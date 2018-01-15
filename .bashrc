@@ -112,7 +112,6 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-alias 'wol_pratiek-pc'='wakeonlan 30:85:A9:43:8B:90'
 
 
 # RETROPIE PROFILE START
@@ -169,10 +168,6 @@ $(tput sgr0)"
 retropie_welcome
 
 # RETROPIE PROFILE END
-
-#echo $(tput setaf 6)\"I Abandoned Every Other Path I Could\'ve Taken And Embraced This One\"$(tput setaf 7)
-#echo $(tput setaf 5)-28th May, 2017
-#echo $(tput sgr0)
 
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
