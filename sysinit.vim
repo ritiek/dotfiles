@@ -28,6 +28,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'rust-lang/rust.vim'
 Plugin 'ajh17/Spacegray.vim'
 Plugin 'xuhdev/SingleCompile'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+let g:airline_theme='term'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
