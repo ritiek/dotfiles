@@ -78,6 +78,7 @@ set expandtab
 set number
 set mouse=a
 set title
+set clipboard+=unnamedplus
 
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
