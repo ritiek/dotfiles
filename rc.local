@@ -12,7 +12,9 @@
 # By default this script does nothing.
 
 USER="ritiek";
+su ${USER} -c "touch /home/${USER}/.config/aria2/aria2.session" &
 sleep 10s && su ${USER} -c "aria2c --conf-path=/home/${USER}/.config/aria2/aria2.conf" &
+su ${USER} -c "mkdir -p /home/${USER}/mega" &
 sleep 10s && su ${USER} -c "MegaFuse -c /home/${USER}/.config/MegaFuse/megafuse.conf" &
 
 while true;
