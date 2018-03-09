@@ -177,3 +177,10 @@ export SDKMAN_DIR="/home/pi/.sdkman"
 [[ -s "/home/pi/.sdkman/bin/sdkman-init.sh" ]] && source "/home/pi/.sdkman/bin/sdkman-init.sh"
 
 alias vim='nvim'
+
+# added by Miniconda3 installer
+export PATH="/home/ritiek/miniconda3/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+echo clannad-as-5
