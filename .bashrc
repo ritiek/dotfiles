@@ -176,9 +176,8 @@ export LESSOPEN='|~/.lessfilter %s'
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/pi/.sdkman"
 [[ -s "/home/pi/.sdkman/bin/sdkman-init.sh" ]] && source "/home/pi/.sdkman/bin/sdkman-init.sh"
-
-# added by Miniconda3 installer
-export PATH="/home/ritiek/miniconda3/bin:$PATH"
-export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
+echo clannad-as-18
+echo https://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/
+echo http://openastronomy.org/projects/2018/plasmapy/plasma-object
+echo https://dev.to/sobolevn/i-am-a-mediocre-developer--30hn

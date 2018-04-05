@@ -62,3 +62,5 @@ eval "$(hub alias -s)"
 source /etc/profile.d/undistract-me.sh
 # Set Vi key bindings for console (Esc for normal mode)
 set -o vi
+alias megamount="MegaFuse -c /home/$USER/.config/MegaFuse/megafuse.conf"
+alias vim='nvim'
