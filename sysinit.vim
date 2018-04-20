@@ -84,8 +84,12 @@ highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
 
 "SingleCompile plugin
-nmap <F8> :SCCompile<cr>
-nmap <F9> :SCCompileRun<cr>
+nmap <F8> :SCCompile<CR>
+nmap <F9> :SCCompileRun<CR>
+
+"Change tabs
+nmap <F3> :tabp<CR>
+nmap <F4> :tabn<CR>
 
 "f, F insert character
 nnoremap f :exec "normal i".nr2char(getchar())."\e"<CR>
