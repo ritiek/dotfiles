@@ -285,7 +285,7 @@ set-option -g set-titles on
 set-option -g set-titles-string "#T"
 
 # increase history size
-#set -g history-limit 10000
+set -g history-limit 10000
 
 # start with mouse mode enabled
 set -g mouse on
