@@ -268,6 +268,11 @@ bind - split-window -v
 unbind '"'
 unbind %
 
+# clear pane scrollback buffer
+# -n option makes it work without
+# sending prefix first
+bind -n C-k clear-history
+
 # window naviagtion
 bind n next-window
 bind p previous-window
