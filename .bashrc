@@ -176,8 +176,8 @@ export LESSOPEN='|~/.lessfilter %s'
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/pi/.sdkman"
 [[ -s "/home/pi/.sdkman/bin/sdkman-init.sh" ]] && source "/home/pi/.sdkman/bin/sdkman-init.sh"
-eval "$(rbenv init -)"
-echo clannad-as-18
+#eval "$(rbenv init -)"
 echo https://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/
 echo http://openastronomy.org/projects/2018/plasmapy/plasma-object
-echo https://dev.to/sobolevn/i-am-a-mediocre-developer--30hn
+
+source /usr/local/Modules/init/bash
