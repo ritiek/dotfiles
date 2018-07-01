@@ -170,6 +170,7 @@ retropie_welcome
 
 # RETROPIE PROFILE END
 
+export EDITOR='nvim'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
 
