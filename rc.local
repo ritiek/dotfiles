@@ -14,6 +14,7 @@
 USER="ritiek";
 su ${USER} -c "touch /home/${USER}/.config/aria2/aria2.session" &
 sleep 10s && su ${USER} -c "aria2c --conf-path=/home/${USER}/.config/aria2/aria2.conf" &
+pulseaudio --start;
 
 #while true;
 #do
@@ -21,7 +22,7 @@ sleep 10s && su ${USER} -c "aria2c --conf-path=/home/${USER}/.config/aria2/aria2
 #    dns-fix
 #done &
 
-exit 0
+exit 0;
 
 
 ## RC.LOCAL RASPBERRY PI
@@ -35,9 +36,9 @@ exit 0
 #chmod 755 /run/screen
 #su pi -c "screen -dmS cunews python /home/pi/cunews/code.py";
 
-#gpio -g mode 4 out 
-#gpio -g mode 17 out 
-#gpio -g mode 27 out 
+#gpio -g mode 4 out
+#gpio -g mode 17 out
+#gpio -g mode 27 out
 #irexec -d
 #su pi -c "screen -dmS led python3 /home/pi/led_code/tg_bot.py";
 ##su pi -c "screen -dmS muxnect muxnect -c mpsyt -w mpsyt";
