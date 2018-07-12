@@ -1,0 +1,42 @@
+#!/bin/sh -e
+#
+# rc.local
+#
+# This script is executed at the end of each multiuser runlevel.
+# Make sure that the script will "exit 0" on success or any other
+# value on error.
+#
+# In order to enable or disable this script just change the execution
+# bits.
+#
+# By default this script does nothing.
+
+# Print the IP address
+IP=$(hostname -I) || true
+if [ "$_IP" ]; then
+  printf "My IP address is %s\n" "$_IP"
+fi
+
+chmod 755 /run/screen
+su pi -c "screen -dmS cunews python /home/pi/cunews/code.py";
+
+gpio -g mode 4 out
+gpio -g mode 17 out
+gpio -g mode 27 out
+irexec -d
+
+pulseaudio --start
+
+su pi -c "screen -dmS led python3 /home/pi/led_code/tg_bot.py";
+#su pi -c "screen -dmS muxnect muxnect -c mpsyt -w mpsyt";
+#su pi -c "screen -dmS muxnect tmux new-session : && muxnect -c mpsyt -w mpsyt";
+su pi -c "screen -dmS null tmux new-session :";
+su pi -c "screen -dmS muxnect muxnect -c mpsyt -w mpsyt -b 0.0.0.0";
+
+#while :; do su pi -c "lt -p 8001 -s wolfpedia"; done &
+#cd /home/pi && su pi -c "python3 wolfpedia.py" &
+
+#cd /home/pi/raspi-weather && forever start app.js;
+#while :; do python sensor_scripts/logger.py; sleep 30; done &
+
+exit 0;
