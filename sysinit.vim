@@ -1,6 +1,7 @@
 " place this config file in `/usr/local/share/nvim/sysinit.vim`
 " and run
 " `sudo git clone https://github.com/VundleVim/Vundle.vim.git /usr/local/share/nvim/bundle/Vundle.vim`
+" (if installed neovim from apt, place the file and run git clone to /usr/share/nvim/)
 
 " `vim`
 " `:PluginInstall`
