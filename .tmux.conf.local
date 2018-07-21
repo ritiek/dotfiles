@@ -1,6 +1,8 @@
 # Installation:
+# sudo apt install tmux
 # wget https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf -O ~/.tmux.conf
 # wget https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf.local ~/.tmux.conf.local
+# sudo apt install fonts-powerline
 
 
 # https://github.com/gpakosz/.tmux
