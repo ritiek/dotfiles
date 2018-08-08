@@ -1,5 +1,4 @@
-" place this config file in `/usr/local/share/nvim/sysinit.vim`
-" and run
+" `sudo wget https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -O /usr/local/share/nvim/sysinit.vim`
 " `sudo git clone https://github.com/VundleVim/Vundle.vim.git /usr/local/share/nvim/bundle/Vundle.vim`
 " (if installed neovim from apt, place the file and run git clone to /usr/share/nvim/)
 
@@ -10,12 +9,12 @@
 " then uncomment below line to path to Vundle.vim
 
 " set rtp+=~/.vim/bundle/Vundle.vim
+" set the runtime path to include Vundle and initialize
+set rtp+=/usr/local/share/nvim/bundle/Vundle.vim
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=/usr/local/share/nvim/bundle/Vundle.vim
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
