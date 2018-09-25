@@ -56,6 +56,8 @@ hdmi_mode=16
 # Additional overlays and parameters are documented /boot/overlays/README
 
 # Enable audio (loads snd_bcm2835)
+# (this also generates white noise from 3.5mm audio jack on my Pi2)
+# (only omxplayer works without this module [static free!])
 dtparam=audio=on
 
 gpu_mem=160
@@ -67,4 +69,5 @@ sdram_freq=500
 core_freq=500
 over_voltage=2
 temp_limit=85
-#disable_audio_dither=1
+disable_audio_dither=1
+audio_pwm_mode=2
