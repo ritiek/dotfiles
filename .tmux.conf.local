@@ -271,6 +271,9 @@ bind j select-pane -D  # move down
 bind k select-pane -U  # move up
 bind l select-pane -R  # move right
 
+unbind C-h
+unbind C-l
+
 # split panes using | and -
 bind | split-window -h
 bind - split-window -v
