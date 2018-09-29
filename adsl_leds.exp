@@ -1,0 +1,24 @@
+#!/usr/bin/expect
+
+# usage: expect adsl_leds.exp <user> <pass> <led_cmd>
+
+set timeout 10
+set ip 192.168.1.1
+set port 23
+set user [lindex $argv 0]
+set password [lindex $argv 1]
+set cmd [lindex $argv 2]
+
+spawn telnet $ip $port
+expect "Username: "
+send "$user\r"
+expect "Password: "
+send "$password\r"
+expect "$"
+send "sh\r"
+expect "XDSL#"
+send "led test\r"
+expect "XDSL(led-test)#"
+send "start\r"
+expect "XDSL(led-test)#"
+send "$cmd\r"
