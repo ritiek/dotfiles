@@ -32,6 +32,8 @@ su pi -c "screen -dmS led python3 /home/pi/led_code/tg_bot.py";
 #su pi -c "screen -dmS muxnect tmux new-session : && muxnect -c mpsyt -w mpsyt";
 su pi -c "screen -dmS null tmux new-session :";
 su pi -c "screen -dmS muxnect muxnect -c mpsyt -w mpsyt -b 0.0.0.0";
+sleep 20
+su pi -c "tmux new-window -n adsl";
 
 #while :; do su pi -c "lt -p 8001 -s wolfpedia"; done &
 #cd /home/pi && su pi -c "python3 wolfpedia.py" &
