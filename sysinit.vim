@@ -92,6 +92,13 @@ nmap <F9> :SCCompileRun<CR>
 nmap <F3> :tabp<CR>
 nmap <F4> :tabn<CR>
 
+"tmux like pane/windows key bindings
+nmap <C-w>- :split<CR>
+nmap <C-w><bar> :vsplit<CR>
+nmap <C-w>c :tabe<CR>
+nmap <C-w>n :tabn<CR>
+nmap <C-w>p :tabp<CR>
+
 "f, F insert character
 nnoremap f :exec "normal i".nr2char(getchar())."\e"<CR>
 nnoremap F :exec "normal a".nr2char(getchar())."\e"<CR>
