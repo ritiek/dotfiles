@@ -92,6 +92,9 @@ nmap <F9> :SCCompileRun<CR>
 nmap <F3> :tabp<CR>
 nmap <F4> :tabn<CR>
 
+"Change increment mapping to C-s to not conflict with tmux's prefix
+nmap <C-s> <C-a>
+
 "tmux like pane/windows key bindings
 nmap <C-w>- :split<CR>
 nmap <C-w><bar> :vsplit<CR>
