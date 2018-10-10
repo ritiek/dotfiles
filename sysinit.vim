@@ -31,7 +31,9 @@ Plugin 'xuhdev/SingleCompile'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
+
 let g:airline_theme='term'
+let g:airline_powerline_fonts = 1
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
