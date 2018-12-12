@@ -70,7 +70,9 @@ syntax on
 "let g:gruvbox_italic=1
 "let g:gruvbox_contrast_dark='hard'
 "let g:gruvbox_contrast_light='hard'
+
 colorscheme spacegray
+
 set t_Co=256
 
 set encoding=utf-8
@@ -90,19 +92,15 @@ match WhiteSpaces /\s\+$/
 nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
 
-"Change tabs
-nmap <F3> :tabp<CR>
-nmap <F4> :tabn<CR>
-
-"Change increment mapping to C-s to not conflict with tmux's prefix
+"Tmux like bindings
 nmap <C-s> <C-a>
-
-"tmux like pane/windows key bindings
 nmap <C-w>- :split<CR>
 nmap <C-w><bar> :vsplit<CR>
 nmap <C-w>c :tabe<CR>
 nmap <C-w>n :tabn<CR>
-nmap <C-w>p :tabp<CR>
+nmap <C-w>N :tabp<CR>
+nmap <C-w>x :q!<CR>
+nmap <C-w>= :reg<CR>
 
 "f, F insert character
 nnoremap f :exec "normal i".nr2char(getchar())."\e"<CR>
