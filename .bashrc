@@ -158,7 +158,7 @@ echo "
 ( : '~'.~.'~' : ) Uptime.............: ${UPTIME}
  ~ .~       ~. ~  Memory.............: $(grep MemFree /proc/meminfo | awk {'print $2'})kB (Free) / $(grep MemTotal /proc/meminfo | awk {'print $2'})kB (Total)$(tput setaf 7)
   (  $(tput setaf 4) |   | $(tput setaf 7)  )  $(tput setaf 1) Running Processes..: $(ps ax | wc -l | tr -d " ")$(tput setaf 7)
-  '~         ~'  $(tput setaf 1) IP Address.........: $(ip route get 8.8.8.8 2>/dev/null | head -1 | cut -d' ' -f8) $(tput setaf 7)
+  '~         ~'  $(tput setaf 1) IP Address.........: $(ip route get 8.8.8.8 2>/dev/null | head -1 | cut -d' ' -f7) $(tput setaf 7)
     *--~-~--*    $(tput setaf 1) Battery............: $(battery)%
                  $(tput setaf 1) Temperature........: CPU: $cpuTempC°C/$cpuTempF°F GPU: $gpuTempC°C/$gpuTempF°F
                  $(tput setaf 7) The RetroPie Project, http://www.petrockblock.com
@@ -170,17 +170,23 @@ retropie_welcome
 
 # RETROPIE PROFILE END
 
-export EDITOR='nvim'
-export LESS='-R'
-export LESSOPEN='|~/.lessfilter %s'
+#function _update_ps1() {
+#    PS1=$(powerline-shell $?)
+#}
+
+#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
+#    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+#fi
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="~/.sdkman"
-export GOPATH="~/go"
-export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
-[[ -s "~/.sdkman/bin/sdkman-init.sh" ]] && source "/home/pi/.sdkman/bin/sdkman-init.sh"
 #eval "$(rbenv init -)"
-echo https://blog.ionelmc.ro/2015/02/09/understanding-python-metaclasses/
-echo http://openastronomy.org/projects/2018/plasmapy/plasma-object
+#source /usr/local/Modules/init/bash
 
-source /usr/local/Modules/init/bash
+alias python3="python3.7"
+
+echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
+echo "nvim http://example.com/"
+echo ":<range>s/<find>/<replace>/[g]"
+echo ":g/<find>"
+echo "<C-n> <C-x><C-l> <C-x><C-f> <C-r>= 180<C-x>"
+echo "http://sqlbolt.com"

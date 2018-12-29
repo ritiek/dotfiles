@@ -16,10 +16,23 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 
+export EDITOR='nvim'
+export LESS='-R'
+export LESSOPEN='|~/.lessfilter %s'
+export SDKMAN_DIR="/home/pi/.sdkman"
+[[ -s "/home/pi/.sdkman/bin/sdkman-init.sh" ]] && source "/home/pi/.sdkman/bin/sdkman-init.sh"
+export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+export GOPATH="$HOME/go"
+
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 PATH="$HOME/go/bin:$PATH"
 PATH="$HOME/.cabal/bin:$PATH"
 PATH="$HOME/.rbenv/bin:$PATH"
 PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
+PATH="$HOME/.rbenv/bin:$PATH"
+PATH="$HOME/bin:$PATH"
+PATH="$HOME/.local/bin:$PATH"
+PATH="$HOME/bin/gyb:$PATH"
+PATH="$HOME/.cargo/bin:$PATH"
+export PATH
