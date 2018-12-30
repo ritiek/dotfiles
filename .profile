@@ -36,3 +36,7 @@ PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/bin/gyb:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
 export PATH
+
+powerline-daemon -q
+POWERLINE_BASH_CONTINUATION=1
+POWERLINE_BASH_SELECT=1

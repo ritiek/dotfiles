@@ -168,19 +168,9 @@ $(tput sgr0)"
 
 retropie_welcome
 
-# RETROPIE PROFILE END
-
-#function _update_ps1() {
-#    PS1=$(powerline-shell $?)
-#}
-
-#if [[ $TERM != linux && ! $PROMPT_COMMAND =~ _update_ps1 ]]; then
-#    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-#fi
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 #eval "$(rbenv init -)"
 #source /usr/local/Modules/init/bash
+source "$HOME/.local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh"
 
 alias python3="python3.7"
 
