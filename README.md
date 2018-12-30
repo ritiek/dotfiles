@@ -42,8 +42,8 @@ sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o /
 export POWERLINE_INSTALLATION=$HOME/.local/lib/python3.7/site-packages/powerline
 
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/config.json -o $POWERLINE_INSTALLATION/config_files/config.json
-curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/default.json -o $POWERLINE_INSTALLATION/config_files/themes/shell/default.json
-curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek.json -o $POWERLINE_INSTALLATION/config_files/colorschemes/ritiek.json
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_shell_theme.json -o $POWERLINE_INSTALLATION/config_files/themes/shell/ritiek.json
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_colorscheme.json -o $POWERLINE_INSTALLATION/config_files/colorschemes/ritiek.json
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o $HOME/.ipython/profile_default/ipython_config.py
 
 unset POWERLINE_INSTALLATION
