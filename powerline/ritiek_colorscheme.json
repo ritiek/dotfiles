@@ -1,9 +1,9 @@
 {
 	"name": "Ritiek",
 	"groups": {
-		"information:additional":     { "fg": "gray9", "bg": "gray4", "attrs": [] },
-		"information:regular":        { "fg": "gray10", "bg": "gray4", "attrs": ["bold"] },
-		"information:highlighted":    { "fg": "white", "bg": "gray4", "attrs": [] },
+		"information:additional":     { "fg": "gray9", "bg": "gray1", "attrs": [] },
+		"information:regular":        { "fg": "gray10", "bg": "gray1", "attrs": ["bold"] },
+		"information:highlighted":    { "fg": "white", "bg": "gray1", "attrs": [] },
 		"information:priority":       { "fg": "brightyellow", "bg": "mediumorange", "attrs": [] },
 		"warning:regular":            { "fg": "white", "bg": "brightred", "attrs": ["bold"] },
 		"critical:failure":           { "fg": "white", "bg": "darkestred", "attrs": [] },
@@ -49,7 +49,7 @@
 		"stash:divider":              "branch:divider",
 		"cwd":                        "information:additional",
 		"cwd:current_folder":         "information:regular",
-		"cwd:divider":                { "fg": "gray7", "bg": "gray4", "attrs": [] },
+		"cwd:divider":                { "fg": "gray7", "bg": "gray1", "attrs": [] },
 		"virtualenv":                 { "fg": "white", "bg": "darkcyan", "attrs": [] },
 		"attached_clients":           { "fg": "gray8", "bg": "gray0", "attrs": [] },
         "gitstatus":                  { "fg": "gray8",           "bg": "gray2", "attrs": [] },
