@@ -4,7 +4,7 @@ Mah dotfiles
 
 ## Installation
 
-```
+```bash
 sudo apt install -y software-properties-common neovim tmux fonts-powerline aria2 undistract-me
 
 pip3 install powerline-status --user
@@ -17,7 +17,7 @@ cargo install fd-find
 
 ## Configuration
 
-```
+```bash
 sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/bash.bashrc -o /etc/bash.bashrc
 
 sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/battery.sh -o /usr/bin/battery
@@ -35,7 +35,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf.local -
 sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o /etc/mpv/mpv.conf
 ```
 
-```
+```bash
 # POWERLINE
 # configure this env variable yourself
 # find it with `pip3 show powerline-status`
