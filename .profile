@@ -19,10 +19,15 @@ fi
 export EDITOR='nvim'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
-export SDKMAN_DIR="/home/pi/.sdkman"
-[[ -s "/home/pi/.sdkman/bin/sdkman-init.sh" ]] && source "/home/pi/.sdkman/bin/sdkman-init.sh"
+
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 export GOPATH="$HOME/go"
+
+export POWERLINE_BASH_CONTINUATION=1
+export POWERLINE_BASH_SELECT=1
 
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
@@ -35,8 +40,5 @@ PATH="$HOME/bin:$PATH"
 PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/bin/gyb:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
+PATH="$HOME/Android/flutter/bin:$PATH"
 export PATH
-
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
