@@ -149,6 +149,11 @@ function retropie_welcome() {
         df_out+=("$line")
     done < <(df -h /)
 
+ps cax | grep powerline-daemo > /dev/null
+if [ $? -ne 0 ]; then
+    powerline-daemon -q
+fi
+
 echo "
    .~~.   .~~.    $(tput setaf 6)$(date +"%A, %e %B %Y, %r")$(tput setaf 1)
   '. \ ' ' / .'   $(tput setaf 2)$(uname -srmo)$(tput setaf 1)
