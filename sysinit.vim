@@ -118,6 +118,8 @@ set number
 set mouse=a
 set title
 set clipboard+=unnamedplus
+set notimeout
+set ttimeout
 
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
