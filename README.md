@@ -5,7 +5,7 @@ Mah dotfiles
 ## Installation
 
 ```bash
-sudo apt install -y software-properties-common neovim tmux fonts-powerline aria2 undistract-me
+sudo apt install -y software-properties-common neovim tmux fonts-powerline aria2 undistract-me mpv
 
 pip3 install powerline-status --user
 pip3 install powerline-gitstatus --user
