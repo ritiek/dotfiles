@@ -13,6 +13,8 @@ pip3 install powerline-gitstatus --user
 curl https://sh.rustup.rs -sSf | bash
 cargo install ripgrep
 cargo install fd-find
+cargo install sd
+cargo install bat
 ```
 
 ## Configuration
