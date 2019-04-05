@@ -37,9 +37,14 @@ autocmd FileType python set commentstring=#\ %s
 autocmd FileType c,cpp,java set commentstring=//\ %s
 Plugin 'tpope/vim-fugitive'
 Plugin 'rafi/awesome-vim-colorschemes'
+Plugin 'Yggdroot/indentLine'
+
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
+
+"¦, ┆, │, ⎸, or ▏
+let g:indentLine_char = '¦'
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
@@ -127,6 +132,9 @@ match WhiteSpaces /\s\+$/
 "SingleCompile plugin
 nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
+
+"indentLine plugin
+nmap <C-i> :IndentLinesToggle<CR>
 
 "Tmux like bindings
 nmap <C-s> <C-a>
