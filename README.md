@@ -67,7 +67,7 @@ $ tmux [-u]
 
 ### Ctrl+L clear terminal
 
-If `^L` won't clear terminal, add `"\C-l":'clear\n'` to `/etc/inputrc` to fix it.
+If `^L` won't clear terminal, add line `"\C-l":'clear\n'` to `/etc/inputrc` at the end of the file to fix it.
 
 ### Kodi - some videos won't play
 
