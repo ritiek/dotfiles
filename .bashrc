@@ -175,9 +175,10 @@ retropie_welcome
 
 #eval "$(rbenv init -)"
 #source /usr/local/Modules/init/bash
-source "$HOME/.local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh"
+PYTHON3="python3.6"
+source "$HOME/.local/lib/$PYTHON3/site-packages/powerline/bindings/bash/powerline.sh"
 
-alias python3="python3.7"
+alias python3=$PYTHON3
 
 echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
 echo "nvim http://example.com/"
