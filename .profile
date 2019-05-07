@@ -33,6 +33,7 @@ PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/bin/gyb:$PATH"
 PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/Android/flutter/bin:$PATH"
+PATH="$HOME/.gem/ruby/2.5.0/bin:$PATH"
 export PATH
 
 # if running bash
