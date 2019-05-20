@@ -2,14 +2,29 @@
 
 Mah dotfiles
 
-## Installation
+## Must-haves
 
 ```bash
-sudo apt install -y software-properties-common neovim tmux fonts-powerline aria2 undistract-me mpv git xclip
+# Default to "en_US.UTF8" locale
+sudo dpkg-reconfigure locales
 
-pip3 install powerline-status --user
-pip3 install powerline-gitstatus --user
+sudo apt install -y software-properties-common \
+                    neovim \
+                    tmux \
+                    fonts-powerline \
+                    aria2 \
+                    undistract-me \
+                    mpv \
+                    git \
+                    xclip \
+                    python3-pip
 
+pip3 install setuptools wheel --user
+pip3 install powerline-status powerline-gitstatus --user
+```
+
+```bash
+# Rust & tools
 curl https://sh.rustup.rs -sSf | bash
 cargo install ripgrep
 cargo install fd-find
@@ -20,26 +35,30 @@ cargo install bat
 ## Configuration
 
 ```bash
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/bash.bashrc -o /etc/bash.bashrc
+# Display current battery % with `$ battery`
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/battery.sh -o ~/.local/bin/battery
+chmod +x ~/.local/bin/battery
 
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/battery.sh -o /usr/bin/battery
-sudo chmod +x /usr/bin/battery
+# NVim configuration
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -o ~/.local/share/nvim/sysinit.vim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.local/share/nvim/bundle/Vundle.vim
 
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -o /usr/share/nvim/sysinit.vim
-sudo git clone https://github.com/VundleVim/Vundle.vim.git /usr/share/nvim/bundle/Vundle.vim
-
+# Shell configuration files
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.bashrc -o ~/.bashrc
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.profile -o ~/.profile
 
+# Tmux configuration
 curl https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf -o ~/.tmux.conf
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf.local -o ~/.tmux.conf.local
 
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o /etc/mpv/mpv.conf
+# Mpv configuration
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.config/mpv/mpv.conf
 ```
 
 ```bash
-# POWERLINE
-# configure this env variable yourself
+# Configure Powerline prompt
+
+# Configure this environment variable based on your python version
 # find it with `pip3 show powerline-status`
 export POWERLINE_INSTALLATION=$HOME/.local/lib/python3.7/site-packages/powerline
 
@@ -51,6 +70,13 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_
 unset POWERLINE_INSTALLATION
 ```
 
+### Specific to Linux Mint
+
+```bash
+# Load all dumped configuration
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | dconf load /org/
+```
+
 ### NVim
 
 ```
@@ -60,7 +86,7 @@ unset POWERLINE_INSTALLATION
 ### Tmux
 
 ```
-$ tmux [-u]
+tmux [-u]
 ```
 
 ## Misc
