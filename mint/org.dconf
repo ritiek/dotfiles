@@ -115,7 +115,7 @@ dwell-click-enabled=false
 lock-enabled=true
 
 [cinnamon/desktop/background]
-picture-uri='file:///usr/share/backgrounds/linuxmint-tessa/dcoffman_lake.jpg'
+picture-uri='file:///usr/share/backgrounds/linuxmint-tessa/kemsley_kluane.jpg'
 picture-options='zoom'
 
 [cinnamon/desktop/background/slideshow]
