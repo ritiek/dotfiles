@@ -21,6 +21,7 @@ sudo apt install -y software-properties-common \
 
 pip3 install setuptools wheel --user
 pip3 install powerline-status powerline-gitstatus --user
+pip3 install youtube-dl --user
 ```
 
 ```bash
