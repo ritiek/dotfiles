@@ -1,0 +1,5 @@
+# No, "powerline-daemo" is not a typo
+ps cax | grep powerline-daemo > /dev/null
+if [ $? -ne 0 ]; then
+    powerline-daemon -q
+fi
