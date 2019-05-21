@@ -54,6 +54,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/battery.sh -o ~/.l
 chmod +x ~/.local/bin/battery
 
 # NVim configuration
+ln -s /usr/share/nvim/runtime ~/.local/share/nvim/runtime
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -o ~/.local/share/nvim/sysinit.vim
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.local/share/nvim/bundle/Vundle.vim
 
