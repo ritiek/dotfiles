@@ -41,8 +41,6 @@ wget -qO - https://wavebox.io/dl/client/repo/archive.key | sudo apt-key add -
 echo "deb https://wavebox.io/dl/client/repo/ x86_64/" | sudo tee --append /etc/apt/sources.list.d/wavebox.list
 sudo apt update
 sudo apt install wavebox
-# Wavebox Fonts
-sudo apt install ttf-mscorefonts-installer
 ```
 
 ## Configuration
@@ -99,12 +97,14 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_
 ```bash
 # Launch Powerline theme with .bashrc
 echo >> $HOME/.bashrc
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> $HOME/.bashrc
 echo "# Load our powerline theme" >> $HOME/.bashrc
 echo "source $POWERLINE_BASH_CONFIG" >> $HOME/.bashrc
 ```
 ```bash
 # Launch Powerline theme with .zshrc
 echo >> $HOME/.zshrc
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> $HOME/.zshrc
 echo "# Load our powerline theme" >> $HOME/.zshrc
 echo "source $POWERLINE_ZSH_CONFIG" >> $HOME/.zshrc
 ```
