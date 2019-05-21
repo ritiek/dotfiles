@@ -10,7 +10,7 @@
 
 " set rtp+=~/.vim/bundle/Vundle.vim
 " set the runtime path to include Vundle and initialize
-set rtp+=/usr/share/nvim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
 
 set nocompatible              " be iMproved, required
 filetype off                  " required

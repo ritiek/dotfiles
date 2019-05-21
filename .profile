@@ -8,9 +8,11 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-export EDITOR='nvim'
-export LESS='-R'
-export LESSOPEN='|~/.lessfilter %s'
+export EDITOR="nvim"
+export VIM="$HOME/.config/nvim"
+export VIMRUNTIME="/usr/share/nvim/runtime"
+export LESS="-R"
+export LESSOPEN="|$HOME/.lessfilter %s"
 # Reduce lag when switching between Normal and Insert mode with Vi
 # bindings in zsh
 export KEYTIMEOUT=1
