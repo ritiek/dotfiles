@@ -18,7 +18,8 @@ sudo apt install -y software-properties-common \
                     git \
                     xclip \
                     python3-pip \
-                    openssh-server
+                    openssh-server \
+                    zsh
 
 pip3 install setuptools wheel --user
 pip3 install powerline-status powerline-gitstatus --user
@@ -70,19 +71,49 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf.local -
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.config/mpv/mpv.conf
 ```
 
-```bash
-# Configure Powerline prompt
+### Switch from Bash to Zsh
+```
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
+# Enter your password when prompted
+chsh -s $(which zsh)
+```
 
-# Configure this environment variable based on your python version
-# find it with `pip3 show powerline-status`
-export POWERLINE_INSTALLATION=$HOME/.local/lib/python3.7/site-packages/powerline
+### Configure Powerline prompt
+
+```bash
+# Configure the PYTHON3 variable based on your python version
+# Find the python version and powerline installation location
+# with `pip3 show powerline-status`
+
+PYTHON3="python3.6"
+POWERLINE_INSTALLATION=$HOME/.local/lib/$PYTHON3/site-packages/powerline
+
+POWERLINE_BASH_CONFIG=$POWERLINE_INSTALLATION/bindings/bash/powerline.sh
+POWERLINE_ZSH_CONFIG=$POWERLINE_INSTALLATION/bindings/zsh/powerline.zsh
 
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/config.json -o $POWERLINE_INSTALLATION/config_files/config.json
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_shell_theme.json -o $POWERLINE_INSTALLATION/config_files/themes/shell/ritiek.json
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_colorscheme.json -o $POWERLINE_INSTALLATION/config_files/colorschemes/ritiek.json
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o $HOME/.ipython/profile_default/ipython_config.py
-
+```
+```
+# Launch Powerline theme with .bashrc
+echo >> $HOME/.bashrc
+echo "# Load our powerline theme" >> $HOME/.bashrc
+echo "source $POWERLINE_BASH_CONFIG" >> $HOME/.bashrc
+```
+```
+# Launch Powerline theme with .zshrc
+echo >> $HOME/.zshrc
+echo "# Load our powerline theme" >> $HOME/.zshrc
+echo "source $POWERLINE_ZSH_CONFIG" >> $HOME/.zshrc
+```
+```
+# unset everything
+unset PYTHON3
 unset POWERLINE_INSTALLATION
+unset POWERLINE_BASH_CONFIG
+unset POWERLINE_ZSH_CONFIG
 ```
 
 ### Specific to Linux Mint
@@ -104,7 +135,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | d
 tmux [-u]
 ```
 
-## Misc
+## Miscellaneous
 
 ### Ctrl+L clear terminal
 

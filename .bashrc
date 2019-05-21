@@ -114,6 +114,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+ps cax | grep powerline-daemo > /dev/null
+if [ $? -ne 0 ]; then
+    powerline-daemon -q
+fi
+
 # RETROPIE PROFILE START
 # Thanks to http://blog.petrockblock.com/forums/topic/retropie-mushroom-motd/#post-3965
 
@@ -149,11 +154,6 @@ function retropie_welcome() {
         df_out+=("$line")
     done < <(df -h /)
 
-ps cax | grep powerline-daemo > /dev/null
-if [ $? -ne 0 ]; then
-    powerline-daemon -q
-fi
-
 echo "
    .~~.   .~~.    $(tput setaf 6)$(date +"%A, %e %B %Y, %r")$(tput setaf 1)
   '. \ ' ' / .'   $(tput setaf 2)$(uname -srmo)$(tput setaf 1)
@@ -175,10 +175,6 @@ retropie_welcome
 
 #eval "$(rbenv init -)"
 #source /usr/local/Modules/init/bash
-PYTHON3="python3.6"
-source "$HOME/.local/lib/$PYTHON3/site-packages/powerline/bindings/bash/powerline.sh"
-
-alias python3=$PYTHON3
 
 echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
 echo "nvim http://example.com/"
