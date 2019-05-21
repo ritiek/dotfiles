@@ -35,7 +35,7 @@ cargo install sd
 cargo install bat
 ```
 
-```
+```bash
 # Wavebox
 wget -qO - https://wavebox.io/dl/client/repo/archive.key | sudo apt-key add -
 echo "deb https://wavebox.io/dl/client/repo/ x86_64/" | sudo tee --append /etc/apt/sources.list.d/wavebox.list
@@ -72,7 +72,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.con
 ```
 
 ### Switch from Bash to Zsh
-```
+```bash
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
 # Enter your password when prompted
 chsh -s $(which zsh)
@@ -96,19 +96,19 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_s
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_colorscheme.json -o $POWERLINE_INSTALLATION/config_files/colorschemes/ritiek.json
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o $HOME/.ipython/profile_default/ipython_config.py
 ```
-```
+```bash
 # Launch Powerline theme with .bashrc
 echo >> $HOME/.bashrc
 echo "# Load our powerline theme" >> $HOME/.bashrc
 echo "source $POWERLINE_BASH_CONFIG" >> $HOME/.bashrc
 ```
-```
+```bash
 # Launch Powerline theme with .zshrc
 echo >> $HOME/.zshrc
 echo "# Load our powerline theme" >> $HOME/.zshrc
 echo "source $POWERLINE_ZSH_CONFIG" >> $HOME/.zshrc
 ```
-```
+```bash
 # unset everything
 unset PYTHON3
 unset POWERLINE_INSTALLATION
