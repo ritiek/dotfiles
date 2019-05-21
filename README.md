@@ -34,6 +34,16 @@ cargo install sd
 cargo install bat
 ```
 
+```
+# Wavebox
+wget -qO - https://wavebox.io/dl/client/repo/archive.key | sudo apt-key add -
+echo "deb https://wavebox.io/dl/client/repo/ x86_64/" | sudo tee --append /etc/apt/sources.list.d/wavebox.list
+sudo apt update
+sudo apt install wavebox
+# Wavebox Fonts
+sudo apt install ttf-mscorefonts-installer
+```
+
 ## Configuration
 
 ```bash
