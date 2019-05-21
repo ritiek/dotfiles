@@ -1,3 +1,6 @@
 #!/bin/bash
 
-cat /sys/class/power_supply/BAT1/capacity
+BATTERYPATH=/sys/class/power_supply/BAT1/capacity
+if [ -f $BATTERYPATH ]; then
+    cat $BATTERYPATH
+fi
