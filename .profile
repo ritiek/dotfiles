@@ -11,6 +11,9 @@
 export EDITOR='nvim'
 export LESS='-R'
 export LESSOPEN='|~/.lessfilter %s'
+# Reduce lag when switching between Normal and Insert mode with Vi
+# bindings in zsh
+export KEYTIMEOUT=1
 
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
