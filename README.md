@@ -17,7 +17,8 @@ sudo apt install -y software-properties-common \
                     mpv \
                     git \
                     xclip \
-                    python3-pip
+                    python3-pip \
+                    openssh-server
 
 pip3 install setuptools wheel --user
 pip3 install powerline-status powerline-gitstatus --user
@@ -36,6 +37,9 @@ cargo install bat
 ## Configuration
 
 ```bash
+# My lovely machines
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.ssh/authorized_keys -o ~/.ssh/authorized_keys
+
 # Display current battery % with `$ battery`
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/battery.sh -o ~/.local/bin/battery
 chmod +x ~/.local/bin/battery
