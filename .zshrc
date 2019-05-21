@@ -3,6 +3,11 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
+# Enable Vi bindings
+bindkey -v
+
+bindkey '^R' history-incremental-search-backward
+
 # RETROPIE PROFILE START
 # Thanks to http://blog.petrockblock.com/forums/topic/retropie-mushroom-motd/#post-3965
 
