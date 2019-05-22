@@ -3,10 +3,18 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
+# Make Enter key on the numpad work as Return key
+bindkey '^[OM' accept-line
+
+# Reverse search like in Bash
+bindkey '^R' history-incremental-search-backward
+
 # Enable Vi bindings
 bindkey -v
 
-bindkey '^R' history-incremental-search-backward
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd ' ' edit-command-line
 
 # RETROPIE PROFILE START
 # Thanks to http://blog.petrockblock.com/forums/topic/retropie-mushroom-motd/#post-3965
