@@ -60,8 +60,8 @@ echo "
    .~~.   .~~.    $(tput setaf 6)$(date +"%A, %e %B %Y, %r")$(tput setaf 1)
   '. \ ' ' / .'   $(tput setaf 2)$(uname -srmo)$(tput setaf 1)
    .~ .~~~..~.
-  : .~.'~'.~. :   $(tput setaf 3)${df_out[0]}$(tput setaf 1)
- ~ (   ) (   ) ~  $(tput setaf 7)${df_out[1]}$(tput setaf 1)
+  : .~.'~'.~. :   $(tput setaf 3)${df_out[1]}$(tput setaf 1)
+ ~ (   ) (   ) ~  $(tput setaf 7)${df_out[2]}$(tput setaf 1)
 ( : '~'.~.'~' : ) Uptime.............: ${UPTIME}
  ~ .~       ~. ~  Memory.............: $(grep MemFree /proc/meminfo | awk {'print $2'})kB (Free) / $(grep MemTotal /proc/meminfo | awk {'print $2'})kB (Total)$(tput setaf 7)
   (  $(tput setaf 4) |   | $(tput setaf 7)  )  $(tput setaf 1) Running Processes..: $(ps ax | wc -l | tr -d " ")$(tput setaf 7)
