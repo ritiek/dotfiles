@@ -1,4 +1,6 @@
 # For setting history length see HISTSIZE and HISTFILESIZE in zsh
+export ZSH="$HOME/.oh-my-zsh"
+
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
@@ -15,6 +17,19 @@ bindkey -v
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd ' ' edit-command-line
+
+# Set your own notification threshold
+bgnotify_threshold=5
+
+function bgnotify_formatted {
+  ## $1=exit_status, $2=command, $3=elapsed_time
+  [ $1 -eq 0 ] && title="Succeeded" || title="Failed"
+  bgnotify "$title in $3s" "$2";
+}
+
+plugins=(
+    bgnotify
+)
 
 # RETROPIE PROFILE START
 # Thanks to http://blog.petrockblock.com/forums/topic/retropie-mushroom-motd/#post-3965
@@ -82,6 +97,8 @@ $(tput sgr0)"
 }
 
 retropie_welcome
+
+source $ZSH/oh-my-zsh.sh
 
 echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
 echo "nvim http://example.com/"
