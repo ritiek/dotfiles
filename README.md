@@ -72,6 +72,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.con
 ### Switch from Bash to Zsh
 ```bash
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
+curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zprofile -o ~/.zprofile
 # Enter your password when prompted
 chsh -s $(which zsh)
 ```
