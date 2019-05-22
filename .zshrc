@@ -5,19 +5,6 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
-# Make Enter key on the numpad work as Return key
-bindkey '^[OM' accept-line
-
-# Reverse search like in Bash
-bindkey '^R' history-incremental-search-backward
-
-# Enable Vi bindings
-bindkey -v
-
-autoload edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd ' ' edit-command-line
-
 # Set your own notification threshold
 bgnotify_threshold=5
 
@@ -30,6 +17,23 @@ function bgnotify_formatted {
 plugins=(
     bgnotify
 )
+
+
+# Make Enter key on the numpad work as Return key
+bindkey '^[OM' accept-line
+
+# Reverse search like in Bash
+bindkey '^R' history-incremental-search-backward
+
+# Load oh-my-zsh configuration
+source $ZSH/oh-my-zsh.sh
+
+# Enable Vi bindings
+bindkey -v
+
+autoload edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd ' ' edit-command-line
 
 # RETROPIE PROFILE START
 # Thanks to http://blog.petrockblock.com/forums/topic/retropie-mushroom-motd/#post-3965
@@ -97,8 +101,6 @@ $(tput sgr0)"
 }
 
 retropie_welcome
-
-source $ZSH/oh-my-zsh.sh
 
 echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
 echo "nvim http://example.com/"
