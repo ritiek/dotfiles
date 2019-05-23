@@ -5,6 +5,9 @@ HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=2000
 
+# Refresh commands-cache for tab-completion
+zstyle ":completion:*:commands" rehash 1
+
 # Set your own notification threshold
 bgnotify_threshold=5
 
