@@ -105,6 +105,8 @@ $(tput sgr0)"
 
 retropie_welcome
 
+eval "$(hub alias -s)"
+
 echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
 echo "nvim http://example.com/"
 echo ":<range>s/<find>/<replace>/[g]"
