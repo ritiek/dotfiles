@@ -54,6 +54,10 @@ if [ -x /usr/bin/dircolors ]; then
     alias sudo='sudo -H'
 fi
 
+if [[ -s '/etc/zsh_command_not_found' ]]; then
+  source '/etc/zsh_command_not_found'
+fi
+
 function retropie_welcome() {
     local upSeconds="$(/usr/bin/cut -d. -f1 /proc/uptime)"
     local secs=$((upSeconds%60))
