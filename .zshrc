@@ -19,6 +19,7 @@ function bgnotify_formatted {
 
 plugins=(
     bgnotify
+    zsh-autosuggestions
 )
 
 
@@ -27,6 +28,10 @@ bindkey '^[OM' accept-line
 
 # Reverse search like in Bash
 bindkey '^R' history-incremental-search-backward
+
+# zsh-autosuggetsions maps
+bindkey '^I' autosuggest-accept
+bindkey '^M' autosuggest-execute
 
 # Load oh-my-zsh configuration
 source $ZSH/oh-my-zsh.sh
