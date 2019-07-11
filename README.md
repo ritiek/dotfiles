@@ -74,6 +74,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.con
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zprofile -o ~/.zprofile
 git clone https://github.com/robbyrussell/oh-my-zsh ~/.oh-my-zsh
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # Enter your password when prompted
 chsh -s $(which zsh)
 ```
