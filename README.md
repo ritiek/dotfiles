@@ -143,6 +143,7 @@ tmux [-u]
 
 <img src="https://i.imgur.com/A8ME49P.png" width="500">
 <img src="https://i.imgur.com/ktjySCI.png" width="500">
+(Excuse my battery percentage and CPU temperature for Linux does not have native support for my hardware)
 
 ## Miscellaneous
 
