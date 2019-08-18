@@ -12,6 +12,7 @@ sudo apt install -y software-properties-common \
                     neovim \
                     tmux \
                     fonts-powerline \
+                    ffmpeg \
                     aria2 \
                     undistract-me \
                     mpv \
