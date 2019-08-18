@@ -139,6 +139,11 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | d
 tmux [-u]
 ```
 
+## Screenshots
+
+<img src="https://i.imgur.com/A8ME49P.png" width="500">
+<img src="https://i.imgur.com/ktjySCI.png" width="500">
+
 ## Miscellaneous
 
 ### Ctrl+L clear terminal
