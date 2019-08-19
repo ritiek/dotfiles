@@ -42,6 +42,7 @@ Plugin 'Yggdroot/indentLine'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 "¦, ┆, │, ⎸, or ▏
 let g:indentLine_char = '¦'
