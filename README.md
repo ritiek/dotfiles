@@ -63,6 +63,7 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.bashrc -o ~/.bash
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.profile -o ~/.profile
 
 # Tmux configuration
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 curl https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf -o ~/.tmux.conf
 curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf.local -o ~/.tmux.conf.local
 
@@ -136,7 +137,8 @@ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | d
 ### Tmux
 
 ```
-tmux [-u]
+$ tmux [-u]
+:Prefix + I
 ```
 
 ## Screenshots

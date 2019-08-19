@@ -314,3 +314,18 @@ set -g mode-keys vi
 
 # move status line to top
 #set -g status-position top
+
+set -g @tpm_plugins '               \
+   tmux-plugins/tpm                 \
+   tmux-plugins/tmux-resurrect      \
+   tmux-plugins/tmux-sidebar        \
+   nhdaly/tmux-better-mouse-mode    \
+'
+
+set -g @resurrect-capture-pane-contents 'on'
+# for vim
+#set -g @resurrect-strategy-vim 'session'
+# for neovim
+#set -g @resurrect-strategy-nvim 'session'
+
+run -b '~/.tmux/plugins/tpm/tpm'
