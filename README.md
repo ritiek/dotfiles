@@ -88,8 +88,7 @@ chsh -s $(which zsh)
 # Find the python version and powerline installation location
 # with `pip3 show powerline-status`
 
-PYTHON3="python3.6"
-POWERLINE_INSTALLATION=$HOME/.local/lib/$PYTHON3/site-packages/powerline
+POWERLINE_INSTALLATION=$(python3 -c "import powerline, inspect, os; print(os.path.dirname(inspect.getfile(powerline)))")
 
 POWERLINE_BASH_CONFIG=$POWERLINE_INSTALLATION/bindings/bash/powerline.sh
 POWERLINE_ZSH_CONFIG=$POWERLINE_INSTALLATION/bindings/zsh/powerline.zsh
