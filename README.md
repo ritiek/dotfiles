@@ -32,6 +32,7 @@ pip3 install youtube-dl --user
 curl https://sh.rustup.rs -sSf | bash
 cargo install ripgrep
 cargo install fd-find
+cargo install cargo-edit
 cargo install sd
 cargo install bat
 ```

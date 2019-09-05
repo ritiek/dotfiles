@@ -254,6 +254,9 @@ function install() {
         echo "Installing fd-find"
         cargo install fd-find
         echo
+        echo "Installing cargo-edit"
+        cargo install cargo-edit
+        echo
         echo "Installing sd"
         cargo install sd
         echo
