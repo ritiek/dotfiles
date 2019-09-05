@@ -37,13 +37,10 @@ function install() {
 
     echo "Make sure to keep an eye on this script, since it will prompt when "
     echo "- Setting locales (to choose the default locale)"
-    echo "- Changing default shell (for password)"
-    echo "You should be safe able to wander off, once these have been taken care of"
+    echo "- Changing default shell (for su password)"
+    echo "You should be safe to wander off, once these have been taken care of"
     echo
     sleep 1s
-
-    echo "Hit enter to continue"
-    read
 
     echo "You'll need to set the default locale to 'en_US.UTF8' manually in the next step"
     echo "Hit enter to continue"
@@ -83,7 +80,7 @@ function install() {
 
         echo "Changing default shell to Zsh"
         # Enter your password when prompted
-        chsh -s $(which zsh)
+        sudo chsh $(whoami) -s $(which zsh)
         echo
     else
         echo "Skip installing Zsh"
@@ -111,14 +108,15 @@ function install() {
         echo "Replacing ~/.profile"
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.profile -o ~/.profile
         echo
-        echo "Replacing ~/.zshrc"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
-        echo
         echo "Replacing ~/.zprofile"
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zprofile -o ~/.zprofile
         echo
+        echo "Replacing ~/.zshrc"
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
+        echo
 
         echo "Sourcing newly zsh configuration"
+        source ~/.profile
         source ~/.zprofile
         source ~/.zshrc
         echo
@@ -193,6 +191,7 @@ function install() {
     if [ "$to_copy_ssh_keys" == "y" ]; then
         # My lovely machines
         echo "Copying SSH keys to ~/.ssh/authorized_keys"
+        mkdir -p ~/.ssh
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.ssh/authorized_keys >> ~/.ssh/authorized_keys
     else
         echo "Skip copying SSH keys"
@@ -208,6 +207,7 @@ function install() {
     # NVim configuration
     echo "Installing NeoVim configuration"
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+    mkdir -p ~/.config/nvim
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -o ~/.config/nvim/sysinit.vim
     nvim -c "PluginInstall" -c "q" -c "q"
     echo
@@ -223,6 +223,7 @@ function install() {
 
     # Mpv configuration
     echo "Installing Mpv configuration"
+    mkdir -p ~/.config/mpv
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.config/mpv/mpv.conf
     echo
 
