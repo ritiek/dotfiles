@@ -70,6 +70,8 @@ function install() {
                         python3-pip \
                         dbus \
                         nmap \
+                        python-dev \
+                        python3-dev \
                         openssh-server
     echo
 
