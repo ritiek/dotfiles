@@ -15,7 +15,7 @@ download the script, analyze it locally and then execute the script if everythin
 ```consle
 $ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/setup.sh -o setup.sh
 $ cat setup.sh
-$ sh setup.sh
+$ bash setup.sh
 ```
 
 ### NVim
