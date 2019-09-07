@@ -4,12 +4,14 @@ Mah dotfiles
 
 ## Must-haves
 
+<!--
 Interactive one-line installer:
 ```console
 $ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/setup.sh -sSf | sh
 ```
 If you're vary about piping random Internet through your shell (you should be), you could first
 download the script, analyze it locally and then execute the script if everything looks alright:
+-->
 ```consle
 $ curl https://raw.githubusercontent.com/ritiek/dotfiles/master/setup.sh -o setup.sh
 $ cat setup.sh
