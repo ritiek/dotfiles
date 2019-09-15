@@ -38,10 +38,12 @@ autocmd FileType c,cpp,java set commentstring=//\ %s
 Plugin 'tpope/vim-fugitive'
 Plugin 'rafi/awesome-vim-colorschemes'
 Plugin 'Yggdroot/indentLine'
-
+Plugin 'scrooloose/nerdtree.git'
+Plugin 'ryanoasis/vim-devicons'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#enabled = 1
 
 "¦, ┆, │, ⎸, or ▏
@@ -126,6 +128,7 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
+set laststatus=2
 
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
@@ -139,17 +142,24 @@ nmap <C-i> :IndentLinesToggle<CR>
 
 "Tmux like bindings
 nmap <C-s> <C-a>
-nmap <C-w>- :split<CR>
-nmap <C-w><bar> :vsplit<CR>
-nmap <C-w>c :tabe<CR>
-nmap <C-w>n :tabn<CR>
-nmap <C-w>N :tabp<CR>
-nmap <C-w>x :q!<CR>
+nmap <silent><C-w>- :split<CR>
+nmap <silent><C-w><bar> :vsplit<CR>
+"nmap <C-w>c :tabe<CR>
+nmap <silent><C-w>c :enew<CR>
+"nmap <C-w>n :tabn<CR>
+nmap <silent><C-w>n :bnext<CR>
+"nmap <C-w>N :tabp<CR>
+nmap <silent><C-w>N :bprevious<CR>
+"nmap <C-w>x :q!<CR>
+nmap <silent><C-w>x :bdelete<CR>
 nmap <C-w>= :reg<CR>
 
+nmap <silent><tab> :NERDTreeToggle<CR>
+nmap <C-w><tab> <tab>
+
 "f, F insert character
-nnoremap f :exec "normal i".nr2char(getchar())."\e"<CR>
-nnoremap F :exec "normal a".nr2char(getchar())."\e"<CR>
+nnoremap <silent>f :exec "normal i".nr2char(getchar())."\e"<CR>
+nnoremap <silent>F :exec "normal a".nr2char(getchar())."\e"<CR>
 
 "Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
 nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
