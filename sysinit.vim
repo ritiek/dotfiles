@@ -40,6 +40,7 @@ Plugin 'rafi/awesome-vim-colorschemes'
 Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'ryanoasis/vim-devicons'
+Plugin 'jlanzarotta/bufexplorer'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
@@ -152,10 +153,13 @@ nmap <silent><C-w>n :bnext<CR>
 nmap <silent><C-w>N :bprevious<CR>
 "nmap <C-w>x :q!<CR>
 nmap <silent><C-w>x :bdelete<CR>
+
 nmap <C-w>= :reg<CR>
 
 nmap <silent><tab> :NERDTreeToggle<CR>
 nmap <C-w><tab> <tab>
+
+nmap <silent><C-w>s :ToggleBufExplore<CR>
 
 "f, F insert character
 nnoremap <silent>f :exec "normal i".nr2char(getchar())."\e"<CR>
