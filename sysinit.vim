@@ -162,6 +162,16 @@ nmap <C-w><tab> <tab>
 
 nmap <silent><C-w>s :ToggleBufExplore<CR>
 
+nmap <silent><C-w>1 :buffer 1<CR>
+nmap <silent><C-w>2 :buffer 2<CR>
+nmap <silent><C-w>3 :buffer 3<CR>
+nmap <silent><C-w>4 :buffer 4<CR>
+nmap <silent><C-w>5 :buffer 5<CR>
+nmap <silent><C-w>6 :buffer 6<CR>
+nmap <silent><C-w>7 :buffer 7<CR>
+nmap <silent><C-w>8 :buffer 8<CR>
+nmap <silent><C-w>9 :buffer 9<CR>
+
 "f, F insert character
 nnoremap <silent>f :exec "normal i".nr2char(getchar())."\e"<CR>
 nnoremap <silent>F :exec "normal a".nr2char(getchar())."\e"<CR>
