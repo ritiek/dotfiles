@@ -29,6 +29,10 @@ bindkey '^[OM' accept-line
 # Reverse search like in Bash
 bindkey '^R' history-incremental-search-backward
 
+bindkey '^[[Z' reverse-menu-complete
+# Navigate to previous selection with shift+tab
+# when using tab completition for navigation
+
 # zsh-autosuggetsions maps
 ## map autosuggest-accept to ctrl+/
 bindkey '^_' autosuggest-accept
