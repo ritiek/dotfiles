@@ -41,12 +41,18 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'wellle/context.vim'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
+
+"let g:webdevicons_enable_airline_statusline = 1
+"let g:webdevicons_enable_airline_tabline = 1
+
+set laststatus=2
 
 "¦, ┆, │, ⎸, or ▏
 let g:indentLine_char = '¦'
@@ -130,7 +136,6 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
-set laststatus=2
 
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
@@ -181,6 +186,8 @@ nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+tnoremap <silent><Esc> <C-\><C-n>
 " █
 "highlight WhiteSpaces ctermbg=green guibg=#55aa55
 
