@@ -41,7 +41,6 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'jlanzarotta/bufexplorer'
-Plugin 'wellle/context.vim'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
