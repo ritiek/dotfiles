@@ -139,6 +139,9 @@ set ttimeout
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
 
+" Suppresses "Press Enter to confirm" when using :w to write files via scp://
+cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w \| redraw' : 'w')<CR>
+
 "SingleCompile plugin
 nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
