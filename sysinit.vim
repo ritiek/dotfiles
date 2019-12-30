@@ -41,6 +41,7 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'scrooloose/nerdtree.git'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'fidian/hexmode'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
@@ -145,6 +146,9 @@ cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w \| redraw' : 'w')<CR>
 "SingleCompile plugin
 nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
+
+"Hexmode plugin
+nmap <C-w>h :Hexmode<CR>
 
 "indentLine plugin
 nmap <C-i> :IndentLinesToggle<CR>
