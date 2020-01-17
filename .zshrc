@@ -128,3 +128,5 @@ echo ":g/<find>"
 echo "<C-n> <C-x><C-l> <C-x><C-f> <C-r>= 180<C-x>"
 echo "http://sqlbolt.com"
 echo "ssh root@192.168.1.5 sh /mnt/us/kindle-pageturn/pageturn/pageturn.sh -b"
+
+alias xclip="xclip -selection clipboard"
