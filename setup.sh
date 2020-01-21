@@ -72,7 +72,8 @@ function install() {
                         nmap \
                         python-dev \
                         python3-dev \
-                        openssh-server
+                        openssh-server \
+                        libssl-dev
     echo
 
     if [ "$to_install_zsh" == "y" ]; then
