@@ -73,7 +73,8 @@ function install() {
                         python-dev \
                         python3-dev \
                         openssh-server \
-                        libssl-dev
+                        libssl-dev \
+                        libclang-dev
     echo
 
     if [ "$to_install_zsh" == "y" ]; then
