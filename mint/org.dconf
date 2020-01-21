@@ -1,12 +1,36 @@
+[onboard]
+system-theme-associations={'HighContrast': 'HighContrast', 'HighContrastInverse': 'HighContrastInverse', 'LowContrast': 'LowContrast', 'ContrastHighInverse': 'HighContrastInverse', 'Default': ''}
+use-system-defaults=false
+schema-version='2.3'
+
+[onboard/window/landscape]
+height=197
+y=263
+
 [x/reader/toolbar]
 show-expand-window=true
 
 [x/reader/default]
-window-ratio=(3.2268907563025211, 1.2173396674584323)
+window-ratio=(2.2320261437908497, 0.9002525252525253)
+continuous=true
+fullscreen=false
+show-toolbar=true
+show-sidebar=true
+dual-page-odd-left=false
+inverted-colors=false
+zoom=0.85149632612266779
+sidebar-page='thumbnails'
+sidebar-size=171
+dual-page=false
+sizing-mode='free'
 
 [x/viewer/view]
 background-color='rgb(0,0,0)'
 use-background-color=true
+
+[x/viewer/ui]
+statusbar=true
+toolbar=true
 
 [x/player]
 subtitle-encoding='UTF-8'
@@ -17,16 +41,16 @@ debug=false
 statusbar-visible=true
 
 [x/editor/plugins/filebrowser/on-load]
-virtual-root='file:///tmp/mozilla_ritiek0'
+virtual-root='file:///home/ritiek/face%20recognition'
 tree-view=true
 root='file:///'
 
 [x/editor/plugins]
-active-plugins=['docinfo', 'textsize', 'filebrowser', 'sort', 'modelines', 'time', 'spell']
+active-plugins=['spell', 'docinfo', 'textsize', 'time', 'sort', 'filebrowser', 'modelines']
 
 [x/editor/state/window]
 size=(650, 500)
-state=87168
+state=43908
 bottom-panel-size=140
 side-panel-size=200
 side-panel-active-page=827629879
@@ -37,9 +61,11 @@ panels-height=['1:30', '2:40']
 panels-show-delay=['1:0', '2:0']
 panels-hide-delay=['1:0', '2:0']
 panel-edit-mode=false
-enabled-applets=['panel1:right:0:systray@cinnamon.org:0', 'panel1:left:0:menu@cinnamon.org:1', 'panel1:left:1:show-desktop@cinnamon.org:2', 'panel1:left:2:grouped-window-list@cinnamon.org:3', 'panel1:right:1:keyboard@cinnamon.org:4', 'panel1:right:4:notifications@cinnamon.org:5', 'panel1:right:6:removable-drives@cinnamon.org:6', 'panel1:right:3:network@cinnamon.org:8', 'panel1:right:5:sound@cinnamon.org:9', 'panel1:right:7:power@cinnamon.org:10', 'panel1:right:8:calendar@cinnamon.org:11']
-next-applet-id=12
+panel-zone-symbolic-icon-sizes='[{"panelId": 1, "left": 28, "center": 28, "right": 16}]'
+enabled-applets=['panel1:right:3:systray@cinnamon.org:0', 'panel1:left:0:menu@cinnamon.org:1', 'panel1:left:1:show-desktop@cinnamon.org:2', 'panel1:left:2:grouped-window-list@cinnamon.org:3', 'panel1:right:4:keyboard@cinnamon.org:4', 'panel1:right:7:notifications@cinnamon.org:5', 'panel1:right:9:removable-drives@cinnamon.org:6', 'panel1:right:6:network@cinnamon.org:8', 'panel1:right:8:sound@cinnamon.org:9', 'panel1:right:10:power@cinnamon.org:10', 'panel1:right:11:calendar@cinnamon.org:11', 'panel1:right:0:xapp-status@cinnamon.org:14']
+next-applet-id=15
 enabled-desklets=@as []
+hotcorner-layout=['expo:false:0', 'scale:false:0', 'scale:false:0', 'desktop:false:0']
 panel-launchers=['DEPRECATED']
 no-adjacent-panel-barriers=false
 panel-zone-icon-sizes='[{"panelId":1,"left":0,"center":0,"right":24}]'
@@ -48,39 +74,80 @@ desklet-snap-interval=25
 applet-cache-updated=1558357971
 panels-enabled=['1:0:bottom']
 
+[cinnamon/settings-daemon/plugins/housekeeping]
+ignore-paths=['/home/ritiek/Downloads']
+
 [cinnamon/settings-daemon/plugins/power]
-sleep-inactive-ac-timeout=0
-sleep-display-battery=1800
 button-power='suspend'
-lid-close-battery-action='nothing'
-lid-close-ac-action='nothing'
-sleep-display-ac=1800
+critical-battery-action='nothing'
+lid-close-suspend-with-external-monitor=false
 sleep-inactive-battery-timeout=0
+lid-close-ac-action='blank'
+lid-close-battery-action='blank'
+sleep-inactive-ac-timeout=0
+sleep-display-ac=0
+sleep-display-battery=0
 
 [cinnamon/settings-daemon/plugins/xsettings]
 buttons-have-icons=false
 menus-have-icons=true
 
 [cinnamon/settings-daemon/peripherals/touchpad]
-motion-threshold=10
-custom-acceleration=false
+tap-to-click=true
 motion-acceleration=1.0
+custom-acceleration=false
 custom-threshold=false
+scrolling-method=3
+disable-while-typing=true
+motion-threshold=10
+touchpad-enabled=true
 
 [cinnamon/settings-daemon/peripherals/keyboard]
+repeat-interval=uint32 30
+delay=uint32 500
 numlock-state='off'
 
 [cinnamon/settings-daemon/peripherals/mouse]
-drag-threshold=8
-custom-acceleration=true
-motion-acceleration=1.2689243027888446
-custom-threshold=true
-double-click=400
 middle-button-enabled=true
+left-handed=false
+drag-threshold=8
+motion-acceleration=6.235059760956176
+custom-acceleration=false
+custom-threshold=false
+double-click=400
 motion-threshold=10
 
+[cinnamon/desktop/interface]
+cursor-size=24
+cursor-blink-time=1200
+icon-theme='Mint-Y-Red'
+gtk-theme='Mint-Y-Darker-Aqua'
+toolkit-accessibility=true
+
+[cinnamon/desktop/keybindings/media-keys]
+previous=['XF86AudioPrev', 'F8']
+next=['XF86AudioNext', 'F9']
+play=['XF86AudioPlay', 'F10']
+pause=['XF86AudioPause']
+
+[cinnamon/desktop/keybindings/wm]
+move-to-monitor-down=['<Super><Shift>Down', '<Shift><Alt>Down']
+move-to-monitor-right=['<Super><Shift>Right', '<Shift><Alt>Right']
+move-to-monitor-up=['<Super><Shift>Up', '<Shift><Alt>Up']
+move-to-monitor-left=['<Super><Shift>Left', '<Shift><Alt>Left']
+
+[cinnamon/desktop/notifications]
+bottom-notifications=false
+remove-old=false
+
+[cinnamon/desktop/screensaver]
+lock-enabled=false
+
+[cinnamon/desktop/wm/preferences]
+theme='Mint-Y-Dark'
+
 [cinnamon/desktop/a11y/applications]
-screen-keyboard-enabled=false
+screen-keyboard-enabled=true
 screen-reader-enabled=false
 
 [cinnamon/desktop/a11y/keyboard]
@@ -111,68 +178,70 @@ dwell-time=1.2
 dwell-threshold=10
 dwell-click-enabled=false
 
-[cinnamon/desktop/screensaver]
-lock-enabled=true
-
-[cinnamon/desktop/background]
-picture-uri='file:///usr/share/backgrounds/linuxmint-tessa/kemsley_kluane.jpg'
-picture-options='zoom'
-
-[cinnamon/desktop/background/slideshow]
-image-source='xml:///usr/share/cinnamon-background-properties/linuxmint-tessa.xml'
-delay=15
-
-[cinnamon/desktop/interface]
-cursor-size=24
-icon-theme='Mint-Y-Red'
-gtk-theme='Mint-Y-Darker-Aqua'
-toolkit-accessibility=false
-
 [cinnamon/desktop/sound]
 maximum-volume=100
 event-sounds=false
 
-[cinnamon/desktop/wm/preferences]
-theme='Mint-Y-Dark'
+[cinnamon/desktop/background]
+picture-uri='file:///usr/share/backgrounds/linuxmint-tricia/rbates_mam_tor.jpg'
+picture-options='zoom'
+
+[cinnamon/desktop/background/slideshow]
+image-source='xml:///usr/share/cinnamon-background-properties/linuxmint-tina.xml'
+delay=15
 
 [cinnamon/theme]
 symbolic-relative-size=0.67000000000000004
 theme-cache-updated=1558353737
 name='Mint-Y-Dark-Orange'
 
-[gnome/terminal/legacy]
-menu-accelerator-enabled=true
-schema-version=uint32 3
-default-show-menubar=false
-theme-variant='system'
+[gnome/settings-daemon/plugins/xsettings]
+antialiasing='grayscale'
+hinting='slight'
 
-[gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
-foreground-color='rgb(255,255,255)'
-palette=['rgb(46,52,54)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']
-default-size-columns=90
-default-size-rows=30
-use-system-font=true
-cursor-colors-set=false
-highlight-colors-set=false
-use-theme-colors=false
-use-transparent-background=true
-font='Monospace 10'
-use-theme-transparency=false
-bold-color-same-as-fg=true
-background-color='rgb(0,0,0)'
-background-transparency-percent=23
-scrollbar-policy='never'
+[gnome/baobab/ui]
+window-state=87168
+window-size=(960, 600)
 
-[gnome/nm-applet/eap/e17fdd07-21bb-4050-9479-d0d745e3de5b]
-ignore-phase2-ca-cert=false
-ignore-ca-cert=false
+[gnome/calculator]
+target-currency=''
+show-zeroes=false
+source-currency=''
+show-thousands=false
+button-mode='basic'
+target-units='radian'
+word-size=64
+window-position=(495, 179)
+number-format='automatic'
+angle-units='degrees'
+base=10
+source-units='degree'
+accuracy=9
 
-[gnome/nm-applet/eap/b624aebc-6332-4b1b-bbac-780b1b9f1dce]
-ignore-phase2-ca-cert=false
-ignore-ca-cert=false
+[gnome/power-manager]
+info-history-type='charge'
+info-stats-type='discharge-accuracy'
+info-last-device='/org/freedesktop/UPower/devices/line_power_axp288_charger'
+info-page-number=0
+
+[gnome/file-roller/listing]
+sort-method='name'
+name-column-width=250
+sort-type='ascending'
+list-mode='as-folder'
+show-path=false
+
+[gnome/file-roller/dialogs/extract]
+skip-newer=false
+recreate-folders=true
+
+[gnome/file-roller/ui]
+sidebar-width=200
+window-height=480
+window-width=600
 
 [gnome/desktop/a11y/applications]
-screen-keyboard-enabled=false
+screen-keyboard-enabled=true
 screen-reader-enabled=false
 
 [gnome/desktop/a11y/mouse]
@@ -183,23 +252,433 @@ dwell-threshold=10
 dwell-click-enabled=false
 
 [gnome/desktop/interface]
-toolkit-accessibility=false
+toolkit-accessibility=true
+
+[gnome/terminal/legacy]
+menu-accelerator-enabled=true
+schema-version=uint32 3
+default-show-menubar=false
+theme-variant='system'
+
+[gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+foreground-color='rgb(255,255,255)'
+scrollbar-policy='never'
+palette=['rgb(46,52,54)', 'rgb(224,81,81)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']
+default-size-columns=90
+default-size-rows=30
+cursor-shape='block'
+cursor-colors-set=false
+highlight-colors-set=false
+use-system-font=true
+use-transparent-background=true
+use-theme-colors=false
+font='Monospace 10'
+use-theme-transparency=false
+bold-color-same-as-fg=true
+cursor-blink-mode='system'
+background-color='rgb(0,0,0)'
+background-transparency-percent=23
+audible-bell=false
+
+[gnome/nm-applet]
+suppress-wireless-networks-available=true
+disable-connected-notifications=true
+
+[gnome/nm-applet/eap/f4eee543-dc2e-478b-bac3-c1fda74e1898]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/848e1615-8e80-49e9-abd3-ec3b06f3d560]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/65892311-2e6e-4284-b443-efe8e1493eca]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/275e8359-d1d3-48c0-8851-324d672a1467]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/847baa91-e666-41cb-b90b-7edaffaad011]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/4ca857c5-bc66-49b3-a96a-f6c6b170ff2c]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/cc309566-5047-406a-8b48-31fc0654f8c0]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3cdade12-eaae-4493-abd9-22574f05027a]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/8446e03a-0d13-4eca-97cd-c471ecc016a3]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/6fd0a562-6872-4f1c-b9af-fd39f79de796]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/55136a6e-daf4-478a-b0c2-d7b091bad5b6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3810b101-f825-469d-877e-7460ab1294d1]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/85cea9d8-a934-475c-be5e-a80f75cfca51]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/345d331e-71b8-47c4-9516-699be9f4ac77]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3f000a2c-7697-471d-8cc0-83e7d1c5ad8d]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/cb18ece1-e344-4da2-b5eb-db76083fb77b]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3fbdedb6-801d-4652-b61d-1e90f1520068]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/7012be45-8d3e-4680-83b6-34bbf5d652ee]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/ad39f4d5-e815-4448-abc9-819a54d12807]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f347a2f2-e221-42bb-a670-9f8e10587227]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/08fa814e-476b-4640-ad68-0c470ff40b52]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/4ee949cd-08dd-4637-970f-9a7649eb6732]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/33baef8c-7cc8-48c1-9a60-4b1c723541e0]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3a5d2e1b-57b9-4828-9bca-d2285bb00c07]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/17eb929f-02fe-42bf-be84-d14f22b8787a]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/56e8d3bc-8e7a-4ab4-b3a6-5b4c700c8f64]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/6f8bd2c2-8e3e-442a-aa5d-1b7ccd9b7103]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/33a21cdd-6727-4197-a285-579c47d69276]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/2035a043-8a99-4077-a17e-f902a26211e6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f7eafbe2-78c7-489c-9ac4-befa3fa26080]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/d9ba9a01-bfd1-4100-8201-9c7797013e96]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/c2a95129-3f67-425f-89e8-390c1cf83fb6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/a20eca82-c008-4d2a-8fa6-5bc2179ef05a]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/08f574de-d2bd-4f36-9bd5-ee3d33ad763f]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/7ed6ddb2-97e1-43b5-b03c-91b315b8a3f7]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/76ed0307-1a2f-463b-9d00-f948330e87db]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/ed43fad7-db5b-4ab5-b897-080d127ef5e8]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/d231d118-6e8a-4ea0-b76e-6645ccb569de]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3ff54f40-cc2a-4c60-b5cb-5d617ba8087e]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/b624aebc-6332-4b1b-bbac-780b1b9f1dce]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/e17fdd07-21bb-4050-9479-d0d745e3de5b]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/86298919-a478-4c87-891c-f224b3523d8f]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/6f9f38ce-86c5-415f-aa78-74573ac8dbe1]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/abe2d43a-cf31-41a2-9a1d-ee1e907577e8]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/feb348ad-e088-431f-a964-2fedc5708ce9]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/dd5c9073-36da-4cfa-b953-3462e3b766b2]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/5061ec58-320f-49e6-9df1-d0332ece4bc6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/8b04559c-d027-45fe-85b4-dcb41c7e05a4]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/222f89b4-653e-4c02-a857-263f59038079]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/996eb17e-79a1-41ed-8a61-3d7822449b2b]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/212ecfda-e2f2-4af3-be1d-f4ce6ec182d4]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/2c26a4f3-740a-466d-a401-be7552549fd6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/921f796f-5a58-4e26-a57f-1c3a24cc43b7]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/2da83935-72e4-4c8e-8fb6-c83c83d3f804]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/18aff511-839b-4f79-8d62-91ce8fe2dbbf]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/c621cb00-6144-42ba-99a5-66c22fb68764]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f7a0e011-3cca-41dc-a82a-f33770d777db]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/73c30368-0705-47b1-96f6-2157d1b06c1a]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/36f088b4-29fd-4f0e-be4f-336892289b41]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/60a980c7-dfc6-4488-a5a7-3d334bcc90c1]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f1236ed3-1a30-4130-b84b-a2f7102c77c8]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/b3f77c7a-5a5d-4f99-ab58-9805f372bdf6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/63fb7aa4-770f-49ba-ac56-ec39b662b7f0]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/33022e7a-1ba0-413b-b28b-f9ab2a93bc14]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f04b06ac-ec35-42d9-99e1-a226684c2aa7]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/87d7ca5d-2cf5-450f-b77c-6a82e6de1647]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/88476ed5-7dab-41ce-9cc5-ae15ed56d0f5]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/3bfb5a15-b57a-422a-bd65-d2686f04a98e]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/077d709d-5c80-46b0-b6a6-b231817ddbee]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/cc92c26d-c7fe-4247-82ea-2ec8b47972d0]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/bb8ad67f-dd51-4dd1-949e-511c64058007]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/c774dee6-b377-4de4-b0a7-043d80bed207]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f23a795d-17d6-4291-a646-5c6cdd0c2e46]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/6085d69c-3b8a-45d2-9298-588b4e0d3e41]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/5aee0178-d35d-47d7-b9d3-8892cb2fc3b2]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/d80a23d7-2380-4df3-a5b6-1cc2179518ca]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f0035914-bc09-46ad-8d18-1e653c6c5471]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/fb19318c-3529-4775-9f2a-e7c345650bf5]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/9c0d84c3-8db9-4995-90aa-75ddf832477a]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/a5776ba4-7a34-4d8c-b62e-463f0a0cf0be]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f873f752-b08d-4553-a608-14328048e122]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/fac448b1-e243-45e4-9642-e0a7453a55d6]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/ec9b4f6d-e0d2-4a65-9e0e-28e20a438cab]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/63764da0-0cc9-4d31-ba68-073bf17daf94]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/4173788c-1524-315e-b64c-a7f28830e87b]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/e9efb54b-4910-46e6-b63b-fca25fd485d2]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/a377be85-05cd-46c9-93b3-4794fa1d8448]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/5c3c34f0-7596-40f6-b4f8-e15f257b992e]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/6591d70d-ebca-492b-9490-24e05371de7a]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/ebe1fdbb-c811-4ccf-bc8e-e4394a2a0b6d]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/04304e91-805e-4c18-9c41-dd8bcf183344]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/20f039ad-f58b-4fee-b4b1-7f356e509723]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/1544bc48-0c54-43d7-9264-d6f27a67dc0b]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/15a542e5-c538-4c0d-8d7a-5274d51d7bf3]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
+
+[gnome/nm-applet/eap/f03f7045-fa65-40c6-8f74-63939f0311ee]
+ignore-phase2-ca-cert=false
+ignore-ca-cert=false
 
 [gtk/settings/file-chooser]
 sort-column='name'
-sidebar-width=253
-window-position=(451, 168)
+sidebar-width=367
+window-position=(174, 3)
 show-size-column=true
 show-hidden=false
-window-size=(1018, 742)
+window-size=(1018, 710)
 sort-directories-first=true
 date-format='regular'
 sort-order='ascending'
 location-mode='path-bar'
 
 [gtk/settings/color-chooser]
-selected-color=(true, 1.0, 0.056666666666666643, 0.056666666666666643, 1.0)
-custom-colors=[(1.0, 0.056666666666666643, 0.056666666666666643, 1.0), (0.81333333333333335, 0.10573333333333335, 0.10573333333333335, 1.0), (0.54000000000000004, 0.061199999999999977, 0.061199999999999977, 1.0)]
+selected-color=(true, 0.87666666666666671, 0.31852222222222221, 0.31852222222222221, 1.0)
+custom-colors=[(0.87666666666666671, 0.31852222222222221, 0.31852222222222221, 1.0), (1.0, 0.056666666666666643, 0.056666666666666643, 1.0), (0.81333333333333335, 0.10573333333333335, 0.10573333333333335, 1.0), (0.54000000000000004, 0.061199999999999977, 0.061199999999999977, 1.0)]
 
 [mate/panel/general]
 object-id-list=['menu-bar', 'show-desktop', 'separator', 'launcher-caja', 'launcher-terminal', 'launcher-firefox', 'window-list', 'notification-area', 'clock']
@@ -211,7 +690,7 @@ orientation='bottom'
 screen=0
 y-bottom=0
 size=27
-y=1053
+y=741
 
 [mate/panel/objects/launcher-firefox]
 locked=true
@@ -289,7 +768,7 @@ show-location-entry=true
 
 [nemo/window-state]
 start-with-sidebar=true
-geometry='798x548+274+87'
+geometry='798x548+274+89'
 my-computer-expanded=true
 maximized=true
 devices-expanded=true
