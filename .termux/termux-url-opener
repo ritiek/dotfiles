@@ -1,0 +1,12 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+URL=$1
+# Cheks if its Youtube or Spotify URL and downloads it
+if [[ $URL == *"open.spotify.com"* || $URL == *"youtu.be"* || $URL == *"youtube.com"* ]] ; then
+  spotdl --song $URL
+else
+  echo "No downloader for this URL type"
+  # spotdl --song $URL
+fi
+
+# read -n 1 -s -p "Press any key to exit..."
