@@ -1,0 +1,6 @@
+darkestcyan
+darkestblue
+darkestgreen
+mediumorange
+orangered
+mediumpurple
