@@ -97,7 +97,7 @@ function install() {
     if [ "$to_install_powerline" == "y" ]; then
         echo "Installing powerline prompt Python packages"
         pip3 install git+https://github.com/powerline/powerline.git --user -U
-        pip3 install powerline-status powerline-gitstatus --user -U
+        pip3 install powerline-gitstatus --user -U
         echo
         echo "Installing youtube-dl"
         pip3 install youtube-dl --user -U
