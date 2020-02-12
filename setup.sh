@@ -159,12 +159,12 @@ function install() {
         git remote add origin https://github.com/ritiek/dotfiles.git
         git config core.sparseCheckout true
         echo "powerline/config" >> .git/info/sparse-checkout
-        git pull --depth=1
-        mv config/* .
-        rm -r config
+        git pull --depth=1 origin master
+        mv powerline/config/* .
+        rm -r powerline
         rm -rf .git
 
-        cd ~
+        cd -
 
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o ~/.ipython/profile_default/ipython_config.py
         echo
