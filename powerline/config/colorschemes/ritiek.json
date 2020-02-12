@@ -66,12 +66,12 @@
         "gitstatus_untracked":        { "fg": "brightestorange", "bg": "gray2", "attrs": [] },
         "gitstatus_stashed":          { "fg": "darkblue",        "bg": "gray2", "attrs": [] },
         "gitstatus:divider":          { "fg": "gray8",           "bg": "gray2", "attrs": [] },
-        "mode":                       { "fg": "darkestcyan", "bg": "white", "attrs": ["bold"] }
+        "mode":                       { "fg": "darkestcyan", "bg": "darkcyan", "attrs": ["bold"] }
     },
     "mode_translations": {
         "vicmd": {
             "groups": {
-                "mode": {"fg": "darkestcyan", "bg": "white", "attrs": ["bold"]}
+                "mode": {"fg": "darkestcyan", "bg": "darkcyan", "attrs": ["bold"]}
             }
         }
     }

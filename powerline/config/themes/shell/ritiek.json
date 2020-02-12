@@ -35,5 +35,8 @@
                 "priority": 40
             }
         ]
+    },
+    "segment_data": {
+        "mode": { "args": {"override": {"vicmd": "C", "viins":" "} } }
     }
 }
