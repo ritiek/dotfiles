@@ -84,7 +84,7 @@ function install() {
 
         echo "Changing default shell to Zsh"
         # Enter your password when prompted
-        sudo chsh $(whoami) -s $(which zsh)
+        sudo chsh $USER -s $(which zsh)
         echo
     else
         echo "Skip installing Zsh"

@@ -1,3 +1,7 @@
+source ~/.zprofile
+# Allow symlinks
+ZSH_DISABLE_COMPFIX=true
+
 # For setting history length see HISTSIZE and HISTFILESIZE in zsh
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -120,14 +124,14 @@ $(tput sgr0)"
 
 retropie_welcome
 
+alias xclip="xclip -selection clipboard"
+
 eval "$(hub alias -s)"
 
-echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
-echo "nvim http://example.com/"
-echo ":<range>s/<find>/<replace>/[g]"
-echo ":g/<find>"
-echo "<C-n> <C-x><C-l> <C-x><C-f> <C-r>= 180<C-x>"
-echo "http://sqlbolt.com"
-echo "ssh root@192.168.1.5 sh /mnt/us/kindle-pageturn/pageturn/pageturn.sh -b"
-
-alias xclip="xclip -selection clipboard"
+#echo "gv zz zt gf == g?G :r! ci' ca' :earlier"
+#echo "nvim http://example.com/"
+#echo ":<range>s/<find>/<replace>/[g]"
+#echo ":g/<find>"
+#echo "<C-n> <C-x><C-l> <C-x><C-f> <C-r>= 180<C-x>"
+#echo "http://sqlbolt.com"
+#echo "ssh root@192.168.1.5 sh /mnt/us/kindle-pageturn/pageturn/pageturn.sh -b"
