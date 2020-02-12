@@ -47,6 +47,7 @@ bindkey -v
 autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd ' ' edit-command-line
+bindkey "^?" backward-delete-char
 
 # RETROPIE PROFILE START
 # Thanks to http://blog.petrockblock.com/forums/topic/retropie-mushroom-motd/#post-3965
