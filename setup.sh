@@ -96,6 +96,7 @@ function install() {
 
     if [ "$to_install_powerline" == "y" ]; then
         echo "Installing powerline prompt Python packages"
+        pip3 install git+https://github.com/powerline/powerline.git --user -U
         pip3 install powerline-status powerline-gitstatus --user -U
         echo
         echo "Installing youtube-dl"
@@ -152,28 +153,38 @@ function install() {
         echo
 
         echo "Fetching powerline theme and colorscheme configuration"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/config.json -o $POWERLINE_INSTALLATION/config_files/config.json
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_shell_theme.json -o $POWERLINE_INSTALLATION/config_files/themes/shell/ritiek.json
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ritiek_colorscheme.json -o $POWERLINE_INSTALLATION/config_files/colorschemes/ritiek.json
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o $HOME/.ipython/profile_default/ipython_config.py
+        mkdir -p ~/.config/powerline
+        cd ~/.config/powerline
+        git init
+        git remote add origin https://github.com/ritiek/dotfiles.git
+        git config core.sparseCheckout true
+        echo "powerline/config" >> .git/info/sparse-checkout
+        git pull --depth=1
+        mv config/* .
+        rm -r config
+        rm -rf .git
+
+        cd ~
+
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o ~/.ipython/profile_default/ipython_config.py
         echo
     fi
 
     # Bash powerline theme
     # echo "Appending powerline Bash specific code to ~/.bashrc"
-    # echo >> $HOME/.bashrc
-    # curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> $HOME/.bashrc
-    # echo "# Load our powerline theme" >> $HOME/.bashrc
-    # echo "source $POWERLINE_BASH_CONFIG" >> $HOME/.bashrc
+    # echo >> ~/.bashrc
+    # curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.bashrc
+    # echo "# Load our powerline theme" >> ~/.bashrc
+    # echo "source $POWERLINE_BASH_CONFIG" >> ~/.bashrc
     # echo
 
     if [ "$to_install_powerline" == "y" ]; then
         # Zsh powerline theme
         echo "Appending powerline Zsh specific code to ~/.zshrc"
-        echo >> $HOME/.zshrc
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> $HOME/.zshrc
-        echo "# Load our powerline theme" >> $HOME/.zshrc
-        echo "source $POWERLINE_ZSH_CONFIG" >> $HOME/.zshrc
+        echo >> ~/.zshrc
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.zshrc
+        echo "# Load our powerline theme" >> ~/.zshrc
+        echo "source $POWERLINE_ZSH_CONFIG" >> ~/.zshrc
         echo
     fi
 
