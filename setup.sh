@@ -136,22 +136,6 @@ function install() {
     fi
 
     if [ "$to_install_powerline" == "y" ]; then
-        echo "Locating where powerline got installed..."
-        POWERLINE_INSTALLATION=$(python3 -c "import powerline, inspect, os; print(os.path.dirname(inspect.getfile(powerline)))")
-        echo "Powerline installation found in $POWERLINE_INSTALLATION"
-        echo
-    fi
-
-    # echo "Setting up powerline prompt for use with Bash"
-    # POWERLINE_BASH_CONFIG=$POWERLINE_INSTALLATION/bindings/bash/powerline.sh
-    # echo
-
-    if [ "$to_install_powerline" == "y" ]; then
-        echo "Locating Zsh powerline configuration..."
-        POWERLINE_ZSH_CONFIG=$POWERLINE_INSTALLATION/bindings/zsh/powerline.zsh
-        echo "Expecting in $POWERLINE_ZSH_CONFIG"
-        echo
-
         echo "Fetching powerline theme and colorscheme configuration"
         mkdir -p ~/.config/powerline
         cd ~/.config/powerline
@@ -168,18 +152,28 @@ function install() {
 
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o ~/.ipython/profile_default/ipython_config.py
         echo
-    fi
 
-    # Bash powerline theme
-    # echo "Appending powerline Bash specific code to ~/.bashrc"
-    # echo >> ~/.bashrc
-    # curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.bashrc
-    # echo "# Load our powerline theme" >> ~/.bashrc
-    # echo "source $POWERLINE_BASH_CONFIG" >> ~/.bashrc
-    # echo
+        echo "Locating where powerline got installed..."
+        POWERLINE_INSTALLATION=$(python3 -c "import powerline, inspect, os; print(os.path.dirname(inspect.getfile(powerline)))")
+        echo "Powerline installation found in $POWERLINE_INSTALLATION"
+        echo
 
-    if [ "$to_install_powerline" == "y" ]; then
+        # Bash powerline theme
+        # echo "Setting up powerline prompt for use with Bash"
+        # POWERLINE_BASH_CONFIG=$POWERLINE_INSTALLATION/bindings/bash/powerline.sh
+        # echo
+        # echo "Appending powerline Bash specific code to ~/.bashrc"
+        # echo >> ~/.bashrc
+        # curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.bashrc
+        # echo "# Load our powerline theme" >> ~/.bashrc
+        # echo "source $POWERLINE_BASH_CONFIG" >> ~/.bashrc
+        # echo
+
         # Zsh powerline theme
+        echo "Locating Zsh powerline configuration..."
+        POWERLINE_ZSH_CONFIG=$POWERLINE_INSTALLATION/bindings/zsh/powerline.zsh
+        echo "Expecting in $POWERLINE_ZSH_CONFIG"
+        echo
         echo "Appending powerline Zsh specific code to ~/.zshrc"
         echo >> ~/.zshrc
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.zshrc
