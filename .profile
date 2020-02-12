@@ -40,11 +40,3 @@ PATH="$HOME/.cargo/bin:$PATH"
 PATH="$HOME/Android/flutter/bin:$PATH"
 PATH="$HOME/.gem/ruby/2.5.0/bin:$PATH"
 export PATH
-
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
-    fi
-fi
