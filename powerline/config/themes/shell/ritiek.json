@@ -37,6 +37,6 @@
         ]
     },
     "segment_data": {
-        "mode": { "args": {"override": {"vicmd": "C", "viins":" "} } }
+        "mode": { "args": {"override": {"vicmd": "", "viins":" "} } }
     }
 }
