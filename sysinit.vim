@@ -148,7 +148,7 @@ nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
 
 "Hexmode plugin
-nmap <C-w>h :Hexmode<CR>
+nmap <C-w>b :Hexmode<CR>
 
 "indentLine plugin
 nmap <C-i> :IndentLinesToggle<CR>
