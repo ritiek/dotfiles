@@ -60,7 +60,6 @@ function install() {
     sudo apt install -y software-properties-common \
                         neovim \
                         tmux \
-                        fonts-powerline \
                         ffmpeg \
                         aria2 \
                         undistract-me \
@@ -96,6 +95,9 @@ function install() {
 
     if [ "$to_install_powerline" == "y" ]; then
         echo "Installing powerline prompt Python packages"
+        mkdir -p ~/.local/share/fonts
+        wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Bold/complete/InconsolataGo%20Bold%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/InconsolataGo\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
+        wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Regular/complete/InconsolataGo%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/InconsolataGo\ Nerd\ Font\ Complete\ Mono.ttf
         pip3 install git+https://github.com/powerline/powerline.git --user -U
         pip3 install powerline-gitstatus --user -U
         echo
