@@ -101,9 +101,6 @@ function install() {
         pip3 install git+https://github.com/powerline/powerline.git --user -U
         pip3 install powerline-gitstatus --user -U
         echo
-        echo "Installing youtube-dl"
-        pip3 install youtube-dl --user -U
-        echo
     else
         echo "Skip installing powerline"
     fi
@@ -249,6 +246,7 @@ function install() {
     fi
 
     if [ "$to_install_miscellaneous" == "y" ]; then
+        pip3 install youtube-dl --user -U
         pip3 install git+https://github.com/mps-youtube/pafy.git --user -U
         pip3 install git+https://github.com/mps-youtube/mps-youtube.git --user -U
         pip3 install spotdl --user -U
