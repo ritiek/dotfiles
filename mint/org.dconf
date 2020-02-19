@@ -41,12 +41,12 @@ debug=false
 statusbar-visible=true
 
 [x/editor/plugins/filebrowser/on-load]
-virtual-root='file:///home/ritiek/face%20recognition'
+virtual-root='file:///home/ritiek'
 tree-view=true
 root='file:///'
 
 [x/editor/plugins]
-active-plugins=['spell', 'docinfo', 'textsize', 'time', 'sort', 'filebrowser', 'modelines']
+active-plugins=['spell', 'open-uri-context-menu', 'docinfo', 'textsize', 'time', 'sort', 'filebrowser', 'modelines']
 
 [x/editor/state/window]
 size=(650, 500)
@@ -62,8 +62,8 @@ panels-show-delay=['1:0', '2:0']
 panels-hide-delay=['1:0', '2:0']
 panel-edit-mode=false
 panel-zone-symbolic-icon-sizes='[{"panelId": 1, "left": 28, "center": 28, "right": 16}]'
-enabled-applets=['panel1:right:3:systray@cinnamon.org:0', 'panel1:left:0:menu@cinnamon.org:1', 'panel1:left:1:show-desktop@cinnamon.org:2', 'panel1:left:2:grouped-window-list@cinnamon.org:3', 'panel1:right:4:keyboard@cinnamon.org:4', 'panel1:right:7:notifications@cinnamon.org:5', 'panel1:right:9:removable-drives@cinnamon.org:6', 'panel1:right:6:network@cinnamon.org:8', 'panel1:right:8:sound@cinnamon.org:9', 'panel1:right:10:power@cinnamon.org:10', 'panel1:right:11:calendar@cinnamon.org:11', 'panel1:right:0:xapp-status@cinnamon.org:14']
-next-applet-id=15
+enabled-applets=['panel1:right:4:systray@cinnamon.org:0', 'panel1:left:0:menu@cinnamon.org:1', 'panel1:left:1:show-desktop@cinnamon.org:2', 'panel1:left:2:grouped-window-list@cinnamon.org:3', 'panel1:right:5:keyboard@cinnamon.org:4', 'panel1:right:8:notifications@cinnamon.org:5', 'panel1:right:10:removable-drives@cinnamon.org:6', 'panel1:right:7:network@cinnamon.org:8', 'panel1:right:9:sound@cinnamon.org:9', 'panel1:right:11:power@cinnamon.org:10', 'panel1:right:12:calendar@cinnamon.org:11', 'panel1:right:1:xapp-status@cinnamon.org:14']
+next-applet-id=16
 enabled-desklets=@as []
 hotcorner-layout=['expo:false:0', 'scale:false:0', 'scale:false:0', 'desktop:false:0']
 panel-launchers=['DEPRECATED']
@@ -89,6 +89,7 @@ sleep-display-ac=0
 sleep-display-battery=0
 
 [cinnamon/settings-daemon/plugins/xsettings]
+antialiasing='rgba'
 buttons-have-icons=false
 menus-have-icons=true
 
@@ -118,8 +119,10 @@ double-click=400
 motion-threshold=10
 
 [cinnamon/desktop/interface]
+font-name='Ubuntu 10'
 cursor-size=24
 cursor-blink-time=1200
+text-scaling-factor=1.0
 icon-theme='Mint-Y-Red'
 gtk-theme='Mint-Y-Darker-Aqua'
 toolkit-accessibility=true
@@ -187,7 +190,7 @@ picture-uri='file:///usr/share/backgrounds/linuxmint-tricia/rbates_mam_tor.jpg'
 picture-options='zoom'
 
 [cinnamon/desktop/background/slideshow]
-image-source='xml:///usr/share/cinnamon-background-properties/linuxmint-tina.xml'
+image-source='xml:///usr/share/cinnamon-background-properties/linuxmint-tara.xml'
 delay=15
 
 [cinnamon/theme]
@@ -269,16 +272,16 @@ default-size-rows=30
 cursor-shape='block'
 cursor-colors-set=false
 highlight-colors-set=false
-use-system-font=true
+use-system-font=false
 use-transparent-background=true
 use-theme-colors=false
-font='Monospace 10'
+font='InconsolataGo Nerd Font Mono 12'
 use-theme-transparency=false
 bold-color-same-as-fg=true
 cursor-blink-mode='system'
 background-color='rgb(0,0,0)'
 background-transparency-percent=23
-audible-bell=false
+audible-bell=true
 
 [gnome/nm-applet]
 suppress-wireless-networks-available=true
@@ -773,3 +776,6 @@ my-computer-expanded=true
 maximized=true
 devices-expanded=true
 sidebar-bookmark-breakpoint=5
+
+[nemo/desktop]
+font='Ubuntu 10'
