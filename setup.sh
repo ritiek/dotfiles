@@ -276,6 +276,9 @@ function install() {
         echo "Installing bat"
         cargo install bat
         echo
+        echo "Installing http-server"
+        cargo install https
+        echo
     else
         echo "Skip Rust installation and awesome tools written in it"
     fi
