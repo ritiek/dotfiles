@@ -14,6 +14,9 @@ function install() {
         to_install_powerline='n'
     fi
 
+    echo "Install Kitty (terminal emulator)? (y/N) "
+    read to_install_kitty
+
     echo "Install Wavebox (if you haven't heard about this, you probably don't need to)? (y/N) "
     read to_install_wavebox
 
@@ -26,7 +29,7 @@ function install() {
     echo "If you're on Linux Mint, apply my modified Cinnamon's look & feel? (y/N) "
     read to_cinnamon_feel
 
-    echo "Copy all my device public keys to ~/.ssh/authorized_keys (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N)"
+    echo "Copy all my device public keys to ~/.ssh/authorized_keys (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N) "
     read to_copy_ssh_keys
 
     echo "Run apt update? You should, to be safe. (Y/n) "
@@ -184,6 +187,17 @@ function install() {
     unset POWERLINE_INSTALLATION
     unset POWERLINE_ZSH_CONFIG
     unset POWERLINE_BASH_CONFIG
+
+
+    if [ "$to_install_kitty" == "y" ]; then
+        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+        ln -s ~/.local/kitty.app/bin/kitty ~/.local/bin/
+        cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
+        sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
+        mkdir -p ~/.config/kitty
+        curl https://i.imgur.com/5oD0uqi.png >> ~/.config/kitty/background.png
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kitty.conf >> ~/.config/kitty/kitty.conf
+    fi
 
     if [ "$to_install_wavebox" == "y" ]; then
         echo "Installing Wavebox for managing cloud services (like GMail, etc.)"
