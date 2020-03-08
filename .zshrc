@@ -26,6 +26,7 @@ plugins=(
     zsh-autosuggestions
 )
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=67'
 
 # Make Enter key on the numpad work as Return key
 bindkey '^[OM' accept-line
