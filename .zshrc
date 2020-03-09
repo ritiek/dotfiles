@@ -24,9 +24,11 @@ function bgnotify_formatted {
 plugins=(
     bgnotify
     zsh-autosuggestions
+    colored-man-pages
+    command-not-found
 )
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=67'
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
 
 # Make Enter key on the numpad work as Return key
 bindkey '^[OM' accept-line
