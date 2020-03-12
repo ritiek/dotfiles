@@ -33,9 +33,8 @@ $ tmux [-u]
 
 ## Screenshots
 
-<img src="https://i.imgur.com/A8ME49P.png" width="500">
-<img src="https://i.imgur.com/VwVd0q9.png" width="500">
-(Excuse my battery percentage and CPU temperature for Linux does not have native support for my hardware)
+<img src="https://i.imgur.com/oojrIGt.png" width="600">
+(click to zoom)
 
 ## Miscellaneous
 
