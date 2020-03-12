@@ -8,7 +8,7 @@ function install() {
     read to_install_zsh
 
     if [ "$to_install_zsh" == "y" ]; then
-        echo "Also install Powerline theme for Zsh? (y/N) "
+        echo "Also install Powerline themes (for Zsh, Tmux, IPython)? (y/N) "
         read to_install_powerline
     else
         to_install_powerline='n'
@@ -182,6 +182,17 @@ function install() {
         echo "# Load our powerline theme" >> ~/.zshrc
         echo "source $POWERLINE_ZSH_CONFIG" >> ~/.zshrc
         echo
+
+        # Tmux powerline theme
+        echo "Locating Tmux powerline configuration..."
+        POWERLINE_TMUX_CONFIG=$POWERLINE_INSTALLATION/bindings/tmux/powerline.conf
+        echo "Expecting in $POWERLINE_TMUX_CONFIG"
+        echo
+        echo "Appending powerline Tmux specific code to ~/.tmux.conf"
+        echo >> ~/.tmux.conf
+        echo "# Load our powerline theme" >> ~/.tmux.conf
+        echo "source $POWERLINE_TMUX_CONFIG" >> ~/.tmux.conf
+        echo
     fi
 
     unset POWERLINE_INSTALLATION
@@ -240,8 +251,7 @@ function install() {
     # Tmux configuration
     echo "Installing Tmux configuration"
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    curl https://raw.githubusercontent.com/gpakosz/.tmux/master/.tmux.conf -o ~/.tmux.conf
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf.local -o ~/.tmux.conf.local
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf -o ~/.tmux.conf
     echo "Please run PREFIX+SHIFT+I manually to complete plugin installation in Tmux"
     sleep 3s
     echo
