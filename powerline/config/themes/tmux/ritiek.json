@@ -2,12 +2,6 @@
 	"segments": {
         "left": [
             {
-				"type": "string",
-				"contents": "hello",
-				"name": "hello",
-				"priority": 40
-            },
-            {
 				"function": "powerline.segments.common.bat.battery",
 				"args": {
 					"format": "{ac_state} {capacity:3.0%}"
@@ -22,14 +16,18 @@
 		"right": [
 			{
 				"function": "powerline.segments.common.players.dbus_player",
-				"name": "player"
+				"name": "player",
+				"args": {
+					"format": "{state_symbol} {artist} - {title}",
+					"player_name": "player"
+                }
 			},
 			{
 				"function": "powerline.segments.common.net.network_load",
 				"args": {
 					"interval": 3,
-					"sent_format": "⇑ {value:>5}",
-					"recv_format": "⇓ {value:>5}  "
+					"sent_format": "⇑ {value:>9}",
+					"recv_format": "⇓ {value:>9}  "
 				}
 			},
 			{
@@ -51,6 +49,13 @@
 			},
 			{
 				"function": "powerline.segments.common.net.hostname"
+			},
+			{
+				"function": "powerline.segments.tmux.attached_clients",
+				"args": {
+                    "minimum": 2
+                },
+				"before": "👓 "
 			}
 		]
 	}
