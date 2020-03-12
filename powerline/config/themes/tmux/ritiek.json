@@ -1,0 +1,57 @@
+{
+	"segments": {
+        "left": [
+            {
+				"type": "string",
+				"contents": "hello",
+				"name": "hello",
+				"priority": 40
+            },
+            {
+				"function": "powerline.segments.common.bat.battery",
+				"args": {
+					"format": "{ac_state} {capacity:3.0%}"
+				},
+				"priority": 40
+            },
+			{
+				"function": "powerline.segments.common.sys.uptime",
+				"priority": 50
+			}
+        ],
+		"right": [
+			{
+				"function": "powerline.segments.common.players.dbus_player",
+				"name": "player"
+			},
+			{
+				"function": "powerline.segments.common.net.network_load",
+				"args": {
+					"interval": 3,
+					"sent_format": "⇑ {value:>5}",
+					"recv_format": "⇓ {value:>5}  "
+				}
+			},
+			{
+				"function": "powerline.segments.common.sys.cpu_load_percent",
+				"args": {
+					"interval": 5,
+					"format": "CPU {0:.0f}%"
+				}
+			},
+			{
+				"function": "powerline.segments.common.time.date"
+			},
+			{
+				"function": "powerline.segments.common.time.date",
+				"args": {
+					"format": "%H:%M",
+					"istime": true
+				}
+			},
+			{
+				"function": "powerline.segments.common.net.hostname"
+			}
+		]
+	}
+}
