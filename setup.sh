@@ -145,6 +145,14 @@ function install() {
     else
         echo "Skip installing Zsh configuration files"
     fi
+    
+    # Tmux configuration
+    echo "Installing Tmux configuration"
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf -o ~/.tmux.conf
+    echo "Please run PREFIX+SHIFT+I manually to complete plugin installation in Tmux"
+    sleep 3s
+    echo
 
     if [ "$to_install_powerline" == "y" ]; then
         echo "Fetching powerline theme and colorscheme configuration"
@@ -255,14 +263,6 @@ function install() {
     curl https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf \
         -o ~/.local/share/fonts/Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete.otf
     nvim -c "PluginInstall" -c "q" -c "q"
-    echo
-
-    # Tmux configuration
-    echo "Installing Tmux configuration"
-    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf -o ~/.tmux.conf
-    echo "Please run PREFIX+SHIFT+I manually to complete plugin installation in Tmux"
-    sleep 3s
     echo
 
     # Mpv configuration
