@@ -110,7 +110,7 @@ function install() {
 
 
         pip3 install dbus-python --user -U
-        pip3 install git+https://github.com/ritiek/powerline.git@assume-dbus-player --user -U
+        pip3 install git+https://github.com/powerline/powerline.git --user -U
         pip3 install powerline-gitstatus --user -U
         echo
     else
