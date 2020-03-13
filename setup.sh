@@ -99,8 +99,16 @@ function install() {
     if [ "$to_install_powerline" == "y" ]; then
         echo "Installing powerline prompt Python packages"
         mkdir -p ~/.local/share/fonts
+
         wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Bold/complete/InconsolataGo%20Bold%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/InconsolataGo\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
         wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Regular/complete/InconsolataGo%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/InconsolataGo\ Nerd\ Font\ Complete\ Mono.ttf
+
+        wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/Fantasque\ Sans\ Mono\ Regular\ Nerd\ Font\ Complete\ Mono.ttf
+        wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Italic/complete/Fantasque%20Sans%20Mono%20Italic%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/Fantasque\ Sans\ Mono\ Italic\ Nerd\ Font\ Complete\ Mono.ttf
+        wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Bold/complete/Fantasque%20Sans%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/Fantasque\ Sans\ Mono\ Bold\ Nerd\ Font\ Complete\ Mono.ttf
+        wget https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Bold-Italic/complete/Fantasque%20Sans%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete%20Mono.ttf -O ~/.local/share/fonts/Fantasque\ Sans\ Mono\ Bold\ Italic\ Nerd\ Font\ Complete\ Mono.ttf
+
+
         pip3 install dbus-python --user -U
         pip3 install git+https://github.com/ritiek/powerline.git@assume-dbus-player --user -U
         pip3 install powerline-gitstatus --user -U
