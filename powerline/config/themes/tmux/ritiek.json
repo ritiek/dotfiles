@@ -34,7 +34,7 @@
 				"function": "powerline.segments.common.sys.cpu_load_percent",
 				"args": {
 					"interval": 5,
-					"format": "CPU {0:.0f}%"
+					"format": "CPU {0:02.0f}%"
 				}
 			},
 			{
