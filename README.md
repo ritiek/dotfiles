@@ -33,7 +33,7 @@ $ tmux [-u]
 
 ## Screenshots
 
-<img src="https://i.imgur.com/oojrIGt.png" width="600">
+<img src="https://i.imgur.com/lNSb7H2.png" width="600">
 (click to zoom)
 
 ## Miscellaneous
