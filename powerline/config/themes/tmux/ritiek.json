@@ -2,15 +2,6 @@
 	"segments": {
         "left": [
             {
-				"function": "powerline.segments.common.bat.battery",
-				"args": {
-					"format": "{ac_state} {capacity:3.0%}"
-				},
-				"priority": 40
-            },
-			{
-				"function": "powerline.segments.common.sys.uptime",
-				"priority": 50
 			}
         ],
 		"right": [
