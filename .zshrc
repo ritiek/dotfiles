@@ -26,6 +26,7 @@ plugins=(
     zsh-autosuggestions
     colored-man-pages
     command-not-found
+    zsh-syntax-highlighting
 )
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
@@ -47,6 +48,11 @@ bindkey '^_' autosuggest-accept
 
 # Load oh-my-zsh configuration
 source $ZSH/oh-my-zsh.sh
+
+# disable underline for paths
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 # Enable Vi bindings
 bindkey -v
