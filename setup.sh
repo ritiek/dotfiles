@@ -142,10 +142,13 @@ function install() {
         echo "Installing zsh-autosuggestions plugin"
         git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
         echo
+        echo "Installing zsh-syntax-highlightning plugin"
+        git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+        echo
     else
         echo "Skip installing Zsh configuration files"
     fi
-    
+
     # Tmux configuration
     echo "Installing Tmux configuration"
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
