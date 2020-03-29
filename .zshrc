@@ -50,8 +50,8 @@ bindkey '^_' autosuggest-accept
 source $ZSH/oh-my-zsh.sh
 
 # disable underline for paths
-ZSH_HIGHLIGHT_STYLES[path]=none
-ZSH_HIGHLIGHT_STYLES[path_prefix]=none
+ZSH_HIGHLIGHT_STYLES[path]='fg=cyan'
+ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=magenta'
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 # Enable Vi bindings
