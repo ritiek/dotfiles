@@ -23,10 +23,15 @@
                     "function": "powerline.segments.shell.cwd",
                     "args": {
                         "use_path_separator": false,
-                        "dir_limit_depth": 5
+                        "dir_limit_depth": 4
                     },
                     "priority": 10
+                },
+                {
+                    "function": "powerline.segments.shell.jobnum",
+                    "priority": 10
                 }
+
             ],
             "right": [
             ]
