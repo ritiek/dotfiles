@@ -74,6 +74,18 @@ Now comes the plethora of hardware issues:
   ```
   And put one CPU core to 100% usage (irrespective of whether pulseaudio runs as daemon)
   as long as pulseaudio runs.
+  
+  **UPDATE:** For some reason it now works fine if I create a script:
+  ```
+  sleep 10s
+  PULSE_RUNTIME_PATH="/run/user/1000/pulse/" /usr/bin/pulseaudio --start
+  ```
+  and execute it via cron on reboot:
+  ```
+  @reboot /bin/bash /home/ritiek/.sound/runner.sh
+  ```
+  The only caveat is that I need to login as soon as the login window shows up,
+  otherwise the sound applet won't load.
 
 
 If you somehow reached this corner and read this text, do yourself a favour and pass such
