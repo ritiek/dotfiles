@@ -34,6 +34,13 @@ Now comes the plethora of hardware issues:
 - Battery percentage isn't read (you need to always keep a guess of how much time
   longer before the battery runs out, [3-4 hrs]).
 
+- Random freezes. This is probably related to the kernel. There is no way to recover
+  from here except a hard reset.
+
+- Kernel versions any later than 4.16.18-041618-generic won't power input hardware
+  devices (such as my lappy's keyboard, track keyboard or even USB ports!).
+  So stick to 4.16.18-041618-generic.
+
 - The worst part is getting the audio output working correctly. Holy hell.
   I'll skip the half the pain and put in all the ALSA files that worked for me
   in here. Replace it with `/usr/share/alsa/`. That's all for the ALSA part.
