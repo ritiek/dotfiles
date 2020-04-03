@@ -1,24 +1,29 @@
 {
 	"segments": {
-        "left": [
-            {
+		"left": [
+			{
 			}
-        ],
+		],
 		"right": [
 			{
 				"function": "powerline.segments.common.players.dbus_player",
 				"name": "player",
 				"args": {
+					"state_symbols": {
+						"play": " ",
+						"pause": "契",
+						"stop": "栗"
+					},
 					"format": "{state_symbol} {artist} - {title}",
 					"player_name": "player"
-                }
+				}
 			},
 			{
 				"function": "powerline.segments.common.net.network_load",
 				"args": {
 					"interval": 3,
-					"sent_format": "⇑ {value:>9}",
-					"recv_format": "⇓ {value:>9}  "
+					"sent_format": " {value:>9}",
+					"recv_format": " {value:>9}  "
 				}
 			},
 			{
@@ -44,9 +49,16 @@
 			{
 				"function": "powerline.segments.tmux.attached_clients",
 				"args": {
-                    "minimum": 2
-                },
+					"minimum": 2
+				},
 				"before": "👓 "
+			},
+			{
+				"function": "powerline.segments.common.bat.battery",
+				"args": {
+					"offline": "",
+					"online": ""
+				}
 			}
 		]
 	}
