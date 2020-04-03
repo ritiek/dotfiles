@@ -93,7 +93,7 @@ function install() {
     fi
 
     echo "Installing standard Python packages: setuptools, wheel"
-    pip3 install setuptools wheel --user -U
+    pip3 install setuptools wheel ipython --user -U
     echo
 
     if [ "$to_install_powerline" == "y" ]; then
@@ -172,6 +172,7 @@ function install() {
 
         cd -
 
+        mkdir -p ~/.ipython/profile_default
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o ~/.ipython/profile_default/ipython_config.py
         echo
 
