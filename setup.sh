@@ -76,7 +76,8 @@ function install() {
                         python3-dev \
                         openssh-server \
                         libssl-dev \
-                        libclang-dev
+                        libclang-dev \
+                        imagemagick
     echo
 
     if [ "$to_install_zsh" == "y" ]; then
