@@ -2,6 +2,9 @@ source ~/.zprofile
 # Allow symlinks
 ZSH_DISABLE_COMPFIX=true
 
+# space prefix to suppress history
+setopt HIST_IGNORE_SPACE
+
 # For setting history length see HISTSIZE and HISTFILESIZE in zsh
 export ZSH="$HOME/.oh-my-zsh"
 
