@@ -14,7 +14,7 @@ function install() {
         to_install_powerline='n'
     fi
 
-    echo "Install Kitty (terminal emulator)? (y/N) "
+    echo "Install Kitty (terminal emulator) and set it as default? (y/N) "
     read to_install_kitty
 
     echo "Install Wavebox (if you haven't heard about this, you probably don't need to)? (y/N) "
@@ -26,8 +26,15 @@ function install() {
     echo "Install miscellaneous packages (mostly music-related tools I care about - mps-youtube, etc.)? (y/N) "
     read to_install_miscellaneous
 
-    echo "If you're on Linux Mint, apply my modified Cinnamon's look & feel? (y/N) "
-    read to_cinnamon_feel
+    echo "Apply my modified GNOME's look & feel? (y/N) "
+    read to_gnome_feel
+
+    if [ "$to_gnome_feel" == "y" ]; then
+        to_cinnamon_feel='n'
+    else
+        echo "Apply my modified Cinnamon's look & feel? (y/N) "
+        read to_cinnamon_feel
+    fi
 
     echo "Copy all my device public keys to ~/.ssh/authorized_keys (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N) "
     read to_copy_ssh_keys
@@ -225,13 +232,15 @@ function install() {
 
     if [ "$to_install_kitty" == "y" ]; then
         curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-        ln -s ~/.local/kitty.app/bin/kitty ~/.local/bin/
+        ln -s ~/.local/kitty.app/bin/kitty ~/.local/bin/kitty
         mkdir -p ~/.local/share/applications
         cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
         sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
         mkdir -p ~/.config/kitty
         curl https://i.imgur.com/5oD0uqi.png >> ~/.config/kitty/background.png
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kitty.conf >> ~/.config/kitty/kitty.conf
+        sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator ~/.local/bin/kitty 50
+        sudo update-alternatives --set x-terminal-emulator ~/.local/bin/kitty
     fi
 
     if [ "$to_install_wavebox" == "y" ]; then
@@ -278,11 +287,25 @@ function install() {
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.config/mpv/mpv.conf
     echo
 
+    if [ "$to_gnome_feel" == "y" ]; then
+        echo "Applying my GNOME's modified look & feel"
+        sudo apt install -y gnome-shell-extensions gnome-shell chrome-gnome-shell
+        mkdir -p ~/.local/share/gnome-shell
+        cd ~/.local/share/gnome-shell
+        git init
+        git remote add origin https://github.com/ritiek/dotfiles.git
+        git config core.sparseCheckout true
+        echo "gnome/extensions" >> .git/info/sparse-checkout
+        git pull --depth=1 origin master
+        mv gnome/extensions .
+        rm -r gnome
+        rm -rf .git
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/gnome/org.dconf | dconf load /org/
+    fi
+
     if [ "$to_cinnamon_feel" == "y" ]; then
         echo "Applying my Cinnamon's modified look & feel"
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | dconf load /org/
-    else
-        echo "Skip my modified Cinnamon's look & feel"
     fi
 
     if [ "$to_install_miscellaneous" == "y" ]; then
