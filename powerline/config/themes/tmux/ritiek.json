@@ -44,6 +44,13 @@
 				}
 			},
 			{
+				"function": "powerline.segments.common.bat.battery",
+				"args": {
+					"offline": "",
+					"online": ""
+				}
+			},
+			{
 				"function": "powerline.segments.common.net.hostname"
 			},
 			{
@@ -52,13 +59,6 @@
 					"minimum": 2
 				},
 				"before": "👓 "
-			},
-			{
-				"function": "powerline.segments.common.bat.battery",
-				"args": {
-					"offline": "",
-					"online": ""
-				}
 			}
 		]
 	}
