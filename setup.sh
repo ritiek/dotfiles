@@ -121,6 +121,7 @@ function install() {
         pip3 install psutil --user -U
         pip3 install git+https://github.com/powerline/powerline.git --user -U
         pip3 install powerline-gitstatus --user -U
+        pip3 install powerline-mem-segment --user -U
         echo
     else
         echo "Skip installing powerline"
