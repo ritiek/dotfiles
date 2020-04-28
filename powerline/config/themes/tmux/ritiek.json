@@ -30,7 +30,13 @@
 				"function": "powerline.segments.common.sys.cpu_load_percent",
 				"args": {
 					"interval": 5,
-					"format": "CPU {0:02.0f}%"
+					"format": "C {0:02.0f}%"
+				}
+			},
+			{
+				"function": "powerlinemem.mem_usage.mem_usage_percent",
+				"args": {
+					"format": "M %d%%"
 				}
 			},
 			{
