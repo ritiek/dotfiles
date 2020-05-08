@@ -1,71 +1,80 @@
 {
-	"segments": {
-		"left": [
-			{
-			}
-		],
-		"right": [
-			{
-				"function": "powerline.segments.common.players.dbus_player",
-				"name": "player",
-				"args": {
-					"state_symbols": {
-						"play": " ",
-						"pause": "契",
-						"stop": "栗"
-					},
-					"format": "{state_symbol} {artist} - {title}",
-					"player_name": "player"
-				}
-			},
-			{
-				"function": "powerline.segments.common.net.network_load",
-				"args": {
-					"interval": 3,
-					"sent_format": " {value:>9}",
-					"recv_format": " {value:>9}  "
-				}
-			},
-			{
-				"function": "powerline.segments.common.sys.cpu_load_percent",
-				"args": {
-					"interval": 5,
-					"format": "C {0:02.0f}%"
-				}
-			},
-			{
-				"function": "powerlinemem.mem_usage.mem_usage_percent",
-				"args": {
-					"format": "M %d%%"
-				}
-			},
-			{
-				"function": "powerline.segments.common.time.date"
-			},
-			{
-				"function": "powerline.segments.common.time.date",
-				"args": {
-					"format": "%H:%M",
-					"istime": true
-				}
-			},
-			{
-				"function": "powerline.segments.common.bat.battery",
-				"args": {
-					"offline": "",
-					"online": ""
-				}
-			},
-			{
-				"function": "powerline.segments.common.net.hostname"
-			},
-			{
-				"function": "powerline.segments.tmux.attached_clients",
-				"args": {
-					"minimum": 2
-				},
-				"before": "👓 "
-			}
-		]
-	}
+    "segments": {
+        "left": [
+            {
+            }
+        ],
+        "right": [
+            {
+                "function": "powerline.segments.common.players.dbus_player",
+                "priority": 20,
+                "name": "player",
+                "args": {
+                    "state_symbols": {
+                        "play": " ",
+                        "pause": "契",
+                        "stop": "栗"
+                    },
+                    "format": "{state_symbol} {artist} - {title}",
+                    "player_name": "player"
+                }
+            },
+            {
+                "function": "powerline.segments.common.net.network_load",
+                "priority": 30,
+                "args": {
+                    "interval": 3,
+                    "sent_format": " {value:>9}",
+                    "recv_format": " {value:>9}  "
+                }
+            },
+            {
+                "function": "powerline.segments.common.sys.cpu_load_percent",
+                "priority": 30,
+                "args": {
+                    "interval": 5,
+                    "format": "C {0:02.0f}%"
+                }
+            },
+            {
+                "function": "powerlinemem.mem_usage.mem_usage_percent",
+                "priority": 40,
+                "args": {
+                    "format": "M %d%%"
+                }
+            },
+            {
+                "function": "powerline.segments.common.time.date",
+                "priority": 60
+            },
+            {
+                "function": "powerline.segments.common.time.date",
+                "priority": 60,
+                "args": {
+                    "format": "%H:%M",
+                    "istime": true
+                }
+            },
+            {
+                "function": "powerline.segments.common.bat.battery",
+                "priority": 20,
+                "args": {
+                    "offline": "",
+                    "online": ""
+                }
+            },
+            {
+                "function": "powerline.segments.common.net.hostname",
+                "priority": 60
+            },
+            {
+                "function": "powerline.segments.tmux.attached_clients",
+                "priority": 10,
+                "args": {
+                    "minimum": 2
+                },
+                "before": "👓 "
+            }
+        ]
+    }
 }
