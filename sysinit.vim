@@ -42,12 +42,14 @@ Plugin 'scrooloose/nerdtree.git'
 Plugin 'ryanoasis/vim-devicons'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'fidian/hexmode'
+Plugin 'troydm/zoomwintab.vim'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#zoomwintab#enabled = 1
 
 "let g:webdevicons_enable_airline_statusline = 1
 "let g:webdevicons_enable_airline_tabline = 1
@@ -152,6 +154,9 @@ nmap <C-w>b :Hexmode<CR>
 
 "indentLine plugin
 nmap <C-i> :IndentLinesToggle<CR>
+
+"zoomwintab plugin
+nmap <silent><C-w>z :ZoomWinTabToggle<CR>
 
 "Tmux like bindings
 nmap <C-s> <C-a>
