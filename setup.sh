@@ -17,8 +17,8 @@ function install() {
     echo "Install Kitty (terminal emulator) and set it as default? (y/N) "
     read to_install_kitty
 
-    echo "Install Wavebox (if you haven't heard about this, you probably don't need to)? (y/N) "
-    read to_install_wavebox
+    echo "Install Spotify (x86-x64 only) (y/N) "
+    read to_install_spotify
 
     echo "Install Rust Compiler and some of its really nice packages (ripgrep and like)? (y/N) "
     read to_install_rust
@@ -244,17 +244,6 @@ function install() {
         sudo update-alternatives --set x-terminal-emulator ~/.local/bin/kitty
     fi
 
-    if [ "$to_install_wavebox" == "y" ]; then
-        echo "Installing Wavebox for managing cloud services (like GMail, etc.)"
-        wget -qO - https://wavebox.io/dl/client/repo/archive.key | sudo apt-key add -
-        echo "deb https://wavebox.io/dl/client/repo/ x86_64/" | sudo tee --append /etc/apt/sources.list.d/wavebox.list
-        sudo apt update
-        sudo apt install -y wavebox
-        echo
-    else
-        echo "Skip Wavebox installation"
-    fi
-
     if [ "$to_copy_ssh_keys" == "y" ]; then
         # My lovely machines
         echo "Copying SSH keys to ~/.ssh/authorized_keys"
@@ -307,6 +296,14 @@ function install() {
     if [ "$to_cinnamon_feel" == "y" ]; then
         echo "Applying my Cinnamon's modified look & feel"
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | dconf load /org/
+    fi
+
+    if [ "$to_install_spotify" == "y" ]; then
+        echo "Installing Spotify"
+        curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
+        echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+        sudo apt-get update
+        sudo apt-get install -y spotify-client
     fi
 
     if [ "$to_install_miscellaneous" == "y" ]; then
