@@ -85,6 +85,8 @@ function install() {
                         libssl-dev \
                         libclang-dev \
                         imagemagick
+    sudo apt install -y hub
+    sudo apt install -y btfs
     echo
 
     if [ "$to_install_zsh" == "y" ]; then
@@ -339,6 +341,9 @@ function install() {
         echo
         echo "Installing http-server"
         cargo install https
+        echo
+        echo "Installing diskonaut"
+        cargo install diskonaut
         echo
     else
         echo "Skip Rust installation and awesome tools written in it"
