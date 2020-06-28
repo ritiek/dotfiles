@@ -21,6 +21,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Base = Me.imports.base;
 const Lib = Me.imports.convenience;
+const _d = Lib._log;
 const SignalManager = Lib.SignalManager;
 const Prefs = Me.imports.prefs;
 const Main = imports.ui.main;
@@ -109,7 +110,7 @@ var SDCInstance = class SDCInstance {
         if(theme != null) {
             let iconPath = Me.dir.get_child('icons');
             if (iconPath != null && iconPath.query_exists(null)){
-            	theme.append_search_path(iconPath.get_path());
+                theme.append_search_path(iconPath.get_path());
             }
         }
     
