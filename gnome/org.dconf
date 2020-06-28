@@ -172,7 +172,7 @@ window-position=(495, 179)
 word-size=64
 
 [gnome/control-center]
-last-panel='power'
+last-panel='keyboard'
 
 [gnome/desktop/a11y]
 always-show-universal-access-status=false
@@ -210,8 +210,8 @@ translate=true
 
 [gnome/desktop/background]
 color-shading-type='solid'
-picture-options='centered'
-picture-uri='file:///home/ritiek/.local/share/backgrounds/2020-04-18-20-19-39-bshWmMy.jpg'
+picture-options='zoom'
+picture-uri='file:///home/ritiek/.local/share/backgrounds/2020-06-28-16-52-14-1.png'
 primary-color='#000000000000'
 secondary-color='#000000000000'
 
@@ -236,7 +236,8 @@ show-battery-percentage=false
 toolkit-accessibility=false
 
 [gnome/desktop/notifications]
-application-children=['org-gnome-baobab', 'io-elementary-appcenter', 'gnome-control-center', 'firefox', 'org-gnome-terminal', 'gnome-network-panel', 'spotify', 'org-gnome-tweaks', 'org-gnome-nautilus']
+application-children=['org-gnome-baobab', 'io-elementary-appcenter', 'gnome-control-center', 'firefox', 'org-gnome-terminal', 'gnome-network-panel', 'spotify', 'org-gnome-tweaks', 'org-gnome-nautilus', 'org-gnome-extensions-desktop', 'org-gnome-shell-extensions']
+show-banners=true
 
 [gnome/desktop/notifications/application/firefox]
 application-id='firefox.desktop'
@@ -253,8 +254,14 @@ application-id='io.elementary.appcenter.desktop'
 [gnome/desktop/notifications/application/org-gnome-baobab]
 application-id='org.gnome.baobab.desktop'
 
+[gnome/desktop/notifications/application/org-gnome-extensions-desktop]
+application-id='org.gnome.Extensions.desktop.desktop'
+
 [gnome/desktop/notifications/application/org-gnome-nautilus]
 application-id='org.gnome.Nautilus.desktop'
+
+[gnome/desktop/notifications/application/org-gnome-shell-extensions]
+application-id='org.gnome.Shell.Extensions.desktop'
 
 [gnome/desktop/notifications/application/org-gnome-terminal]
 application-id='org.gnome.Terminal.desktop'
@@ -272,6 +279,7 @@ numlock-state=false
 two-finger-scrolling-enabled=true
 
 [gnome/desktop/privacy]
+disable-microphone=false
 report-technical-problems=true
 
 [gnome/desktop/remote-access]
@@ -280,7 +288,11 @@ prompt-enabled=false
 vnc-password='bm9uZXNoYWw='
 
 [gnome/desktop/screensaver]
-picture-options='centered'
+color-shading-type='solid'
+picture-options='zoom'
+picture-uri='file:///home/ritiek/.local/share/backgrounds/2020-06-28-16-52-14-1.png'
+primary-color='#000000000000'
+secondary-color='#000000000000'
 
 [gnome/desktop/search-providers]
 enabled=['org.gnome.Weather.desktop']
@@ -293,6 +305,8 @@ idle-delay=uint32 0
 theme-name='Pop'
 
 [gnome/desktop/wm/keybindings]
+minimize=['<Super>h']
+show-desktop=['<Super>d']
 toggle-fullscreen=['F11']
 
 [gnome/desktop/wm/preferences]
@@ -933,14 +947,16 @@ locations=['file:///home/ritiek/Music']
 
 [gnome/settings-daemon/plugins/color]
 night-light-enabled=true
-night-light-last-coordinates=(30.923599280057594, 75.854299999999995)
+night-light-last-coordinates=(30.718601439884807, 76.792500000000004)
 night-light-schedule-automatic=false
 night-light-schedule-from=12.016666666666666
 night-light-schedule-to=12.0
 night-light-temperature=uint32 3246
 
 [gnome/settings-daemon/plugins/media-keys]
+email=@as []
 home=['<Super>e']
+mic-mute=['F12']
 next=['F9']
 play=['F10']
 previous=['F8']
@@ -966,11 +982,11 @@ hinting='full'
 [gnome/shell]
 app-picker-view=uint32 1
 command-history=['r']
-enabled-extensions=['always-show-workspaces@system76.com', 'donotdisturb@kylecorry31.github.io', 'pop-suspend-button@system76.com', 'system76-power@system76.com', 'desktop-icons@csoriano', 'sound-output-device-chooser@kgshank.net', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'extensions-sync@elhan.io', 'lockkeys@vaina.lt', 'alt-tab-raise-first-window@system76.com', 'hidetopbar@mathieu.bidon.ca', 'pop-shop-details@system76.com', 'dash-to-dock@micxgx.gmail.com', 'batteryiconfix@kylecorry31.github.io']
+enabled-extensions=['always-show-workspaces@system76.com', 'donotdisturb@kylecorry31.github.io', 'pop-suspend-button@system76.com', 'system76-power@system76.com', 'desktop-icons@csoriano', 'sound-output-device-chooser@kgshank.net', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'extensions-sync@elhan.io', 'lockkeys@vaina.lt', 'alt-tab-raise-first-window@system76.com', 'hidetopbar@mathieu.bidon.ca', 'pop-shop-details@system76.com', 'dash-to-dock@micxgx.gmail.com', 'batteryiconfix@kylecorry31.github.io', 'drive-menu@gnome-shell-extensions.gcampax.github.com']
 
 [gnome/shell/extensions/hidetopbar]
 enable-active-window=false
-enable-intellihide=false
+enable-intellihide=true
 hot-corner=false
 mouse-sensitive=true
 mouse-sensitive-fullscreen-window=true
@@ -986,11 +1002,14 @@ do-not-disturb=false
 [gnome/shell/extensions/lockkeys]
 style='show-hide'
 
+[gnome/shell/extensions/pop-shell]
+focus-left=@as []
+
 [gnome/shell/extensions/sound-output-device-chooser]
 expand-volume-menu=true
-hide-menu-icons=false
+hide-menu-icons=true
 hide-on-single-device=true
-icon-theme='none'
+icon-theme='monochrome'
 show-profiles=false
 
 [gnome/shell/weather]
