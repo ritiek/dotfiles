@@ -171,6 +171,12 @@ target-units='radian'
 window-position=(495, 179)
 word-size=64
 
+[gnome/calendar]
+active-view='week'
+window-maximized=false
+window-position=(223, 408)
+window-size=(750, 501)
+
 [gnome/control-center]
 last-panel='keyboard'
 
@@ -236,7 +242,7 @@ show-battery-percentage=false
 toolkit-accessibility=false
 
 [gnome/desktop/notifications]
-application-children=['org-gnome-baobab', 'io-elementary-appcenter', 'gnome-control-center', 'firefox', 'org-gnome-terminal', 'gnome-network-panel', 'spotify', 'org-gnome-tweaks', 'org-gnome-nautilus', 'org-gnome-extensions-desktop', 'org-gnome-shell-extensions']
+application-children=['org-gnome-baobab', 'io-elementary-appcenter', 'gnome-control-center', 'firefox', 'org-gnome-terminal', 'gnome-network-panel', 'spotify', 'org-gnome-tweaks', 'org-gnome-nautilus', 'org-gnome-extensions-desktop', 'org-gnome-shell-extensions', 'org-gnome-shell-extensions-gsconnect']
 show-banners=true
 
 [gnome/desktop/notifications/application/firefox]
@@ -259,6 +265,9 @@ application-id='org.gnome.Extensions.desktop.desktop'
 
 [gnome/desktop/notifications/application/org-gnome-nautilus]
 application-id='org.gnome.Nautilus.desktop'
+
+[gnome/desktop/notifications/application/org-gnome-shell-extensions-gsconnect]
+application-id='org.gnome.Shell.Extensions.GSConnect.desktop'
 
 [gnome/desktop/notifications/application/org-gnome-shell-extensions]
 application-id='org.gnome.Shell.Extensions.desktop'
@@ -325,6 +334,7 @@ network-monitor-gio-name=''
 
 [gnome/evolution]
 default-address-book='bd67a91b407559896377e2afe04aa4be8500dc2e'
+default-calendar='22726e679706016da30ba5bf2c728672f7209fd7'
 
 [gnome/file-roller/dialogs/extract]
 recreate-folders=true
@@ -947,7 +957,7 @@ locations=['file:///home/ritiek/Music']
 
 [gnome/settings-daemon/plugins/color]
 night-light-enabled=true
-night-light-last-coordinates=(30.718601439884807, 76.792500000000004)
+night-light-last-coordinates=(30.712598560115193, 76.850399999999993)
 night-light-schedule-automatic=false
 night-light-schedule-from=12.016666666666666
 night-light-schedule-to=12.0
@@ -982,7 +992,28 @@ hinting='full'
 [gnome/shell]
 app-picker-view=uint32 1
 command-history=['r']
-enabled-extensions=['always-show-workspaces@system76.com', 'donotdisturb@kylecorry31.github.io', 'pop-suspend-button@system76.com', 'system76-power@system76.com', 'desktop-icons@csoriano', 'sound-output-device-chooser@kgshank.net', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'extensions-sync@elhan.io', 'lockkeys@vaina.lt', 'alt-tab-raise-first-window@system76.com', 'hidetopbar@mathieu.bidon.ca', 'pop-shop-details@system76.com', 'dash-to-dock@micxgx.gmail.com', 'batteryiconfix@kylecorry31.github.io', 'drive-menu@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['always-show-workspaces@system76.com', 'donotdisturb@kylecorry31.github.io', 'pop-suspend-button@system76.com', 'system76-power@system76.com', 'desktop-icons@csoriano', 'sound-output-device-chooser@kgshank.net', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'native-window-placement@gnome-shell-extensions.gcampax.github.com', 'extensions-sync@elhan.io', 'lockkeys@vaina.lt', 'alt-tab-raise-first-window@system76.com', 'hidetopbar@mathieu.bidon.ca', 'pop-shop-details@system76.com', 'dash-to-dock@micxgx.gmail.com', 'batteryiconfix@kylecorry31.github.io', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'gsconnect@andyholmes.github.io']
+
+[gnome/shell/extensions/gsconnect]
+devices=['dc0b7702e5a45dc4']
+id='a792e412-e22e-42ea-8ba9-b3208c756770'
+name='pop-os'
+
+[gnome/shell/extensions/gsconnect/device/dc0b7702e5a45dc4]
+certificate-pem='-----BEGIN CERTIFICATE-----\nMIIC9zCCAd+gAwIBAgIBATANBgkqhkiG9w0BAQsFADA/MRkwFwYDVQQDDBBkYzBi\nNzcwMmU1YTQ1ZGM0MRQwEgYDVQQLDAtLREUgQ29ubmVjdDEMMAoGA1UECgwDS0RF\nMB4XDTE5MDYyOTE4MDgzM1oXDTI5MDYyOTE4MDgzM1owPzEZMBcGA1UEAwwQZGMw\nYjc3MDJlNWE0NWRjNDEUMBIGA1UECwwLS0RFIENvbm5lY3QxDDAKBgNVBAoMA0tE\nRTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMNPqH58rwGeMV03v7/4\n3AKdcDZghUMDiRD1JtLa3zWI96O+pZ5NQ5ytJqiAP/3eAE0KyLl0XlGGr0N6V2D3\nJga7KVUPUKvPjXaeyDX5cvOvO3SrwpBrBah9l1DFGduMYHagvGfVI03JEK9z82B4\nUazgkoZoQTVmBd+bLot/DJdGA9wr00rQqnLkQn0Ej3xPo9ghvfZqMIFClMEg7zc7\n5F2o23wPfP4VwZndMXsyGre+2Vg9koIUcOR9gwVRBUXiZp6Qu+xREpS113ETWHoT\n58FCFlFbKv4C41bkgL+Xxh1vauNrJ1D/3ZG78wmGK/W+TcZKSFzl743tqGOo8vwE\ndSkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEACLBNzHsSBEhdLmDzLGKIwTF1Dp9l\nX1QGsvb+uAQTRtbonCxOtw9DHHbE4JlGb/wLDg/Sf9LyEnEgLICR0UrxeNQ+PedE\nU0nSJU/061iOc95W70KRRgBE+DVngNulCT/9zIHjd61mXiEyNJD+DrvI88X8bmlZ\nR7+AutzzuHhO1IDdMn4jOn91Ebz01KDvMP3jo09bVchEqaM9Vb8nJIFisA7wLKKB\nV386QOfH1//6Eh4djmbj/FAERAkAlG0OAWYUaqCrFIRtzwNT9vTYJU6htzMFkXYT\n3HFZIcfShguZNOv3+WtFiSSRYTZXhJlcqoEq5g69DbwUVSIqP44paIEnHg==\n-----END CERTIFICATE-----\n'
+incoming-capabilities=['kdeconnect.battery.request', 'kdeconnect.clipboard', 'kdeconnect.clipboard.connect', 'kdeconnect.contacts.request_all_uids_timestamps', 'kdeconnect.contacts.request_vcards_by_uid', 'kdeconnect.findmyphone.request', 'kdeconnect.mousepad.keyboardstate', 'kdeconnect.mousepad.request', 'kdeconnect.mpris', 'kdeconnect.mpris.request', 'kdeconnect.notification', 'kdeconnect.notification.action', 'kdeconnect.notification.reply', 'kdeconnect.notification.request', 'kdeconnect.photo.request', 'kdeconnect.ping', 'kdeconnect.runcommand', 'kdeconnect.sftp.request', 'kdeconnect.share.request', 'kdeconnect.share.request.update', 'kdeconnect.sms.request', 'kdeconnect.sms.request_conversation', 'kdeconnect.sms.request_conversations', 'kdeconnect.systemvolume', 'kdeconnect.telephony.request', 'kdeconnect.telephony.request_mute']
+last-connection='lan://192.168.42.129:1716'
+name='ONE A2003'
+outgoing-capabilities=['kdeconnect.battery', 'kdeconnect.clipboard', 'kdeconnect.clipboard.connect', 'kdeconnect.contacts.response_uids_timestamps', 'kdeconnect.contacts.response_vcards', 'kdeconnect.findmyphone.request', 'kdeconnect.mousepad.echo', 'kdeconnect.mousepad.keyboardstate', 'kdeconnect.mousepad.request', 'kdeconnect.mpris', 'kdeconnect.mpris.request', 'kdeconnect.notification', 'kdeconnect.notification.request', 'kdeconnect.photo', 'kdeconnect.ping', 'kdeconnect.presenter', 'kdeconnect.runcommand.request', 'kdeconnect.sftp', 'kdeconnect.share.request', 'kdeconnect.sms.messages', 'kdeconnect.systemvolume.request', 'kdeconnect.telephony']
+paired=true
+supported-plugins=['battery', 'clipboard', 'contacts', 'findmyphone', 'mousepad', 'mpris', 'notification', 'photo', 'ping', 'presenter', 'runcommand', 'sftp', 'share', 'sms', 'systemvolume', 'telephony']
+type='phone'
+
+[gnome/shell/extensions/gsconnect/device/dc0b7702e5a45dc4/plugin/notification]
+applications='{"Printers":{"iconName":"printer","enabled":true},"Desktop Sharing":{"iconName":"preferences-desktop-remote-desktop","enabled":true},"Date & Time":{"iconName":"preferences-system-time","enabled":true},"Network":{"iconName":"nm-device-wireless","enabled":true},"Disk Usage Analyzer":{"iconName":"org.gnome.baobab","enabled":true},"Geary":{"iconName":"org.gnome.Geary","enabled":true},"Power":{"iconName":"gnome-power-manager","enabled":true},"Color":{"iconName":"preferences-color","enabled":true},"Pop!_Shop":{"iconName":"pop-shop","enabled":true},"Files":{"iconName":"org.gnome.Nautilus","enabled":true},"Firmware":{"iconName":"firmware-manager","enabled":true},"Archive Manager":{"iconName":"org.gnome.ArchiveManager","enabled":true},"Eddy":{"iconName":"com.github.donadigo.eddy","enabled":true},"OS Upgrade":{"iconName":"software-update-available-symbolic","enabled":true}}'
+
+[gnome/shell/extensions/gsconnect/device/dc0b7702e5a45dc4/plugin/share]
+receive-directory='/home/ritiek/Downloads'
 
 [gnome/shell/extensions/hidetopbar]
 enable-active-window=false
@@ -1060,7 +1091,7 @@ sort-column='name'
 sort-directories-first=true
 sort-order='ascending'
 type-format='category'
-window-position=(174, 11)
+window-position=(451, 113)
 window-size=(1018, 694)
 
 [mate/panel/general]
