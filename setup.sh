@@ -279,6 +279,11 @@ function install() {
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.config/mpv/mpv.conf
     echo
 
+    # Radare2 configuration
+    echo "Replacing ~/.radare2rc"
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.radare2rc -o ~/.radare2rc
+    echo
+
     if [ "$to_gnome_feel" == "y" ]; then
         echo "Applying my GNOME's modified look & feel"
         sudo apt install -y gnome-shell-extensions gnome-shell chrome-gnome-shell
