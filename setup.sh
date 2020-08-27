@@ -1,6 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 function install() {
+    if [ -f "/etc/arch-release" ]; then
+        is_arch=true
+    else
+        is_arch=false
+    fi
+
     echo "I'll ask some questions, READ THEM CAREFULLY BEFORE ANSWERING y OR n."
     echo
 
@@ -26,21 +32,32 @@ function install() {
     echo "Install miscellaneous packages (mostly music-related tools I care about - mps-youtube, etc.)? (y/N) "
     read to_install_miscellaneous
 
-    echo "Apply my modified GNOME's look & feel? (y/N) "
-    read to_gnome_feel
+    echo "Apply my customized KDE's look & feel? (y/N) "
+    read to_kde_feel
 
-    if [ "$to_gnome_feel" == "y" ]; then
+    if [ "$to_kde_feel" == "y" ]; then
+        to_gnome_feel='n'
+    else
+        echo "Apply my customized GNOME's look & feel? (y/N) "
+        read to_gnome_feel
+    fi
+
+    if [[ "$to_kde_feel" == "y" || "$to_gnome_feel" == "y" ]]; then
         to_cinnamon_feel='n'
     else
-        echo "Apply my modified Cinnamon's look & feel? (y/N) "
+        echo "Apply my customized Cinnamon's look & feel? (y/N) "
         read to_cinnamon_feel
     fi
 
     echo "Copy all my device public keys to ~/.ssh/authorized_keys (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N) "
     read to_copy_ssh_keys
 
-    echo "Run apt update? You should, to be safe. (Y/n) "
-    read to_apt_update
+    if [[ $is_arch == true ]]; then
+        echo "Run pacman -Syu? You should, to be safe. (Y/n) "
+    else
+        echo "Run apt update? You should, to be safe. (Y/n) "
+    fi
+    read to_update
 
     echo
     echo "Okay, that's all I need to know for now"
@@ -52,46 +69,103 @@ function install() {
     echo
     sleep 1s
 
-    echo "You'll need to set the default locale to 'en_US.UTF8' manually in the next step"
-    echo "Hit enter to continue"
-    read
-    sudo dpkg-reconfigure locales
-    echo
-
-    if [ "$to_apt_update" == "n" ]; then
-        echo "Skip apt update"
-    else
-        echo "Calling apt update"
-        sudo apt update
+    if [[ $is_arch == true ]]; then
+        echo "You'll need to set the default locale to 'en_US.UTF8' manually in the next step"
+        echo "Hit enter to continue"
+        read
+        sudo dpkg-reconfigure locales
         echo
     fi
 
-    echo "Installing useful tools via apt install"
-    sudo apt install -y software-properties-common \
-                        neovim \
-                        tmux \
-                        ffmpeg \
-                        aria2 \
-                        undistract-me \
-                        mpv \
-                        git \
-                        xclip \
-                        python3-pip \
-                        dbus \
-                        nmap \
-                        python-dev \
-                        python3-dev \
-                        openssh-server \
-                        libssl-dev \
-                        libclang-dev \
-                        imagemagick
-    sudo apt install -y hub
-    sudo apt install -y btfs
+    if [ "$to_update" == "n" ]; then
+        echo "Skip update"
+    else
+        if [[ $is_arch == true ]]; then
+            echo "Calling apt update"
+            sudo apt update
+        else
+            echo "Calling pacman -Syu"
+            sudo pacman -Syu
+        fi
+        echo
+    fi
+
+    if [[ $is_arch == true ]]; then
+        echo "Installing useful tools via apt install"
+        sudo apt install -y software-properties-common \
+                            neovim \
+                            tmux \
+                            ffmpeg \
+                            aria2 \
+                            undistract-me \
+                            mpv \
+                            git \
+                            xclip \
+                            python3-pip \
+                            dbus \
+                            nmap \
+                            python-dev \
+                            python3-dev \
+                            openssh-server \
+                            libssl-dev \
+                            libclang-dev \
+                            netdiscover \
+                            imagemagick
+        sudo apt install -y hub
+        sudo apt install -y btfs
+    else
+        echo "Installing useful tools via pacamn -S"
+        sudo pacman --noconfirm -S neovim \
+                                   tmux \
+                                   ffmpeg \
+                                   aria2 \
+                                   mpv \
+                                   git \
+                                   base-devel \
+                                   linux-mainline \
+                                   xclip \
+                                   dbus \
+                                   nmap \
+                                   python-pip \
+                                   openssh \
+                                   openssl-1.0 \
+                                   clang \
+                                   gcc \
+                                   imagemagick \
+                                   pamac-cli
+                                   xdotool \
+                                   tree \
+                                   xdg-desktop-portal-gtk \
+                                   xxd-standalone \
+                                   strace \
+                                   virt-manager \
+                                   qemu \
+                                   vde2 \
+                                   ebtables \
+                                   dnsmasq \
+                                   bridge-utils \
+                                   openbsd-netcat \
+                                   unzip \
+                                   libvorbis \
+                                   openal \
+                                   sdl2 \
+                                   pkgconf \
+                                   dbus-python \
+                                   make \
+                                   wireguard-tools
+
+        pamac build --no-confirm scrcpy \
+                                 netdiscover
+    fi
     echo
 
     if [ "$to_install_zsh" == "y" ]; then
         echo "Installing Zsh"
-        sudo apt install -y zsh
+        if [[ $is_arch == true ]]; then
+            sudo pacman --noconfirm -S zsh
+        else
+            sudo apt install -y zsh
+        fi
         echo
 
         echo "Changing default shell to Zsh"
@@ -266,7 +340,7 @@ function install() {
     echo "Installing NeoVim configuration"
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
     mkdir -p ~/.config/nvim
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -o ~/.config/nvim/sysinit.vim
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/init.vim -o ~/.config/nvim/init.vim
     mkdir -p ~/.local/share/fonts
     curl https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf \
         -o ~/.local/share/fonts/Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete.otf
@@ -284,8 +358,17 @@ function install() {
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.radare2rc -o ~/.radare2rc
     echo
 
+    if [ "$to_kde_feel" == "y" ]; then
+        curl https://gitlab.com/cscs/transfuse/-/raw/master/transfuse.sh -o transfuse.sh
+        chmod +x transfuse.sh
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20200828_0120.tar.gz -o ritiek_transfusion_20200828_0120.tar.gz
+        echo
+        echo 'Choose "$USER_transfusion_$DATE.tar.gz" here'
+        ./transfuse.sh -r
+    fi
+
     if [ "$to_gnome_feel" == "y" ]; then
-        echo "Applying my GNOME's modified look & feel"
+        echo "Applying my GNOME's customized look & feel"
         sudo apt install -y gnome-shell-extensions gnome-shell chrome-gnome-shell
         mkdir -p ~/.local/share/gnome-shell
         cd ~/.local/share/gnome-shell
@@ -301,16 +384,21 @@ function install() {
     fi
 
     if [ "$to_cinnamon_feel" == "y" ]; then
-        echo "Applying my Cinnamon's modified look & feel"
+        echo "Applying my Cinnamon's customized look & feel"
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | dconf load /org/
     fi
 
     if [ "$to_install_spotify" == "y" ]; then
         echo "Installing Spotify"
-        curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
-        echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
-        sudo apt-get update
-        sudo apt-get install -y spotify-client
+        if [[ $is_arch == true ]]; then
+            curl -sS https://download.spotify.com/debian/pubkey.gpg | gpg --import -
+            pamac build --no-confirm spotify spotify-adblock-git
+        else
+            curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
+            echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+            sudo apt-get update
+            sudo apt-get install -y spotify-client
+        fi
     fi
 
     if [ "$to_install_miscellaneous" == "y" ]; then
