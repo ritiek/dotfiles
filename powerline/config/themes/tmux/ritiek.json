@@ -40,7 +40,7 @@
                 "function": "powerlinemem.mem_usage.mem_usage_percent",
                 "priority": 40,
                 "args": {
-                    "format": "M %d%%"
+                    "format": "M %02d%%"
                 }
             },
             {
