@@ -438,6 +438,9 @@ function install() {
         echo "Installing diskonaut"
         cargo install diskonaut
         echo
+        echo "Installing bandwhich"
+        cargo install bandwhich
+        echo
     else
         echo "Skip Rust installation and awesome tools written in it"
     fi
