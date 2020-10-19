@@ -43,6 +43,7 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'fidian/hexmode'
 Plugin 'troydm/zoomwintab.vim'
+Plugin 'udalov/kotlin-vim.git'
 
 let g:airline_theme='fairyfloss'
 let g:airline_powerline_fonts = 1
