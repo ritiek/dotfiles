@@ -52,6 +52,9 @@ function install() {
     echo "Copy all my device public keys to ~/.ssh/authorized_keys (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N) "
     read to_copy_ssh_keys
 
+    echo "Override ~/.gitconfig (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N) "
+    read to_override_gitconfig
+
     if [[ $is_arch == true ]]; then
         echo "Run pacman -Syu? You should, to be safe. (Y/n) "
     else
@@ -329,6 +332,11 @@ function install() {
         echo "Skip copying SSH keys"
     fi
 
+    if [ "$to_override_gitconfig" == "y" ]; then
+        echo "Overriding ~/.gitconfig"
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.gitconfig >> ~/.gitconfig
+    fi
+
     # Display current battery % with `$ battery`
     echo "Fetching script to display remaining battery % in ~/.local/bin/battery"
     mkdir -p ~/.local/bin/
@@ -440,6 +448,9 @@ function install() {
         echo
         echo "Installing bandwhich"
         cargo install bandwhich
+        echo
+        echo "Installing delta"
+        cargo install delta
         echo
     else
         echo "Skip Rust installation and awesome tools written in it"
