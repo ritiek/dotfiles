@@ -113,7 +113,8 @@ function install() {
                             libssl-dev \
                             libclang-dev \
                             netdiscover \
-                            imagemagick
+                            imagemagick \
+                            fonts-noto-color-emoji
         sudo apt install -y hub
         sudo apt install -y btfs
     else
@@ -155,7 +156,8 @@ function install() {
                                    pkgconf \
                                    dbus-python \
                                    make \
-                                   wireguard-tools
+                                   wireguard-tools \
+                                   noto-fonts-emoji
 
         pamac build --no-confirm scrcpy \
                                  netdiscover
