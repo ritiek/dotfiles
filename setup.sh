@@ -157,7 +157,8 @@ function install() {
                                    dbus-python \
                                    make \
                                    wireguard-tools \
-                                   noto-fonts-emoji
+                                   noto-fonts-emoji \
+                                   glava
 
         pamac build --no-confirm scrcpy \
                                  netdiscover
@@ -367,6 +368,23 @@ function install() {
     echo "Replacing ~/.radare2rc"
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.radare2rc -o ~/.radare2rc
     echo
+
+    if [[ $is_arch == true ]]; then
+        # GLava configuration
+        echo "Installing GLava configuration"
+        glava --copy-config
+        mkdir -p ~/.config/glava
+        cd ~/.config/glava
+        git init
+        git remote add origin https://github.com/ritiek/dotfiles.git
+        git config core.sparseCheckout true
+        echo "glava" >> .git/info/sparse-checkout
+        git pull --depth=1 origin master
+        mv glava/* .
+        rm -r glava
+        rm -rf .git
+        cd -
+    fi
 
     if [ "$to_kde_feel" == "y" ]; then
         curl https://gitlab.com/cscs/transfuse/-/raw/master/transfuse.sh -o transfuse.sh
