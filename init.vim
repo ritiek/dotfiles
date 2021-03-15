@@ -33,8 +33,8 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-commentary'
-autocmd FileType python set commentstring=#\ %s
-autocmd FileType c,cpp,java set commentstring=//\ %s
+autocmd FileType sh,python set commentstring=#\ %s
+autocmd FileType c,cpp,java,rust set commentstring=//\ %s
 Plugin 'tpope/vim-fugitive'
 Plugin 'rafi/awesome-vim-colorschemes'
 Plugin 'Yggdroot/indentLine'
