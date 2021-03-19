@@ -84,11 +84,11 @@ function install() {
         echo "Skip update"
     else
         if [[ $is_arch == true ]]; then
-            echo "Calling apt update"
-            sudo apt update
-        else
             echo "Calling pacman -Syu"
             sudo pacman -Syu
+        else
+            echo "Calling apt update"
+            sudo apt update
         fi
         echo
     fi
