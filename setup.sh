@@ -94,30 +94,6 @@ function install() {
     fi
 
     if [[ $is_arch == true ]]; then
-        echo "Installing useful tools via apt install"
-        sudo apt install -y software-properties-common \
-                            neovim \
-                            tmux \
-                            ffmpeg \
-                            aria2 \
-                            undistract-me \
-                            mpv \
-                            git \
-                            xclip \
-                            python3-pip \
-                            dbus \
-                            nmap \
-                            python-dev \
-                            python3-dev \
-                            openssh-server \
-                            libssl-dev \
-                            libclang-dev \
-                            netdiscover \
-                            imagemagick \
-                            fonts-noto-color-emoji
-        sudo apt install -y hub
-        sudo apt install -y btfs
-    else
         echo "Installing useful tools via pacamn -S"
         sudo pacman --noconfirm -S neovim \
                                    tmux \
@@ -162,6 +138,30 @@ function install() {
 
         pamac build --no-confirm scrcpy \
                                  netdiscover
+    else
+        echo "Installing useful tools via apt install"
+        sudo apt install -y software-properties-common \
+                            neovim \
+                            tmux \
+                            ffmpeg \
+                            aria2 \
+                            undistract-me \
+                            mpv \
+                            git \
+                            xclip \
+                            python3-pip \
+                            dbus \
+                            nmap \
+                            python-dev \
+                            python3-dev \
+                            openssh-server \
+                            libssl-dev \
+                            libclang-dev \
+                            netdiscover \
+                            imagemagick \
+                            fonts-noto-color-emoji
+        sudo apt install -y hub
+        sudo apt install -y btfs
     fi
     echo
 
