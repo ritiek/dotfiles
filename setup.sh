@@ -72,7 +72,7 @@ function install() {
     echo
     sleep 1s
 
-    if [[ $is_arch == true ]]; then
+    if [[ $is_arch == false ]]; then
         echo "You'll need to set the default locale to 'en_US.UTF8' manually in the next step"
         echo "Hit enter to continue"
         read
