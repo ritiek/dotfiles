@@ -16,6 +16,7 @@
                         "stop": "栗"
                     },
                     "format": "{state_symbol} {artist} - {title}",
+                    "player_inactive_override": "",
                     "player_name": "player"
                 }
             },
@@ -24,8 +25,8 @@
                 "priority": 30,
                 "args": {
                     "interval": 3,
-                    "sent_format": " {value:>9}",
-                    "recv_format": " {value:>9}  "
+                    "sent_format": "{value:>9}",
+                    "recv_format": "{value:>9} │ "
                 }
             },
             {
@@ -37,6 +38,14 @@
                 }
             },
             {
+                "function": "powerline_cpu_temp.cpu_temp",
+                "args": {
+                    "format": "T {value:.0f}°C",
+                    "threshold_good": 60,
+                    "threshold_bad": 110
+                }
+            },
+            {
                 "function": "powerlinemem.mem_usage.mem_usage_percent",
                 "priority": 40,
                 "args": {
@@ -44,8 +53,14 @@
                 }
             },
             {
-                "function": "powerline.segments.common.time.date",
-                "priority": 60
+                "function": "powerlinemem.mem_usage.mem_swap_percentage",
+                "priority": 40,
+                "args": {
+                    "format": "S %02d%%"
+                }
+            },
+            {
+                "function": "powerlinedisk.disk_usage.disk_usage_percentage"
             },
             {
                 "function": "powerline.segments.common.time.date",
