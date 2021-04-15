@@ -1,6 +1,8 @@
 {
     "name": "ritiek",
     "groups": {
+        "cpu_temp":                   { "fg": "gray8", "bg": "gray1", "attrs": [] },
+        "cpu_temp_gradient":          { "fg": "green_yellow_orange_red", "bg": "gray1", "attrs": [] },
         "information:additional":     { "fg": "gray9", "bg": "gray1", "attrs": [] },
         "information:regular":        { "fg": "gray10", "bg": "gray1", "attrs": ["bold"] },
         "information:highlighted":    { "fg": "white", "bg": "gray1", "attrs": [] },
