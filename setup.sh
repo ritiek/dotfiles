@@ -473,6 +473,9 @@ function install() {
         echo "Installing delta"
         cargo install delta
         echo
+        echo "Installing cargo-edit"
+        cargo install cargo-edit
+        echo
     else
         echo "Skip Rust installation and awesome tools written in it"
     fi
