@@ -36,6 +36,7 @@ Plugin 'tpope/vim-commentary'
 autocmd FileType sh,python set commentstring=#\ %s
 autocmd FileType c,cpp,java,rust set commentstring=//\ %s
 autocmd FileType tex set commentstring=%\ %s
+autocmd FileType yml,yaml set commentstring=#\ %s
 Plugin 'tpope/vim-fugitive'
 Plugin 'rafi/awesome-vim-colorschemes'
 Plugin 'Yggdroot/indentLine'
