@@ -127,7 +127,7 @@ echo "
  ~ .~       ~. ~  Memory.............: $(grep MemFree /proc/meminfo | awk {'print $2'})kB (Free) / $(grep MemTotal /proc/meminfo | awk {'print $2'})kB (Total)$(tput setaf 7)
   (  $(tput setaf 4) |   | $(tput setaf 7)  )  $(tput setaf 1) Running Processes..: $(ps ax | wc -l | tr -d " ")$(tput setaf 7)
   '~         ~'  $(tput setaf 1) IP Address.........: $(ip route get 8.8.8.8 2>/dev/null | head -1 | cut -d' ' -f7) $(tput setaf 7)
-    *--~-~--*    $(tput setaf 1) Battery............: $(cat /sys/class/power_supply/BAT0/capacity)%
+    *--~-~--*    $(tput setaf 1) Battery............: $(battery)%
                  $(tput setaf 1) Temperature........: CPU: $cpuTempC°C/$cpuTempF°F GPU: $gpuTempC°C/$gpuTempF°F
                  $(tput setaf 7) The RetroPie Project, http://www.petrockblock.com
 
