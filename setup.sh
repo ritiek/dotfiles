@@ -203,7 +203,7 @@ function install() {
         pip3 install psutil --user -U
         pip3 install git+https://github.com/ritiek/powerline.git --user -U
         pip3 install powerline-gitstatus --user -U
-        pip3 install powerline-mem-segment --user -U
+        pip3 install git+https://github.com/mKaloer/powerline_mem_segment --user -U
         pip3 install powerline-cpu-temp --user -U
         echo
     else
