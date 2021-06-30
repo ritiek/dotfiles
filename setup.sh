@@ -461,8 +461,8 @@ function install() {
         echo "Installing bat"
         cargo install bat
         echo
-        echo "Installing http-server"
-        cargo install https
+        echo "Installing simple-http-server"
+        cargo install simple-http-server
         echo
         echo "Installing diskonaut"
         cargo install diskonaut
