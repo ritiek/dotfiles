@@ -471,7 +471,7 @@ function install() {
         cargo install bandwhich
         echo
         echo "Installing delta"
-        cargo install delta
+        cargo install git-delta
         echo
         echo "Installing cargo-edit"
         cargo install cargo-edit
