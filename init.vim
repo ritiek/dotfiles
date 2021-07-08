@@ -142,6 +142,8 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
+" Preserve undo history when switching tabs
+set hidden
 
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
 match WhiteSpaces /\s\+$/
