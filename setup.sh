@@ -476,6 +476,9 @@ function install() {
         echo "Installing cargo-edit"
         cargo install cargo-edit
         echo
+        echo "Installing tealdeer (tldr)"
+        cargo install tealdeer
+        echo
     else
         echo "Skip Rust installation and awesome tools written in it"
     fi
