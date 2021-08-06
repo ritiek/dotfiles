@@ -62,7 +62,8 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_sign_warning = ''
 let g:ale_set_highlights = 0
 let g:ale_lint_on_text_changed = 'never'
-let g:ale_linters = {'rust': ['rustc', 'rls']}
+"let g:ale_linters = {'rust': ['rustc', 'rls']}
+"let g:ale_rust_ignore_error_codes = ['E0283', 'E0412', 'E0432', 'E0433', 'E0601']
 
 "let g:webdevicons_enable_airline_statusline = 1
 "let g:webdevicons_enable_airline_tabline = 1
