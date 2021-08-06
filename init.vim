@@ -25,7 +25,6 @@ Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
-Plugin 'rust-lang/rust.vim'
 Plugin 'JuliaEditorSupport/julia-vim'
 "Plugin 'ajh17/Spacegray.vim'
 Plugin 'xuhdev/SingleCompile'
@@ -45,15 +44,25 @@ Plugin 'ryanoasis/vim-devicons'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'fidian/hexmode'
 Plugin 'troydm/zoomwintab.vim'
+Plugin 'supercollider/scvim'
+Plugin 'dermusikman/sonicpi.vim'
 Plugin 'udalov/kotlin-vim.git'
+Plugin 'kshenoy/vim-signature'
 Plugin 'farmergreg/vim-lastplace'
+Plugin 'dense-analysis/ale'
 
-let g:airline_theme='fairyfloss'
+let g:airline_theme = 'fairyfloss'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#zoomwintab#enabled = 1
+let g:airline#extensions#ale#enabled = 1
+
+let g:ale_sign_warning = ''
+let g:ale_set_highlights = 0
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_linters = {'rust': ['rustc', 'rls']}
 
 "let g:webdevicons_enable_airline_statusline = 1
 "let g:webdevicons_enable_airline_tabline = 1
@@ -142,7 +151,7 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
-" Preserve undo history when switching tabs
+" Keep undo history when switching tabs
 set hidden
 
 highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
@@ -154,6 +163,10 @@ cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w \| redraw' : 'w')<CR>
 "SingleCompile plugin
 nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
+
+"ALE error navigation
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 "Hexmode plugin
 nmap <C-w>b :Hexmode<CR>
@@ -199,8 +212,8 @@ nnoremap <silent>f :exec "normal i".nr2char(getchar())."\e"<CR>
 nnoremap <silent>F :exec "normal a".nr2char(getchar())."\e"<CR>
 
 "Ctrl-j/k deletes blank line below/above, and Alt-j/k inserts.
-nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
-nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+"nnoremap <silent><C-j> m`:silent +g/\m^\s*$/d<CR>``:noh<CR>
+"nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
 nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
