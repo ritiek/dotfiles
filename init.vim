@@ -50,6 +50,7 @@ Plugin 'udalov/kotlin-vim.git'
 Plugin 'kshenoy/vim-signature'
 Plugin 'farmergreg/vim-lastplace'
 Plugin 'dense-analysis/ale'
+Plugin 'rust-lang/rust.vim'
 
 let g:airline_theme = 'fairyfloss'
 let g:airline_powerline_fonts = 1
