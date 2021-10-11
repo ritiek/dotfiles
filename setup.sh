@@ -101,6 +101,7 @@ function install() {
                                    aria2 \
                                    mpv \
                                    git \
+                                   hub \
                                    base-devel \
                                    linux-mainline \
                                    xclip \
@@ -137,7 +138,15 @@ function install() {
                                    glava
 
         pamac build --no-confirm scrcpy \
-                                 netdiscover
+                                 netdiscover \
+                                 chiaki \
+                                 plasma5-applets-eventcalendar \
+                                 sc-controller \
+                                 brave-bin \
+                                 python38 \
+                                 zoom \
+                                 slack-desktop \
+                                 spotify-adblock
     else
         echo "Installing useful tools via apt install"
         sudo apt install -y software-properties-common \
