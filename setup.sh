@@ -146,7 +146,9 @@ function install() {
                                  python38 \
                                  zoom \
                                  slack-desktop \
-                                 spotify-adblock
+                                 spotify-adblock \
+                                 auto-cpufreq \
+                                 mongodb-bin
     else
         echo "Installing useful tools via apt install"
         sudo apt install -y software-properties-common \
