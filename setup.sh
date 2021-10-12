@@ -135,7 +135,8 @@ function install() {
                                    make \
                                    wireguard-tools \
                                    noto-fonts-emoji \
-                                   glava
+                                   glava \
+                                   git-delta
 
         pamac build --no-confirm scrcpy \
                                  netdiscover \
