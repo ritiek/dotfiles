@@ -12,6 +12,9 @@
                 },
                 {
                     "function": "powerline.segments.common.env.user",
+                    "args": {
+                        "hide_user": "ritiek"
+                    },
                     "priority": 20
                 },
                 {
