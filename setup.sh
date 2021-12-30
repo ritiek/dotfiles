@@ -103,7 +103,8 @@ function install() {
                                    git \
                                    hub \
                                    base-devel \
-                                   linux-mainline \
+                                   linux-headers \
+                                   sof-firmware \
                                    xclip \
                                    dbus \
                                    nmap \
