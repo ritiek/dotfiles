@@ -137,6 +137,7 @@ function install() {
                                    wireguard-tools \
                                    noto-fonts-emoji \
                                    glava \
+                                   xorg-xrandr \
                                    git-delta
 
         pamac build --no-confirm scrcpy \
