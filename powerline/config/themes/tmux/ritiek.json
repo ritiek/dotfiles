@@ -1,8 +1,6 @@
 {
     "segments": {
         "left": [
-            {
-            }
         ],
         "right": [
             {
@@ -58,9 +56,6 @@
                 "args": {
                     "format": "S %02d%%"
                 }
-            },
-            {
-                "function": "powerlinedisk.disk_usage.disk_usage_percentage"
             },
             {
                 "function": "powerline.segments.common.time.date",
