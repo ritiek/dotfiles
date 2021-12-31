@@ -219,7 +219,6 @@ function install() {
         pip3 install git+https://github.com/ritiek/powerline.git --user -U
         pip3 install powerline-gitstatus --user -U
         pip3 install git+https://github.com/mKaloer/powerline_mem_segment.git --user -U
-        pip3 install git+https://github.com/mvrozanti/powerline-disk-segment.git --user -U
         pip3 install powerline-cpu-temp --user -U
         echo
     else
