@@ -405,7 +405,7 @@ function install() {
     if [ "$to_kde_feel" == "y" ]; then
         curl https://gitlab.com/cscs/transfuse/-/raw/master/transfuse.sh -o transfuse.sh
         chmod +x transfuse.sh
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20200828_0120.tar.gz -o ritiek_transfusion_20200828_0120.tar.gz
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20211230_0237.tar.gz -o ritiek_transfusion_20211230_0237.tar.gz
         echo
         echo 'Choose "$USER_transfusion_$DATE.tar.gz" here'
         ./transfuse.sh -r
