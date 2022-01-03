@@ -17,6 +17,8 @@ export LESSOPEN="|$HOME/.lessfilter %s"
 # bindings in zsh
 export KEYTIMEOUT=1
 
+export OPENCV_LOG_LEVEL=ERROR 
+
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
