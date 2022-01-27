@@ -51,6 +51,54 @@ Plugin 'kshenoy/vim-signature'
 Plugin 'farmergreg/vim-lastplace'
 Plugin 'dense-analysis/ale'
 Plugin 'rust-lang/rust.vim'
+Plugin 'nvim-lua/plenary.nvim'
+Plugin 'nvim-telescope/telescope.nvim'
+
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+"Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+"Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent off    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+" vim hardcodes background color erase even if the terminfo file does
+" not contain bce (not to mention that libvte based terminals
+" incorrectly contain bce in their terminfo files). This causes
+" incorrect background rendering when using a color theme with a
+" background color.
+let &t_ut=''
+
+set background=dark
+syntax on
+"let g:gruvbox_italic=1
+"let g:gruvbox_contrast_dark='hard'
+"let g:gruvbox_contrast_light='hard'
+
+"colorscheme spacegray
+colorscheme space-vim-dark
+set t_Co=256
+"set termguicolors
 
 let g:airline_theme = 'fairyfloss'
 let g:airline_powerline_fonts = 1
@@ -101,47 +149,6 @@ let g:airline_symbols.branch = ''
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.linenr = ''
 
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent off    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-"SUGAR SYNTACT!
-
-set background=dark
-syntax on
-"let g:gruvbox_italic=1
-"let g:gruvbox_contrast_dark='hard'
-"let g:gruvbox_contrast_light='hard'
-
-"colorscheme spacegray
-colorscheme space-vim-dark
-
-set t_Co=256
-
 set encoding=utf-8
 set tabstop=4
 set softtabstop=0
@@ -153,11 +160,14 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
+
 " Keep undo history when switching tabs
 set hidden
 
-highlight WhiteSpaces ctermbg=darkgreen guibg=darkgreen
+highlight WhiteSpaces ctermbg=darkgrey guibg=darkgrey
 match WhiteSpaces /\s\+$/
+
+highlight Search ctermbg=grey guibg=darkgrey
 
 " Suppresses "Press Enter to confirm" when using :w to write files via scp://
 cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w \| redraw' : 'w')<CR>
@@ -195,6 +205,10 @@ nmap <silent><C-w>x :bdelete<CR>
 nmap <C-w>= :reg<CR>
 
 nmap <silent><tab> :NERDTreeToggle<CR>
+
+nmap <silent><S-tab> :Telescope find_files<CR>
+nmap <silent><C-w>g :Telescope live_grep<CR>
+
 nmap <C-w><tab> <tab>
 
 nmap <silent><C-w>s :ToggleBufExplore<CR>
