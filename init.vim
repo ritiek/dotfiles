@@ -207,7 +207,7 @@ nmap <C-w>= :reg<CR>
 nmap <silent><tab> :NERDTreeToggle<CR>
 
 nmap <silent><S-tab> :Telescope find_files<CR>
-nmap <silent><C-w>g :Telescope live_grep<CR>
+nmap <silent><C-w>/ :Telescope live_grep<CR>
 
 nmap <C-w><tab> <tab>
 
