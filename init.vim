@@ -49,10 +49,11 @@ Plugin 'dermusikman/sonicpi.vim'
 Plugin 'udalov/kotlin-vim.git'
 Plugin 'kshenoy/vim-signature'
 Plugin 'farmergreg/vim-lastplace'
-Plugin 'dense-analysis/ale'
+"Plugin 'dense-analysis/ale'
 Plugin 'rust-lang/rust.vim'
 Plugin 'nvim-lua/plenary.nvim'
 Plugin 'nvim-telescope/telescope.nvim'
+Plugin 'preservim/tagbar'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -107,6 +108,8 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#zoomwintab#enabled = 1
 let g:airline#extensions#ale#enabled = 1
+"let g:airline#extensions#hunks#enabled = 0
+let g:airline#extensions#branch#enabled = 0
 
 let g:ale_sign_warning = ''
 let g:ale_set_highlights = 0
@@ -209,6 +212,7 @@ nmap <silent><tab> :NERDTreeToggle<CR>
 nmap <silent><S-tab> :Telescope find_files<CR>
 nmap <silent><C-w>/ :Telescope live_grep<CR>
 
+nmap <silent>\ :TagbarToggle<CR>
 nmap <C-w><tab> <tab>
 
 nmap <silent><C-w>s :ToggleBufExplore<CR>
