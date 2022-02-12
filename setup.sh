@@ -138,6 +138,7 @@ function install() {
                                    noto-fonts-emoji \
                                    glava \
                                    xorg-xrandr \
+                                   ctags \
                                    git-delta
 
         pamac build --no-confirm scrcpy \
@@ -174,6 +175,7 @@ function install() {
                             libclang-dev \
                             netdiscover \
                             imagemagick \
+                            ctags \
                             fonts-noto-color-emoji
         sudo apt install -y hub
         sudo apt install -y btfs
