@@ -153,7 +153,9 @@ function install() {
                                  spotify-adblock \
                                  auto-cpufreq \
                                  mongodb-bin \
-                                 postman-bin
+                                 postman-bin \
+                                 touchegg \
+                                 touche
     else
         echo "Installing useful tools via apt install"
         sudo apt install -y software-properties-common \
@@ -356,6 +358,13 @@ function install() {
     if [ "$to_override_gitconfig" == "y" ]; then
         echo "Overriding ~/.gitconfig"
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.gitconfig >> ~/.gitconfig
+    fi
+
+    mkdir -p ~/.config/touchegg
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/touchegg.conf -o ~/.config/touchegg/touchegg.conf
+    if [[ $is_arch == true ]]; then
+        sudo systemctl enable touchegg.service
+        sudo systemctl start touchegg
     fi
 
     # Display current battery % with `$ battery`
