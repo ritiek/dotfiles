@@ -54,6 +54,9 @@ Plugin 'rust-lang/rust.vim'
 Plugin 'nvim-lua/plenary.nvim'
 Plugin 'nvim-telescope/telescope.nvim'
 Plugin 'preservim/tagbar'
+Plugin 'christoomey/vim-conflicted'
+Plugin 'andymass/vim-matchup'
+Plugin 'pechorin/any-jump.vim'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -120,6 +123,9 @@ let g:ale_lint_on_text_changed = 'never'
 "let g:webdevicons_enable_airline_statusline = 1
 "let g:webdevicons_enable_airline_tabline = 1
 
+let g:matchup_matchparen_offscreen = {'method': 'popup'}
+let g:matchup_transmute_enabled = 1
+
 set laststatus=2
 
 "¦, ┆, │, ⎸, or ▏
@@ -181,12 +187,18 @@ cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'w \| redraw' : 'w')<CR>
 nmap <F8> :SCCompile<CR>
 nmap <F9> :SCCompileRun<CR>
 
+"AnyJump to definations
+nmap <silent><Enter> :AnyJump<CR>
+
 "ALE error navigation
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+nmap <silent><C-k> <Plug>(ale_previous_wrap)
+nmap <silent><C-j> <Plug>(ale_next_wrap)
+
+"git blame
+nmap <silent><C-w>b :Git blame<CR>
 
 "Hexmode plugin
-nmap <C-w>b :Hexmode<CR>
+nmap <C-w>B :Hexmode<CR>
 
 "indentLine plugin
 nmap <C-i> :IndentLinesToggle<CR>
