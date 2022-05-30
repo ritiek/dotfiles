@@ -163,6 +163,8 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
+set foldmethod=indent
+set foldlevel=5
 
 " Keep undo history when switching tabs
 set hidden
