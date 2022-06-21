@@ -139,6 +139,7 @@ function install() {
                                    glava \
                                    xorg-xrandr \
                                    ctags \
+                                   reptyr \
                                    git-delta
 
         pamac build --no-confirm scrcpy \
