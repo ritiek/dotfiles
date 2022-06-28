@@ -377,6 +377,7 @@ function install() {
 
     # NVim configuration
     echo "Installing NeoVim configuration"
+    pip3 install pynvim
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
     mkdir -p ~/.config/nvim
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/init.vim -o ~/.config/nvim/init.vim

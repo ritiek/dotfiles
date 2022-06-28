@@ -57,6 +57,9 @@ Plugin 'preservim/tagbar'
 Plugin 'christoomey/vim-conflicted'
 Plugin 'andymass/vim-matchup'
 Plugin 'pechorin/any-jump.vim'
+"Plugin 'tmhedberg/SimpylFold'
+Plugin 'github/copilot.vim'
+"Plugin 'ycm-core/YouCompleteMe'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -101,6 +104,7 @@ syntax on
 
 "colorscheme spacegray
 colorscheme space-vim-dark
+"colorscheme one
 set t_Co=256
 "set termguicolors
 
@@ -169,8 +173,10 @@ set title
 set clipboard+=unnamedplus
 set notimeout
 set ttimeout
-set foldmethod=indent
-set foldlevel=5
+"set foldmethod=expr
+"set foldexpr=VimFolds(v:lnum)
+"set foldlevel=5
+"set foldcolumn=5
 
 " Keep undo history when switching tabs
 set hidden
@@ -252,6 +258,12 @@ nnoremap <silent><A-j> :set paste<CR>m`o<Esc>``:set nopaste<CR>
 nnoremap <silent><A-k> :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
 tnoremap <silent><Esc> <C-\><C-n>
+
+"Copilot
+imap <silent><script><expr> <C-o> copilot#Accept("\<CR>")
+let g:copilot_no_tab_map = v:true
+nmap <C-o> :Copilot<CR>
+
 " █
 "highlight WhiteSpaces ctermbg=green guibg=#55aa55
 
@@ -260,3 +272,4 @@ tnoremap <silent><Esc> <C-\><C-n>
 
 hi NonText ctermbg=none
 hi Normal guibg=NONE ctermbg=NONE
+i Normal guibg=NONE ctermbg=NONE
