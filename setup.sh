@@ -158,6 +158,7 @@ function install() {
                                  mongodb-bin \
                                  postman-bin \
                                  touchegg \
+                                 wlr-randr \
                                  touche
     else
         echo "Installing useful tools via apt install"
@@ -343,7 +344,7 @@ function install() {
         cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
         sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
         mkdir -p ~/.config/kitty
-        curl https://i.imgur.com/5oD0uqi.png >> ~/.config/kitty/background.png
+        curl https://i.imgur.com/WY6kWpl.png >> ~/.config/kitty/background.png
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kitty.conf >> ~/.config/kitty/kitty.conf
         sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator ~/.local/bin/kitty 50
         sudo update-alternatives --set x-terminal-emulator ~/.local/bin/kitty
