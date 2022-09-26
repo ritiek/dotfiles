@@ -55,12 +55,10 @@ function install() {
     echo "Override ~/.gitconfig (THIS SHOULD BE A BIG NO, UNLESS YOU ARE ME!)? (y/N) "
     read to_override_gitconfig
 
-    if [[ $is_arch == true ]]; then
-        echo "Run pacman -Syu? You should, to be safe. (Y/n) "
-    else
+    if [[ $is_arch == false ]]; then
         echo "Run apt update? You should, to be safe. (Y/n) "
+        read to_update
     fi
-    read to_update
 
     echo
     echo "Okay, that's all I need to know for now"
@@ -78,71 +76,64 @@ function install() {
         read
         sudo dpkg-reconfigure locales
         echo
-    fi
-
-    if [ "$to_update" == "n" ]; then
-        echo "Skip update"
-    else
-        if [[ $is_arch == true ]]; then
-            echo "Calling pacman -Syu"
-            sudo pacman -Syu
+        if [ $to_update == "n" ]; then
+            echo "Skip update"
         else
             echo "Calling apt update"
             sudo apt update
         fi
-        echo
     fi
 
     if [[ $is_arch == true ]]; then
         echo "Replace /etc/pacman.conf"
         sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pacman.conf -o /etc/pacman.conf
         echo "Installing useful tools via pacamn -S"
-        sudo pacman --noconfirm -S neovim \
-                                   tmux \
-                                   ffmpeg \
-                                   aria2 \
-                                   mpv \
-                                   git \
-                                   hub \
-                                   base-devel \
-                                   linux-headers \
-                                   sof-firmware \
-                                   xclip \
-                                   dbus \
-                                   nmap \
-                                   python-pip \
-                                   openssh \
-                                   openssl-1.0 \
-                                   clang \
-                                   gcc \
-                                   imagemagick \
-                                   pamac-cli
-                                   xdotool \
-                                   tree \
-                                   xdg-desktop-portal-gtk \
-                                   xxd-standalone \
-                                   strace \
-                                   virt-manager \
-                                   qemu \
-                                   vde2 \
-                                   ebtables \
-                                   dnsmasq \
-                                   bridge-utils \
-                                   openbsd-netcat \
-                                   unzip \
-                                   libvorbis \
-                                   openal \
-                                   sdl2 \
-                                   pkgconf \
-                                   dbus-python \
-                                   make \
-                                   wireguard-tools \
-                                   noto-fonts-emoji \
-                                   glava \
-                                   xorg-xrandr \
-                                   ctags \
-                                   reptyr \
-                                   git-delta
+        sudo pacman --noconfirm -Syu neovim \
+                                     tmux \
+                                     ffmpeg \
+                                     aria2 \
+                                     mpv \
+                                     git \
+                                     hub \
+                                     base-devel \
+                                     linux-headers \
+                                     sof-firmware \
+                                     xclip \
+                                     dbus \
+                                     nmap \
+                                     python-pip \
+                                     openssh \
+                                     openssl-1.0 \
+                                     clang \
+                                     gcc \
+                                     imagemagick \
+                                     pamac-cli
+                                     xdotool \
+                                     tree \
+                                     xdg-desktop-portal-gtk \
+                                     xxd-standalone \
+                                     strace \
+                                     virt-manager \
+                                     qemu \
+                                     vde2 \
+                                     ebtables \
+                                     dnsmasq \
+                                     bridge-utils \
+                                     openbsd-netcat \
+                                     unzip \
+                                     libvorbis \
+                                     openal \
+                                     sdl2 \
+                                     pkgconf \
+                                     dbus-python \
+                                     make \
+                                     wireguard-tools \
+                                     noto-fonts-emoji \
+                                     glava \
+                                     xorg-xrandr \
+                                     ctags \
+                                     reptyr \
+                                     git-delta
 
         pamac build --no-confirm scrcpy \
                                  netdiscover \
@@ -500,9 +491,6 @@ function install() {
         echo
         echo "Installing bandwhich"
         cargo install bandwhich
-        echo
-        echo "Installing delta"
-        cargo install git-delta
         echo
         echo "Installing cargo-edit"
         cargo install cargo-edit
