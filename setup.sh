@@ -26,11 +26,8 @@ function install() {
     echo "Install Spotify (x86-x64 only) (y/N) "
     read to_install_spotify
 
-    echo "Install Rust Compiler and some of its really nice packages (ripgrep and like)? (y/N) "
+    echo "Install Rust Compiler and some useful (to me) packages (like simple-http-server)? (y/N) "
     read to_install_rust
-
-    echo "Install miscellaneous packages (mostly music-related tools I care about - mps-youtube, etc.)? (y/N) "
-    read to_install_miscellaneous
 
     echo "Apply my customized KDE's look & feel? (y/N) "
     read to_kde_feel
@@ -133,23 +130,33 @@ function install() {
                                      xorg-xrandr \
                                      ctags \
                                      reptyr \
-                                     git-delta
+                                     scrcpy \
+                                     picocom \
+                                     wl-clipboard \
+                                     plasma-wayland-session \
+                                     docker \
+                                     docker-compose \
+                                     ripgrep \
+                                     git-delta \
+                                     fd \
+                                     sd \
+                                     bandwhich \
+                                     diskonaut
 
-        pamac build --no-confirm scrcpy \
-                                 netdiscover \
+        echo "Replace /etc/pamac.conf"
+        sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pamac.conf -o /etc/pamac.conf
+        pamac build --no-confirm netdiscover \
                                  chiaki \
                                  plasma5-applets-eventcalendar \
                                  sc-controller \
-                                 brave-bin \
-                                 python38 \
                                  zoom \
                                  slack-desktop \
-                                 spotify-adblock \
                                  auto-cpufreq \
                                  mongodb-bin \
                                  postman-bin \
                                  touchegg \
                                  wlr-randr \
+                                 google-chrome \
                                  touche
     else
         echo "Installing useful tools via apt install"
@@ -329,16 +336,20 @@ function install() {
 
 
     if [ "$to_install_kitty" == "y" ]; then
-        curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-        ln -s ~/.local/kitty.app/bin/kitty ~/.local/bin/kitty
-        mkdir -p ~/.local/share/applications
-        cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
-        sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
+        if [[ $is_arch == true ]]; then
+            sudo pacman --noconfirm -S kitty
+        else
+            curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+            ln -s ~/.local/kitty.app/bin/kitty ~/.local/bin/kitty
+            mkdir -p ~/.local/share/applications
+            cp ~/.local/kitty.app/share/applications/kitty.desktop ~/.local/share/applications
+            sed -i "s/Icon\=kitty/Icon\=\/home\/$USER\/.local\/kitty.app\/share\/icons\/hicolor\/256x256\/apps\/kitty.png/g" ~/.local/share/applications/kitty.desktop
+            sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator ~/.local/bin/kitty 50
+            sudo update-alternatives --set x-terminal-emulator ~/.local/bin/kitty
+        fi
         mkdir -p ~/.config/kitty
         curl https://i.imgur.com/WY6kWpl.png >> ~/.config/kitty/background.png
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kitty.conf >> ~/.config/kitty/kitty.conf
-        sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator ~/.local/bin/kitty 50
-        sudo update-alternatives --set x-terminal-emulator ~/.local/bin/kitty
     fi
 
     if [ "$to_copy_ssh_keys" == "y" ]; then
@@ -415,7 +426,7 @@ function install() {
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20211230_0237.tar.gz -o ritiek_transfusion_20211230_0237.tar.gz
         echo
         echo 'Choose "$USER_transfusion_$DATE.tar.gz" here'
-        ./transfuse.sh -r
+        ./transfuse.sh
     fi
 
     if [ "$to_gnome_feel" == "y" ]; then
@@ -443,6 +454,7 @@ function install() {
         echo "Installing Spotify"
         if [[ $is_arch == true ]]; then
             curl -sS https://download.spotify.com/debian/pubkey.gpg | gpg --import -
+            curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | gpg --import -
             pamac build --no-confirm spotify spotify-adblock-git
         else
             curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
@@ -452,48 +464,38 @@ function install() {
         fi
     fi
 
-    if [ "$to_install_miscellaneous" == "y" ]; then
-        pip3 install youtube-dl --user -U
-        pip3 install git+https://github.com/mps-youtube/pafy.git --user -U
-        pip3 install git+https://github.com/mps-youtube/mps-youtube.git --user -U
-        pip3 install spotdl --user -U
-    else
-        echo "Skip installing miscellaneous stuff"
-    fi
-
-
     if [ "$to_install_rust" == "y" ]; then
         echo "Installing Rust"
         curl https://sh.rustup.rs -sSf | sh -s -- -y
         echo
 
         # Favourite Rust tools
-        echo "Installing ripgrep"
-        cargo install ripgrep
-        echo
-        echo "Installing fd-find"
-        cargo install fd-find
-        echo
+        if [[ $is_arch == false ]]; then
+            echo "Installing ripgrep"
+            cargo install ripgrep
+            echo
+            echo "Installing fd-find"
+            cargo install fd-find
+            echo
+            echo "Installing sd"
+            cargo install sd
+            echo
+            echo "Installing diskonaut"
+            cargo install diskonaut
+            echo
+            echo "Installing bandwhich"
+            cargo install bandwhich
+            echo
+        fi
+
         echo "Installing cargo-edit"
         cargo install cargo-edit
-        echo
-        echo "Installing sd"
-        cargo install sd
         echo
         echo "Installing bat"
         cargo install bat
         echo
         echo "Installing simple-http-server"
         cargo install simple-http-server
-        echo
-        echo "Installing diskonaut"
-        cargo install diskonaut
-        echo
-        echo "Installing bandwhich"
-        cargo install bandwhich
-        echo
-        echo "Installing cargo-edit"
-        cargo install cargo-edit
         echo
         echo "Installing tealdeer (tldr)"
         cargo install tealdeer
