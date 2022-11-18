@@ -82,6 +82,7 @@ function install() {
     fi
 
     if [[ $is_arch == true ]]; then
+        sudo pacman-mirrors --fasttrack 20
         echo "Replace /etc/pacman.conf"
         sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pacman.conf -o /etc/pacman.conf
         echo "Installing useful tools via pacamn -S"
