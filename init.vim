@@ -272,4 +272,3 @@ nmap <C-o> :Copilot<CR>
 
 hi NonText ctermbg=none
 hi Normal guibg=NONE ctermbg=NONE
-i Normal guibg=NONE ctermbg=NONE
