@@ -126,6 +126,7 @@ function install() {
                                      dbus-python \
                                      make \
                                      wireguard-tools \
+                                     jq \
                                      noto-fonts-emoji \
                                      glava \
                                      xorg-xrandr \
