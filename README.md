@@ -33,7 +33,14 @@ $ tmux [-u]
 
 ## Screenshots
 
-<img src="https://i.imgur.com/lNSb7H2.png" width="600">
+March, 2020
+
+<img src="https://i.imgur.com/lNSb7H2.png" width="750">
+
+November, 2022
+
+<img src="https://i.imgur.com/K8QXOPq.png" width="750">
+
 (click to zoom)
 
 ## Miscellaneous
