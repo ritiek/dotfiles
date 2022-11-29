@@ -131,6 +131,7 @@ function install() {
                                      glava \
                                      xorg-xrandr \
                                      ctags \
+                                     net-tools \
                                      reptyr \
                                      scrcpy \
                                      picocom \
