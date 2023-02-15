@@ -458,7 +458,7 @@ function install() {
         if [[ $is_arch == true ]]; then
             curl -sS https://download.spotify.com/debian/pubkey.gpg | gpg --import -
             curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | gpg --import -
-            pamac build --no-confirm spotify spotify-adblock-git
+            pamac build --no-confirm spotify-adblock spotify-remove-ad-banner
         else
             curl -sS https://download.spotify.com/debian/pubkey.gpg | sudo apt-key add -
             echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
