@@ -119,6 +119,8 @@ function install() {
                                      bridge-utils \
                                      openbsd-netcat \
                                      unzip \
+                                     bitwarden \
+                                     bitwarden-cli \
                                      libvorbis \
                                      openal \
                                      sdl2 \
