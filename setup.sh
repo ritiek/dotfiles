@@ -121,6 +121,9 @@ function install() {
                                      unzip \
                                      bitwarden \
                                      bitwarden-cli \
+                                     keybase-gui \
+                                     calibre \
+                                     mitmproxy \
                                      libvorbis \
                                      openal \
                                      sdl2 \
@@ -162,6 +165,7 @@ function install() {
                                  touchegg \
                                  wlr-randr \
                                  google-chrome \
+                                 protonvpn \
                                  touche
     else
         echo "Installing useful tools via apt install"
