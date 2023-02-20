@@ -357,7 +357,7 @@ function install() {
             sudo update-alternatives --set x-terminal-emulator ~/.local/bin/kitty
         fi
         mkdir -p ~/.config/kitty
-        curl https://i.imgur.com/WY6kWpl.png >> ~/.config/kitty/background.png
+        curl https://i.imgur.com/YTkf90A.png >> ~/.config/kitty/background.png
         curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kitty.conf >> ~/.config/kitty/kitty.conf
     fi
 
