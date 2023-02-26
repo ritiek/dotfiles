@@ -87,6 +87,7 @@ function install() {
         sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pacman.conf -o /etc/pacman.conf
         echo "Installing useful tools via pacamn -S"
         sudo pacman --noconfirm -Syu neovim \
+                                     helix \
                                      tmux \
                                      ffmpeg \
                                      aria2 \
@@ -100,6 +101,7 @@ function install() {
                                      dbus \
                                      nmap \
                                      python-pip \
+                                     python-lsp-server \
                                      openssh \
                                      openssl-1.0 \
                                      clang \
@@ -399,6 +401,21 @@ function install() {
     curl https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf \
         -o ~/.local/share/fonts/Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete.otf
     nvim -c "PluginInstall" -c "q" -c "q"
+    echo
+
+    # Helix configuration
+    echo "Installing Helix configuration"
+    mkdir -p ~/.config/helix
+    cd ~/.config/helix
+    git init
+    git remote add origin https://github.com/ritiek/dotfiles.git
+    git config core.sparseCheckout true
+    echo "helix" >> .git/info/sparse-checkout
+    git pull --depth=1 origin master
+    mv helix/* .
+    rm -r helix
+    rm -rf .git
+    cd -
     echo
 
     # Mpv configuration

@@ -1,0 +1,4 @@
+#inherits = "onedark"
+inherits = "sonokai"
+
+"ui.background" = { }
