@@ -87,7 +87,6 @@ function install() {
         sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pacman.conf -o /etc/pacman.conf
         echo "Installing useful tools via pacamn -S"
         sudo pacman --noconfirm -Syu neovim \
-                                     helix \
                                      tmux \
                                      ffmpeg \
                                      aria2 \
@@ -123,7 +122,6 @@ function install() {
                                      unzip \
                                      bitwarden \
                                      bitwarden-cli \
-                                     keybase-gui \
                                      calibre \
                                      mitmproxy \
                                      libvorbis \
@@ -156,6 +154,7 @@ function install() {
         echo "Replace /etc/pamac.conf"
         sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pamac.conf -o /etc/pamac.conf
         pamac build --no-confirm netdiscover \
+                                 # helix-git \
                                  chiaki \
                                  plasma5-applets-eventcalendar \
                                  sc-controller \
@@ -403,20 +402,20 @@ function install() {
     nvim -c "PluginInstall" -c "q" -c "q"
     echo
 
-    # Helix configuration
-    echo "Installing Helix configuration"
-    mkdir -p ~/.config/helix
-    cd ~/.config/helix
-    git init
-    git remote add origin https://github.com/ritiek/dotfiles.git
-    git config core.sparseCheckout true
-    echo "helix" >> .git/info/sparse-checkout
-    git pull --depth=1 origin master
-    mv helix/* .
-    rm -r helix
-    rm -rf .git
-    cd -
-    echo
+    # # Helix configuration
+    # echo "Installing Helix configuration"
+    # mkdir -p ~/.config/helix
+    # cd ~/.config/helix
+    # git init
+    # git remote add origin https://github.com/ritiek/dotfiles.git
+    # git config core.sparseCheckout true
+    # echo "helix" >> .git/info/sparse-checkout
+    # git pull --depth=1 origin master
+    # mv helix/* .
+    # rm -r helix
+    # rm -rf .git
+    # cd -
+    # echo
 
     # Mpv configuration
     echo "Installing Mpv configuration"
@@ -449,7 +448,7 @@ function install() {
     if [ "$to_kde_feel" == "y" ]; then
         curl https://gitlab.com/cscs/transfuse/-/raw/master/transfuse.sh -o transfuse.sh
         chmod +x transfuse.sh
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20211230_0237.tar.gz -o ritiek_transfusion_20211230_0237.tar.gz
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20230307_1815.tar.gz -o ritiek_transfusion_20230307_1815.tar.gz
         echo
         echo 'Choose "$USER_transfusion_$DATE.tar.gz" here'
         ./transfuse.sh
