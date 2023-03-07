@@ -45,5 +45,3 @@ PATH="$HOME/Android/flutter/bin:$PATH"
 PATH="$HOME/.gem/ruby/2.5.0/bin:$PATH"
 PATH="/snap/bin:$PATH"
 export PATH
-
-alias hx="helix"
