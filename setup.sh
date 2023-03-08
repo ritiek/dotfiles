@@ -149,6 +149,7 @@ function install() {
                                      fd \
                                      sd \
                                      bandwhich \
+                                     avahi \
                                      diskonaut
 
         echo "Replace /etc/pamac.conf"
@@ -168,6 +169,9 @@ function install() {
                                  google-chrome \
                                  protonvpn \
                                  touche
+        # Enables hostname.local domains on local network, making stuff like below possible:
+        # ssh pi@raspberrypi.local
+        sudo systemctl enable avahi-daemon
     else
         echo "Installing useful tools via apt install"
         sudo apt install -y software-properties-common \
