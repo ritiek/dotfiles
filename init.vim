@@ -1,82 +1,47 @@
-" `sudo wget https://raw.githubusercontent.com/ritiek/dotfiles/master/sysinit.vim -O /usr/local/share/nvim/sysinit.vim`
-" `sudo git clone https://github.com/VundleVim/Vundle.vim.git /usr/local/share/nvim/bundle/Vundle.vim`
-" (if installed neovim from apt, place the file and run git clone to /usr/share/nvim/)
-
-" `vim`
-" `:PluginInstall`
-
 " if problems, remember -u option can be used to set path to .vim conf file
-" then uncomment below line to path to Vundle.vim
-
-" set rtp+=~/.vim/bundle/Vundle.vim
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.config/nvim/bundle/Vundle.vim
 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" set the runtime path to include Vundle and initialize
+call plug#begin('~/.vim/plugged')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+Plug 'JuliaEditorSupport/julia-vim'
+"Plug 'ajh17/Spacegray.vim'
+Plug 'xuhdev/SingleCompile'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'Yggdroot/indentLine'
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+Plug 'jlanzarotta/bufexplorer'
+Plug 'fidian/hexmode'
+Plug 'troydm/zoomwintab.vim'
+Plug 'supercollider/scvim'
+Plug 'dermusikman/sonicpi.vim'
+Plug 'udalov/kotlin-vim'
+Plug 'kshenoy/vim-signature'
+Plug 'farmergreg/vim-lastplace'
+"Plug 'dense-analysis/ale'
+Plug 'rust-lang/rust.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'preservim/tagbar'
+Plug 'christoomey/vim-conflicted'
+Plug 'andymass/vim-matchup'
+Plug 'pechorin/any-jump.vim'
+"Plug 'tmhedberg/SimpylFold'
+Plug 'github/copilot.vim'
+"Plug 'ycm-core/YouCompleteMe'
+Plug 'metakirby5/codi.vim'
+Plug 'mg979/vim-visual-multi'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'JuliaEditorSupport/julia-vim'
-"Plugin 'ajh17/Spacegray.vim'
-Plugin 'xuhdev/SingleCompile'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-autocmd FileType sh,python set commentstring=#\ %s
-autocmd FileType c,cpp,java,rust set commentstring=//\ %s
-autocmd FileType tex set commentstring=%\ %s
-autocmd FileType yml,yaml set commentstring=#\ %s
-Plugin 'tpope/vim-fugitive'
-Plugin 'rafi/awesome-vim-colorschemes'
-Plugin 'Yggdroot/indentLine'
-Plugin 'scrooloose/nerdtree.git'
-Plugin 'ryanoasis/vim-devicons'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'fidian/hexmode'
-Plugin 'troydm/zoomwintab.vim'
-Plugin 'supercollider/scvim'
-Plugin 'dermusikman/sonicpi.vim'
-Plugin 'udalov/kotlin-vim.git'
-Plugin 'kshenoy/vim-signature'
-Plugin 'farmergreg/vim-lastplace'
-"Plugin 'dense-analysis/ale'
-Plugin 'rust-lang/rust.vim'
-Plugin 'nvim-lua/plenary.nvim'
-Plugin 'nvim-telescope/telescope.nvim'
-Plugin 'preservim/tagbar'
-Plugin 'christoomey/vim-conflicted'
-Plugin 'andymass/vim-matchup'
-Plugin 'pechorin/any-jump.vim'
-"Plugin 'tmhedberg/SimpylFold'
-Plugin 'github/copilot.vim'
-"Plugin 'ycm-core/YouCompleteMe'
-
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Install L9 and avoid a Naming conflict if you've already installed a
-" different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent off    " required
+call plug#end()
+filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
@@ -107,6 +72,11 @@ colorscheme space-vim-dark
 "colorscheme one
 set t_Co=256
 "set termguicolors
+
+autocmd FileType sh,python set commentstring=#\ %s
+autocmd FileType c,cpp,java,rust set commentstring=//\ %s
+autocmd FileType tex set commentstring=%\ %s
+autocmd FileType yml,yaml set commentstring=#\ %s
 
 let g:airline_theme = 'fairyfloss'
 let g:airline_powerline_fonts = 1
@@ -196,9 +166,10 @@ nmap <F9> :SCCompileRun<CR>
 "AnyJump to definations
 nmap <silent><Enter> :AnyJump<CR>
 
+"Disabling ALE as it slows down nvim in large projects.
 "ALE error navigation
-nmap <silent><C-k> <Plug>(ale_previous_wrap)
-nmap <silent><C-j> <Plug>(ale_next_wrap)
+"nmap <silent><C-k> <Plug>(ale_previous_wrap)
+"nmap <silent><C-j> <Plug>(ale_next_wrap)
 
 "git blame
 nmap <silent><C-w>b :Git blame<CR>
@@ -246,6 +217,8 @@ nmap <silent><C-w>6 :buffer 6<CR>
 nmap <silent><C-w>7 :buffer 7<CR>
 nmap <silent><C-w>8 :buffer 8<CR>
 nmap <silent><C-w>9 :buffer 9<CR>
+
+let g:VM_mouse_mappings = 1
 
 "f, F insert character
 nnoremap <silent>f :exec "normal i".nr2char(getchar())."\e"<CR>
