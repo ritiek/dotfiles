@@ -397,13 +397,14 @@ function install() {
     # NVim configuration
     echo "Installing NeoVim configuration"
     pip3 install pynvim
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.config/nvim/bundle/Vundle.vim
+    sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     mkdir -p ~/.config/nvim
     curl https://raw.githubusercontent.com/ritiek/dotfiles/master/init.vim -o ~/.config/nvim/init.vim
     mkdir -p ~/.local/share/fonts
     curl https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf \
         -o ~/.local/share/fonts/Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete.otf
-    nvim -c "PluginInstall" -c "q" -c "q"
+    nvim -c "PlugInstall" -c "q" -c "q"
     echo
 
     # # Helix configuration
