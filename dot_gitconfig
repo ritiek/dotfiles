@@ -1,0 +1,24 @@
+[user]
+	name = Ritiek Malhotra
+	email = ritiekmalhotra123@gmail.com
+
+[core]
+    pager = delta
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = line-numbers decorations
+    whitespace-error-style = 22 reverse
+    plus-color = "#012800"
+    minus-color = "#340001"
+    syntax-theme = Monokai Extended
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    file-decoration-style = none
+
+[hub]
+	protocol = ssh
