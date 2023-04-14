@@ -12,7 +12,7 @@ end
 
 -- This is where you actually apply your config choices
 
-config.color_scheme = 'OneDark (base16)'
+config.color_scheme = 'Tartan (terminal.sexy)'
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font(
   "FantasqueSansMono Nerd Font Mono", {
