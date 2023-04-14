@@ -59,6 +59,25 @@ local plugins = {
     opts = overrides.copilot,
   },
 
+  {
+    "nyngwang/NeoZoom.lua",
+    event = "BufWinEnter",
+    -- opts = overrides.neozoom,
+    config = function()
+      require("neo-zoom").setup(
+        overrides.neozoom
+      )
+    end,
+  },
+
+  {
+    "ellisonleao/carbon-now.nvim",
+    event = "BufWinEnter",
+    config = function()
+      require("carbon-now").setup()
+    end,
+  }
+
   -- To make a plugin not be loaded
   -- {
   --   "NvChad/nvim-colorizer.lua",

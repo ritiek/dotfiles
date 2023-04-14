@@ -68,4 +68,21 @@ M.copilot = {
   },
 }
 
+M.neozoom = {
+  winopts = {
+    offset = {
+      -- NOTE: you can omit `top` and/or `left` to center the floating window.
+      top = 0.06,
+      left = 0.03,
+      width = 150,
+      height = 0.85,
+    },
+    -- NOTE: check :help nvim_open_win() for possible border values.
+    border = "single",
+  },
+  exclude_buftypes = {
+    "terminal",
+  },
+}
+
 return M
