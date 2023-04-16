@@ -81,7 +81,7 @@ M.neozoom = {
     border = "single",
   },
   exclude_buftypes = {
-    "terminal",
+    -- "terminal",
   },
 }
 
