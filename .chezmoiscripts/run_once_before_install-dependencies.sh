@@ -1,3 +1,5 @@
+#!/bin/sh
+
 if [ -f "/etc/arch-release" ]; then
     is_arch=true
 else
