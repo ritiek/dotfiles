@@ -1,0 +1,34 @@
+[{
+    "name": "Recent profiles", 
+    "separator": true
+}, {
+    "generator": "recent", 
+    "rows": 3
+}, {
+    "icon": "system/profiles", 
+    "name": "All Profiles", 
+    "submenu": "Profiles.menu"
+}, {
+    "name": "Options", 
+    "separator": true
+}, {
+    "action": "shell('scc-osd-show-bindings')", 
+    "icon": "system/binding-display", 
+    "id": "item_i7", 
+    "name": "Display Current Bindings..."
+}, {
+    "action": "osd(turnoff())", 
+    "icon": "system/turn-off", 
+    "id": "item4", 
+    "name": "Turn Controller OFF"
+}, {
+    "action": "keyboard()", 
+    "icon": "system/keyboard", 
+    "id": "item5", 
+    "name": "Display Keyboard"
+}, {
+    "action": "shell('sc-controller --osd')", 
+    "icon": "system/edit", 
+    "id": "item_i9", 
+    "name": "Edit Bindings"
+}]

@@ -1,0 +1,17 @@
+theme = "my_transparent_theme"
+
+[editor]
+#line-number = "relative"
+mouse = true
+soft-wrap.enable = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.file-picker]
+hidden = false
+
+[keys.normal]
+c = ["trim_selections", "change_selection"]
