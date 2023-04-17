@@ -1,23 +1,32 @@
 [".oh-my-zsh/custom/plugins/zsh-autosuggestions"]
-    type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-autosuggestions.git"
-    refreshPeriod = "168h"
-    clone.args = ["--depth", "1"]
+  type = "git-repo"
+  url = "https://github.com/zsh-users/zsh-autosuggestions.git"
+  refreshPeriod = "168h"
+  clone.args = ["--depth", "1"]
 
 [".oh-my-zsh/custom/plugins/zsh-syntax-highlighting"]
-    type = "git-repo"
-    url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
-    refreshPeriod = "168h"
-    clone.args = ["--depth", "1"]
+  type = "git-repo"
+  url = "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+  refreshPeriod = "168h"
+  clone.args = ["--depth", "1"]
 
 [".oh-my-zsh/custom/themes/powerlevel10k"]
-    type = "git-repo"
-    url = "https://github.com/romkatv/powerlevel10k.git"
-    refreshPeriod = "168h"
-    clone.args = ["--depth", "1"]
-#
-# [".config/nvim"]
-#     type = "git-repo"
-#     url = "https://github.com/NvChad/NvChad.git"
-#     refreshPeriod = "168h"
-#     clone.args = ["--depth", "1"]
+  type = "git-repo"
+  url = "https://github.com/romkatv/powerlevel10k.git"
+  refreshPeriod = "168h"
+  clone.args = ["--depth", "1"]
+
+[".config/nvim"]
+  # type = "git-repo"
+  # url = "https://github.com/NvChad/NvChad.git"
+  # refreshPeriod = "168h"
+  # clone.args = ["--depth", "1"]
+
+  # Ideally, we should be treating this a git-repo and not an archive.
+  # However, due to a bug in chezmoi, this seems like the best workaround
+  # for now:
+  # https://github.com/twpayne/chezmoi/issues/1614#issuecomment-1058933765
+  type = "archive"
+  url = "https://github.com/NvChad/NvChad/archive/master.tar.gz"
+  stripComponents = 1
+  exact = false
