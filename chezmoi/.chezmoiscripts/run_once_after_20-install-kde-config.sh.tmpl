@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd {{ joinPath .chezmoi.sourceDir "kde" | quote }}
+transfuse -r {{ .chezmoi.username }}
