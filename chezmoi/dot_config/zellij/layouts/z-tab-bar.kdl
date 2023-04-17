@@ -1,0 +1,8 @@
+layout {
+  pane
+  pane size=1 borderless=true {
+    plugin location="file:/home/ritiek/.config/zellij/plugins/z-tab-bar.wasm"
+  }
+}
+session_name "0"
+attach_to_session true

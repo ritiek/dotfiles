@@ -12,9 +12,9 @@ echo
 sudo pacman-mirrors --fasttrack 20
 
 echo "Replace /etc/pacman.conf"
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/etc/pacman.conf -o /etc/pacman.conf
+sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/chezmoi/etc/pacman.conf -o /etc/pacman.conf
 echo "Replace /etc/pamac.conf"
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/etc/pamac.conf -o /etc/pamac.conf
+sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/chezmoi/etc/pamac.conf -o /etc/pamac.conf
 
 echo "Install stuff using pacman -S"
 sudo pacman --noconfirm -Syu neovim \
