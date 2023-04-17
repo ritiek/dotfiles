@@ -2,3 +2,6 @@
 /kde/
 
 .config/zellij
+.config/touchegg
+.config/glava
+.config/helix
