@@ -1,6 +1,7 @@
 # dotfiles
 
-Mah dotfiles (maintained using [chezmoi](https://www.chezmoi.io/).
+Mah dotfiles, maintained using [chezmoi](https://www.chezmoi.io/). I previously maintained these manually
+in the [legacy](https://github.com/ritiek/dotfiles/tree/legacy) branch.
 
 
 ## Installation
