@@ -84,7 +84,7 @@ function install() {
     if [[ $is_arch == true ]]; then
         sudo pacman-mirrors --fasttrack 20
         echo "Replace /etc/pacman.conf"
-        sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pacman.conf -o /etc/pacman.conf
+        sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/pacman.conf -o /etc/pacman.conf
         echo "Installing useful tools via pacamn -S"
         sudo pacman --noconfirm -Syu neovim \
                                      tmux \
@@ -153,7 +153,7 @@ function install() {
                                      diskonaut
 
         echo "Replace /etc/pamac.conf"
-        sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/master/pamac.conf -o /etc/pamac.conf
+        sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/pamac.conf -o /etc/pamac.conf
         pamac build --no-confirm netdiscover \
                                  # helix-git \
                                  chiaki \
@@ -246,17 +246,17 @@ function install() {
     fi
 
     # echo "Replacing ~/.bashrc"
-    # curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.bashrc -o ~/.bashrc
+    # curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.bashrc -o ~/.bashrc
 
     if [ "$to_install_zsh" == "y" ]; then
         echo "Replacing ~/.profile"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.profile -o ~/.profile
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.profile -o ~/.profile
         echo
         echo "Replacing ~/.zprofile"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zprofile -o ~/.zprofile
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.zprofile -o ~/.zprofile
         echo
         echo "Replacing ~/.zshrc"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.zshrc -o ~/.zshrc
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.zshrc -o ~/.zshrc
         echo
 
         echo "Sourcing newly zsh configuration"
@@ -280,7 +280,7 @@ function install() {
     # Tmux configuration
     echo "Installing Tmux configuration"
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.tmux.conf -o ~/.tmux.conf
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.tmux.conf -o ~/.tmux.conf
     echo "Please run PREFIX+SHIFT+I manually to complete plugin installation in Tmux"
     sleep 3s
     echo
@@ -293,7 +293,7 @@ function install() {
         git remote add origin https://github.com/ritiek/dotfiles.git
         git config core.sparseCheckout true
         echo "powerline/config" >> .git/info/sparse-checkout
-        git pull --depth=1 origin master
+        git pull --depth=1 origin legacy
         mv powerline/config/* .
         rm -r powerline
         rm -rf .git
@@ -301,7 +301,7 @@ function install() {
         cd -
 
         mkdir -p ~/.ipython/profile_default
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/ipython_config.py -o ~/.ipython/profile_default/ipython_config.py
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/powerline/ipython_config.py -o ~/.ipython/profile_default/ipython_config.py
         echo
 
         echo "Locating where powerline got installed..."
@@ -315,7 +315,7 @@ function install() {
         # echo
         # echo "Appending powerline Bash specific code to ~/.bashrc"
         # echo >> ~/.bashrc
-        # curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.bashrc
+        # curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/powerline/powerline-daemon-runner >> ~/.bashrc
         # echo "# Load our powerline theme" >> ~/.bashrc
         # echo "source $POWERLINE_BASH_CONFIG" >> ~/.bashrc
         # echo
@@ -327,7 +327,7 @@ function install() {
         echo
         echo "Appending powerline Zsh specific code to ~/.zshrc"
         echo >> ~/.zshrc
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/powerline/powerline-daemon-runner >> ~/.zshrc
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/powerline/powerline-daemon-runner >> ~/.zshrc
         echo "# Load our powerline theme" >> ~/.zshrc
         echo "source $POWERLINE_ZSH_CONFIG" >> ~/.zshrc
         echo
@@ -363,25 +363,25 @@ function install() {
         fi
         mkdir -p ~/.config/kitty
         curl https://i.imgur.com/YTkf90A.png >> ~/.config/kitty/background.png
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kitty.conf >> ~/.config/kitty/kitty.conf
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/kitty.conf >> ~/.config/kitty/kitty.conf
     fi
 
     if [ "$to_copy_ssh_keys" == "y" ]; then
         # My lovely machines
         echo "Copying SSH keys to ~/.ssh/authorized_keys"
         mkdir -p ~/.ssh
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.ssh/authorized_keys >> ~/.ssh/authorized_keys
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.ssh/authorized_keys >> ~/.ssh/authorized_keys
     else
         echo "Skip copying SSH keys"
     fi
 
     if [ "$to_override_gitconfig" == "y" ]; then
         echo "Overriding ~/.gitconfig"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.gitconfig >> ~/.gitconfig
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.gitconfig >> ~/.gitconfig
     fi
 
     mkdir -p ~/.config/touchegg
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/touchegg.conf -o ~/.config/touchegg/touchegg.conf
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/touchegg.conf -o ~/.config/touchegg/touchegg.conf
     if [[ $is_arch == true ]]; then
         sudo systemctl enable touchegg.service
         sudo systemctl start touchegg
@@ -390,7 +390,7 @@ function install() {
     # Display current battery % with `$ battery`
     echo "Fetching script to display remaining battery % in ~/.local/bin/battery"
     mkdir -p ~/.local/bin/
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/battery.sh -o ~/.local/bin/battery
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/battery.sh -o ~/.local/bin/battery
     chmod +x ~/.local/bin/battery
     echo
 
@@ -404,7 +404,7 @@ function install() {
     sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
     mkdir -p ~/.config/nvim
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/init.vim -o ~/.config/nvim/init.vim
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/init.vim -o ~/.config/nvim/init.vim
     mkdir -p ~/.local/share/fonts
     curl https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf \
         -o ~/.local/share/fonts/Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete.otf
@@ -419,7 +419,7 @@ function install() {
     # git remote add origin https://github.com/ritiek/dotfiles.git
     # git config core.sparseCheckout true
     # echo "helix" >> .git/info/sparse-checkout
-    # git pull --depth=1 origin master
+    # git pull --depth=1 origin legacy
     # mv helix/* .
     # rm -r helix
     # rm -rf .git
@@ -429,12 +429,12 @@ function install() {
     # Mpv configuration
     echo "Installing Mpv configuration"
     mkdir -p ~/.config/mpv
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mpv.conf -o ~/.config/mpv/mpv.conf
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/mpv.conf -o ~/.config/mpv/mpv.conf
     echo
 
     # Radare2 configuration
     echo "Replacing ~/.radare2rc"
-    curl https://raw.githubusercontent.com/ritiek/dotfiles/master/.radare2rc -o ~/.radare2rc
+    curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/.radare2rc -o ~/.radare2rc
     echo
 
     if [[ $is_arch == true ]]; then
@@ -447,7 +447,7 @@ function install() {
         git remote add origin https://github.com/ritiek/dotfiles.git
         git config core.sparseCheckout true
         echo "glava" >> .git/info/sparse-checkout
-        git pull --depth=1 origin master
+        git pull --depth=1 origin legacy
         mv glava/* .
         rm -r glava
         rm -rf .git
@@ -457,7 +457,7 @@ function install() {
     if [ "$to_kde_feel" == "y" ]; then
         curl https://gitlab.com/cscs/transfuse/-/raw/master/transfuse.sh -o transfuse.sh
         chmod +x transfuse.sh
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/kde/ritiek_transfusion_20230307_1815.tar.gz -o ritiek_transfusion_20230307_1815.tar.gz
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/kde/ritiek_transfusion_20230307_1815.tar.gz -o ritiek_transfusion_20230307_1815.tar.gz
         echo
         echo 'Choose "$USER_transfusion_$DATE.tar.gz" here'
         ./transfuse.sh
@@ -472,16 +472,16 @@ function install() {
         git remote add origin https://github.com/ritiek/dotfiles.git
         git config core.sparseCheckout true
         echo "gnome/extensions" >> .git/info/sparse-checkout
-        git pull --depth=1 origin master
+        git pull --depth=1 origin legacy
         mv gnome/extensions .
         rm -r gnome
         rm -rf .git
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/gnome/org.dconf | dconf load /org/
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/gnome/org.dconf | dconf load /org/
     fi
 
     if [ "$to_cinnamon_feel" == "y" ]; then
         echo "Applying my Cinnamon's customized look & feel"
-        curl https://raw.githubusercontent.com/ritiek/dotfiles/master/mint/org.dconf | dconf load /org/
+        curl https://raw.githubusercontent.com/ritiek/dotfiles/legacy/mint/org.dconf | dconf load /org/
     fi
 
     if [ "$to_install_spotify" == "y" ]; then
