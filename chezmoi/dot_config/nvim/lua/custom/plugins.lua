@@ -11,12 +11,12 @@ local plugins = {
       -- format & linting
       {
         "jose-elias-alvarez/null-ls.nvim",
-        config = function()
+        config = function(_, opts)
           require "custom.configs.null-ls"
         end,
       },
     },
-    config = function()
+    config = function(_, opts)
       require "plugins.configs.lspconfig"
       require "custom.configs.lspconfig"
     end, -- Override to setup mason-lspconfig
@@ -42,7 +42,7 @@ local plugins = {
   {
     "max397574/better-escape.nvim",
     event = "InsertEnter",
-    config = function()
+    config = function(_, opts)
       require("better_escape").setup()
     end,
   },
@@ -62,21 +62,34 @@ local plugins = {
   {
     "nyngwang/NeoZoom.lua",
     event = "BufWinEnter",
-    -- opts = overrides.neozoom,
-    config = function()
-      require("neo-zoom").setup(
-        overrides.neozoom
-      )
+    opts = overrides.neozoom,
+    config = function(_, opts)
+      require("neo-zoom").setup(opts)
     end,
   },
 
   {
     "ellisonleao/carbon-now.nvim",
     event = "BufWinEnter",
-    config = function()
+    config = function(_, opts)
       require("carbon-now").setup()
     end,
-  }
+  },
+
+  {
+    "folke/which-key.nvim",
+    event = "BufWinEnter",
+  },
+
+  -- {
+  --   "lewis6991/gitsigns.nvim",
+  --   event = "BufWinEnter",
+  --   config = function()
+  --     require("gitsigns").setup(
+  --       overrides.gitsigns
+  --     )
+  --   end,
+  -- }
 
   -- To make a plugin not be loaded
   -- {
