@@ -17,72 +17,73 @@ echo "Replace /etc/pamac.conf"
 sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/chezmoi/etc/pamac.conf -o /etc/pamac.conf
 
 echo "Install stuff using pacman -Sy"
-sudo pacman -Sy pkgconf \
-                gcc
-sudo pacman -Sy neovim \
-                zsh \
-                wezterm \
-                ffmpeg \
-                aria2 \
-                mpv \
-                git \
-                hub \
-                base-devel \
-                linux-headers \
-                sof-firmware \
-                xclip \
-                dbus \
-                nmap \
-                python-pip \
-                python-lsp-server \
-                openssh \
-                imagemagick \
-                pamac-cli \
-                xdotool \
-                tree \
-                xdg-desktop-portal-gtk \
-                strace \
-                virt-manager \
-                qemu \
-                vde2 \
-                ebtables \
-                dnsmasq \
-                bridge-utils \
-                openbsd-netcat \
-                unzip \
-                bitwarden \
-                bitwarden-cli \
-                calibre \
-                mitmproxy \
-                libvorbis \
-                openal \
-                sdl2 \
-                dbus-python \
-                make \
-                wireguard-tools \
-                jq \
-                noto-fonts-emoji \
-                glava \
-                xorg-xrandr \
-                ctags \
-                net-tools \
-                reptyr \
-                scrcpy \
-                picocom \
-                wl-clipboard \
-                plasma-wayland-session \
-                docker \
-                docker-compose \
-                ripgrep \
-                git-delta \
-                fd \
-                sd \
-                bandwhich \
-                tailscale \
-                avahi \
-                python-pynvim \
-                diskonaut
-                # tmux
+sudo pacman -Syu
+sudo pacman -S pkgconf \
+               gcc
+sudo pacman -S neovim \
+               zsh \
+               wezterm \
+               ffmpeg \
+               aria2 \
+               mpv \
+               git \
+               hub \
+               base-devel \
+               linux-headers \
+               sof-firmware \
+               xclip \
+               dbus \
+               nmap \
+               python-pip \
+               python-lsp-server \
+               openssh \
+               imagemagick \
+               pamac-cli \
+               xdotool \
+               tree \
+               xdg-desktop-portal-gtk \
+               strace \
+               virt-manager \
+               qemu \
+               vde2 \
+               ebtables \
+               dnsmasq \
+               bridge-utils \
+               openbsd-netcat \
+               unzip \
+               bitwarden \
+               bitwarden-cli \
+               calibre \
+               mitmproxy \
+               libvorbis \
+               openal \
+               sdl2 \
+               dbus-python \
+               make \
+               wireguard-tools \
+               jq \
+               noto-fonts-emoji \
+               glava \
+               xorg-xrandr \
+               ctags \
+               net-tools \
+               reptyr \
+               scrcpy \
+               picocom \
+               wl-clipboard \
+               plasma-wayland-session \
+               docker \
+               docker-compose \
+               ripgrep \
+               git-delta \
+               fd \
+               sd \
+               bandwhich \
+               tailscale \
+               avahi \
+               python-pynvim \
+               diskonaut
+               # tmux
 
 pamac build netdiscover \
             chiaki \
