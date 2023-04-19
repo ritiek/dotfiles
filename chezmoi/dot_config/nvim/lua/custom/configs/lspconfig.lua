@@ -24,6 +24,7 @@ lspconfig.pylsp.setup {
     pylsp = {
       plugins = {
         pycodestyle = {
+          ignore = true,
           maxLineLength = 120,
         },
       }

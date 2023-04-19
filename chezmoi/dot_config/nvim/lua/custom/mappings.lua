@@ -4,8 +4,6 @@ local M = {}
 -- M.general = {}
 
 M.comment = {
-  plugin = true,
-
   n = {
     ["gc"] = {
       function()
@@ -23,8 +21,6 @@ M.comment = {
 }
 
 M.carbon = {
-  plugin = true,
-
   v = {
     ["<leader>cn"] = {
       -- Not using this as it'd carbon now the entire file.
@@ -38,8 +34,6 @@ M.carbon = {
 }
 
 M.neozoom = {
-  plugin = true,
-
   n = {
     ["<C-a>"] = {
       function()
@@ -60,8 +54,6 @@ M.neozoom = {
 }
 
 M.telescope = {
-  plugin = true,
-
   n = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
     ["<leader>tt"] = {
@@ -74,8 +66,6 @@ M.telescope = {
 }
 
 M.gitsigns = {
-  plugin = true,
-
   n = {
     ["<leader>ta"] = {
       function()
