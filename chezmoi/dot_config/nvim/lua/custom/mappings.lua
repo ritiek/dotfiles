@@ -3,7 +3,33 @@ local M = {}
 
 -- M.general = {}
 
+M.lspconfig = {
+  plugin = false,
+}
+
+M.tabufline = {
+  plugin = false,
+}
+
+M.nvterm = {
+  plugin = false,
+}
+
+M.whichkey = {
+  plugin = false,
+}
+
+M.nvterm = {
+  plugin = false,
+}
+
+M.blankline = {
+  plugin = false,
+}
+
 M.comment = {
+  plugin = false,
+
   n = {
     ["gc"] = {
       function()
@@ -21,6 +47,8 @@ M.comment = {
 }
 
 M.carbon = {
+  plugin = false,
+
   v = {
     ["<leader>cn"] = {
       -- Not using this as it'd carbon now the entire file.
@@ -34,6 +62,8 @@ M.carbon = {
 }
 
 M.neozoom = {
+  plugin = false,
+
   n = {
     ["<C-a>"] = {
       function()
@@ -54,6 +84,8 @@ M.neozoom = {
 }
 
 M.telescope = {
+  plugin = false,
+
   n = {
     [";"] = { ":", "enter command mode", opts = { nowait = true } },
     ["<leader>tt"] = {
@@ -66,6 +98,8 @@ M.telescope = {
 }
 
 M.gitsigns = {
+  plugin = false,
+
   n = {
     ["<leader>ta"] = {
       function()
