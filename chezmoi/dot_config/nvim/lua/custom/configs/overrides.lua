@@ -85,4 +85,25 @@ M.neozoom = {
   },
 }
 
+-- FIXME: Statusline currently doesn't work with NvChad, need to debug.
+M.autosession = {
+  cwd_change_handling = {
+    pre_cwd_changed_hook = function()
+      require("lualine").setup({
+        options = {
+          theme = "tokyonight",
+        },
+        sections = {
+          lualine_c = {
+            require("auto-session.lib").current_session_name
+          },
+        },
+      })
+    end,
+    post_cwd_changed_hook = function()
+      require("lualine").refresh()
+    end,
+  }
+}
+
 return M

@@ -86,6 +86,15 @@ local plugins = {
     enabled = false,
   },
 
+  {
+    "rmagatti/auto-session",
+    event = "VimEnter",
+    opts = overrides.autosession,
+    config = function(_, opts)
+      require("auto-session").setup(opts)
+    end,
+  },
+
   -- {
   --   "lewis6991/gitsigns.nvim",
   --   event = "BufWinEnter",
