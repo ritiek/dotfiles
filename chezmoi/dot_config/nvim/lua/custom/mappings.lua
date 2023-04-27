@@ -1,7 +1,17 @@
 ---@type MappingsTable
 local M = {}
 
--- M.general = {}
+M.general = {
+  t = {
+    -- Unbind <S-Space>, this would otherwise delete all text in terminal mode.
+    -- Happens a lot to me. :(
+    ["<S-Space>"] = {
+      function()
+      end,
+      opts = { nowait = true }
+    },
+  },
+}
 
 M.lspconfig = {
   plugin = false,

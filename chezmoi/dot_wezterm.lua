@@ -39,6 +39,8 @@ config.keys = {
     action = wezterm.action.DisableDefaultAssignment,
   }
 }
+-- Maybe I should try fix this instead of suppressing this warning.
+config.warn_about_missing_glyphs=false
 
 -- and finally, return the configuration to wezterm
 return config
