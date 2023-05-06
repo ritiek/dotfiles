@@ -82,18 +82,23 @@ local plugins = {
   },
 
   {
+    "samjwill/nvim-unception",
+    event = "BufWinEnter",
+  },
+
+  {
     "hrsh7th/nvim-cmp",
     enabled = false,
   },
 
-  {
-    "rmagatti/auto-session",
-    event = "VimEnter",
-    opts = overrides.autosession,
-    config = function(_, opts)
-      require("auto-session").setup(opts)
-    end,
-  },
+  -- {
+  --   "rmagatti/auto-session",
+  --   event = "VimEnter",
+  --   opts = overrides.autosession,
+  --   config = function(_, opts)
+  --     require("auto-session").setup(opts)
+  --   end,
+  -- },
 
   -- {
   --   "lewis6991/gitsigns.nvim",
