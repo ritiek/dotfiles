@@ -37,38 +37,43 @@
   executable = true
   refreshPeriod = "168h"
 
-[".local/share/fonts/InconsolataGo Bold Nerd Font Complete Mono.ttf"]
+
+# Fonts
+
+[".local/share/fonts/InconsolataGoNerdFontMono-Regular.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Bold/complete/InconsolataGo%20Bold%20Nerd%20Font%20Complete%20Mono.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Regular/InconsolataGoNerdFontMono-Regular.ttf"
   executable = false
   refreshPeriod = "168h"
-[".local/share/fonts/InconsolataGo Nerd Font Complete Mono.ttf"]
+[".local/share/fonts/InconsolataGoNerdFontMono-Bold.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Regular/complete/InconsolataGo%20Nerd%20Font%20Complete%20Mono.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/InconsolataGo/Bold/InconsolataGoNerdFontMono-Bold.ttf"
   executable = false
   refreshPeriod = "168h"
-[".local/share/fonts/Fantasque Sans Mono Regular Nerd Font Complete Mono.ttf"]
+
+[".local/share/fonts/FantasqueSansMNerdFontMono-Regular.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete%20Mono.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Regular/FantasqueSansMNerdFontMono-Regular.ttf"
   executable = false
   refreshPeriod = "168h"
-[".local/share/fonts/Fantasque Sans Mono Italic Nerd Font Complete Mono.ttf"]
+[".local/share/fonts/FantasqueSansMNerdFontMono-Italic.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Italic/complete/Fantasque%20Sans%20Mono%20Italic%20Nerd%20Font%20Complete%20Mono.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Italic/FantasqueSansMNerdFontMono-Italic.ttf"
   executable = false
   refreshPeriod = "168h"
-[".local/share/fonts/Fantasque Sans Mono Bold Nerd Font Complete Mono.ttf"]
+[".local/share/fonts/FantasqueSansMNerdFontMono-Bold.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Bold/complete/Fantasque%20Sans%20Mono%20Bold%20Nerd%20Font%20Complete%20Mono.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Bold/FantasqueSansMNerdFontMono-Bold.ttf"
   executable = false
   refreshPeriod = "168h"
-[".local/share/fonts/Fantasque Sans Mono Bold Italic Nerd Font Complete Mono.ttf"]
+[".local/share/fonts/FantasqueSansMNerdFontMono-BoldItalic.ttf"]
   type = "file"
-  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Bold-Italic/complete/Fantasque%20Sans%20Mono%20Bold%20Italic%20Nerd%20Font%20Complete%20Mono.ttf"
+  url = "https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FantasqueSansMono/Bold-Italic/FantasqueSansMNerdFontMono-BoldItalic.ttf"
   executable = false
   refreshPeriod = "168h"
-[".local/share/fonts/Droid Sans Mono Nerd Font Complete.otf"]
+
+[".local/share/fonts/DroidSansMNerdFontMono-Regular.otf"]
   type = "file"
-  url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf"
+  url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/master/patched-fonts/DroidSansMono/DroidSansMNerdFontMono-Regular.otf"
   executable = false
   refreshPeriod = "168h"

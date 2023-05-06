@@ -15,7 +15,7 @@ end
 config.color_scheme = 'Tartan (terminal.sexy)'
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font(
-  "FantasqueSansMono Nerd Font Mono", {
+  "FantasqueSansM Nerd Font Mono", {
     stretch = 'Expanded',
     weight = 'Regular'
   }
