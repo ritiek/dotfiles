@@ -81,10 +81,11 @@ local plugins = {
     event = "BufWinEnter",
   },
 
-  {
-    "samjwill/nvim-unception",
-    event = "BufWinEnter",
-  },
+  -- Commenting this out for now as it breaks `git commit` opening editor.
+  -- {
+  --   "samjwill/nvim-unception",
+  --   event = "BufWinEnter",
+  -- },
 
   {
     "hrsh7th/nvim-cmp",
