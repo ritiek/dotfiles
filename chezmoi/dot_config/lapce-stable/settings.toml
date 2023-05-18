@@ -1,0 +1,16 @@
+
+[core]
+modal = true
+color-theme = "Lapce Dark"
+
+[terminal]
+font-family = "FantasqueSansMono Nerd Font Mono"
+
+[ui]
+font-family = "FantasqueSansM Nerd Font Mono"
+font-size = 14
+
+[editor]
+font-family = "FantasqueSansM Nerd Font Mono"
+font-size = 16
+code-lens-font-size = 2
