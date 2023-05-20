@@ -3,6 +3,13 @@ local M = {}
 
 M.general = {
   n = {
+    ["+"] = { "<C-a>", "increment" },
+    ["-"] = { "<C-x>", "decrement" },
+    -- Unbind <C-x> from decrementing integer values.
+    ["<C-x>"] = {
+      function()
+      end,
+    },
     ["<Space><S-b>"] = {
       function()
         vim.cmd("tabnew")
@@ -26,6 +33,11 @@ M.general = {
         vim.cmd("tabclose")
       end,
       "new tab",
+    },
+    -- Unbind <C-c> from NvChad from copying entire file contents to clipboard.
+    ["<C-c>"] = {
+      function()
+      end,
     },
   },
 
