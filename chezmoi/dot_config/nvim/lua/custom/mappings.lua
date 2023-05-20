@@ -2,11 +2,39 @@
 local M = {}
 
 M.general = {
+  n = {
+    ["<Space><S-b>"] = {
+      function()
+        vim.cmd("tabnew")
+      end,
+      "new tab",
+    },
+    ["<Space><TAB>"] = {
+      function()
+        vim.cmd("tabnext")
+      end,
+      "next tab",
+    },
+    ["<Space><S-TAB>"] = {
+      function()
+        vim.cmd("tabprevious")
+      end,
+      "previous tab",
+    },
+    ["<Space><S-x>"] = {
+      function()
+        vim.cmd("tabclose")
+      end,
+      "new tab",
+    },
+  },
+
   t = {
     -- Unbind <S-Space>, this would otherwise delete all text in terminal mode.
     -- Happens a lot to me. :(
     ["<S-Space>"] = {
       function()
+        vim.api.nvim_put({" "}, "c", true, true)
       end,
       opts = { nowait = true }
     },
