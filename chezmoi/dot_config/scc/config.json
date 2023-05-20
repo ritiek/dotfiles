@@ -73,6 +73,6 @@
         "version": "0x110"
     }, 
     "recent_max": 10, 
-    "recent_profiles": ["Desktop", "XBox Controller with High Precision Camera", "XBox Controller"], 
+    "recent_profiles": ["Bombsquad", "Desktop", "XBox Controller with High Precision Camera", "XBox Controller"], 
     "windows_opacity": 0.95
 }
