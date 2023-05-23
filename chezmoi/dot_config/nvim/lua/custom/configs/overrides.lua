@@ -106,4 +106,7 @@ M.autosession = {
   }
 }
 
+M.scnvim = {
+}
+
 return M
