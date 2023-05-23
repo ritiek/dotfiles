@@ -81,6 +81,18 @@ local plugins = {
     event = "BufWinEnter",
   },
 
+  -- Commenting this out as it seems there's already support for syntax
+  -- highlighting for SuperCollider *.sc extensions.
+  -- {
+  --   "davidgranstrom/scnvim",
+  --   event = "BufWinEnter",
+  --   opts = overrides.scnvim,
+  --   config = function()
+  --     -- require("scnvim").setup(opts)
+  --     require("scnvim").setup()
+  --   end,
+  -- },
+
   -- Commenting this out for now as it breaks `git commit` opening editor.
   -- {
   --   "samjwill/nvim-unception",
