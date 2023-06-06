@@ -16,8 +16,8 @@ setopt HIST_IGNORE_SPACE
 export ZSH="$HOME/.oh-my-zsh"
 
 HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=2000
+HISTSIZE=5000
+SAVEHIST=5000
 
 # Refresh commands-cache for tab-completion
 zstyle ":completion:*:commands" rehash 1
