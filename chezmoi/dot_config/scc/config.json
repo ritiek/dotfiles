@@ -2,6 +2,18 @@
     "autoswitch": [], 
     "autoswitch_osd": true, 
     "controllers": {
+        "ds4": {
+            "icon": "ds4-0.svg", 
+            "idle_timeout": 600, 
+            "input_rotation_l": 20, 
+            "input_rotation_r": -20, 
+            "led_level": 80, 
+            "menu_cancel": "B", 
+            "menu_confirm": "A", 
+            "menu_control": "STICK", 
+            "name": "ds4", 
+            "osd_alignment": 0
+        }, 
         "ev64577D06": {
             "icon": "evdev-0.svg", 
             "idle_timeout": 600, 
@@ -17,6 +29,7 @@
     }, 
     "drivers": {
         "ds4drv": true, 
+        "ds5drv": true, 
         "evdevdrv": true, 
         "fake": false, 
         "hiddrv": true, 
