@@ -30,6 +30,10 @@ export POWERLINE_BASH_SELECT=1
 
 export ESPIDF=/opt/esp-idf
 
+# export PYENV_ROOT="$HOME/.pyenv"
+# command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+# eval "$(pyenv init -)"
+
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 PATH="$HOME/go/bin:$PATH"
@@ -45,3 +49,5 @@ PATH="$HOME/Android/flutter/bin:$PATH"
 PATH="$HOME/.gem/ruby/2.5.0/bin:$PATH"
 PATH="/snap/bin:$PATH"
 export PATH
+
+eval $(ssh-agent -s)
