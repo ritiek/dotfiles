@@ -1,6 +1,21 @@
 [user]
   name = {{ .personal.fullname }}
   email = {{ .personal.email }}
+  ; signingKey = ~/.ssh/id_ed25519
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  allowedSignersFile = ~/.ssh/allowed_signers
+  # Use first key in ssh-agent.
+  defaultKeyCommand = sh -c 'echo key::$(ssh-add -L)'
+
+[commit]
+  gpgSign = true
+
+[tag]
+  gpgSign = true
 
 [core]
   pager = delta
