@@ -22,7 +22,7 @@ export OPENCV_LOG_LEVEL=ERROR
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
+# export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 export GOPATH="$HOME/go"
 
 export POWERLINE_BASH_CONTINUATION=1
