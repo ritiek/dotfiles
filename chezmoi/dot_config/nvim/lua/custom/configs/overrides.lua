@@ -74,7 +74,7 @@ M.neozoom = {
       -- NOTE: you can omit `top` and/or `left` to center the floating window.
       top = 0.06,
       left = 0.03,
-      width = 150,
+      width = 200,
       height = 0.85,
     },
     -- NOTE: check :help nvim_open_win() for possible border values.
@@ -107,6 +107,21 @@ M.autosession = {
 }
 
 M.scnvim = {
+}
+
+M.nvterm = {
+  terminals = {
+    type_opts = {
+      float = {
+        relative = 'editor',
+        row = 0.075,
+        col = 0.125,
+        width = 0.8,
+        height = 0.8,
+        border = "single",
+      }
+    }
+  }
 }
 
 return M
