@@ -50,4 +50,6 @@ PATH="$HOME/.gem/ruby/2.5.0/bin:$PATH"
 PATH="/snap/bin:$PATH"
 export PATH
 
+alias cp="cp --reflink=auto --sparse=always"
+
 eval $(keychain --eval --quiet --noask)
