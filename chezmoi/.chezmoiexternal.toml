@@ -27,15 +27,11 @@
   # for now:
   # https://github.com/twpayne/chezmoi/issues/1614#issuecomment-1058933765
   type = "archive"
-  url = "https://github.com/NvChad/NvChad/archive/master.tar.gz"
+  # Not using this as it downloads tarball from releases section on GitHub.
+  # url = "https://github.com/NvChad/NvChad/archive/master.tar.gz"
+  url = "https://api.github.com/repos/NvChad/NvChad/tarball"
   stripComponents = 1
   exact = false
-
-[".local/bin/transfuse"]
-  type = "file"
-  url = "https://gitlab.com/cscs/transfuse/raw/master/transfuse.sh"
-  executable = true
-  refreshPeriod = "168h"
 
 
 # Fonts
