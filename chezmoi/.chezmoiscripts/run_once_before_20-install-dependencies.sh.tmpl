@@ -9,19 +9,11 @@ echo
 {{ end }}
 
 {{ if eq .chezmoi.osRelease.idLike "arch" -}}
-sudo pacman-mirrors --fasttrack 20
-
-echo "Replace /etc/pacman.conf"
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/chezmoi/etc/pacman.conf -o /etc/pacman.conf
-echo "Replace /etc/pamac.conf"
-sudo curl https://raw.githubusercontent.com/ritiek/dotfiles/chezmoi/chezmoi/etc/pamac.conf -o /etc/pamac.conf
-
 echo "Install stuff using pacman -Sy"
 sudo pacman -Syu
 sudo pacman -S pkgconf \
                gcc
 sudo pacman -S neovim \
-               manjaro-pipewire \
                pipewire-pulse \
                pipewire-jack \
                pipewire-audio \
@@ -44,12 +36,12 @@ sudo pacman -S neovim \
                python-lsp-server \
                openssh \
                imagemagick \
-               pamac-cli \
                xdotool \
                tree \
                xdg-desktop-portal-gtk \
                strace \
                virt-manager \
+               libfido2 \
                qemu \
                vde2 \
                ebtables \
@@ -57,6 +49,7 @@ sudo pacman -S neovim \
                bridge-utils \
                openbsd-netcat \
                unzip \
+               btop \
                bitwarden \
                bitwarden-cli \
                calibre \
@@ -92,23 +85,23 @@ sudo pacman -S neovim \
                diskonaut
                # tmux
 
-pamac build netdiscover \
-            chiaki \
-            plasma5-applets-eventcalendar \
-            sc-controller \
-            zoom \
-            slack-desktop \
-            auto-cpufreq \
-            mongodb-bin \
-            postman-bin \
-            touchegg \
-            wlr-randr \
-            google-chrome \
-            protonvpn \
-            touche
-            # helix-git
-pamac build spotify-adblock \
-            spotify-remove-ad-banner
+yay -S netdiscover \
+       chiaki \
+       plasma5-applets-eventcalendar \
+       sc-controller \
+       zoom \
+       slack-desktop \
+       auto-cpufreq \
+       mongodb-bin \
+       postman-bin \
+       touchegg \
+       wlr-randr \
+       google-chrome \
+       protonvpn \
+       touche
+       # helix-git
+yay -S spotify-adblock \
+       spotify-remove-ad-banner
 # Enables hostname.local domains on local network, making stuff like below possible:
 # ssh pi@raspberrypi.local
 sudo systemctl enable avahi-daemon \
@@ -146,7 +139,3 @@ echo
 rm -rf ~/.oh-my-zsh
 echo "Install Oh-My-Zsh"
 KEEP_ZSHRC="yes" RUNZSH="no" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-{{ if ne .chezmoi.osRelease.idLike "arch" -}}
-pip3 install pynvim
-{{ end }}
