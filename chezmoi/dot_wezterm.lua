@@ -42,5 +42,9 @@ config.keys = {
 -- Maybe I should try fix this instead of suppressing this warning.
 config.warn_about_missing_glyphs=false
 
+
+-- config.window_background_image = "/home/ritiek/Pictures/island-fantastic-coast-mountains-art.jpg"
+-- config.window_background_opacity = 0.9
+
 -- and finally, return the configuration to wezterm
 return config
