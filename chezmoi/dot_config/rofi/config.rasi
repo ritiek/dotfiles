@@ -1,0 +1,23 @@
+configuration {
+  modes: [ combi ];
+  combi-modes: [ window, drun, run ];
+  font: "FantasqueSansM Nerd Font Mono 14";
+  show-icons: true;
+  terminal: "wezterm";
+}
+
+@theme "Arc-Dark"
+
+entry {
+    cursor: pointer;
+}
+
+element {
+  orientation: horizontal;
+  children: [ element-text, element-icon ];
+  spacing: 5px;
+}
+
+element-icon {
+    size: 1.25em;
+}
