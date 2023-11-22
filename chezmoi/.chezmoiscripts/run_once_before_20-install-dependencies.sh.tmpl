@@ -13,6 +13,33 @@ echo "Install stuff using pacman -Sy"
 sudo pacman -Syu
 sudo pacman -S pkgconf \
                gcc
+
+# Hyprland
+sudo pacman -S wmctrl \
+               hyprpaper \
+               systemd-boot-manager \
+               qt5-wayland \
+               qt6-wayland \
+               qt5ct \
+               libva \
+               polkit-kde-agent \
+               pipewire \
+               wireplumber \
+               waybar \
+               xorg-xev \
+               dolphin \
+               espeak-ng \
+               playerctl \
+               xdg-desktop-portal-hyprland \
+               xdg-desktop-portal-gtk
+yay -S hyprland-nvidia \
+       libva-nvidia-driver-git \
+       swaync \
+       wl-gammarelay-rs \
+       rofi-lbonn-wayland \
+       brillo \
+       nwg-look-bin
+
 sudo pacman -S neovim \
                pipewire-pulse \
                pipewire-jack \
@@ -42,6 +69,8 @@ sudo pacman -S neovim \
                strace \
                virt-manager \
                libfido2 \
+               pam-u2f \
+               yubico-pam \
                qemu \
                vde2 \
                ebtables \
@@ -100,10 +129,11 @@ yay -S netdiscover \
        google-chrome \
        webtorrent-mpv-hook \
        protonvpn \
-       touche
-       # helix-git
-yay -S spotify-adblock \
+       touche \
+       armcord-bin \
+       spotify-adblock \
        spotify-remove-ad-banner
+       # helix-git
 # Enables hostname.local domains on local network, making stuff like below possible:
 # ssh pi@raspberrypi.local
 sudo systemctl enable avahi-daemon \
