@@ -1,8 +1,10 @@
 {{ $fullname := promptString "Full Name" -}}
+{{ $machine_username := promptString "User Name" -}}
 {{ $email := promptString "Email" -}}
 
 [data.personal]
   fullname = {{ $fullname | quote }}
+  machine_username = {{ $machine_username | quote }}
   email = {{ $email | quote }}
 
 
