@@ -44,7 +44,7 @@ config.warn_about_missing_glyphs=false
 
 
 -- config.window_background_image = "/home/ritiek/Pictures/island-fantastic-coast-mountains-art.jpg"
--- config.window_background_opacity = 0.9
+-- config.window_background_opacity = 0.7
 
 -- and finally, return the configuration to wezterm
 return config
