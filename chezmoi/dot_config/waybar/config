@@ -1,5 +1,6 @@
 {
     "layer": "bottom",
+    "output": ["eDP-1"],
     "position": "bottom",
     "spacing": 0,
     "height": 34,
