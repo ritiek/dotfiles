@@ -1,12 +1,13 @@
 {
-    "layer": "bottom",
+    "layer": "top",
     "output": ["eDP-1"],
     "position": "bottom",
     "spacing": 0,
     "height": 34,
     "modules-left": [
         "custom/logo",
-        "hyprland/workspaces"
+        "hyprland/workspaces",
+        "hyprland/window"
     ],
     "modules-center": [
         "clock"
@@ -48,6 +49,10 @@
             "4": [],
             "5": []
         }
+    },
+    "hyprland/window": {
+        "max-length": 200,
+        "separate-outputs": true
     },
     "tray": {
         "spacing": 10
