@@ -10,6 +10,8 @@ M.treesitter = {
     "typescript",
     "tsx",
     "c",
+    "python",
+    "rust",
     "markdown",
     "markdown_inline",
   },
@@ -18,6 +20,9 @@ M.treesitter = {
     -- disable = {
     --   "python"
     -- },
+  },
+  highlight = {
+    enable = true,
   },
 }
 
@@ -40,6 +45,9 @@ M.mason = {
 
     -- python stuff
     "python-lsp-server",
+
+    -- rust stuff
+    "rust-analyzer",
   },
 }
 
