@@ -1,6 +1,6 @@
 {
     "layer": "top",
-    "output": ["eDP-1"],
+    "output": ["eDP-1", "HDMI-A-1"],
     "position": "bottom",
     "spacing": 0,
     "height": 34,

@@ -12,6 +12,7 @@ end
 
 -- This is where you actually apply your config choices
 
+-- config.enable_wayland = false
 config.color_scheme = 'Tartan (terminal.sexy)'
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font(
@@ -40,7 +41,7 @@ config.keys = {
   }
 }
 -- Maybe I should try fix this instead of suppressing this warning.
-config.warn_about_missing_glyphs=false
+config.warn_about_missing_glyphs = false
 
 
 -- config.window_background_image = "/home/ritiek/Pictures/island-fantastic-coast-mountains-art.jpg"
