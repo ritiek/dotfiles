@@ -31,6 +31,8 @@ export POWERLINE_BASH_SELECT=1
 
 export ESPIDF=/opt/esp-idf
 
+# export QT_QPA_PLATFORMTHEME="qt5ct"
+
 # export PYENV_ROOT="$HOME/.pyenv"
 # command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 # eval "$(pyenv init -)"

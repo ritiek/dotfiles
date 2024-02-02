@@ -16,29 +16,38 @@ sudo pacman -S pkgconf \
 
 # Hyprland
 sudo pacman -S wmctrl \
+               hyprland \
                hyprpaper \
-               systemd-boot-manager \
                qt5-wayland \
                qt6-wayland \
                swayidle \
-               qt5ct \
                libva \
                polkit-kde-agent \
                pipewire \
                wireplumber \
                waybar \
+               brightnessctl \
                blueman \
-               xorg-xev \
+               rustup \
                dolphin \
                espeak-ng \
                playerctl \
                sassc \
                imv \
+               nemo \
+               xorg-xev \
                xorg-xhost \
+               xorg-xeyes \
                xdg-desktop-portal-hyprland \
                xdg-desktop-portal-gtk
-yay -S hyprland-nvidia \
-       libva-nvidia-driver-git \
+               # systemd-boot-manager
+
+rustup default stable
+
+yay -S libva-nvidia-driver-git \
+       catppuccin-gtk-theme-mocha \
+       qogir-cursor-theme-git \
+       papirus-folders-catppuccin-git \
        swaync \
        swayosd-git \
        swaylock-effects \
@@ -51,6 +60,7 @@ yay -S hyprland-nvidia \
        eww-wayland \
        nwg-look-bin
        # brillo
+       # hyprland-nvidia
 
 sudo pacman -S neovim \
                pipewire-pulse \
@@ -151,14 +161,13 @@ yay -S netdiscover \
        touche \
        armcord-bin \
        ani-cli \
-       apk-mitm \
-       spotify-adblock \
+       sonixd-bin \
+       yubico-authenticator-bin \
+       apk-mitm
+
+yay -S spotify-adblock \
        spotify-remove-ad-banner
        # helix-git
-# Enables hostname.local domains on local network, making stuff like below possible:
-# ssh pi@raspberrypi.local
-sudo systemctl enable avahi-daemon \
-                      auto-cpufreq
 {{ else }}
 sudo apt update
 echo "Install stuff using apt install"
@@ -183,7 +192,6 @@ sudo apt install -y software-properties-common \
                     netdiscover \
                     imagemagick \
                     ctags \
-                    yubico-authenticator-bin \
                     fonts-noto-color-emoji
 sudo apt install -y hub
 sudo apt install -y btfs
