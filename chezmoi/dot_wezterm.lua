@@ -10,9 +10,20 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+wezterm.on('toggle-colorscheme', function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.color_scheme then
+    overrides.color_scheme = 'Dracula'
+  else
+    overrides.color_scheme = nil
+  end
+  window:set_config_overrides(overrides)
+end)
+
 -- This is where you actually apply your config choices
 
--- config.enable_wayland = false
+config.enable_wayland = true
+-- config.color_scheme = 'Dracula'
 config.color_scheme = 'Tartan (terminal.sexy)'
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font(
@@ -38,7 +49,12 @@ config.keys = {
     key = 'Enter',
     mods = 'ALT',
     action = wezterm.action.DisableDefaultAssignment,
-  }
+  },
+  {
+    key = 'E',
+    mods = 'CTRL',
+    action = wezterm.action.EmitEvent 'toggle-colorscheme',
+  },
 }
 -- Maybe I should try fix this instead of suppressing this warning.
 config.warn_about_missing_glyphs = false
