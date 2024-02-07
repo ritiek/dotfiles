@@ -87,6 +87,11 @@ local plugins = {
   },
 
   {
+    "elkowar/yuck.vim",
+    event = "BufWinEnter",
+  },
+
+  {
     "folke/which-key.nvim",
     event = "BufWinEnter",
   },

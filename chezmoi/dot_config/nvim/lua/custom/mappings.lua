@@ -39,6 +39,12 @@ M.general = {
       function()
       end,
     },
+    ["gy"] = {
+      function()
+        vim.cmd("%yank")
+      end,
+      "Copy entire buffer to clipboard",
+    },
   },
 
   t = {
