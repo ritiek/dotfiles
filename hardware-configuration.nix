@@ -12,6 +12,13 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+  services.tailscale.enable = true;
+  services.blueman.enable = true;
 
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/49254923-cc07-4c12-89eb-ce13e05ee965";
@@ -28,9 +35,11 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   programs.hyprland.enable = true;
+  programs.zsh.enable = true;
+  # users.defaultUserShell = pkgs.zsh;
+  users.users.ritiek.shell = pkgs.zsh;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
-  # nixpkgs.config.allowUnfree = true;
   nixpkgs.config.packageOverrides = pkgs: {
     nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
       inherit pkgs;
@@ -46,8 +55,32 @@
     spotify
     google-chrome
     wezterm
+    kitty
+    hyprpaper
+    swaynotificationcenter
+    swayosd
+    waybar
+    # wl-gammarelay-rs
+    swayidle
+    swaylock-effects
+    # wofi
+    rofi
+    # rofi-wayland
+    # nemo
+    brightnessctl
+    playerctl
+    # hyprshot
+    nwg-look
+    ripgrep
+    fd
+    keychain
     nur.repos.nltch.spotify-adblock
   ];
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FantasqueSansMono" "InconsolataGo" ]; })
+  ];
+
   environment.variables.EDITOR = "nvim";
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -56,11 +89,11 @@
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
-  networking.firewall.allowedTCPPorts = [
-    # Spotify
-    57621
-    5353
-  ];
+  # networking.firewall.allowedTCPPorts = [
+  #   # Spotify
+  #   57621
+  #   5353
+  # ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
