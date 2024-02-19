@@ -5,99 +5,34 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [ (modulesPath + "/profiles/qemu-guest.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "thunderbolt" "vmd" "nvme" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.loader.grub.enable = true;    
+  boot.loader.grub.device = "/dev/vda";
+  boot.loader.grub.useOSProber = true;
+
+  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  hardware.bluetooth.enable = true; # enables support for Bluetooth
-  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
-
-  services.tailscale.enable = true;
-  services.blueman.enable = true;
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/49254923-cc07-4c12-89eb-ce13e05ee965";
+    { device = "/dev/disk/by-uuid/081c76a3-4313-4c09-9cac-b5a7a19956c4";
       fsType = "ext4";
     };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/FC00-AE2C";
-      fsType = "vfat";
-    };
-
   swapDevices = [ ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  programs.hyprland.enable = true;
-  programs.zsh.enable = true;
-  # users.defaultUserShell = pkgs.zsh;
-  users.users.ritiek.shell = pkgs.zsh;
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
-  nixpkgs.config.packageOverrides = pkgs: {
-    nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-      inherit pkgs;
-    };
-  };
-
-  environment.systemPackages = with pkgs; [
-    # Flakes use Git to pull dependencies from data sources 
-    git
-    neovim
-    wget
-    curl
-    spotify
-    google-chrome
-    wezterm
-    kitty
-    hyprpaper
-    swaynotificationcenter
-    swayosd
-    waybar
-    # wl-gammarelay-rs
-    swayidle
-    swaylock-effects
-    # wofi
-    rofi
-    # rofi-wayland
-    # nemo
-    brightnessctl
-    playerctl
-    # hyprshot
-    nwg-look
-    ripgrep
-    fd
-    keychain
-    nur.repos.nltch.spotify-adblock
-  ];
-
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" "InconsolataGo" ]; })
-  ];
-
-  environment.variables.EDITOR = "nvim";
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
-  # networking.firewall.allowedTCPPorts = [
-  #   # Spotify
-  #   57621
-  #   5353
-  # ];
+  # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
-  system.autoUpgrade.enable = true;
-  # system.autoUpgrade.allowReboot = true;
 }
