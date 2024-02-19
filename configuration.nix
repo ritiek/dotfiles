@@ -2,19 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
+      (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
       ./home-manager.nix
-      # ./nixpkgs-wayland.nix
     ];
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -45,11 +41,11 @@
   };
 
   # Enable the X11 windowing system.
-  # services.xserver.enable = true;
+  services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.gdm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
   # services.xserver = {
@@ -89,6 +85,7 @@
       firefox
     #  thunderbird
     ];
+    shell = pkgs.zsh;
   };
 
   # Allow unfree packages
@@ -97,8 +94,34 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    # Flakes use Git to pull dependencies from data sources 
+    git
+    neovim
+    wget
+    curl
+    spotify
+    google-chrome
+    wezterm
+    kitty
+    hyprpaper
+    swaynotificationcenter
+    swayosd
+    waybar
+    # wl-gammarelay-rs
+    swayidle
+    swaylock-effects
+    # wofi
+    rofi
+    # rofi-wayland
+    # nemo
+    brightnessctl
+    playerctl
+    # hyprshot
+    nwg-look
+    ripgrep
+    fd
+    keychain
+    nur.repos.nltch.spotify-adblock
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -128,4 +151,33 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  hardware.bluetooth.powerOnBoot = true; # powers up the default Bluetooth controller on boot
+
+  services.tailscale.enable = true;
+  services.blueman.enable = true;
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  programs.hyprland.enable = true;
+  programs.zsh.enable = true;
+  # users.defaultUserShell = pkgs.zsh;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+      inherit pkgs;
+    };
+  };
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override { fonts = [ "FantasqueSansMono" "InconsolataGo" ]; })
+  ];
+
+  environment.variables.EDITOR = "nvim";
+
+  system.autoUpgrade.enable = true;
+  # system.autoUpgrade.allowReboot = true;
 }
