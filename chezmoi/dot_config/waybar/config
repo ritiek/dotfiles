@@ -6,8 +6,9 @@
     "height": 34,
     "modules-left": [
         "custom/logo",
-        "hyprland/workspaces",
-        "hyprland/window"
+        "hyprland/workspaces"
+        // "hyprland/workspaces",
+        // "hyprland/window"
     ],
     "modules-center": [
         "clock"
