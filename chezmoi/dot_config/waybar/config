@@ -7,7 +7,6 @@
     "modules-left": [
         "custom/logo",
         "hyprland/workspaces"
-        // "hyprland/workspaces",
         // "hyprland/window"
     ],
     "modules-center": [
