@@ -2,5 +2,5 @@
 
 nvim -c "q"
 # Gotta do these manually
-# :MasonInstall
+# :MasonInstallAll
 # :Copilot auth
