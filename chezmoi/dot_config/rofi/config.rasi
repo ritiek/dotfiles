@@ -1,6 +1,6 @@
 configuration {
-  modes: [ combi ];
-  combi-modes: [ window, drun, run ];
+  modes: [ combi, window, drun, ssh, filebrowser ];
+  combi-modes: [ window, drun, ssh ];
   font: "FantasqueSansM Nerd Font Mono 14";
   show-icons: true;
   terminal: "wezterm";
