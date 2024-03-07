@@ -96,6 +96,20 @@ local plugins = {
     event = "BufWinEnter",
   },
 
+  -- {
+  --   "kevinhwang91/nvim-ufo",
+  --   opts = overrides.nvim_ufo,
+  --   dependencies = {
+  --     {
+  --       "kevinhwang91/promise-async",
+  --     },
+  --   },
+  --   event = "BufWinEnter",
+  --   -- config = function(_, opts)
+  --   --   require("ufo").setup()
+  --   -- end,
+  -- },
+
   -- Commenting this out as it seems there's already support for syntax
   -- highlighting for SuperCollider *.sc extensions.
   -- {

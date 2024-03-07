@@ -132,4 +132,15 @@ M.nvterm = {
   }
 }
 
+-- M.nvim_ufo = {
+--   vim = {
+--     o = {
+--       foldcolumn = "1",
+--       foldlevel = 99,
+--       foldlevelstart = 99,
+--       foldenable = true,
+--     }
+--   },
+-- }
+
 return M
