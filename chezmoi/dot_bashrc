@@ -135,3 +135,5 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
+
+source /home/ritiek/.config/broot/launcher/bash/br
