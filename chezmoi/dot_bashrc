@@ -136,4 +136,4 @@ ex ()
   fi
 }
 
-source /home/ritiek/.config/broot/launcher/bash/br
+source ~/.config/broot/launcher/bash/br
