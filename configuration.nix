@@ -12,7 +12,6 @@
       ./home-manager.nix
     ];
 
-  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -46,6 +45,9 @@
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  # Enable KDE.
+  # services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.plasma5.enable = true;
 
   # Configure keymap in X11
   # services.xserver = {
@@ -101,8 +103,7 @@
     curl
     spotify
     google-chrome
-    wezterm
-    kitty
+    # wezterm
     hyprpaper
     swaynotificationcenter
     swayosd
@@ -121,6 +122,7 @@
     ripgrep
     fd
     keychain
+    btop
     nur.repos.nltch.spotify-adblock
   ];
 
@@ -161,7 +163,13 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  programs.hyprland.enable = true;
+  programs.hyprland = { # or wayland.windowManager.hyprland
+    enable = true;
+    xwayland.enable = true;
+    enableNvidiaPatches = true;
+    # systemd.enable = true;
+  };
+
   programs.zsh.enable = true;
   # users.defaultUserShell = pkgs.zsh;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -174,6 +182,7 @@
 
   fonts.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "FantasqueSansMono" "InconsolataGo" ]; })
+    cantarell-fonts
   ];
 
   environment.variables.EDITOR = "nvim";
