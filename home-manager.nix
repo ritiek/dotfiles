@@ -18,17 +18,64 @@ in
 	google-chrome
 	hyprpaper
 	swaynotificationcenter
-	swayosd
-	# waybar
-	# rofi-wayland
 	playerctl
 	nwg-look
 	armcord
-	# bitwarden-desktop
+	bitwarden
+	rofi-bluetooth
+	xorg.xeyes
+	sonixd
+	unstable.hyprlock
+	unstable.wl-gammarelay-rs
 	nur.repos.nltch.spotify-adblock
       ];
     };
     /* Here goes the rest of your home-manager config, e.g. home.packages = [ pkgs.foo ]; */
+    # services.swayosd = {
+    #   enable = true;
+    # };
+    programs.rofi = {
+      enable = true;
+      package = pkgs.rofi-wayland;
+      # plugins = with pkgs; [
+      #   rofi-bluetooth
+      # ];
+      # FIXME: a very ugly hack to override existing theme, improve this.
+      theme = ''Arc-Dark"
+
+entry {
+  cursor: pointer;
+}
+
+element {
+  orientation: horizontal;
+  children: [ element-text, element-icon ];
+  spacing: 5px;
+}
+
+element-icon {
+  size: 1.25em;
+}
+//'';
+      cycle = true;
+      extraConfig = {
+        modes = [
+	  "combi"
+	  "window"
+	  "drun"
+	  "ssh"
+	  "filebrowser"
+	];
+        combi-modes = [
+	  "window"
+	  "drun"
+	  "ssh"
+	];
+        font = "FantasqueSansM Nerd Font Mono 14";
+        show-icons = true;
+        terminal = "wezterm";
+      };
+    };
     programs.mpv = {
       enable = true;
       config = {
@@ -206,7 +253,7 @@ in
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: Material Design Icons, JetBrainsMono Nerd Font;
+  /* font-family: Material Design Icons, JetBrainsMono Nerd Font; */
   font-size: 13px;
 }
 
@@ -321,7 +368,7 @@ window#waybar.hidden {
 }
 
 #clock {
-  font-family: JetBrainsMono Nerd Font;
+  /* font-family: JetBrainsMono Nerd Font; */
   background-color: #cba6f7;
 }
 
@@ -330,7 +377,7 @@ window#waybar.hidden {
 }
 
 #custom-notification {
-  font-family: "NotoSansMono Nerd Font";
+  /* font-family: "NotoSansMono Nerd Font"; */
 }
 
 
@@ -392,6 +439,7 @@ exec-once = hyprctl setcursor Qogir 24
 
 # Notification daemon
 exec-once = swaync
+exec-once = swayosd
 # Status bar
 exec-once = waybar
 
@@ -399,9 +447,6 @@ exec-once = waybar
 exec-once = pipewire
 exec-once = wireplumber
 exec-once = pipewire-pulse
-
-# Volume/Brightness OSD
-exec-once = swayosd-server
 
 # Wallpaper
 exec-once = hyprpaper
@@ -548,9 +593,9 @@ bindm = $mainMod, mouse:272, movewindow
 bindm = ALT, mouse:272, resizewindow
 
 # Output volume key bindings
-$outputVolumeUpCommand = swayosd-client --output-volume +2
-$outputVolumeDownCommand = swayosd-client --output-volume -2
-$outputVolumeMuteCommand = swayosd-client --output-volume mute-toggle
+$outputVolumeUpCommand = swayosd --output-volume +2
+$outputVolumeDownCommand = swayosd --output-volume -2
+$outputVolumeMuteCommand = swayosd --output-volume mute-toggle
 bindel = , XF86AudioRaiseVolume, exec, $outputVolumeUpCommand
 bindel = , XF86AudioLowerVolume, exec, $outputVolumeDownCommand
 bindel = , XF86AudioMute, exec, $outputVolumeMuteCommand
@@ -561,9 +606,9 @@ bindel = , F7, exec, $outputVolumeUpCommand
 bindel = , F6, exec, $outputVolumeDownCommand
 
 # Input volume key bindings
-$inputVolumeUpCommand = swayosd-client --input-volume +5
-$inputVolumeDownCommand = swayosd-client --input-volume -5
-$inputVolumeMuteCommand = swayosd-client --input-volume mute-toggle
+$inputVolumeUpCommand = swayosd --input-volume +5
+$inputVolumeDownCommand = swayosd --input-volume -5
+$inputVolumeMuteCommand = swayosd --input-volume mute-toggle
 bindel = SHIFT, XF86AudioRaiseVolume, exec, $inputVolumeUpCommand
 bindel = SHIFT, XF86AudioLowerVolume, exec, $inputVolumeDownCommand
 bindel = SHIFT, XF86AudioMute, exec, $inputVolumeMuteCommand
@@ -571,11 +616,11 @@ bindel = SHIFT, F7, exec, $inputVolumeUpCommand
 bindel = SHIFT, F6, exec, $inputVolumeDownCommand
 
 # Brightness key bindings
-bindel = , XF86MonBrightnessUp, exec, swayosd-client --device $primaryMonitorBlk --brightness raise
-bindel = , XF86MonBrightnessDown, exec, swayosd-client --device $primaryMonitorBlk --brightness lower
+bindel = , XF86MonBrightnessUp, exec, swayosd --device $primaryMonitorBlk --brightness raise
+bindel = , XF86MonBrightnessDown, exec, swayosd --device $primaryMonitorBlk --brightness lower
 
-bindel = SHIFT, XF86MonBrightnessUp, exec, swayosd-client --device $screenPadMonitorBlk --brightness raise
-bindel = SHIFT, XF86MonBrightnessDown, exec, swayosd-client --device $screenPadMonitorBlk --brightness lower
+bindel = SHIFT, XF86MonBrightnessUp, exec, swayosd --device $screenPadMonitorBlk --brightness raise
+bindel = SHIFT, XF86MonBrightnessDown, exec, swayosd --device $screenPadMonitorBlk --brightness lower
 # bindel = , XF86MonBrightnessUp, exec, brillo -q -A 2
 # bindel = , XF86MonBrightnessDown, exec, brillo -q -U 2
 
@@ -949,6 +994,7 @@ config.keys = {
 }
 -- Maybe I should try fix this instead of suppressing this warning.
 config.warn_about_missing_glyphs = false
+config.audible_bell = 'Disabled'
 
 
 -- config.window_background_image = "/home/ritiek/Pictures/island-fantastic-coast-mountains-art.jpg"

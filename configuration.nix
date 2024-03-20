@@ -83,7 +83,15 @@
   users.users.ritiek = {
     isNormalUser = true;
     description = "Ritiek Malhotra";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+      "audio"
+      "input"
+      "dialout"
+      "polkituser"
+    ];
     # packages = with pkgs; [
     #   firefox
     # ];
@@ -104,9 +112,7 @@
     # wl-gammarelay-rs
     swayidle
     swaylock-effects
-    # wofi
-    rofi
-    # rofi-wayland
+    swayosd
     # nemo
     brightnessctl
     # hyprshot
@@ -114,8 +120,59 @@
     fd
     keychain
     btop
+    gparted
+    xorg.xhost
     # nur.repos.nltch.spotify-adblock
   ];
+
+  services.udev.packages = [ pkgs.swayosd ];
+  # services.swayosd.enable = true;
+
+  systemd = {
+    services = {
+      swayosd-libinput-backend = {
+        description = "swayosd-libinput-backend";
+	enable = true;
+	path = [
+	  pkgs.coreutils
+	  pkgs.swayosd
+	];
+        script = ''
+${pkgs.coreutils}/bin/sleep 30s
+echo starting
+sudo ${pkgs.swayosd}/bin/swayosd-libinput-backend
+	'';
+        wantedBy = [ "graphical-session.target" ];
+        # wants = [ "graphical-session.target" ];
+        # after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          Restart = "on-failure";
+          RestartSec = 10;
+          TimeoutStopSec = 60;
+	  User = "root";
+	  Group = "root";
+        };
+      };
+    };
+
+    user.services = {
+      polkit-gnome-authentication-agent-1 = {
+        description = "polkit-gnome-authentication-agent-1";
+	enable = true;
+        wantedBy = [ "graphical-session.target" ];
+        wants = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+          Restart = "on-failure";
+          RestartSec = 1;
+          TimeoutStopSec = 10;
+        };
+      };
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -164,27 +221,32 @@
   programs.zsh.enable = true;
   # users.defaultUserShell = pkgs.zsh;
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
     nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
       inherit pkgs;
     };
+    unstable = import (fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
   };
 
-  fonts.packages = with pkgs; [
-    cantarell-fonts
-    material-design-icons
-    noto-fonts
+  fonts = {
+    fontDir.enable = true;
+    packages = with pkgs; [
+      cantarell-fonts
+      material-design-icons
+      noto-fonts
 
-    (nerdfonts.override {
-      fonts = [
-        "FantasqueSansMono"
-        "InconsolataGo"
-	"JetBrainsMono"
-	# "NotoSansMono"
-      ];
-    })
-  ];
+      (nerdfonts.override {
+        fonts = [
+          "FantasqueSansMono"
+          "InconsolataGo"
+          "JetBrainsMono"
+          # "NotoSansMono"
+        ];
+      })
+    ];
+  };
 
   environment.variables.EDITOR = "nvim";
 
