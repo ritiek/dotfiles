@@ -40,11 +40,12 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  # services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.displayManager.gdm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
+
   # Enable KDE.
   # services.xserver.displayManager.sddm.enable = true;
   # services.xserver.desktopManager.plasma5.enable = true;
@@ -83,10 +84,9 @@
     isNormalUser = true;
     description = "Ritiek Malhotra";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      firefox
-    #  thunderbird
-    ];
+    # packages = with pkgs; [
+    #   firefox
+    # ];
     shell = pkgs.zsh;
   };
 
@@ -101,13 +101,6 @@
     neovim
     wget
     curl
-    spotify
-    google-chrome
-    # wezterm
-    hyprpaper
-    swaynotificationcenter
-    swayosd
-    waybar
     # wl-gammarelay-rs
     swayidle
     swaylock-effects
@@ -116,14 +109,12 @@
     # rofi-wayland
     # nemo
     brightnessctl
-    playerctl
     # hyprshot
-    nwg-look
     ripgrep
     fd
     keychain
     btop
-    nur.repos.nltch.spotify-adblock
+    # nur.repos.nltch.spotify-adblock
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -163,12 +154,12 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-  programs.hyprland = { # or wayland.windowManager.hyprland
-    enable = true;
-    xwayland.enable = true;
-    enableNvidiaPatches = true;
-    # systemd.enable = true;
-  };
+  programs.hyprland.enable = true;
+  # programs.hyprland = { # or wayland.windowManager.hyprland
+  #   enable = true;
+  #   enableNvidiaPatches = true;
+  #   # xwayland.enable = true;
+  # };
 
   programs.zsh.enable = true;
   # users.defaultUserShell = pkgs.zsh;
@@ -181,8 +172,18 @@
   };
 
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" "InconsolataGo" ]; })
     cantarell-fonts
+    material-design-icons
+    noto-fonts
+
+    (nerdfonts.override {
+      fonts = [
+        "FantasqueSansMono"
+        "InconsolataGo"
+	"JetBrainsMono"
+	# "NotoSansMono"
+      ];
+    })
   ];
 
   environment.variables.EDITOR = "nvim";
