@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
-      ./home-manager.nix
+      ./home.nix
     ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -105,8 +105,6 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # Flakes use Git to pull dependencies from data sources 
-    git
-    neovim
     wget
     curl
     # wl-gammarelay-rs
@@ -122,8 +120,17 @@
     btop
     gparted
     xorg.xhost
+
+    libnotify
+    lshw
+    glxinfo
+    intel-gpu-tools
     # nur.repos.nltch.spotify-adblock
   ];
+
+  programs.git.enable = true;
+  programs.neovim.enable = true;
+  # programs.nixvim.enable = true;
 
   services.udev.packages = [ pkgs.swayosd ];
   # services.swayosd.enable = true;
@@ -220,7 +227,6 @@ sudo ${pkgs.swayosd}/bin/swayosd-libinput-backend
 
   programs.zsh.enable = true;
   # users.defaultUserShell = pkgs.zsh;
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   security.polkit.enable = true;
 
   nixpkgs.config.packageOverrides = pkgs: {
