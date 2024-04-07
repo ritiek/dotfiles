@@ -20,20 +20,37 @@ in
 	swaynotificationcenter
 	playerctl
 	nwg-look
-	armcord
+	# armcord
 	bitwarden
 	rofi-bluetooth
 	xorg.xeyes
 	sonixd
 	cinnamon.nemo
+	calibre
+	krita
+	# protonvpn-gui
+        yubikey-manager
+
+        slack
+        # telegram-desktop
+	awscli2
+	ssm-session-manager-plugin
+
 	unstable.hyprlock
+	unstable.hyprshot
 	unstable.wl-gammarelay-rs
 	nur.repos.nltch.spotify-adblock
       ];
     };
-    home.file.hyprpaper = {
-      source = ./hyprpaper.conf;
-      target = ".config/hypr/hyprpaper.conf";
+    home.file = {
+      hyprpaper = {
+        source = ./hyprpaper.conf;
+        target = ".config/hypr/hyprpaper.conf";
+      };
+      allowed_signers = {
+        source = ./allowed_signers;
+        target = ".ssh/allowed_signers";
+      };
     };
     home.pointerCursor = {
       x11.enable = true;
@@ -681,9 +698,9 @@ bind = $mainMod, W, movetoworkspace, special
 bind = $mainMod, T, movetoworkspace, e+0
 # bind = $mainMod, T, togglespecialworkspace
 
-bind = $mainMod CTRL SHIFT, 1, movecurrentworkspacetomonitor, eDP-1
-bind = $mainMod CTRL SHIFT, 2, movecurrentworkspacetomonitor, HDMI-A-1
-bind = $mainMod CTRL SHIFT, 0, movecurrentworkspacetomonitor, HDMI-A-2
+bind = $mainMod CTRL SHIFT, 1, movecurrentworkspacetomonitor, $primaryMonitor
+bind = $mainMod CTRL SHIFT, 2, movecurrentworkspacetomonitor, $screenPadMonitor
+bind = $mainMod CTRL SHIFT, 0, movecurrentworkspacetomonitor, $externalMonitor
 
 # Move windows
 bind = $mainMod CTRL, H, movewindow, l
@@ -773,6 +790,7 @@ windowrulev2 = tile, 0.85, class:^(ballistica.*|bombsquad)$
 #
 # Main monitor
 monitor = $primaryMonitor, preferred, 0x0, 1.0
+# monitor = $primaryMonitor, disable
 #
 # Screenpad
 # monitor = $screenPadMonitor, disable
@@ -781,7 +799,8 @@ monitor = $screenPadMonitor, highres, 0x2080, 2.666667, transform, 3
 #
 # External Monitor
 # monitor = $externalMonitor, preferred, 1920x0, 1.0
-monitor = $externalMonitor, preferred, 0x0, 1.0, mirror, eDP-1
+# monitor = $externalMonitor, preferred, 0x0, 1.0, mirror, eDP-1
+monitor = $externalMonitor, preferred, 0x0, 1.0
 
 # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
 input {
@@ -937,8 +956,13 @@ device:epic-mouse-v1 {
       userName = "Ritiek Malhotra";
       userEmail = "ritiekmalhotra123@gmail.com";
       extraConfig = {
-        core.editor = "nvim";
         init.defaultBranch = "main";
+        core.editor = "nvim";
+        commit.gpgsign = true;
+        gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
+        gpg.ssh.defaultKeyCommand = "sh -c 'echo key::$(ssh-add -L)'";
+        gpg.format = "ssh";
+        # user.signingkey = "~/.ssh/id_ed25519.pub";
         # commit.verbose = true;
       };
       delta = {
@@ -1121,10 +1145,6 @@ ZSH_DISABLE_COMPFIX=true
 # Make Enter key on the numpad work as Return key
 bindkey '^[OM' accept-line
 
-# Reverse search like in Bash
-bindkey '^R' history-incremental-search-backward
-# bindkey '^R' history-incremental-pattern-search-backward
-
 bindkey '^[[Z' reverse-menu-complete
 # Navigate to previous selection with shift+tab
 # when using tab completition for navigation
@@ -1132,10 +1152,16 @@ bindkey '^[[Z' reverse-menu-complete
 # zsh-autosuggetsions maps
 ## map autosuggest-accept to ctrl+/
 bindkey '^_' autosuggest-accept
-#bindkey '^M' autosuggest-execute
+bindkey '^M' autosuggest-execute
 
 # Enable Vi bindings
-# bindkey -v
+bindkey -v
+
+# Reverse search like in Bash
+# bindkey '^R' history-incremental-search-backward
+# bindkey '^S' history-incremental-search-forward
+bindkey '^R' history-incremental-pattern-search-backward
+bindkey '^S' history-incremental-pattern-search-forward
 
 autoload edit-command-line
 zle -N edit-command-line
@@ -1173,7 +1199,7 @@ bindkey "^?" backward-delete-char
 	expireDuplicatesFirst = true;
 	extended = true;
       };
-      defaultKeymap = "viins";
+      # defaultKeymap = "emacs";
       # historySubstringSearch.enable = true;
       oh-my-zsh = {
         enable = true;

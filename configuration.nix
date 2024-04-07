@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, options, ... }:
 
 {
   imports =
@@ -119,18 +119,33 @@
     keychain
     btop
     gparted
+    xclip
     xorg.xhost
+    imv
+    yubico-pam
+    pam_u2f
 
     libnotify
     lshw
     glxinfo
     intel-gpu-tools
+    aircrack-ng
+    linuxPackages.usbip
     # nur.repos.nltch.spotify-adblock
   ];
 
   programs.git.enable = true;
   programs.neovim.enable = true;
   # programs.nixvim.enable = true;
+
+  # programs.nix-ld = {
+  #   enable = true;
+  #   # libraries = options.programs.nix-ld.libraries.default ++ (with pkgs; [ yourlibrary ]);
+  #   libraries = options.programs.nix-ld.libraries.default;
+  # };
+  # environment.variables = {
+  #   NIX_LD = lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
+  # };
 
   services.udev.packages = [ pkgs.swayosd ];
   # services.swayosd.enable = true;
