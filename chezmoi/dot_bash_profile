@@ -5,3 +5,5 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
 source ~/.config/broot/launcher/bash/br
+
+source /home/ritiek/.config/broot/launcher/bash/br

@@ -164,3 +164,5 @@ eval "$(hub alias -s)"
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 source ~/.config/broot/launcher/bash/br
+
+source /home/ritiek/.config/broot/launcher/bash/br
