@@ -4,4 +4,5 @@
 # .config/zellij
 .config/touchegg
 .config/glava
+# .config/nvim
 .config/helix
