@@ -16,22 +16,22 @@
   refreshPeriod = "168h"
   clone.args = ["--depth", "1"]
 
-[".config/nvim"]
-  # type = "git-repo"
-  # url = "https://github.com/NvChad/NvChad.git"
-  # refreshPeriod = "168h"
-  # clone.args = ["--depth", "1"]
-
-  # Ideally, we should be treating this a git-repo and not an archive.
-  # However, due to a bug in chezmoi, this seems like the best workaround
-  # for now:
-  # https://github.com/twpayne/chezmoi/issues/1614#issuecomment-1058933765
-  type = "archive"
-  # Not using this as it downloads tarball from releases section on GitHub.
-  # url = "https://github.com/NvChad/starter/archive/master.tar.gz"
-  url = "https://api.github.com/repos/NvChad/starter/tarball"
-  stripComponents = 1
-  exact = false
+# [".config/nvim"]
+#   # type = "git-repo"
+#   # url = "https://github.com/NvChad/NvChad.git"
+#   # refreshPeriod = "168h"
+#   # clone.args = ["--depth", "1"]
+# 
+#   # Ideally, we should be treating this a git-repo and not an archive.
+#   # However, due to a bug in chezmoi, this seems like the best workaround
+#   # for now:
+#   # https://github.com/twpayne/chezmoi/issues/1614#issuecomment-1058933765
+#   type = "archive"
+#   # Not using this as it downloads tarball from releases section on GitHub.
+#   # url = "https://github.com/NvChad/starter/archive/master.tar.gz"
+#   url = "https://api.github.com/repos/NvChad/starter/tarball"
+#   stripComponents = 1
+#   exact = false
 
 
 # Fonts
