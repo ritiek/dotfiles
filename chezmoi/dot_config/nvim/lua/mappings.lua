@@ -4,7 +4,10 @@ require "nvchad.mappings"
 
 local map = vim.keymap.set
 
-map("n", ";", ":", { desc = "CMD enter command mode" })
+local function removeMap ()
+end
+
+-- map("n", ";", ":", { desc = "CMD enter command mode" })
 
 map({ "n", "i", "t" }, "<M-i>", function()
   require("nvchad.term").toggle({ pos = "float", id = "floatTerm", float_opts = {
@@ -30,7 +33,7 @@ end, { desc = "Toggle Mini Floating Term" })
 
 map("n", "=", "<C-a>", { desc = "Increment" })
 map("n", "-", "<C-x>", { desc = "Decrement" })
-map("n", "<C-x>", function() end)
+map("n", "<C-x>", removeMap)
 map("n", "<Space><S-b>", function()
   vim.cmd("tabnew")
 end, { desc = "New Tab" })
@@ -68,5 +71,10 @@ end, { desc = "NeoZoom Toggle", nowait = true })
 map("n", "<leader>ta", function()
   require("gitsigns").toggle_numhl()
 end, { desc = "Toggle Addition" })
+map("n", "<leader>ta", function()
+  require("gitsigns").toggle_deleted()
+end, { desc = "Toggle Deleted" })
+
+-- toggle_word_diff
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
