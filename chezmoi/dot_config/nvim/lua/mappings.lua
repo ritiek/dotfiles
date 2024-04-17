@@ -60,7 +60,8 @@ end, { nowait = true })
 
 vim.keymap.set("v", "<leader>cn", ":CarbonNow<CR>", { desc = "Carbon Now", nowait = true })
 vim.keymap.set({ "n", "i" }, "<C-a>", function()
-  vim.cmd("NeoZoomToggle")
+  -- vim.cmd("NeoZoomToggle")
+  require("neo-zoom").neo_zoom({})
 end, { desc = "NeoZoom Toggle", nowait = true })
 
 vim.keymap.set("n", "<leader>ta", function()

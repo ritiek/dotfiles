@@ -1,11 +1,12 @@
 local plugins = {
-  {
-    "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
-    config = function()
-      require "configs.conform"
-    end,
-  },
+  -- FIXME: Are we using this?
+  -- {
+  --   "stevearc/conform.nvim",
+  --   -- event = 'BufWritePre', -- uncomment for format on save
+  --   config = function()
+  --     require "configs.conform"
+  --   end,
+  -- },
 
   {
     "williamboman/mason.nvim",
@@ -48,7 +49,7 @@ local plugins = {
     },
     config = function()
       require("nvchad.configs.lspconfig").defaults()
-      -- require "configs.lspconfig"
+      require "configs.lspconfig"
     end,
   },
 
