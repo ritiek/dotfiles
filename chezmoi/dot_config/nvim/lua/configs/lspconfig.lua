@@ -63,29 +63,59 @@ vim.api.nvim_create_autocmd("LspAttach", {
     -- Buffer local mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-    vim.keymap.set("n", "gV", function()
-      require("telescope.builtin").lsp_definitions { jump_type = "vsplit", desc = "Lsp Go to definition (vsplit)" }
-    end)
-    vim.keymap.set("n", "gS", function()
-      require("telescope.builtin").lsp_definitions { jump_type = "split", desc = "Lsp Go to definition (split)" }
-    end)
+
+    opts["desc"] = "Lsp hover"
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
+    opts["desc"] = "Lsp implementation"
     vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-    vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+
+    -- Messes when navigating to pane Up.
+    -- opts["desc"] = "Lsp signature help"
+    -- vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+
+    opts["desc"] = "Lsp add workspace folder"
     vim.keymap.set("n", "<space>wa", vim.lsp.buf.add_workspace_folder, opts)
+
+    opts["desc"] = "Lsp remove workspace folder"
     vim.keymap.set("n", "<space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+
+    opts["desc"] = "Lsp list workspace folders"
     vim.keymap.set("n", "<space>wl", function()
       print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
     end, opts)
-    vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
+
+    opts["desc"] = "Lsp rename"
     vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
+
+    opts["desc"] = "Lsp code action"
     vim.keymap.set({ "n", "v" }, "<space>ca", vim.lsp.buf.code_action, opts)
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+
+    opts["desc"] = "Lsp format"
     vim.keymap.set("n", "<space>f", function()
       vim.lsp.buf.format { async = true }
     end, opts)
+
+    vim.keymap.set("n", "gV", function()
+      require("telescope.builtin").lsp_definitions { jump_type = "vsplit" }
+    end, { desc = "Lsp Go to definition (vsplit)" })
+
+    vim.keymap.set("n", "gS", function()
+      require("telescope.builtin").lsp_definitions { jump_type = "split" }
+    end, { desc = "Lsp Go to definition (split)" })
+
+    opts["desc"] = "Lsp Go to declaration"
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+
+    opts["desc"] = "Lsp Go to definition"
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+
+    opts["desc"] = "Lsp type defintion"
+    vim.keymap.set("n", "<space>D", vim.lsp.buf.type_definition, opts)
+
+    opts["desc"] = "Lsp Show references"
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+
     opts["desc"] = "Lsp Show references (Telescope)"
     vim.keymap.set("n", "gR", telescope.lsp_references, opts)
   end,

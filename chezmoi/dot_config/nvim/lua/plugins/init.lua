@@ -125,6 +125,23 @@ local plugins = {
   },
 
   {
+    "debugloop/telescope-undo.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+    event = "BufWinEnter",
+  },
+
+  {
+    "ThePrimeagen/harpoon",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+  },
+
+  {
     "elkowar/yuck.vim",
     event = "BufWinEnter",
   },
@@ -132,7 +149,7 @@ local plugins = {
   {
     "hrsh7th/nvim-cmp",
     enabled = false,
-  },
+  }
 
   -- {
   --   "lewis6991/gitsigns.nvim",
