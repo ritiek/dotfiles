@@ -122,6 +122,7 @@
     xclip
     xorg.xhost
     imv
+    helix
     yubico-pam
     pam_u2f
 
@@ -243,6 +244,10 @@ sudo ${pkgs.swayosd}/bin/swayosd-libinput-backend
   programs.zsh.enable = true;
   # users.defaultUserShell = pkgs.zsh;
   security.polkit.enable = true;
+  security.pam.services = {
+    login.u2fAuth = true;
+    sudo.u2fAuth = true;
+  };
 
   nixpkgs.config.packageOverrides = pkgs: {
     nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
