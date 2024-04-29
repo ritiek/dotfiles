@@ -1,10 +1,27 @@
 # dotfiles
 
-Mah dotfiles, maintained using [chezmoi](https://www.chezmoi.io/). I previously maintained these manually
-in the [legacy](https://github.com/ritiek/dotfiles/tree/legacy) branch.
+Mah dotfiles, for NixOS, as well as for Debian/Arch based distros maintained using
+[chezmoi](https://www.chezmoi.io/).
 
+I previously maintained these manually in the [legacy](https://github.com/ritiek/dotfiles/tree/legacy) branch.
 
 ## Installation
+
+### NixOS
+
+```sh
+$ sudo mv /etc/nixos{,.bak}
+$ sudo git clone git@github.com:ritiek/dotfiles /etc/nixos
+```
+
+Update machine specific values in `hardware-configuration.nix` and rebuild config.
+
+```sh
+$ sudo nixos-rebuild boot --upgrade-all
+$ sudo shutdown -r now
+```
+
+### Debian/Arch based distros
 
 Install [chezmoi](https://www.chezmoi.io/install/) and run:
 ```sh
@@ -16,13 +33,3 @@ $ chezmoi apply -R
 
 (soon!)
 
-
-## Miscellaneous
-
-### Ctrl+L clear terminal
-
-If `^L` won't clear terminal, add line `"\C-l":'clear\n'` to `/etc/inputrc` at the end of the file to fix it.
-
-### Kodi - some videos won't play
-
-Try disabling/enabling hardware acceleration in `Settings -> Player -> Videos -> Allow hardware acceleration - ...`
