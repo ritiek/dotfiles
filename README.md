@@ -11,7 +11,7 @@ I previously maintained these manually in the [legacy](https://github.com/ritiek
 
 ```sh
 $ sudo mv /etc/nixos{,.bak}
-$ sudo git clone git@github.com:ritiek/dotfiles /etc/nixos
+$ sudo git clone https://github.com/ritiek/dotfiles /etc/nixos
 ```
 
 Update machine specific values in `hardware-configuration.nix` and rebuild config.
