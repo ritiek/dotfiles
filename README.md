@@ -14,9 +14,13 @@ $ sudo mv /etc/nixos{,.bak}
 $ sudo git clone https://github.com/ritiek/dotfiles /etc/nixos
 ```
 
-Update machine specific values in `hardware-configuration.nix` and rebuild config.
+Update machine specific values in `environment.nix` and setup Intel/Nvidia graphics in `graphics.nix`
+and rebuild config:
 
 ```sh
+# Create a machine specific `hardware-configuration.nix`.
+$ sudo nixos-generate-config
+
 $ sudo nixos-rebuild boot --upgrade-all
 $ sudo shutdown -r now
 ```
