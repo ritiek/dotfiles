@@ -10,6 +10,7 @@
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
       ./graphics.nix
+      ./environment.nix
       ./home.nix
     ];
 
