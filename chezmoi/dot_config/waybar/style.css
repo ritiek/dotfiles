@@ -2,7 +2,7 @@
   border: none;
   border-radius: 0;
   min-height: 0;
-  font-family: Material Design Icons, JetBrainsMono Nerd Font;
+  /* font-family: Material Design Icons, JetBrainsMono Nerd Font; */
   font-size: 13px;
 }
 
@@ -117,7 +117,7 @@ window#waybar.hidden {
 }
 
 #clock {
-  font-family: JetBrainsMono Nerd Font;
+  /* font-family: JetBrainsMono Nerd Font; */
   background-color: #cba6f7;
 }
 
@@ -126,7 +126,7 @@ window#waybar.hidden {
 }
 
 #custom-notification {
-  font-family: "NotoSansMono Nerd Font";
+  /* font-family: "NotoSansMono Nerd Font"; */
 }
 
 
