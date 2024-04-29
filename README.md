@@ -32,4 +32,3 @@ $ chezmoi apply -R
 ## Screenshots
 
 (soon!)
-
