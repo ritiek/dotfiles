@@ -33,6 +33,7 @@ config.font = wezterm.font(
   }
 )
 config.font_size = 12.2
+config.audible_bell = "Disabled"
 config.window_padding = {
   left = 0,
   right = 0,
