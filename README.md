@@ -14,9 +14,10 @@ $ sudo mv /etc/nixos{,.bak}
 $ sudo git clone https://github.com/ritiek/dotfiles /etc/nixos
 ```
 
-Update machine specific values in `environment.nix` and setup Intel/Nvidia graphics in `graphics.nix`
-and rebuild config:
-
+- Update machine specific values in `environment.nix`.
+- Setup Intel/AMD/Nvidia graphics in `graphics.nix`. If you want to use Intel graphics, then comment out
+  `graphics.nix` entirely. If you want to be using Nvidia graphics, then leave `graphics.nix` unmodified.
+- Rebuild config:
 ```sh
 # Create a machine specific `hardware-configuration.nix`.
 $ sudo nixos-generate-config
