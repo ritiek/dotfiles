@@ -109,13 +109,10 @@
     # Flakes use Git to pull dependencies from data sources 
     wget
     curl
-    # wl-gammarelay-rs
     swayidle
     swaylock-effects
     swayosd
-    # nemo
     brightnessctl
-    # hyprshot
     ripgrep
     fd
     keychain
@@ -124,17 +121,19 @@
     xclip
     xorg.xhost
     imv
-    helix
+    # helix
     yubico-pam
     pam_u2f
 
+    xorg.xeyes
+    usbutils
     libnotify
     lshw
+    pv
     glxinfo
     intel-gpu-tools
     aircrack-ng
     linuxPackages.usbip
-    # nur.repos.nltch.spotify-adblock
   ];
 
   programs.git.enable = true;
