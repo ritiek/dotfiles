@@ -38,13 +38,16 @@ in
 	armcord
 	bitwarden
 	rofi-bluetooth
-	xorg.xeyes
 	sonixd
 	cinnamon.nemo
 	calibre
 	krita
 	# protonvpn-gui
-        yubikey-manager
+	yubioath-flutter
+
+	gnumake
+	cmake
+	texlive.combined.scheme-full
 
         slack
         # telegram-desktop
