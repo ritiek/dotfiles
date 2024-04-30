@@ -122,7 +122,7 @@ export PATH
       {
         name = "powerlevel10k-config";
         # File path is $src + $file
-        src = /etc/nixos/chezmoi;
+        src = ../chezmoi;
         file = "dot_p10k.zsh";
       }
     ];
