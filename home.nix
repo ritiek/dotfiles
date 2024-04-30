@@ -20,6 +20,7 @@ in
       ./nixconf/btop.nix
       ./nixconf/rofi.nix
       ./nixconf/waybar.nix
+      ./nixconf/swaync.nix
       ./nixconf/mpv.nix
       ./nixconf/sioyek.nix
     ];
