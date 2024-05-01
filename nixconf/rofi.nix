@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  home.packages = with pkgs; [
+    rofi-bluetooth
+  ];
   programs.rofi = {
     enable = true;
     package = pkgs.rofi-wayland;
