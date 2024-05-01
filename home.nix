@@ -7,7 +7,8 @@ in
     (import "${home-manager}/nixos")
   ];
 
-
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
   home-manager.users.ritiek = { config, lib, ... }: {
     imports = [
       ./nixconf/hyprland.nix
@@ -21,7 +22,11 @@ in
       ./nixconf/rofi.nix
       ./nixconf/waybar.nix
       ./nixconf/swaync.nix
+      ./nixconf/swayidle.nix
+      # ./nixconf/swaylock.nix
+      ./nixconf/hyprlock.nix
       ./nixconf/mpv.nix
+      # ./nixconf/syncthing.nix
       ./nixconf/sioyek.nix
     ];
     home = {
@@ -31,19 +36,17 @@ in
         wezterm
 	# spotify
 	google-chrome
-	hyprpaper
-	swaynotificationcenter
 	playerctl
 	nwg-look
 	armcord
 	bitwarden
-	rofi-bluetooth
 	sonixd
 	cinnamon.nemo
 	calibre
 	krita
 	# protonvpn-gui
 	yubioath-flutter
+	hyprpicker
 
 	gnumake
 	cmake
