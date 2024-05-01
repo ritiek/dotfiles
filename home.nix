@@ -57,7 +57,6 @@ in
 	awscli2
 	ssm-session-manager-plugin
 
-	unstable.hyprlock
 	unstable.hyprshot
 	unstable.wl-gammarelay-rs
 	nur.repos.nltch.spotify-adblock
