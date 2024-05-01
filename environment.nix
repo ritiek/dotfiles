@@ -1,6 +1,8 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
+  time.timeZone = "Asia/Kolkata";
+
   networking.hostName = "nixin"; # Define your hostname.
 
   boot.loader.systemd-boot.enable = true;
