@@ -2,7 +2,8 @@
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    enableNvidiaPatches = true;
+    package = pkgs.unstable.hyprland;
+    # enableNvidiaPatches = true;
     # xwayland.enable = false;
     systemd = {
       enable = true;

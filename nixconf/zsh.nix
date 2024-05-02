@@ -15,7 +15,7 @@ setopt HIST_IGNORE_SPACE
 zstyle ":completion:*:commands" rehash 1
 
 # Set your own notification threshold
-bgnotify_threshold=5
+bgnotify_threshold=7
 
 function bgnotify_formatted {
   ## $1=exit_status, $2=command, $3=elapsed_time
@@ -37,13 +37,13 @@ bindkey '^[[Z' reverse-menu-complete
 # Navigate to previous selection with shift+tab
 # when using tab completition for navigation
 
+# Enable Vi bindings
+bindkey -v
+
 # zsh-autosuggetsions maps
 ## map autosuggest-accept to ctrl+/
 bindkey '^_' autosuggest-accept
-bindkey '^M' autosuggest-execute
-
-# Enable Vi bindings
-bindkey -v
+bindkey '^K' autosuggest-execute
 
 # Reverse search like in Bash
 # bindkey '^R' history-incremental-search-backward
