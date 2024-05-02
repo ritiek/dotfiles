@@ -41,6 +41,7 @@ in
 	calibre
 	krita
 	# protonvpn-gui
+	lxqt.lxqt-policykit
 	yubioath-flutter
 	hyprpicker
 
