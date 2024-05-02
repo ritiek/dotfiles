@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/refs/heads/release-23.11.zip";
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.zip";
 in
 {
   imports = [
@@ -27,7 +27,7 @@ in
     ];
     home = {
       /* The home.stateVersion option does not have a default and must be set */
-      stateVersion = "23.11";
+      stateVersion = "24.05";
       packages = with pkgs; [
         wezterm
 	# spotify
@@ -54,8 +54,8 @@ in
 	awscli2
 	ssm-session-manager-plugin
 
-	unstable.hyprshot
-	unstable.wl-gammarelay-rs
+	hyprshot
+	wl-gammarelay-rs
 	nur.repos.nltch.spotify-adblock
       ];
       pointerCursor = {

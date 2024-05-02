@@ -12,7 +12,8 @@
       nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
         inherit pkgs;
       };
-      unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
+      # Default pkgs are already from unstable channel.
+      # unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
     };
   };
 
@@ -289,6 +290,7 @@
     stateVersion = "23.11"; # Did you read the comment?
     autoUpgrade = {
       enable = true;
+      channel = "https://nixos.org/channels/nixos-unstable";
       # allowReboot = true;
     };
   };

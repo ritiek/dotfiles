@@ -126,7 +126,7 @@ export PATH
         file = "dot_p10k.zsh";
       }
     ];
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     enableCompletion = true;
     enableVteIntegration = true;
     autocd = true;

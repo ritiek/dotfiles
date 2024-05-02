@@ -2,7 +2,7 @@
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.unstable.hyprland;
+    package = pkgs.hyprland;
     # enableNvidiaPatches = true;
     # xwayland.enable = false;
     systemd = {
@@ -12,8 +12,8 @@
     extraConfig = builtins.readFile ../chezmoi/dot_config/hypr/hyprland.conf;
   };
   home.packages = with pkgs; [
-    unstable.hypridle
-    unstable.hyprlock
+    hypridle
+    hyprlock
     hyprpaper
   ];
   home.file = {
