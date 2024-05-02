@@ -11,7 +11,7 @@
   };
   # options.services.swaync = {
   #   enable = true;
-  #   settings = builtins.fromJSON (builtins.readFile /etc/nixos/chezmoi/dot_config/swaync/config.json);
-  #   style = builtins.readFile /etc/nixos/chezmoi/dot_config/swaync/style.css;
+  #   settings = builtins.fromJSON (builtins.readFile ../chezmoi/dot_config/swaync/config.json);
+  #   style = builtins.readFile ../chezmoi/dot_config/swaync/style.css;
   # };
 }

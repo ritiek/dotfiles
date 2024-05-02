@@ -93,8 +93,6 @@
       # Flakes use Git to pull dependencies from data sources 
       wget
       curl
-      swayidle
-      swaylock-effects
       swayosd
       brightnessctl
       ripgrep
@@ -108,6 +106,7 @@
       # helix
       yubico-pam
       pam_u2f
+      parallel
 
       xorg.xeyes
       usbutils
