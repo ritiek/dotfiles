@@ -12,7 +12,6 @@ in
   home-manager.users.ritiek = { config, lib, ... }: {
     imports = [
       ./nixconf/hyprland.nix
-      ./nixconf/hyprpaper.nix
       ./nixconf/wezterm.nix
       ./nixconf/zsh.nix
       ./nixconf/git.nix
@@ -22,9 +21,6 @@ in
       ./nixconf/rofi.nix
       ./nixconf/waybar.nix
       ./nixconf/swaync.nix
-      ./nixconf/swayidle.nix
-      # ./nixconf/swaylock.nix
-      ./nixconf/hyprlock.nix
       ./nixconf/mpv.nix
       # ./nixconf/syncthing.nix
       ./nixconf/sioyek.nix
