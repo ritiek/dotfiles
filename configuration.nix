@@ -81,6 +81,7 @@
         "input"
         "dialout"
         "polkituser"
+	"users"
       ];
       shell = pkgs.zsh;
     };
@@ -149,23 +150,6 @@
         };
       };
     };
-
-    user.services = {
-      polkit-gnome-authentication-agent-1 = {
-        description = "polkit-gnome-authentication-agent-1";
-	enable = true;
-        wantedBy = [ "graphical-session.target" ];
-        wants = [ "graphical-session.target" ];
-        after = [ "graphical-session.target" ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-          Restart = "on-failure";
-          RestartSec = 1;
-          TimeoutStopSec = 10;
-        };
-      };
-    };
   };
 
   # Enable sound with pipewire.
@@ -231,7 +215,22 @@
     #   xkbVariant = "";
     # };
 
-    udev.packages = [ pkgs.swayosd ];
+    udev = {
+      packages = [
+        pkgs.swayosd
+	# pkgs.yubikey-personalization
+      ];
+      # FIXME: Auto-lock screen on unplugging Yubikey.
+      # extraRules = ''
+      #   ACTION=="remove",\
+      #    ENV{ID_BUS}=="usb",\
+      #    ENV{ID_MODEL_ID}=="0402",\
+      #    ENV{ID_VENDOR_ID}=="1050",\
+      #    ENV{ID_VENDOR}=="Yubico",\
+      #    RUN+="${pkgs.libnotify}/bin/notify-send locking"
+      # '';
+      # # RUN+="${pkgs.procps} hyprlock || ${pkgs.unstable.hyprlock}/bin/hyprlock"
+    };
   };
 
   # programs.nix-ld = {
@@ -256,7 +255,9 @@
     pam.services = {
       login.u2fAuth = true;
       sudo.u2fAuth = true;
+      su.u2fAuth = true;
       polkit-1.u2fAuth = true;
+      hyprlock.u2fAuth = true;
     };
   };
 
