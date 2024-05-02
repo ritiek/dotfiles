@@ -23,8 +23,8 @@ end)
 -- This is where you actually apply your config choices
 
 config.enable_wayland = false
--- config.color_scheme = 'Dracula'
-config.color_scheme = 'Tartan (terminal.sexy)'
+config.color_scheme = 'Dracula'
+-- config.color_scheme = 'Tartan (terminal.sexy)'
 config.hide_tab_bar_if_only_one_tab = true
 config.font = wezterm.font(
   "FantasqueSansM Nerd Font Mono", {

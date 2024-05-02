@@ -2,8 +2,10 @@
 
 {
   time.timeZone = "Asia/Kolkata";
+  networking.hostName = "nixin";
 
-  networking.hostName = "nixin"; # Define your hostname.
+  # Force Wayland on all apps.
+  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
