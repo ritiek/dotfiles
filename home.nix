@@ -12,9 +12,7 @@ in
   home-manager.users.ritiek = { config, lib, ... }: {
     imports = [
       ./nixconf/hyprland.nix
-      ./nixconf/alacritty.nix
       ./nixconf/wezterm.nix
-      ./nixconf/kitty.nix
       ./nixconf/zsh.nix
       ./nixconf/git.nix
       ./nixconf/neovim.nix
