@@ -42,7 +42,7 @@ element-icon {
       ];
       font = "FantasqueSansM Nerd Font Mono 14";
       show-icons = true;
-      terminal = "alacritty";
+      terminal = "wezterm";
     };
   };
 }
