@@ -42,7 +42,6 @@ in
 	# protonvpn-gui
 	lxqt.lxqt-policykit
 	yubioath-flutter
-	hyprpicker
 
 	gnumake
 	cmake
