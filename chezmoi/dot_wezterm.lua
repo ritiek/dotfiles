@@ -13,7 +13,8 @@ end
 wezterm.on('toggle-colorscheme', function(window, pane)
   local overrides = window:get_config_overrides() or {}
   if not overrides.color_scheme then
-    overrides.color_scheme = 'Dracula'
+    -- overrides.color_scheme = 'Dracula'
+    overrides.color_scheme = 'Tartan (terminal.sexy)'
   else
     overrides.color_scheme = nil
   end
