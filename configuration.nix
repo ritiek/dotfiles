@@ -274,6 +274,7 @@
           "FantasqueSansMono"
           "InconsolataGo"
           "JetBrainsMono"
+	  "FiraCode"
           # "NotoSansMono"
         ];
       })
