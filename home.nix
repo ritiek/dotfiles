@@ -12,7 +12,7 @@ in
   home-manager.users.ritiek = { config, lib, ... }: {
     imports = [
       ./nixconf/hyprland.nix
-      ./nixconf/wezterm.nix
+      ./nixconf/alacritty.nix
       ./nixconf/zsh.nix
       ./nixconf/git.nix
       ./nixconf/neovim.nix
@@ -29,7 +29,6 @@ in
       /* The home.stateVersion option does not have a default and must be set */
       stateVersion = "24.05";
       packages = with pkgs; [
-        wezterm
 	# spotify
 	google-chrome
 	playerctl

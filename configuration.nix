@@ -289,9 +289,9 @@
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
     stateVersion = "23.11"; # Did you read the comment?
     autoUpgrade = {
-      enable = true;
+      enable = false;
       channel = "https://nixos.org/channels/nixos-unstable";
-      # allowReboot = true;
+      allowReboot = false;
     };
   };
 
