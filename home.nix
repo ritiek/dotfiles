@@ -30,6 +30,9 @@ in
       stateVersion = "24.05";
       packages = with pkgs; [
 	# spotify
+	unzip
+	unrar-wrapper
+	jq
 	google-chrome
 	playerctl
 	nwg-look
@@ -46,6 +49,7 @@ in
 	any-nix-shell
 	android-tools
 	# nix-index
+	lutris
 
 	gnumake
 	cmake
