@@ -42,6 +42,10 @@ in
 	# protonvpn-gui
 	lxqt.lxqt-policykit
 	yubioath-flutter
+	wl-clipboard-rs
+	any-nix-shell
+	android-tools
+	# nix-index
 
 	gnumake
 	cmake
