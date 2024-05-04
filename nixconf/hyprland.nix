@@ -12,6 +12,7 @@
     extraConfig = builtins.readFile ../chezmoi/dot_config/hypr/hyprland.conf;
   };
   home.packages = with pkgs; [
+    xdg-desktop-portal-hyprland
     hypridle
     hyprlock
     hyprpaper
