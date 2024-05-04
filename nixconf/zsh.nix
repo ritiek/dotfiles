@@ -55,6 +55,8 @@ autoload edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd ' ' edit-command-line
 bindkey "^?" backward-delete-char
+
+${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
       '';
       envExtra = ''
 # the default umask is set in /etc/profile; for setting the umask
