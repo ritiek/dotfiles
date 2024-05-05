@@ -2,6 +2,7 @@
 {
   home.packages = with pkgs; [
     rofi-bluetooth
+    rofi-pulse-select
   ];
   programs.rofi = {
     enable = true;
