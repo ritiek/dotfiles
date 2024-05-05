@@ -50,10 +50,12 @@ in
 	android-tools
 	# nix-index
 	lutris
+	libreoffice-qt-fresh
 
 	gnumake
 	cmake
 	texlive.combined.scheme-full
+	pavucontrol
 
         slack
         # telegram-desktop
