@@ -1,3 +1,7 @@
+# configuration.nix
+programs.nix-ld.enable = true;
+
+# bombsquad.nix
 with import <nixpkgs> {};
   mkShell {
     # NIX_LD = lib.fileContents "${pkgs.stdenv.cc}/nix-support/dynamic-linker";
