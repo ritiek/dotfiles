@@ -126,6 +126,8 @@
     variables.EDITOR = "nvim";
   };
 
+  virtualisation.docker.enable = true;
+
   systemd = {
     services = {
       swayosd-libinput-backend = {
