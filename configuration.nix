@@ -121,6 +121,7 @@
       intel-gpu-tools
       aircrack-ng
       linuxPackages.usbip
+      docker-compose
     ];
 
     variables.EDITOR = "nvim";
@@ -246,8 +247,35 @@
     neovim.enable = true;
     hyprland.enable = true;
     zsh.enable = true;
-    steam.enable = true;
-    nix-ld.enable = true;
+
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        # Bombsquad Game.
+	# Now installing these packages using Lutris in home-manager.
+        # python312
+        # SDL2
+        # libvorbis
+        # libGL
+        # openal
+        # stdenv.cc.cc
+      ];
+    };
+
+    # Gamescope currently doesn't work:
+    # https://github.com/NixOS/nixpkgs/issues/292620
+    # gamescope = {
+    #   enable = true;
+    #   capSysNice = true;
+    # };
+    steam = {
+      enable = true;
+    #   gamescopeSession.enable = true;
+    };
+    gamemode = {
+      enable = true;
+      enableRenice = true;
+    };
   };
 
   security = {

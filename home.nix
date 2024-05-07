@@ -48,6 +48,21 @@ in
 	# # So having armcord as a fallback for now
 	armcord
 
+	(lutris.override {
+	  extraPkgs = pkgs: [
+	    # Bombsquad Game
+	    python312
+            SDL2
+            libvorbis
+            libGL
+            openal
+            stdenv.cc.cc
+	  ];
+	  extraLibraries = pkgs: [
+	  ];
+	})
+	# mangohud
+
 	bitwarden
 	sonixd
 	cinnamon.nemo
@@ -60,10 +75,10 @@ in
 	any-nix-shell
 	android-tools
 	# nix-index
-	lutris
 	libreoffice-fresh
 	transmission-gtk
 	chiaki
+	diskonaut
 
 	gnumake
 	cmake
@@ -79,6 +94,16 @@ in
 	wl-gammarelay-rs
 	nur.repos.nltch.spotify-adblock
       ];
+    };
+    programs.mangohud = {
+      enable = true;
+      enableSessionWide = true;
+      settings = {
+        full = true;
+        cpu_load_change = true;
+	# Turn off display by default. Use Rshift + F12 to toggle.
+        no_display = true;
+      };
     };
   };
 
