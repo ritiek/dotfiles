@@ -1,5 +1,5 @@
 # configuration.nix
-programs.nix-ld.enable = true;
+# programs.nix-ld.enable = true;
 
 # bombsquad.nix
 with import <nixpkgs> {};
