@@ -33,6 +33,7 @@ element-icon {
         "combi"
         "window"
         "drun"
+	"run"
         "ssh"
         "filebrowser"
       ];
