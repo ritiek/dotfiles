@@ -12,6 +12,10 @@
       nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
         inherit pkgs;
       };
+      ritiek = import (builtins.fetchTarball "https://github.com/ritiek/nur-packages/archive/hide-placeholder-for-spotify-advert-banner.zip") {
+        inherit pkgs;
+      };
+
       # Default pkgs are already from unstable channel.
       # unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
     };

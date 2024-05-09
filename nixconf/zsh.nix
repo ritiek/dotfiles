@@ -86,8 +86,6 @@ export POWERLINE_BASH_SELECT=1
 
 export ESPIDF=/opt/esp-idf
 
-# export QT_QPA_PLATFORMTHEME="qt5ct"
-
 # export PYENV_ROOT="$HOME/.pyenv"
 # command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 # eval "$(pyenv init -)"
@@ -139,7 +137,6 @@ export PATH
       extended = true;
     };
     # defaultKeymap = "emacs";
-    # historySubstringSearch.enable = true;
     oh-my-zsh = {
       enable = true;
       plugins = [
@@ -147,7 +144,8 @@ export PATH
         "bgnotify"
         "colored-man-pages"
         "command-not-found"
-        "history-substring-search"
+	# Commenting out as it break Ctrl+C to clear command in some scenarios.
+        # "history-substring-search"
       ];
     };
     syntaxHighlighting = {

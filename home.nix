@@ -24,6 +24,7 @@ in
       ./nixconf/swaync.nix
       ./nixconf/mpv.nix
       # ./nixconf/syncthing.nix
+      ./nixconf/glava.nix
       ./nixconf/sioyek.nix
     ];
     programs = {
@@ -59,6 +60,7 @@ in
             stdenv.cc.cc
 	  ];
 	  extraLibraries = pkgs: [
+	    # python312Packages.tkinter
 	  ];
 	})
 	# mangohud
@@ -92,7 +94,11 @@ in
 
 	hyprshot
 	wl-gammarelay-rs
-	nur.repos.nltch.spotify-adblock
+
+	# Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
+	# nur.repos.nltch.spotify-adblock
+	# So installing directly from my source repo instead
+	ritiek.spotify-adblock
       ];
     };
     programs.mangohud = {
