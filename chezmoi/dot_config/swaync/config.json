@@ -3,7 +3,7 @@
 
   "positionX": "center",
   "positionY": "top",
-  "control-center-positionX": "none",
+  "control-center-positionX": "right",
   "control-center-positionY": "none",
   "control-center-margin-top": 8,
   "control-center-margin-bottom": 8,
