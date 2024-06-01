@@ -79,14 +79,14 @@
       isNormalUser = true;
       description = "Ritiek Malhotra";
       extraGroups = [
-        "networkmanager"
+        # "networkmanager"
         "wheel"
         "video"
         "audio"
         "input"
-        "dialout"
+        # "dialout"
         "polkituser"
-	"users"
+	# "users"
 	"plugdev"
       ];
       shell = pkgs.zsh;

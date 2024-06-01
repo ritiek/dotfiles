@@ -49,6 +49,7 @@ in
 	# # So having armcord as a fallback for now
 	armcord
 
+        # bombsquad
 	(lutris.override {
 	  extraPkgs = pkgs: [
 	    # Bombsquad Game
