@@ -27,9 +27,15 @@
     [ # Include the results of the hardware scan.
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
+      ./home.nix
       ./graphics.nix
       ./environment.nix
-      ./home.nix
+
+      # Enable only one of these:
+      # x86-64 machine
+      ./boot.nix
+      # Raspberry Pi 4
+      ./rpi4.nix
     ];
 
   # Select internationalisation properties.
