@@ -34,72 +34,72 @@ in
       /* The home.stateVersion option does not have a default and must be set */
       stateVersion = "24.05";
       packages = with pkgs; [
-	# spotify
-	unzip
-	unrar-wrapper
-	jq
-	google-chrome
-	playerctl
-	nwg-look
-	libsForQt5.qt5ct
+        # spotify
+        unzip
+        unrar-wrapper
+        jq
+        google-chrome
+        playerctl
+        nwg-look
+        libsForQt5.qt5ct
 
-	# # Can't join voice channels on dorion discord client and it
-	# # seems to freeze randomly (wayland/gpu issues maybe)
-	# dorion
-	# # So having armcord as a fallback for now
-	armcord
+        # # Can't join voice channels on dorion discord client and it
+        # # seems to freeze randomly (wayland/gpu issues maybe)
+        # dorion
+        # # So having armcord as a fallback for now
+        armcord
 
         # bombsquad
-	(lutris.override {
-	  extraPkgs = pkgs: [
-	    # Bombsquad Game
-	    python312
+        (lutris.override {
+          extraPkgs = pkgs: [
+            # Bombsquad Game
+            python312
             SDL2
             libvorbis
             libGL
             openal
             stdenv.cc.cc
-	  ];
-	  extraLibraries = pkgs: [
-	    # python312Packages.tkinter
-	  ];
-	})
-	# mangohud
+          ];
+          extraLibraries = pkgs: [
+            # python312Packages.tkinter
+          ];
+        })
+        # mangohud
 
-	bitwarden
-	sonixd
-	cinnamon.nemo
-	calibre
-	krita
-	# protonvpn-gui
-	lxqt.lxqt-policykit
-	yubioath-flutter
-	wl-clipboard-rs
-	any-nix-shell
-	android-tools
-	# nix-index
-	libreoffice-fresh
-	transmission-gtk
-	chiaki
-	diskonaut
+        bitwarden
+        sonixd
+        cinnamon.nemo
+        calibre
+        krita
+        # protonvpn-gui
+        lxqt.lxqt-policykit
+        yubioath-flutter
+        wl-clipboard-rs
+        any-nix-shell
+        android-tools
+        # nix-index
+        libreoffice-fresh
+        transmission-gtk
+        chiaki
+        diskonaut
 
-	gnumake
-	cmake
-	texlive.combined.scheme-full
-	pavucontrol
+        gnumake
+        cmake
+        texlive.combined.scheme-full
+        pavucontrol
 
         slack
         # telegram-desktop
-	awscli2
-	ssm-session-manager-plugin
+        awscli2
+        ssm-session-manager-plugin
 
-	hyprshot
-	wl-gammarelay-rs
+        hyprshot
+        wl-gammarelay-rs
 
-	# Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
-	# nur.repos.nltch.spotify-adblock
-	# So installing directly from my source repo instead
-	ritiek.spotify-adblock
+        # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
+        # nur.repos.nltch.spotify-adblock
+        # So installing directly from my source repo instead
+        ritiek.spotify-adblock
       ];
     };
     programs.mangohud = {
@@ -108,7 +108,7 @@ in
       settings = {
         full = true;
         cpu_load_change = true;
-	# Turn off display by default. Use Rshift + F12 to toggle.
+        # Turn off display by default. Use Rshift + F12 to toggle.
         no_display = true;
       };
     };

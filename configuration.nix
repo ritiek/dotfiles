@@ -86,8 +86,8 @@
         "input"
         # "dialout"
         "polkituser"
-	# "users"
-	"plugdev"
+        # "users"
+        "plugdev"
       ];
       shell = pkgs.zsh;
     };
@@ -306,7 +306,7 @@
           "FantasqueSansMono"
           "InconsolataGo"
           "JetBrainsMono"
-	  # "FiraCode"
+	        # "FiraCode"
           # "NotoSansMono"
         ];
       })
