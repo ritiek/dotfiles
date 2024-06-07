@@ -23,6 +23,7 @@ end)
 
 -- This is where you actually apply your config choices
 
+-- config.front_end = "WebGpu"  -- Enable in case of no OpenGL
 config.enable_wayland = false
 config.color_scheme = 'Dracula'
 -- config.color_scheme = 'Tartan (terminal.sexy)'

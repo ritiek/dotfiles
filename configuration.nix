@@ -28,14 +28,14 @@
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
       ./home.nix
-      ./graphics.nix
       ./environment.nix
 
-      # Enable only one of these:
-      # x86-64 machine
+      ## Enable only one of the following sections:
+      ## x86-64 machine
+      ./graphics.nix
       ./boot.nix
-      # Raspberry Pi 4
-      ./rpi4.nix
+      ## Raspberry Pi 4
+      # ./rpi4.nix
     ];
 
   # Select internationalisation properties.
@@ -234,8 +234,8 @@
     udev = {
       packages = [
         pkgs.swayosd
-	# pkgs.android-tools
-	# pkgs.yubikey-personalization
+        # pkgs.android-tools
+        # pkgs.yubikey-personalization
       ];
       extraRules = ''
       #   # FIXME: Try getting ADB to work non-root users.
@@ -262,7 +262,7 @@
       enable = true;
       libraries = with pkgs; [
         # Bombsquad Game.
-	# Now installing these packages using Lutris in home-manager.
+        # Now installing these packages using Lutris in home-manager.
         # python312
         # SDL2
         # libvorbis
@@ -312,7 +312,7 @@
           "FantasqueSansMono"
           "InconsolataGo"
           "JetBrainsMono"
-	        # "FiraCode"
+          # "FiraCode"
           # "NotoSansMono"
         ];
       })
