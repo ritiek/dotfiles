@@ -49,16 +49,16 @@ in
         # # So having armcord as a fallback for now
         armcord
 
-        # bombsquad
+        bombsquad
         (lutris.override {
           extraPkgs = pkgs: [
-            # Bombsquad Game
-            python312
-            SDL2
-            libvorbis
-            libGL
-            openal
-            stdenv.cc.cc
+            # # Bombsquad Game
+            # python312
+            # SDL2
+            # libvorbis
+            # libGL
+            # openal
+            # stdenv.cc.cc
           ];
           extraLibraries = pkgs: [
             # python312Packages.tkinter
