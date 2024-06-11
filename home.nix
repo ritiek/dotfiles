@@ -73,7 +73,7 @@ in
         krita
         # protonvpn-gui
         lxqt.lxqt-policykit
-        yubioath-flutter
+
         wl-clipboard-rs
         any-nix-shell
         android-tools
@@ -83,6 +83,14 @@ in
         chiaki
         diskonaut
 
+        # FIXME: Can't seem to install both these together.
+        yubioath-flutter
+        # fluffychat
+
+        # element-desktop-wayland
+        element-desktop
+
+        python312Packages.ipython
         gnumake
         cmake
         texlive.combined.scheme-full
