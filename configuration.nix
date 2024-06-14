@@ -108,6 +108,7 @@
       # Flakes use Git to pull dependencies from data sources 
       wget
       curl
+      screen
       swayosd
       brightnessctl
       ripgrep
@@ -125,6 +126,7 @@
       # android-tools
 
       xorg.xeyes
+      netdiscover
       usbutils
       libnotify
       lshw
@@ -143,6 +145,9 @@
 
   systemd = {
     services = {
+      avahi = {
+        enable = true;
+      };
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
 	enable = true;
