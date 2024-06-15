@@ -100,6 +100,7 @@ in
         # telegram-desktop
         awscli2
         ssm-session-manager-plugin
+        nmap
 
         hyprshot
         wl-gammarelay-rs
