@@ -71,6 +71,7 @@ in
         cinnamon.nemo
         calibre
         krita
+        blender
         # protonvpn-gui
         lxqt.lxqt-policykit
 
@@ -82,6 +83,8 @@ in
         transmission-gtk
         chiaki
         diskonaut
+        woeusb-ng
+        wifite2
 
         # FIXME: Can't seem to install both these together.
         yubioath-flutter
