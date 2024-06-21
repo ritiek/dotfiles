@@ -132,8 +132,8 @@
       lshw
       pv
       glxinfo
+      sof-firmware
       intel-gpu-tools
-      aircrack-ng
       linuxPackages.usbip
       docker-compose
     ];
