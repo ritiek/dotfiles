@@ -46,8 +46,12 @@
       target = "${config.home.homeDirectory}/.local/share/icons/rose-pine-hyprcursor";
     };
     wallpaper = {
-      source = builtins.fetchurl "https://i.imgur.com/gtGew3r.jpg";
-      # source = builtins.fetchurl "https://i.imgur.com/tjXNPpW.jpg";
+      source = builtins.fetchurl {
+        url = "https://i.imgur.com/gtGew3r.jpg";
+        sha256 = "0kjkj73szx2ahdh9kxyzy2z4alh2xz4z47fzbc9ns6mcxjwqsr1s";
+
+        # url = "https://i.imgur.com/tjXNPpW.jpg";
+      };
       target = "${config.home.homeDirectory}/Pictures/wallpaper.jpg";
       # FIXME: `onChange` isn't working right now for some reason.
       # The plan is to update wallpaper automatically if the above URL gets changed.
