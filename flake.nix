@@ -5,8 +5,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
-    ritiek.url = "github:ritiek/nur-packages/hide-placeholder-for-spotify-advert-banner";
-    stable.url = "github:NixOS/nixpkgs";
+    # ritiek.url = "github:ritiek/nur-packages/hide-placeholder-for-spotify-advert-banner";
+    # stable.url = "github:NixOS/nixpkgs";
     # v23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
 
     home-manager = {
@@ -27,6 +27,8 @@
         # Import the previous configuration.nix we used,
         # so the old configuration file still takes effect
         ./configuration.nix
+
+        { nixpkgs.overlays = [ nur.overlay ]; }
 
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;

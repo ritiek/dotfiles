@@ -22,6 +22,9 @@ $ sudo git clone https://github.com/ritiek/dotfiles /etc/nixos
 # Create a machine specific `hardware-configuration.nix`.
 $ sudo nixos-generate-config
 
+$ cd /etc/nixos
+$ nix flake update
+
 $ sudo nixos-rebuild boot --upgrade-all
 $ sudo shutdown -r now
 ```
