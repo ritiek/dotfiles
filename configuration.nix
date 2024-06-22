@@ -8,19 +8,19 @@
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
-    packageOverrides = pkgs: {
-      nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-        inherit pkgs;
-      };
-      ritiek = import (builtins.fetchTarball "https://github.com/ritiek/nur-packages/archive/hide-placeholder-for-spotify-advert-banner.zip") {
-        inherit pkgs;
-      };
+    # packageOverrides = pkgs: {
+    #   nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
+    #     inherit pkgs;
+    #   };
+    #   ritiek = import (builtins.fetchTarball "https://github.com/ritiek/nur-packages/archive/hide-placeholder-for-spotify-advert-banner.zip") {
+    #     inherit pkgs;
+    #   };
 
-      # Default pkgs are already from unstable channel.
-      # unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
-      stable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/master.tar.gz") {};
-      # v23_11 = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-23.11.tar.gz") {};
-    };
+    #   # Default pkgs are already from unstable channel.
+    #   # unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
+    #   stable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/master.tar.gz") {};
+    #   # v23_11 = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-23.11.tar.gz") {};
+    # };
   };
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -29,7 +29,7 @@
     [ # Include the results of the hardware scan.
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
-      ./home.nix
+      # ./home.nix
       ./environment.nix
 
       ## Enable only one of the following sections:

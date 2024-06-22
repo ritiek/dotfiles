@@ -1,16 +1,8 @@
-{ pkgs, ... }:
-let
-  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.zip";
-in
+{ pkgs, inputs, ... }:
 {
-  imports = [
-    (import "${home-manager}/nixos")
-  ];
-
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.ritiek = { config, lib, ... }: {
     imports = [
+      # inputs.nur.hmModules.nur
+
       ./nixconf/hyprland.nix
       ./nixconf/theme.nix
       ./nixconf/wezterm.nix
@@ -49,7 +41,9 @@ in
         # # So having armcord as a fallback for now
         armcord
 
-        bombsquad
+        # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
+        # bombsquad
+
         (lutris.override {
           extraPkgs = pkgs: [
             # # Bombsquad Game
@@ -108,10 +102,11 @@ in
         hyprshot
         wl-gammarelay-rs
 
+        # FIXME: Make nur work with flakes
         # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
         # nur.repos.nltch.spotify-adblock
         # So installing directly from my source repo instead
-        ritiek.spotify-adblock
+        # ritiek.spotify-adblock
       ];
     };
     programs.mangohud = {
@@ -124,7 +119,4 @@ in
         no_display = true;
       };
     };
-  };
-
-  environment.pathsToLink = [ "/share/zsh" ];
 }
