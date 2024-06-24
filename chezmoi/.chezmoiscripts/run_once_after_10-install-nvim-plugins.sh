@@ -5,3 +5,4 @@ nvim -c "q"
 # :MasonInstallAll
 # :TSUpdate
 # :Copilot auth
+# :Lazy sync
