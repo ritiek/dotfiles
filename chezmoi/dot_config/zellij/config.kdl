@@ -13,3 +13,11 @@ themes {
         orange 208 135 112 // #D08770
 	}
 }
+
+keybinds {
+    // unbind "Alt h" "Alt n"
+    normal {
+        unbind "Alt i"
+        unbind "Ctrl h"
+    }
+}
