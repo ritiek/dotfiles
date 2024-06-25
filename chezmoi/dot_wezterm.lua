@@ -59,7 +59,7 @@ config.keys = {
     action = wezterm.action.EmitEvent 'toggle-colorscheme',
   },
   {
-    key = 'F',
+    key = 'f',
     mods = 'CTRL',
     action = wezterm.action.ToggleFullScreen,
   },
