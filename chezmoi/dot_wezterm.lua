@@ -58,9 +58,17 @@ config.keys = {
     mods = 'CTRL',
     action = wezterm.action.EmitEvent 'toggle-colorscheme',
   },
+  {
+    key = 'F',
+    mods = 'CTRL',
+    action = wezterm.action.ToggleFullScreen,
+  },
 }
 -- Maybe I should try fix this instead of suppressing this warning.
 config.warn_about_missing_glyphs = false
+
+config.send_composed_key_when_left_alt_is_pressed = false
+config.send_composed_key_when_right_alt_is_pressed = false
 
 
 -- config.window_background_image = "/home/ritiek/Pictures/island-fantastic-coast-mountains-art.jpg"
