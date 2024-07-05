@@ -72,7 +72,7 @@
       android-tools
       # nix-index
       libreoffice-fresh
-      transmission-gtk
+      transmission_4-gtk
       chiaki
       diskonaut
       woeusb-ng
@@ -96,6 +96,7 @@
       awscli2
       ssm-session-manager-plugin
       nmap
+      dig
 
       hyprshot
       wl-gammarelay-rs
