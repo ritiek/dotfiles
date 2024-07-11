@@ -195,7 +195,6 @@
 
     # swayosd.enable = true;
 
-    pipewire.wireplumber.enable = true;
     tailscale.enable = true;
 
     blueman.enable = true;
@@ -213,6 +212,7 @@
         enable = true;
         support32Bit = true;
       };
+      wireplumber.enable = true;
       pulse.enable = true;
       jack.enable = true;
 

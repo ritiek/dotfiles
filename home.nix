@@ -37,7 +37,7 @@
       # # seems to freeze randomly (wayland/gpu issues maybe)
       # dorion
       # # So having armcord as a fallback for now
-      armcord
+      # armcord
 
       # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
       # bombsquad
@@ -75,7 +75,7 @@
       transmission_4-gtk
       chiaki
       diskonaut
-      woeusb-ng
+      # woeusb-ng
       wifite2
 
       # FIXME: Can't seem to install both these together.
