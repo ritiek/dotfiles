@@ -25,7 +25,7 @@ $ sudo nixos-generate-config
 $ cd /etc/nixos
 $ nix flake update
 
-$ sudo nixos-rebuild boot --upgrade-all
+$ sudo nixos-rebuild boot --upgrade-all --option eval-cache false
 $ sudo shutdown -r now
 ```
 

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, modulesPath, options, ... }:
+{ config, lib, pkgs, modulesPath, options, inputs, ... }:
 
 {
   # Allow unfree packages
@@ -29,7 +29,6 @@
     [ # Include the results of the hardware scan.
       (modulesPath + "/installer/scan/not-detected.nix")
       ./hardware-configuration.nix
-      # ./home.nix
       ./environment.nix
 
       ## Enable only one of the following sections:
@@ -123,6 +122,7 @@
       yubico-pam
       pam_u2f
       parallel
+      libarchive
       # android-tools
 
       xorg.xeyes
@@ -136,6 +136,8 @@
       intel-gpu-tools
       linuxPackages.usbip
       docker-compose
+
+      inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
     ];
 
     variables.EDITOR = "nvim";
@@ -176,7 +178,7 @@
   };
 
   # Enable sound with pipewire.
-  sound.enable = true;
+  # sound.enable = true;
 
   hardware = {
     pulseaudio.enable = false;
@@ -188,7 +190,7 @@
 
   services = {
     # Enable the OpenSSH daemon.
-    # openssh.enable = true;
+    openssh.enable = true;
 
     # Enable CUPS to print documents.
     # printing.enable = true;

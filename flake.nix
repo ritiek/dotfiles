@@ -8,6 +8,7 @@
     # ritiek.url = "github:ritiek/nur-packages/hide-placeholder-for-spotify-advert-banner";
     # stable.url = "github:NixOS/nixpkgs";
     # v23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -19,7 +20,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, ... }@inputs: {
+  outputs = { self, nixpkgs, nur, home-manager, rose-pine-hyprcursor, ... }@inputs: {
     # Please replace my-nixos with your hostname
     nixosConfigurations.nixin = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
@@ -34,9 +35,14 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.ritiek = import ./home.nix;
+          # home-manager.users.ritiek = import ./home.nix {
+          #   pkgs = import nixpkgs;
+          #   inherit inputs;
+          # };
           environment.pathsToLink = [ "/share/zsh" ];
         }
       ];
+      specialArgs = { inherit inputs; };
     };
   };
 }

@@ -37,7 +37,7 @@
       # # seems to freeze randomly (wayland/gpu issues maybe)
       # dorion
       # # So having armcord as a fallback for now
-      # armcord
+      armcord
 
       # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
       # bombsquad
@@ -100,6 +100,8 @@
 
       hyprshot
       wl-gammarelay-rs
+
+      # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
 
       # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
       nur.repos.nltch.spotify-adblock

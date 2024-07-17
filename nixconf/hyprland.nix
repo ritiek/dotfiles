@@ -36,15 +36,16 @@
       source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/hypr/hyprpaper.conf;
       target = "${config.home.homeDirectory}/.config/hypr/hyprpaper.conf";
     };
-    hyprcursor = {
-      source = (pkgs.fetchFromGitHub {
-        owner = "ndom91";
-        repo = "rose-pine-hyprcursor";
-        rev = "7e0473876f0e6d2308813a78fe84a6c6430b112b";
-        hash = "sha256-wLuFLI6S5DOretqJN05+kvrs8cbnZKfVLXrJ4hvI/Tg=";
-      }) + "/hyprcursors";
-      target = "${config.home.homeDirectory}/.local/share/icons/rose-pine-hyprcursor";
-    };
+    # Now using flake.nix input instead.
+    # hyprcursor = {
+    #   source = (pkgs.fetchFromGitHub {
+    #     owner = "ndom91";
+    #     repo = "rose-pine-hyprcursor";
+    #     rev = "7e0473876f0e6d2308813a78fe84a6c6430b112b";
+    #     hash = "sha256-wLuFLI6S5DOretqJN05+kvrs8cbnZKfVLXrJ4hvI/Tg=";
+    #   }) # + "/hyprcursors";
+    #   target = "${config.home.homeDirectory}/.local/share/icons/rose-pine-hyprcursor";
+    # };
     wallpaper = {
       source = builtins.fetchurl {
         url = "https://i.imgur.com/gtGew3r.jpg";
