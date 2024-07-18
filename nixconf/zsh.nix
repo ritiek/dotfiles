@@ -64,8 +64,10 @@ ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 #umask 022
 
 export EDITOR="nvim"
-export VIM="$HOME/.config/nvim"
-export VIMRUNTIME="/usr/share/nvim/runtime"
+# This messes up Neovim config on NixOS, so commenting it out:
+# export VIM="$HOME/.config/nvim"
+# export VIMRUNTIME="/usr/share/nvim/runtime"
+
 export BROWSER="google-chrome-stable"
 export LESS="--mouse --wheel-lines=3 -r"
 export LESSOPEN="|$HOME/.lessfilter %s"
