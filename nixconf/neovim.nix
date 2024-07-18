@@ -18,8 +18,16 @@
     extraPackages = with pkgs; [
       xclip
       wl-clipboard
-      lua-language-server
       stylua
+      deno
+      clang-tools
+      lua-language-server
+      python3
+      python312Packages.python-lsp-server
+      rust-analyzer
+      typescript-language-server
+      gcc
+      cargo
     ];
 
     # plugins = with pkgs.vimPlugins; [
@@ -27,9 +35,12 @@
   };
 
   # xdg.configFile = {
-  #   "nvim" = {
+  #   nvim = {
   #     source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/chezmoi/dot_config/nvim/";
   #   };
   # };
-
+  home.file.nvim = {
+    source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/nvim;
+    target = "${config.home.homeDirectory}/.config/nvim";
+  };
 }
