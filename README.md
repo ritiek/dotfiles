@@ -39,4 +39,14 @@ $ chezmoi apply -R
 
 ## Screenshots
 
-(soon!)
+March, 2020
+
+<img src="https://i.imgur.com/lNSb7H2.png" width="750">
+
+November, 2022
+
+<img src="https://i.imgur.com/K8QXOPq.png" width="750">
+
+July, 2024
+
+<img src="https://i.imgur.com/rI8Wnka.png" width="750">
