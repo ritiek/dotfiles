@@ -152,16 +152,16 @@
       };
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
-	enable = true;
-	path = [
-	  pkgs.coreutils
-	  pkgs.swayosd
-	];
+        enable = true;
+        path = [
+          pkgs.coreutils
+          pkgs.swayosd
+        ];
         script = ''
           ${pkgs.coreutils}/bin/sleep 30s;
           echo starting;
           sudo ${pkgs.swayosd}/bin/swayosd-libinput-backend;
-	'';
+        '';
         wantedBy = [ "graphical-session.target" ];
         # wants = [ "graphical-session.target" ];
         # after = [ "graphical-session.target" ];
@@ -170,8 +170,8 @@
           Restart = "on-failure";
           RestartSec = 10;
           TimeoutStopSec = 60;
-	  User = "root";
-	  Group = "root";
+          User = "root";
+          Group = "root";
         };
       };
     };
