@@ -60,7 +60,7 @@
 
       bitwarden
       sonixd
-      cinnamon.nemo
+      nemo
       calibre
       krita
       blender
@@ -85,6 +85,8 @@
       # element-desktop-wayland
       element-desktop
 
+      python312
+      python312Packages.pip
       python312Packages.ipython
       gnumake
       cmake
@@ -97,6 +99,7 @@
       ssm-session-manager-plugin
       nmap
       dig
+      fastgron
 
       hyprshot
       wl-gammarelay-rs
