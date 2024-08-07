@@ -69,6 +69,7 @@ local plugins = {
         "rust",
         "markdown",
         "markdown_inline",
+        "svelte",
       },
       indent = {
         enable = true,

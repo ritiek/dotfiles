@@ -88,6 +88,13 @@
       python312
       python312Packages.pip
       python312Packages.ipython
+      poetry
+
+      cargo
+      rustfmt
+      go
+
+      gcc
       gnumake
       cmake
       texlive.combined.scheme-full
