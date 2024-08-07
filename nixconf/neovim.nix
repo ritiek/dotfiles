@@ -22,12 +22,13 @@
       deno
       clang-tools
       lua-language-server
-      python3
+      # python312
       python312Packages.python-lsp-server
       rust-analyzer
       typescript-language-server
-      gcc
-      cargo
+      # gcc
+      # cargo
+      # rustfmt
     ];
 
     # plugins = with pkgs.vimPlugins; [
