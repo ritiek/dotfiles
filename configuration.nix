@@ -135,7 +135,7 @@
       sof-firmware
       intel-gpu-tools
       linuxPackages.usbip
-      docker-compose
+      # docker-compose
 
       inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
     ];

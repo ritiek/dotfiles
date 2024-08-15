@@ -36,8 +36,9 @@
       # # Can't join voice channels on dorion discord client and it
       # # seems to freeze randomly (wayland/gpu issues maybe)
       # dorion
-      # # So having armcord as a fallback for now
-      armcord
+      ## # So having armcord as a fallback for now
+      # armcord
+      # discord
 
       # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
       # bombsquad
@@ -77,6 +78,8 @@
       diskonaut
       # woeusb-ng
       wifite2
+      mitmproxy
+      docker-compose
 
       # FIXME: Can't seem to install both these together.
       yubioath-flutter
@@ -90,8 +93,10 @@
       python312Packages.ipython
       poetry
 
+      rustc
       cargo
       rustfmt
+      clippy
       go
 
       gcc
@@ -107,6 +112,7 @@
       nmap
       dig
       fastgron
+      nap
 
       hyprshot
       wl-gammarelay-rs
