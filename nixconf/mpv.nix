@@ -14,6 +14,17 @@
       vo = "gpu";
       profile = "gpu-hq";
       gpu-context = "wayland";
+      osc = "no";
     };
+    scripts = with pkgs.mpvScripts; [
+      mpv-cheatsheet
+      mpris
+      # Pass magnet URLs to mpv.
+      webtorrent-mpv-hook
+      thumbnail
+      thumbfast
+      # Doesn't install for some reason.
+      # mpv-notify-send
+    ];
   };
 }
