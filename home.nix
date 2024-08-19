@@ -37,7 +37,7 @@
       # # seems to freeze randomly (wayland/gpu issues maybe)
       # dorion
       ## # So having armcord as a fallback for now
-      # armcord
+      armcord
       # discord
 
       # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
@@ -69,6 +69,7 @@
       lxqt.lxqt-policykit
 
       wl-clipboard-rs
+      wev
       any-nix-shell
       android-tools
       # nix-index
@@ -86,7 +87,10 @@
       # fluffychat
 
       # element-desktop-wayland
-      element-desktop
+
+      # XXX: error: Package ‘jitsi-meet-1.0.8043’ is marked as insecure, refusing to evaluate.
+      # https://github.com/NixOS/nixpkgs/pull/334638#issuecomment-2289025802
+      # element-desktop
 
       python312
       python312Packages.pip
@@ -114,7 +118,6 @@
       fastgron
       nap
 
-      hyprshot
       wl-gammarelay-rs
 
       # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default

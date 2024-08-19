@@ -23,7 +23,10 @@
     # };
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    auto-optimise-store = true;
+  };
 
   imports =
     [ # Include the results of the hardware scan.
@@ -291,7 +294,7 @@
     # };
     steam = {
       enable = true;
-    #   gamescopeSession.enable = true;
+      # gamescopeSession.enable = true;
     };
     gamemode = {
       enable = true;
@@ -344,6 +347,9 @@
       allowReboot = false;
     };
   };
+
+  powerManagement.cpuFreqGovernor = "ondemand";
+  # powerManagement.cpuFreqGovernor = "performance";
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
