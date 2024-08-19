@@ -24,7 +24,7 @@ end)
 -- This is where you actually apply your config choices
 
 -- config.front_end = "WebGpu"  -- Enable in case of no OpenGL
-config.enable_wayland = false
+config.enable_wayland = true
 config.color_scheme = 'Dracula'
 -- config.color_scheme = 'Tartan (terminal.sexy)'
 config.hide_tab_bar_if_only_one_tab = true

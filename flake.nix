@@ -3,10 +3,11 @@
   # using `sudo nixos-generate-config`?
   description = "NixOS flake for my dotfiles";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs";
     nur.url = "github:nix-community/NUR";
+    stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    # unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     # ritiek.url = "github:ritiek/nur-packages/hide-placeholder-for-spotify-advert-banner";
-    # stable.url = "github:NixOS/nixpkgs";
     # v23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
 
@@ -20,29 +21,44 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, rose-pine-hyprcursor, ... }@inputs: {
+  outputs = { self, nixpkgs, nur, stable, home-manager, rose-pine-hyprcursor, ... }@inputs:
+    {
     # Please replace my-nixos with your hostname
-    nixosConfigurations.nixin = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
         # Import the previous configuration.nix we used,
         # so the old configuration file still takes effect
         ./configuration.nix
 
-        { nixpkgs.overlays = [ nur.overlay ]; }
+        { nixpkgs.overlays = [
+          nur.overlay
+          (final: _prev: {
+            stable = import stable {
+              inherit (final) system;
+            };
+          })
+        ]; }
 
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.ritiek = import ./home.nix;
-          # home-manager.users.ritiek = import ./home.nix {
-          #   pkgs = import nixpkgs;
-          #   inherit inputs;
+          home-manager.extraSpecialArgs = {
+            inherit inputs;
+          };
+          # home-manager.extraSpecialArgs = {
+          #   stable = import stable {
+          #     inherit system;
+          #     config.allowUnfree = true;
+          #   };
           # };
+          home-manager.users.ritiek = import ./home.nix;
           environment.pathsToLink = [ "/share/zsh" ];
         }
       ];
-      specialArgs = { inherit inputs; };
+      specialArgs = {
+        inherit inputs;
+      };
     };
   };
 }

@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, inputs, config, ... }:
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -18,6 +18,8 @@
     hyprpaper
     hyprpicker
     hyprcursor
+    hyprshot
+    # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
   ];
   home.file = {
     hyprland = {
