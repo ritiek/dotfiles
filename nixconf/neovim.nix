@@ -17,18 +17,18 @@
 
     extraPackages = with pkgs; [
       xclip
-      wl-clipboard
+      wl-clipboard-rs
       stylua
       deno
       clang-tools
       lua-language-server
-      # python312
+      python312
       python312Packages.python-lsp-server
       rust-analyzer
       typescript-language-server
-      # gcc
-      # cargo
-      # rustfmt
+      gcc
+      cargo
+      rustfmt
     ];
 
     # plugins = with pkgs.vimPlugins; [

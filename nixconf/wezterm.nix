@@ -5,6 +5,7 @@
   programs.kitty.enable = true;
   programs.wezterm = {
     enable = true;
+    # package = pkgs.stable.wezterm;
     extraConfig = builtins.readFile ../chezmoi/dot_wezterm.lua;
   };
 }
