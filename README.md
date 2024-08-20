@@ -50,3 +50,4 @@ November, 2022
 July, 2024
 
 <img src="https://i.imgur.com/rI8Wnka.png" width="750">
+<img src="https://i.imgur.com/s6ivguO.png" width="750">
