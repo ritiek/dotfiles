@@ -6,10 +6,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs";
     nur.url = "github:nix-community/NUR";
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    # unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    # ritiek.url = "github:ritiek/nur-packages/hide-placeholder-for-spotify-advert-banner";
-    # v23_11.url = "github:NixOS/nixpkgs/nixos-23.11";
-    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -19,6 +15,8 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
   outputs = { self, nixpkgs, nur, stable, home-manager, rose-pine-hyprcursor, ... }@inputs:
@@ -31,14 +29,16 @@
         # so the old configuration file still takes effect
         ./configuration.nix
 
-        { nixpkgs.overlays = [
-          nur.overlay
-          (final: _prev: {
-            stable = import stable {
-              inherit (final) system;
-            };
-          })
-        ]; }
+        {
+          nixpkgs.overlays = [
+            nur.overlay
+            (final: _prev: {
+              stable = import stable {
+                inherit (final) system;
+              };
+            })
+          ];
+        }
 
         home-manager.nixosModules.home-manager {
           home-manager.useGlobalPkgs = true;
