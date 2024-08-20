@@ -15,6 +15,10 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    wezterm-flake = {
+      url = "github:wez/wezterm/main?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };

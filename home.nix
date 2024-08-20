@@ -87,10 +87,9 @@
       # fluffychat
 
       # element-desktop-wayland
-
       # XXX: error: Package ‘jitsi-meet-1.0.8043’ is marked as insecure, refusing to evaluate.
       # https://github.com/NixOS/nixpkgs/pull/334638#issuecomment-2289025802
-      # element-desktop
+      element-desktop
 
       python312
       python312Packages.pip
@@ -121,6 +120,7 @@
       wl-gammarelay-rs
 
       # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+      inputs.wezterm-flake.packages.${pkgs.system}.default
 
       # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
       nur.repos.nltch.spotify-adblock
