@@ -7,6 +7,7 @@
 {
   # Allow unfree packages
   nixpkgs.config = {
+    # TODO: Make adjustments and set this to false.
     allowUnfree = true;
     # packageOverrides = pkgs: {
     #   nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
@@ -137,6 +138,7 @@
       glxinfo
       sof-firmware
       intel-gpu-tools
+      cpulimit
       linuxPackages.usbip
       # docker-compose
 
@@ -146,7 +148,10 @@
     variables.EDITOR = "nvim";
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation = {
+    docker.enable = true;
+    waydroid.enable = true;
+  };
 
   systemd = {
     services = {
@@ -194,6 +199,7 @@
   services = {
     # Enable the OpenSSH daemon.
     openssh.enable = true;
+    dbus.enable = true;
 
     # Enable CUPS to print documents.
     # printing.enable = true;
@@ -264,6 +270,14 @@
       '';
       # # RUN+="${pkgs.procps} hyprlock || ${pkgs.unstable.hyprlock}/bin/hyprlock"
     };
+  };
+
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    # gtkUsePortal = true;
   };
 
   programs = {

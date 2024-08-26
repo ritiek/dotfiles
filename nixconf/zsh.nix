@@ -3,6 +3,7 @@
   programs.zsh = {
     enable = true;
     profileExtra = ''
+export WAYLAND_DISPLAY=wayland-1
 eval $(keychain --eval --quiet --noask)
     '';
     initExtraFirst = ''
