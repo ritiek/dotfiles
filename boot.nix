@@ -1,6 +1,10 @@
 {
   # Force Wayland on all apps.
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    # WAYLAND_DISPLAY = "wayland-1";
+  };
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 

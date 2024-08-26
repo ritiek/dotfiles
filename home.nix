@@ -29,6 +29,7 @@
       unrar-wrapper
       jq
       google-chrome
+      stable.librewolf
       playerctl
       nwg-look
       libsForQt5.qt5ct
@@ -40,6 +41,7 @@
       armcord
       # discord
 
+      # osu-lazer-bin
       # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
       # bombsquad
 
@@ -57,14 +59,13 @@
           # python312Packages.tkinter
         ];
       })
-      # mangohud
 
       bitwarden
       sonixd
       nemo
       calibre
       krita
-      blender
+      unstable.blender
       # protonvpn-gui
       lxqt.lxqt-policykit
 
@@ -73,7 +74,9 @@
       any-nix-shell
       android-tools
       # nix-index
-      libreoffice-fresh
+      unstable.libreoffice-fresh
+      # Looks like this available only for darwin:
+      # libreoffice-bin
       transmission_4-gtk
       chiaki
       diskonaut
@@ -118,6 +121,7 @@
       nap
 
       wl-gammarelay-rs
+      wayvnc
 
       # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
       inputs.wezterm-flake.packages.${pkgs.system}.default

@@ -1,5 +1,8 @@
 { pkgs, ... }:
 {
+  # home.packages = with pkgs; [
+  #   mpv
+  # ];
   programs.mpv = {
     enable = true;
     config = {
@@ -10,10 +13,10 @@
       slang = "eng";
       no-sub-ass = "";
       force-seekable = "";
-      hwdec = "auto-safe";
-      vo = "gpu";
-      profile = "gpu-hq";
-      gpu-context = "wayland";
+      # hwdec = "auto-safe";
+      # vo = "gpu";
+      # profile = "gpu-hq";
+      # gpu-context = "wayland";
       osc = "no";
     };
     scripts = with pkgs.mpvScripts; [
