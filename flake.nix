@@ -64,7 +64,11 @@
           #   };
           # };
           home-manager.users.ritiek = import ./home.nix;
-          environment.pathsToLink = [ "/share/zsh" ];
+          environment.pathsToLink = [
+            "/share/zsh"
+            "/share/xdg-desktop-portal"
+            "/share/applications"
+          ];
         }
       ];
       specialArgs = {
