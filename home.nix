@@ -13,6 +13,7 @@
     ./nixconf/waybar.nix
     ./nixconf/swaync.nix
     ./nixconf/mpv.nix
+    ./nixconf/firefox.nix
     # ./nixconf/syncthing.nix
     ./nixconf/glava.nix
     ./nixconf/sioyek.nix
@@ -29,7 +30,6 @@
       unrar-wrapper
       jq
       google-chrome
-      stable.librewolf
       playerctl
       nwg-look
       libsForQt5.qt5ct
@@ -122,6 +122,7 @@
 
       wl-gammarelay-rs
       wayvnc
+      wlvncc
 
       # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
       inputs.wezterm-flake.packages.${pkgs.system}.default
