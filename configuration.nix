@@ -101,11 +101,17 @@
         "plugdev"
       ];
       shell = pkgs.zsh;
+      openssh.authorizedKeys.keys = [
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHVwHXOotXjPLC/fXIEu/Xnc5ZiIwOKK4Amas/rb9/ZGAAAAEnNzaDpyaXRpZWtAeXViaWtrbw=="
+        "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIAUVNBe5AkMEPT9fell8hjKrRh6CNaZBDNeBozB8TJseAAAAFHNzaDpyaXRpZWtAeXViaXNjdWl0"
+      ];
     };
   };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+
   environment = {
     systemPackages = with pkgs; [
       # Flakes use Git to pull dependencies from data sources 
@@ -114,14 +120,14 @@
       screen
       swayosd
       brightnessctl
-      ripgrep
-      fd
-      keychain
+
+      # Superseded by programs.ssh.startAgent = true;
+      # keychain
+
       btop
       gparted
       xclip
       xorg.xhost
-      imv
       # helix
       yubico-pam
       pam_u2f
@@ -197,8 +203,14 @@
   };
 
   services = {
-    # Enable the OpenSSH daemon.
-    openssh.enable = true;
+    openssh = {
+      enable = true;
+      startWhenNeeded = true;
+      settings = {
+        PermitRootLogin = "no";
+        PasswordAuthentication = false;
+      };
+    };
     dbus.enable = true;
 
     # Enable CUPS to print documents.
@@ -284,6 +296,8 @@
   };
 
   programs = {
+    ssh.startAgent = true;
+
     git.enable = true;
     neovim.enable = true;
     hyprland.enable = true;
@@ -309,10 +323,10 @@
     #   enable = true;
     #   capSysNice = true;
     # };
-    steam = {
-      enable = true;
-      # gamescopeSession.enable = true;
-    };
+    # steam = {
+    #   enable = true;
+    #   # gamescopeSession.enable = true;
+    # };
     gamemode = {
       enable = true;
       enableRenice = true;
@@ -320,14 +334,43 @@
   };
 
   security = {
+    sudo.enable = false;
+    sudo-rs.enable = true;
+
     rtkit.enable = true;
     polkit.enable = true;
+
     pam.services = {
-      login.u2fAuth = true;
-      sudo.u2fAuth = true;
-      su.u2fAuth = true;
-      polkit-1.u2fAuth = true;
-      hyprlock.u2fAuth = true;
+      login = {
+        u2fAuth = true;
+        sshAgentAuth = true;
+      };
+      sudo = {
+        u2fAuth = true;
+        sshAgentAuth = true;
+      #   auth = [
+      #     {
+      #       required = "${pkgs.pam_u2f}/lib/security/pam_u2f.so";
+      #       controlFlag = "required";
+      #     }
+      #     {
+      #       required = "pam_unix.so";
+      #       controlFlag = "sufficient";
+      #     }
+      #   ];
+      };
+      su = {
+        u2fAuth = true;
+        sshAgentAuth = true;
+      };
+      polkit-1 = {
+        u2fAuth = true;
+        sshAgentAuth = true;
+      };
+      hyprlock = {
+        u2fAuth = true;
+        sshAgentAuth = true;
+      };
     };
   };
 
