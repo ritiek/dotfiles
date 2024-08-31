@@ -4,10 +4,10 @@
   description = "NixOS flake for my dotfiles";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
-    # nixpkgs.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     nur.url = "github:nix-community/NUR";
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -25,7 +25,8 @@
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
   };
 
-  outputs = { self, nixpkgs, nur, unstable, stable, home-manager, rose-pine-hyprcursor, ... }@inputs:
+  # outputs = { self, nixpkgs, nur, stable, unstable, local, home-manager, rose-pine-hyprcursor, ... }@inputs:
+  outputs = { self, nixpkgs, nur, stable, unstable, home-manager, rose-pine-hyprcursor, ... }@inputs:
     {
     # Please replace my-nixos with your hostname
     nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
@@ -41,13 +42,21 @@
             (final: _prev: {
               stable = import stable {
                 inherit (final) system;
+                config.allowUnfree = true;
               };
             })
             (final: _prev: {
               unstable = import unstable {
                 inherit (final) system;
+                config.allowUnfree = true;
               };
             })
+            # (final: _prev: {
+            #   local = import local {
+            #     inherit (final) system;
+            #     config.allowUnfree = true;
+            #   };
+            # })
           ];
         }
 
