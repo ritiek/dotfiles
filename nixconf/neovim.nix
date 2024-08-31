@@ -37,11 +37,11 @@
 
   # xdg.configFile = {
   #   nvim = {
-  #     source = config.lib.file.mkOutOfStoreSymlink "/etc/nixos/chezmoi/dot_config/nvim/";
+  #     source =  "/etc/nixos/chezmoi/dot_config/nvim/";
   #   };
   # };
   home.file.nvim = {
-    source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/nvim;
+    source =  ../chezmoi/dot_config/nvim;
     target = "${config.home.homeDirectory}/.config/nvim";
   };
 }

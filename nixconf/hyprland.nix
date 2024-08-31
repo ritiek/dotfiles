@@ -70,15 +70,15 @@ in
 
   home.file = {
     hyprland = {
-      source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/hypr/hyprland;
+      source =  ../chezmoi/dot_config/hypr/hyprland;
       target = "${config.home.homeDirectory}/.config/hypr/hyprland";
     };
     # hypridle = {
-    #   source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/hypr/hypridle.conf;
+    #   source =  ../chezmoi/dot_config/hypr/hypridle.conf;
     #   target = "${config.home.homeDirectory}/.config/hypr/hypridle.conf";
     # };
     hyprlock = {
-      source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/hypr/hyprlock.conf;
+      source =  ../chezmoi/dot_config/hypr/hyprlock.conf;
       target = "${config.home.homeDirectory}/.config/hypr/hyprlock.conf";
     };
   };
