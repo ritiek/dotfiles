@@ -55,4 +55,4 @@ export PATH
 
 alias cp="cp --reflink=auto --sparse=always"
 
-eval $(keychain --eval --quiet --noask)
+# eval $(keychain --eval --quiet --noask)
