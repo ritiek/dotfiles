@@ -30,6 +30,7 @@
       unrar-wrapper
       # jq
       # google-chrome
+      sd
       playerctl
       nwg-look
       libsForQt5.qt5ct

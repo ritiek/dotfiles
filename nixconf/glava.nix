@@ -11,7 +11,7 @@
 
   # Override configuration.
   home.file.glava = {
-    source = config.lib.file.mkOutOfStoreSymlink ../chezmoi/dot_config/glava/bars.glsl;
+    source =  ../chezmoi/dot_config/glava/bars.glsl;
     target = "${config.home.homeDirectory}/.config/glava/bars.glsl";
   };
 }
