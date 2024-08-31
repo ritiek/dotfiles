@@ -28,11 +28,12 @@
       # spotify
       unzip
       unrar-wrapper
-      jq
-      google-chrome
+      # jq
+      # google-chrome
       playerctl
       nwg-look
       libsForQt5.qt5ct
+      libsForQt5.xp-pen-deco-01-v2-driver
 
       # # Can't join voice channels on dorion discord client and it
       # # seems to freeze randomly (wayland/gpu issues maybe)
@@ -84,6 +85,7 @@
       wifite2
       mitmproxy
       docker-compose
+      cryptsetup
 
       # FIXME: Can't seem to install both these together.
       yubioath-flutter
@@ -97,7 +99,6 @@
       python312
       python312Packages.pip
       python312Packages.ipython
-      poetry
 
       rustc
       cargo
@@ -135,6 +136,21 @@
   };
   programs = {
     home-manager.enable = true;
+    jq = {
+      enable = true;
+      # colors = {
+      # };
+    };
+    ripgrep.enable = true;
+    fd.enable = true;
+    poetry.enable = true;
+    imv.enable = true;
+    timidity.enable = true;
+
+    joplin-desktop = {
+      enable = true;
+    };
+
     mangohud = {
       enable = true;
       enableSessionWide = true;
@@ -146,4 +162,7 @@
       };
     };
   };
+  # services = {
+  #   playerctld.enable = true;
+  # };
 }
