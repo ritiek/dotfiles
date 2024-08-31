@@ -26,7 +26,11 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-beta;
+    package = pkgs.firefox-beta.override {
+      nativeMessagingHosts = with pkgs; [
+        ff2mpv-rust
+      ];
+    };
 
     policies = {
       AppAutoUpdate = false; # Disable automatic application update
@@ -46,7 +50,7 @@
       DisableFormHistory = true;
       DisablePasswordReveal = true;
       DontCheckDefaultBrowser = true; # Stop being attention whore
-      HardwareAcceleration = false; # Disabled as it's exposes points for fingerprinting
+      HardwareAcceleration = true; # Disabled as it's exposes points for fingerprinting
       OfferToSaveLogins = false; # Managed by KeepAss instead
       EnableTrackingProtection = {
         Value = true;
@@ -119,7 +123,6 @@
       extensions = with pkgs.nur.repos.rycee.firefox-addons; [
         # https://nur.nix-community.org/repos/rycee/
 
-        # dracula-dark-colorscheme
         ublock-origin
         canvasblocker
         privacy-badger
@@ -150,11 +153,12 @@
         youtube-shorts-block
         youtube-nonstop
 
-        # vimium-c
-        tridactyl
+        vimium-c
+        # tridactyl
         web-archives
         to-deepl
         languagetool
+        ff2mpv
 
         tubearchivist-companion
 
@@ -267,10 +271,10 @@
         "browser.laterrun.enabled" = false;
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
         "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
-        "browser.newtabpage.activity-stream.default.sites" = "";
+        # "browser.newtabpage.activity-stream.default.sites" = "";
         "browser.newtabpage.activity-stream.discoverystream.recentSaves.enabled" = false;
         "browser.newtabpage.activity-stream.discoverystream.spocTopsitesPlacement.enabled" = false;
-        "browser.newtabpage.activity-stream.feeds.topsites" = true;
+        "browser.newtabpage.activity-stream.feeds.topsites" = false;
         "browser.newtabpage.activity-stream.feeds.telemetry" = false;
         "browser.newtabpage.activity-stream.feeds.snippets" = false;
         "browser.newtabpage.activity-stream.feeds.section.topstories" = false;
@@ -281,21 +285,27 @@
         "browser.newtabpage.activity-stream.showRecentSaves" = false;
         "browser.newtabpage.activity-stream.showSponsored" = false;
         "browser.newtabpage.activity-stream.showSponsoredTopSites" = false;
+
+        # Do not  topsites in homepage
         "browser.newtabpage.activity-stream.feeds.system.topsites" = false;
+        # "browser.newtabpage.activity-stream.sectionOrder" = "";
+
+        "browser.newtabpage.pinned" = [
+          {
+            title = "NixOS";
+            url = "https://nixos.org";
+          }
+        ];
+        # "browser.newtabpage.activity-stream.topSitesRows" = false;
+        # "browser.newtabpage.pinned" = false;
+
         "browser.newtabpage.activity-stream.feeds.sections" = false;
         "browser.newtabpage.activity-stream.improvesearch.topSiteSearchShortcuts" = false;
-        "browser.newtabpage.activity-stream.sectionOrder" = "";
         "browser.newtabpage.activity-stream.feeds.section.highlights" = false;
         "browser.newtabpage.activity-stream.section.highlights.includeBookmarks" = false;
         "browser.newtabpage.activity-stream.section.highlights.includeDownloads" = false;
         "browser.newtabpage.activity-stream.section.highlights.includeVisited" = false;
         "browser.newtabpage.activity-stream.telemetry" = false;
-        "browser.newtabpage.activity-stream.topSitesRows" = false;
-        "browser.newtabpage.pinned" = false;
-        # "browser.newtabpage.pinned" = [{
-        #   title = "NixOS";
-        #   url = "https://nixos.org";
-        # }];
         # "webgl.disabled" = false;
         "browser.protections_panel.infoMessage.seen" = true;
         "browser.quitShortcut.disabled" = true;

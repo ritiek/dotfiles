@@ -135,6 +135,7 @@
       # ritiek.spotify-adblock
     ];
   };
+
   programs = {
     home-manager.enable = true;
     jq = {
@@ -163,7 +164,18 @@
       };
     };
   };
+
   # services = {
   #   playerctld.enable = true;
   # };
+
+  xdg.mimeApps = {
+    enable = true;
+    associations.added = {
+      "application/pdf" = ["sioyek.desktop"];
+    };
+    defaultApplications = {
+      "application/pdf" = ["sioyek.desktop"];
+    };
+  };
 }
