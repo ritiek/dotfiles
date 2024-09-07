@@ -23,10 +23,14 @@
     };
 
     rose-pine-hyprcursor.url = "github:ndom91/rose-pine-hyprcursor";
+
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  # outputs = { self, nixpkgs, nur, stable, unstable, local, home-manager, rose-pine-hyprcursor, ... }@inputs:
-  outputs = { self, nixpkgs, nur, stable, unstable, home-manager, rose-pine-hyprcursor, ... }@inputs:
+  outputs = { self, nixpkgs, nur, stable, unstable, home-manager, rose-pine-hyprcursor, nix-index-database, ... }@inputs:
     {
     # Please replace my-nixos with your hostname
     nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
@@ -61,23 +65,29 @@
         }
 
         home-manager.nixosModules.home-manager {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.extraSpecialArgs = {
-            inherit inputs;
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = {
+              inherit inputs;
+            };
+            # extraSpecialArgs = {
+            #   stable = import stable {
+            #     inherit system;
+            #     config.allowUnfree = true;
+            #   };
+            # };
+            users.ritiek = import ./home.nix;
           };
-          # home-manager.extraSpecialArgs = {
-          #   stable = import stable {
-          #     inherit system;
-          #     config.allowUnfree = true;
-          #   };
-          # };
-          home-manager.users.ritiek = import ./home.nix;
           environment.pathsToLink = [
             "/share/zsh"
             "/share/xdg-desktop-portal"
             "/share/applications"
           ];
+        }
+
+        nix-index-database.nixosModules.nix-index {
+          programs.nix-index-database.comma.enable = true;
         }
       ];
       specialArgs = {

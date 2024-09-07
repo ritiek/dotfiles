@@ -212,6 +212,13 @@
       };
     };
     dbus.enable = true;
+    # Smartcard
+    pcscd = {
+      enable = true;
+      # plugins = with pkgs.pcsc; [
+      #   pcsc-safenet
+      # ];
+    };
 
     # Enable CUPS to print documents.
     # printing.enable = true;
@@ -297,6 +304,12 @@
 
   programs = {
     ssh.startAgent = true;
+    gnupg.agent = {
+      enable = true;
+      # pinentryPackage = lib.mkForce pkgs.pinentry-qt;
+      # pinentryPackage = lib.mkForce pkgs.pinentry-gnome3;
+      # enableSSHSupport = true;
+    };
 
     git.enable = true;
     neovim.enable = true;
@@ -305,6 +318,7 @@
 
     nix-ld = {
       enable = true;
+      package = pkgs.nix-ld-rs;
       libraries = with pkgs; [
         # Bombsquad Game.
         # Now installing these packages using Lutris in home-manager.
@@ -410,6 +424,7 @@
 
   powerManagement.cpuFreqGovernor = "ondemand";
   # powerManagement.cpuFreqGovernor = "performance";
+  zramSwap.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }

@@ -75,7 +75,6 @@
       wev
       any-nix-shell
       android-tools
-      # nix-index
       unstable.libreoffice-fresh
       # Looks like this available only for darwin:
       # libreoffice-bin
@@ -87,6 +86,10 @@
       mitmproxy
       docker-compose
       cryptsetup
+      openssl
+
+      miniserve
+      bore-cli
 
       # FIXME: Can't seem to install both these together.
       yubioath-flutter
@@ -138,6 +141,7 @@
 
   programs = {
     home-manager.enable = true;
+    # gpg.enable = true;
     jq = {
       enable = true;
       # colors = {
@@ -151,6 +155,16 @@
 
     joplin-desktop = {
       enable = true;
+    };
+
+    freetube = {
+      enable = true;
+      settings = {
+        allowDashAv1Formats = true;
+        checkForUpdates = false;
+        defaultQuality = "1080";
+        baseTheme = "catppuccinMocha";
+      };
     };
 
     mangohud = {
