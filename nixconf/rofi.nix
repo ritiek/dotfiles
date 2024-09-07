@@ -6,14 +6,22 @@
     (rofi-pulse-select.override {
       rofi-unwrapped = rofi-wayland;
     })
+    (rofimoji.override {
+      rofi = rofi-wayland;
+    })
   ];
   programs.rofi = {
     enable = true;
     # Doesn't work for some reason.
-    # plugins = with pkgs; [
+    plugins = with pkgs; [
     #   rofi-bluetooth
     #   rofi-pulse-select
-    # ];
+    #
+    #   rofi-emoji
+    #   (rofi-emoji.override {
+    #     rofi-unwrapped = rofi-wayland;
+    #   })
+    ];
     package = pkgs.rofi-wayland;
     theme = builtins.toFile "rofi-theme.rasi" ''
       /*******************************************************************************
