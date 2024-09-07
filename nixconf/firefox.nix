@@ -31,6 +31,16 @@
         ff2mpv-rust
       ];
     };
+    # package = pkgs.firefox.override {
+    #   nativeMessagingHosts = with pkgs; [
+    #     ff2mpv-rust
+    #   ];
+    # };
+    # package = pkgs.firefox-bin.override {
+    #   nativeMessagingHosts = with pkgs; [
+    #     ff2mpv-rust
+    #   ];
+    # };
 
     policies = {
       AppAutoUpdate = false; # Disable automatic application update
@@ -92,12 +102,12 @@
 
       SanitizeOnShutdown = {
         Cache = true;
-        Cookies = false;
+        Cookies = true;
         Downloads = true;
         FormData = true;
-        History = false;
-        Sessions = false;
-        SiteSettings = false;
+        History = true;
+        Sessions = true;
+        SiteSettings = true;
         OfflineApps = true;
         Locked = true;
       };
@@ -125,7 +135,8 @@
 
         ublock-origin
         canvasblocker
-        privacy-badger
+        # Consensus is that privacy-badger makes more prone to fingerprinting.
+        # privacy-badger
         unpaywall
         link-cleaner
 
