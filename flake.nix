@@ -36,9 +36,7 @@
     nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
-        # Import the previous configuration.nix we used,
-        # so the old configuration file still takes effect
-        ./configuration.nix
+        ./nixin
 
         {
           nixpkgs.overlays = [
@@ -77,7 +75,7 @@
             #     config.allowUnfree = true;
             #   };
             # };
-            users.ritiek = import ./home.nix;
+            users.ritiek = import ./nixin/home.nix;
           };
           environment.pathsToLink = [
             "/share/zsh"

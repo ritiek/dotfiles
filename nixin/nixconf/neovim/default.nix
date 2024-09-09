@@ -41,7 +41,7 @@
   #   };
   # };
   home.file.nvim = {
-    source =  ../chezmoi/dot_config/nvim;
+    source =  ./nvim;
     target = "${config.home.homeDirectory}/.config/nvim";
   };
 }

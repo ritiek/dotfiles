@@ -1,7 +1,7 @@
 { pkgs, config, ... }:
 {
   home.file.allowed_signers = {
-    source =  ../chezmoi/dot_ssh/allowed_signers;
+    source =  ./allowed_signers;
     target = "${config.home.homeDirectory}/.ssh/allowed_signers";
   };
   programs.git = {
