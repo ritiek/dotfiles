@@ -15,7 +15,7 @@ in
       enable = true;
       variables = ["-all"];
     };
-    extraConfig = builtins.readFile ../chezmoi/dot_config/hypr/hyprland.conf;
+    extraConfig = builtins.readFile ./hypr/hyprland.conf;
   };
 
   home.packages = with pkgs; [
@@ -70,15 +70,15 @@ in
 
   home.file = {
     hyprland = {
-      source =  ../chezmoi/dot_config/hypr/hyprland;
+      source =  ./hypr/hyprland;
       target = "${config.home.homeDirectory}/.config/hypr/hyprland";
     };
     # hypridle = {
-    #   source =  ../chezmoi/dot_config/hypr/hypridle.conf;
+    #   source =  ./hypr/hypridle.conf;
     #   target = "${config.home.homeDirectory}/.config/hypr/hypridle.conf";
     # };
     hyprlock = {
-      source =  ../chezmoi/dot_config/hypr/hyprlock.conf;
+      source =  ./hypr/hyprlock.conf;
       target = "${config.home.homeDirectory}/.config/hypr/hyprlock.conf";
     };
   };

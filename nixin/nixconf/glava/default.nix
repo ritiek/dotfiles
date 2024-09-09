@@ -11,7 +11,7 @@
 
   # Override configuration.
   home.file.glava = {
-    source =  ../chezmoi/dot_config/glava/bars.glsl;
+    source =  ./bars.glsl;
     target = "${config.home.homeDirectory}/.config/glava/bars.glsl";
   };
 }

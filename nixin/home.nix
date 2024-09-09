@@ -1,21 +1,21 @@
 { pkgs, inputs, ... }:
 {
   imports = [
-    ./nixconf/hyprland.nix
+    ./nixconf/hyprland
     ./nixconf/theme.nix
-    ./nixconf/wezterm.nix
-    ./nixconf/zsh.nix
-    ./nixconf/git.nix
-    ./nixconf/neovim.nix
+    ./nixconf/wezterm
+    ./nixconf/zsh
+    ./nixconf/git
+    ./nixconf/neovim
     ./nixconf/zellij.nix
     ./nixconf/btop.nix
     ./nixconf/rofi.nix
-    ./nixconf/waybar.nix
-    ./nixconf/swaync.nix
+    ./nixconf/waybar
+    ./nixconf/swaync
     ./nixconf/mpv.nix
     ./nixconf/firefox.nix
     # ./nixconf/syncthing.nix
-    ./nixconf/glava.nix
+    ./nixconf/glava
     ./nixconf/sioyek.nix
   ];
   programs = {

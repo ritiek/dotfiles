@@ -4,7 +4,7 @@
     swaynotificationcenter
   ];
   home.file.swaync = {
-    source =  ../chezmoi/dot_config/swaync;
+    source =  ./swaync;
     target = "${config.home.homeDirectory}/.config/swaync";
     # Doesn't work.
     # onChange = "sh -c '${pkgs.swaynotificationcenter}/bin/swaync-client --reload-config'";
