@@ -125,8 +125,16 @@ export PATH
       {
         name = "powerlevel10k-config";
         # File path is $src + $file
-        src = ../chezmoi;
-        file = "dot_p10k.zsh";
+        # src = ../../../chezmoi;
+        # file = "dot_p10k.zsh";
+        # src = ./.;
+        # file = "p10k-config.zsh";
+
+        # src = ./p10k-config;
+        # file = "p10k-config.zsh";
+
+        src = ./p10k-config;
+        file = "p10k-config.zsh";
       }
     ];
     autosuggestion.enable = true;
