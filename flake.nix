@@ -33,64 +33,96 @@
   outputs = { self, nixpkgs, nur, stable, unstable, home-manager, rose-pine-hyprcursor, nix-index-database, ... }@inputs:
     {
     # Please replace my-nixos with your hostname
-    nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
-      system = "x86_64-linux";
-      modules = [
-        ./machines/nixin
+    nixosConfigurations = {
+      nixin = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          ./machines/nixin
 
-        {
-          nixpkgs.overlays = [
-            nur.overlay
-            (final: _prev: {
-              stable = import stable {
-                inherit (final) system;
-                config.allowUnfree = true;
-              };
-            })
-            (final: _prev: {
-              unstable = import unstable {
-                inherit (final) system;
-                config.allowUnfree = true;
-              };
-            })
-            # (final: _prev: {
-            #   local = import local {
-            #     inherit (final) system;
-            #     config.allowUnfree = true;
-            #   };
-            # })
-          ];
-        }
+          {
+            nixpkgs.overlays = [
+              nur.overlay
+              (final: _prev: {
+                stable = import stable {
+                  inherit (final) system;
+                  config.allowUnfree = true;
+                };
+              })
+              (final: _prev: {
+                unstable = import unstable {
+                  inherit (final) system;
+                  config.allowUnfree = true;
+                };
+              })
+              # (final: _prev: {
+              #   local = import local {
+              #     inherit (final) system;
+              #     config.allowUnfree = true;
+              #   };
+              # })
+            ];
+          }
 
-        home-manager.nixosModules.home-manager {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = {
-              inherit inputs;
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+              };
+              # extraSpecialArgs = {
+              #   stable = import stable {
+              #     inherit system;
+              #     config.allowUnfree = true;
+              #   };
+              # };
+              users.ritiek = import ./machines/nixin/home.nix;
             };
-            # extraSpecialArgs = {
-            #   stable = import stable {
-            #     inherit system;
-            #     config.allowUnfree = true;
-            #   };
-            # };
-            users.ritiek = import ./machines/nixin/home.nix;
-          };
-          environment.pathsToLink = [
-            "/share/zsh"
-            "/share/xdg-desktop-portal"
-            "/share/applications"
-          ];
-        }
+            environment.pathsToLink = [
+              "/share/zsh"
+              "/share/xdg-desktop-portal"
+              "/share/applications"
+            ];
+          }
 
-        nix-index-database.nixosModules.nix-index {
-          programs.nix-index-database.comma.enable = true;
-        }
-      ];
-      specialArgs = {
-        inherit inputs;
+          nix-index-database.nixosModules.nix-index {
+            programs.nix-index-database.comma.enable = true;
+          }
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
       };
+
+      clawsiecats = stable.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          ./machines/clawsiecats
+
+          # home-manager.nixosModules.home-manager {
+          #   home-manager = {
+          #     useGlobalPkgs = true;
+          #     useUserPackages = true;
+          #     extraSpecialArgs = {
+          #       inherit inputs;
+          #     };
+          #     users.root = import ./machines/clawsiecats/home.nix;
+          #   };
+          #   environment.pathsToLink = [
+          #     "/share/zsh"
+          #     "/share/applications"
+          #   ];
+          # }
+
+          # nix-index-database.nixosModules.nix-index {
+          #   programs.nix-index-database.comma.enable = true;
+          # }
+        ];
+        specialArgs = {
+          inherit inputs;
+        };
+      };
+
     };
   };
 }
