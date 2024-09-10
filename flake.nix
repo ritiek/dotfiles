@@ -17,6 +17,10 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # home-manager-stable = {
+    #   url = "github:nix-community/home-manager/release-24.05";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     wezterm-flake = {
       url = "github:wez/wezterm/main?dir=nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -94,25 +98,26 @@
         };
       };
 
-      clawsiecats = stable.lib.nixosSystem rec {
+      # clawsiecats = unstable.lib.nixosSystem rec {
+      clawsiecats = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
           ./machines/clawsiecats
 
-          # home-manager.nixosModules.home-manager {
-          #   home-manager = {
-          #     useGlobalPkgs = true;
-          #     useUserPackages = true;
-          #     extraSpecialArgs = {
-          #       inherit inputs;
-          #     };
-          #     users.root = import ./machines/clawsiecats/home.nix;
-          #   };
-          #   environment.pathsToLink = [
-          #     "/share/zsh"
-          #     "/share/applications"
-          #   ];
-          # }
+          home-manager.nixosModules.home-manager {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              extraSpecialArgs = {
+                inherit inputs;
+              };
+              users.root = import ./machines/clawsiecats/home.nix;
+            };
+            environment.pathsToLink = [
+              "/share/zsh"
+              "/share/applications"
+            ];
+          }
 
           # nix-index-database.nixosModules.nix-index {
           #   programs.nix-index-database.comma.enable = true;

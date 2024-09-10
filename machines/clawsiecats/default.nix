@@ -33,45 +33,46 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [
-    btop
-    git
-  ];
+  # environment.systemPackages = with pkgs; [
+  #   btop
+  #   git
+  # ];
 
-  programs = {
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      configure.customRC = ''
-        set number
-        set undofile
-      '';
-    };
-    zsh = {
-      enable = true;
-      autosuggestions.enable = true;
-      # syntaxHighlighting.enable = true;
-      ohMyZsh = {
-        enable = true;
-        theme = "alanpeabody";
-        plugins = [
-          "command-not-found"
-	];
-      };
-      syntaxHighlighting = {
-        enable = true;
-        styles = {
-          path = "fg=cyan";
-          path_prefix = "fg=magenta";
-        };
-        highlighters = [
-          "main"
-          "brackets"
-        ];
-      };
-    };
-    command-not-found.enable = true;
-  };
+  programs.zsh.enable = true;
+  # programs = {
+  #   neovim = {
+  #     enable = true;
+  #     defaultEditor = true;
+  #     configure.customRC = ''
+  #       set number
+  #       set undofile
+  #     '';
+  #   };
+  #   zsh = {
+  #     enable = true;
+  #     autosuggestions.enable = true;
+  #     # syntaxHighlighting.enable = true;
+  #     ohMyZsh = {
+  #       enable = true;
+  #       theme = "alanpeabody";
+  #       plugins = [
+  #         "command-not-found"
+  #       ];
+  #     };
+  #     syntaxHighlighting = {
+  #       enable = true;
+  #       styles = {
+  #         path = "fg=cyan";
+  #         path_prefix = "fg=magenta";
+  #       };
+  #       highlighters = [
+  #         "main"
+  #         "brackets"
+  #       ];
+  #     };
+  #   };
+  #   command-not-found.enable = true;
+  # };
 
   services = {
     openssh.enable = true;
