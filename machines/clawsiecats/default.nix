@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./services.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -21,6 +22,9 @@
     auto-optimise-store = true;
   };
 
+  # Disable sudo as we've no non-root users.
+  security.sudo.enable = false;
+
   users = {
     defaultUserShell = pkgs.zsh;
     users.root.openssh.authorizedKeys.keys = [
@@ -31,27 +35,39 @@
   };
 
   # environment.systemPackages = with pkgs; [
-  #   btop
-  #   git
+  #   iptables
   # ];
 
   programs = {
     zsh.enable = true;
   };
+
   services = {
-    openssh.enable = true;
-    tailscale.enable = true;
+    openssh = {
+      enable = true;
+      openFirewall = true;
+    };
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      useRoutingFeatures = "both";
+      extraSetFlags = [
+        "--advertise-exit-node"
+      ];
+    };
+    # tailscaleAuth = {
+    # };
   };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+
+  networking.firewall.enable = true;
 
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
