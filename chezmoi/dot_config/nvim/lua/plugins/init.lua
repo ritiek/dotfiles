@@ -150,7 +150,11 @@ local plugins = {
   {
     "hrsh7th/nvim-cmp",
     enabled = false,
-  }
+  },
+
+  -- {
+  --   "ojroques/nvim-osc52",
+  -- }
 
   -- {
   --   "lewis6991/gitsigns.nvim",
