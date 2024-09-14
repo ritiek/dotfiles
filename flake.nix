@@ -32,9 +32,22 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, nur, stable, unstable, home-manager, rose-pine-hyprcursor, nix-index-database, ... }@inputs:
+  outputs =
+  {
+    self,
+    nixpkgs,
+    nur,
+    stable,
+    unstable,
+    home-manager,
+    rose-pine-hyprcursor,
+    nix-index-database,
+    sops-nix,
+    ...
+  }@inputs:
     {
     # Please replace my-nixos with your hostname
     nixosConfigurations = {
@@ -122,6 +135,8 @@
           nix-index-database.nixosModules.nix-index {
             programs.nix-index-database.comma.enable = true;
           }
+
+          sops-nix.nixosModules.sops
         ];
         specialArgs = {
           inherit inputs;

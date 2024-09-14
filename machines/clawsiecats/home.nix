@@ -17,10 +17,12 @@
       sd
       diskonaut
 
+      iptables
       nmap
       dig
       cryptsetup
       openssl
+      sops
 
       miniserve
       bore-cli
