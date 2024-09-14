@@ -32,6 +32,7 @@
     ];
 
     # plugins = with pkgs.vimPlugins; [
+    #   nvim-osc52
     # ];
   };
 
