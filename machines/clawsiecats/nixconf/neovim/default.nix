@@ -13,7 +13,8 @@
     withRuby = true;
 
     extraPackages = with pkgs; [
-      xclip
+      # xclip
+      # wl-clipboard-rs
       stylua
       deno
       clang-tools
@@ -26,6 +27,10 @@
       cargo
       rustfmt
     ];
+
+    # plugins = with pkgs.vimPlugins; [
+    #   nvim-osc52
+    # ];
   };
 
   home.file.nvim = {
