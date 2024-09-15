@@ -22,6 +22,16 @@
     auto-optimise-store = true;
   };
 
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    age.sshKeyPaths = [
+      "/etc/ssh/ssh_host_ed25519_key"
+    ];
+    secrets = {
+      "tailscale.authkey" = {};
+    };
+  };
+
   # Disable sudo as we've no non-root users.
   security.sudo.enable = false;
 
@@ -50,13 +60,12 @@
     tailscale = {
       enable = true;
       openFirewall = true;
+      authKeyFile = config.sops.secrets."tailscale.authkey".path;
       useRoutingFeatures = "both";
-      extraSetFlags = [
+      extraUpFlags = [
         "--advertise-exit-node"
       ];
     };
-    # tailscaleAuth = {
-    # };
   };
 
   boot.kernel.sysctl = {
