@@ -12,6 +12,15 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
+    { device = "none";
+      fsType = "tmpfs";
+      options = [
+        "size=3G"
+        "mode=755"
+      ];
+    };
+
+  fileSystems."/nix" =
     { device = "/dev/disk/by-uuid/d7171c6e-0a88-48cd-bbe1-4f378b93341a";
       fsType = "btrfs";
       options = [
