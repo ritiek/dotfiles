@@ -1,11 +1,11 @@
 { pkgs, inputs, ... }:
 {
   imports = [
-    ./nixconf/zsh
-    ./nixconf/git
-    ./nixconf/neovim
-    ./nixconf/zellij.nix
-    ./nixconf/btop.nix
+    ./zsh
+    ./git
+    ./neovim
+    ./zellij.nix
+    ./btop.nix
   ];
   home = {
     stateVersion = "24.05";
