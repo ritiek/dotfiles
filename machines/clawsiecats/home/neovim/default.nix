@@ -33,8 +33,23 @@
     # ];
   };
 
-  home.file.nvim = {
-    source =  ./nvim;
-    target = "${config.home.homeDirectory}/.config/nvim";
+  home.file = {
+    init = {
+      source = ./nvim/init.lua;
+      target = "${config.home.homeDirectory}/.config/nvim/init.lua";
+    };
+    lua = {
+      source = ./nvim/lua;
+      target = "${config.home.homeDirectory}/.config/nvim/lua";
+    };
+    stylua = {
+      source = ./nvim/dot_stylua.toml;
+      target = "${config.home.homeDirectory}/.config/nvim/.stylua.toml";
+    };
+    # So that the lock file stays writable.
+    lazy-lock = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/.nvim-lazy-lock.json";
+      target = "${config.home.homeDirectory}/.config/nvim/lazy-lock.json";
+    };
   };
 }
