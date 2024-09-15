@@ -14,7 +14,16 @@
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/d7171c6e-0a88-48cd-bbe1-4f378b93341a";
       fsType = "btrfs";
+      options = [
+        "noatime"
+        "nodiscard"
+        "noautodefrag"
+        "ssd"
+        "space_cache=v2"
+        "compress-force=zstd:3"
+      ];
     };
+  services.btrfs.autoScrub.enable = true;
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/CC1B-65D9";
