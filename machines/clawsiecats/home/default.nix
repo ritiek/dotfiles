@@ -12,6 +12,7 @@
     persistence."/nix/persist/${config.home.homeDirectory}" = {
       files = [
         ".zsh_history"
+        ".local/share/nvim"
       ];
     };
     stateVersion = "24.05";
