@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -7,7 +7,15 @@ export WAYLAND_DISPLAY=wayland-1
 # eval $(keychain --eval --quiet --noask)
     '';
     initExtraFirst = ''
-source ~/.zprofile
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "$HOME/.cache/p10k-instant-prompt-$USER.zsh" ]]; then
+  source "$HOME/.cache/p10k-instant-prompt-$USER.zsh"
+fi
+
+source $HOME/.p10k.zsh
+source $HOME/.zprofile
 
 # Space prefix to suppress history
 setopt HIST_IGNORE_SPACE
@@ -122,20 +130,23 @@ export PATH
         src = pkgs.zsh-powerlevel10k;
         file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
       }
-      {
-        name = "powerlevel10k-config";
-        # File path is $src + $file
-        # src = ../../../chezmoi;
-        # file = "dot_p10k.zsh";
-        # src = ./.;
-        # file = "p10k-config.zsh";
-
-        # src = ./p10k-config;
-        # file = "p10k-config.zsh";
-
-        src = ./p10k-config;
-        file = "p10k-config.zsh";
-      }
+      # XXX: Commenting this out as it looks to have problems with
+      # using p10k-config.zsh through symlink. So, using `home.file`
+      # to setup the config later in this file.
+      # {
+      #   name = "powerlevel10k-config";
+      #   # File path is $src + $file
+      #   # src = ../../../chezmoi;
+      #   # file = "dot_p10k.zsh";
+      #   # src = ./.;
+      #   # file = "p10k-config.zsh";
+      #
+      #   # src = ./p10k-config;
+      #   # file = "p10k-config.zsh";
+      #
+      #   src = ./p10k-config;
+      #   file = "p10k-config.zsh";
+      # }
     ];
     autosuggestion.enable = true;
     enableCompletion = true;
@@ -169,6 +180,13 @@ export PATH
         "main"
         "brackets"
       ];
+    };
+  };
+
+  home.file = {
+    p10k-config = {
+      source = ./p10k-config/p10k-config.zsh;
+      target = "${config.home.homeDirectory}/.p10k.zsh";
     };
   };
 }
