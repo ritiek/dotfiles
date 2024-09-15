@@ -427,4 +427,8 @@
   zramSwap.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.tmp = {
+    useTmpfs = true;
+    cleanOnBoot = true;
+  };
 }
