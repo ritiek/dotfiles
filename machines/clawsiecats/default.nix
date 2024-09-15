@@ -24,9 +24,10 @@
 
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.sshKeyPaths = [
-      "/etc/ssh/ssh_host_ed25519_key"
-    ];
+    # age.sshKeyPaths = [
+    #   "/etc/ssh/ssh_host_ed25519_key"
+    # ];
+    age.keyFile = "/root/.config/sops/age/keys.txt";
     secrets = {
       "tailscale.authkey" = {};
     };
