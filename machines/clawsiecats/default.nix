@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./impermanence.nix
     ./services.nix
   ];
 

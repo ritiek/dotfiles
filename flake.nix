@@ -33,6 +33,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix.url = "github:Mic92/sops-nix";
+    impermanence.url = "github:nix-community/impermanence";
   };
 
   outputs =
@@ -46,6 +47,7 @@
     rose-pine-hyprcursor,
     nix-index-database,
     sops-nix,
+    impermanence,
     ...
   }@inputs:
     {
@@ -137,6 +139,8 @@
           }
 
           sops-nix.nixosModules.sops
+
+          impermanence.nixosModules.impermanence
         ];
         specialArgs = {
           inherit inputs;
