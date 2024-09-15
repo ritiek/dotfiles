@@ -1,22 +1,22 @@
 { pkgs, inputs, ... }:
 {
   imports = [
-    ./nixconf/hyprland
-    ./nixconf/theme.nix
-    ./nixconf/wezterm
-    ./nixconf/zsh
-    ./nixconf/git
-    ./nixconf/neovim
-    ./nixconf/zellij.nix
-    ./nixconf/btop.nix
-    ./nixconf/rofi.nix
-    ./nixconf/waybar
-    ./nixconf/swaync
-    ./nixconf/mpv.nix
-    ./nixconf/firefox.nix
+    ./hyprland
+    ./theme.nix
+    ./wezterm
+    ./zsh
+    ./git
+    ./neovim
+    ./zellij.nix
+    ./btop.nix
+    ./rofi.nix
+    ./waybar
+    ./swaync
+    ./mpv.nix
+    ./firefox.nix
     # ./nixconf/syncthing.nix
-    ./nixconf/glava
-    ./nixconf/sioyek.nix
+    ./glava
+    ./sioyek.nix
   ];
   programs = {
     command-not-found.enable = true;
