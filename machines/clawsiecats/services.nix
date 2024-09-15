@@ -4,15 +4,9 @@ let
   domain = "clawsiecats.omg.lol";
 in
 {
-  sops = {
-    defaultSopsFile = ./secrets.yaml;
-    age.sshKeyPaths = [
-      "/etc/ssh/ssh_host_ed25519_key"
-    ];
-    secrets = {
-      "jitsi.htpasswd" = {
-        owner = "nginx";
-      };
+  sops.secrets = {
+    "jitsi.htpasswd" = {
+      owner = "nginx";
     };
   };
 
