@@ -48,12 +48,12 @@ in
           basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
           # basicAuthFile = ./jitsi.htpasswd;
         };
-        "miniserve.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          # locations."/".root = pkgs.miniserve;
-          locations."/".proxyPass = "http://127.0.0.1:8081";
-        };
+        # "miniserve.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   # locations."/".root = pkgs.miniserve;
+        #   locations."/".proxyPass = "http://127.0.0.1:8081";
+        # };
       };
     };
   };
