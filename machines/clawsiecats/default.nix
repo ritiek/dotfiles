@@ -3,9 +3,32 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./impermanence.nix
     ./services.nix
   ];
+
+  environment.persistence."/nix/persist/system" = {
+    enable = true; 
+    hideMounts = true;
+    directories = [
+      "/etc/nixos"
+      "/etc/ssh"
+      "/var/log"
+      "/var/lib/acme"
+      "/var/lib/jitsi-meet"
+      "/var/lib/prosody"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+    ];
+    files = [
+      "/etc/machine-id"
+    ];
+    users.root = {
+      home = "/root";
+      files = [
+        ".age-key"
+      ];
+    };
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -19,7 +42,7 @@
 
   time.timeZone = "Asia/Kolkata";
   nix.settings = {
-    experimental-features = [ "nix-command" " flakes" ];
+    experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
   };
 
@@ -28,7 +51,7 @@
     # age.sshKeyPaths = [
     #   "/etc/ssh/ssh_host_ed25519_key"
     # ];
-    age.keyFile = "/root/.config/sops/age/keys.txt";
+    age.keyFile = "/root/.age-key";
     secrets = {
       "tailscale.authkey" = {};
     };
