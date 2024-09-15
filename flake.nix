@@ -93,7 +93,7 @@
               #     config.allowUnfree = true;
               #   };
               # };
-              users.ritiek = import ./machines/nixin/home.nix;
+              users.ritiek = import ./machines/nixin/home;
             };
             environment.pathsToLink = [
               "/share/zsh"
@@ -124,7 +124,7 @@
               extraSpecialArgs = {
                 inherit inputs;
               };
-              users.root = import ./machines/clawsiecats/home.nix;
+              users.root = import ./machines/clawsiecats/home;
             };
             environment.pathsToLink = [
               "/share/zsh"
