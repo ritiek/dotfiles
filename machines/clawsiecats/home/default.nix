@@ -16,6 +16,7 @@
       unrar-wrapper
       sd
       diskonaut
+      compsize
 
       iptables
       nmap
