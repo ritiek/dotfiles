@@ -118,7 +118,14 @@
         };
       };
 
-      # clawsiecats = unstable.lib.nixosSystem rec {
+      clawsiecats-minimal = nixpkgs.lib.nixosSystem rec {
+        system = "x86_64-linux";
+        modules = [
+          ./machines/clawsiecats/minimal.nix
+          disko.nixosModules.disko
+        ];
+      };
+
       clawsiecats = nixpkgs.lib.nixosSystem rec {
         system = "x86_64-linux";
         modules = [
@@ -145,7 +152,7 @@
 
           sops-nix.nixosModules.sops
 
-          impermanence.nixosModules.impermanence
+          # impermanence.nixosModules.impermanence
 
           disko.nixosModules.disko
         ];
