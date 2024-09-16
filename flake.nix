@@ -34,6 +34,10 @@
     };
     sops-nix.url = "github:Mic92/sops-nix";
     impermanence.url = "github:nix-community/impermanence";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -48,6 +52,7 @@
     nix-index-database,
     sops-nix,
     impermanence,
+    disko,
     ...
   }@inputs:
     {
@@ -141,6 +146,8 @@
           sops-nix.nixosModules.sops
 
           impermanence.nixosModules.impermanence
+
+          disko.nixosModules.disko
         ];
         specialArgs = {
           inherit inputs;

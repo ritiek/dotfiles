@@ -25,10 +25,10 @@
       fsType = "btrfs";
       options = [
         "noatime"
-        "nodiscard"
+        # "nodiscard"
         "noautodefrag"
-        "ssd"
-        "space_cache=v2"
+        # "ssd"
+        # "space_cache=v2"
         "compress-force=zstd:3"
       ];
     };

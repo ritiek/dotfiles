@@ -6,6 +6,51 @@
     ./services.nix
   ];
 
+  disko.devices.disk.clawsiecats = {
+    device = lib.mkDefault "/dev/vda";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          size = "200M";
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+          };
+        };
+        nix = {
+          end = "-3G";
+          content = {
+            type = "filesystem";
+            format = "btrfs";
+            mountpoint = "/nix";
+            mountOptions = [
+              "compress-force=zstd:3"
+            ];
+          };
+        };
+        plainSwap = {
+          size = "100%";
+          content = {
+            type = "swap";
+            discardPolicy = "both";
+            resumeDevice = true;
+          };
+        };
+      };
+    };
+  };
+  disko.devices.disk.impermanence = {
+    "/" = {
+      fsType = "tmpfs";
+      mountOptions = [
+        "size=1G"
+      ];
+    };
+  };
+
   environment.persistence."/nix/persist/system" = {
     enable = true; 
     hideMounts = true;
@@ -78,6 +123,7 @@
   };
 
   services = {
+    btrfs.autoScrub.enable = true;
     openssh = {
       enable = true;
       openFirewall = true;
