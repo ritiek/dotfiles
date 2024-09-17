@@ -11,38 +11,38 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "none";
-      fsType = "tmpfs";
-      options = [
-        "size=1G"
-        "mode=755"
-      ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/d7171c6e-0a88-48cd-bbe1-4f378b93341a";
-      fsType = "btrfs";
-      options = [
-        "noatime"
-        "nodiscard"
-        "noautodefrag"
-        "ssd"
-        "space_cache=v2"
-        "compress-force=zstd:3"
-      ];
-    };
-  services.btrfs.autoScrub.enable = true;
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/CC1B-65D9";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/1a85f2ee-d4a2-402b-b6df-996072f32d80"; }
-    ];
+  # fileSystems."/" =
+  #   { device = "none";
+  #     fsType = "tmpfs";
+  #     options = [
+  #       "size=1G"
+  #       "mode=755"
+  #     ];
+  #   };
+  #
+  # fileSystems."/nix" =
+  #   { device = "/dev/disk/by-uuid/d7171c6e-0a88-48cd-bbe1-4f378b93341a";
+  #     fsType = "btrfs";
+  #     options = [
+  #       "noatime"
+  #       # "nodiscard"
+  #       "noautodefrag"
+  #       # "ssd"
+  #       # "space_cache=v2"
+  #       "compress-force=zstd:3"
+  #     ];
+  #   };
+  # services.btrfs.autoScrub.enable = true;
+  #
+  # fileSystems."/boot" =
+  #   { device = "/dev/disk/by-uuid/CC1B-65D9";
+  #     fsType = "vfat";
+  #     options = [ "fmask=0077" "dmask=0077" ];
+  #   };
+  #
+  # swapDevices =
+  #   [ { device = "/dev/disk/by-uuid/1a85f2ee-d4a2-402b-b6df-996072f32d80"; }
+  #   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

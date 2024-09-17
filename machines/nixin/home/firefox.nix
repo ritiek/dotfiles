@@ -168,7 +168,7 @@
         # tridactyl
         web-archives
         to-deepl
-        languagetool
+        # languagetool
         ff2mpv
 
         tubearchivist-companion
