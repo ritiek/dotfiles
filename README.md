@@ -1,6 +1,8 @@
 # dotfiles
 
-Mah dotfiles, for NixOS, as well as for Debian/Arch based distros maintained using
+**(README out of date currently)**
+
+My dotfiles. For NixOS. As well as for Debian/Arch based distros maintained using
 [chezmoi](https://www.chezmoi.io/).
 
 I previously maintained these manually in the [legacy](https://github.com/ritiek/dotfiles/tree/legacy) branch.
