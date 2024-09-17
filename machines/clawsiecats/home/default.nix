@@ -1,7 +1,6 @@
 { pkgs, inputs, config, ... }:
 {
   imports = [
-    "${inputs.impermanence}/home-manager.nix"
     ./zsh
     ./git
     ./neovim
@@ -9,12 +8,6 @@
     ./btop.nix
   ];
   home = {
-    # persistence."/nix/persist/${config.home.homeDirectory}" = {
-    #   files = [
-    #     ".zsh_history"
-    #     # ".local/share/nvim"
-    #   ];
-    # };
     stateVersion = "24.05";
     packages = with pkgs; [
       any-nix-shell
