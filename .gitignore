@@ -1,1 +1,2 @@
-# /hardware-configuration.nix
+/machines/clawsiecats/mnt/nix/persist/system/root/.age-key
+/machines/clawsiecats/mnt/nix/persist/system/etc/machine-id
