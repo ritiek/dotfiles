@@ -32,12 +32,17 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sops-nix.url = "github:Mic92/sops-nix";
+
     impermanence.url = "github:nix-community/impermanence";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    deploy-rs.url = "github:serokell/deploy-rs";
   };
 
   outputs =
@@ -53,115 +58,123 @@
     sops-nix,
     impermanence,
     disko,
+    deploy-rs,
     ...
   }@inputs:
     {
-    # Please replace my-nixos with your hostname
-    nixosConfigurations = {
-      nixin = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          ./machines/nixin
+    nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/nixin
 
-          {
-            nixpkgs.overlays = [
-              nur.overlay
-              (final: _prev: {
-                stable = import stable {
-                  inherit (final) system;
-                  config.allowUnfree = true;
-                };
-              })
-              (final: _prev: {
-                unstable = import unstable {
-                  inherit (final) system;
-                  config.allowUnfree = true;
-                };
-              })
-              # (final: _prev: {
-              #   local = import local {
-              #     inherit (final) system;
-              #     config.allowUnfree = true;
-              #   };
-              # })
-            ];
-          }
-
-          home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {
-                inherit inputs;
+        {
+          nixpkgs.overlays = [
+            nur.overlay
+            (final: _prev: {
+              stable = import stable {
+                inherit (final) system;
+                config.allowUnfree = true;
               };
-              # extraSpecialArgs = {
-              #   stable = import stable {
-              #     inherit system;
-              #     config.allowUnfree = true;
-              #   };
-              # };
-              users.ritiek = import ./machines/nixin/home;
-            };
-            environment.pathsToLink = [
-              "/share/zsh"
-              "/share/xdg-desktop-portal"
-              "/share/applications"
-            ];
-          }
-
-          nix-index-database.nixosModules.nix-index {
-            programs.nix-index-database.comma.enable = true;
-          }
-        ];
-        specialArgs = {
-          inherit inputs;
-        };
-      };
-
-      clawsiecats-minimal = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          ./machines/clawsiecats/minimal.nix
-          impermanence.nixosModules.impermanence
-          disko.nixosModules.disko
-        ];
-      };
-
-      clawsiecats = nixpkgs.lib.nixosSystem rec {
-        system = "x86_64-linux";
-        modules = [
-          ./machines/clawsiecats
-
-          home-manager.nixosModules.home-manager {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              extraSpecialArgs = {
-                inherit inputs;
+            })
+            (final: _prev: {
+              unstable = import unstable {
+                inherit (final) system;
+                config.allowUnfree = true;
               };
-              users.root = import ./machines/clawsiecats/home;
+            })
+            # (final: _prev: {
+            #   local = import local {
+            #     inherit (final) system;
+            #     config.allowUnfree = true;
+            #   };
+            # })
+          ];
+        }
+
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = {
+              inherit inputs;
             };
-            environment.pathsToLink = [
-              "/share/zsh"
-              "/share/applications"
-            ];
-          }
+            # extraSpecialArgs = {
+            #   stable = import stable {
+            #     inherit system;
+            #     config.allowUnfree = true;
+            #   };
+            # };
+            users.ritiek = import ./machines/nixin/home;
+          };
+          environment.pathsToLink = [
+            "/share/zsh"
+            "/share/xdg-desktop-portal"
+            "/share/applications"
+          ];
+        }
 
-          nix-index-database.nixosModules.nix-index {
-            programs.nix-index-database.comma.enable = true;
-          }
-
-          sops-nix.nixosModules.sops
-
-          impermanence.nixosModules.impermanence
-
-          disko.nixosModules.disko
-        ];
-        specialArgs = {
-          inherit inputs;
-        };
+        nix-index-database.nixosModules.nix-index {
+          programs.nix-index-database.comma.enable = true;
+        }
+      ];
+      specialArgs = {
+        inherit inputs;
       };
-
     };
+
+    nixosConfigurations.clawsiecats-minimal = nixpkgs.lib.nixosSystem rec {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/clawsiecats/minimal.nix
+        impermanence.nixosModules.impermanence
+        disko.nixosModules.disko
+      ];
+    };
+
+    nixosConfigurations.clawsiecats = nixpkgs.lib.nixosSystem rec {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/clawsiecats
+
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = {
+              inherit inputs;
+            };
+            users.root = import ./machines/clawsiecats/home;
+          };
+          environment.pathsToLink = [
+            "/share/zsh"
+            "/share/applications"
+          ];
+        }
+
+        nix-index-database.nixosModules.nix-index {
+          programs.nix-index-database.comma.enable = true;
+        }
+
+        sops-nix.nixosModules.sops
+
+        impermanence.nixosModules.impermanence
+
+        disko.nixosModules.disko
+      ];
+      specialArgs = {
+        inherit inputs;
+      };
+    };
+
+    deploy.nodes.clawsiecats = {
+      hostname = "clawsiecats.omg.lol";
+      profiles.system = {
+        user = "root";
+        path = deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.clawsiecats;
+      };
+      sshUser = "root";
+    };
+
+    checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
   };
 }
