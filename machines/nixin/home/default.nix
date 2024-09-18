@@ -129,6 +129,7 @@
       wayvnc
       wlvncc
 
+      deploy-rs
       # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
       inputs.wezterm-flake.packages.${pkgs.system}.default
 
