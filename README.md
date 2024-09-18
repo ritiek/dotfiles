@@ -39,6 +39,12 @@ $ chezmoi init ritiek
 $ chezmoi apply -R
 ```
 
+#### clawsiecats
+
+```bash
+$ nix run github:nix-community/nixos-anywhere -- --flake '.#clawsiecats' vps.machine.ip.address --extra-files ./machines/clawsiecats/mnt
+```
+
 ## Screenshots
 
 March, 2020
