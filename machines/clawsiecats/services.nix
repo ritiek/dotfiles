@@ -4,64 +4,64 @@ let
   domain = "clawsiecats.omg.lol";
 in
 {
-  # sops.secrets = {
-  #   "jitsi.htpasswd" = {
-  #     owner = "nginx";
-  #   };
-  # };
+  sops.secrets = {
+    "jitsi.htpasswd" = {
+      owner = "nginx";
+    };
+  };
 
   nixpkgs.config.permittedInsecurePackages = [
     "jitsi-meet-1.0.8043"
   ];
 
-  # services = {
-  #   jitsi-meet = {
-  #     enable = true;
-  #     hostName = "jitsi.${domain}";
-  #     config = {
-  #       enableInsecureRoomNameWarning = true;
-  #       fileRecordingsEnabled = false;
-  #       liveStreamingEnabled = false;
-  #       prejoinPageEnabled = true;
-  #     };
-  #     interfaceConfig = {
-  #       SHOW_JITSI_WATERMARK = false;
-  #       SHOW_WATERMARK_FOR_GUESTS = false;
-  #     };
-  #   };
-  #
-  #   jitsi-videobridge.openFirewall = true;
-  #
-  #   # invidious = {
-  #   #   enable = true;
-  #   #   domain = "invidious.${domain}";
-  #   #   nginx.enable = true;
-  #   # };
-  #
-  #   nginx = {
-  #     enable = true;
-  #     virtualHosts = {
-  #       "jitsi.${domain}" = {
-  #         # basicAuth = {
-  #         #   jitsi = "notthepass";
-  #         # };
-  #         basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
-  #         # basicAuthFile = ./jitsi.htpasswd;
-  #       };
-  #       # "miniserve.${domain}" = {
-  #       #   forceSSL = true;
-  #       #   enableACME = true;
-  #       #   # locations."/".root = pkgs.miniserve;
-  #       #   locations."/".proxyPass = "http://127.0.0.1:8081";
-  #       # };
-  #     };
-  #   };
-  # };
-  #
-  # security.acme = {
-  #   acceptTerms = true;
-  #   defaults.email = "clawsiecats@omg.lol";
-  # };
+  services = {
+    jitsi-meet = {
+      enable = true;
+      hostName = "jitsi.${domain}";
+      config = {
+        enableInsecureRoomNameWarning = true;
+        fileRecordingsEnabled = false;
+        liveStreamingEnabled = false;
+        prejoinPageEnabled = true;
+      };
+      interfaceConfig = {
+        SHOW_JITSI_WATERMARK = false;
+        SHOW_WATERMARK_FOR_GUESTS = false;
+      };
+    };
+
+    jitsi-videobridge.openFirewall = true;
+
+    # invidious = {
+    #   enable = true;
+    #   domain = "invidious.${domain}";
+    #   nginx.enable = true;
+    # };
+
+    nginx = {
+      enable = true;
+      virtualHosts = {
+        "jitsi.${domain}" = {
+          # basicAuth = {
+          #   jitsi = "notthepass";
+          # };
+          basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
+          # basicAuthFile = ./jitsi.htpasswd;
+        };
+        # "miniserve.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   # locations."/".root = pkgs.miniserve;
+        #   locations."/".proxyPass = "http://127.0.0.1:8081";
+        # };
+      };
+    };
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "clawsiecats@omg.lol";
+  };
 
   networking.firewall = {
     allowedTCPPorts = [
