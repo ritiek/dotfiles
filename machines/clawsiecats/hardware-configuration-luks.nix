@@ -4,11 +4,25 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" "virtio-pci" "virtio_net" ];
   boot.initrd.kernelModules = [ ];
 
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+
+  boot.initrd.network = {
+    enable = true;
+    ssh = {
+      enable = true;
+      port = 2222;
+      hostKeys = [
+        "/boot/ssh_host_ed25519_key"
+      ];
+    };
+    postCommands = ''
+      echo 'cryptsetup-askpass' >> /root/.profile
+    '';
+  };
 
   # boot.loader.grub = {
   #   enable = true;
@@ -37,24 +51,29 @@
             mountpoint = "/boot";
           };
         };
-        nix = {
+        luks = {
           end = "-3G";
           content = {
-            type = "filesystem";
-            format = "btrfs";
-            mountpoint = "/nix";
-            mountOptions = [
-              "noatime"
-              "compress-force=zstd:3"
-            ];
+            type = "luks";
+            name = "cryptnix";
+            settings.allowDiscards = true;
+            content = {
+              type = "btrfs";
+              extraArgs = [ "-f" ];
+              mountpoint = "/nix";
+              mountOptions = [
+                "noatime"
+                "compress-force=zstd:3"
+              ];
+            };
           };
         };
-        plainSwap = {
+        encryptedSwap = {
           size = "100%";
           content = {
             type = "swap";
-            discardPolicy = "both";
-            resumeDevice = true;
+            randomEncryption = true;
+            priority = 100;
           };
         };
       };
