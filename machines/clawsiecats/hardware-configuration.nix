@@ -9,6 +9,54 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  disko.devices.disk.clawsiecats = {
+    device = lib.mkDefault "/dev/vda";
+    content = {
+      type = "gpt";
+      partitions = {
+        ESP = {
+          size = "200M";
+          type = "EF00";
+          content = {
+            type = "filesystem";
+            format = "vfat";
+            mountpoint = "/boot";
+          };
+        };
+        nix = {
+          end = "-3G";
+          content = {
+            type = "filesystem";
+            format = "btrfs";
+            mountpoint = "/nix";
+            mountOptions = [
+              "noatime"
+              "compress-force=zstd:3"
+            ];
+          };
+        };
+        plainSwap = {
+          size = "100%";
+          content = {
+            type = "swap";
+            discardPolicy = "both";
+            resumeDevice = true;
+          };
+        };
+      };
+    };
+  };
+
+  disko.devices.nodev = {
+    "/" = {
+      fsType = "tmpfs";
+      mountOptions = [
+        "size=2G"
+        "mode=755"
+      ];
+    };
+  };
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction
