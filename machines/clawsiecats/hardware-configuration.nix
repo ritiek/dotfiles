@@ -6,14 +6,28 @@
 {
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];
+
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+
+  # boot.loader.grub = {
+  #   enable = true;
+  #   device = "/dev/vda";
+  #   efiSupport = true;
+  # };
+
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
     content = {
       type = "gpt";
       partitions = {
+        # boot = {
+        #   size = "2M";
+        #   type = "EF02";
+        # };
         ESP = {
           size = "200M";
           type = "EF00";

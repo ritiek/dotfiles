@@ -126,6 +126,7 @@
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats/minimal.nix
+        ./machines/clawsiecats/hardware-configuration.nix
         impermanence.nixosModules.impermanence
         disko.nixosModules.disko
       ];
@@ -135,6 +136,7 @@
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats
+        ./machines/clawsiecats/hardware-configuration.nix
 
         home-manager.nixosModules.home-manager {
           home-manager = {
@@ -166,6 +168,41 @@
       };
     };
 
+    nixosConfigurations.clawsiecats-luks = nixpkgs.lib.nixosSystem rec {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/clawsiecats
+        ./machines/clawsiecats/hardware-configuration-luks.nix
+
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            extraSpecialArgs = {
+              inherit inputs;
+            };
+            users.root = import ./machines/clawsiecats/home;
+          };
+          environment.pathsToLink = [
+            "/share/zsh"
+            "/share/applications"
+          ];
+        }
+
+        nix-index-database.nixosModules.nix-index {
+          programs.nix-index-database.comma.enable = true;
+        }
+
+        sops-nix.nixosModules.sops
+
+        impermanence.nixosModules.impermanence
+
+        disko.nixosModules.disko
+      ];
+      specialArgs = {
+        inherit inputs;
+      };
+    };
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
       profiles.system = {

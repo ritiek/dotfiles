@@ -1,15 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
-
   networking.hostName = "clawsiecats";
   time.timeZone = "Asia/Kolkata";
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -47,6 +40,7 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
+  users.mutableUsers = false;
   users.users.root = {
     openssh.authorizedKeys.keys = [
       "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
