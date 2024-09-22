@@ -25,7 +25,7 @@
         #   size = "2M";
         #   type = "EF02";
         # };
-        ESP = {
+        esp = {
           size = "200M";
           type = "EF00";
           content = {
@@ -46,7 +46,7 @@
             ];
           };
         };
-        plainSwap = {
+        plain-swap = {
           size = "100%";
           content = {
             type = "swap";
