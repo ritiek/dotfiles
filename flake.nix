@@ -35,7 +35,8 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
-    impermanence.url = "github:nix-community/impermanence";
+    # impermanence.url = "github:nix-community/impermanence";
+    impermanence.url = "github:amarshall/nix-impermanence/7448d149b0489f709aa6841d5d2af0635f14d69f";
 
     disko = {
       url = "github:nix-community/disko";
