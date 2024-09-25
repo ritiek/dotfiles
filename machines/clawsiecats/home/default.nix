@@ -10,11 +10,17 @@
   ];
   home = {
     stateVersion = "24.05";
-    persistence."/nix/persist/${config.home.homeDirectory}" = {
+    persistence."/nix/persist/home/${config.home.username}" = {
+      directories = [
+        ".local/share/nvim"
+        ".local/state/nvim"
+        ".local/cache/nvim"
+      ];
       files = [
         ".zsh_history"
-        # ".local/share/nvim"
+        ".nvim-lazy-lock.json"
       ];
+      allowOther = false;
     };
     packages = with pkgs; [
       any-nix-shell
