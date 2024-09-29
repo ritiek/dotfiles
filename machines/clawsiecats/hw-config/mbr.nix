@@ -7,35 +7,33 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
-  # boot.loader.grub = {
-  #   enable = true;
-  #   device = "/dev/vda";
-  #   efiSupport = true;
-  # };
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable = true;
+    # device = "/dev/vda";
+    # NOTE: Disable `device` and enable `mirroredBoots`
+    # when using tmpfs for /
+    mirroredBoots = [
+      {
+        path = "/nix/boot";
+        devices = [ "/dev/vda" ];
+      }
+    ];
+    efiSupport = false;
+  };
 
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
+    type = "disk";
     content = {
-      type = "gpt";
-      partitions = {
-        # boot = {
-        #   size = "2M";
-        #   type = "EF02";
-        # };
-        esp = {
-          size = "200M";
-          type = "EF00";
-          content = {
-            type = "filesystem";
-            format = "vfat";
-            mountpoint = "/boot";
-          };
-        };
-        nix = {
+      type = "table";
+      format = "msdos";
+      partitions = [
+        {
           end = "-3G";
+          part-type = "primary";
+          fs-type = "btrfs";
+          name = "root";
+          bootable = true;
           content = {
             type = "filesystem";
             format = "btrfs";
@@ -45,16 +43,17 @@
               "compress-force=zstd:3"
             ];
           };
-        };
-        plain-swap = {
-          size = "100%";
+        }
+        {
+          start = "-3G";
+          name = "swap";
           content = {
             type = "swap";
             discardPolicy = "both";
             resumeDevice = true;
           };
-        };
-      };
+        }
+      ];
     };
   };
 
