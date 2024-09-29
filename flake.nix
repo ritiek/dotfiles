@@ -140,8 +140,8 @@
       modules = [
         ./machines/clawsiecats
 
-        # ./machines/clawsiecats/hw-config/mbr.nix
-        ./machines/clawsiecats/hw-config/gpt.nix
+        ./machines/clawsiecats/hw-config/mbr.nix
+        # ./machines/clawsiecats/hw-config/gpt.nix
 
         home-manager.nixosModules.home-manager {
           home-manager = {

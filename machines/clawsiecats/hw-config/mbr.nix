@@ -29,7 +29,7 @@
       format = "msdos";
       partitions = [
         {
-          end = "-3G";
+          end = "-1G";
           part-type = "primary";
           fs-type = "btrfs";
           name = "root";
@@ -45,7 +45,7 @@
           };
         }
         {
-          start = "-3G";
+          start = "-1G";
           name = "swap";
           content = {
             type = "swap";
