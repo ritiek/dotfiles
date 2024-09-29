@@ -21,6 +21,20 @@
     efiSupport = false;
   };
 
+  services = {
+    btrfs.autoScrub.enable = true;
+    beesd.filesystems = {
+      nix = {
+        # spec = "ID=dm-name-nix";
+        # spec = "PARTUUID=48a5b9f3-01";
+        spec = "LABEL=nix";
+        hashTableSizeMB = 112;
+        verbosity = "crit";
+        extraOptions = [ "--loadavg-target" "5.0" ];
+      };
+    };
+  };
+
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
     type = "disk";
@@ -32,7 +46,7 @@
           end = "-1G";
           part-type = "primary";
           fs-type = "btrfs";
-          name = "root";
+          name = "nix";
           bootable = true;
           content = {
             type = "filesystem";
@@ -42,6 +56,7 @@
               "noatime"
               "compress-force=zstd:3"
             ];
+            extraArgs = [ "-Lnix" ];
           };
         }
         {
