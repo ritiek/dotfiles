@@ -28,15 +28,6 @@
   };
 
   services = {
-    btrfs.autoScrub.enable = true;
-    beesd.filesystems = {
-      cryptnix = {
-        spec = "ID=dm-name-cryptnix";
-        hashTableSizeMB = 112;
-        verbosity = "crit";
-        extraOptions = [ "--loadavg-target" "5.0" ];
-      };
-    };
     openssh = {
       openFirewall = true; 
       knownHosts = {

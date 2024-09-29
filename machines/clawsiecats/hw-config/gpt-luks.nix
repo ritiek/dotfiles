@@ -24,6 +24,19 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services = {
+    btrfs.autoScrub.enable = true;
+    beesd.filesystems = {
+      cryptnix = {
+        # spec = "ID=dm-name-cryptnix";
+        spec = "LABEL=cryptnix";
+        hashTableSizeMB = 112;
+        verbosity = "crit";
+        extraOptions = [ "--loadavg-target" "5.0" ];
+      };
+    };
+  };
+
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
     content = {
@@ -50,12 +63,12 @@
             settings.allowDiscards = true;
             content = {
               type = "btrfs";
-              extraArgs = [ "-f" ];
               mountpoint = "/nix";
               mountOptions = [
                 "noatime"
                 "compress-force=zstd:3"
               ];
+              extraArgs = [ "-Lcryptnix -f" ];
             };
           };
         };

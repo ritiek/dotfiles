@@ -38,6 +38,20 @@
     enableCryptodisk = true;
   };
 
+  services = {
+    btrfs.autoScrub.enable = true;
+    beesd.filesystems = {
+      cryptnix = {
+        # spec = "ID=dm-name-nix";
+        # spec = "PARTUUID=48a5b9f3-01";
+        spec = "LABEL=cryptnix";
+        hashTableSizeMB = 112;
+        verbosity = "crit";
+        extraOptions = [ "--loadavg-target" "5.0" ];
+      };
+    };
+  };
+
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
     type = "disk";
@@ -49,7 +63,7 @@
           end = "-3G";
           part-type = "primary";
           fs-type = "btrfs";
-          name = "root";
+          name = "cryptnix";
           bootable = true;
           content = {
             type = "luks";
@@ -63,6 +77,7 @@
                 "noatime"
                 "compress-force=zstd:3"
               ];
+              extraArgs = [ "-Lcryptnix -f" ];
             };
           };
         }

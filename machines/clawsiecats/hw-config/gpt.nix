@@ -10,6 +10,18 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services = {
+    btrfs.autoScrub.enable = true;
+    beesd.filesystems = {
+      nix = {
+        spec = "LABEL=nix";
+        hashTableSizeMB = 112;
+        verbosity = "crit";
+        extraOptions = [ "--loadavg-target" "5.0" ];
+      };
+    };
+  };
+
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
     content = {
@@ -31,6 +43,7 @@
         nix = {
           end = "-3G";
           content = {
+            name = "nix";
             type = "filesystem";
             format = "btrfs";
             mountpoint = "/nix";
@@ -38,6 +51,7 @@
               "noatime"
               "compress-force=zstd:3"
             ];
+            extraArgs = [ "-Lnix" ];
           };
         };
         plain-swap = {
