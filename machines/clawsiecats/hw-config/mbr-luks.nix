@@ -1,3 +1,5 @@
+# FIXME: Doesn't boot after installation for some reason.
+
 { config, lib, pkgs, modulesPath, ... }:
 
 {
@@ -21,42 +23,41 @@
     '';
   };
 
-  # boot.loader.grub = {
-  #   enable = true;
-  #   device = "/dev/vda";
-  #   efiSupport = true;
-  # };
-
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub = {
+    enable = true;
+    # device = "/dev/vda";
+    # NOTE: Disable `device` and enable `mirroredBoots`
+    # when using tmpfs for /
+    mirroredBoots = [
+      {
+        path = "/nix/boot";
+        devices = [ "/dev/vda" ];
+      }
+    ];
+    efiSupport = false;
+    enableCryptodisk = true;
+  };
 
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
+    type = "disk";
     content = {
-      type = "gpt";
-      partitions = {
-        # boot = {
-        #   size = "2M";
-        #   type = "EF02";
-        # };
-        esp = {
-          size = "200M";
-          type = "EF00";
-          content = {
-            type = "filesystem";
-            format = "vfat";
-            mountpoint = "/boot";
-          };
-        };
-        luks = {
+      type = "table";
+      format = "msdos";
+      partitions = [
+        {
           end = "-3G";
+          part-type = "primary";
+          fs-type = "btrfs";
+          name = "root";
+          bootable = true;
           content = {
             type = "luks";
             name = "cryptnix";
-            settings.allowDiscards = true;
+            extraOpenArgs = [ "--allow-discards" ];
             content = {
-              type = "btrfs";
-              extraArgs = [ "-f" ];
+              type = "filesystem";
+              format = "btrfs";
               mountpoint = "/nix";
               mountOptions = [
                 "noatime"
@@ -64,16 +65,17 @@
               ];
             };
           };
-        };
-        encrypted-swap = {
-          size = "100%";
+        }
+        {
+          start = "-3G";
+          name = "swap";
           content = {
             type = "swap";
-            randomEncryption = true;
-            priority = 100;
+            discardPolicy = "both";
+            resumeDevice = true;
           };
-        };
-      };
+        }
+      ];
     };
   };
 

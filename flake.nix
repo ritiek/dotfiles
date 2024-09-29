@@ -126,7 +126,10 @@
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats/minimal.nix
-        ./machines/clawsiecats/hardware-configuration.nix
+
+        # ./machines/clawsiecats/hw-config/mbr.nix
+        ./machines/clawsiecats/hw-config/gpt.nix
+
         impermanence.nixosModules.impermanence
         disko.nixosModules.disko
       ];
@@ -136,7 +139,9 @@
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats
-        ./machines/clawsiecats/hardware-configuration.nix
+
+        # ./machines/clawsiecats/hw-config/mbr.nix
+        ./machines/clawsiecats/hw-config/gpt.nix
 
         home-manager.nixosModules.home-manager {
           home-manager = {
@@ -172,7 +177,9 @@
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats
-        ./machines/clawsiecats/hardware-configuration-luks.nix
+
+        # ./machines/clawsiecats/hw-config/mbr-luks.nix
+        ./machines/clawsiecats/hw-config/gpt-luks.nix
 
         home-manager.nixosModules.home-manager {
           home-manager = {
@@ -203,6 +210,7 @@
         inherit inputs;
       };
     };
+
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
       profiles.system = {
