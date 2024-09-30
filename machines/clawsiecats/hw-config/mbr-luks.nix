@@ -52,6 +52,8 @@
     };
   };
 
+  boot.initrd.luks.devices.cryptnix.preLVM = false;
+
   disko.devices.disk.clawsiecats = {
     device = lib.mkDefault "/dev/vda";
     type = "disk";
@@ -62,8 +64,8 @@
         {
           end = "-3G";
           part-type = "primary";
-          fs-type = "btrfs";
-          name = "cryptnix";
+          # fs-type = "btrfs";
+          # name = "cryptnix";
           bootable = true;
           content = {
             type = "luks";
