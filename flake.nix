@@ -165,6 +165,7 @@
         sops-nix.nixosModules.sops
 
         impermanence.nixosModules.impermanence
+        # impermanence.nixosModules.home-manager.impermanence
 
         disko.nixosModules.disko
       ];
