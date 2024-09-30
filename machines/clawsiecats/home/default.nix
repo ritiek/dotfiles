@@ -1,7 +1,8 @@
 { pkgs, inputs, config, ... }:
 {
   imports = [
-    "${inputs.impermanence}/home-manager.nix"
+    # "${inputs.impermanence}/home-manager.nix"
+    inputs.impermanence.nixosModules.home-manager.impermanence
     ./zsh
     ./git
     ./neovim
@@ -11,6 +12,8 @@
   home = {
     stateVersion = "24.05";
     persistence."/nix/persist/home/${config.home.username}" = {
+      # enable = true;
+      # hideMounts = true;
       directories = [
         ".local/share/nvim"
         ".local/state/nvim"

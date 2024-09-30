@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -18,6 +18,9 @@
   };
 
   users.defaultUserShell = pkgs.zsh;
+  users.users.root.packages = [
+    inputs.home-manager.packages.${pkgs.system}.default
+  ];
 
   # environment.systemPackages = with pkgs; [
   #   iptables
