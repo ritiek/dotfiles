@@ -71,6 +71,7 @@ config.send_composed_key_when_left_alt_is_pressed = false
 config.send_composed_key_when_right_alt_is_pressed = false
 
 config.hide_mouse_cursor_when_typing = false
+config.mux_enable_ssh_agent = false
 
 -- config.window_background_image = "/home/ritiek/Pictures/island-fantastic-coast-mountains-art.jpg"
 -- config.window_background_opacity = 0.7
