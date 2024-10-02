@@ -91,6 +91,8 @@
       miniserve
       bore-cli
 
+      yubikey-manager
+
       # FIXME: Can't seem to install both these together.
       yubioath-flutter
       # fluffychat
@@ -140,9 +142,18 @@
     ];
   };
 
+  services.gpg-agent = {
+    enable = true;
+    # enableExtraSocket = true;
+    enableSshSupport = true;
+    sshKeys = [
+      "5093E5BC80A747932DDBE3400EF3B45E3546EDCE"
+    ];
+  };
+
   programs = {
     home-manager.enable = true;
-    # gpg.enable = true;
+    gpg.enable = true;
     jq = {
       enable = true;
       # colors = {
