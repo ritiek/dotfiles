@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -72,7 +72,7 @@ ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-export EDITOR="nvim"
+# export EDITOR="nvim"
 # This messes up Neovim config on NixOS, so commenting it out:
 # export VIM="$HOME/.config/nvim"
 # export VIMRUNTIME="/usr/share/nvim/runtime"
@@ -92,8 +92,8 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # export JAVA_OPTS="-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee"
 export GOPATH="$HOME/go"
 
-export POWERLINE_BASH_CONTINUATION=1
-export POWERLINE_BASH_SELECT=1
+# export POWERLINE_BASH_CONTINUATION=1
+# export POWERLINE_BASH_SELECT=1
 
 export ESPIDF=/opt/esp-idf
 
@@ -123,6 +123,14 @@ export PATH
       # Check if xclip is even being used in hyprland
       xclip = "xclip -selection clipboard";
       cp = "cp --reflink=auto --sparse=always";
+    };
+    localVariables = {
+      SSH_AUTH_SOCK = (
+        if config.services.gpg-agent.enable then
+          "/run/user/1000/gnupg/S.gpg-agent.ssh"
+        else
+          "/run/user/1000/ssh-agent"
+      );
     };
     plugins = [
       {
