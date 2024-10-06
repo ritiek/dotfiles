@@ -28,6 +28,7 @@
       # spotify
       unzip
       unrar-wrapper
+      tree
       # jq
       # google-chrome
       sd
@@ -91,6 +92,8 @@
       miniserve
       bore-cli
 
+      sops
+      ssh-to-age
       yubikey-manager
 
       # FIXME: Can't seem to install both these together.
