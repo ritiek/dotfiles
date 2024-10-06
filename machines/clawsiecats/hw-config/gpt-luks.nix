@@ -61,6 +61,7 @@
             type = "luks";
             name = "cryptnix";
             settings.allowDiscards = true;
+            passwordFile = "/tmp/disk.key";
             content = {
               type = "btrfs";
               mountpoint = "/nix";
