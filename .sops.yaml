@@ -3,7 +3,7 @@ keys:
   - &paintball age1m8ge0r6qtghsj88yu8f77660u8z6m2p2uvhg4day4d2c86vtp3kqcf7p72
   - &clawsiecats age1ej66fdsu8q3dfdas85zfnw38az79e4tp0hw4sh5587kdzy0l45hsj8cqth
 creation_rules:
-  - path_regex: secrets\.yaml$
+  - path_regex: machines/secrets\.yaml$
     pgp: *ritiek
   - path_regex: machines/clawsiecats/secrets\.yaml$
     # key_groups:
