@@ -24,13 +24,16 @@
     files = [
       "/etc/machine-id"
       "/etc/ssh/ssh_host_ed25519_key"
-      # "/var/lib/tailscale/tailscaled.state"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/etc/ssh/ssh_host_ed25519_agekey"
+      "/etc/ssh/ssh_host_rsa_key"
+      "/etc/ssh/ssh_host_rsa_key.pub"
+      "/var/lib/tailscale/tailscaled.state"
     ];
     users.root = {
       home = "/root";
-      files = [
-        ".age-key"
-      ];
+      directories = [ ];
+      files = [ ];
     };
   };
 

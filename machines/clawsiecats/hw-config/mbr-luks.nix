@@ -71,6 +71,7 @@
             type = "luks";
             name = "cryptnix";
             extraOpenArgs = [ "--allow-discards" ];
+            passwordFile = "/tmp/disk.key";
             content = {
               type = "filesystem";
               format = "btrfs";
