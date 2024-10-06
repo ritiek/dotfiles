@@ -20,7 +20,7 @@ systemd-machine-id-setup --root="$BASEDIR"/nix/persist/system/
 
 # Host SSH keys; also used by sops-nix for decrypting secrets.
 install -d -m755 "$BASEDIR"/nix/persist/system/etc/ssh/
-sops decrypt ./secrets.yaml \
+sops decrypt ./machines/secrets.yaml \
   --extract '["clawsiecats_ssh_host_ed25519_key"]' \
   --output "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_key
 chmod 600 "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_key
