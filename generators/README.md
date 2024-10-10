@@ -1,0 +1,3 @@
+```
+$ nix build .#minimal-iso
+```

@@ -43,7 +43,6 @@
         nix = {
           end = "-3G";
           content = {
-            name = "nix";
             type = "filesystem";
             format = "btrfs";
             mountpoint = "/nix";

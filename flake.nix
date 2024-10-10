@@ -43,6 +43,11 @@
     };
 
     deploy-rs.url = "github:serokell/deploy-rs";
+
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -59,6 +64,7 @@
     impermanence,
     disko,
     deploy-rs,
+    nixos-generators,
     ...
   }@inputs:
     {
@@ -129,6 +135,7 @@
 
         # ./machines/clawsiecats/hw-config/mbr.nix
         ./machines/clawsiecats/hw-config/gpt.nix
+        # ./machines/clawsiecats/hw-config/gpt-luks.nix
 
         impermanence.nixosModules.impermanence
         disko.nixosModules.disko
@@ -222,5 +229,17 @@
     };
 
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) deploy-rs.lib;
+
+    minimal-iso = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./generators/minimal-iso.nix ];
+      format = "iso";
+    };
+
+    minimal-install-iso = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./generators/minimal-iso.nix ];
+      format = "install-iso";
+    };
   };
 }

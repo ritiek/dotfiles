@@ -54,12 +54,4 @@
   };
 
   networking.firewall.enable = true;
-
-  powerManagement.cpuFreqGovernor = "performance";
-  zramSwap.enable = true;
-
-  boot.tmp = {
-    useTmpfs = true;
-    cleanOnBoot = true;
-  };
 }
