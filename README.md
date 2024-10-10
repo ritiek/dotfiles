@@ -42,7 +42,7 @@ $ chezmoi apply -R
 #### clawsiecats
 
 ```bash
-$ nix run github:nix-community/nixos-anywhere -- --flake '.#clawsiecats' vps.machine.ip.address --extra-files ./machines/clawsiecats/mnt
+$ ./machines/clawsiecats/anywhere.sh .#clawsiecats-luks root@vps.machine.ip.address --luks
 ```
 
 ## Screenshots
