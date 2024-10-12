@@ -1,3 +1,3 @@
 ```
-$ nix build .#minimal-iso
+$ nix build '.#minimal-iso'
 ```
