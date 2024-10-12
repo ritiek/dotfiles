@@ -27,7 +27,7 @@ jobs:
         run: |
           nix build .#nixosConfigurations.nixin.config.system.build.toplevel
 
-  clawsiecats-minimal:
+  clawsiecats:
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
@@ -37,25 +37,9 @@ jobs:
       - name: Build .#clawsiecats-minimal
         run: |
           nix build .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
-
-  clawsiecats:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-      - name: Clone Repository
-        uses: actions/checkout@v4
       - name: Build .#clawsiecats
         run: |
           nix build .#nixosConfigurations.clawsiecats.config.system.build.toplevel
-
-  clawsiecats-luks:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-      - name: Clone Repository
-        uses: actions/checkout@v4
       - name: Build .#clawsiecats-luks
         run: |
           nix build .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
