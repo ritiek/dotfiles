@@ -1,9 +1,9 @@
-name: "clawsiecats"
+name: "clawsiecats-minimal"
 on:
   push:
   workflow_dispatch:
 jobs:
-  clawsiecats:
+  clawsiecats-minimal:
     runs-on: ubuntu-latest
     steps:
     - name: Maximize build space
@@ -28,7 +28,7 @@ jobs:
         #     extraPullNames: nix-community
     - name: Build
       run: |
-        nix build .#nixosConfigurations.clawsiecats.config.system.build.toplevel
+        nix build .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
       # run: |
       #   for host in nixos/*; do
       #     host=${host#nixos/}
