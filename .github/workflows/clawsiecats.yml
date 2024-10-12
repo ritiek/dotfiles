@@ -1,0 +1,48 @@
+name: "clawsiecats"
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  clawsiecats:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Maximize build space
+      uses: AdityaGarg8/remove-unwanted-software@v2
+      with:
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
+        remove-codeql: 'true'
+        remove-docker-images: 'true'
+    - uses: pierotofy/set-swap-space@master
+      with:
+        swap-size-gb: 10
+    - uses: actions/checkout@v4
+    - uses: cachix/install-nix-action@v26
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+        # - uses: cachix/cachix-action@v14
+        #   with:
+        #     name: rvfg
+        #     authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+        #     extraPullNames: nix-community
+    - name: Build
+      run: |
+        nix build .#nixosConfigurations.clawsiecats.config.system.build.toplevel
+      # run: |
+      #   for host in nixos/*; do
+      #     host=${host#nixos/}
+      #     if [[ "$(nix eval .#nixosConfigurations."$host".pkgs.system)" = '"x86_64-linux"' ]]; then
+      #       echo "$host"
+      #       nix build .#nixosConfigurations."$host".config.system.build.toplevel
+      #     fi
+      #   done
+    # - name: Deploy
+    #   if: ${{ github.ref == 'refs/heads/main' }}
+    #   env:
+    #     SSH_KEY: ${{secrets.DEPLOY_SSH_KEY}}
+    #   run: |
+    #     mkdir -p ~/.ssh
+    #     printenv SSH_KEY > ~/.ssh/id_ed25519
+    #     chmod 600 ~/.ssh/id_ed25519
+    #     nix run .#ci-deploy
