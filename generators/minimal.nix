@@ -1,5 +1,5 @@
 {
-  networking.hostName = "minimal-iso";
+  networking.hostName = "minimal";
 
   # Helpful for tinkering within the installation environment.
   # fileSystems."/root" = {

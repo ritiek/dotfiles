@@ -232,13 +232,13 @@
 
     minimal-iso = nixos-generators.nixosGenerate {
       system = "x86_64-linux";
-      modules = [ ./generators/minimal-iso.nix ];
+      modules = [ ./generators/minimal.nix ];
       format = "iso";
     };
 
     minimal-install-iso = nixos-generators.nixosGenerate {
       system = "x86_64-linux";
-      modules = [ ./generators/minimal-iso.nix ];
+      modules = [ ./generators/minimal.nix ];
       format = "install-iso";
     };
   };

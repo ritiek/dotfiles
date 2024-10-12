@@ -37,7 +37,7 @@ $ sudo shutdown -r now
 
 ### Clawsiecats
 A configuration optimized for limited compute availability, supposed to be deployed on VPS machines.
-It hosts routing services, VPN, some other useful stuff.
+It hosts routing services, tailscale, some other useful stuff.
 
 Uncomment the disko partioning configuration that should be used in [flake.nix](/flake.nix) under the
 variant before deployment. Supports MBR, GPT, GPT+LUKS. I haven't gotten MBR+LUKS working yet.
@@ -53,7 +53,7 @@ Looks to work fine on the most minimal [Vultr](https://www.vultr.com/) configura
 
 **Deployment Steps**
 
-1. Replace your SSH public keys in [minimal-iso.nix](/generators/minimal-iso.nix).
+1. Replace your SSH public keys in [minimal.nix](/generators/minimal.nix).
 
 2. Build the minimal ISO:
   ```bash

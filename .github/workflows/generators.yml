@@ -15,6 +15,11 @@ jobs:
       - name: Build .#minimal-iso
         run: |
           nix build .#minimal-iso
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: minimal.iso
+          path: ./result/iso/nixos.iso
 
   minimal-install-iso:
     runs-on: ubuntu-latest
@@ -26,3 +31,8 @@ jobs:
       - name: Build .#minimal-install-iso
         run: |
           nix build .#minimal-install-iso
+      - name: Upload ISO
+        uses: actions/upload-artifact@v4
+        with:
+          name: minimal-install.iso
+          path: ./result/iso/*.iso
