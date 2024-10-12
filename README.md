@@ -1,6 +1,6 @@
 # dotfiles
 
-[![machines](https://img.shields.io/github/actions/workflow/status/ritiek/dotfiles/generators.yml?label=machines)](https://github.com/ritiek/dotfiles/actions/workflows/machines.yml)
+[![machines](https://img.shields.io/github/actions/workflow/status/ritiek/dotfiles/machines.yml?label=machines)](https://github.com/ritiek/dotfiles/actions/workflows/machines.yml)
 [![generators](https://img.shields.io/github/actions/workflow/status/ritiek/dotfiles/generators.yml?label=generators)](https://github.com/ritiek/dotfiles/actions/workflows/generators.yml)
 
 My dotfiles. For NixOS. As well as for Debian/Arch based distros maintained using
