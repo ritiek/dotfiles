@@ -1,0 +1,34 @@
+name: generators
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  nix-setup:
+    uses: ./.github/workflows/nix-setup.yml
+
+  minimal-iso:
+    runs-on: ubuntu-latest
+    needs: nix-setup
+    steps:
+      - uses: actions/checkout@v4
+      # - name: Install Nix
+      #   uses: cachix/install-nix-action@v26
+      #   with:
+      #     nix_path: nixpkgs=channel:nixos-unstable
+      - name: minimal-iso
+        run: |
+          nix build .#minimal-iso
+
+  minimal-install-iso:
+    runs-on: ubuntu-latest
+    needs: nix-setup
+    steps:
+      - uses: actions/checkout@v4
+      # - name: Install Nix
+      #   uses: cachix/install-nix-action@v27
+      #   with:
+      #     nix_path: nixpkgs=channel:nixos-unstable
+      - name: minimal-install-iso
+        run: |
+          nix build .#minimal-install-iso
