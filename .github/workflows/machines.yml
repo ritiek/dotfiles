@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  nixin:
+  mishy:
     runs-on: ubuntu-latest
     steps:
       - name: Maximize build space
@@ -23,9 +23,9 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Build .#nixin
+      - name: Build .#mishy
         run: |
-          nix build .#nixosConfigurations.nixin.config.system.build.toplevel
+          nix build .#nixosConfigurations.mishy.config.system.build.toplevel
 
   clawsiecats:
     runs-on: ubuntu-latest
