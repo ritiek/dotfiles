@@ -68,10 +68,10 @@
     ...
   }@inputs:
     {
-    nixosConfigurations.nixin = nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.mishy = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
-        ./machines/nixin
+        ./machines/mishy
 
         {
           nixpkgs.overlays = [
@@ -110,7 +110,7 @@
             #     config.allowUnfree = true;
             #   };
             # };
-            users.ritiek = import ./machines/nixin/home;
+            users.ritiek = import ./machines/mishy/home;
           };
           environment.pathsToLink = [
             "/share/zsh"
