@@ -27,12 +27,6 @@ chmod 600 "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_key
 ssh-keygen -y -f \
   "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_key \
   > "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_key.pub
-# NOTE: Relying solely on SSH private key for sops-nix magic doesn't seem
-# to play very well nixos-anywhere at the moment. So dealing directly in
-# agekeys for now.
-, ssh-to-age -private-key \
-  -i "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_key \
-  -o "$BASEDIR"/nix/persist/system/etc/ssh/ssh_host_ed25519_agekey
 
 # Transfer current state of `/etc/nixos/` to the new installation.
 rsync -rl \
