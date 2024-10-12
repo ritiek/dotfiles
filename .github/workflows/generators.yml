@@ -9,11 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
-        uses: cachix/install-nix-action@v26
-      #   with:
-      #     nix_path: nixpkgs=channel:nixos-unstable
-      - uses: actions/checkout@v4
-      - name: minimal-iso
+        uses: cachix/install-nix-action@v27
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Build .#minimal-iso
         run: |
           nix build .#minimal-iso
 
@@ -22,9 +21,8 @@ jobs:
     steps:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
-      #   with:
-      #     nix_path: nixpkgs=channel:nixos-unstable
-      - uses: actions/checkout@v4
-      - name: minimal-install-iso
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Build .#minimal-install-iso
         run: |
           nix build .#minimal-install-iso
