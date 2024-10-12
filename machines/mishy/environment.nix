@@ -2,5 +2,5 @@
 
 {
   time.timeZone = "Asia/Kolkata";
-  networking.hostName = "nixin";
+  networking.hostName = "mishy";
 }
