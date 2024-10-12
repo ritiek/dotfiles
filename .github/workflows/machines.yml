@@ -1,0 +1,35 @@
+name: machines
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  nix-setup:
+    uses: ./.github/workflows/nix-setup.yml
+
+  clawsiecats-minimal:
+    runs-on: ubuntu-latest
+    needs: nix-setup
+    steps:
+      - uses: actions/checkout@v4
+      # - name: Install Nix
+      #   uses: cachix/install-nix-action@v27
+      #   with:
+      #     nix_path: nixpkgs=channel:nixos-unstable
+      - name: clawsiecats-minimal
+        run: |
+          nix build .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
+
+  nixin:
+    runs-on: ubuntu-latest
+    needs: nix-setup
+    steps:
+      - uses: actions/checkout@v4
+      # - name: Install Nix
+      #   uses: cachix/install-nix-action@v27
+      #   with:
+      #     nix_path: nixpkgs=channel:nixos-unstable
+      - name: nixin
+        run: |
+          nix build .#nixosConfigurations.nixin.config.system.build.toplevel
