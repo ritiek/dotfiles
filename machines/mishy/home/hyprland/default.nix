@@ -8,9 +8,12 @@ in
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    package = pkgs.hyprland;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     # enableNvidiaPatches = true;
     # xwayland.enable = false;
+    plugins = [
+      inputs.hyprgrass.packages.${pkgs.system}.default
+    ];
     systemd = {
       enable = true;
       variables = ["-all"];
