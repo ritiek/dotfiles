@@ -11,19 +11,30 @@
   ];
   home = {
     stateVersion = "24.05";
-    persistence."/nix/persist/home/${config.home.username}" = {
-      # enable = true;
-      # hideMounts = true;
-      directories = [
-        ".local/share/nvim"
-        ".local/state/nvim"
-        ".local/cache/nvim"
-      ];
-      files = [
-        ".zsh_history"
-        ".nvim-lazy-lock.json"
-      ];
-      allowOther = false;
+    persistence = {
+      "/nix/persist/home/${config.home.username}/files" = {
+        files = [
+          ".zsh_history"
+        ];
+        allowOther = false;
+      };
+      "/nix/persist/home/${config.home.username}/cache" = {
+        directories = [
+          ".local/share/nvim"
+          # {
+          #   directory = ".local/share/nvim";
+          #   method = "symlink";
+          # }
+          # {
+          #   directory = ".local/state/nvim";
+          #   method = "symlink";
+          # }
+        ];
+        # files = [
+        #   ".nvim-lazy-lock.json"
+        # ];
+        allowOther = false;
+      };
     };
     packages = with pkgs; [
       any-nix-shell
