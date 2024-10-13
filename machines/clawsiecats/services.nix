@@ -4,6 +4,14 @@ let
   domain = "clawsiecats.omg.lol";
 in
 {
+  environment.persistence."/nix/persist/system" = {
+    directories = [
+      "/var/lib/acme"
+      "/var/lib/jitsi-meet"
+      "/var/lib/prosody"
+    ];
+    files = [ ];
+  };
   sops.secrets = {
     "jitsi.htpasswd" = {
       owner = "nginx";

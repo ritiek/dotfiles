@@ -15,9 +15,6 @@
     directories = [
       "/etc/nixos"
       "/var/log"
-      "/var/lib/acme"
-      "/var/lib/jitsi-meet"
-      "/var/lib/prosody"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
     ];
@@ -27,13 +24,12 @@
       "/etc/ssh/ssh_host_ed25519_key.pub"
       "/etc/ssh/ssh_host_rsa_key"
       "/etc/ssh/ssh_host_rsa_key.pub"
-      "/var/lib/tailscale/tailscaled.state"
     ];
-    users.root = {
-      home = "/root";
-      directories = [ ];
-      files = [ ];
-    };
+    # users.root = {
+    #   home = "/root";
+    #   directories = [ ];
+    #   files = [ ];
+    # };
   };
 
   # Disable sudo as we've no non-root users.
