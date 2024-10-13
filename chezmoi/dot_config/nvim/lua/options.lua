@@ -2,10 +2,8 @@ require "nvchad.options"
 
 -- add yours here!
 
-local o = vim.o
-
--- o.cursorlineopt = 'both' -- highlights current cursor line
-o.scrolloff = 5 -- always show x number of top and bottom lines on buffer
+-- vim.o.cursorlineopt = 'both' -- highlights current cursor line
+vim.o.scrolloff = 5 -- always show x number of top and bottom lines on buffer
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight when yanking text",
