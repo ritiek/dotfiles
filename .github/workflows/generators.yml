@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  minimal-iso:
+  minimal:
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
@@ -15,24 +15,16 @@ jobs:
       - name: Build .#minimal-iso
         run: |
           nix build .#minimal-iso
-      - name: Upload ISO
+      - name: Upload .#minimal-iso
         uses: actions/upload-artifact@v4
         with:
           name: minimal.iso
           path: ./result/iso/nixos.iso
-
-  minimal-install-iso:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-      - name: Clone Repository
-        uses: actions/checkout@v4
       - name: Build .#minimal-install-iso
         run: |
           nix build .#minimal-install-iso
-      - name: Upload ISO
+      - name: Upload .#minimal-install-iso
         uses: actions/upload-artifact@v4
         with:
           name: minimal-install.iso
-          path: ./result/iso/*.iso
+          path: ./result/iso/nixos-*.iso
