@@ -208,6 +208,20 @@
       format = "raw-efi";
     };
 
+    mishy-iso = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./machines/mishy ];
+      specialArgs = { inherit inputs; };
+      format = "iso";
+    };
+
+    mishy-install-iso = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./machines/mishy ];
+      specialArgs = { inherit inputs; };
+      format = "install-iso";
+    };
+
     mishy-raw-efi = nixos-generators.nixosGenerate {
       system = "x86_64-linux";
       modules = [ ./machines/mishy ];
