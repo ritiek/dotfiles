@@ -57,8 +57,9 @@
         # # Can't join voice channels on dorion discord client and it
         # # seems to freeze randomly (wayland/gpu issues maybe)
         # dorion
-        ## # So having armcord as a fallback for now
+        ## # So having legcord (armcord) as a fallback for now
         armcord
+        # legcord
         # discord
 
         # osu-lazer-bin
