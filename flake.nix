@@ -80,71 +80,19 @@
       system = "x86_64-linux";
       modules = [
         ./machines/mishy
-
-        {
-          nixpkgs.overlays = [
-            nur.overlay
-            (final: _prev: {
-              stable = import stable {
-                inherit (final) system;
-                config.allowUnfree = true;
-              };
-            })
-            (final: _prev: {
-              unstable = import unstable {
-                inherit (final) system;
-                config.allowUnfree = true;
-              };
-            })
-            # (final: _prev: {
-            #   local = import local {
-            #     inherit (final) system;
-            #     config.allowUnfree = true;
-            #   };
-            # })
-          ];
-        }
-
-        home-manager.nixosModules.home-manager {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            extraSpecialArgs = {
-              inherit inputs;
-            };
-            # extraSpecialArgs = {
-            #   stable = import stable {
-            #     inherit system;
-            #     config.allowUnfree = true;
-            #   };
-            # };
-            users.ritiek = import ./machines/mishy/home;
-          };
-          environment.pathsToLink = [
-            "/share/zsh"
-            "/share/xdg-desktop-portal"
-            "/share/applications"
-          ];
-        }
-
-        nix-index-database.nixosModules.nix-index {
-          programs.nix-index-database.comma.enable = true;
-        }
+        ./machines/mishy/boot.nix
+        ./machines/mishy/hardware-configuration.nix
       ];
-      specialArgs = {
-        inherit inputs;
-      };
+      specialArgs = { inherit inputs; };
     };
 
     nixosConfigurations.clawsiecats-minimal = nixpkgs.lib.nixosSystem rec {
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats/minimal.nix
-
         # ./machines/clawsiecats/hw-config/mbr.nix
         ./machines/clawsiecats/hw-config/gpt.nix
         # ./machines/clawsiecats/hw-config/gpt-luks.nix
-
         impermanence.nixosModules.impermanence
         disko.nixosModules.disko
       ];
@@ -154,10 +102,8 @@
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats
-
         ./machines/clawsiecats/hw-config/mbr.nix
         # ./machines/clawsiecats/hw-config/gpt.nix
-
         home-manager.nixosModules.home-manager {
           home-manager = {
             useGlobalPkgs = true;
@@ -259,6 +205,13 @@
     minimal-raw-efi = nixos-generators.nixosGenerate {
       system = "x86_64-linux";
       modules = [ ./generators/minimal.nix ];
+      format = "raw-efi";
+    };
+
+    mishy-raw-efi = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./machines/mishy ];
+      specialArgs = { inherit inputs; };
       format = "raw-efi";
     };
   };
