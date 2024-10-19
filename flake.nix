@@ -217,14 +217,20 @@
 
     mishy-install-iso = nixos-generators.nixosGenerate {
       system = "x86_64-linux";
-      modules = [ ./machines/mishy ];
+      modules = [
+        ./machines/mishy
+        ./generators/mishy.nix
+      ];
       specialArgs = { inherit inputs; };
       format = "install-iso";
     };
 
     mishy-raw-efi = nixos-generators.nixosGenerate {
       system = "x86_64-linux";
-      modules = [ ./machines/mishy ];
+      modules = [
+        ./machines/mishy
+        ./generators/mishy.nix
+      ];
       specialArgs = { inherit inputs; };
       format = "raw-efi";
     };
