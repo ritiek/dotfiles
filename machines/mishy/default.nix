@@ -5,43 +5,45 @@
 { config, lib, pkgs, modulesPath, options, inputs, ... }:
 
 {
-  # Allow unfree packages
-  nixpkgs.config = {
-    # TODO: Make adjustments and set this to false.
-    allowUnfree = true;
-    # packageOverrides = pkgs: {
-    #   nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-    #     inherit pkgs;
-    #   };
-    #   ritiek = import (builtins.fetchTarball "https://github.com/ritiek/nur-packages/archive/hide-placeholder-for-spotify-advert-banner.zip") {
-    #     inherit pkgs;
-    #   };
+  time.timeZone = "Asia/Kolkata";
+  networking.hostName = "mishy";
 
-    #   # Default pkgs are already from unstable channel.
-    #   # unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
-    #   stable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/master.tar.gz") {};
-    #   # v23_11 = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-23.11.tar.gz") {};
-    # };
-  };
+  # TODO: Make adjustments and set this to false.
+  nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.overlays = [
+    inputs.nur.overlay
+    (final: _prev: {
+      stable = import inputs.stable {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
+    (final: _prev: {
+      unstable = import inputs.unstable {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
+    # (final: _prev: {
+    #   local = import local {
+    #     inherit (final) system;
+    #     config.allowUnfree = true;
+    #   };
+    # })
+  ];
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
   };
 
-  imports =
-    [ # Include the results of the hardware scan.
-      (modulesPath + "/installer/scan/not-detected.nix")
-      ./hardware-configuration.nix
-      ./environment.nix
-
-      ## Enable only one of the following sections:
-      ## x86-64 machine
-      ./graphics.nix
-      ./boot.nix
-      ## Raspberry Pi 4
-      # ./rpi4.nix
-    ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    inputs.nix-index-database.nixosModules.nix-index
+    ./home
+    ./graphics.nix
+  ];
 
   # Select internationalisation properties.
   i18n = {
@@ -306,6 +308,7 @@
   };
 
   programs = {
+    nix-index-database.comma.enable = true;
     ssh.startAgent = true;
     gnupg.agent = {
       enable = true;
@@ -348,6 +351,7 @@
       enable = true;
       enableRenice = true;
     };
+
   };
 
   security = {
@@ -433,5 +437,11 @@
   boot.tmp = {
     useTmpfs = true;
     cleanOnBoot = true;
+  };
+
+  # Force Wayland on all apps.
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    # WAYLAND_DISPLAY = "wayland-1";
   };
 }
