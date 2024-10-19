@@ -8,14 +8,17 @@ jobs:
   mishy:
     runs-on: ubuntu-latest
     steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
+      # - name: Maximize build space
+      #   uses: AdityaGarg8/remove-unwanted-software@v4.1
+      #   with:
+      #     remove-dotnet: 'true'
+      #     remove-android: 'true'
+      #     remove-haskell: 'true'
+      #     remove-codeql: 'true'
+      #     remove-docker-images: 'true'
+      #
+      # Filesystem on /mnt for some reason has more space on GitHub action
+      # runner than /
       - name: Bind mount /nix
         run: |
           sudo mkdir /nix
@@ -28,7 +31,7 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Build .#mishy
+      - name: "Build: .#mishy"
         run: |
           nix build .#nixosConfigurations.mishy.config.system.build.toplevel
 
@@ -39,12 +42,13 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Build .#clawsiecats-minimal
+
+      - name: "Build: .#clawsiecats-minimal"
         run: |
           nix build .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
-      - name: Build .#clawsiecats
+      - name: "Build: .#clawsiecats"
         run: |
           nix build .#nixosConfigurations.clawsiecats.config.system.build.toplevel
-      - name: Build .#clawsiecats-luks
+      - name: "Build: .#clawsiecats-luks"
         run: |
           nix build .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
