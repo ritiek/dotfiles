@@ -16,7 +16,12 @@ jobs:
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
-      - uses: pierotofy/set-swap-space@master
+      - name: Bind mount /nix
+        run: |
+          sudo mkdir /nix
+          sudo mount --bind /mnt /nix
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 10
       - name: Install Nix
