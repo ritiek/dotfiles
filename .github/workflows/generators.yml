@@ -44,11 +44,13 @@ jobs:
       # Derivations are built under /tmp
       - name: Bind mount /tmp
         run: |
-          sudo mount --bind /mnt /tmp
-      - name: Set swap space
-        uses: pierotofy/set-swap-space@master
-        with:
-          swap-size-gb: 10
+          sudo mkdir /mnt/tmp
+          sudo chmod 1777 /mnt/tmp
+          sudo mount --bind /mnt/tmp /tmp
+      # - name: Set swap space
+      #   uses: pierotofy/set-swap-space@master
+      #   with:
+      #     swap-size-gb: 10
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
