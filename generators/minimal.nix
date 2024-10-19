@@ -12,10 +12,52 @@
   # };
 
   # Swap files don't work as expected as they seem to use tmpfs.
+  #
   # swapDevices = [{
   #   device = "/swap";
-  #   size = 4 * 1024;  # 4GB
+  #   size = 2 * 1024;  # 2GB
   # }];
+  #
+  # disko.devices.disk.minimal = {
+  #   device = "nodev";
+  #   content = {
+  #     type = "gpt";
+  #     partitions = {
+  #       plain-swap = {
+  #         size = "2G";
+  #         content = {
+  #           type = "swap";
+  #           discardPolicy = "both";
+  #           resumeDevice = true;
+  #         };
+  #       };
+  #     };
+  #   };
+  # };
+  #
+  # disko.devices.nodev = {
+  #   "/swap" = {
+  #     fsType = "ext4";
+  #     mountOptions = [
+  #       "size=2G"
+  #       "mode=755"
+  #     ];
+  #   };
+  # };
+
+  # systemd.tmpfiles.rules = [
+  #     "f /var/log/timers/backup - ${variables.username} ${variables.username} - -"
+  # ];
+
+  # systemd.tmpfiles.settings."swap" = {
+  #   "/var/lib/swap" = {
+  #     f = {
+  #       group = "root";
+  #       mode = "0755";
+  #       user = "root";
+  #     };
+  #   };
+  # };
 
   # Disable sudo as we've no non-root users.
   security.sudo.enable = false;
