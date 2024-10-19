@@ -21,9 +21,9 @@ jobs:
       # runner than /
       - name: Bind mount /nix
         run: |
-          sudo mkdir /nix
+          sudo mkdir /mnt/nix /nix
           sudo chmod 0755 /nix
-          sudo mount --bind /mnt /nix
+          sudo mount --bind /mnt/nix /nix
       # - name: Set swap space
       #   uses: pierotofy/set-swap-space@master
       #   with:
