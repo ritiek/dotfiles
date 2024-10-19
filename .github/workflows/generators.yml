@@ -44,9 +44,9 @@ jobs:
       # Derivations are built under /tmp
       - name: Bind mount /tmp
         run: |
-          sudo mkdir /mnt/tmp
-          sudo chmod 1777 /mnt/tmp
-          sudo mount --bind /mnt/tmp /tmp
+          sudo mkdir /mnt/nix /nix
+          sudo chmod 0755 /nix
+          sudo mount --bind /mnt/nix /nix
       # - name: Set swap space
       #   uses: pierotofy/set-swap-space@master
       #   with:
