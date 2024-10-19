@@ -22,11 +22,12 @@ jobs:
       - name: Bind mount /nix
         run: |
           sudo mkdir /nix
+          sudo chmod 0755 /nix
           sudo mount --bind /mnt /nix
-      - name: Set swap space
-        uses: pierotofy/set-swap-space@master
-        with:
-          swap-size-gb: 10
+      # - name: Set swap space
+      #   uses: pierotofy/set-swap-space@master
+      #   with:
+      #     swap-size-gb: 10
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
