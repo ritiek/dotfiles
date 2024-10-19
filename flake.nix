@@ -249,5 +249,17 @@
       modules = [ ./generators/minimal.nix ];
       format = "install-iso";
     };
+
+    minimal-qcow-efi = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./generators/minimal.nix ];
+      format = "qcow-efi";
+    };
+
+    minimal-raw-efi = nixos-generators.nixosGenerate {
+      system = "x86_64-linux";
+      modules = [ ./generators/minimal.nix ];
+      format = "raw-efi";
+    };
   };
 }
