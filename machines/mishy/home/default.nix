@@ -26,6 +26,7 @@
     stateVersion = "24.05";
     packages = with pkgs; [
       # spotify
+      # local.piano-rs
       unzip
       unrar-wrapper
       tree

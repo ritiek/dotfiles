@@ -8,6 +8,7 @@
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
+    # local.url = "github:ritiek/nixpkgs/init-piano-rs";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -71,6 +72,7 @@
     disko,
     deploy-rs,
     nixos-generators,
+    # local,
     ...
   }@inputs:
     {
