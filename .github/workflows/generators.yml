@@ -12,19 +12,48 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Build .#minimal-iso
+
+      - name: "Build: .#minimal-iso"
         run: |
           nix build .#minimal-iso
-      - name: Upload .#minimal-iso
-        uses: actions/upload-artifact@v4
-        with:
-          name: minimal.iso
-          path: ./result/iso/nixos.iso
-      - name: Build .#minimal-install-iso
+      # - name: Upload .#minimal-iso
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: minimal.iso
+      #     path: ./result/iso/nixos.iso
+      - name: "Build: .#minimal-install-iso"
         run: |
           nix build .#minimal-install-iso
-      - name: Upload .#minimal-install-iso
-        uses: actions/upload-artifact@v4
+      # - name: Upload .#minimal-install-iso
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: minimal-install.iso
+      #     path: ./result/iso/nixos-*.iso
+
+  mishy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v4.1
         with:
-          name: minimal-install.iso
-          path: ./result/iso/nixos-*.iso
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+      # Derivations are built under /tmp
+      - name: Bind mount /tmp
+        run: |
+          sudo mount --bind /mnt /tmp
+      - name: Set swap space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: "Build: .#mishi-raw-efi"
+        run: |
+          nix build .#mishy-raw-efi
