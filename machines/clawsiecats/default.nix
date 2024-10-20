@@ -3,7 +3,10 @@
 {
   imports = [
     ./minimal.nix
+    ./home
     ./services.nix
+    inputs.sops-nix.nixosModules.sops
+    inputs.nix-index-database.nixosModules.nix-index
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -35,6 +38,7 @@
   # ];
 
   programs = {
+    nix-index-database.comma.enable = true;
     zsh.enable = true;
   };
 

@@ -66,7 +66,7 @@
         # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
         # bombsquad
 
-        (lutris.override {
+        (unstable.lutris.override {
           extraPkgs = pkgs: [
             # # Bombsquad Game
             # python312
@@ -84,8 +84,8 @@
         bitwarden
         sonixd
         nemo
-        # calibre
-        krita
+        # unstable.calibre
+        unstable.rita
         unstable.blender
         # protonvpn-gui
         lxqt.lxqt-policykit
@@ -121,7 +121,7 @@
         # element-desktop-wayland
         # XXX: error: Package ‘jitsi-meet-1.0.8043’ is marked as insecure, refusing to evaluate.
         # https://github.com/NixOS/nixpkgs/pull/334638#issuecomment-2289025802
-        element-desktop
+        unstable.element-desktop
 
         python312
         python312Packages.pip
