@@ -58,8 +58,8 @@
         # # seems to freeze randomly (wayland/gpu issues maybe)
         # dorion
         ## # So having legcord (armcord) as a fallback for now
-        armcord
-        # legcord
+        # armcord
+        legcord
         # discord
 
         # osu-lazer-bin
@@ -84,7 +84,7 @@
         bitwarden
         sonixd
         nemo
-        calibre
+        # calibre
         krita
         unstable.blender
         # protonvpn-gui
