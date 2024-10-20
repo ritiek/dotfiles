@@ -1,6 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
+  imports = [
+    inputs.impermanence.nixosModules.impermanence
+    inputs.disko.nixosModules.disko
+  ];
+
   networking.hostName = "clawsiecats";
   time.timeZone = "Asia/Kolkata";
 
