@@ -12,7 +12,7 @@ in
     # enableNvidiaPatches = true;
     # xwayland.enable = false;
     plugins = [
-      inputs.hyprgrass.packages.${pkgs.system}.default
+      # inputs.hyprgrass.packages.${pkgs.system}.default
     ];
     systemd = {
       enable = true;

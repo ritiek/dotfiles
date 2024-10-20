@@ -3,7 +3,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
     nur.url = "github:nix-community/NUR";
-    # stable.url = "github:NixOS/nixpkgs/nixos-24.05";
+    stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
@@ -20,10 +20,11 @@
     #   url = "github:nix-community/home-manager/release-24.05";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
-    # wezterm-flake.url = "github:wez/wezterm/main?dir=nix";
+
     wezterm-flake = {
       url = "github:wez/wezterm/main?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # Commenting out as compilation fails (as of 10th Oct, 2024).
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
 
     rose-pine-hyprcursor = {
@@ -65,6 +66,7 @@
 
     hyprgrass = {
        url = "github:horriblename/hyprgrass";
+       # inputs.nixpkgs.follows = "nixpkgs";
        inputs.hyprland.follows = "hyprland";
     };
   };
