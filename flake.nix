@@ -3,7 +3,11 @@
   # using `sudo nixos-generate-config`?
   description = "NixOS flake for my dotfiles";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs";
+    # nixpkgs.url = "github:NixOS/nixpkgs";
+
+    # https://github.com/NixOS/nixpkgs/pull/349783
+    nixpkgs.url = "github:samueltardieu/nixpkgs/push-llzvpztxtpvq";
+
     nur.url = "github:nix-community/NUR";
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
