@@ -30,7 +30,7 @@
         spec = "LABEL=nix";
         hashTableSizeMB = 112;
         verbosity = "crit";
-        extraOptions = [ "--loadavg-target" "5.0" ];
+        extraOptions = [ "--loadavg-target" "1.5" ];
       };
     };
   };
