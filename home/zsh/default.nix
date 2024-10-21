@@ -128,9 +128,9 @@ export PATH
     localVariables = {
       SSH_AUTH_SOCK = (
         if config.services.gpg-agent.enable then
-          "/run/user/1000/gnupg/S.gpg-agent.ssh"
+          "\${SSH_AUTH_SOCK}"
         else
-          "/run/user/1000/ssh-agent"
+          "$(gpgconf --list-dirs agent-ssh-socket)"
       );
     };
     plugins = [
