@@ -3,7 +3,7 @@
   imports = [
     inputs.home-manager.nixosModules.home-manager
     # "${inputs.impermanence}/home-manager.nix"
-    inputs.impermanence.nixosModules.home-manager.impermanence
+    # inputs.impermanence.nixosModules.home-manager.impermanence
   ];
 
   home-manager = {
@@ -30,31 +30,31 @@
     ];
     home = {
       stateVersion = "24.05";
-      persistence = {
-        "/nix/persist/home/${config.home.username}/files" = {
-          files = [
-            ".zsh_history"
-          ];
-          allowOther = false;
-        };
-        "/nix/persist/home/${config.home.username}/cache" = {
-          directories = [
-            ".local/share/nvim"
-            # {
-            #   directory = ".local/share/nvim";
-            #   method = "symlink";
-            # }
-            # {
-            #   directory = ".local/state/nvim";
-            #   method = "symlink";
-            # }
-          ];
-          # files = [
-          #   ".nvim-lazy-lock.json"
-          # ];
-          allowOther = false;
-        };
-      };
+      # persistence = {
+      #   "/nix/persist/home/${config.home.username}/files" = {
+      #     files = [
+      #       ".zsh_history"
+      #     ];
+      #     allowOther = false;
+      #   };
+      #   "/nix/persist/home/${config.home.username}/cache" = {
+      #     directories = [
+      #       ".local/share/nvim"
+      #       # {
+      #       #   directory = ".local/share/nvim";
+      #       #   method = "symlink";
+      #       # }
+      #       # {
+      #       #   directory = ".local/state/nvim";
+      #       #   method = "symlink";
+      #       # }
+      #     ];
+      #     # files = [
+      #     #   ".nvim-lazy-lock.json"
+      #     # ];
+      #     allowOther = false;
+      #   };
+      # };
       packages = with pkgs; [
         any-nix-shell
 
