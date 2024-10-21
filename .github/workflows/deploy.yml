@@ -1,0 +1,15 @@
+# name: deploy
+# on:
+#   workflow_dispatch:
+#
+#   clawsiecats:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Install Nix
+#         uses: cachix/install-nix-action@v27
+#       - name: Clone Repository
+#         uses: actions/checkout@v4
+#
+#       - name: "Deploy: .#clawsiecats"
+#         run: |
+#           nix run github:serokell/deploy-rs -- -s .#clawsiecats
