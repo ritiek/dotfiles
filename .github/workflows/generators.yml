@@ -36,11 +36,15 @@ jobs:
       - name: Maximize build space
         uses: AdityaGarg8/remove-unwanted-software@v4.1
         with:
+          verbose: 'true'
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
+          remove-large-packages: 'true'
+          remove-cached-tools: 'true'
+          remove-swapfile: 'true'
       # Derivations are built under /tmp
       - name: Bind mount /tmp
         run: |
