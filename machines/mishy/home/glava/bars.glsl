@@ -1,1 +1,0 @@
-../../../../chezmoi/dot_config/glava/bars.glsl

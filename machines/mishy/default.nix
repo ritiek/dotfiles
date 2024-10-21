@@ -51,7 +51,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.nix-index-database.nixosModules.nix-index
-    ./home
+    ./home.nix
     ./graphics.nix
   ];
 

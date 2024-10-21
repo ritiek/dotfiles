@@ -625,7 +625,7 @@
         "sops-nix": "sops-nix",
         "stable": "stable",
         "unstable": "unstable",
-        "wezterm-flake": "wezterm-flake"
+        "wezterm": "wezterm"
       }
     },
     "rose-pine-hyprcursor": {
@@ -653,7 +653,7 @@
     "rust-overlay": {
       "inputs": {
         "nixpkgs": [
-          "wezterm-flake",
+          "wezterm",
           "nixpkgs"
         ]
       },
@@ -835,7 +835,7 @@
         "type": "github"
       }
     },
-    "wezterm-flake": {
+    "wezterm": {
       "inputs": {
         "flake-utils": "flake-utils",
         "freetype2": "freetype2",
