@@ -3,7 +3,7 @@
 {
   imports = [
     ./minimal.nix
-    ./home
+    ./home.nix
     ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index

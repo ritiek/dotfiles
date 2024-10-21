@@ -20,22 +20,22 @@
 
   home-manager.users.ritiek = {
     imports = [
-      ./hyprland
-      ./theme.nix
-      ./wezterm
-      ./zsh
-      ./git
-      ./neovim
-      ./zellij.nix
-      ./btop.nix
-      ./rofi.nix
-      ./waybar
-      ./swaync
-      ./mpv.nix
-      ./firefox.nix
-      # ./nixconf/syncthing.nix
-      ./glava
-      ./sioyek.nix
+      ./../../home/hyprland
+      ./../../home/theme.nix
+      ./../../home/wezterm
+      ./../../home/zsh
+      ./../../home/git
+      ./../../home/neovim
+      ./../../home/zellij.nix
+      ./../../home/btop.nix
+      ./../../home/rofi.nix
+      ./../../home/waybar
+      ./../../home/swaync
+      ./../../home/mpv.nix
+      ./../../home/firefox.nix
+      # ./../../home/nixconf/syncthing.nix
+      ./../../home/glava
+      ./../../home/sioyek.nix
     ];
     home = {
       /* The home.stateVersion option does not have a default and must be set */
