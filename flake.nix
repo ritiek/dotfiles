@@ -21,7 +21,7 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    wezterm-flake = {
+    wezterm = {
       url = "github:wez/wezterm/main?dir=nix";
       # Commenting out as compilation fails (as of 10th Oct, 2024).
       # inputs.nixpkgs.follows = "nixpkgs";

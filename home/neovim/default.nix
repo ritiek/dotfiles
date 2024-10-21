@@ -5,6 +5,9 @@
     enable = true;
     defaultEditor = true;
 
+    # colorschemes.gruvbox.enable = true;
+    # plugins.lightline.enable = true;
+
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
@@ -13,8 +16,11 @@
     withRuby = true;
 
     extraPackages = with pkgs; [
-      # xclip
-      # wl-clipboard-rs
+      # TODO: If-else for installing these packages based on whether
+      # we are on mishy or clawsiecats.
+      xclip
+      wl-clipboard-rs
+
       stylua
       deno
       clang-tools
@@ -32,6 +38,12 @@
     #   nvim-osc52
     # ];
   };
+
+  # xdg.configFile = {
+  #   nvim = {
+  #     source =  "/etc/nixos/chezmoi/dot_config/nvim/";
+  #   };
+  # };
 
   home.file = {
     init = {

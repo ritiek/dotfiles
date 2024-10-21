@@ -22,11 +22,11 @@
 
   home-manager.users.root = {
     imports = [
-      ./zsh
-      ./git
-      ./neovim
-      ./zellij.nix
-      ./btop.nix
+      ./../../home/zsh
+      ./../../home/git
+      ./../../home/neovim
+      ./../../home/zellij.nix
+      ./../../home/btop.nix
     ];
     home = {
       stateVersion = "24.05";
