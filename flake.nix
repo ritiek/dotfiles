@@ -109,6 +109,14 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.nixypi = inputs.nixpkgs.lib.nixosSystem rec {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/nixypi
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
 
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
