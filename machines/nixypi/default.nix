@@ -24,10 +24,11 @@
 
   networking.wireless = {
     enable = true;
-    environmentFile = config.sops.secrets."access_point.1".path;
+    # Ref: https://github.com/NixOS/nixpkgs/pull/180872
+    secretsFile = config.sops.secrets."access_point.1".path;
     networks = {
       "SSID".psk = "PASS_PLAIN";
-      "@home_ssid@".psk = "@home_psk@";
+      "ext:home_ssid".pskRaw = "ext:home_psk";
     };
     interfaces = [ "wlan0" ];
   };
