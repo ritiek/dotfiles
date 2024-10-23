@@ -133,24 +133,28 @@
     minimal-iso = inputs.nixos-generators.nixosGenerate {
       system = "x86_64-linux";
       modules = [ ./generators/minimal.nix ];
+      specialArgs = { inherit inputs; };
       format = "iso";
     };
 
     minimal-install-iso = inputs.nixos-generators.nixosGenerate {
       system = "x86_64-linux";
       modules = [ ./generators/minimal.nix ];
+      specialArgs = { inherit inputs; };
       format = "install-iso";
     };
 
     minimal-qcow-efi = inputs.nixos-generators.nixosGenerate {
       system = "x86_64-linux";
       modules = [ ./generators/minimal.nix ];
+      specialArgs = { inherit inputs; };
       format = "qcow-efi";
     };
 
     minimal-raw-efi = inputs.nixos-generators.nixosGenerate {
       system = "x86_64-linux";
       modules = [ ./generators/minimal.nix ];
+      specialArgs = { inherit inputs; };
       format = "raw-efi";
     };
 
