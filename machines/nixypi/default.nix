@@ -13,20 +13,22 @@
 
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 
-  # sops = {
-  #   defaultSopsFile = ./secrets.yaml;
-  #   age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  #   secrets = {
-  #     "tailscale.authkey" = {};
-  #     "access_point.1" = {};
-  #   };
-  # };
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    secrets = {
+      "tailscale.authkey" = {};
+      "access_point.1" = {};
+    };
+  };
 
   networking.wireless = {
     enable = true;
-    networks."SSID".psk = "PASS_PLAIN";
-    # TODO: Sopsify this.
-    # networks."SSID".psk = "PASS_PLAIN";
+    environmentFile = config.sops.secrets."access_point.1".path;
+    networks = {
+      "SSID".psk = "PASS_PLAIN";
+      "@home_ssid@".psk = "@home_psk@";
+    };
     interfaces = [ "wlan0" ];
   };
 
@@ -77,15 +79,15 @@
         PasswordAuthentication = false;
       };
     };
-    # tailscale = {
-    #   enable = true;
-    #   openFirewall = true;
-    #   authKeyFile = config.sops.secrets."tailscale.authkey".path;
-    #   useRoutingFeatures = "both";
-    #   extraUpFlags = [
-    #     "--advertise-exit-node"
-    #   ];
-    # };
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+      authKeyFile = config.sops.secrets."tailscale.authkey".path;
+      useRoutingFeatures = "both";
+      extraUpFlags = [
+        "--advertise-exit-node"
+      ];
+    };
   };
 
   programs = {

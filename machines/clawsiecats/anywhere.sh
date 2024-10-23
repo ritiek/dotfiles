@@ -38,7 +38,7 @@ if [ "$3" = "--luks" ]; then
     read -s -p "Enter LUKS passphrase: " passphrase
     # Do not log the passphrase on console!
     set +x
-    nix run github:ritiek/nixos-anywhere -- \
+    nix run github:nix-community/nixos-anywhere -- \
       --extra-files "$BASEDIR" \
       --flake "$1" "$2" \
       --disk-encryption-keys /tmp/disk.key <(echo "$passphrase")
@@ -46,7 +46,7 @@ if [ "$3" = "--luks" ]; then
     exit 0
 fi
 
-nix run github:ritiek/nixos-anywhere -- \
+nix run github:nix-community/nixos-anywhere -- \
   --extra-files "$BASEDIR" \
   --flake "$1" "$2"
   # -i <(ssh-add -L | head -1) \

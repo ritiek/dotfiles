@@ -1,43 +1,18 @@
+{ inputs, ... }:
 {
+  # TODO: Increase tmpfs mount size on /nix/.rw-store
+
+  # imports = [
+  #   inputs.disko.nixosModules.disko
+  # ];
+
   networking.hostName = "minimal";
 
-  # Helpful for tinkering within the installation environment.
-  # fileSystems."/root" = {
-  #   device = "none";
-  #   fsType = "tmpfs";
-  #   options = [
-  #     "size=2G"
-  #     "mode=755"
-  #   ];
-  # };
+  # Expand rw store a bit.
 
-  # Swap files don't work as expected as they seem to use tmpfs.
-  #
-  # swapDevices = [{
-  #   device = "/swap";
-  #   size = 2 * 1024;  # 2GB
-  # }];
-  #
-  # disko.devices.disk.minimal = {
-  #   device = "nodev";
-  #   content = {
-  #     type = "gpt";
-  #     partitions = {
-  #       plain-swap = {
-  #         size = "2G";
-  #         content = {
-  #           type = "swap";
-  #           discardPolicy = "both";
-  #           resumeDevice = true;
-  #         };
-  #       };
-  #     };
-  #   };
-  # };
-  #
   # disko.devices.nodev = {
-  #   "/swap" = {
-  #     fsType = "ext4";
+  #   "/nix/.rw-store" = {
+  #     fsType = "tmpfs";
   #     mountOptions = [
   #       "size=2G"
   #       "mode=755"
@@ -45,19 +20,16 @@
   #   };
   # };
 
-  # systemd.tmpfiles.rules = [
-  #     "f /var/log/timers/backup - ${variables.username} ${variables.username} - -"
-  # ];
-
-  # systemd.tmpfiles.settings."swap" = {
-  #   "/var/lib/swap" = {
-  #     f = {
-  #       group = "root";
-  #       mode = "0755";
-  #       user = "root";
-  #     };
-  #   };
+  # fileSystems."/nix/.rw-store" = {
+  #   device = "none";
+  #   fsType = "tmpfs";
+  #   options = [
+  #     "size=512M"
+  #     "mode=755"
+  #   ];
   # };
+
+  system.nixos.variant_id = "installer";
 
   # Disable sudo as we've no non-root users.
   security.sudo.enable = false;
