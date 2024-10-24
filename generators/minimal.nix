@@ -55,7 +55,6 @@
   };
 
   powerManagement.cpuFreqGovernor = "performance";
-
   zramSwap = {
     enable = true;
     memoryPercent = 100;

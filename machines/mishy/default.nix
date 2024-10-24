@@ -443,7 +443,10 @@
 
   powerManagement.cpuFreqGovernor = "ondemand";
   # powerManagement.cpuFreqGovernor = "performance";
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 100;
+  };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.tmp = {
