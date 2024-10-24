@@ -97,7 +97,10 @@
   };
 
   powerManagement.cpuFreqGovernor = "performance";
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    memoryPercent = 100;
+  };
 
   boot.tmp = {
     useTmpfs = true;
