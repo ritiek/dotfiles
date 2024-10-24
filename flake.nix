@@ -178,5 +178,12 @@
       specialArgs = { inherit inputs; };
       format = "raw-efi";
     };
+
+    nixypi-sd-installer = inputs.nixos-generators.nixosGenerate {
+      system = "aarch64-linux";
+      modules = [ ./machines/nixypi ];
+      specialArgs = { inherit inputs; };
+      format = "sd-aarch64-installer";
+    };
   };
 }
