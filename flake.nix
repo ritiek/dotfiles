@@ -127,6 +127,15 @@
       sshUser = "root";
     };
 
+    deploy.nodes.nixypi = {
+      hostname = "nixypi.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nixypi;
+      };
+      sshUser = "root";
+    };
+
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
 
 
