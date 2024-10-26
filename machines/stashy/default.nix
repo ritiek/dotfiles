@@ -4,7 +4,7 @@
   imports = [
     ./home.nix
     ./services.nix
-    # ./hw-config.nix
+    ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
   ];
@@ -12,7 +12,15 @@
   networking.hostName = "stashy";
   time.timeZone = "Asia/Kolkata";
 
-  # boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+  # Needed for building SD images.
+  nixpkgs.overlays = [
+    (final: super: {
+      makeModulesClosure = x:
+        super.makeModulesClosure (x // { allowMissing = true; });
+    })
+  ];
+
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 
   sops = {
     defaultSopsFile = ./secrets.yaml;

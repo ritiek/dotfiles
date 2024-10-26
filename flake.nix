@@ -70,10 +70,10 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    raspberry-pi-nix = {
-      url = "github:nix-community/raspberry-pi-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # raspberry-pi-nix = {
+    #   url = "github:nix-community/raspberry-pi-nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   outputs = { self, ... }@inputs: {
@@ -125,7 +125,9 @@
     nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem rec {
       system = "aarch64-linux";
       modules = [
-        inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
+        # Use this flake input, for some reason haves the kernel compile from source
+        # which takes a loong time and isn't practical.
+        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/stashy
       ];
       specialArgs = { inherit inputs; };
@@ -205,6 +207,13 @@
     nixypi-sd-installer = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
       modules = [ ./machines/nixypi ];
+      specialArgs = { inherit inputs; };
+      format = "sd-aarch64-installer";
+    };
+
+    stashy-sd-installer = inputs.nixos-generators.nixosGenerate {
+      system = "aarch64-linux";
+      modules = [ ./machines/stashy ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64-installer";
     };
