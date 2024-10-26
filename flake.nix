@@ -117,6 +117,14 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem rec {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/stashy
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
 
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
