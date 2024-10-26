@@ -65,9 +65,14 @@
     };
 
     hyprgrass = {
-       url = "github:horriblename/hyprgrass";
-       # inputs.nixpkgs.follows = "nixpkgs";
-       inputs.hyprland.follows = "hyprland";
+      url = "github:horriblename/hyprgrass";
+      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    raspberry-pi-nix = {
+      url = "github:nix-community/raspberry-pi-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -120,6 +125,7 @@
     nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem rec {
       system = "aarch64-linux";
       modules = [
+        inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/stashy
       ];
       specialArgs = { inherit inputs; };
