@@ -19,18 +19,16 @@
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     secrets = {
       "tailscale.authkey" = {};
-      "access_point.1" = {};
+      "wpa_supplicant" = {
+        # Ref: https://github.com/NixOS/nixpkgs/pull/180872
+        path = "/etc/wpa_supplicant.conf";
+      };
     };
   };
 
   networking.wireless = {
     enable = true;
-    # Ref: https://github.com/NixOS/nixpkgs/pull/180872
-    secretsFile = config.sops.secrets."access_point.1".path;
-    networks = {
-      "SSID".psk = "PASS_PLAIN";
-      "ext:home_ssid".pskRaw = "ext:home_psk";
-    };
+    allowAuxiliaryImperativeNetworks = true;
     interfaces = [ "wlan0" ];
   };
 
