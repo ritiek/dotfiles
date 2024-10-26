@@ -20,6 +20,7 @@
 
   home-manager.users.ritiek = {
     imports = [
+      ./../../home/gnupg.nix
       ./../../home/hyprland
       ./../../home/theme.nix
       ./../../home/wezterm
@@ -162,19 +163,9 @@
       ];
     };
 
-    services.gpg-agent = {
-      enable = true;
-      # enableExtraSocket = true;
-      enableSshSupport = true;
-      sshKeys = [
-        "5093E5BC80A747932DDBE3400EF3B45E3546EDCE"
-      ];
-    };
-
     programs = {
       home-manager.enable = true;
       command-not-found.enable = true;
-      gpg.enable = true;
       jq = {
         enable = true;
         # colors = {
