@@ -6,7 +6,9 @@
       enable = true;
       appriseSupport = false;
       settings = {
-        DATA_DIR = "/root/uptime-kuma";
+        HOST = "0.0.0.0";
+        # FIXME: This results in a permission error during nixos-rebuild.
+        # DATA_DIR = lib.mkForce "/root/uptime-kuma";
       };
     };
   };
