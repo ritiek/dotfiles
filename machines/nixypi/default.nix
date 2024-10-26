@@ -11,6 +11,14 @@
   networking.hostName = "nixypi";
   time.timeZone = "Asia/Kolkata";
 
+  # Needed for building SD images.
+  nixpkgs.overlays = [
+    (final: super: {
+      makeModulesClosure = x:
+        super.makeModulesClosure (x // { allowMissing = true; });
+    })
+  ];
+
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 
   sops = {
