@@ -6,6 +6,8 @@
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./../../common/nix.nix
+    ./../../common/wifi.nix
     ./../../common/tailscale.nix
   ];
 
@@ -25,29 +27,6 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  };
-
-  networking.wireless = {
-    enable = true;
-    networks = {
-      "SSID".psk = "PASS_PLAIN";
-    };
-    interfaces = [ "wlan0" ];
-  };
-
-  nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    auto-optimise-store = true;
-    substituters = [
-      "https://nix-community.cachix.org"
-      "https://cache.garnix.io"
-      "https://hyprland.cachix.org"
-    ];
-    trusted-public-keys = [
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-    ];
   };
 
   # Disable sudo as we've no non-root users.
