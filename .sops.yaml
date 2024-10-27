@@ -4,6 +4,7 @@ keys:
   - &clawsiecats age1ej66fdsu8q3dfdas85zfnw38az79e4tp0hw4sh5587kdzy0l45hsj8cqth
   - &nixypi age14mqpwq8cfzqwe6ruyqqm2vgxzrq68dlwk9axzj4gxj2vfe75avtqvdzrgx
   - &stashy age13fpx2errrwgxt4fsxagtvf7z77srxw0wvwlekuz4qgez7wtz4ccslvsgmv
+  - &nutcracker age17r6ljsa6sg0706cq7j3gfevnk3k8knlvz5vppelaj996q5gnf4jqzyxk28
 creation_rules:
   - path_regex: machines/secrets\.yaml$
     pgp: *ritiek
@@ -24,3 +25,6 @@ creation_rules:
   - path_regex: machines/stashy/secrets\.yaml$
     pgp: *ritiek
     age: *stashy
+  - path_regex: machines/nutcracker/secrets\.yaml$
+    pgp: *ritiek
+    age: *nutcracker
