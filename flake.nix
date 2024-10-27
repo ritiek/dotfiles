@@ -211,6 +211,13 @@
       format = "sd-aarch64-installer";
     };
 
+    stashy-sd = inputs.nixos-generators.nixosGenerate {
+      system = "aarch64-linux";
+      modules = [ ./machines/stashy ];
+      specialArgs = { inherit inputs; };
+      format = "sd-aarch64";
+    };
+
     stashy-sd-installer = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
       modules = [ ./machines/stashy ];
