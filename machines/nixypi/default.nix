@@ -6,6 +6,7 @@
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./../../common/tailscale.nix
   ];
 
   networking.hostName = "nixypi";
@@ -24,10 +25,6 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    secrets = {
-      "tailscale.authkey" = {};
-      # Ref: https://github.com/NixOS/nixpkgs/pull/180872
-    };
   };
 
   networking.wireless = {
@@ -84,15 +81,6 @@
         PermitRootLogin = "yes";
         PasswordAuthentication = false;
       };
-    };
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      authKeyFile = config.sops.secrets."tailscale.authkey".path;
-      useRoutingFeatures = "both";
-      extraUpFlags = [
-        "--advertise-exit-node"
-      ];
     };
   };
 
