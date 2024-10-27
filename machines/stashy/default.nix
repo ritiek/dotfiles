@@ -37,6 +37,9 @@
   networking.wireless = {
     enable = true;
     allowAuxiliaryImperativeNetworks = true;
+    networks = {
+      "SSID".psk = "PASS_PLAIN";
+    };
     interfaces = [ "wlan0" ];
   };
 
@@ -63,6 +66,7 @@
     mutableUsers = false;
 
     users.root = {
+      password = "ff";
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHVwHXOotXjPLC/fXIEu/Xnc5ZiIwOKK4Amas/rb9/ZGAAAAEnNzaDpyaXRpZWtAeXViaWtrbw=="
@@ -101,6 +105,7 @@
   programs = {
     nix-index-database.comma.enable = true;
     zsh.enable = true;
+    # gnupg.agent.enable = true;
   };
 
   powerManagement.cpuFreqGovernor = "performance";
