@@ -222,11 +222,15 @@
       format = "sd-aarch64";
     };
 
-    stashy-sd-installer = inputs.nixos-generators.nixosGenerate {
-      system = "aarch64-linux";
-      modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
-      specialArgs = { inherit inputs; };
-      format = "sd-aarch64-installer";
-    };
+    # NOTE: Reason for commenting this out:
+    # For some reason 'sd-aarch64-installer' assigns the value of
+    # `users.users.root.initialHashedPassword`, which makes the
+    # machine unloggable.
+    # stashy-sd-installer = inputs.nixos-generators.nixosGenerate {
+    #   system = "aarch64-linux";
+    #   modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
+    #   specialArgs = { inherit inputs; };
+    #   format = "sd-aarch64-installer";
+    # };
   };
 }
