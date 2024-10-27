@@ -20,6 +20,7 @@
 
   home-manager.users.root = {
     imports = [
+      # ./../../home/gnupg.nix
       ./../../home/zsh
       ./../../home/git
       ./../../home/neovim
