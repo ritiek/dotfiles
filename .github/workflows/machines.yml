@@ -71,3 +71,21 @@ jobs:
       - name: "Build: .#stashy"
         run: |
           nix build .#nixosConfigurations.stashy.config.system.build.toplevel
+
+  nutcracker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: "extra-platforms = aarch64-linux"
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: "Build: .#nutcracker"
+        run: |
+          nix build .#nixosConfigurations.nutcracker.config.system.build.toplevel

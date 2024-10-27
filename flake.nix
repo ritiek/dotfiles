@@ -249,5 +249,12 @@
     #   specialArgs = { inherit inputs; };
     #   format = "sd-aarch64-installer";
     # };
+
+    nutcracker-sd = inputs.nixos-generators.nixosGenerate {
+      system = "aarch64-linux";
+      modules = [ ./machines/nutcracker ];
+      specialArgs = { inherit inputs; };
+      format = "sd-aarch64";
+    };
   };
 }
