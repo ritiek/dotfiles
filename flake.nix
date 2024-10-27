@@ -164,6 +164,15 @@
       sshUser = "root";
     };
 
+    deploy.nodes.nutcracker = {
+      hostname = "stashy-2.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nutcracker;
+      };
+      sshUser = "root";
+    };
+
     checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
 
 
