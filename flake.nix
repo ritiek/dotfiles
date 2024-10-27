@@ -137,6 +137,14 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.nutcracker = inputs.nixpkgs.lib.nixosSystem rec {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/nutcracker
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
 
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
