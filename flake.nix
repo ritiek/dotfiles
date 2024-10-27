@@ -74,6 +74,8 @@
     #   url = "github:nix-community/raspberry-pi-nix";
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
+
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs = { self, ... }@inputs: {
@@ -118,6 +120,7 @@
       system = "aarch64-linux";
       modules = [
         ./machines/nixypi
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
     };
@@ -125,10 +128,11 @@
     nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem rec {
       system = "aarch64-linux";
       modules = [
-        # Use this flake input, for some reason haves the kernel compile from source
+        # Using this flake input, for some reason haves the kernel compile from source
         # which takes a loong time and isn't practical.
         # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/stashy
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
     };
@@ -143,11 +147,11 @@
       sshUser = "root";
     };
 
-    deploy.nodes.nixypi = {
-      hostname = "nixypi.lion-zebra.ts.net";
+    deploy.nodes.stashy = {
+      hostname = "stashy.lion-zebra.ts.net";
       profiles.system = {
         user = "root";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nixypi;
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.stashy;
       };
       sshUser = "root";
     };
@@ -206,7 +210,7 @@
 
     nixypi-sd-installer = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/nixypi ];
+      modules = [ ./machines/nixypi inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64-installer";
     };
@@ -220,7 +224,7 @@
 
     stashy-sd-installer = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/stashy ];
+      modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64-installer";
     };

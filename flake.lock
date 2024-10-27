@@ -491,6 +491,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1729742320,
+        "narHash": "sha256-u3Of8xRkN//me8PU+RucKA59/6RNy4B2jcGAF36P4jI=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "e8a2f6d5513fe7b7d15701b2d05404ffdc3b6dda",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1728888510,
@@ -619,6 +634,7 @@
         "impermanence": "impermanence",
         "nix-index-database": "nix-index-database",
         "nixos-generators": "nixos-generators",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
