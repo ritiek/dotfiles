@@ -21,11 +21,11 @@
   home-manager.users.root = {
     imports = [
       # ./../../home/gnupg.nix
-      ./../../home/zsh
-      ./../../home/git
-      ./../../home/neovim
-      ./../../home/zellij.nix
-      ./../../home/btop.nix
+      ./../../common/home/zsh
+      ./../../common/home/git
+      ./../../common/home/neovim
+      ./../../common/home/zellij.nix
+      ./../../common/home/btop.nix
     ];
     home = {
       stateVersion = "24.11";

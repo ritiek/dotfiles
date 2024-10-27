@@ -7,6 +7,7 @@
     ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./../../common/tailscale.nix
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -23,9 +24,6 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-    secrets = {
-      "tailscale.authkey" = {};
-    };
   };
 
   users.defaultUserShell = pkgs.zsh;
@@ -48,15 +46,6 @@
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
       };
-    };
-    tailscale = {
-      enable = true;
-      openFirewall = true;
-      authKeyFile = config.sops.secrets."tailscale.authkey".path;
-      useRoutingFeatures = "both";
-      extraUpFlags = [
-        "--advertise-exit-node"
-      ];
     };
   };
 

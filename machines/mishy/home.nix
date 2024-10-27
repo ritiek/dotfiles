@@ -20,23 +20,23 @@
 
   home-manager.users.ritiek = {
     imports = [
-      ./../../home/gnupg.nix
-      ./../../home/hyprland
-      ./../../home/theme.nix
-      ./../../home/wezterm
-      ./../../home/zsh
-      ./../../home/git
-      ./../../home/neovim
-      ./../../home/zellij.nix
-      ./../../home/btop.nix
-      ./../../home/rofi.nix
-      ./../../home/waybar
-      ./../../home/swaync
-      ./../../home/mpv.nix
-      ./../../home/firefox.nix
-      # ./../../home/nixconf/syncthing.nix
-      ./../../home/glava
-      ./../../home/sioyek.nix
+      ./../../common/home/gnupg.nix
+      ./../../common/home/hyprland
+      ./../../common/home/theme.nix
+      ./../../common/home/wezterm
+      ./../../common/home/zsh
+      ./../../common/home/git
+      ./../../common/home/neovim
+      ./../../common/home/zellij.nix
+      ./../../common/home/btop.nix
+      ./../../common/home/rofi.nix
+      ./../../common/home/waybar
+      ./../../common/home/swaync
+      ./../../common/home/mpv.nix
+      ./../../common/home/firefox.nix
+      # ./../../commonhome/nixconf/syncthing.nix
+      ./../../common/home/glava
+      ./../../common/home/sioyek.nix
     ];
     home = {
       /* The home.stateVersion option does not have a default and must be set */
