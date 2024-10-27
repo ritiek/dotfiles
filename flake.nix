@@ -217,7 +217,7 @@
 
     stashy-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/stashy ];
+      modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
