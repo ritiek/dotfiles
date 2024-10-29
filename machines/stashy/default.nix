@@ -8,6 +8,7 @@
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../common/nix.nix
+    ./../../common/sops.nix
     ./../../common/wifi.nix
     ./../../common/tailscale.nix
   ];
@@ -24,11 +25,6 @@
   ];
 
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
-
-  sops = {
-    defaultSopsFile = ./secrets.yaml;
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  };
 
   # Disable sudo as we've no non-root users.
   security.sudo.enable = false;
