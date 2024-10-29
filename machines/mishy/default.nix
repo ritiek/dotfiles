@@ -26,7 +26,7 @@
       };
     })
     # (final: _prev: {
-    #   local = import local {
+    #   local = import inputs.local {
     #     inherit (final) system;
     #     config.allowUnfree = true;
     #   };
