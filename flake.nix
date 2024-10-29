@@ -165,7 +165,7 @@
     };
 
     deploy.nodes.nutcracker = {
-      hostname = "stashy-2.lion-zebra.ts.net";
+      hostname = "nutcracker.lion-zebra.ts.net";
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nutcracker;
