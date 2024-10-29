@@ -44,6 +44,7 @@
         cryptsetup
         openssl
         sops
+        deploy-rs
 
         miniserve
         bore-cli

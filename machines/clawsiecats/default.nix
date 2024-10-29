@@ -7,6 +7,7 @@
     ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./../../common/sops.nix
     ./../../common/tailscale.nix
   ];
 
@@ -19,11 +20,6 @@
     # files = [
     #   "/var/lib/tailscale/tailscaled.state"
     # ];
-  };
-
-  sops = {
-    defaultSopsFile = ./secrets.yaml;
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   };
 
   users.defaultUserShell = pkgs.zsh;
