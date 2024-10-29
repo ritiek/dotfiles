@@ -5,6 +5,28 @@
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
+  # TODO: I should also look into `bootCounter` option sometime for
+  # systemd-boot systems:
+  # https://github.com/NixOS/nixpkgs/pull/330017
+
+  # FIXME: Doesn't work at the moment for some reason. Needs debugging.
+  # boot.initrd.systemd = {
+  #   timers.timeout-reset = {
+  #     description = "Reset if boot takes too long";
+  #     wantedBy = [ "initrd.target" ];
+  #     timerConfig = {
+  #       OnActiveSec = 60 * 10; # 10 minutes
+  #     };
+  #   };
+  #
+  #   services.timeout-reset = {
+  #     description = "Reset if boot takes too long";
+  #     serviceConfig.ExecStart = ''
+  #       echo b > /proc/sysrq-trigger
+  #     '';
+  #   };
+  # };
+
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
