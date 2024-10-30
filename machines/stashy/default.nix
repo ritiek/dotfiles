@@ -25,6 +25,7 @@
   ];
 
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   # Disable sudo as we've no non-root users.
   security.sudo.enable = false;
