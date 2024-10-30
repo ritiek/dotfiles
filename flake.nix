@@ -84,7 +84,7 @@
       modules = [
         ./machines/mishy
         ./machines/mishy/boot.nix
-        ./machines/mishy/hardware-configuration.nix
+        ./machines/mishy/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
     };

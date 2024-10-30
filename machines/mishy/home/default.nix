@@ -20,24 +20,27 @@
 
   home-manager.users.ritiek = {
     imports = [
-      ./../../common/home/gnupg.nix
-      ./../../common/home/hyprland
-      ./../../common/home/theme.nix
-      ./../../common/home/wezterm
-      ./../../common/home/zsh
-      ./../../common/home/git
-      ./../../common/home/neovim
-      ./../../common/home/zellij.nix
-      ./../../common/home/btop.nix
-      ./../../common/home/rofi.nix
-      ./../../common/home/waybar
-      ./../../common/home/swaync
-      ./../../common/home/mpv.nix
-      ./../../common/home/firefox.nix
-      # ./../../commonhome/nixconf/syncthing.nix
-      ./../../common/home/glava
-      ./../../common/home/sioyek.nix
+      ./../../../common/home/sops.nix
+      ./../../../common/home/nix.nix
+      ./../../../common/home/gnupg.nix
+      ./../../../common/home/hyprland
+      ./../../../common/home/theme.nix
+      ./../../../common/home/wezterm
+      ./../../../common/home/zsh
+      ./../../../common/home/git
+      ./../../../common/home/neovim
+      ./../../../common/home/zellij.nix
+      ./../../../common/home/btop.nix
+      ./../../../common/home/rofi.nix
+      ./../../../common/home/waybar
+      ./../../../common/home/swaync
+      ./../../../common/home/mpv.nix
+      ./../../../common/home/firefox.nix
+      # ./../../../commonhome/nixconf/syncthing.nix
+      ./../../../common/home/glava
+      ./../../../common/home/sioyek.nix
     ];
+
     home = {
       /* The home.stateVersion option does not have a default and must be set */
       stateVersion = "24.05";

@@ -36,9 +36,11 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     inputs.nix-index-database.nixosModules.nix-index
-    ./home.nix
+    inputs.sops-nix.nixosModules.sops
+    ./home
     ./graphics.nix
     ./../../common/nix.nix
+    ./../../common/sops.nix
   ];
 
   # Select internationalisation properties.
@@ -170,9 +172,9 @@
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
         enable = true;
-        path = [
-          pkgs.coreutils
-          pkgs.swayosd
+        path = with pkgs; [
+          coreutils
+          swayosd
         ];
         script = ''
           ${pkgs.coreutils}/bin/sleep 30s;
@@ -274,10 +276,10 @@
     # };
 
     udev = {
-      packages = [
-        pkgs.swayosd
-        # pkgs.android-tools
-        # pkgs.yubikey-personalization
+      packages = with pkgs; [
+        swayosd
+        # android-tools
+        # yubikey-personalization
       ];
       extraRules = ''
       #   # FIXME: Try getting ADB to work non-root users.
@@ -298,9 +300,9 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
     ];
     # gtkUsePortal = true;
   };
