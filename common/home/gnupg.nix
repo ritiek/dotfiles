@@ -7,6 +7,7 @@
     sshKeys = [
       "5093E5BC80A747932DDBE3400EF3B45E3546EDCE"
     ];
+    pinentryPackage = pkgs.pinentry-curses;
   };
   programs.gpg = {
     enable = true;
