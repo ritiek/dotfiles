@@ -129,7 +129,7 @@ export PATH
     };
     localVariables = {
       SSH_AUTH_SOCK = (
-        if config.services.gpg-agent.enable then
+        if config.services.gpg-agent.enableSshSupport then
           "$(gpgconf --list-dirs agent-ssh-socket)"
         else
           "$SSH_AUTH_SOCK"
