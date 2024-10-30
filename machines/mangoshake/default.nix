@@ -31,7 +31,7 @@ in
     ./../../common/tailscale.nix
   ];
 
-  networking.hostName = "nutcracker";
+  networking.hostName = "mangoshake";
   time.timeZone = "Asia/Kolkata";
 
   # Needed for building SD images.

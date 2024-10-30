@@ -137,10 +137,10 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.nutcracker = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem rec {
       system = "aarch64-linux";
       modules = [
-        ./machines/nutcracker
+        ./machines/mangoshake
       ];
       specialArgs = { inherit inputs; };
     };
@@ -164,11 +164,11 @@
       sshUser = "root";
     };
 
-    deploy.nodes.nutcracker = {
-      hostname = "nutcracker.lion-zebra.ts.net";
+    deploy.nodes.mangoshake = {
+      hostname = "mangoshake.lion-zebra.ts.net";
       profiles.system = {
         user = "root";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.nutcracker;
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mangoshake;
       };
       sshUser = "root";
     };
@@ -250,9 +250,9 @@
     #   format = "sd-aarch64-installer";
     # };
 
-    nutcracker-sd = inputs.nixos-generators.nixosGenerate {
+    mangoshake-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/nutcracker ];
+      modules = [ ./machines/mangoshake ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
