@@ -104,7 +104,7 @@ jobs:
         run: |
           nix build .#stashy-sd
 
-  nutcracker:
+  mangoshake:
     runs-on: ubuntu-latest
     steps:
       - name: Maximize build space
@@ -140,6 +140,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: "Build: .#nutcracker-sd"
+      - name: "Build: .#mangoshake-sd"
         run: |
-          nix build .#nutcracker-sd
+          nix build .#mangoshake-sd

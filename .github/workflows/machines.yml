@@ -72,7 +72,7 @@ jobs:
         run: |
           nix build .#nixosConfigurations.stashy.config.system.build.toplevel
 
-  nutcracker:
+  mangoshake:
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
@@ -86,6 +86,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: "Build: .#nutcracker"
+      - name: "Build: .#mangoshake"
         run: |
-          nix build .#nixosConfigurations.nutcracker.config.system.build.toplevel
+          nix build .#nixosConfigurations.mangoshake.config.system.build.toplevel
