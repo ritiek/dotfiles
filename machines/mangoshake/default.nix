@@ -25,10 +25,10 @@ in
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     # inputs.impermanence.nixosModules.impermanence
-    ./../../common/nix.nix
-    ./../../common/sops.nix
-    ./../../common/wifi.nix
-    ./../../common/tailscale.nix
+    ./../../modules/nix.nix
+    ./../../modules/sops.nix
+    ./../../modules/wifi.nix
+    ./../../modules/tailscale.nix
   ];
 
   networking.hostName = "mangoshake";

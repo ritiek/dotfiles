@@ -20,25 +20,25 @@
 
   home-manager.users.ritiek = {
     imports = [
-      ./../../../common/home/sops.nix
-      ./../../../common/home/nix.nix
-      ./../../../common/home/gnupg.nix
-      ./../../../common/home/hyprland
-      ./../../../common/home/theme.nix
-      ./../../../common/home/wezterm
-      ./../../../common/home/zsh
-      ./../../../common/home/git
-      ./../../../common/home/neovim
-      ./../../../common/home/zellij.nix
-      ./../../../common/home/btop.nix
-      ./../../../common/home/rofi.nix
-      ./../../../common/home/waybar
-      ./../../../common/home/swaync
-      ./../../../common/home/mpv.nix
-      ./../../../common/home/firefox.nix
-      # ./../../../commonhome/nixconf/syncthing.nix
-      ./../../../common/home/glava
-      ./../../../common/home/sioyek.nix
+      ./../../../modules/home/sops.nix
+      ./../../../modules/home/nix.nix
+      ./../../../modules/home/gnupg.nix
+      ./../../../modules/home/hyprland
+      ./../../../modules/home/theme.nix
+      ./../../../modules/home/wezterm
+      ./../../../modules/home/zsh
+      ./../../../modules/home/git
+      ./../../../modules/home/neovim
+      ./../../../modules/home/zellij.nix
+      ./../../../modules/home/btop.nix
+      ./../../../modules/home/rofi.nix
+      ./../../../modules/home/waybar
+      ./../../../modules/home/swaync
+      ./../../../modules/home/mpv.nix
+      ./../../../modules/home/firefox.nix
+      # ./../../../moduleshome/nixconf/syncthing.nix
+      ./../../../modules/home/glava
+      ./../../../modules/home/sioyek.nix
     ];
 
     home = {

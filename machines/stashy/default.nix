@@ -7,10 +7,10 @@
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
-    ./../../common/nix.nix
-    ./../../common/sops.nix
-    ./../../common/wifi.nix
-    ./../../common/tailscale.nix
+    ./../../modules/nix.nix
+    ./../../modules/sops.nix
+    ./../../modules/wifi.nix
+    ./../../modules/tailscale.nix
   ];
 
   networking.hostName = "stashy";

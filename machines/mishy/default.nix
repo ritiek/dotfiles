@@ -39,8 +39,8 @@
     inputs.sops-nix.nixosModules.sops
     ./home
     ./graphics.nix
-    ./../../common/nix.nix
-    ./../../common/sops.nix
+    ./../../modules/nix.nix
+    ./../../modules/sops.nix
   ];
 
   # Select internationalisation properties.

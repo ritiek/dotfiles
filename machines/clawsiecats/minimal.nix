@@ -4,7 +4,7 @@
   imports = [
     inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.disko
-    ./../../common/nix.nix
+    ./../../modules/nix.nix
   ];
 
   networking.hostName = "clawsiecats";
