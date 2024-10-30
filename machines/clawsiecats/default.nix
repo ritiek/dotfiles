@@ -7,8 +7,8 @@
     ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
-    ./../../common/sops.nix
-    ./../../common/tailscale.nix
+    ./../../modules/sops.nix
+    ./../../modules/tailscale.nix
   ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
