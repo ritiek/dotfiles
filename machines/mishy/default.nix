@@ -441,6 +441,8 @@
     cleanOnBoot = true;
   };
 
+  systemd.watchdog.runtimeTime = "360s";
+
   # Force Wayland on all apps.
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
