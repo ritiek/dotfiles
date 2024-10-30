@@ -25,9 +25,14 @@ creation_rules:
   - path_regex: machines/nixypi/secrets\.yaml$
     pgp: *ritiek
     age: *nixypi
+
   - path_regex: machines/stashy/secrets\.yaml$
     pgp: *ritiek
     age: *stashy
+  - path_regex: machines/stashy/home/secrets\.yaml$
+    pgp: *ritiek
+    age: *stashy
+
   - path_regex: machines/mangoshake/secrets\.yaml$
     pgp: *ritiek
     age: *mangoshake

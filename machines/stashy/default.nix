@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./home.nix
+    ./home
     ./services.nix
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
