@@ -20,12 +20,12 @@
 
   home-manager.users.root = {
     imports = [
-      # ./../../home/gnupg.nix
-      ./../../common/home/zsh
-      ./../../common/home/git
-      ./../../common/home/neovim
-      ./../../common/home/zellij.nix
-      ./../../common/home/btop.nix
+      # ./../../../home/gnupg.nix
+      ./../../../common/home/zsh
+      ./../../../common/home/git
+      ./../../../common/home/neovim
+      ./../../../common/home/zellij.nix
+      ./../../../common/home/btop.nix
     ];
     home = {
       stateVersion = "24.11";
