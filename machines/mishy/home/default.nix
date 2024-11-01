@@ -85,7 +85,7 @@
           ];
         })
 
-        bitwarden
+        goldwarden
         sonixd
         nemo
         # unstable.calibre
