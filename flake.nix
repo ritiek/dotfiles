@@ -70,16 +70,16 @@
       inputs.hyprland.follows = "hyprland";
     };
 
-    # raspberry-pi-nix = {
-    #   url = "github:nix-community/raspberry-pi-nix";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    raspberry-pi-nix = {
+      url = "github:nix-community/raspberry-pi-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs = { self, ... }@inputs: {
-    nixosConfigurations.mishy = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.mishy = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./machines/mishy
@@ -89,7 +89,16 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.clawsiecats-minimal = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.pilab = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/pilab
+        ./machines/pilab/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    nixosConfigurations.clawsiecats-minimal = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats/minimal.nix
@@ -98,7 +107,7 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.clawsiecats = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.clawsiecats = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats
@@ -107,7 +116,7 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.clawsiecats-luks = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.clawsiecats-luks = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
         ./machines/clawsiecats
@@ -116,7 +125,7 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.nixypi = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.nixypi = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
         ./machines/nixypi
@@ -125,7 +134,7 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
         # Using this flake input, for some reason haves the kernel compile from source
@@ -137,7 +146,7 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem rec {
+    nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
         ./machines/mangoshake
@@ -224,6 +233,16 @@
       specialArgs = { inherit inputs; };
       format = "raw-efi";
     };
+
+    # pilab-sd = inputs.nixos-generators.nixosGenerate {
+    #   system = "aarch64-linux";
+    #   modules = [ ./machines/pilab ];
+    #   # modules = [ nixosConfigurations.pilab.config.system.build.sdImage ];
+    #   specialArgs = { inherit inputs; };
+    #   format = "sd-aarch64";
+    # };
+
+    pilab-sd = self.nixosConfigurations.pilab.config.system.build.sdImage;
 
     nixypi-sd-installer = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
