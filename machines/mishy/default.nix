@@ -361,6 +361,7 @@
     rtkit.enable = true;
     polkit.enable = true;
 
+    pam.sshAgentAuth.enable = true;
     pam.services = {
       login = {
         u2fAuth = true;
