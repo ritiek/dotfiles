@@ -23,7 +23,7 @@
   virtualisation.oci-containers.containers."pihole" = {
     image = "pihole/pihole:latest";
     environmentFiles = [
-        config.sops.secrets."env.pihole".path
+      config.sops.secrets."env.pihole".path
     ];
     volumes = [
       "/media/services/pihole:/etc/pihole:rw"
