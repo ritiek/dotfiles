@@ -38,12 +38,16 @@
         diskonaut
         compsize
 
+        podman-compose
+        compose2nix
+
         iptables
         nmap
         dig
         cryptsetup
         openssl
         sops
+        gnupg
         deploy-rs
 
         miniserve

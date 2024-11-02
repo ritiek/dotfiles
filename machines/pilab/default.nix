@@ -11,6 +11,9 @@
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
     ./../../modules/tailscale.nix
+    # Generated using:
+    # compose2nix --env_files=stack.env --include_env_files=true --env_files_only=true
+    ./compose/pihole
   ];
 
   networking.hostName = "pilab";
