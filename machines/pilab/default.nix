@@ -15,6 +15,7 @@
     # compose2nix --env_files=stack.env --include_env_files=true --env_files_only=true
     ./compose/pihole
     ./compose/immich
+    ./compose/uptime-kuma.nix
   ];
 
   networking.hostName = "pilab";
