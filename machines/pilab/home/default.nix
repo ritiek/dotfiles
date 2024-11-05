@@ -92,7 +92,6 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-pihole.service
             ${pkgs.systemd}/bin/systemctl start docker-uptime-kuma.service
             ${pkgs.systemd}/bin/systemctl start docker-immich_server.service
-            ${pkgs.systemd}/bin/systemctl start docker-immich_machine_learning.service
             ${pkgs.systemd}/bin/systemctl start docker-tubearchivist.service
             ${pkgs.systemd}/bin/systemctl start docker-paperless-ngx-webserver.service
 
