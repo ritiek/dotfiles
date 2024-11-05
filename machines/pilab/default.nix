@@ -12,10 +12,11 @@
     ./../../modules/wifi.nix
     ./../../modules/tailscale.nix
     # Generated using:
-    # compose2nix --env_files=stack.env --include_env_files=true --env_files_only=true
+    # $ compose2nix --env_files=stack.env --include_env_files=true --check_systemd_mounts=true --auto_start=false --remove_volumes=true --runtime=docker
     ./compose/pihole
     ./compose/immich
     ./compose/uptime-kuma.nix
+    ./compose/tubearchivist
   ];
 
   networking.hostName = "pilab";
@@ -33,6 +34,17 @@
 
   # Disable sudo as we've no non-root users.
   security.sudo.enable = false;
+
+  # Ref:
+  # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
+  systemd.tmpfiles.settings."10-homelab"."/media" = {
+    d = {
+      group = "root";
+      mode = "0755";
+      user = "root";
+    };
+    h.argument = "+i";
+  };
 
   users = {
     defaultUserShell = pkgs.zsh;
@@ -71,6 +83,8 @@
     zsh.enable = true;
     # gnupg.agent.enable = true;
   };
+
+  # virtualisation.docker.package = pkgs.docker_25;
 
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
