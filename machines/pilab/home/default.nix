@@ -1,6 +1,7 @@
 { pkgs, inputs, config, ... }:
 let 
   homelab-mount = (pkgs.writeShellScriptBin "homelab-mount" ''
+    set -x
     ${pkgs.cryptsetup}/bin/cryptsetup open \
       /dev/disk/by-label/HOMELAB_MEDIA \
       homelab_media
@@ -66,11 +67,13 @@ in
         homelab-mount
 
         (writeShellScriptBin "homelab-unmount" ''
+          set -x
+          umount -l /media
           ${pkgs.cryptsetup}/bin/cryptsetup close homelab_media
-          umount /media
         '')
 
         (writeShellScriptBin "homelab-stop" ''
+          set -x
           ${pkgs.systemd}/bin/systemctl stop docker-compose-pihole-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-uptime-kuma-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-immich-root.target
@@ -81,6 +84,7 @@ in
         '')
 
         (writeShellScriptBin "homelab-start" ''
+          set -x
           ${homelab-mount}/bin/homelab-mount && (
             # Disable serve for Vaultwarden can bind to port 9445
             ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
