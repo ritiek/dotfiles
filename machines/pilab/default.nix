@@ -17,6 +17,7 @@
     ./compose/immich
     ./compose/uptime-kuma.nix
     ./compose/tubearchivist
+    ./compose/paperless-ngx
   ];
 
   networking.hostName = "pilab";
