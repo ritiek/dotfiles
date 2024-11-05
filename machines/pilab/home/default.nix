@@ -71,9 +71,10 @@ in
         '')
 
         (writeShellScriptBin "homelab-stop" ''
-          ${pkgs.systemd}/bin/systemctl stop podman-pihole
-          ${pkgs.systemd}/bin/systemctl stop podman-uptime-kuma
-          ${pkgs.systemd}/bin/systemctl stop podman-immich_server
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-pihole-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-uptime-kuma-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-immich-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-tubearchivist-root.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -83,9 +84,11 @@ in
             # Disable serve for Vaultwarden can bind to port 9445
             ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
 
-            ${pkgs.systemd}/bin/systemctl start podman-pihole
-            ${pkgs.systemd}/bin/systemctl start podman-uptime-kuma
-            ${pkgs.systemd}/bin/systemctl start podman-immich_server
+            ${pkgs.systemd}/bin/systemctl start docker-pihole.service
+            ${pkgs.systemd}/bin/systemctl start docker-uptime-kuma.service
+            ${pkgs.systemd}/bin/systemctl start docker-immich_server.service
+            ${pkgs.systemd}/bin/systemctl start docker-immich_machine_learning.service
+            ${pkgs.systemd}/bin/systemctl start docker-tubearchivist.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off
