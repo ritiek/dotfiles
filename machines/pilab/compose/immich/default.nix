@@ -129,6 +129,7 @@
     dependsOn = [
       "immich_postgres"
       "immich_redis"
+      "immich_machine_learning"
     ];
     log-driver = "journald";
     autoStart = false;
