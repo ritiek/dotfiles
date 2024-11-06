@@ -21,6 +21,8 @@
     ./compose/paperless-ngx
     ./compose/forgejo
     ./compose/vaultwarden
+    ./compose/navidrome.nix
+    ./compose/memos.nix
   ];
 
   networking.hostName = "pilab";
