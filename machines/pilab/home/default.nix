@@ -82,6 +82,8 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-paperless-ngx-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-forgejo-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-vaultwarden.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-navidrome.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-memos.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -100,6 +102,8 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-paperless-ngx-webserver.service
             ${pkgs.systemd}/bin/systemctl start docker-forgejo.service
             ${pkgs.systemd}/bin/systemctl start docker-vaultwarden.service
+            ${pkgs.systemd}/bin/systemctl start docker-navidrome.service
+            ${pkgs.systemd}/bin/systemctl start docker-memos.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off
