@@ -74,6 +74,7 @@ in
 
         (writeShellScriptBin "homelab-stop" ''
           set -x
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-dashy-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-pihole-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-uptime-kuma-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-immich-root.target
@@ -89,6 +90,7 @@ in
             # Disable serve for Vaultwarden can bind to port 9445
             ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
 
+            ${pkgs.systemd}/bin/systemctl start docker-dashy.service
             ${pkgs.systemd}/bin/systemctl start docker-pihole.service
             ${pkgs.systemd}/bin/systemctl start docker-uptime-kuma.service
             ${pkgs.systemd}/bin/systemctl start docker-immich_server.service
