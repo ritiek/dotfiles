@@ -80,6 +80,7 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-immich-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-tubearchivist-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-paperless-ngx-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-forgejo-root.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -96,6 +97,7 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-immich_server.service
             ${pkgs.systemd}/bin/systemctl start docker-tubearchivist.service
             ${pkgs.systemd}/bin/systemctl start docker-paperless-ngx-webserver.service
+            ${pkgs.systemd}/bin/systemctl start docker-forgejo.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off
