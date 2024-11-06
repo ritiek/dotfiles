@@ -20,6 +20,7 @@
     ./compose/tubearchivist
     ./compose/paperless-ngx
     ./compose/forgejo
+    ./compose/vaultwarden
   ];
 
   networking.hostName = "pilab";
