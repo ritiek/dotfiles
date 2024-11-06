@@ -23,6 +23,7 @@
     ./compose/vaultwarden
     ./compose/navidrome.nix
     ./compose/memos.nix
+    ./compose/syncthing.nix
   ];
 
   networking.hostName = "pilab";
