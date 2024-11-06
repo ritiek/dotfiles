@@ -19,6 +19,7 @@
     ./compose/uptime-kuma.nix
     ./compose/tubearchivist
     ./compose/paperless-ngx
+    ./compose/forgejo
   ];
 
   networking.hostName = "pilab";
