@@ -111,7 +111,7 @@
       "docker-network-immich_default.service"
     ];
   };
-  virtualisation.oci-containers.containers."immich_server" = {
+  virtualisation.oci-containers.containers."immich" = {
     image = "ghcr.io/immich-app/immich-server:release";
     environment = {
       "TZ" = "Asia/Kolkata";
@@ -138,7 +138,7 @@
       "--network=immich_default"
     ];
   };
-  systemd.services."docker-immich_server" = {
+  systemd.services."docker-immich" = {
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
       RestartMaxDelaySec = lib.mkOverride 500 "1m";

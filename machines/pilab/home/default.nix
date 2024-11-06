@@ -85,6 +85,8 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-navidrome.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-memos.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-syncthing.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-miniflux.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-gotify.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -98,7 +100,7 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-dashy.service
             ${pkgs.systemd}/bin/systemctl start docker-pihole.service
             ${pkgs.systemd}/bin/systemctl start docker-uptime-kuma.service
-            ${pkgs.systemd}/bin/systemctl start docker-immich_server.service
+            ${pkgs.systemd}/bin/systemctl start docker-immich.service
             ${pkgs.systemd}/bin/systemctl start docker-tubearchivist.service
             ${pkgs.systemd}/bin/systemctl start docker-paperless-ngx-webserver.service
             ${pkgs.systemd}/bin/systemctl start docker-forgejo.service
@@ -106,6 +108,8 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-navidrome.service
             ${pkgs.systemd}/bin/systemctl start docker-memos.service
             ${pkgs.systemd}/bin/systemctl start docker-syncthing.service
+            ${pkgs.systemd}/bin/systemctl start docker-miniflux.service
+            ${pkgs.systemd}/bin/systemctl start docker-gotify.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off

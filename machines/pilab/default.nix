@@ -24,6 +24,8 @@
     ./compose/navidrome.nix
     ./compose/memos.nix
     ./compose/syncthing.nix
+    ./compose/miniflux
+    ./compose/gotify.nix
   ];
 
   networking.hostName = "pilab";
