@@ -13,6 +13,7 @@
     ./../../modules/tailscale.nix
     # Generated using:
     # $ compose2nix --env_files=stack.env --include_env_files=true --check_systemd_mounts=true --auto_start=false --remove_volumes=true --runtime=docker
+    ./compose/dashy.nix
     ./compose/pihole
     ./compose/immich
     ./compose/uptime-kuma.nix
