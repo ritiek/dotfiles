@@ -91,6 +91,7 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-homebox.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-conduwuit.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-grocy.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-kopia.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -118,6 +119,7 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-homebox.service
             ${pkgs.systemd}/bin/systemctl start docker-conduwuit.service
             ${pkgs.systemd}/bin/systemctl start docker-grocy.service
+            ${pkgs.systemd}/bin/systemctl start docker-kopia.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off
