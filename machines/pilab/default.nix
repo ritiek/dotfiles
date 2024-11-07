@@ -55,6 +55,11 @@
     h.argument = "+i";
   };
 
+  # Since I am the DNS!
+  services.tailscale.extraUpFlags = [
+    "--accept-dns=false"
+  ];
+
   users = {
     defaultUserShell = pkgs.zsh;
     mutableUsers = false;
