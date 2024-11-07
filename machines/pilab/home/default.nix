@@ -74,6 +74,7 @@ in
 
         (writeShellScriptBin "homelab-stop" ''
           set -x
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-vaultwarden.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-dashy-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-pihole-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-uptime-kuma-root.target
@@ -81,7 +82,6 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-tubearchivist-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-paperless-ngx-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-forgejo-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-vaultwarden.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-navidrome.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-memos.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-syncthing.target
@@ -89,6 +89,8 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-gotify.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-shiori.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-homebox.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-conduwuit.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-grocy.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -99,6 +101,7 @@ in
             # Disable serve for Vaultwarden can bind to port 9445
             ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
 
+            ${pkgs.systemd}/bin/systemctl start docker-vaultwarden.service
             ${pkgs.systemd}/bin/systemctl start docker-dashy.service
             ${pkgs.systemd}/bin/systemctl start docker-pihole.service
             ${pkgs.systemd}/bin/systemctl start docker-uptime-kuma.service
@@ -106,7 +109,6 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-tubearchivist.service
             ${pkgs.systemd}/bin/systemctl start docker-paperless-ngx-webserver.service
             ${pkgs.systemd}/bin/systemctl start docker-forgejo.service
-            ${pkgs.systemd}/bin/systemctl start docker-vaultwarden.service
             ${pkgs.systemd}/bin/systemctl start docker-navidrome.service
             ${pkgs.systemd}/bin/systemctl start docker-memos.service
             ${pkgs.systemd}/bin/systemctl start docker-syncthing.service
@@ -114,10 +116,13 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-gotify.service
             ${pkgs.systemd}/bin/systemctl start docker-shiori.service
             ${pkgs.systemd}/bin/systemctl start docker-homebox.service
+            ${pkgs.systemd}/bin/systemctl start docker-conduwuit.service
+            ${pkgs.systemd}/bin/systemctl start docker-grocy.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off
-            ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9445
+            # ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9445
+            ${pkgs.tailscale}/bin/tailscale serve --bg --https=9446 127.0.0.1:9445
             # {pkgs.tailscale}/bin/tailscale serve --bg --https=8008 127.0.0.1:8008
           )
         '')
