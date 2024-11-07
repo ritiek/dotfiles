@@ -28,6 +28,8 @@
     ./compose/gotify.nix
     ./compose/shiori
     ./compose/homebox.nix
+    ./compose/conduwuit
+    ./compose/grocy
   ];
 
   networking.hostName = "pilab";
