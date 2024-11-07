@@ -87,6 +87,8 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-syncthing.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-miniflux.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-gotify.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-shiori.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-homebox.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -110,6 +112,8 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-syncthing.service
             ${pkgs.systemd}/bin/systemctl start docker-miniflux.service
             ${pkgs.systemd}/bin/systemctl start docker-gotify.service
+            ${pkgs.systemd}/bin/systemctl start docker-shiori.service
+            ${pkgs.systemd}/bin/systemctl start docker-homebox.service
 
             # Disable serve for Matrix Dendrite can bind to port 8008
             # {pkgs.tailscale}/bin/tailscale serve --https=8008 off

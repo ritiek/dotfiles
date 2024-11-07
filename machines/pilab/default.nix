@@ -26,6 +26,8 @@
     ./compose/syncthing.nix
     ./compose/miniflux
     ./compose/gotify.nix
+    ./compose/shiori
+    ./compose/homebox.nix
   ];
 
   networking.hostName = "pilab";
