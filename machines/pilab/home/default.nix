@@ -92,6 +92,7 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-conduwuit-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-grocy-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-kopia-root.target
+          ${pkgs.systemd}/bin/systemctl stop spotdl-sync.timer
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
@@ -117,6 +118,7 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-conduwuit.service
             ${pkgs.systemd}/bin/systemctl start docker-grocy.service
             ${pkgs.systemd}/bin/systemctl start docker-kopia.service
+            ${pkgs.systemd}/bin/systemctl start spotdl-sync.timer
 
             ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9446
           )
