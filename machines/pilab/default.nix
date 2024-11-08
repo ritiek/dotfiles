@@ -3,7 +3,7 @@
 {
   imports = [
     ./home
-    # ./services.nix
+    ./services/spotdl.nix
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
