@@ -24,7 +24,7 @@
       "/media/services/vaultwarden:/data:rw"
     ];
     ports = [
-      "9445:80/tcp"
+      "9446:80/tcp"
     ];
     user = "1000:1000";
     log-driver = "journald";
