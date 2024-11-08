@@ -74,7 +74,7 @@ in
 
         (writeShellScriptBin "homelab-stop" ''
           set -x
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-vaultwarden.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-vaultwarden-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-dashy-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-pihole-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-uptime-kuma-root.target
@@ -82,16 +82,16 @@ in
           ${pkgs.systemd}/bin/systemctl stop docker-compose-tubearchivist-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-paperless-ngx-root.target
           ${pkgs.systemd}/bin/systemctl stop docker-compose-forgejo-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-navidrome.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-memos.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-syncthing.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-miniflux.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-gotify.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-shiori.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-homebox.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-conduwuit.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-grocy.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-kopia.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-navidrome-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-memos-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-syncthing-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-miniflux-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-gotify-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-shiori-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-homebox-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-conduwuit-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-grocy-root.target
+          ${pkgs.systemd}/bin/systemctl stop docker-compose-kopia-root.target
 
           ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
         '')
