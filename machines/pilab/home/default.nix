@@ -99,9 +99,6 @@ in
         (writeShellScriptBin "homelab-start" ''
           set -x
           ${homelab-mount}/bin/homelab-mount && (
-            # Disable serve for Vaultwarden can bind to port 9445
-            ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
-
             ${pkgs.systemd}/bin/systemctl start docker-vaultwarden.service
             ${pkgs.systemd}/bin/systemctl start docker-dashy.service
             ${pkgs.systemd}/bin/systemctl start docker-pihole.service
@@ -121,11 +118,7 @@ in
             ${pkgs.systemd}/bin/systemctl start docker-grocy.service
             ${pkgs.systemd}/bin/systemctl start docker-kopia.service
 
-            # Disable serve for Matrix Dendrite can bind to port 8008
-            # {pkgs.tailscale}/bin/tailscale serve --https=8008 off
-            # ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9445
-            ${pkgs.tailscale}/bin/tailscale serve --bg --https=9446 127.0.0.1:9445
-            # {pkgs.tailscale}/bin/tailscale serve --bg --https=8008 127.0.0.1:8008
+            ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9446
           )
         '')
       ];
