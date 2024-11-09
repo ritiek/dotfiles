@@ -31,13 +31,19 @@ in
 
   home-manager.users.root = {
     imports = [
-      # ./../../../home/gnupg.nix
+      # ./../../../modules/home/sops.nix
+      # ./../../../modules/home/nix.nix
+      # ./../../../modules/home/gnupg.nix
       ./../../../modules/home/zsh
       ./../../../modules/home/git
       ./../../../modules/home/neovim
       ./../../../modules/home/zellij.nix
       ./../../../modules/home/btop.nix
     ];
+    # sops.secrets."immich_cli_env" = {};
+    # sops.secrets."immich_cli_env".path = "${config.home.homeDirectory}/secret";
+    # systemd.user.services.sops-nix.enable = true;
+    # systemd.user.services.sops-nix.Install.WantedBy = [ "graphical-session-pre.target" ];
     home = {
       stateVersion = "24.11";
       packages = with pkgs; [
@@ -63,8 +69,13 @@ in
 
         miniserve
         bore-cli
+        immich-cli
 
         homelab-mount
+
+        # (writeShellScriptBin "testes" ''
+        #   ${pkgs.coreutils}/bin/echo "${config.sops.gnupg.home}"
+        # '')
 
         (writeShellScriptBin "homelab-unmount" ''
           set -x
@@ -123,6 +134,15 @@ in
             ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9446
           )
         '')
+
+        # (writeShellScriptBin "immich-with-env" ''
+        #   source ${config.sops.secrets."immich_cli_env".path}
+        #   ${pkgs.immich-cli}/bin/immich "$@"
+        # '')
+
+        # (writeShellScriptBin "immich-with-env" ''
+        #   ${pkgs.immich-cli}/bin/immich "$@"
+        # '')
       ];
     };
     programs = {

@@ -2,11 +2,11 @@
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
+    inputs.nix-index-database.nixosModules.nix-index
     ./home
     ./services/spotdl.nix
     ./hw-config.nix
-    inputs.sops-nix.nixosModules.sops
-    inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
