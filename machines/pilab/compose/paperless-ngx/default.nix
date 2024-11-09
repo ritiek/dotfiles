@@ -61,6 +61,59 @@
       "--network=paperless-ngx_default"
     ];
   };
+  virtualisation.oci-containers.containers."paperless-ngx-gotenberg" = {
+    image = "docker.io/gotenberg/gotenberg:8.7";
+    environmentFiles = [
+      config.sops.secrets."env.paperless-ngx".path
+    ];
+    cmd = [ "gotenberg" "--chromium-disable-javascript=true" "--chromium-allow-list=file:///tmp/.*" ];
+    log-driver = "journald";
+    autoStart = false;
+    extraOptions = [
+      "--network-alias=gotenberg"
+      "--network=paperless-ngx_default"
+    ];
+  };
+  systemd.services."docker-paperless-ngx-gotenberg" = {
+    serviceConfig = {
+      Restart = lib.mkOverride 500 "always";
+      RestartMaxDelaySec = lib.mkOverride 500 "1m";
+      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSteps = lib.mkOverride 500 9;
+    };
+    after = [
+      "docker-network-paperless-ngx_default.service"
+    ];
+    requires = [
+      "docker-network-paperless-ngx_default.service"
+    ];
+  };
+  virtualisation.oci-containers.containers."paperless-ngx-tika" = {
+    image = "docker.io/apache/tika:latest";
+    environmentFiles = [
+      config.sops.secrets."env.paperless-ngx".path
+    ];
+    log-driver = "journald";
+    autoStart = false;
+    extraOptions = [
+      "--network-alias=tika"
+      "--network=paperless-ngx_default"
+    ];
+  };
+  systemd.services."docker-paperless-ngx-tika" = {
+    serviceConfig = {
+      Restart = lib.mkOverride 500 "always";
+      RestartMaxDelaySec = lib.mkOverride 500 "1m";
+      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSteps = lib.mkOverride 500 9;
+    };
+    after = [
+      "docker-network-paperless-ngx_default.service"
+    ];
+    requires = [
+      "docker-network-paperless-ngx_default.service"
+    ];
+  };
   systemd.services."docker-paperless-ngx-db" = {
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
@@ -95,6 +148,8 @@
     dependsOn = [
       "paperless-ngx-broker"
       "paperless-ngx-db"
+      "paperless-ngx-gotenberg"
+      "paperless-ngx-tika"
     ];
     log-driver = "journald";
     autoStart = false;
