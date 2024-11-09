@@ -27,8 +27,8 @@ in
       Type = "oneshot";
       WorkingDirectory = "/media/services/spotdl";
       ExecStart = "${spotdl-sync}/bin/spotdl-sync";
-      ExecStop = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
-      ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
+      # ExecStop = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
+      # ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
 
       # Restart = lib.mkOverride 500 "always";
       # RestartMaxDelaySec = lib.mkOverride 500 "1m";
