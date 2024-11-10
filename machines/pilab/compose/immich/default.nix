@@ -7,19 +7,6 @@
     format = "dotenv";
   };
 
-  # environment.systemPackages = with pkgs; [
-  #   immich-cli
-  #
-  #   (writeShellScriptBin "immich-with-env" ''
-  #     source ${config.sops.secrets."env.immich".path}
-  #     ${pkgs.immich-cli}/bin/immich "$@"
-  #   '')
-  #
-  #   # (writeShellScriptBin "immich-with-env" ''
-  #   #   ${pkgs.immich-cli}/bin/immich "$@"
-  #   # '')
-  # ];
-
   # Runtime
   virtualisation.docker = {
     enable = true;
