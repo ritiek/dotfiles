@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.immich" = {
+  sops.secrets."compose/immich.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -21,7 +21,7 @@
       "TZ" = "Asia/Kolkata";
     };
     environmentFiles = [
-      config.sops.secrets."env.immich".path
+      config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
       "/media/services/immich/model-cache:/cache:rw"
@@ -56,7 +56,7 @@
       "TZ" = "Asia/Kolkata";
     };
     environmentFiles = [
-      config.sops.secrets."env.immich".path
+      config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
       "/media/services/immich/pgdata:/var/lib/postgresql/data:rw"
@@ -88,7 +88,7 @@
   virtualisation.oci-containers.containers."immich_redis" = {
     image = "redis:6.2-alpine@sha256:80cc8518800438c684a53ed829c621c94afd1087aaeb59b0d4343ed3e7bcf6c5";
     environmentFiles = [
-      config.sops.secrets."env.immich".path
+      config.sops.secrets."compose/immich.env".path
     ];
     log-driver = "journald";
     autoStart = false;
@@ -117,7 +117,7 @@
       "TZ" = "Asia/Kolkata";
     };
     environmentFiles = [
-      config.sops.secrets."env.immich".path
+      config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
       "/etc/localtime:/etc/localtime:ro"

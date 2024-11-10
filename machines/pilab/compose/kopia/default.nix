@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.kopia" = {
+  sops.secrets."compose/kopia.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."kopia" = {
     image = "kopia/kopia:latest";
     environmentFiles = [
-      config.sops.secrets."env.kopia".path
+      config.sops.secrets."compose/kopia.env".path
     ];
     volumes = [
       "/:/motionless2:ro"

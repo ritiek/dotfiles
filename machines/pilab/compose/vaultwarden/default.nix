@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.vaultwarden" = {
+  sops.secrets."compose/vaultwarden.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."vaultwarden" = {
     image = "vaultwarden/server:latest";
     environmentFiles = [
-      config.sops.secrets."env.vaultwarden".path
+      config.sops.secrets."compose/vaultwarden.env".path
     ];
     volumes = [
       "/media/services/vaultwarden:/data:rw"

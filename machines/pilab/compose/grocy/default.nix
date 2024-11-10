@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.grocy" = {
+  sops.secrets."compose/grocy.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -23,7 +23,7 @@
       "TZ" = "Asia/Kolkata";
     };
     environmentFiles = [
-      config.sops.secrets."env.grocy".path
+      config.sops.secrets."compose/grocy.env".path
     ];
     volumes = [
       "/media/services/grocy:/config:rw"

@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.miniflux" = {
+  sops.secrets."compose/miniflux.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."miniflux-db" = {
     image = "postgres:15";
     environmentFiles = [
-      config.sops.secrets."env.miniflux".path
+      config.sops.secrets."compose/miniflux.env".path
     ];
     volumes = [
       "/media/services/miniflux/data:/var/lib/postgresql/data:rw"
@@ -53,7 +53,7 @@
   virtualisation.oci-containers.containers."miniflux" = {
     image = "miniflux/miniflux:latest";
     environmentFiles = [
-      config.sops.secrets."env.miniflux".path
+      config.sops.secrets."compose/miniflux.env".path
     ];
     ports = [
       "3721:8080/tcp"

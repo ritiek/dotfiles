@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.pihole" = {
+  sops.secrets."compose/pihole.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -22,7 +22,7 @@
       "WEB_PORT" = "81";
     };
     environmentFiles = [
-      config.sops.secrets."env.pihole".path
+      config.sops.secrets."compose/pihole.env".path
     ];
     volumes = [
       "/media/services/pihole:/etc/pihole:rw"

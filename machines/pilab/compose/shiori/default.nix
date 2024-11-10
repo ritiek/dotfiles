@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.shiori" = {
+  sops.secrets."compose/shiori.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."shiori" = {
     image = "ghcr.io/go-shiori/shiori:dev";
     environmentFiles = [
-      config.sops.secrets."env.shiori".path
+      config.sops.secrets."compose/shiori.env".path
     ];
     volumes = [
       "/media/services/shiori/dev:/srv/shiori:rw"
@@ -58,7 +58,7 @@
   virtualisation.oci-containers.containers."shiori-postgres" = {
     image = "postgres:15";
     environmentFiles = [
-      config.sops.secrets."env.shiori".path
+      config.sops.secrets."compose/shiori.env".path
     ];
     volumes = [
       "/media/services/shiori/postgresql:/var/lib/postgresql/data:rw"
