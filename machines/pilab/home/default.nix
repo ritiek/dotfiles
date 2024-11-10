@@ -31,8 +31,8 @@ in
 
   home-manager.users.root = {
     imports = [
-      # ./../../../modules/home/sops.nix
-      # ./../../../modules/home/nix.nix
+      ./../../../modules/home/sops.nix
+      ./../../../modules/home/nix.nix
       # ./../../../modules/home/gnupg.nix
       ./../../../modules/home/zsh
       ./../../../modules/home/git
@@ -42,6 +42,10 @@ in
     ];
     # sops.secrets."immich_cli_env" = {};
     # sops.secrets."immich_cli_env".path = "${config.home.homeDirectory}/secret";
+
+    sops.secrets."paperless_ngx_cli_env" = {};
+    # sops.secrets."paperless_ngx_cli_env".path = "${config.home.homeDirectory}/.config/nix/nix.conf";
+
     # systemd.user.services.sops-nix.enable = true;
     # systemd.user.services.sops-nix.Install.WantedBy = [ "graphical-session-pre.target" ];
     home = {
@@ -143,6 +147,41 @@ in
         # (writeShellScriptBin "immich-with-env" ''
         #   ${pkgs.immich-cli}/bin/immich "$@"
         # '')
+
+        # source ${config.sops.secrets."paperless_ngx_cli_env".path}
+
+        (writeShellScriptBin "push-to-paperless-ngx" ''
+          # Check if at least one file argument is provided
+          if [ $# -lt 1 ]; then
+              echo "Usage: $0 <file_to_upload> [<file_to_upload> ...]"
+              exit 1
+          fi
+          
+          # TODO: Shouldn't have to hardcode the path here.
+          source ~/.config/sops-nix/secrets/paperless_ngx_cli_env
+          
+          # Loop through all provided files
+          for FILE in "$@"; do
+              # Check if the file exists and is a regular file
+              if [ ! -f "$FILE" ]; then
+                  echo "Error: $FILE does not exist or is not a valid file."
+                  continue
+              fi
+          
+              # Upload the file
+              echo "Uploading $FILE..."
+          
+              curl -H "Authorization: Token $PAPERLESS_NGX_API_KEY" -F "document=@$FILE" "$PAPERLESS_NGX_INSTANCE_PUSH_DOCUMENT_URL"
+          
+              if [ $? -eq 0 ]; then
+                  echo "$FILE uploaded successfully."
+              else
+                  echo "Failed to upload $FILE."
+              fi
+          done
+          
+          echo "File upload process complete."
+        '')
       ];
     };
     programs = {
