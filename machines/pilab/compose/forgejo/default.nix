@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.forgejo" = {
+  sops.secrets."compose/forgejo.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."forgejo" = {
     image = "codeberg.org/forgejo/forgejo:7";
     environmentFiles = [
-      config.sops.secrets."env.forgejo".path
+      config.sops.secrets."compose/forgejo.env".path
     ];
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
@@ -66,7 +66,7 @@
   virtualisation.oci-containers.containers."forgejo-db" = {
     image = "postgres:14";
     environmentFiles = [
-      config.sops.secrets."env.forgejo".path
+      config.sops.secrets."compose/forgejo.env".path
     ];
     volumes = [
       "/media/services/forgejo/db:/var/lib/postgresql/data:rw"

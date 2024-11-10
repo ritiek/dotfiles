@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.paperless-ngx" = {
+  sops.secrets."compose/paperless-ngx.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."paperless-ngx-broker" = {
     image = "docker.io/library/redis:7";
     environmentFiles = [
-      config.sops.secrets."env.paperless-ngx".path
+      config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
       "paperless-ngx_redisdata:/data:rw"
@@ -49,7 +49,7 @@
   virtualisation.oci-containers.containers."paperless-ngx-db" = {
     image = "docker.io/library/postgres:15";
     environmentFiles = [
-      config.sops.secrets."env.paperless-ngx".path
+      config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
       "/media/services/paperless/pgdata:/var/lib/postgresql/data:rw"
@@ -64,7 +64,7 @@
   virtualisation.oci-containers.containers."paperless-ngx-gotenberg" = {
     image = "docker.io/gotenberg/gotenberg:8.7";
     environmentFiles = [
-      config.sops.secrets."env.paperless-ngx".path
+      config.sops.secrets."compose/paperless-ngx.env".path
     ];
     cmd = [ "gotenberg" "--chromium-disable-javascript=true" "--chromium-allow-list=file:///tmp/.*" ];
     log-driver = "journald";
@@ -91,7 +91,7 @@
   virtualisation.oci-containers.containers."paperless-ngx-tika" = {
     image = "docker.io/apache/tika:latest";
     environmentFiles = [
-      config.sops.secrets."env.paperless-ngx".path
+      config.sops.secrets."compose/paperless-ngx.env".path
     ];
     log-driver = "journald";
     autoStart = false;
@@ -134,7 +134,7 @@
   virtualisation.oci-containers.containers."paperless-ngx-webserver" = {
     image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
     environmentFiles = [
-      config.sops.secrets."env.paperless-ngx".path
+      config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
       "/media/services/paperless/consume:/usr/src/paperless/consume:rw"
