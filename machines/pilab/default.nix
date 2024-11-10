@@ -46,9 +46,6 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # Disable sudo as we've no non-root users.
-  security.sudo.enable = false;
-
   # Ref:
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
   systemd.tmpfiles.settings."10-homelab"."/media" = {
@@ -69,8 +66,11 @@
     defaultUserShell = pkgs.zsh;
     mutableUsers = false;
 
-    users.root = {
-      password = "ff";
+    users.ritiek = {
+      isNormalUser = true;
+      extraGroups = [
+        "wheel"
+      ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHVwHXOotXjPLC/fXIEu/Xnc5ZiIwOKK4Amas/rb9/ZGAAAAEnNzaDpyaXRpZWtAeXViaWtrbw=="
@@ -91,8 +91,11 @@
       enable = true;
       startWhenNeeded = true;
       settings = {
-        PermitRootLogin = "yes";
+        PermitRootLogin = "no";
         PasswordAuthentication = false;
+      };
+      knownHosts = {
+        "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
       };
     };
   };
@@ -103,7 +106,13 @@
     # gnupg.agent.enable = true;
   };
 
-  # virtualisation.docker.package = pkgs.docker_25;
+  security = {
+    sudo.enable = false;
+    sudo-rs = {
+      enable = true;
+      wheelNeedsPassword = false;
+    };
+  };
 
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
