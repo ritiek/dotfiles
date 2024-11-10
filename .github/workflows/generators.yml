@@ -30,39 +30,41 @@ jobs:
       #     name: minimal-install.iso
       #     path: ./result/iso/nixos-*.iso
 
-  mishy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          verbose: 'true'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
-          remove-swapfile: 'true'
-      # Derivations are built under /tmp
-      - name: Bind mount /tmp
-        run: |
-          sudo mkdir /mnt/nix /nix
-          sudo chmod 0755 /nix
-          sudo mount --bind /mnt/nix /nix
-      # - name: Set swap space
-      #   uses: pierotofy/set-swap-space@master
-      #   with:
-      #     swap-size-gb: 10
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-      - name: Clone Repository
-        uses: actions/checkout@v4
-
-      - name: "Build: .#mishi-raw-efi"
-        run: |
-          nix build .#mishy-raw-efi
+  # FIXME: Building `.#mishy-raw-efi` always causes the github actions
+  # runner to run out of disk space and fail.
+  # mishy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Maximize build space
+  #       uses: AdityaGarg8/remove-unwanted-software@v4.1
+  #       with:
+  #         verbose: 'true'
+  #         remove-dotnet: 'true'
+  #         remove-android: 'true'
+  #         remove-haskell: 'true'
+  #         remove-codeql: 'true'
+  #         remove-docker-images: 'true'
+  #         remove-large-packages: 'true'
+  #         remove-cached-tools: 'true'
+  #         remove-swapfile: 'true'
+  #     # Derivations are built under /tmp
+  #     - name: Bind mount /tmp
+  #       run: |
+  #         sudo mkdir /mnt/nix /nix
+  #         sudo chmod 0755 /nix
+  #         sudo mount --bind /mnt/nix /nix
+  #     # - name: Set swap space
+  #     #   uses: pierotofy/set-swap-space@master
+  #     #   with:
+  #     #     swap-size-gb: 10
+  #     - name: Install Nix
+  #       uses: cachix/install-nix-action@v27
+  #     - name: Clone Repository
+  #       uses: actions/checkout@v4
+  #
+  #     - name: "Build: .#mishi-raw-efi"
+  #       run: |
+  #         nix build .#mishy-raw-efi
 
   stashy:
     runs-on: ubuntu-latest
