@@ -29,7 +29,7 @@ in
     "/share/applications"
   ];
 
-  home-manager.users.root = {
+  home-manager.users.root = { osConfig, ... }: {
     imports = [
       ./../../../modules/home/sops.nix
       ./../../../modules/home/nix.nix
@@ -40,14 +40,9 @@ in
       ./../../../modules/home/zellij.nix
       ./../../../modules/home/btop.nix
     ];
-    # sops.secrets."immich_cli_env" = {};
-    # sops.secrets."immich_cli_env".path = "${config.home.homeDirectory}/secret";
-
+    sops.secrets."immich_cli_env" = {};
     sops.secrets."paperless_ngx_cli_env" = {};
-    # sops.secrets."paperless_ngx_cli_env".path = "${config.home.homeDirectory}/.config/nix/nix.conf";
 
-    # systemd.user.services.sops-nix.enable = true;
-    # systemd.user.services.sops-nix.Install.WantedBy = [ "graphical-session-pre.target" ];
     home = {
       stateVersion = "24.11";
       packages = with pkgs; [
@@ -139,48 +134,46 @@ in
           )
         '')
 
-        # (writeShellScriptBin "immich-with-env" ''
-        #   source ${config.sops.secrets."immich_cli_env".path}
-        #   ${pkgs.immich-cli}/bin/immich "$@"
-        # '')
+        (writeShellScriptBin "immich-env" ''
+          # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
+          # to work:
+          # eval $(${pkgs.coreutils}/bin/cat $\{config.sops.secrets."immich_cli_env".path}) ${pkgs.immich-cli}/bin/immich "$@"
+          eval $(${pkgs.coreutils}/bin/cat ~/.config/sops-nix/secrets/immich_cli_env) ${pkgs.immich-cli}/bin/immich "$@"
+        '')
 
-        # (writeShellScriptBin "immich-with-env" ''
-        #   ${pkgs.immich-cli}/bin/immich "$@"
-        # '')
-
-        # source ${config.sops.secrets."paperless_ngx_cli_env".path}
-
-        (writeShellScriptBin "push-to-paperless-ngx" ''
+        (writeShellScriptBin "paperless-ngx-push" ''
           # Check if at least one file argument is provided
           if [ $# -lt 1 ]; then
-              echo "Usage: $0 <file_to_upload> [<file_to_upload> ...]"
+              ${pkgs.coreutils}/bin/echo "Usage: $0 <file_to_upload> [<file_to_upload> ...]"
               exit 1
           fi
           
-          # TODO: Shouldn't have to hardcode the path here.
+          # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
+          # to work:
+          # source $\{osConfig.sops.secrets."paperless_ngx_cli_env".path}
           source ~/.config/sops-nix/secrets/paperless_ngx_cli_env
           
           # Loop through all provided files
           for FILE in "$@"; do
               # Check if the file exists and is a regular file
               if [ ! -f "$FILE" ]; then
-                  echo "Error: $FILE does not exist or is not a valid file."
+                  ${pkgs.coreutils}/bin/echo "Error: $FILE does not exist or is not a valid file."
                   continue
               fi
           
               # Upload the file
-              echo "Uploading $FILE..."
+              ${pkgs.coreutils}/bin/echo "Uploading $FILE..."
           
-              curl -H "Authorization: Token $PAPERLESS_NGX_API_KEY" -F "document=@$FILE" "$PAPERLESS_NGX_INSTANCE_PUSH_DOCUMENT_URL"
+              ${pkgs.curl}/bin/curl -H "Authorization: Token $PAPERLESS_NGX_API_KEY" -F "document=@$FILE" "$PAPERLESS_NGX_INSTANCE_PUSH_DOCUMENT_URL"
           
               if [ $? -eq 0 ]; then
-                  echo "$FILE uploaded successfully."
+                  ${pkgs.coreutils}/bin/echo "$FILE uploaded successfully."
               else
-                  echo "Failed to upload $FILE."
+                  ${pkgs.coreutils}/bin/echo "Failed to upload $FILE."
               fi
           done
           
-          echo "File upload process complete."
+          ${pkgs.coreutils}/bin/echo "File upload process complete."
         '')
       ];
     };
