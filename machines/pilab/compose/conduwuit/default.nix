@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.conduwuit" = {
+  sops.secrets."compose/conduwuit.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."conduwuit" = {
     image = "girlbossceo/conduwuit:latest";
     environmentFiles = [
-      config.sops.secrets."env.conduwuit".path
+      config.sops.secrets."compose/conduwuit.env".path
     ];
     volumes = [
       "/media/services/conduwuit/data:/var/lib/matrix-conduit:rw"

@@ -2,7 +2,7 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."env.tubearchivist" = {
+  sops.secrets."compose/tubearchivist.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
   };
@@ -18,7 +18,7 @@
   virtualisation.oci-containers.containers."archivist-es" = {
     image = "docker.elastic.co/elasticsearch/elasticsearch:8.9.0";
     environmentFiles = [
-      config.sops.secrets."env.tubearchivist".path
+      config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
       "/media/services/tubearchivist/es:/usr/share/elasticsearch/data:rw"
@@ -50,7 +50,7 @@
   virtualisation.oci-containers.containers."archivist-redis" = {
     image = "redis/redis-stack-server";
     environmentFiles = [
-      config.sops.secrets."env.tubearchivist".path
+      config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
       "tubearchivist_redis:/data:rw"
@@ -84,7 +84,7 @@
   virtualisation.oci-containers.containers."tubearchivist" = {
     image = "bbilly1/tubearchivist";
     environmentFiles = [
-      config.sops.secrets."env.tubearchivist".path
+      config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
       "/media/services/tubearchivist/cache:/cache:rw"
