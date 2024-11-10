@@ -29,7 +29,15 @@ in
     "/share/applications"
   ];
 
-  home-manager.users.root = { osConfig, ... }: {
+  home-manager.users.root = {
+    imports = [
+      ./../../../modules/home/zsh
+      ./../../../modules/home/neovim
+    ];
+    home.stateVersion = "24.11";
+  };
+
+  home-manager.users.ritiek = { osConfig, ... }: {
     imports = [
       ./../../../modules/home/sops.nix
       ./../../../modules/home/nix.nix
@@ -70,10 +78,6 @@ in
         immich-cli
 
         homelab-mount
-
-        # (writeShellScriptBin "testes" ''
-        #   ${pkgs.coreutils}/bin/echo "${config.sops.gnupg.home}"
-        # '')
 
         (writeShellScriptBin "homelab-unmount" ''
           set -x

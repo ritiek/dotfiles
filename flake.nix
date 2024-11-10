@@ -9,9 +9,9 @@
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
 
     home-manager = {
-      # url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager";
       # Using my patched home-manager to let root install systemd user services.
-      url = "github:ritiek/home-manager";
+      # url = "github:ritiek/home-manager";
 
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
