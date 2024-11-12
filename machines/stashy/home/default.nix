@@ -20,6 +20,14 @@
 
   home-manager.users.root = {
     imports = [
+      ./../../../modules/home/zsh
+      ./../../../modules/home/neovim
+    ];
+    home.stateVersion = "24.11";
+  };
+
+  home-manager.users.ritiek = {
+    imports = [
       # ./../../../home/gnupg.nix
       ./../../../modules/home/zsh
       ./../../../modules/home/git
