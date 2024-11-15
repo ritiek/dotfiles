@@ -47,18 +47,7 @@
         "/nix/persist/home/${config.home.username}/cache" = {
           directories = [
             ".local/share/nvim"
-            # {
-            #   directory = ".local/share/nvim";
-            #   method = "symlink";
-            # }
-            # {
-            #   directory = ".local/state/nvim";
-            #   method = "symlink";
-            # }
           ];
-          # files = [
-          #   ".nvim-lazy-lock.json"
-          # ];
           allowOther = false;
         };
       };
