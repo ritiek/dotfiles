@@ -17,6 +17,7 @@
       hostKeys = [
         "/boot/ssh_host_ed25519_key"
       ];
+      authorizedKeys = config.users.users.ritiek.openssh.authorizedKeys.keys;
     };
     postCommands = ''
       echo 'cryptsetup-askpass' >> /root/.profile
