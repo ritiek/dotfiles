@@ -34,6 +34,11 @@ rsync -rl \
   "$BASEDIR"/../../../ \
   "$BASEDIR"/nix/persist/system/etc/nixos/
 
+# Remount tmpfs with more space otherwise nixos-anywhere runs out of space.
+# FIXME: There should be a way to increase tmpfs size declaratively
+# through the minimal-iso generator.
+ssh "$2" "mount -o remount,size=512M /nix/.rw-store"
+
 if [ "$3" = "--luks" ]; then
     read -s -p "Enter LUKS passphrase: " passphrase
     # Do not log the passphrase on console!

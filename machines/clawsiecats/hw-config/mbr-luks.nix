@@ -72,6 +72,8 @@
             type = "luks";
             name = "cryptnix";
             extraOpenArgs = [ "--allow-discards" ];
+            # Using `pbkdf2` instead of `argon2id` for a lower memory footprint.
+            extraFormatArgs = [ "--pbkdf pbkdf2" ];
             passwordFile = "/tmp/disk.key";
             content = {
               type = "filesystem";
