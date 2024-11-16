@@ -62,6 +62,8 @@
             type = "luks";
             name = "cryptnix";
             settings.allowDiscards = true;
+            # Using `pbkdf2` instead of `argon2id` for a lower memory footprint.
+            extraFormatArgs = [ "--pbkdf pbkdf2" ];
             passwordFile = "/tmp/disk.key";
             content = {
               type = "btrfs";

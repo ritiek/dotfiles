@@ -10,6 +10,8 @@
 
   # Expand rw store a bit.
 
+  # virtualisation.diskSize = 2 * 1024; # 2G
+
   # disko.devices.nodev = {
   #   "/nix/.rw-store" = {
   #     fsType = "tmpfs";
@@ -57,7 +59,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 100;
+    memoryPercent = 300;
   };
 
   nix.settings = {
