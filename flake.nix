@@ -149,6 +149,18 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.pi400kb = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        # Using this flake input, for some reason haves the kernel compile from source
+        # which takes a loong time and isn't practical.
+        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
+        ./machines/pi400kb
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -257,6 +269,13 @@
     stashy-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
       modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
+      specialArgs = { inherit inputs; };
+      format = "sd-aarch64";
+    };
+
+    pi400kb-sd = inputs.nixos-generators.nixosGenerate {
+      system = "aarch64-linux";
+      modules = [ ./machines/pi400kb inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
