@@ -18,6 +18,33 @@
     "/share/applications"
   ];
 
+  # Create directory `/nix/persist/home/ritiek` here as
+  # impermanence's HM module gets a permission denied error
+  # as it runs with user perms.
+  systemd.tmpfiles.settings."10-home" = {
+    # Commenting this out as parent directories seem to be created
+    # automatically under root:root so they don't have to be explicity
+    # specified here.
+    # "/nix/persist/home".d = {
+    #   group = "root";
+    #   mode = "0755";
+    #   user = "root";
+    # };
+    "/nix/persist/home/ritiek".d = {
+      group = "root";
+      mode = "0755";
+      user = "ritiek";
+    };
+  };
+
+  # Commenting out as this doesn't look to help with directory creation.
+  # environment.persistence."/nix/persist/home/ritiek" = {
+  #   users.ritiek = {
+  #     directories = [ ];
+  #     files = [ ];
+  #   };
+  # };
+
   home-manager.users.root = {
     imports = [
       ./../../modules/home/zsh

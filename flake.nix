@@ -161,10 +161,10 @@
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
       profiles.system = {
-        user = "root";
+        user = "ritiek";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.clawsiecats;
       };
-      sshUser = "root";
+      sshUser = "ritiek";
     };
 
     deploy.nodes.stashy = {
