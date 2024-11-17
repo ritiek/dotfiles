@@ -3,7 +3,7 @@ keys:
   - &mishy age1ev6fc54zqnsw3fp6c3ue6uzakkk88a2x6ywn9ngelvus4dde29espr2y7a
   - &pilab age18z96a5v4ugj5lmwgs0xfn4ernq8s44mszf5amp6qxdgyzrg7wusqkhuy8u
   - &clawsiecats age1ej66fdsu8q3dfdas85zfnw38az79e4tp0hw4sh5587kdzy0l45hsj8cqth
-  - &nixypi age1d9a7lvrcyz5pnaezcc90n8wc3qq7tx3vgqa2ccdhqtrmrmd20cjsh0ndu8
+  - &keyberry age16ta3nkg3jrruu27tqux4uswj6ha2pd64myecp4a34rxyqlgnd9tsxj95w5
   - &stashy age13fpx2errrwgxt4fsxagtvf7z77srxw0wvwlekuz4qgez7wtz4ccslvsgmv
   - &mangoshake age17r6ljsa6sg0706cq7j3gfevnk3k8knlvz5vppelaj996q5gnf4jqzyxk28
 
@@ -35,9 +35,12 @@ creation_rules:
     age: *clawsiecats
     # age: *mishy
 
-  - path_regex: machines/nixypi/secrets\.yaml$
+  - path_regex: machines/keyberry/secrets\.yaml$
     pgp: *ritiek
-    age: *nixypi
+    age: *keyberry
+  - path_regex: machines/keyberry/home/secrets\.yaml$
+    pgp: *ritiek
+    age: *keyberry
 
   - path_regex: machines/stashy/secrets\.yaml$
     pgp: *ritiek

@@ -134,10 +134,13 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.nixypi = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.keyberry = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
-        ./machines/nixypi
+        # Using this flake input, for some reason haves the kernel compile from source
+        # which takes a loong time and isn't practical.
+        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
+        ./machines/keyberry
         inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
@@ -150,18 +153,6 @@
         # which takes a loong time and isn't practical.
         # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/stashy
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
-      ];
-      specialArgs = { inherit inputs; };
-    };
-
-    nixosConfigurations.pi400kb = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [
-        # Using this flake input, for some reason haves the kernel compile from source
-        # which takes a loong time and isn't practical.
-        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
-        ./machines/pi400kb
         inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
@@ -255,33 +246,23 @@
       format = "raw-efi";
     };
 
-    # pilab-sd = inputs.nixos-generators.nixosGenerate {
-    #   system = "aarch64-linux";
-    #   modules = [ ./machines/pilab ];
-    #   # modules = [ nixosConfigurations.pilab.config.system.build.sdImage ];
-    #   specialArgs = { inherit inputs; };
-    #   format = "sd-aarch64";
-    # };
-
     pilab-sd = self.nixosConfigurations.pilab.config.system.build.sdImage;
 
-    nixypi-sd-installer = inputs.nixos-generators.nixosGenerate {
+    keyberry-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/nixypi inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
-      specialArgs = { inherit inputs; };
-      format = "sd-aarch64-installer";
-    };
-
-    stashy-sd = inputs.nixos-generators.nixosGenerate {
-      system = "aarch64-linux";
-      modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
+      modules = [
+        ./machines/keyberry
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
+      ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
 
-    pi400kb-sd = inputs.nixos-generators.nixosGenerate {
+    stashy-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/pi400kb inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
+      modules = [
+        ./machines/stashy
+      ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
