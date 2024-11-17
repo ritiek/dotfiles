@@ -8,6 +8,12 @@
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
 
+    pi400kb-nix = {
+      url = "github:ritiek/pi400kb-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # pi400kb-nix.url = "git+file:///home/ritiek/pi400kb-nix";
+
     home-manager = {
       url = "github:nix-community/home-manager";
       # Using my patched home-manager to let root install systemd user services.
