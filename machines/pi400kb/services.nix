@@ -1,6 +1,11 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
+  imports = [
+    inputs.pi400kb-nix.nixosModules.pi400kb
+  ];
+  services.pi400kb.enable = true;
+
   services = {
     uptime-kuma = {
       enable = true;

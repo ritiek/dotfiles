@@ -634,6 +634,45 @@
         "type": "github"
       }
     },
+    "pi400kb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1684245072,
+        "narHash": "sha256-erA+UQtRDIqCRP52btzHSt92tyWYpaKjD3waDof0+aY=",
+        "ref": "refs/heads/main",
+        "rev": "ad102c2fa2e6f1298cbe9e4cf550089363bc60d9",
+        "revCount": 38,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/Gadgetoid/pi400kb"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/Gadgetoid/pi400kb"
+      }
+    },
+    "pi400kb-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pi400kb": "pi400kb"
+      },
+      "locked": {
+        "lastModified": 1731847253,
+        "narHash": "sha256-/q79eaoLEwEHPZa6HnkzBXjQo7bnLc6DnfPjg5JnpC4=",
+        "owner": "ritiek",
+        "repo": "pi400kb-nix",
+        "rev": "4d50eeeb8653fcf0bf4185cd2ede2f44fe526163",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ritiek",
+        "repo": "pi400kb-nix",
+        "type": "github"
+      }
+    },
     "pre-commit-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -700,6 +739,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",
+        "pi400kb-nix": "pi400kb-nix",
         "raspberry-pi-nix": "raspberry-pi-nix",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "sops-nix": "sops-nix",
