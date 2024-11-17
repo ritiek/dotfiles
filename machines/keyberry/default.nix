@@ -13,7 +13,7 @@
     ./../../modules/tailscale.nix
   ];
 
-  networking.hostName = "pi400kb";
+  networking.hostName = "keyberry";
   time.timeZone = "Asia/Kolkata";
 
   # Needed for building SD images.
