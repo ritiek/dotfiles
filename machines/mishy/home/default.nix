@@ -89,7 +89,7 @@
         sonixd
         nemo
         # unstable.calibre
-        unstable.rita
+        unstable.krita
         unstable.blender
         # protonvpn-gui
         lxqt.lxqt-policykit
