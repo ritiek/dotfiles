@@ -76,6 +76,7 @@ in
         miniserve
         bore-cli
         immich-cli
+        restic
 
         homelab-mount
 
