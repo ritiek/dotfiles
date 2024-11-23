@@ -5,6 +5,7 @@ keys:
   - &clawsiecats age1ej66fdsu8q3dfdas85zfnw38az79e4tp0hw4sh5587kdzy0l45hsj8cqth
   - &keyberry age16ta3nkg3jrruu27tqux4uswj6ha2pd64myecp4a34rxyqlgnd9tsxj95w5
   - &stashy age13fpx2errrwgxt4fsxagtvf7z77srxw0wvwlekuz4qgez7wtz4ccslvsgmv
+  - &zerostash age1xy3tu6wccq0jf3epxefeh6t5xu2lvudkcu56tzdrgprmvxfm7y2qpyuqwa
   - &mangoshake age17r6ljsa6sg0706cq7j3gfevnk3k8knlvz5vppelaj996q5gnf4jqzyxk28
 
 creation_rules:
@@ -48,6 +49,13 @@ creation_rules:
   - path_regex: machines/stashy/home/secrets\.yaml$
     pgp: *ritiek
     age: *stashy
+
+  - path_regex: machines/zerostash/secrets\.yaml$
+    pgp: *ritiek
+    age: *zerostash
+  - path_regex: machines/zerostash/home/secrets\.yaml$
+    pgp: *ritiek
+    age: *zerostash
 
   - path_regex: machines/mangoshake/secrets\.yaml$
     pgp: *ritiek
