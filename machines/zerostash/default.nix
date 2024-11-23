@@ -83,7 +83,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 100;
+    memoryPercent = 300;
   };
 
   boot.tmp = {
