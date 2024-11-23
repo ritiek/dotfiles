@@ -441,7 +441,7 @@
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.supportedFilesystems = [ "ntfs" ];
   boot.tmp = {
-    useTmpfs = true;
+    useTmpfs = false;
     cleanOnBoot = true;
   };
 
