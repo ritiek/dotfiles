@@ -158,6 +158,18 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.zerostash = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        # Using this flake input, for some reason haves the kernel compile from source
+        # which takes a loong time and isn't practical.
+        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
+        ./machines/zerostash
+        inputs.nixos-hardware.nixosModules.raspberry-pi-4
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -179,10 +191,19 @@
     deploy.nodes.stashy = {
       hostname = "stashy.lion-zebra.ts.net";
       profiles.system = {
-        user = "root";
+        user = "ritiek";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.stashy;
       };
-      sshUser = "root";
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.zerostash = {
+      hostname = "zerostash.lion-zebra.ts.net";
+      profiles.system = {
+        user = "ritiek";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.stashy;
+      };
+      sshUser = "ritiek";
     };
 
     deploy.nodes.mangoshake = {
@@ -262,6 +283,15 @@
       system = "aarch64-linux";
       modules = [
         ./machines/stashy
+      ];
+      specialArgs = { inherit inputs; };
+      format = "sd-aarch64";
+    };
+
+    zerostash-sd = inputs.nixos-generators.nixosGenerate {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/zerostash
       ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
