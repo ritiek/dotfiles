@@ -2,7 +2,7 @@
 let 
   homelab-mount = (pkgs.writeShellScriptBin "homelab-mount" ''
     set -x
-    ${pkgs.cryptsetup}/bin/cryptsetup open \
+    cryptsetup open \
       /dev/disk/by-label/HOMELAB_MEDIA \
       homelab_media
     mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
@@ -83,58 +83,58 @@ in
         (writeShellScriptBin "homelab-unmount" ''
           set -x
           umount -l /media
-          ${pkgs.cryptsetup}/bin/cryptsetup close homelab_media
+          cryptsetup close homelab_media
         '')
 
         (writeShellScriptBin "homelab-stop" ''
           set -x
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-vaultwarden-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-dashy-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-pihole-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-uptime-kuma-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-immich-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-tubearchivist-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-paperless-ngx-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-forgejo-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-navidrome-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-memos-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-syncthing-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-miniflux-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-gotify-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-shiori-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-homebox-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-conduwuit-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-grocy-root.target
-          ${pkgs.systemd}/bin/systemctl stop docker-compose-kopia-root.target
-          ${pkgs.systemd}/bin/systemctl stop spotdl-sync.timer
+          systemctl stop docker-compose-vaultwarden-root.target
+          systemctl stop docker-compose-dashy-root.target
+          systemctl stop docker-compose-pihole-root.target
+          systemctl stop docker-compose-uptime-kuma-root.target
+          systemctl stop docker-compose-immich-root.target
+          systemctl stop docker-compose-tubearchivist-root.target
+          systemctl stop docker-compose-paperless-ngx-root.target
+          systemctl stop docker-compose-forgejo-root.target
+          systemctl stop docker-compose-navidrome-root.target
+          systemctl stop docker-compose-memos-root.target
+          systemctl stop docker-compose-syncthing-root.target
+          systemctl stop docker-compose-miniflux-root.target
+          systemctl stop docker-compose-gotify-root.target
+          systemctl stop docker-compose-shiori-root.target
+          systemctl stop docker-compose-homebox-root.target
+          systemctl stop docker-compose-conduwuit-root.target
+          systemctl stop docker-compose-grocy-root.target
+          systemctl stop docker-compose-kopia-root.target
+          systemctl stop spotdl-sync.timer
 
-          ${pkgs.tailscale}/bin/tailscale serve --https=9445 off
+          tailscale serve --https=9445 off
         '')
 
         (writeShellScriptBin "homelab-start" ''
           set -x
-          ${homelab-mount}/bin/homelab-mount && (
-            ${pkgs.systemd}/bin/systemctl start docker-vaultwarden.service
-            ${pkgs.systemd}/bin/systemctl start docker-dashy.service
-            ${pkgs.systemd}/bin/systemctl start docker-pihole.service
-            ${pkgs.systemd}/bin/systemctl start docker-uptime-kuma.service
-            ${pkgs.systemd}/bin/systemctl start docker-immich.service
-            ${pkgs.systemd}/bin/systemctl start docker-tubearchivist.service
-            ${pkgs.systemd}/bin/systemctl start docker-paperless-ngx-webserver.service
-            ${pkgs.systemd}/bin/systemctl start docker-forgejo.service
-            ${pkgs.systemd}/bin/systemctl start docker-navidrome.service
-            ${pkgs.systemd}/bin/systemctl start docker-memos.service
-            ${pkgs.systemd}/bin/systemctl start docker-syncthing.service
-            ${pkgs.systemd}/bin/systemctl start docker-miniflux.service
-            ${pkgs.systemd}/bin/systemctl start docker-gotify.service
-            ${pkgs.systemd}/bin/systemctl start docker-shiori.service
-            ${pkgs.systemd}/bin/systemctl start docker-homebox.service
-            ${pkgs.systemd}/bin/systemctl start docker-conduwuit.service
-            ${pkgs.systemd}/bin/systemctl start docker-grocy.service
-            ${pkgs.systemd}/bin/systemctl start docker-kopia.service
-            ${pkgs.systemd}/bin/systemctl start spotdl-sync.timer
+          homelab-mount && (
+            systemctl start docker-vaultwarden.service
+            systemctl start docker-dashy.service
+            systemctl start docker-pihole.service
+            systemctl start docker-uptime-kuma.service
+            systemctl start docker-immich.service
+            systemctl start docker-tubearchivist.service
+            systemctl start docker-paperless-ngx-webserver.service
+            systemctl start docker-forgejo.service
+            systemctl start docker-navidrome.service
+            systemctl start docker-memos.service
+            systemctl start docker-syncthing.service
+            systemctl start docker-miniflux.service
+            systemctl start docker-gotify.service
+            systemctl start docker-shiori.service
+            systemctl start docker-homebox.service
+            systemctl start docker-conduwuit.service
+            systemctl start docker-grocy.service
+            systemctl start docker-kopia.service
+            systemctl start spotdl-sync.timer
 
-            ${pkgs.tailscale}/bin/tailscale serve --bg --https=9445 127.0.0.1:9446
+            tailscale serve --bg --https=9445 127.0.0.1:9446
           )
         '')
 
