@@ -201,7 +201,7 @@
       hostname = "zerostash.lion-zebra.ts.net";
       profiles.system = {
         user = "ritiek";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.stashy;
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.zerostash;
       };
       sshUser = "ritiek";
     };
