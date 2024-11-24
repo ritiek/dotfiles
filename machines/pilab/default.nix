@@ -34,8 +34,10 @@
   ];
 
   sops.secrets = {
-    "restic.repository" = {};
-    "restic.password" = {};
+    "stashy.repository" = {};
+    "stashy.password" = {};
+    "zerostash.repository" = {};
+    "zerostash.password" = {};
   };
 
   networking.hostName = "pilab";
