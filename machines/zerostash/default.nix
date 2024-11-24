@@ -50,6 +50,11 @@
     defaultUserShell = pkgs.zsh;
     mutableUsers = false;
 
+    # users.restic.extraGroups = [
+    #   "storage"
+    #   "disk"
+    # ];
+
     users.ritiek = {
       isNormalUser = true;
       password = "ff";
