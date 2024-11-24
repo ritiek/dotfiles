@@ -28,6 +28,24 @@
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
   boot.supportedFilesystems = [ "ntfs" ];
 
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [{
+      hostName = "pilab.lion-zebra.ts.net";
+      system = "aarch64-linux";
+      # system = pkgs.stdenv.hostPlatform;
+      # systems = [ "aarch64-linux" ];
+      # protocol = "ssh-ng";
+      protocol = "ssh";
+      sshUser = "ritiek";
+      maxJobs = 8;
+      speedFactor = 5;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      # mandatoryFeatures = [ ];
+    }];
+    # settings.builders-use-substitutes = true;
+  };
+
   users = {
     defaultUserShell = pkgs.zsh;
     mutableUsers = false;
@@ -84,7 +102,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 300;
+    memoryPercent = 500;
   };
 
   boot.tmp = {
