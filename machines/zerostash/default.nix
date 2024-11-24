@@ -4,6 +4,7 @@
   programs.nix-ld.enable = true;
   imports = [
     ./home
+    ./services.nix
     ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
