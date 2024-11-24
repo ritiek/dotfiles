@@ -13,4 +13,8 @@
       options = [ "noatime" ];
     };
   };
+  # swapDevices = [{
+  #   device = "/var/lib/swapfile";
+  #   size = 1*1024;  # 1GB
+  # }];
 }

@@ -179,11 +179,38 @@
     };
 
 
+    deploy.nodes.mishy = {
+      hostname = "mishy.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mishy;
+      };
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.pilab = {
+      hostname = "pilab.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.pilab;
+      };
+      sshUser = "ritiek";
+    };
+
     deploy.nodes.clawsiecats = {
       hostname = "clawsiecats.omg.lol";
       profiles.system = {
-        user = "ritiek";
+        user = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.clawsiecats;
+      };
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.keyberry = {
+      hostname = "keyberry.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.keyberry;
       };
       sshUser = "ritiek";
     };
@@ -191,7 +218,7 @@
     deploy.nodes.stashy = {
       hostname = "stashy.lion-zebra.ts.net";
       profiles.system = {
-        user = "ritiek";
+        user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.stashy;
       };
       sshUser = "ritiek";
@@ -200,7 +227,7 @@
     deploy.nodes.zerostash = {
       hostname = "zerostash.lion-zebra.ts.net";
       profiles.system = {
-        user = "ritiek";
+        user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.zerostash;
       };
       sshUser = "ritiek";
