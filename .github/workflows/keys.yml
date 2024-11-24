@@ -1,0 +1,26 @@
+name: keys
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  key-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y curl jq wget
+      - name: Install sops
+        run: |
+          latest_url=$(curl -s https://api.github.com/repositories/40684033/releases/latest | jq -r '.assets[] | select(.name | endswith("amd64.deb")) | .browser_download_url')
+          echo "Latest sops release URL: $latest_url"
+          wget -O /tmp/sops_latest.deb $latest_url
+          sudo dpkg -i /tmp/sops_latest.deb
+          sudo apt-get install -f -y
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Validate specified public keys
+        run: |
+          sops updatekeys -y $(find . -name secrets.yaml)
