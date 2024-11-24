@@ -12,21 +12,16 @@
       autoResize = true;
       options = [ "noatime" ];
     };
-    "/media" = {
-      device = "/dev/disk/by-label/HOMELAB_BACKUP";
+    restic-backup = {
+      mountPoint = "/RESTIC_BACKUP";
+      device = "/dev/disk/by-label/RESTIC_BACKUP";
       fsType = "ext4";
+      label = "RESTIC_BACKUP";
       autoResize = true;
       options = [
         "noatime"
         "noauto"
-        # "uid=${toString config.ids.uids.restic}"
-        # "gid=${toString config.ids.gids.restic}"
-        # "forceuid"
-        # "forcegid"
-        # "dmask=007"
-        # "fmask=117"
         "nofail"
-        # "x-systemd.before=local-fs.target"
         "x-systemd.automount"
         "x-systemd.mount-timeout=5s"
       ];
