@@ -68,6 +68,7 @@ in
         nmap
         dig
         cryptsetup
+        btrfs-progs
         openssl
         sops
         gnupg
