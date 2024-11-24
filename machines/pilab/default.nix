@@ -104,10 +104,10 @@
       };
     };
 
-    restic.backups.english-mix = {
+    restic.backups.stashy = {
       initialize = true;
-      repositoryFile = config.sops.secrets."restic.repository".path;
-      passwordFile = config.sops.secrets."restic.password".path;
+      repositoryFile = config.sops.secrets."stashy.repository".path;
+      passwordFile = config.sops.secrets."stashy.password".path;
       paths = [
         "/media/services/spotdl/English Mix"
       ];
@@ -125,6 +125,30 @@
       '';
       timerConfig = {
         # Every 20 minutes
+        OnCalendar = "*:0/20";
+        Persistent = true;
+      };
+    };
+
+    restic.backups.zerostash = {
+      initialize = true;
+      repositoryFile = config.sops.secrets."zerostash.repository".path;
+      passwordFile = config.sops.secrets."zerostash.password".path;
+      paths = [
+        "/media/services/spotdl/English Mix"
+      ];
+      pruneOpts = [
+        "--keep-hourly 18"
+        "--keep-daily 7"
+        "--keep-weekly 5"
+        "--keep-monthly 12"
+        "--keep-yearly 75"
+        "--keep-tag forever"
+      ];
+      backupPrepareCommand = ''
+        ${pkgs.restic}/bin/restic unlock || true
+      '';
+      timerConfig = {
         OnCalendar = "*:0/20";
         Persistent = true;
       };
