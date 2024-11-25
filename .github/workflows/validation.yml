@@ -1,11 +1,11 @@
-name: keys
+name: validation
 on:
   pull_request:
   push:
   workflow_dispatch:
 
 jobs:
-  key-validation:
+  keys:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
@@ -24,3 +24,16 @@ jobs:
       - name: Validate specified public keys
         run: |
           sops updatekeys -y $(find . -name secrets.yaml)
+
+  flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: "extra-platforms = aarch64-linux"
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Nix flake check
+        run: |
+          nix flake check
