@@ -79,6 +79,14 @@ in
         immich-cli
         restic
 
+        (discordchatexporter-cli.overrideAttrs (oldAttrs: {
+          meta = oldAttrs.meta // {
+            # XXX: Overriding until maybe https://github.com/NixOS/nixpkgs/pull/360371
+            # gets merged.
+            platforms = [ "aarch64-linux" ];
+          };
+        }))
+
         homelab-mount
 
         (writeShellScriptBin "homelab-unmount" ''
