@@ -18,6 +18,11 @@
               value = 1;
               enable = true;
             };
+            # Force PCIe Gen 3 speeds.
+            pciex1_gen = {
+              value = 3;
+              enable = true;
+            };
           };
           dt-overlays = {
             disable-bt = {
