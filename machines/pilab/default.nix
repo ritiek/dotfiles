@@ -5,6 +5,7 @@
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./home
+    ./services/restic.nix
     ./services/spotdl.nix
     ./hw-config.nix
     ./../../modules/nix.nix
@@ -32,13 +33,6 @@
     ./compose/grocy
     ./compose/kopia
   ];
-
-  sops.secrets = {
-    "stashy.repository" = {};
-    "stashy.password" = {};
-    "zerostash.repository" = {};
-    "zerostash.password" = {};
-  };
 
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
@@ -103,56 +97,6 @@
       };
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
-      };
-    };
-
-    restic.backups.stashy = {
-      initialize = true;
-      repositoryFile = config.sops.secrets."stashy.repository".path;
-      passwordFile = config.sops.secrets."stashy.password".path;
-      paths = [
-        "/media/services/spotdl/English Mix"
-      ];
-      pruneOpts = [
-        "--keep-hourly 18"
-        "--keep-daily 7"
-        "--keep-weekly 5"
-        "--keep-monthly 12"
-        "--keep-yearly 75"
-        "--keep-tag forever"
-      ];
-      # Remove any stale locks
-      backupPrepareCommand = ''
-        ${pkgs.restic}/bin/restic unlock || true
-      '';
-      timerConfig = {
-        # Every 20 minutes
-        OnCalendar = "*:0/20";
-        Persistent = true;
-      };
-    };
-
-    restic.backups.zerostash = {
-      initialize = true;
-      repositoryFile = config.sops.secrets."zerostash.repository".path;
-      passwordFile = config.sops.secrets."zerostash.password".path;
-      paths = [
-        "/media/services/spotdl/English Mix"
-      ];
-      pruneOpts = [
-        "--keep-hourly 18"
-        "--keep-daily 7"
-        "--keep-weekly 5"
-        "--keep-monthly 12"
-        "--keep-yearly 75"
-        "--keep-tag forever"
-      ];
-      backupPrepareCommand = ''
-        ${pkgs.restic}/bin/restic unlock || true
-      '';
-      timerConfig = {
-        OnCalendar = "*:0/20";
-        Persistent = true;
       };
     };
   };
