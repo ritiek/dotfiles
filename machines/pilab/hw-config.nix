@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ config, inputs, lib, ... }:
 {
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
@@ -33,6 +33,21 @@
         };
       };
     };
+  };
+
+  fileSystems.restic-backup = {
+    mountPoint = "/${config.fileSystems.restic-backup.label}";
+    device = "/dev/disk/by-label/${config.fileSystems.restic-backup.label}";
+    fsType = "ext4";
+    label = "RESTIC_BACKUP";
+    autoResize = true;
+    options = [
+      "noatime"
+      "noauto"
+      "nofail"
+      "x-systemd.automount"
+      "x-systemd.mount-timeout=5s"
+    ];
   };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
