@@ -61,7 +61,7 @@ in
         diskonaut
         compsize
 
-        podman-compose
+        docker-compose
         compose2nix
 
         iptables
