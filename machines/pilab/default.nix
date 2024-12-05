@@ -32,6 +32,7 @@
     ./compose/conduwuit
     ./compose/grocy
     ./compose/kopia
+    ./compose/changedetection
   ];
 
   networking.hostName = "pilab";
