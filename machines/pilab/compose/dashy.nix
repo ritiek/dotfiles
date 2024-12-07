@@ -16,7 +16,7 @@
       "NODE_ENV" = "production";
     };
     volumes = [
-      "/media/services/dashy/config.yml:/app/user-data/conf.yml:rw"
+      "/media/HOMELAB_MEDIA/services/dashy/config.yml:/app/user-data/conf.yml:rw"
     ];
     ports = [
       "80:8080/tcp"
@@ -48,7 +48,7 @@
       "docker-network-dashy_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/dashy/config.yml"
+      "/media/HOMELAB_MEDIA/services/dashy/config.yml"
     ];
   };
 

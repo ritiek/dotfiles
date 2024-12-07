@@ -4,10 +4,10 @@ let
     set -x
     cryptsetup open \
       /dev/disk/by-label/HOMELAB_MEDIA \
-      homelab_media
+      HOMELAB_MEDIA
     mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
-      /dev/mapper/homelab_media \
-      /media
+      /dev/mapper/HOMELAB_MEDIA \
+      /media/HOMELAB_MEDIA
   '');
 in
 {
@@ -91,7 +91,7 @@ in
 
         (writeShellScriptBin "homelab-unmount" ''
           set -x
-          umount -l /media
+          umount -l /media/HOMELAB_MEDIA
           cryptsetup close homelab_media
         '')
 

@@ -21,7 +21,7 @@
       config.sops.secrets."compose/changedetection.env".path
     ];
     volumes = [
-      "/media/services/changedetection:/datastore:rw"
+      "/media/HOMELAB_MEDIA/services/changedetection:/datastore:rw"
     ];
     ports = [
       "5000:5000/tcp"
@@ -52,7 +52,7 @@
       "docker-network-changedetection_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/changedetection"
+      "/media/HOMELAB_MEDIA/services/changedetection"
     ];
   };
   virtualisation.oci-containers.containers."changedetection-sockpuppetbrowser" = {

@@ -20,12 +20,12 @@ in
     unitConfig = {
       Description = "Sync Spotify playlists locally.";
       RequiresMountsFor = [
-        "/media/services/spotdl"
+        "/media/HOMELAB_MEDIA/services/spotdl"
       ];
     };
     serviceConfig = {
       Type = "oneshot";
-      WorkingDirectory = "/media/services/spotdl";
+      WorkingDirectory = "/media/HOMELAB_MEDIA/services/spotdl";
       ExecStart = "${spotdl-sync}/bin/spotdl-sync";
       # ExecStop = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
       # ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";

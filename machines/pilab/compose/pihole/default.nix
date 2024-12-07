@@ -25,7 +25,7 @@
       config.sops.secrets."compose/pihole.env".path
     ];
     volumes = [
-      "/media/services/pihole:/etc/pihole:rw"
+      "/media/HOMELAB_MEDIA/services/pihole:/etc/pihole:rw"
       "pihole_dnsmasq.d:/etc/dnsmasq.d:rw"
     ];
     log-driver = "journald";
@@ -49,7 +49,7 @@
       "docker-volume-pihole_dnsmasq.d.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/pihole"
+      "/media/HOMELAB_MEDIA/services/pihole"
     ];
   };
 

@@ -21,8 +21,8 @@
       config.sops.secrets."compose/shiori.env".path
     ];
     volumes = [
-      "/media/services/shiori/dev:/srv/shiori:rw"
-      "/media/services/shiori/src:/src/shiori:rw"
+      "/media/HOMELAB_MEDIA/services/shiori/dev:/srv/shiori:rw"
+      "/media/HOMELAB_MEDIA/services/shiori/src:/src/shiori:rw"
     ];
     ports = [
       "2397:8080/tcp"
@@ -51,8 +51,8 @@
       "docker-network-shiori_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/shiori/dev"
-      "/media/services/shiori/src"
+      "/media/HOMELAB_MEDIA/services/shiori/dev"
+      "/media/HOMELAB_MEDIA/services/shiori/src"
     ];
   };
   virtualisation.oci-containers.containers."shiori-postgres" = {
@@ -61,7 +61,7 @@
       config.sops.secrets."compose/shiori.env".path
     ];
     volumes = [
-      "/media/services/shiori/postgresql:/var/lib/postgresql/data:rw"
+      "/media/HOMELAB_MEDIA/services/shiori/postgresql:/var/lib/postgresql/data:rw"
     ];
     ports = [
       "5432:5432/tcp"
@@ -87,7 +87,7 @@
       "docker-network-shiori_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/shiori/postgresql"
+      "/media/HOMELAB_MEDIA/services/shiori/postgresql"
     ];
   };
 

@@ -23,7 +23,7 @@
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/etc/timezone:/etc/timezone:ro"
-      "/media/services/forgejo/server:/data:rw"
+      "/media/HOMELAB_MEDIA/services/forgejo/server:/data:rw"
     ];
     ports = [
       "3033:3033/tcp"
@@ -60,7 +60,7 @@
     unitConfig.RequiresMountsFor = [
       "/etc/localtime"
       "/etc/timezone"
-      "/media/services/forgejo/server"
+      "/media/HOMELAB_MEDIA/services/forgejo/server"
     ];
   };
   virtualisation.oci-containers.containers."forgejo-db" = {
@@ -69,7 +69,7 @@
       config.sops.secrets."compose/forgejo.env".path
     ];
     volumes = [
-      "/media/services/forgejo/db:/var/lib/postgresql/data:rw"
+      "/media/HOMELAB_MEDIA/services/forgejo/db:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -92,7 +92,7 @@
       "docker-network-forgejo_forgejo.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/forgejo/db"
+      "/media/HOMELAB_MEDIA/services/forgejo/db"
     ];
   };
 
