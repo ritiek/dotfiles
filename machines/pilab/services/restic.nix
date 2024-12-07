@@ -5,10 +5,10 @@
   services.restic.backups.pilab = {
     initialize = true;
     # repositoryFile = config.sops.secrets."pilab.repository".path;
-    repository = config.fileSystems.restic-backup.mountPoint;
+    repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
     passwordFile = config.sops.secrets."pilab.password".path;
     paths = [
-      "/media/services/spotdl/English Mix"
+      "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
     ];
     # exclude = [
     #   "*.db-shm"
@@ -52,15 +52,15 @@
     #   ${pkgs.restic}/bin/restic unlock || true
     # '';
     backupPrepareCommand = ''
-      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media"; then
-        echo "Error: '/media' is not mounted. Skipping backup."
+      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
+        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
       fi
 
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
-      echo "Backing up '/media'."
+      echo "Backing up '/media/HOMELAB_MEDIA'."
     '';
     timerConfig = {
       # Every 20 minutes
@@ -78,7 +78,7 @@
     repositoryFile = config.sops.secrets."stashy.repository".path;
     passwordFile = config.sops.secrets."stashy.password".path;
     paths = [
-      "/media/services/spotdl/English Mix"
+      "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
     ];
     pruneOpts = [
       "--keep-hourly 18"
@@ -106,7 +106,7 @@
     repositoryFile = config.sops.secrets."zerostash.repository".path;
     passwordFile = config.sops.secrets."zerostash.password".path;
     paths = [
-      "/media/services/spotdl/English Mix"
+      "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
     ];
     pruneOpts = [
       "--keep-hourly 18"

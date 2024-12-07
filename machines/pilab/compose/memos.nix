@@ -13,7 +13,7 @@
   virtualisation.oci-containers.containers."memos" = {
     image = "neosmemo/memos:latest";
     volumes = [
-      "/media/services/memos:/var/opt/memos:rw"
+      "/media/HOMELAB_MEDIA/services/memos:/var/opt/memos:rw"
     ];
     ports = [
       "5230:5230/tcp"
@@ -40,7 +40,7 @@
       "docker-network-memos_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/memos"
+      "/media/HOMELAB_MEDIA/services/memos"
     ];
   };
 

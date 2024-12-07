@@ -19,8 +19,8 @@
       "ND_SESSIONTIMEOUT" = "24h";
     };
     volumes = [
-      "/media/services/navidrome:/data:rw"
-      "/media/services/spotdl:/music:ro"
+      "/media/HOMELAB_MEDIA/services/navidrome:/data:rw"
+      "/media/HOMELAB_MEDIA/services/spotdl:/music:ro"
     ];
     ports = [
       "4533:4533/tcp"
@@ -47,8 +47,8 @@
       "docker-network-navidrome_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/navidrome"
-      "/media/services/spotdl"
+      "/media/HOMELAB_MEDIA/services/navidrome"
+      "/media/HOMELAB_MEDIA/services/spotdl"
     ];
   };
 

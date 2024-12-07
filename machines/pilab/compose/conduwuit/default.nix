@@ -21,7 +21,7 @@
       config.sops.secrets."compose/conduwuit.env".path
     ];
     volumes = [
-      "/media/services/conduwuit/data:/var/lib/matrix-conduit:rw"
+      "/media/HOMELAB_MEDIA/services/conduwuit/data:/var/lib/matrix-conduit:rw"
     ];
     ports = [
       "6168:6168/tcp"
@@ -48,7 +48,7 @@
       "docker-network-conduwuit_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/conduwuit/data"
+      "/media/HOMELAB_MEDIA/services/conduwuit/data"
     ];
   };
 
