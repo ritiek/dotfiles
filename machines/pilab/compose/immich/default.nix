@@ -24,7 +24,7 @@
       config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
-      "/media/services/immich/model-cache:/cache:rw"
+      "/media/HOMELAB_MEDIA/services/immich/model-cache:/cache:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -47,7 +47,7 @@
       "docker-network-immich_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/immich/model-cache"
+      "/media/HOMELAB_MEDIA/services/immich/model-cache"
     ];
   };
   virtualisation.oci-containers.containers."immich_postgres" = {
@@ -59,7 +59,7 @@
       config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
-      "/media/services/immich/pgdata:/var/lib/postgresql/data:rw"
+      "/media/HOMELAB_MEDIA/services/immich/pgdata:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -82,7 +82,7 @@
       "docker-network-immich_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/immich/pgdata"
+      "/media/HOMELAB_MEDIA/services/immich/pgdata"
     ];
   };
   virtualisation.oci-containers.containers."immich_redis" = {
@@ -121,7 +121,7 @@
     ];
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
-      "/media/services/immich/photos:/usr/src/app/upload:rw"
+      "/media/HOMELAB_MEDIA/services/immich/photos:/usr/src/app/upload:rw"
     ];
     ports = [
       "2283:2283/tcp"
@@ -153,7 +153,7 @@
     ];
     unitConfig.RequiresMountsFor = [
       "/etc/localtime"
-      "/media/services/immich/photos"
+      "/media/HOMELAB_MEDIA/services/immich/photos"
     ];
   };
 

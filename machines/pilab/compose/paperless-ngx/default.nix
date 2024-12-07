@@ -52,7 +52,7 @@
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
-      "/media/services/paperless/pgdata:/var/lib/postgresql/data:rw"
+      "/media/HOMELAB_MEDIA/services/paperless/pgdata:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -128,7 +128,7 @@
       "docker-network-paperless-ngx_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/paperless/pgdata"
+      "/media/HOMELAB_MEDIA/services/paperless/pgdata"
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-webserver" = {
@@ -137,10 +137,10 @@
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
-      "/media/services/paperless/consume:/usr/src/paperless/consume:rw"
-      "/media/services/paperless/data:/usr/src/paperless/data:rw"
-      "/media/services/paperless/export:/usr/src/paperless/export:rw"
-      "/media/services/paperless/media:/usr/src/paperless/media:rw"
+      "/media/HOMELAB_MEDIA/services/paperless/consume:/usr/src/paperless/consume:rw"
+      "/media/HOMELAB_MEDIA/services/paperless/data:/usr/src/paperless/data:rw"
+      "/media/HOMELAB_MEDIA/services/paperless/export:/usr/src/paperless/export:rw"
+      "/media/HOMELAB_MEDIA/services/paperless/media:/usr/src/paperless/media:rw"
     ];
     ports = [
       "8010:8000/tcp"
@@ -176,10 +176,10 @@
       "docker-network-paperless-ngx_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/paperless/consume"
-      "/media/services/paperless/data"
-      "/media/services/paperless/export"
-      "/media/services/paperless/media"
+      "/media/HOMELAB_MEDIA/services/paperless/consume"
+      "/media/HOMELAB_MEDIA/services/paperless/data"
+      "/media/HOMELAB_MEDIA/services/paperless/export"
+      "/media/HOMELAB_MEDIA/services/paperless/media"
     ];
   };
 

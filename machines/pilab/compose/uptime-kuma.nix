@@ -13,7 +13,7 @@
   virtualisation.oci-containers.containers."uptime-kuma" = {
     image = "louislam/uptime-kuma:1";
     volumes = [
-      "/media/services/uptime-kuma:/app/data:rw"
+      "/media/HOMELAB_MEDIA/services/uptime-kuma:/app/data:rw"
     ];
     ports = [
       "3001:3001/tcp"
@@ -44,7 +44,7 @@
       "docker-network-uptime-kuma_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/uptime-kuma"
+      "/media/HOMELAB_MEDIA/services/uptime-kuma"
     ];
   };
 

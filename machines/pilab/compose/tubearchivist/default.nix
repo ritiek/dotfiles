@@ -21,7 +21,7 @@
       config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
-      "/media/services/tubearchivist/es:/usr/share/elasticsearch/data:rw"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/es:/usr/share/elasticsearch/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -44,7 +44,7 @@
       "docker-network-tubearchivist_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/tubearchivist/es"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/es"
     ];
   };
   virtualisation.oci-containers.containers."archivist-redis" = {
@@ -87,8 +87,8 @@
       config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
-      "/media/services/tubearchivist/cache:/cache:rw"
-      "/media/services/tubearchivist/videos:/youtube:rw"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/cache:/cache:rw"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/videos:/youtube:rw"
     ];
     ports = [
       "8454:8000/tcp"
@@ -124,8 +124,8 @@
       "docker-network-tubearchivist_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/tubearchivist/cache"
-      "/media/services/tubearchivist/videos"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/cache"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/videos"
     ];
   };
 

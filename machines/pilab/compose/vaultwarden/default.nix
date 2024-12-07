@@ -21,7 +21,7 @@
       config.sops.secrets."compose/vaultwarden.env".path
     ];
     volumes = [
-      "/media/services/vaultwarden:/data:rw"
+      "/media/HOMELAB_MEDIA/services/vaultwarden:/data:rw"
     ];
     ports = [
       "9446:80/tcp"
@@ -48,7 +48,7 @@
       "docker-network-vaultwarden_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/vaultwarden"
+      "/media/HOMELAB_MEDIA/services/vaultwarden"
     ];
   };
 

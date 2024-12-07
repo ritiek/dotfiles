@@ -19,7 +19,7 @@
     };
     volumes = [
       "/media:/media:rw"
-      "/media/services/syncthing:/var/syncthing/config:rw"
+      "/media/HOMELAB_MEDIA/services/syncthing:/var/syncthing/config:rw"
     ];
     user = "1000:1000";
     log-driver = "journald";
@@ -38,7 +38,7 @@
     };
     unitConfig.RequiresMountsFor = [
       "/media"
-      "/media/services/syncthing"
+      "/media/HOMELAB_MEDIA/services/syncthing"
     ];
   };
 

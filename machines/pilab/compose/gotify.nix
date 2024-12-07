@@ -16,7 +16,7 @@
       "GOTIFY_DEFAULTUSER_PASS" = "custom";
     };
     volumes = [
-      "/media/services/gotify:/app/data:rw"
+      "/media/HOMELAB_MEDIA/services/gotify:/app/data:rw"
     ];
     ports = [
       "8893:80/tcp"
@@ -43,7 +43,7 @@
       "docker-network-gotify_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/gotify"
+      "/media/HOMELAB_MEDIA/services/gotify"
     ];
   };
 

@@ -22,7 +22,7 @@
     ];
     volumes = [
       "/:/motionless2:ro"
-      "/media/services/kopia/config:/app/config:rw"
+      "/media/HOMELAB_MEDIA/services/kopia/config:/app/config:rw"
       "kopia_cache:/app/cache:rw"
       "kopia_logs:/app/logs:rw"
     ];
@@ -68,7 +68,7 @@
     ];
     unitConfig.RequiresMountsFor = [
       "/"
-      "/media/services/kopia/config"
+      "/media/HOMELAB_MEDIA/services/kopia/config"
     ];
   };
 

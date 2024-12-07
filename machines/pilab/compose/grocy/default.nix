@@ -26,7 +26,7 @@
       config.sops.secrets."compose/grocy.env".path
     ];
     volumes = [
-      "/media/services/grocy:/config:rw"
+      "/media/HOMELAB_MEDIA/services/grocy:/config:rw"
     ];
     ports = [
       "9283:80/tcp"
@@ -52,7 +52,7 @@
       "docker-network-grocy_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/grocy"
+      "/media/HOMELAB_MEDIA/services/grocy"
     ];
   };
 

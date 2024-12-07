@@ -50,7 +50,7 @@
 
   # Ref:
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
-  systemd.tmpfiles.settings."10-homelab"."/media" = {
+  systemd.tmpfiles.settings."10-homelab"."/media/HOMELAB_MEDIA" = {
     d = {
       group = "root";
       mode = "0755";

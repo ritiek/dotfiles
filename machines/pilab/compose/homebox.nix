@@ -19,7 +19,7 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "/media/services/homebox:/data:rw"
+      "/media/HOMELAB_MEDIA/services/homebox:/data:rw"
     ];
     ports = [
       "3100:7745/tcp"
@@ -46,7 +46,7 @@
       "docker-network-homebox_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/homebox"
+      "/media/HOMELAB_MEDIA/services/homebox"
     ];
   };
 

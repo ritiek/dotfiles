@@ -36,7 +36,7 @@
   };
 
   fileSystems.restic-backup = {
-    mountPoint = "/${config.fileSystems.restic-backup.label}";
+    mountPoint = "/media/${config.fileSystems.restic-backup.label}";
     device = "/dev/disk/by-label/${config.fileSystems.restic-backup.label}";
     fsType = "ext4";
     label = "RESTIC_BACKUP";

@@ -21,7 +21,7 @@
       config.sops.secrets."compose/miniflux.env".path
     ];
     volumes = [
-      "/media/services/miniflux/data:/var/lib/postgresql/data:rw"
+      "/media/HOMELAB_MEDIA/services/miniflux/data:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -47,7 +47,7 @@
       "docker-network-miniflux_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/miniflux/data"
+      "/media/HOMELAB_MEDIA/services/miniflux/data"
     ];
   };
   virtualisation.oci-containers.containers."miniflux" = {
