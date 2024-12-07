@@ -8,7 +8,7 @@
     repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
     passwordFile = config.sops.secrets."pilab.password".path;
     paths = [
-      "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
+      "/media/HOMELAB_MEDIA"
     ];
     # exclude = [
     #   "*.db-shm"
