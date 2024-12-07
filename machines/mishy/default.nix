@@ -403,15 +403,11 @@
       material-design-icons
       noto-fonts
 
-      (nerdfonts.override {
-        fonts = [
-          "FantasqueSansMono"
-          "InconsolataGo"
-          "JetBrainsMono"
-          # "FiraCode"
-          # "NotoSansMono"
-        ];
-      })
+      nerd-fonts.fantasque-sans-mono
+      nerd-fonts.inconsolata-go
+      nerd-fonts.jetbrains-mono
+      # nerd-fonts.fira-code
+      # nerd-fonts.noto
     ];
   };
 
