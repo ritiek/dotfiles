@@ -37,6 +37,13 @@ in
     home.stateVersion = "24.11";
   };
 
+  systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/id_ed25519" = {
+    "C+" = {
+      mode = "0600";
+      user = "ritiek";
+      argument = "/etc/ssh/ssh_host_ed25519_key";
+    };
+  };
   home-manager.users.ritiek = { osConfig, ... }: {
     imports = [
       ./../../../modules/home/sops.nix
