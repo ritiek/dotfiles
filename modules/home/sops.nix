@@ -6,6 +6,6 @@
 
   sops = {
     defaultSopsFile = ./../../machines/${osConfig.networking.hostName}/home/secrets.yaml;
-    age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+    age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/id_ed25519" ];
   };
 }
