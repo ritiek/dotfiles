@@ -13,8 +13,8 @@
       options = [ "noatime" ];
     };
     restic-backup = {
-      mountPoint = "/RESTIC_BACKUP";
-      device = "/dev/disk/by-label/RESTIC_BACKUP";
+      mountPoint = "/media/${config.fileSystems.restic-backup.label}";
+      device = "/dev/disk/by-label/${config.fileSystems.restic-backup.label}";
       fsType = "ext4";
       label = "RESTIC_BACKUP";
       autoResize = true;
