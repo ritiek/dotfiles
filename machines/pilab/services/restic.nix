@@ -1,12 +1,32 @@
 { config, pkgs, ...}:
 
 {
-  sops.secrets."pilab.password" = {};
-  services.restic.backups.pilab = {
+  sops.secrets."restic.homelab.password" = {};
+  # sops.secrets."restic.homelab.password".owner = "restic";
+
+  users.groups.restic = {};
+  users.users.restic = {
+    uid = config.ids.uids.restic;
+    # group = "root";
+    group = "restic";
+    # isNormalUser = true;
+  };
+
+  # https://nixos.wiki/wiki/Restic
+  # security.wrappers.restic = {
+  #   source = "${pkgs.restic}/bin/restic";
+  #   owner = "restic";
+  #   group = "users";
+  #   permissions = "u=rwx,g=,o=";
+  #   capabilities = "cap_dac_read_search=+ep";
+  # };
+
+  services.restic.backups."homelab@pilab" = {
     initialize = true;
     # repositoryFile = config.sops.secrets."pilab.repository".path;
     repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
-    passwordFile = config.sops.secrets."pilab.password".path;
+    passwordFile = config.sops.secrets."restic.homelab.password".path;
+    # user = "restic";
     paths = [
       "/media/HOMELAB_MEDIA"
     ];
@@ -62,6 +82,15 @@
 
       echo "Backing up '/media/HOMELAB_MEDIA'."
     '';
+    backupCleanupCommand = ''
+      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
+        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping post backup cleanup."
+        exit 1 # Exit with a non-zero status to prevent the post backup cleanup
+      fi
+
+      echo "Assigning ownership to 'restic:restic'."
+      chown -R restic:restic "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA"
+    '';
     timerConfig = {
       # Every 20 minutes
       OnCalendar = "*:0/20";
@@ -70,13 +99,14 @@
   };
 
   sops.secrets = {
-    "stashy.repository" = {};
-    "stashy.password" = {};
+    "restic.stashy.repository" = {};
+    "restic.stashy.password" = {};
   };
   services.restic.backups.stashy = {
     initialize = true;
-    repositoryFile = config.sops.secrets."stashy.repository".path;
-    passwordFile = config.sops.secrets."stashy.password".path;
+    repositoryFile = config.sops.secrets."restic.stashy.repository".path;
+    passwordFile = config.sops.secrets."restic.stashy.password".path;
+    # user = "restic";
     paths = [
       "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
     ];
@@ -97,16 +127,15 @@
     };
   };
 
-  sops.secrets = {
-    "zerostash.repository" = {};
-    "zerostash.password" = {};
-  };
-  services.restic.backups.zerostash = {
+  sops.secrets."restic.zerostash.repository" = {};
+  # sops.secrets."restic.zerostash.repository".owner = "restic";
+  services.restic.backups."homelab@zerostash" = {
     initialize = true;
-    repositoryFile = config.sops.secrets."zerostash.repository".path;
-    passwordFile = config.sops.secrets."zerostash.password".path;
+    repositoryFile = config.sops.secrets."restic.zerostash.repository".path;
+    passwordFile = config.sops.secrets."restic.homelab.password".path;
+    # user = "restic";
     paths = [
-      "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
+      "/media/HOMELAB_MEDIA"
     ];
     pruneOpts = [
       "--keep-hourly 18"
@@ -117,7 +146,15 @@
       "--keep-tag forever"
     ];
     backupPrepareCommand = ''
+      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
+        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping backup."
+        exit 1 # Exit with a non-zero status to prevent the backup
+      fi
+
+      # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
+
+      echo "Backing up '/media/HOMELAB_MEDIA'."
     '';
     timerConfig = {
       OnCalendar = "*:0/20";
