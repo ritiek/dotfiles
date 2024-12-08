@@ -1,12 +1,13 @@
 { config, pkgs, ...}:
 
 {
-  sops.secrets."pilab.password" = {};
-  services.restic.backups.pilab = {
+  sops.secrets."restic.homelab.password" = {};
+
+  services.restic.backups."homelab@pilab" = {
     initialize = true;
     # repositoryFile = config.sops.secrets."pilab.repository".path;
     repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
-    passwordFile = config.sops.secrets."pilab.password".path;
+    passwordFile = config.sops.secrets."restic.homelab.password".path;
     paths = [
       "/media/HOMELAB_MEDIA"
     ];
@@ -70,13 +71,13 @@
   };
 
   sops.secrets = {
-    "stashy.repository" = {};
-    "stashy.password" = {};
+    "restic.stashy.repository" = {};
+    "restic.stashy.password" = {};
   };
   services.restic.backups.stashy = {
     initialize = true;
-    repositoryFile = config.sops.secrets."stashy.repository".path;
-    passwordFile = config.sops.secrets."stashy.password".path;
+    repositoryFile = config.sops.secrets."restic.stashy.repository".path;
+    passwordFile = config.sops.secrets."restic.stashy.password".path;
     paths = [
       "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
     ];
@@ -97,16 +98,13 @@
     };
   };
 
-  sops.secrets = {
-    "zerostash.repository" = {};
-    "zerostash.password" = {};
-  };
-  services.restic.backups.zerostash = {
+  sops.secrets."restic.zerostash.repository" = {};
+  services.restic.backups."homelab@zerostash" = {
     initialize = true;
-    repositoryFile = config.sops.secrets."zerostash.repository".path;
-    passwordFile = config.sops.secrets."zerostash.password".path;
+    repositoryFile = config.sops.secrets."restic.zerostash.repository".path;
+    passwordFile = config.sops.secrets."restic.homelab.password".path;
     paths = [
-      "/media/HOMELAB_MEDIA/services/spotdl/English Mix"
+      "/media/HOMELAB_MEDIA"
     ];
     pruneOpts = [
       "--keep-hourly 18"
