@@ -12,7 +12,7 @@
   services.restic.server = {
     enable = true;
     listenAddress = "0.0.0.0:52525";
-    dataDir = config.fileSystems.restic-backup.mountPoint;
+    dataDir = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
     # privateRepos = true;
     extraFlags = [
       "--htpasswd-file=${config.sops.secrets."restic.htpasswd".path}"
