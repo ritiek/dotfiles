@@ -26,7 +26,7 @@
     home.stateVersion = "24.11";
   };
 
-  systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/id_ed25519" = {
+  systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/sops.id_ed25519" = {
     "C+" = {
       mode = "0600";
       user = "ritiek";
