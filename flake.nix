@@ -103,6 +103,7 @@
       modules = [
         ./machines/pilab
         ./machines/pilab/hw-config.nix
+        inputs.raspberry-pi-nix.nixosModules.sd-image
       ];
       specialArgs = { inherit inputs; };
     };
