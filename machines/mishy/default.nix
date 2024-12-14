@@ -430,7 +430,7 @@
   # powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 100;
+    memoryPercent = 200;
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
