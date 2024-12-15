@@ -12,7 +12,7 @@
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.overlays = [
-    inputs.nur.overlay
+    inputs.nur.overlays.default
     (final: _prev: {
       stable = import inputs.stable {
         inherit (final) system;
