@@ -426,8 +426,8 @@
     };
   };
 
-  powerManagement.cpuFreqGovernor = "ondemand";
-  # powerManagement.cpuFreqGovernor = "performance";
+  # powerManagement.cpuFreqGovernor = "ondemand";
+  powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
     memoryPercent = 200;
