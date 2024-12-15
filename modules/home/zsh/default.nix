@@ -124,6 +124,7 @@ export PATH
       xclip = "xclip -selection clipboard";
       cp = "cp --reflink=auto --sparse=always";
       sops-s2a = "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key') sops";
+      sops-s2a-home = "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'ssh-to-age -private-key -i ~/.ssh/sops.id_ed25519_key') sops";
       ssh-auth-sock = "echo SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent";
       gpg-auth-sock = "echo SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)";
     };
