@@ -343,10 +343,10 @@
     #   enable = true;
     #   capSysNice = true;
     # };
-    # steam = {
-    #   enable = true;
-    #   # gamescopeSession.enable = true;
-    # };
+    steam = {
+      enable = true;
+      # gamescopeSession.enable = true;
+    };
     gamemode = {
       enable = true;
       enableRenice = true;
