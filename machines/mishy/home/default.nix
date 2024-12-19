@@ -106,6 +106,8 @@
         any-nix-shell
         android-tools
         unstable.libreoffice-fresh
+        whatsapp-for-linux
+        # thunderbird-bin
         # Looks like this available only for darwin:
         # libreoffice-bin
         transmission_4-gtk
@@ -186,6 +188,13 @@
       poetry.enable = true;
       imv.enable = true;
       timidity.enable = true;
+
+      thunderbird = {
+        enable = true;
+        profiles.ritiek = {
+          isDefault = true;
+        };
+      };
 
       joplin-desktop = {
         enable = true;
