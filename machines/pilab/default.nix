@@ -31,8 +31,9 @@
     ./compose/homebox.nix
     ./compose/conduwuit
     ./compose/grocy
-    ./compose/kopia
     ./compose/changedetection
+    ./compose/frigate
+    ./compose/kopia
   ];
 
   networking.hostName = "pilab";
