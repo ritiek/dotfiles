@@ -122,6 +122,7 @@ in
           systemctl stop docker-compose-conduwuit-root.target
           systemctl stop docker-compose-grocy-root.target
           systemctl stop docker-compose-changedetection-root.target
+          systemctl stop docker-compose-frigate-root.target
           systemctl stop docker-compose-kopia-root.target
           systemctl stop spotdl-sync.timer
 
@@ -149,6 +150,7 @@ in
             systemctl start docker-conduwuit.service
             systemctl start docker-grocy.service
             systemctl start docker-changedetection.service
+            systemctl start docker-frigate.service
             systemctl start docker-kopia.service
             systemctl start spotdl-sync.timer
 
