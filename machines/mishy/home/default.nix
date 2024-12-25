@@ -111,6 +111,7 @@
         # Looks like this available only for darwin:
         # libreoffice-bin
         transmission_4-gtk
+        syncplay
         chiaki
         diskonaut
         # woeusb-ng
