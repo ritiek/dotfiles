@@ -8,6 +8,14 @@
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
 
+    # habitica-nix.url = "git+file:///home/ritiek/Downloads/habitica-nix";
+    # habitica-nix.url = "github:kira-bruneau/nur-packages";
+    # shabitica-nix = {
+    #   # url = "github:lomenzel/shabitica";
+    #   url = "git+file:///home/ritiek/Downloads/shabitica";
+    #   # inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
     pi400kb-nix = {
       url = "github:ritiek/pi400kb-nix";
       inputs.nixpkgs.follows = "nixpkgs";

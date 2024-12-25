@@ -41,7 +41,13 @@
     ./graphics.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
+    # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
+
+  # shabitica = {
+  #   adminMailAddress = "ritiekmalhotra123@gmail.com";
+  #   senderMailAddress = "ritiekmalhotra123@gmail.com";
+  # };
 
   # Select internationalisation properties.
   i18n = {

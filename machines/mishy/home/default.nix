@@ -173,6 +173,8 @@
         nur.repos.nltch.spotify-adblock
         # So installing directly from my source repo instead
         # ritiek.spotify-adblock
+
+        # nur.repos.kira-bruneau.habitica
       ];
     };
 
