@@ -33,6 +33,7 @@
     ./compose/grocy
     ./compose/changedetection
     ./compose/frigate
+    ./compose/habitica
     ./compose/kopia
   ];
 
