@@ -89,7 +89,7 @@
       fi
 
       if ! ${pkgs.util-linux}/bin/mountpoint -q "${config.fileSystems.restic-backup.mountPoint}"; then
-        echo "Error: '${config.fileSystems.restic-backups.mountPoint}' is not mounted. Skipping post backup cleanup."
+        echo "Error: '${config.fileSystems.restic-backup.mountPoint}' is not mounted. Skipping post backup cleanup."
         exit 1 # Exit with a non-zero status to prevent the post backup cleanup
       fi
 
