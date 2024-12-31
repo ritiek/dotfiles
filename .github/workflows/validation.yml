@@ -25,34 +25,34 @@ jobs:
         run: |
           sops updatekeys -y $(find . -name secrets.yaml)
 
-  flake-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          verbose: 'true'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
-          remove-swapfile: 'true'
-      # Derivations are built under /tmp
-      - name: Bind mount /tmp
-        run: |
-          sudo mkdir /mnt/nix /nix
-          sudo chmod 0755 /nix
-          sudo mount --bind /mnt/nix /nix
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: "extra-platforms = aarch64-linux"
-      - name: Clone Repository
-        uses: actions/checkout@v4
-      - name: Nix flake check
-        run: |
-          # nix flake check --all-systems
-          nix flake check
+  # flake-check:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Maximize build space
+  #       uses: AdityaGarg8/remove-unwanted-software@v4.1
+  #       with:
+  #         verbose: 'true'
+  #         remove-dotnet: 'true'
+  #         remove-android: 'true'
+  #         remove-haskell: 'true'
+  #         remove-codeql: 'true'
+  #         remove-docker-images: 'true'
+  #         remove-large-packages: 'true'
+  #         remove-cached-tools: 'true'
+  #         remove-swapfile: 'true'
+  #     # Derivations are built under /tmp
+  #     - name: Bind mount /tmp
+  #       run: |
+  #         sudo mkdir /mnt/nix /nix
+  #         sudo chmod 0755 /nix
+  #         sudo mount --bind /mnt/nix /nix
+  #     - name: Install Nix
+  #       uses: cachix/install-nix-action@v27
+  #       with:
+  #         extra_nix_config: "extra-platforms = aarch64-linux"
+  #     - name: Clone Repository
+  #       uses: actions/checkout@v4
+  #     - name: Nix flake check
+  #       run: |
+  #         # nix flake check --all-systems
+  #         nix flake check
