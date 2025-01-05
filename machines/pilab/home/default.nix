@@ -152,7 +152,7 @@ in
             systemctl start docker-grocy.service
             systemctl start docker-changedetection.service
             systemctl start docker-frigate.service
-            systemctl start docker-habitica.service
+            systemctl start docker-habitica-server.service
             systemctl start docker-kopia.service
             systemctl start spotdl-sync.timer
 
