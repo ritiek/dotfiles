@@ -1,12 +1,7 @@
 # Auto-generated using compose2nix v0.3.1.
-{ config, pkgs, lib, ... }:
+{ pkgs, lib, ... }:
 
 {
-  sops.secrets."compose/habitica.env" = {
-    sopsFile = ./stack.env;
-    format = "dotenv";
-  };
-
   # Runtime
   virtualisation.docker = {
     enable = true;
@@ -15,42 +10,11 @@
   virtualisation.oci-containers.backend = "docker";
 
   # Containers
-  virtualisation.oci-containers.containers."habitica-client" = {
-    image = "docker.io/ritiek/habitica-client:latest";
-    environmentFiles = [
-      config.sops.secrets."compose/habitica.env".path
-    ];
-    ports = [
-      "8025:80/tcp"
-    ];
-    dependsOn = [
-      "habitica-server"
-    ];
-    log-driver = "journald";
-    autoStart = false;
-    extraOptions = [
-      "--network-alias=client"
-      "--network=habitica_habitica"
-    ];
-  };
-  systemd.services."docker-habitica-client" = {
-    serviceConfig = {
-      Restart = lib.mkOverride 90 "no";
-    };
-    after = [
-      "docker-network-habitica_habitica.service"
-    ];
-    requires = [
-      "docker-network-habitica_habitica.service"
-    ];
-  };
   virtualisation.oci-containers.containers."habitica-mongo" = {
     image = "docker.io/mongo:5.0";
-    environmentFiles = [
-      config.sops.secrets."compose/habitica.env".path
-    ];
-    ports = [
-      "27017:27017/tcp"
+    volumes = [
+      "/media/HOMELAB_MEDIA/services/habitica/db:/data/db:rw"
+      "/media/HOMELAB_MEDIA/services/habitica/dbconf:/data/configdb:rw"
     ];
     cmd = [ "--replSet" "rs" "--bind_ip_all" "--port" "27017" ];
     log-driver = "journald";
@@ -62,6 +26,8 @@
       "--health-start-interval=1s"
       "--health-start-period=0s"
       "--health-timeout=30s"
+      "--hostname=mongo"
+      "--network-alias=mongo"
       "--network-alias=mongo"
       "--network=habitica_habitica"
     ];
@@ -79,14 +45,20 @@
     requires = [
       "docker-network-habitica_habitica.service"
     ];
+    unitConfig.RequiresMountsFor = [
+      "/media/HOMELAB_MEDIA/services/habitica/db"
+      "/media/HOMELAB_MEDIA/services/habitica/dbconf"
+    ];
   };
   virtualisation.oci-containers.containers."habitica-server" = {
-    image = "docker.io/ritiek/habitica-server:latest";
-    environmentFiles = [
-      config.sops.secrets."compose/habitica.env".path
-    ];
+    image = "docker.io/awinterstein/habitica-server:latest";
+    environment = {
+      "BASE_URL" = "http://127.0.0.1:8080";
+      "INVITE_ONLY" = "false";
+      "NODE_DB_URI" = "mongodb://mongo/habitica";
+    };
     ports = [
-      "8024:3000/tcp"
+      "3000:3000/tcp"
     ];
     dependsOn = [
       "habitica-mongo"
