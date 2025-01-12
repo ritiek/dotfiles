@@ -19,6 +19,7 @@
       window-height = "30";
       window-width = "90";
       mouse-hide-while-typing = true;
+      confirm-close-surface = false;
       theme = "dracula";
     };
 
