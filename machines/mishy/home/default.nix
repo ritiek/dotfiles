@@ -32,7 +32,7 @@
       ./../../../modules/home/gnupg.nix
       ./../../../modules/home/hyprland
       ./../../../modules/home/theme.nix
-      ./../../../modules/home/ghostty
+      ./../../../modules/home/ghostty.nix
       ./../../../modules/home/wezterm
       ./../../../modules/home/zsh
       ./../../../modules/home/git
