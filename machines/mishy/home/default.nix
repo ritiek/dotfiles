@@ -32,6 +32,7 @@
       ./../../../modules/home/gnupg.nix
       ./../../../modules/home/hyprland
       ./../../../modules/home/theme.nix
+      ./../../../modules/home/ghostty
       ./../../../modules/home/wezterm
       ./../../../modules/home/zsh
       ./../../../modules/home/git
@@ -175,6 +176,7 @@
         # ritiek.spotify-adblock
 
         # nur.repos.kira-bruneau.habitica
+        # inputs.ghostty.packages."${pkgs.system}".default
       ];
     };
 

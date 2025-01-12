@@ -7,6 +7,10 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
+    # ghostty = {
+    #   url = "github:ghostty-org/ghostty";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # habitica-nix.url = "git+file:///home/ritiek/Downloads/habitica-nix";
     # habitica-nix.url = "github:kira-bruneau/nur-packages";
