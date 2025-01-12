@@ -107,6 +107,8 @@
         "polkituser"
         # "users"
         "plugdev"
+        "kvm"
+        "adbusers"
       ];
       shell = pkgs.zsh;
       openssh.authorizedKeys.keys = [
@@ -206,7 +208,6 @@
   # sound.enable = true;
 
   hardware = {
-    pulseaudio.enable = false;
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -222,6 +223,7 @@
         PasswordAuthentication = false;
       };
     };
+    pulseaudio.enable = false;
     dbus.enable = true;
     # Smartcard
     pcscd = {
