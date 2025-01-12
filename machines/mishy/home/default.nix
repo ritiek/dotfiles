@@ -191,6 +191,7 @@
       poetry.enable = true;
       imv.enable = true;
       timidity.enable = true;
+      gradle.enable = true;
 
       thunderbird = {
         enable = true;
