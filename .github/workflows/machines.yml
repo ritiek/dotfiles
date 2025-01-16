@@ -36,24 +36,17 @@ jobs:
         run: |
           nix build .#nixosConfigurations.mishy.config.system.build.toplevel
 
-  # FIXME: Runs out of the allotted time limit for a job (6 hours).
-  # pilab:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Install Nix
-  #       uses: cachix/install-nix-action@v27
-  #       with:
-  #         extra_nix_config: "extra-platforms = aarch64-linux"
-  #     - name: Clone Repository
-  #       uses: actions/checkout@v4
-  #     - name: Set up QEMU
-  #       uses: docker/setup-qemu-action@v3
-  #     - name: Set up Docker Buildx
-  #       uses: docker/setup-buildx-action@v3
+  pilab:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Clone Repository
+        uses: actions/checkout@v4
 
-  #     - name: "Build: .#pilab"
-  #       run: |
-  #         nix build .#nixosConfigurations.pilab.config.system.build.toplevel
+      - name: "Build: .#pilab"
+        run: |
+          nix build .#nixosConfigurations.pilab.config.system.build.toplevel
 
   clawsiecats:
     runs-on: ubuntu-latest
@@ -86,54 +79,36 @@ jobs:
           nix build .#nixosConfigurations.keyberry.config.system.build.toplevel
 
   stashy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: "extra-platforms = aarch64-linux"
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: "Build: .#stashy"
         run: |
           nix build .#nixosConfigurations.stashy.config.system.build.toplevel
 
   zerostash:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: "extra-platforms = aarch64-linux"
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: "Build: .#zerostash"
         run: |
           nix build .#nixosConfigurations.zerostash.config.system.build.toplevel
 
   mangoshake:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
         uses: cachix/install-nix-action@v27
-        with:
-          extra_nix_config: "extra-platforms = aarch64-linux"
       - name: Clone Repository
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: "Build: .#mangoshake"
         run: |
