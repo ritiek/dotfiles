@@ -69,28 +69,6 @@ jobs:
   pilab:
     runs-on: ubuntu-24.04-arm
     steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          verbose: 'true'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
-          remove-swapfile: 'true'
-      # Derivations are built under /tmp
-      - name: Bind mount /tmp
-        run: |
-          sudo mkdir /mnt/nix /nix
-          sudo chmod 0755 /nix
-          sudo mount --bind /mnt/nix /nix
-      # - name: Set swap space
-      #   uses: pierotofy/set-swap-space@master
-      #   with:
-      #     swap-size-gb: 10
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
@@ -115,28 +93,6 @@ jobs:
   stashy:
     runs-on: ubuntu-24.04-arm
     steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          verbose: 'true'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
-          remove-swapfile: 'true'
-      # Derivations are built under /tmp
-      - name: Bind mount /tmp
-        run: |
-          sudo mkdir /mnt/nix /nix
-          sudo chmod 0755 /nix
-          sudo mount --bind /mnt/nix /nix
-      # - name: Set swap space
-      #   uses: pierotofy/set-swap-space@master
-      #   with:
-      #     swap-size-gb: 10
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
@@ -149,28 +105,6 @@ jobs:
   zerostash:
     runs-on: ubuntu-24.04-arm
     steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          verbose: 'true'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
-          remove-swapfile: 'true'
-      # Derivations are built under /tmp
-      - name: Bind mount /tmp
-        run: |
-          sudo mkdir /mnt/nix /nix
-          sudo chmod 0755 /nix
-          sudo mount --bind /mnt/nix /nix
-      # - name: Set swap space
-      #   uses: pierotofy/set-swap-space@master
-      #   with:
-      #     swap-size-gb: 10
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
@@ -183,28 +117,6 @@ jobs:
   mangoshake:
     runs-on: ubuntu-24.04-arm
     steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v4.1
-        with:
-          verbose: 'true'
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
-          remove-large-packages: 'true'
-          remove-cached-tools: 'true'
-          remove-swapfile: 'true'
-      # Derivations are built under /tmp
-      - name: Bind mount /tmp
-        run: |
-          sudo mkdir /mnt/nix /nix
-          sudo chmod 0755 /nix
-          sudo mount --bind /mnt/nix /nix
-      # - name: Set swap space
-      #   uses: pierotofy/set-swap-space@master
-      #   with:
-      #     swap-size-gb: 10
       - name: Install Nix
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
