@@ -96,7 +96,7 @@
         goldwarden
         sonixd
         nemo
-        # unstable.calibre
+        calibre
         unstable.krita
         unstable.blender
         # protonvpn-gui

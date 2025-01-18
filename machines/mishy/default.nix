@@ -303,6 +303,9 @@
       '';
       # # RUN+="${pkgs.procps} hyprlock || ${pkgs.unstable.hyprlock}/bin/hyprlock"
     };
+
+    # Allows `calibre` to detect attached Kindle devices.
+    udisks2.enable = true;
   };
 
 
