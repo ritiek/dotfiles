@@ -32,7 +32,10 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--dns=1.1.1.1"
       "--dns=100.100.100.100"
+      "--dns=127.0.0.1"
+      "--dns=8.8.8.8"
       "--hostname=changedetection"
       "--network-alias=changedetection"
       "--network=changedetection_default"
@@ -63,6 +66,10 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--dns=1.1.1.1"
+      "--dns=100.100.100.100"
+      "--dns=127.0.0.1"
+      "--dns=8.8.8.8"
       "--cap-add=SYS_ADMIN"
       "--hostname=sockpuppetbrowser"
       "--network-alias=sockpuppetbrowser"
