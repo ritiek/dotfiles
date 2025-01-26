@@ -26,7 +26,7 @@
       "--network=memos_default"
     ];
     labels = {
-      "homepage.description" = "Make Notes";
+      "homepage.description" = "Take Notes";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:5230";
       "homepage.icon" = "memos";
