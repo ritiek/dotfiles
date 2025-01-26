@@ -48,6 +48,13 @@
       "--privileged"
       "--security-opt=apparmor:unconfined"
     ];
+    labels = {
+      "homepage.description" = "Backups";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:51515";
+      "homepage.icon" = "kopia";
+      "homepage.name" = "Kopia";
+    };
   };
   systemd.services."docker-kopia" = {
     serviceConfig = {

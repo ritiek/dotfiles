@@ -31,6 +31,13 @@
       "--network-alias=mongo"
       "--network=habitica_habitica"
     ];
+    labels = {
+      "homepage.description" = "Gamify Your Life";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:3000";
+      "homepage.icon" = "habitica";
+      "homepage.name" = "Habitica";
+    };
   };
   systemd.services."docker-habitica-mongo" = {
     serviceConfig = {

@@ -33,6 +33,13 @@
       "--network-alias=conduit"
       "--network=conduwuit_default"
     ];
+    labels = {
+      "homepage.description" = "Conduwuit Homeserver";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:6168";
+      "homepage.icon" = "matrix";
+      "homepage.name" = "Matrix";
+    };
   };
   systemd.services."docker-conduwuit" = {
     serviceConfig = {
