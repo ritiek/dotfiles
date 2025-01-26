@@ -10,20 +10,24 @@ let
   '');
 in
 {
-  environment.systemPackages = with pkgs; [
+  home.packages = with pkgs; [
     spotdl
     spotdl-sync
   ];
 
-  systemd.services.spotdl-sync = {
-    path = [ pkgs.spotdl ];
-    unitConfig = {
+  systemd.user.services.spotdl-sync = {
+    Unit = {
       Description = "Sync Spotify playlists locally.";
       RequiresMountsFor = [
         "/media/HOMELAB_MEDIA/services/spotdl"
       ];
+      Path = [ pkgs.spotdl ];
+      # After = "network-online.target";
+      # Requires = [
+      #   "network-online.target"
+      # ];
     };
-    serviceConfig = {
+    Service = {
       Type = "oneshot";
       WorkingDirectory = "/media/HOMELAB_MEDIA/services/spotdl";
       ExecStart = "${spotdl-sync}/bin/spotdl-sync";
@@ -35,20 +39,14 @@ in
       # RestartSec = lib.mkOverride 500 "100ms";
       # RestartSteps = lib.mkOverride 500 9;
     };
-    after = [
-      "network-online.target"
-    ];
-    requires = [
-      "network-online.target"
-    ];
     # wantedBy = [ "multi-user.target" ];
   };
 
-  systemd.timers.spotdl-sync = {
-    unitConfig = {
+  systemd.user.timers.spotdl-sync = {
+    Unit = {
       Description = "Run sync Spotify playlists service periodically.";
     };
-    timerConfig = {
+    Timer = {
       OnBootSec = "1m";
       OnUnitActiveSec = "6h";
       Unit = "spotdl-sync.service";

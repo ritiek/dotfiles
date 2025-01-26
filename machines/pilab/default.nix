@@ -6,7 +6,6 @@
     inputs.nix-index-database.nixosModules.nix-index
     ./home
     ./services/restic.nix
-    ./services/spotdl.nix
     ./hw-config.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
