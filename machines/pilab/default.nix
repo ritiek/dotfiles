@@ -6,6 +6,7 @@
     inputs.nix-index-database.nixosModules.nix-index
     ./home
     ./services/restic.nix
+    # ./services/paperless-ngx.nix
     ./hw-config.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
