@@ -46,6 +46,7 @@ in
   };
   home-manager.users.ritiek = { osConfig, ... }: {
     imports = [
+      ./services/spotdl.nix
       ./../../../modules/home/sops.nix
       ./../../../modules/home/nix.nix
       # ./../../../modules/home/gnupg.nix
