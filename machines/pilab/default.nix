@@ -7,6 +7,7 @@
     ./home
     ./services/restic.nix
     ./services/spotdl.nix
+    # ./services/paperless-ngx.nix
     ./hw-config.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
