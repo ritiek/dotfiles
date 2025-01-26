@@ -21,7 +21,6 @@ in
       RequiresMountsFor = [
         "/media/HOMELAB_MEDIA/services/spotdl"
       ];
-      Path = [ pkgs.spotdl ];
       # After = "network-online.target";
       # Requires = [
       #   "network-online.target"
