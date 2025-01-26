@@ -37,6 +37,13 @@
       "--network-alias=grocy"
       "--network=grocy_default"
     ];
+    labels = {
+      "homepage.description" = "Grocery Inventory";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:9283";
+      "homepage.icon" = "grocy";
+      "homepage.name" = "Grocy";
+    };
   };
   systemd.services."docker-grocy" = {
     serviceConfig = {

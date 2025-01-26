@@ -161,6 +161,13 @@
       "--network-alias=webserver"
       "--network=paperless-ngx_default"
     ];
+    labels = {
+      "homepage.description" = "Go paperless";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:8010";
+      "homepage.icon" = "paperless-ngx.png";
+      "homepage.name" = "Paperless NGX";
+    };
   };
   systemd.services."docker-paperless-ngx-webserver" = {
     serviceConfig = {

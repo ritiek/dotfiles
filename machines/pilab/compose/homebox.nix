@@ -31,6 +31,13 @@
       "--network-alias=homebox"
       "--network=homebox_default"
     ];
+    labels = {
+      "homepage.description" = "Home Inventory";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:3100";
+      "homepage.icon" = "homebox";
+      "homepage.name" = "Homebox";
+    };
   };
   systemd.services."docker-homebox" = {
     serviceConfig = {
