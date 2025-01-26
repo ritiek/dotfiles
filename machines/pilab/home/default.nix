@@ -67,7 +67,7 @@ in
         unzip
         unrar-wrapper
         sd
-        diskonaut
+        # diskonaut
         compsize
 
         docker-compose
