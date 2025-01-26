@@ -19,15 +19,17 @@
       # gpu-context = "wayland";
       osc = "no";
     };
-    scripts = with pkgs.mpvScripts; [
-      mpv-cheatsheet
-      mpris
+    scripts = with pkgs; [
+      mpvScripts.mpv-cheatsheet
+      mpvScripts.mpris
       # Pass magnet URLs to mpv.
-      webtorrent-mpv-hook
-      thumbnail
-      thumbfast
+      # TODO: Switch to unstable once this PR is merged:
+      # https://github.com/NixOS/nixpkgs/pull/350461
+      stable.mpvScripts.webtorrent-mpv-hook
+      mpvScripts.thumbnail
+      mpvScripts.thumbfast
       # Doesn't install for some reason.
-      # mpv-notify-send
+      # mpvScripts.mpv-notify-send
     ];
   };
 }
