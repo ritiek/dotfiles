@@ -42,6 +42,13 @@
       "--privileged"
       "--shm-size=67108864"
     ];
+    labels = {
+      "homepage.description" = "Monitor IP cams";
+      "homepage.group" = "Monitoring";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:5010";
+      "homepage.icon" = "frigate";
+      "homepage.name" = "Frigate";
+    };
   };
   systemd.services."docker-frigate" = {
     serviceConfig = {

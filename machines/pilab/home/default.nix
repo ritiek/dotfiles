@@ -105,7 +105,8 @@ in
         (writeShellScriptBin "homelab-stop" ''
           set -x
           systemctl stop docker-compose-vaultwarden-root.target
-          systemctl stop docker-compose-dashy-root.target
+          # systemctl stop docker-compose-dashy-root.target
+          systemctl stop docker-compose-homepage-root.target
           systemctl stop docker-compose-pihole-root.target
           systemctl stop docker-compose-uptime-kuma-root.target
           systemctl stop docker-compose-immich-root.target
@@ -134,7 +135,8 @@ in
           set -x
           homelab-mount && (
             systemctl start docker-vaultwarden.service
-            systemctl start docker-dashy.service
+            # systemctl start docker-dashy.service
+            systemctl start docker-homepage.service
             systemctl start docker-pihole.service
             systemctl start docker-uptime-kuma.service
             systemctl start docker-immich.service

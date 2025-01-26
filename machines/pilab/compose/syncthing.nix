@@ -28,6 +28,13 @@
       "--hostname=${config.networking.hostName}"
       "--network=host"
     ];
+    labels = {
+      "homepage.description" = "Synchronize data between Machines";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:8384";
+      "homepage.icon" = "syncthing";
+      "homepage.name" = "Syncthing";
+    };
   };
   systemd.services."docker-syncthing" = {
     serviceConfig = {

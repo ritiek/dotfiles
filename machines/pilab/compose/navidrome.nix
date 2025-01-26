@@ -32,6 +32,13 @@
       "--network-alias=navidrome"
       "--network=navidrome_default"
     ];
+    labels = {
+      "homepage.description" = "Subsonic Music Server";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:4533";
+      "homepage.icon" = "navidrome";
+      "homepage.name" = "Navidrome";
+    };
   };
   systemd.services."docker-navidrome" = {
     serviceConfig = {

@@ -25,6 +25,13 @@
       "--network-alias=memos"
       "--network=memos_default"
     ];
+    labels = {
+      "homepage.description" = "Make Notes";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:5230";
+      "homepage.icon" = "memos";
+      "homepage.name" = "Memos";
+    };
   };
   systemd.services."docker-memos" = {
     serviceConfig = {

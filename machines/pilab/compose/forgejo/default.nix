@@ -43,6 +43,13 @@
       "--network-alias=server"
       "--network=forgejo_forgejo"
     ];
+    labels = {
+      "homepage.description" = "Git in a forge";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:3033";
+      "homepage.icon" = "forgejo";
+      "homepage.name" = "Forgejo";
+    };
   };
   systemd.services."docker-forgejo" = {
     serviceConfig = {

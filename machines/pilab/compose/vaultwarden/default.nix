@@ -33,6 +33,13 @@
       "--network-alias=vaultwarden"
       "--network=vaultwarden_default"
     ];
+    labels = {
+      "homepage.description" = "Password Manager";
+      "homepage.group" = "Services";
+      "homepage.href" = "https://pilab.lion-zebra.ts.net:9445";
+      "homepage.icon" = "vaultwarden";
+      "homepage.name" = "Vaultwarden";
+    };
   };
   systemd.services."docker-vaultwarden" = {
     serviceConfig = {

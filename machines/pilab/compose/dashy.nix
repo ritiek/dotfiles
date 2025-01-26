@@ -40,6 +40,8 @@
       RestartMaxDelaySec = lib.mkOverride 500 "1m";
       RestartSec = lib.mkOverride 500 "100ms";
       RestartSteps = lib.mkOverride 500 9;
+      # RootDirectoryStartOnly = lib.mkForce false;
+      # RootDirectory = lib.mkForce "";
     };
     after = [
       "docker-network-dashy_default.service"

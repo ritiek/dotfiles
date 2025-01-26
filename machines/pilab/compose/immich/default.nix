@@ -32,6 +32,13 @@
       "--network-alias=immich-machine-learning"
       "--network=immich_default"
     ];
+    labels = {
+      "homepage.description" = "Photos Backup";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:2283";
+      "homepage.icon" = "immich.png";
+      "homepage.name" = "Immich";
+    };
   };
   systemd.services."docker-immich_machine_learning" = {
     serviceConfig = {
