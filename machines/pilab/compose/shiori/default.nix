@@ -39,7 +39,7 @@
     labels = {
       "homepage.description" = "Bookmarks & Read Later";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3033";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:2397";
       "homepage.icon" = "shiori";
       "homepage.name" = "Shiori";
     };
