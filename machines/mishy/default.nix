@@ -410,6 +410,13 @@
         sshAgentAuth = true;
       };
     };
+
+    pam.yubico = {
+      enable = true;
+      debug = true;
+      mode = "challenge-response";
+      id = [ "30084843" ];
+    };
   };
 
   fonts = {
