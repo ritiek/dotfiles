@@ -364,6 +364,10 @@
       enableRenice = true;
     };
 
+    yubikey-touch-detector = {
+      enable = true;
+      libnotify = true;
+    };
   };
 
   security = {
