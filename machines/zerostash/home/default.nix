@@ -50,7 +50,7 @@
         unzip
         unrar-wrapper
         sd
-        diskonaut
+        # diskonaut
         compsize
 
         iptables

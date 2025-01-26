@@ -114,7 +114,7 @@
         transmission_4-gtk
         syncplay
         chiaki
-        diskonaut
+        # diskonaut
         # woeusb-ng
         wifite2
         mitmproxy
