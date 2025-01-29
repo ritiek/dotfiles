@@ -127,8 +127,9 @@ in
           systemctl stop docker-compose-changedetection-root.target
           systemctl stop docker-compose-frigate-root.target
           systemctl stop docker-compose-habitica-root.target
+          systemctl stop docker-ollama-webui-root.target
           systemctl stop docker-compose-kopia-root.target
-          systemctl stop spotdl-sync.timer
+          # systemctl stop spotdl-sync.timer
 
           tailscale serve --https=9445 off
         '')
@@ -157,8 +158,9 @@ in
             systemctl start docker-changedetection.service
             systemctl start docker-frigate.service
             systemctl start docker-habitica-server.service
+            systemctl start docker-open-webui.service
             systemctl start docker-kopia.service
-            systemctl start spotdl-sync.timer
+            # systemctl start spotdl-sync.timer
 
             tailscale serve --bg --https=9445 127.0.0.1:9446
           )

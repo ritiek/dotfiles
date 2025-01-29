@@ -35,6 +35,7 @@
     ./compose/changedetection
     ./compose/frigate
     ./compose/habitica
+    ./compose/ollama-webui
     ./compose/kopia
   ];
 
