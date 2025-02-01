@@ -29,6 +29,13 @@
       "--network-alias=uptime-kuma"
       "--network=uptime-kuma_default"
     ];
+    labels = {
+      "homepage.description" = "Monitor machines and services for health";
+      "homepage.group" = "Monitoring";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:3001";
+      "homepage.icon" = "uptime-kuma";
+      "homepage.name" = "Uptime Kuma";
+    };
   };
   systemd.services."docker-uptime-kuma" = {
     serviceConfig = {
