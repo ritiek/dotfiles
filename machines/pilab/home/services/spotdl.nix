@@ -51,5 +51,8 @@ in
       Unit = "spotdl-sync.service";
     };
     # wantedBy = [ "timers.target" ];
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
   };
 }
