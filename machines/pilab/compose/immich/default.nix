@@ -36,7 +36,7 @@
       "homepage.description" = "Photos Backup";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:2283";
-      "homepage.icon" = "immich.png";
+      "homepage.icon" = "immich";
       "homepage.name" = "Immich";
     };
   };

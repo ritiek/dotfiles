@@ -38,7 +38,7 @@
       "homepage.description" = "DNS";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:81/admin";
-      "homepage.icon" = "pi-hole.png";
+      "homepage.icon" = "pi-hole";
       "homepage.name" = "Pi-Hole";
     };
   };

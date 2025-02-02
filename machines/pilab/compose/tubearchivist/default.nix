@@ -113,7 +113,7 @@
       "homepage.description" = "Tube Archivist";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:8454";
-      "homepage.icon" = "tube-archivist.png";
+      "homepage.icon" = "tube-archivist";
       "homepage.name" = "Tube Archivist";
     };
   };
