@@ -37,10 +37,21 @@ let
     echo "$CURRENT_TIMESTAMP" > "$TIMESTAMP_FILE"
     echo "Sync complete."
   '');
+
+  ping-uptime-kuma = (pkgs.writeShellScriptBin "ping-uptime-kuma@paperless-ngx-sync" ''
+    if [ "$EXIT_STATUS" -eq 0 ]; then
+      STATUS=up
+    else
+      STATUS=down
+    fi
+    ${pkgs.curl}/bin/curl -s "http://127.0.0.1:3001/api/push/8sKmxnwk3t?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    exit 0
+  '');
 in
 {
   home.packages = with pkgs; [
     paperless-ngx-sync
+    curl
   ];
 
   systemd.user.services.paperless-ngx-sync = {
@@ -54,6 +65,7 @@ in
       Type = "oneshot";
       WorkingDirectory = "/media/HOMELAB_MEDIA/services/paperless";
       ExecStart = "${paperless-ngx-sync}/bin/paperless-ngx-sync";
+      ExecStopPost = "${ping-uptime-kuma}/bin/ping-uptime-kuma@paperless-ngx-sync";
     };
   };
 
@@ -62,12 +74,12 @@ in
       Description = "Run sync paperless-ngx service periodically.";
     };
     Timer = {
-      OnBootSec = "1m";
+      OnBootSec = "5m";
       OnUnitActiveSec = "1h";
       Unit = "paperless-ngx-sync.service";
     };
-    Install = {
-      WantedBy = [ "timers.target" ];
-    };
+    # Install = {
+    #   WantedBy = [ "timers.target" ];
+    # };
   };
 }

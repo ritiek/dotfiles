@@ -8,11 +8,22 @@ let
       echo
     done
   '');
+
+  ping-uptime-kuma = (pkgs.writeShellScriptBin "ping-uptime-kuma@spotdl-sync" ''
+    if [ "$EXIT_STATUS" -eq 0 ]; then
+      STATUS=up
+    else
+      STATUS=down
+    fi
+    ${pkgs.curl}/bin/curl -s "http://127.0.0.1:3001/api/push/jk2k8QAm9h?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    exit 0
+  '');
 in
 {
   home.packages = with pkgs; [
     spotdl
     spotdl-sync
+    curl
   ];
 
   systemd.user.services.spotdl-sync = {
@@ -32,6 +43,7 @@ in
       ExecStart = "${spotdl-sync}/bin/spotdl-sync";
       # ExecStop = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
       # ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
+      ExecStopPost = "${ping-uptime-kuma}/bin/ping-uptime-kuma@spotdl-sync";
 
       # Restart = lib.mkOverride 500 "always";
       # RestartMaxDelaySec = lib.mkOverride 500 "1m";
@@ -46,13 +58,12 @@ in
       Description = "Run sync Spotify playlists service periodically.";
     };
     Timer = {
-      OnBootSec = "1m";
+      OnBootSec = "5m";
       OnUnitActiveSec = "6h";
       Unit = "spotdl-sync.service";
     };
-    # wantedBy = [ "timers.target" ];
-    Install = {
-      WantedBy = [ "timers.target" ];
-    };
+    # Install = {
+    #   WantedBy = [ "timers.target" ];
+    # };
   };
 }
