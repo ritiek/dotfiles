@@ -165,7 +165,7 @@
       "homepage.description" = "Go paperless";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:8010";
-      "homepage.icon" = "paperless-ngx.png";
+      "homepage.icon" = "paperless-ngx";
       "homepage.name" = "Paperless NGX";
     };
   };
