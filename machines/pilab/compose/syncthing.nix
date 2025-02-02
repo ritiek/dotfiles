@@ -18,8 +18,8 @@
       "TZ" = "'Asia/Kolkata'";
     };
     volumes = [
-      "/media:/media:rw"
-      "/media/HOMELAB_MEDIA/services/syncthing:/var/syncthing/config:rw"
+      "/media/HOMELAB_MEDIA:/media/HOMELAB_MEDIA:rw"
+      "/media/HOMELAB_MEDIA/services/syncthing/config:/var/syncthing/config:rw"
     ];
     user = "1000:1000";
     log-driver = "journald";
