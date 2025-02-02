@@ -28,6 +28,13 @@
       "--network-alias=gotify"
       "--network=gotify_default"
     ];
+    labels = {
+      "homepage.description" = "Send push notifications";
+      "homepage.group" = "Monitoring";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:8893";
+      "homepage.icon" = "gotify";
+      "homepage.name" = "Gotify";
+    };
   };
   systemd.services."docker-gotify" = {
     serviceConfig = {
