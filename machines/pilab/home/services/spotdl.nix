@@ -4,6 +4,10 @@ let
     for directory in */; do
       cd "$directory"
       ${pkgs.spotdl}/bin/spotdl sync *.spotdl
+      if [ $? -ne 0 ]; then
+        ${pkgs.coreutils}/bin/echo "Failed to sync *.spotdl."
+        exit $?
+      fi
       cd ..
       echo
     done
@@ -15,8 +19,15 @@ let
     else
       STATUS=down
     fi
+
     ${pkgs.curl}/bin/curl -s "http://127.0.0.1:3001/api/push/jk2k8QAm9h?status=$STATUS&msg=$SERVICE_RESULT&ping="
-    exit 0
+
+    if [ $? -eq 0 ]; then
+      ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
+    else
+      ${pkgs.coreutils}/bin/echo "ping-uptime-kuma failed."
+      exit $?
+    fi
   '');
 in
 {

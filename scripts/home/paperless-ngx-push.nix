@@ -26,7 +26,7 @@
         # Upload the file
         ${pkgs.coreutils}/bin/echo "Uploading $FILE..."
 
-        ${pkgs.curl}/bin/curl -s --write-out '%{http_code}' -H "Authorization: Token $PAPERLESS_NGX_API_KEY" -F "document=@$FILE" "$PAPERLESS_NGX_INSTANCE_PUSH_DOCUMENT_URL"
+        ${pkgs.curl}/bin/curl -s -H "Authorization: Token $PAPERLESS_NGX_API_KEY" -F "document=@$FILE" "$PAPERLESS_NGX_INSTANCE_PUSH_DOCUMENT_URL"
 
         if [ $? -eq 0 ]; then
           ${pkgs.coreutils}/bin/echo "$FILE uploaded successfully."

@@ -49,8 +49,15 @@ let
     else
       STATUS=down
     fi
+
     ${pkgs.curl}/bin/curl -s "http://127.0.0.1:3001/api/push/8sKmxnwk3t?status=$STATUS&msg=$SERVICE_RESULT&ping="
-    exit 0
+
+    if [ $? -eq 0 ]; then
+      ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
+    else
+      ${pkgs.coreutils}/bin/echo "ping-uptime-kuma failed."
+      exit $?
+    fi
   '');
 in
 {
