@@ -17,6 +17,23 @@ let
       echo "0" > "$TIMESTAMP_FILE"
     fi
 
+    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
+    # to work:
+    # source $\{osConfig.sops.secrets."paperless-ngx-push.env".path}
+    source ~/.config/sops-nix/secrets/paperless-ngx-push.env
+
+    USERNAME=$(${pkgs.curl}/bin/curl -s -H "Authorization: Token $PAPERLESS_NGX_API_KEY" "$PAPERLESS_NGX_INSTANCE_URL/api/users/" | ${pkgs.jq}/bin/jq -r '.results[].username')
+
+    if [ $? -ne 0 ]; then
+      echo "/api/users/ returned status code $?, exiting."
+      exit $?
+    fi
+
+    if [[ "$USERNAME" != "${config.home.username}" ]]; then
+      echo "/api/users/ endpoint returned invalid username, exiting."
+      exit 1
+    fi
+
     LAST_RUN_TIMESTAMP=$(${pkgs.coreutils}/bin/cat "$TIMESTAMP_FILE")
 
     # Process each path pattern in the sync paths file
@@ -50,7 +67,12 @@ let
       STATUS=down
     fi
 
-    ${pkgs.curl}/bin/curl -s "http://127.0.0.1:3001/api/push/8sKmxnwk3t?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
+    # to work:
+    # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
+    source ~/.config/sops-nix/secrets/uptime-kuma.env
+
+    ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/8sKmxnwk3t?status=$STATUS&msg=$SERVICE_RESULT&ping="
 
     if [ $? -eq 0 ]; then
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
@@ -61,9 +83,12 @@ let
   '');
 in
 {
+  sops.secrets."uptime-kuma.env" = {};
+
   home.packages = with pkgs; [
     paperless-ngx-sync
     curl
+    jq
   ];
 
   systemd.user.services.paperless-ngx-sync = {

@@ -20,7 +20,12 @@ let
       STATUS=down
     fi
 
-    ${pkgs.curl}/bin/curl -s "http://127.0.0.1:3001/api/push/jk2k8QAm9h?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
+    # to work:
+    # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
+    source ~/.config/sops-nix/secrets/uptime-kuma.env
+
+    ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/jk2k8QAm9h?status=$STATUS&msg=$SERVICE_RESULT&ping="
 
     if [ $? -eq 0 ]; then
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
@@ -31,6 +36,8 @@ let
   '');
 in
 {
+  sops.secrets."uptime-kuma.env" = {};
+
   home.packages = with pkgs; [
     spotdl
     spotdl-sync
