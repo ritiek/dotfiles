@@ -68,6 +68,13 @@
       "--network-alias=miniflux"
       "--network=miniflux_default"
     ];
+    labels = {
+      "homepage.description" = "RSS Reader";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:3721";
+      "homepage.icon" = "miniflux";
+      "homepage.name" = "Miniflux";
+    };
   };
   systemd.services."docker-miniflux" = {
     serviceConfig = {
