@@ -25,11 +25,16 @@ let
         if [[ -f "$FILE" ]]; then
           FILE_CREATION_DATE=$(${pkgs.coreutils}/bin/stat -c %W "$FILE")
 
-            if [[ "$FILE_CREATION_DATE" -gt "$LAST_RUN_TIMESTAMP" ]]; then
-              # Requires ./scripts/home/paperless-ngx-push.nix
-              /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push "$FILE"
-              echo
+          if [[ "$FILE_CREATION_DATE" -gt "$LAST_RUN_TIMESTAMP" ]]; then
+            # Requires ./scripts/home/paperless-ngx-push.nix
+            /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push "$FILE"
+
+            if [ $? -ne 0 ]; then
+              echo "paperless-ngx-push returned status code $?, exiting."
+              exit $?
             fi
+            echo
+          fi
         fi
       done
     done < "$SYNC_PATHS_FILE"
