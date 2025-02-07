@@ -33,7 +33,7 @@
       ./../../../modules/home/hyprland
       ./../../../modules/home/theme.nix
       ./../../../modules/home/ghostty.nix
-      ./../../../modules/home/wezterm
+      # ./../../../modules/home/wezterm
       ./../../../modules/home/zsh
       ./../../../modules/home/git
       ./../../../modules/home/neovim
