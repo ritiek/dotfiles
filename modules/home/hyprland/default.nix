@@ -22,7 +22,8 @@ in
   };
 
   home.packages = with pkgs; [
-    xdg-desktop-portal-hyprland
+    # xdg-desktop-portal-hyprland
+    # xdg-desktop-portal-wlr
     hypridle
     hyprlock
     hyprpaper

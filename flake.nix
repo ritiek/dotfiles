@@ -19,6 +19,10 @@
     #   url = "git+file:///home/ritiek/Downloads/shabitica";
     #   # inputs.nixpkgs.follows = "nixpkgs";
     # };
+    nixpkgs-wayland = {
+      url = "github:nix-community/nixpkgs-wayland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     pi400kb-nix = {
       url = "github:ritiek/pi400kb-nix";

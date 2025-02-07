@@ -13,6 +13,8 @@
 
   nixpkgs.overlays = [
     inputs.nur.overlays.default
+    inputs.nixpkgs-wayland.overlay
+
     (final: _prev: {
       stable = import inputs.stable {
         inherit (final) system;
@@ -311,10 +313,16 @@
 
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    xdgOpenUsePortal = true;
+    # wlr.enable = true;
+    config = {
+      common.default = [ "gtk" ];
+      hyprland.default = [ "gtk" "hyprland" ];
+    };
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
       xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-wlr
     ];
     # gtkUsePortal = true;
   };
