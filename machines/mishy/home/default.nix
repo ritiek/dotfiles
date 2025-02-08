@@ -166,6 +166,7 @@
         wl-gammarelay-rs
         wayvnc
         wlvncc
+        kooha
 
         deploy-rs
         # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
