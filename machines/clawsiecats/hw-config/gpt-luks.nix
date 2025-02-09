@@ -1,7 +1,7 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" "virtio-pci" "virtio_net" ];
+  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "sr_mod" "virtio_blk" "virtio_pci" "virtio_net" ];
   boot.initrd.kernelModules = [ ];
 
   boot.kernelModules = [ ];
@@ -62,8 +62,8 @@
             type = "luks";
             name = "cryptnix";
             settings.allowDiscards = true;
-            # Using `pbkdf2` instead of `argon2id` for a lower memory footprint.
-            extraFormatArgs = [ "--pbkdf pbkdf2" ];
+            # NOTE: Use `pbkdf2` instead of `argon2id` for a lower memory footprint.
+            # extraFormatArgs = [ "--pbkdf pbkdf2" ];
             passwordFile = "/tmp/disk.key";
             content = {
               type = "btrfs";
