@@ -12,15 +12,11 @@
   ];
   programs.rofi = {
     enable = true;
-    # Doesn't work for some reason.
     plugins = with pkgs; [
-    #   rofi-bluetooth
-    #   rofi-pulse-select
-    #
-    #   rofi-emoji
-    #   (rofi-emoji.override {
-    #     rofi-unwrapped = rofi-wayland;
-    #   })
+      rofi-calc
+      # (rofi-emoji.override {
+      #   rofi-unwrapped = rofi-wayland;
+      # })
     ];
     package = pkgs.rofi-wayland;
     theme = builtins.toFile "rofi-theme.rasi" ''
@@ -138,18 +134,20 @@
         "combi"
         "window"
         "drun"
-	"run"
+        "run"
         "ssh"
         "filebrowser"
+        "calc"
       ];
       combi-modes = [
         "window"
         "drun"
         "ssh"
+        "calc"
       ];
       font = "Roboto 12";
       show-icons = true;
-      terminal = "wezterm";
+      terminal = "ghostty";
     };
   };
 }
