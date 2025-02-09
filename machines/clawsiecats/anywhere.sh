@@ -3,7 +3,7 @@
 # Usage:
 # $ ./machines/clawsiecats/anywhere.sh .#clawsiecats root@12.121.212.121
 # Luks with disko:
-# $ ./machines/clawsiecats/anywhere.sh .#clawsiecats root@12.121.212.121 --luks
+# $ ./machines/clawsiecats/anywhere.sh .#clawsiecats-luks root@12.121.212.121 --luks
 
 set -x
 BASEDIR=$(dirname "$0")/mnt
