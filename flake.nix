@@ -46,11 +46,11 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
-    wezterm = {
-      url = "github:wez/wezterm/main?dir=nix";
-      # Commenting out as compilation fails (as of 10th Oct, 2024).
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # wezterm = {
+    #   url = "github:wez/wezterm/main?dir=nix";
+    #   # Commenting out as compilation fails (as of 10th Oct, 2024).
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     rose-pine-hyprcursor = {
       url = "github:ndom91/rose-pine-hyprcursor";
