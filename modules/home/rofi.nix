@@ -143,7 +143,6 @@
         "window"
         "drun"
         "ssh"
-        "calc"
       ];
       font = "Roboto 12";
       show-icons = true;
