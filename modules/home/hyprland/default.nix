@@ -89,7 +89,7 @@ in
 
   # XXX: Shouldn't hyprland's NixOS module be handling auto-reload by itself?
   home.activation.reload-hyprland = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    HYPRLAND_INSTANCE_SIGNATURE=$(basename $(echo /run/user/1000/hypr/*)) \
+    HYPRLAND_INSTANCE_SIGNATURE=$(basename $(echo /run/user/$UID/hypr/*)) \
       ${pkgs.hyprland}/bin/hyprctl reload config-only
   '';
 }
