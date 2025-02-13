@@ -36,11 +36,9 @@
     };
     after = [
       "docker-network-ollama-webui_default.service"
-      "docker-volume-ollama-webui_ollama.service"
     ];
     requires = [
       "docker-network-ollama-webui_default.service"
-      "docker-volume-ollama-webui_ollama.service"
     ];
   };
   virtualisation.oci-containers.containers."open-webui" = {
@@ -84,11 +82,9 @@
     };
     after = [
       "docker-network-ollama-webui_default.service"
-      "docker-volume-ollama-webui_open-webui.service"
     ];
     requires = [
       "docker-network-ollama-webui_default.service"
-      "docker-volume-ollama-webui_open-webui.service"
     ];
   };
 
@@ -102,34 +98,6 @@
     };
     script = ''
       docker network inspect ollama-webui_default || docker network create ollama-webui_default
-    '';
-    partOf = [ "docker-compose-ollama-webui-root.target" ];
-    wantedBy = [ "docker-compose-ollama-webui-root.target" ];
-  };
-
-  # Volumes
-  systemd.services."docker-volume-ollama-webui_ollama" = {
-    path = [ pkgs.docker ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStop = "docker volume rm -f ollama-webui_ollama";
-    };
-    script = ''
-      docker volume inspect ollama-webui_ollama || docker volume create ollama-webui_ollama
-    '';
-    partOf = [ "docker-compose-ollama-webui-root.target" ];
-    wantedBy = [ "docker-compose-ollama-webui-root.target" ];
-  };
-  systemd.services."docker-volume-ollama-webui_open-webui" = {
-    path = [ pkgs.docker ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStop = "docker volume rm -f ollama-webui_open-webui";
-    };
-    script = ''
-      docker volume inspect ollama-webui_open-webui || docker volume create ollama-webui_open-webui
     '';
     partOf = [ "docker-compose-ollama-webui-root.target" ];
     wantedBy = [ "docker-compose-ollama-webui-root.target" ];
