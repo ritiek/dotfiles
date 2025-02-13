@@ -1,4 +1,4 @@
-{ pkgs, inputs, config, ... }:
+{ lib, pkgs, inputs, config, ... }:
 let
   wallpaper = pkgs.fetchurl {
     url = "https://i.imgur.com/gtGew3r.jpg";
@@ -86,4 +86,10 @@ in
       target = "${config.home.homeDirectory}/.config/hypr/hyprlock.conf";
     };
   };
+
+  # XXX: Shouldn't hyprland's NixOS module be handling auto-reload by itself?
+  home.activation.reload-hyprland = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    HYPRLAND_INSTANCE_SIGNATURE=$(basename $(echo /run/user/1000/hypr/*)) \
+      ${pkgs.hyprland}/bin/hyprctl reload config-only
+  '';
 }
