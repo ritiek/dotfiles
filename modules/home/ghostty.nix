@@ -20,6 +20,10 @@
       window-width = "90";
       mouse-hide-while-typing = true;
       confirm-close-surface = false;
+      clipboard-paste-protection = false;
+      # window-inherit-working-directory = true;
+      # quick-terminal-screen = "main";
+      # keybind = "ctrl+f=toggle_quick_terminal";
       term = "xterm-256color";
       theme = "dracula";
     };
