@@ -1,2 +1,4 @@
 /machines/*/mnt/
 result
+# zellij plugins
+*.wasm
