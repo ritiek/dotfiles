@@ -62,6 +62,15 @@ in
         #   # locations."/".root = pkgs.miniserve;
         #   locations."/".proxyPass = "http://127.0.0.1:8081";
         # };
+        "puwush.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.76.250.31:5100";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
       };
     };
   };
