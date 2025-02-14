@@ -37,7 +37,7 @@
     ./compose/habitica
     ./compose/ollama-webui
     ./compose/pwpush
-    ./compose/kopia
+    # ./compose/kopia
   ];
 
   networking.hostName = "pilab";
