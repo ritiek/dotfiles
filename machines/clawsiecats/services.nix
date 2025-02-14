@@ -16,6 +16,7 @@ in
     "jitsi.htpasswd" = {
       owner = "nginx";
     };
+    "syncplay.password" = {};
   };
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -39,6 +40,12 @@ in
     };
 
     jitsi-videobridge.openFirewall = true;
+
+    syncplay = {
+      enable = true;
+      passwordFile = config.sops.secrets."syncplay.password".path;
+      useACMEHost = "syncplay.${domain}";
+    };
 
     # invidious = {
     #   enable = true;
@@ -78,6 +85,7 @@ in
   security.acme = {
     acceptTerms = true;
     defaults.email = "clawsiecats@omg.lol";
+    certs."syncplay.${domain}".webroot = "/var/lib/acme/acme-challenge";
   };
 
   networking.firewall = {
