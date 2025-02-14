@@ -36,6 +36,7 @@
     ./compose/frigate
     ./compose/habitica
     ./compose/ollama-webui
+    ./compose/pwpush
     ./compose/kopia
   ];
 
