@@ -159,14 +159,6 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [
-        ./machines/stashy
-      ];
-      specialArgs = { inherit inputs; };
-    };
-
     nixosConfigurations.zerostash = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -216,15 +208,6 @@
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.keyberry;
-      };
-      sshUser = "ritiek";
-    };
-
-    deploy.nodes.stashy = {
-      hostname = "stashy.lion-zebra.ts.net";
-      profiles.system = {
-        user = "root";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.stashy;
       };
       sshUser = "ritiek";
     };
@@ -311,15 +294,6 @@
       format = "sd-aarch64";
     };
 
-    stashy-sd = inputs.nixos-generators.nixosGenerate {
-      system = "aarch64-linux";
-      modules = [
-        ./machines/stashy
-      ];
-      specialArgs = { inherit inputs; };
-      format = "sd-aarch64";
-    };
-
     zerostash-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
       modules = [
@@ -333,9 +307,9 @@
     # For some reason 'sd-aarch64-installer' assigns the value of
     # `users.users.root.initialHashedPassword`, which makes the
     # machine unloggable.
-    # stashy-sd-installer = inputs.nixos-generators.nixosGenerate {
+    # keyberry-sd-installer = inputs.nixos-generators.nixosGenerate {
     #   system = "aarch64-linux";
-    #   modules = [ ./machines/stashy inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
+    #   modules = [ ./machines/keyberry inputs.nixos-hardware.nixosModules.raspberry-pi-4 ];
     #   specialArgs = { inherit inputs; };
     #   format = "sd-aarch64-installer";
     # };
