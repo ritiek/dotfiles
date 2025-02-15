@@ -154,11 +154,7 @@
     nixosConfigurations.keyberry = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
-        # Using this flake input, for some reason haves the kernel compile from source
-        # which takes a loong time and isn't practical.
-        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/keyberry
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
     };
@@ -166,11 +162,7 @@
     nixosConfigurations.stashy = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
-        # Using this flake input, for some reason haves the kernel compile from source
-        # which takes a loong time and isn't practical.
-        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/stashy
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
     };
@@ -178,11 +170,7 @@
     nixosConfigurations.zerostash = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
-        # Using this flake input, for some reason haves the kernel compile from source
-        # which takes a loong time and isn't practical.
-        # inputs.raspberry-pi-nix.nixosModules.raspberry-pi { raspberry-pi-nix.board = "bcm2711"; }
         ./machines/zerostash
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
       ];
       specialArgs = { inherit inputs; };
     };
