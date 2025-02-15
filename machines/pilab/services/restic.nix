@@ -4,13 +4,21 @@
   sops.secrets."restic.homelab.password" = {};
   # sops.secrets."restic.homelab.password".owner = "restic";
 
-  users.groups.restic = {};
+  # Copy pasto from here to keep restic user's UID & GID consistent with
+  # services.restic.server:
+  # https://github.com/NixOS/nixpkgs/blob/01115de/nixos/modules/services/backup/restic-rest-server.nix#L135-L142
+  #
+  # Since backups through services.restic.server are created through the
+  # restic user. Setting the same UID & GID allows to swap the same backup
+  # media between this (pilab) and other machines (zerostash/keyberry).
   users.users.restic = {
-    uid = config.ids.uids.restic;
-    # group = "root";
     group = "restic";
-    # isNormalUser = true;
+    home = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
+    createHome = true;
+    uid = config.ids.uids.restic;
   };
+
+  users.groups.restic.gid = config.ids.uids.restic;
 
   # https://nixos.wiki/wiki/Restic
   # security.wrappers.restic = {
@@ -94,7 +102,8 @@
       fi
 
       echo "Assigning ownership to 'restic:restic' on '${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA'."
-      chown -R restic:restic "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA"
+      chown -R ${builtins.toString config.ids.uids.restic}:${builtins.toString config.ids.uids.restic} \
+        "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA"
     '';
     timerConfig = {
       # Every 20 minutes
