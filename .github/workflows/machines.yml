@@ -97,18 +97,6 @@ jobs:
         run: |
           nix build .#nixosConfigurations.keyberry.config.system.build.toplevel
 
-  stashy:
-    runs-on: ubuntu-24.04-arm
-    steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v27
-      - name: Clone Repository
-        uses: actions/checkout@v4
-
-      - name: "Build: .#stashy"
-        run: |
-          nix build .#nixosConfigurations.stashy.config.system.build.toplevel
-
   zerostash:
     runs-on: ubuntu-24.04-arm
     steps:
