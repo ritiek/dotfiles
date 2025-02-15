@@ -14,8 +14,8 @@
     ./../../modules/tailscale.nix
   ];
 
-  networking.hostName = "zerostash";
-  time.timeZone = "Asia/Kolkata";
+  networking.hostName = lib.mkDefault "zerostash";
+  time.timeZone = lib.mkDefault "Asia/Kolkata";
 
   # Needed for building SD images.
   nixpkgs.overlays = [
@@ -107,7 +107,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 500;
+    memoryPercent = lib.mkDefault 500;
   };
 
   boot.tmp = {
