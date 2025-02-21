@@ -163,7 +163,7 @@
         fastgron
         nap
 
-        wl-gammarelay-rs
+        # wl-gammarelay-rs
         wayvnc
         wlvncc
         kooha
