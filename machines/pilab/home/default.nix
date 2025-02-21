@@ -129,7 +129,7 @@ in
           systemctl stop docker-compose-habitica-root.target
           systemctl stop docker-compose-ollama-webui-root.target
           systemctl stop docker-compose-pwpush-root.target
-          systemctl stop docker-compose-kopia-root.target
+          # systemctl stop docker-compose-kopia-root.target
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.service
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.service
@@ -165,7 +165,7 @@ in
             systemctl start docker-habitica-server.service
             systemctl start docker-open-webui.service
             systemctl start docker-pwpush.service
-            systemctl start docker-kopia.service
+            # systemctl start docker-kopia.service
             machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
             machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start paperless-ngx-sync.timer
             # systemctl start spotdl-sync.timer
