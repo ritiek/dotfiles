@@ -1,10 +1,10 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
 {
   home.pointerCursor = {
-    x11.enable = true;
-    name = "Qogir";
-    package = pkgs.qogir-icon-theme;
+    name = lib.mkDefault "Qogir";
+    package = lib.mkDefault pkgs.qogir-icon-theme;
     size = 24;
+    x11.enable = true;
     gtk.enable = true;
   };
  

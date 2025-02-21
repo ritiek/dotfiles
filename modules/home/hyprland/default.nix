@@ -30,8 +30,18 @@ in
     hyprpicker
     hyprcursor
     hyprshot
-    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+    hyprsunset
+    # hyprpolkitagent
   ];
+
+  home.pointerCursor = {
+    name = "rose-pine-hyprcursor";
+    package = inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default;
+    hyprcursor = {
+      enable = true;
+      size = 27;
+    };
+  };
 
   services = {
     hyprpaper = {
@@ -64,8 +74,8 @@ in
           }
           {
             timeout = 3600;
-            on-timeout = "hyprctl dispatch dpms off; pkill -f wl-gammarelay-rs";
-            on-resume = "hyprctl reload; hyprctl dispatch dpms on";
+            on-timeout = "hyprctl dispatch dpms off";
+            on-resume = "hyprctl dispatch dpms on";
           }
         ];
       };
