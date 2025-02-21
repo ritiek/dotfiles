@@ -1,7 +1,12 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci"
+    "usbhid"
+    "usb_storage"
+  ];
+  boot.kernelModules = [ ];
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
