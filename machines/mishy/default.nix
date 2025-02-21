@@ -321,7 +321,7 @@
     };
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-hyprland
       # xdg-desktop-portal-wlr
     ];
     # gtkUsePortal = true;
@@ -339,7 +339,12 @@
 
     git.enable = true;
     neovim.enable = true;
-    hyprland.enable = true;
+    hyprland = {
+      enable = true;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+      xwayland.enable = true;
+    };
     zsh.enable = true;
 
     nix-ld = {
