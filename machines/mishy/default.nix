@@ -44,6 +44,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/ssh.nix
+    ./../../modules/usbip.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
 
