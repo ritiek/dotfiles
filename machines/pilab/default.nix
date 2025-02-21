@@ -12,6 +12,7 @@
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
     ./../../modules/tailscale.nix
+    ./../../modules/usbipd.nix
     # Generated using:
     # $ compose2nix --env_files=stack.env --include_env_files=true --check_systemd_mounts=true --auto_start=false --remove_volumes=true --runtime=docker
     ./compose/pihole
