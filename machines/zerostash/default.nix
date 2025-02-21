@@ -12,6 +12,7 @@
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
     ./../../modules/tailscale.nix
+    ./../../modules/usbipd.nix
   ];
 
   networking.hostName = lib.mkDefault "zerostash";
