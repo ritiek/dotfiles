@@ -1,29 +1,5 @@
 { pkgs, ... }:
 {
-  # TODO: Librewolf's home manager module is missing options that
-  # are available in firefox's module. So using firefox for now.
-  # Maybe this PR addresses it:
-  # https://github.com/nix-community/home-manager/pull/5684
-  #
-  # home.packages = with pkgs; [
-  #   stable.librewolf
-  # ];
-  # programs.librewolf = {
-  #   enable = true;
-  #   # package = pkgs.stable.librewolf;
-  #   settings = {
-  #     # "webgl.disabled" = false;
-  #     "privacy.resistFingerprinting" = true;
-  #     "privacy.resistFingerprinting.letterboxing" = true;
-  #     "browser.safebrowsing.downloads.enabled" = false;
-  #     "identity.fxaccounts.enabled" = false;
-  #     "privacy.clearOnShutdown.history" = false;
-  #     "privacy.clearOnShutdown.downloads" = false;
-  #     "browser.sessionstore.resume_from_crash" = true;
-  #   };
-  #   # profiles = {};
-  # };
-
   programs.firefox = {
     enable = true;
     package = pkgs.firefox-beta.override {
@@ -31,16 +7,6 @@
         ff2mpv-rust
       ];
     };
-    # package = pkgs.firefox.override {
-    #   nativeMessagingHosts = with pkgs; [
-    #     ff2mpv-rust
-    #   ];
-    # };
-    # package = pkgs.firefox-bin.override {
-    #   nativeMessagingHosts = with pkgs; [
-    #     ff2mpv-rust
-    #   ];
-    # };
 
     policies = {
       AppAutoUpdate = false; # Disable automatic application update
@@ -174,7 +140,7 @@
         tubearchivist-companion
 
         (buildFirefoxXpiAddon {
-          pname = "Shiori";
+          pname = "shiori";
           version = "0.8.5";
           addonId = "{c6e8bd66-ebb4-4b63-bd29-5ef59c795903}";
           url = "https://addons.mozilla.org/firefox/downloads/file/3911467/shiori_ext-0.8.5.xpi";
@@ -184,7 +150,7 @@
         })
 
         (buildFirefoxXpiAddon {
-          pname = "Send to Kindle";
+          pname = "send-to-kindle";
           version = "1.3";
           addonId = "reabble.com@gmail.com";
           url = "https://addons.mozilla.org/firefox/downloads/file/3577406/push_to_kindle_2-1.3.xpi";
@@ -193,7 +159,7 @@
         })
 
         (buildFirefoxXpiAddon {
-          pname = "LinkedIn Feed Blocker";
+          pname = "linkedin-feed-blocker";
           version = "0.0.3";
           addonId = "{78400a4a-b6fe-4f7d-a831-734229802784}";
           url = "https://addons.mozilla.org/firefox/downloads/file/3795847/linkedin_feed_blocker-0.0.3.xpi";
@@ -342,7 +308,7 @@
 
       search = {
         force = true;
-        default = "DuckDuckGo";
+        default = "Google";
         order = [
           "DuckDuckGo"
           "Kagi"
