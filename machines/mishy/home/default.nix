@@ -43,7 +43,8 @@
       ./../../../modules/home/waybar
       ./../../../modules/home/swaync
       ./../../../modules/home/mpv.nix
-      ./../../../modules/home/firefox.nix
+      # ./../../../modules/home/firefox.nix
+      ./../../../modules/home/librewolf.nix
       # ./../../../moduleshome/nixconf/syncthing.nix
       ./../../../modules/home/glava
       ./../../../modules/home/sioyek.nix
