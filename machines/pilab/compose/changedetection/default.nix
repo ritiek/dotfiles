@@ -40,6 +40,13 @@
       "--network-alias=changedetection"
       "--network=changedetection_default"
     ];
+    labels = {
+      "homepage.description" = "Monitor webpages for changes";
+      "homepage.group" = "Monitoring";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:5000";
+      "homepage.icon" = "changedetection";
+      "homepage.name" = "ChangeDetection";
+    };
   };
   systemd.services."docker-changedetection" = {
     serviceConfig = {
