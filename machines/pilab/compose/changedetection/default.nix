@@ -32,9 +32,10 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--dns=1.1.1.1"
-      "--dns=100.100.100.100"
+      "--add-host=host.docker.internal:host-gateway"
       "--dns=127.0.0.1"
+      "--dns=100.100.100.100"
+      "--dns=1.1.1.1"
       "--dns=8.8.8.8"
       "--hostname=changedetection"
       "--network-alias=changedetection"
