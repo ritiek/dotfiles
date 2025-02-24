@@ -54,6 +54,20 @@
   programs = {
     nix-index-database.comma.enable = true;
     zsh.enable = true;
+    nix-ld = {
+      enable = true;
+      package = pkgs.nix-ld-rs;
+      libraries = with pkgs; [
+        # Bombsquad Game.
+        # Now installing these packages using Lutris in home-manager.
+        # python312
+        # SDL2
+        # libvorbis
+        # libGL
+        # openal
+        # stdenv.cc.cc
+      ];
+    };
   };
 
   services = {
