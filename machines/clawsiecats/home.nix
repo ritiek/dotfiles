@@ -66,6 +66,9 @@
           files = [
             ".zsh_history"
           ];
+          directories = [
+            "ballistica-personal-release"
+          ];
           allowOther = false;
         };
         "/nix/persist/home/${config.home.username}/cache" = {
