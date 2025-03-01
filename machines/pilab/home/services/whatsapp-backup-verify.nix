@@ -59,7 +59,6 @@ let
       )
 
       args = parser.parse_args()
-      print(args.path_to_encrypted_db)
 
       with open(args.path_to_encrypted_db, "rb") as fin:
           database = fin.read()
