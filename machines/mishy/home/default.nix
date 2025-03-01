@@ -37,7 +37,7 @@
       ./../../../modules/home/zsh
       ./../../../modules/home/git
       ./../../../modules/home/neovim
-      # ./../../../modules/home/zellij.nix
+      ./../../../modules/home/zellij.nix
       ./../../../modules/home/btop.nix
       ./../../../modules/home/rofi.nix
       ./../../../modules/home/waybar
