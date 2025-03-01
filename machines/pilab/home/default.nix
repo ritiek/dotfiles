@@ -48,6 +48,8 @@ in
     imports = [
       ./services/spotdl.nix
       ./services/paperless-ngx.nix
+      ./services/whatsapp-backup-verify.nix
+      ./../../../scripts/home/immich-env.nix
       ./../../../modules/home/sops.nix
       ./../../../modules/home/nix.nix
       # ./../../../modules/home/gnupg.nix
@@ -56,8 +58,6 @@ in
       ./../../../modules/home/neovim
       ./../../../modules/home/zellij.nix
       ./../../../modules/home/btop.nix
-      ./../../../scripts/home/immich-env.nix
-      ./../../../scripts/home/paperless-ngx-push.nix
     ];
     home = {
       stateVersion = "24.11";
@@ -87,14 +87,7 @@ in
         bore-cli
         immich-cli
         restic
-
-        (discordchatexporter-cli.overrideAttrs (oldAttrs: {
-          meta = oldAttrs.meta // {
-            # XXX: Overriding until maybe https://github.com/NixOS/nixpkgs/pull/360371
-            # gets merged.
-            platforms = [ "aarch64-linux" ];
-          };
-        }))
+        discordchatexporter-cli
 
         homelab-mount
 
@@ -134,6 +127,8 @@ in
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.service
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.timer
+          machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify.service
+          machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify.timer
           # systemctl stop spotdl-sync.timer
 
           tailscale serve --https=9445 off
@@ -168,6 +163,7 @@ in
             # systemctl start docker-kopia.service
             machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
             machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start paperless-ngx-sync.timer
+            machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start whatsapp-backup-verify.timer
             # systemctl start spotdl-sync.timer
 
             tailscale serve --bg --https=9445 127.0.0.1:9446
