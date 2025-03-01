@@ -83,6 +83,9 @@ let
   '');
 in
 {
+  imports = [
+    ./../../../../scripts/home/paperless-ngx-push.nix
+  ];
   sops.secrets."uptime-kuma.env" = {};
 
   home.packages = with pkgs; [
