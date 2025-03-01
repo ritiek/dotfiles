@@ -31,7 +31,7 @@
       isDefault = true;
       name = "Ritiek Malhotra";
 
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         # https://nur.nix-community.org/repos/rycee/
 
         ublock-origin
