@@ -470,7 +470,6 @@
     memoryPercent = 200;
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   boot.supportedFilesystems = [ "ntfs" ];
   boot.tmp = {

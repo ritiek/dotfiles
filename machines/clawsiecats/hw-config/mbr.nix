@@ -7,6 +7,8 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.loader.grub = {
     enable = true;
     # device = "/dev/vda";
