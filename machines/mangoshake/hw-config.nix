@@ -5,6 +5,16 @@
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+
+  # Needed for building SD images.
+  nixpkgs.overlays = [
+    (final: super: {
+      makeModulesClosure = x:
+        super.makeModulesClosure (x // { allowMissing = true; });
+    })
+  ];
+
   # TODO: I should also look into `bootCounter` option sometime for
   # systemd-boot systems:
   # https://github.com/NixOS/nixpkgs/pull/330017

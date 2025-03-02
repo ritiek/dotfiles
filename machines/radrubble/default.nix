@@ -3,7 +3,6 @@
 {
   imports = [
     ./home
-    ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
@@ -13,8 +12,8 @@
     ./../../modules/usbipd.nix
   ];
 
-  networking.hostName = lib.mkDefault "zerostash";
-  time.timeZone = lib.mkDefault "Asia/Kolkata";
+  networking.hostName = "radrubble";
+  time.timeZone = "Asia/Kolkata";
 
   boot.supportedFilesystems = [ "ntfs" ];
 
@@ -47,7 +46,7 @@
 
     users.ritiek = {
       isNormalUser = true;
-      # password = "ff";
+      password = "ff";
       extraGroups = [
         "wheel"
       ];
@@ -97,7 +96,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = lib.mkDefault 500;
+    memoryPercent = 200;
   };
 
   boot.tmp = {
