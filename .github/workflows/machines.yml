@@ -109,6 +109,18 @@ jobs:
         run: |
           nix build .#nixosConfigurations.zerostash.config.system.build.toplevel
 
+  radrubble:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: "Build: .#radrubble"
+        run: |
+          nix build .#nixosConfigurations.radrubble.config.system.build.toplevel
+
   mangoshake:
     runs-on: ubuntu-24.04-arm
     steps:
