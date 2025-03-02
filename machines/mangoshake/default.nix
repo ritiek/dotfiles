@@ -22,7 +22,6 @@ let
 in
 {
   imports = [
-    ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     # inputs.impermanence.nixosModules.impermanence
     ./../../modules/nix.nix
@@ -33,16 +32,6 @@ in
 
   networking.hostName = "mangoshake";
   time.timeZone = "Asia/Kolkata";
-
-  # Needed for building SD images.
-  nixpkgs.overlays = [
-    (final: super: {
-      makeModulesClosure = x:
-        super.makeModulesClosure (x // { allowMissing = true; });
-    })
-  ];
-
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
 
   # environment.persistence."/nix/persist/system" = {
   #   enable = true; 
@@ -66,7 +55,6 @@ in
     mutableUsers = false;
 
     users.root = {
-      password = "ff";
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHVwHXOotXjPLC/fXIEu/Xnc5ZiIwOKK4Amas/rb9/ZGAAAAEnNzaDpyaXRpZWtAeXViaWtrbw=="
