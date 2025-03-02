@@ -11,7 +11,7 @@
     ./../../modules/tailscale.nix
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.supportedFilesystems = [ "ntfs" ];
 
   environment.persistence."/nix/persist/system" = {
     directories = [

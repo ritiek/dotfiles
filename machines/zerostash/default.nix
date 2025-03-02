@@ -4,7 +4,6 @@
   imports = [
     ./home
     ./services.nix
-    ./hw-config.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
@@ -17,15 +16,6 @@
   networking.hostName = lib.mkDefault "zerostash";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
 
-  # Needed for building SD images.
-  nixpkgs.overlays = [
-    (final: super: {
-      makeModulesClosure = x:
-        super.makeModulesClosure (x // { allowMissing = true; });
-    })
-  ];
-
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
   boot.supportedFilesystems = [ "ntfs" ];
 
   nix = {
@@ -57,7 +47,7 @@
 
     users.ritiek = {
       isNormalUser = true;
-      password = "ff";
+      # password = "ff";
       extraGroups = [
         "wheel"
       ];

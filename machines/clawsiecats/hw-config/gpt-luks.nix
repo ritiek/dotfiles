@@ -7,6 +7,8 @@
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.initrd.network = {
     enable = true;
     ssh = {

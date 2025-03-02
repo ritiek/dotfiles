@@ -100,6 +100,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rockchip = {
+      url = "github:nabam/nixos-rockchip";
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    flake-utils.url = "github:numtide/flake-utils";
+
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
@@ -119,7 +126,6 @@
       modules = [
         ./machines/pilab
         ./machines/pilab/hw-config.nix
-        inputs.raspberry-pi-nix.nixosModules.sd-image
       ];
       specialArgs = { inherit inputs; };
     };
@@ -155,6 +161,7 @@
       system = "aarch64-linux";
       modules = [
         ./machines/keyberry
+        ./machines/keyberry/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
     };
@@ -163,6 +170,16 @@
       system = "aarch64-linux";
       modules = [
         ./machines/zerostash
+        ./machines/zerostash/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    nixosConfigurations.radrubble = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/radrubble
+        ./machines/radrubble/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
     };
@@ -171,6 +188,7 @@
       system = "aarch64-linux";
       modules = [
         ./machines/mangoshake
+        ./machines/mangoshake/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
     };
@@ -217,6 +235,15 @@
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.zerostash;
+      };
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.radrubble = {
+      hostname = "radrubble.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.radrubble;
       };
       sshUser = "ritiek";
     };
@@ -288,7 +315,7 @@
       system = "aarch64-linux";
       modules = [
         ./machines/keyberry
-        inputs.nixos-hardware.nixosModules.raspberry-pi-4
+        ./machines/keyberry/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
@@ -298,10 +325,13 @@
       system = "aarch64-linux";
       modules = [
         ./machines/zerostash
+        ./machines/zerostash/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
+
+    radrubble-sd = self.nixosConfigurations.radrubble.config.system.build.sdImage;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of
@@ -316,7 +346,10 @@
 
     mangoshake-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";
-      modules = [ ./machines/mangoshake ];
+      modules = [
+        ./machines/mangoshake
+        ./machines/mangoshake/hw-config.nix
+      ];
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };

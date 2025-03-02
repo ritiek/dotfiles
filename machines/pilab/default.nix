@@ -7,7 +7,6 @@
     ./home
     ./services/restic.nix
     # ./services/paperless-ngx.nix
-    ./hw-config.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
@@ -43,14 +42,6 @@
 
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
-
-  # Needed for building SD images.
-  nixpkgs.overlays = [
-    (final: super: {
-      makeModulesClosure = x:
-        super.makeModulesClosure (x // { allowMissing = true; });
-    })
-  ];
 
   boot.supportedFilesystems = [ "ntfs" ];
 

@@ -2,6 +2,15 @@
 {
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
+    inputs.raspberry-pi-nix.nixosModules.sd-image
+  ];
+
+  # Needed for building SD images.
+  nixpkgs.overlays = [
+    (final: super: {
+      makeModulesClosure = x:
+        super.makeModulesClosure (x // { allowMissing = true; });
+    })
   ];
 
   raspberry-pi-nix.board = "bcm2712";
