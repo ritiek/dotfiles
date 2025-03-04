@@ -38,7 +38,22 @@ let
 
     # Process each path pattern in the sync paths file
     while IFS= read -r PATH_PATTERN; do
-      for FILE in $PATH_PATTERN; do
+      # Split pattern into directory and filename components
+      dir_part="$(dirname "$PATH_PATTERN")"
+      file_pattern="$(basename "$PATH_PATTERN")"
+
+      # Skip if directory doesn't exist
+      if [[ ! -d "$dir_part" ]]; then
+        echo "Directory does not exist: $dir_part"
+        continue
+      fi
+
+      # Expand files safely
+      shopt -s nullglob
+      files=("$dir_part"/$file_pattern)  # Intentional unquoted $file_pattern for glob expansion
+      shopt -u nullglob
+
+      for FILE in "''${files[@]}"; do
         if [[ -f "$FILE" ]]; then
           FILE_CREATION_DATE=$(${pkgs.coreutils}/bin/stat -c %W "$FILE")
 
