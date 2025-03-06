@@ -57,7 +57,7 @@
   };
 
   # Since I am the DNS!
-  services.tailscale.extraUpFlags = [
+  services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-dns=false"
   ];
 
