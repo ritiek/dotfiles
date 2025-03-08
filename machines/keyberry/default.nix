@@ -6,6 +6,10 @@
   ];
 
   networking.hostName = lib.mkForce "keyberry";
+  services.tailscale.extraUpFlags = lib.mkAfter [
+    "--advertise-routes=192.168.1.0/24"
+  ];
+
   zramSwap.memoryPercent = 200;
 
   services.uptime-kuma = {
