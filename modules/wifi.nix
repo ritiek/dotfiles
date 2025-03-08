@@ -8,6 +8,6 @@
     networks = {
       "SSID".psk = "PASS_PLAIN";
     };
-    interfaces = [ "wlan0" ];
+    interfaces = [ ];
   };
 }
