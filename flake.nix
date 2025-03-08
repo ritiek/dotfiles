@@ -25,10 +25,10 @@
     };
 
     pi400kb-nix = {
-      url = "github:ritiek/pi400kb-nix";
+      # url = "git+file:///home/ritiek/pi400kb?submodules=1";
+      url = "git+https://github.com/ritiek/pi400kb?ref=main&submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # pi400kb-nix.url = "git+file:///home/ritiek/pi400kb-nix";
 
     home-manager = {
       url = "github:nix-community/home-manager";
