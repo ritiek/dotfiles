@@ -56,9 +56,8 @@
     h.argument = "+i";
   };
 
-  # Since I am the DNS!
   services.tailscale.extraUpFlags = lib.mkAfter [
-    "--accept-dns=false"
+    "--accept-routes"
   ];
 
   users = {
