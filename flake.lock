@@ -661,6 +661,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware_2": {
+      "locked": {
+        "lastModified": 1741325094,
+        "narHash": "sha256-RUAdT8dZ6k/486vnu3tiNRrNW6+Q8uSD2Mq7gTX4jlo=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "b48cc4dab0f9711af296fc367b6108cf7b8ccb16",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1739020877,
@@ -797,43 +812,28 @@
         "type": "github"
       }
     },
-    "pi400kb": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1684245072,
-        "narHash": "sha256-erA+UQtRDIqCRP52btzHSt92tyWYpaKjD3waDof0+aY=",
-        "ref": "refs/heads/main",
-        "rev": "ad102c2fa2e6f1298cbe9e4cf550089363bc60d9",
-        "revCount": 38,
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/Gadgetoid/pi400kb"
-      },
-      "original": {
-        "submodules": true,
-        "type": "git",
-        "url": "https://github.com/Gadgetoid/pi400kb"
-      }
-    },
     "pi400kb-nix": {
       "inputs": {
+        "nixos-hardware": "nixos-hardware_2",
         "nixpkgs": [
           "nixpkgs"
-        ],
-        "pi400kb": "pi400kb"
+        ]
       },
       "locked": {
-        "lastModified": 1731868939,
-        "narHash": "sha256-WUUCOVlWPZx+S9mCWgHXJ6xoENT6zI2p5QMkn7Th0UE=",
-        "owner": "ritiek",
-        "repo": "pi400kb-nix",
-        "rev": "132735c2ec00a5390e1fdd2c05e4daeee9f4be56",
-        "type": "github"
+        "lastModified": 1741425399,
+        "narHash": "sha256-1bFekRhlBuKfUvm87gu8/rfBQf6FEmo0tOlmlI+M5r4=",
+        "ref": "main",
+        "rev": "656a5d9bf5306a2062e8fefade3cb30da3d65bb0",
+        "revCount": 50,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/ritiek/pi400kb"
       },
       "original": {
-        "owner": "ritiek",
-        "repo": "pi400kb-nix",
-        "type": "github"
+        "ref": "main",
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/ritiek/pi400kb"
       }
     },
     "pre-commit-hooks": {
