@@ -152,6 +152,17 @@ local plugins = {
     enabled = false,
   },
 
+  {
+    "nvzone/typr",
+    dependencies = "nvzone/volt",
+    opts = {},
+    cmd = { "Typr", "TyprStats" },
+  },
+
+  {
+    "cappyzawa/trim.nvim",
+    opts = {},
+  },
   -- {
   --   "ojroques/nvim-osc52",
   -- }
