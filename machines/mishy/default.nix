@@ -44,6 +44,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/ssh.nix
+    ./../../modules/yubico-pam.nix
     ./../../modules/usbip.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
@@ -146,8 +147,6 @@
       xclip
       xorg.xhost
       # helix
-      yubico-pam
-      pam_u2f
       parallel
       libarchive
       # android-tools
@@ -390,47 +389,6 @@
 
     rtkit.enable = true;
     polkit.enable = true;
-
-    pam.sshAgentAuth.enable = true;
-    pam.services = {
-      login = {
-        u2fAuth = true;
-        sshAgentAuth = true;
-      };
-      sudo = {
-        u2fAuth = true;
-        sshAgentAuth = true;
-      #   auth = [
-      #     {
-      #       required = "${pkgs.pam_u2f}/lib/security/pam_u2f.so";
-      #       controlFlag = "required";
-      #     }
-      #     {
-      #       required = "pam_unix.so";
-      #       controlFlag = "sufficient";
-      #     }
-      #   ];
-      };
-      su = {
-        u2fAuth = true;
-        sshAgentAuth = true;
-      };
-      polkit-1 = {
-        u2fAuth = true;
-        sshAgentAuth = true;
-      };
-      hyprlock = {
-        u2fAuth = true;
-        sshAgentAuth = true;
-      };
-    };
-
-    pam.yubico = {
-      enable = true;
-      debug = true;
-      mode = "challenge-response";
-      id = [ "30084843" ];
-    };
   };
 
   fonts = {
