@@ -1,8 +1,17 @@
 { lib, pkgs, ... }:
+let
+  # FIXME: Hardcoding my username for now. There should be a better way I guess.
+  username = "ritiek";
+in
 {
+  sops.secrets."u2f_keys" = {
+    owner = username;
+    path = "/home/${username}/.config/Yubico/u2f_keys";
+  };
+
   environment.systemPackages = with pkgs; [ pam_u2f ];
 
-  users.users.ritiek.extraGroups = lib.mkAfter [ "plugdev" ];
+  users.users.${username}.extraGroups = lib.mkAfter [ "plugdev" ];
 
   security = {
     sudo.wheelNeedsPassword = true;
