@@ -108,7 +108,7 @@
     sudo.enable = false;
     sudo-rs = {
       enable = true;
-      wheelNeedsPassword = false;
+      wheelNeedsPassword = lib.mkDefault false;
     };
   };
 
