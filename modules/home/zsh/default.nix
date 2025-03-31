@@ -178,6 +178,7 @@ export PATH
         "bgnotify"
         "colored-man-pages"
         "command-not-found"
+        "tailscale"
 	# Commenting out as it break Ctrl+C to clear command in some scenarios.
         # "history-substring-search"
       ];
