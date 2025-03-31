@@ -39,13 +39,13 @@ let
     # Process each path pattern in the sync paths file
     while IFS= read -r PATH_PATTERN; do
       # Split pattern into directory and filename components
-      dir_part="$(dirname "$PATH_PATTERN")"
-      file_pattern="$(basename "$PATH_PATTERN")"
+      dir_part="$(${pkgs.coreutils}/bin/dirname "$PATH_PATTERN")"
+      file_pattern="$(${pkgs.coreutils}/bin/basename "$PATH_PATTERN")"
 
       # Skip if directory doesn't exist
       if [[ ! -d "$dir_part" ]]; then
         echo "Directory does not exist: $dir_part"
-        continue
+        exit 1
       fi
 
       # Expand files safely
