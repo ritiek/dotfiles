@@ -120,6 +120,11 @@
     memoryPercent = 200;
   };
 
+  networking.localCommands = ''
+    # Prioritize default route over Tailscale route for default gateway.
+    ip rule add to 192.168.2.0/24 priority 2500 lookup main
+  '';
+
   boot.tmp = {
     # Not using tmpfs as it causes nixos-generators to eat
     # RAM like a furious pete.
