@@ -38,6 +38,7 @@
     ./compose/ollama-webui
     ./compose/pwpush
     ./compose/dawarich
+    ./compose/rustdesk.nix
     # ./compose/kopia
   ];
 
