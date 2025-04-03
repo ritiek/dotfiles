@@ -6,9 +6,10 @@
     (rofi-pulse-select.override {
       rofi-unwrapped = rofi-wayland;
     })
-    (rofimoji.override {
-      rofi = rofi-wayland;
-    })
+    rofimoji
+    # (rofimoji.override {
+    #   rofi = rofi-wayland;
+    # })
   ];
   programs.rofi = {
     enable = true;
