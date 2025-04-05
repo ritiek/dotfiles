@@ -67,7 +67,12 @@
             ".zsh_history"
           ];
           directories = [
-            "ballistica-personal-release"
+            # "ballistica-personal-release"
+            {
+              directory = "ballistica-personal-release";
+              # Symlinking as mounting sets nosuid which is not what I want.
+              method = "symlink";
+            }
           ];
           allowOther = false;
         };

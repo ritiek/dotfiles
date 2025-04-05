@@ -98,17 +98,19 @@ in
       # 7835
 
       # Bombsquad
-      # 43210
+      43210
     ];
     allowedUDPPorts = [
       # Bombsquad
       43210
     ];
-    extraCommands = ''
-      ${pkgs.iptables}/bin/iptables -A FORWARD -i %i -j ACCEPT
-      # Reverse proxy a bombsquad server running behind a NAT via Tailscale.
-      ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o tailscale0 -j MASQUERADE
-      ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -p udp --dport 43210 -j DNAT --to-destination 100.104.56.111:43210
-    '';
+    # extraCommands = ''
+    #   # Commenting these out for now as these rules interfere with running
+    #   # Bombsquad server natively on the machine.
+    #   ${pkgs.iptables}/bin/iptables -A FORWARD -i %i -j ACCEPT
+    #   # Reverse proxy a bombsquad server running behind a NAT via Tailscale.
+    #   ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o tailscale0 -j MASQUERADE
+    #   ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -p udp --dport 43210 -j DNAT --to-destination 100.104.56.111:43210
+    # '';
   };
 }
