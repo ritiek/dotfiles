@@ -16,7 +16,7 @@ let
       owner = "KnugiHK";
       repo = "WhatsApp-Chat-Exporter";
       rev = "9f321384ece48e262d325b80b1fb1669cf90dae3";   # branch: dev (1st March, 2025)
-      sha256 = "sha256-kAa8D53Zz1Vd77zZ7hVwj6lgtj+VhtLUtIVur2gWdI8=";
+      sha256 = "sha256-/ul132+qQxJBrexlArJMH0vfmPGDiXdvnhgxeue7WIA=";
     };
 
     nativeBuildInputs = with pkgs.python3Packages; [
