@@ -165,8 +165,8 @@
         nap
 
         # wl-gammarelay-rs
-        wayvnc
-        wlvncc
+        # wayvnc
+        # wlvncc
         kooha
 
         deploy-rs
