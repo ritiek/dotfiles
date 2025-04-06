@@ -51,7 +51,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--cpus=0.5"
+      # "--cpus=0.5"
       # NOTE: compose2nix generated the entrypoint inside an array. Docker didn't
       # seem to like this. Had to re-define the entrypoint as a string manually
       # to make Docker happy.
@@ -62,10 +62,17 @@
       "--health-retries=30"
       "--health-start-period=30s"
       "--health-timeout=10s"
-      "--memory=4294967296b"
+      # "--memory=4294967296b"
       "--network-alias=dawarich"
       "--network=dawarich_dawarich"
     ];
+    labels = {
+      "homepage.description" = "Location";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:3030";
+      "homepage.icon" = "dawarich";
+      "homepage.name" = "Dawarich";
+    };
   };
   systemd.services."docker-dawarich" = {
     serviceConfig = {
