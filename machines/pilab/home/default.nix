@@ -162,7 +162,7 @@ in
             systemctl start docker-habitica-server.service
             systemctl start docker-open-webui.service
             systemctl start docker-pwpush.service
-            systemctl start docker-dawarich.service
+            systemctl start docker-dawarich.service docker-dawarich_sidekiq.service
             systemctl start docker-rustdesk-hbbs.service
             # systemctl start docker-kopia.service
             machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
