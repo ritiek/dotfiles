@@ -13,7 +13,7 @@
   virtualisation.oci-containers.containers."rustdesk-hbbr" = {
     image = "rustdesk/rustdesk-server:latest";
     volumes = [
-      "/media/services/rustdesk/hbbr:/root:rw"
+      "/media/HOMELAB_MEDIA/services/rustdesk/hbbr:/root:rw"
     ];
     ports = [
       "21117:21117/tcp"
@@ -41,13 +41,13 @@
       "docker-network-rustdesk_rustdesk-net.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/rustdesk/hbbr"
+      "/media/HOMELAB_MEDIA/services/rustdesk/hbbr"
     ];
   };
   virtualisation.oci-containers.containers."rustdesk-hbbs" = {
     image = "rustdesk/rustdesk-server:latest";
     volumes = [
-      "/media/services/rustdesk/hbbs:/root:rw"
+      "/media/HOMELAB_MEDIA/services/rustdesk/hbbs:/root:rw"
     ];
     ports = [
       "21115:21115/tcp"
@@ -87,7 +87,7 @@
       "docker-network-rustdesk_rustdesk-net.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/services/rustdesk/hbbs"
+      "/media/HOMELAB_MEDIA/services/rustdesk/hbbs"
     ];
   };
 
