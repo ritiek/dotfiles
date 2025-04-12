@@ -43,8 +43,9 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDM4K9v5v6sGycejZDxf6fHpiLkt7dxuo/mINCE011y2"
     ];
   };
-  users.users.ritiek.packages = [
+  users.users.ritiek.packages = with pkgs; [
     inputs.home-manager.packages.${pkgs.system}.default
+    deploy-rs
   ];
 
   # environment.systemPackages = with pkgs; [
