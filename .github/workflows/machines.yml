@@ -32,9 +32,22 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
+
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
       - name: "Build: .#mishy"
         run: |
           nix build .#nixosConfigurations.mishy.config.system.build.toplevel
+
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          cache: attic-action
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
   pilab:
     runs-on: ubuntu-24.04-arm
@@ -44,9 +57,21 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
       - name: "Build: .#pilab"
         run: |
           nix build .#nixosConfigurations.pilab.config.system.build.toplevel
+
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          cache: attic-action
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
   clawsiecats:
     runs-on: ubuntu-latest
