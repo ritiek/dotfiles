@@ -66,6 +66,43 @@
         "x-systemd.mount-timeout=5s"
       ];
     };
+
+    nix-binary-cache = {
+      mountPoint = "/media/${config.fileSystems.nix-binary-cache.label}";
+      device = "/dev/disk/by-label/${config.fileSystems.nix-binary-cache.label}";
+      fsType = "ext4";
+      label = "NIX_BINARY_CACHE";
+      autoResize = true;
+      options = [
+        "noatime"
+        "noauto"
+        "nofail"
+        "x-systemd.automount"
+        "x-systemd.mount-timeout=5s"
+      ];
+    };
+  };
+
+  # Ref:
+  # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
+  systemd.tmpfiles.settings = {
+    "10-homelab"."/media/HOMELAB_MEDIA" = {
+      d = {
+        group = "root";
+        mode = "0755";
+        user = "root";
+      };
+      h.argument = "+i";
+    };
+
+    "10-nix-binary-cache"."${config.fileSystems.nix-binary-cache.mountPoint}" = {
+      d = {
+        group = config.services.atticd.group;
+        mode = "0755";
+        user = config.services.atticd.user;
+      };
+      h.argument = "+i";
+    };
   };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

@@ -48,17 +48,6 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
-  # Ref:
-  # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
-  systemd.tmpfiles.settings."10-homelab"."/media/HOMELAB_MEDIA" = {
-    d = {
-      group = "root";
-      mode = "0755";
-      user = "root";
-    };
-    h.argument = "+i";
-  };
-
   services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-routes"
   ];
