@@ -11,6 +11,7 @@
       "https://nixpkgs-wayland.cachix.org"
       "https://nabam-nixos-rockchip.cachix.org"
       "https://hyprland.cachix.org"
+      "http://pilab.lion-zebra.ts.net:8080/attic-action"
     ];
     trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -20,6 +21,7 @@
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
       "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+      "attic-action:tH4QQA1x0GVGf1GJoQOZpoT7kQ5poZfwNSGjzHLRGgg="
     ];
     trusted-users = [ "ritiek" ];
   };
