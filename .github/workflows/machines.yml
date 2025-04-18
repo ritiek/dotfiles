@@ -38,16 +38,16 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: "Build: .#mishy"
-        run: |
-          nix build .#nixosConfigurations.mishy.config.system.build.toplevel
-
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#mishy"
+        run: |
+          nix build .#nixosConfigurations.mishy.config.system.build.toplevel
 
   pilab:
     runs-on: ubuntu-24.04-arm
@@ -62,16 +62,16 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: "Build: .#pilab"
-        run: |
-          nix build .#nixosConfigurations.pilab.config.system.build.toplevel
-
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#pilab"
+        run: |
+          nix build .#nixosConfigurations.pilab.config.system.build.toplevel
 
   clawsiecats:
     runs-on: ubuntu-latest
@@ -105,6 +105,13 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          cache: attic-action
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
       - name: "Build: .#clawsiecats-minimal"
         run: |
           nix build .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
@@ -114,13 +121,6 @@ jobs:
       - name: "Build: .#clawsiecats-luks"
         run: |
           nix build .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
-
-      - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
-        with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
-          cache: attic-action
-          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
   keyberry:
     runs-on: ubuntu-24.04-arm
@@ -135,16 +135,16 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: "Build: .#keyberry"
-        run: |
-          nix build .#nixosConfigurations.keyberry.config.system.build.toplevel
-
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#keyberry"
+        run: |
+          nix build .#nixosConfigurations.keyberry.config.system.build.toplevel
 
   zerostash:
     runs-on: ubuntu-24.04-arm
@@ -159,16 +159,16 @@ jobs:
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: "Build: .#zerostash"
-        run: |
-          nix build .#nixosConfigurations.zerostash.config.system.build.toplevel
-
       - name: Setup Attic cache
         uses: ryanccn/attic-action@v0
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#zerostash"
+        run: |
+          nix build .#nixosConfigurations.zerostash.config.system.build.toplevel
 
   radrubble:
     runs-on: ubuntu-24.04-arm
@@ -177,6 +177,18 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
+
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          cache: attic-action
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#radrubble"
         run: |
@@ -189,6 +201,18 @@ jobs:
         uses: cachix/install-nix-action@v27
       - name: Clone Repository
         uses: actions/checkout@v4
+
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Setup Attic cache
+        uses: ryanccn/attic-action@v0
+        with:
+          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          cache: attic-action
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#mangoshake"
         run: |
