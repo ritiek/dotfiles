@@ -11,7 +11,12 @@ on:
 # --configure-cache attic-action --configure-cache-retention attic-action)
 #
 # To generate authenticate push to GH actions cache token ${{ secrets.ATTIC_PUSH_TOKEN }}:
-# $ sudo atticd-atticadm make-token --sub ritiek --validity 1y --push attic-action
+# $ sudo atticd-atticadm make-token \
+#   --sub ritiek \
+#   --validity 1y \
+#   --pull attic-action \
+#   --push attic-action \
+#   --create-cache attic-action
 
 jobs:
   mishy:
