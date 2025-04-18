@@ -4,6 +4,15 @@ on:
   push:
   workflow_dispatch:
 
+# NOTE: Attic can authenticate atticd through:
+# $ attic login --set-default attic-action http://pilab.lion-zebra.ts.net:8080 \
+# $(sudo atticd-atticadm make-token --sub ritiek --validity 1y --pull attic-action \
+# --push attic-action --create-cache attic-action --destroy-cache attic-action \
+# --configure-cache attic-action --configure-cache-retention attic-action)
+#
+# To generate authenticate push to GH actions cache token ${{ secrets.ATTIC_PUSH_TOKEN }}:
+# $ sudo atticd-atticadm make-token --sub ritiek --validity 1y --push attic-action
+
 jobs:
   mishy:
     runs-on: ubuntu-latest
