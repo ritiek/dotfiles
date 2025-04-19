@@ -24,5 +24,7 @@
       "attic-action:tH4QQA1x0GVGf1GJoQOZpoT7kQ5poZfwNSGjzHLRGgg="
     ];
     trusted-users = [ "ritiek" ];
+    # Fallback to building from source when cache server is not accessible.
+    fallback = true;
   };
 }
