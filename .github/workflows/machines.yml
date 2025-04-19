@@ -53,10 +53,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#mishy"
@@ -77,10 +78,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#pilab"
@@ -120,10 +122,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#clawsiecats-minimal"
@@ -150,10 +153,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#keyberry"
@@ -174,10 +178,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#zerostash"
@@ -198,10 +203,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#radrubble"
@@ -222,10 +228,11 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Setup Attic cache
-        uses: ryanccn/attic-action@v0
+        uses: ritiek/attic-action@main
         with:
           endpoint: http://pilab.lion-zebra.ts.net:8080/
           cache: attic-action
+          create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
       - name: "Build: .#mangoshake"
