@@ -16,7 +16,9 @@ on:
 #   --validity 1y \
 #   --pull attic-action \
 #   --push attic-action \
-#   --create-cache attic-action
+#   --create-cache attic-action \
+#   --configure-cache attic-action \
+#   --configure-cache-retention attic-action
 
 jobs:
   mishy:
