@@ -22,6 +22,10 @@
     # ];
   };
 
+  nixpkgs.overlays = [
+    inputs.headplane.overlays.default
+  ];
+
   users.defaultUserShell = pkgs.zsh;
   users.users.root.openssh.authorizedKeys.keys = [ ];
 
@@ -79,6 +83,8 @@
       };
     };
   };
+
+  virtualisation.docker.enable = true;
 
   security = {
     sudo.enable = false;

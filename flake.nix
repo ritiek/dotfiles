@@ -89,6 +89,11 @@
       # inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    headplane = {
+      url = "github:tale/headplane";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     hyprgrass = {
       url = "github:horriblename/hyprgrass";
       # inputs.nixpkgs.follows = "nixpkgs";

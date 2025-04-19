@@ -1,9 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 let
   domain = "clawsiecats.omg.lol";
 in
 {
+  imports = [
+    inputs.headplane.nixosModules.headplane
+  ];
+
   environment.persistence."/nix/persist/system" = {
     directories = [
       "/var/lib/acme"
@@ -53,6 +57,20 @@ in
     #   nginx.enable = true;
     # };
 
+    headplane = {
+      enable = true;
+      agent = {
+        enable = false;
+      };
+    };
+
+    # headscale = {
+    #   enable = true;
+    #   settings = {
+    #     dns.base_domain = "clawsiecats.omg.lol";
+    #   };
+    # };
+
     nginx = {
       enable = true;
       virtualHosts = {
@@ -78,6 +96,24 @@ in
             recommendedProxySettings = true;
           };
         };
+        "immich.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.76.250.31:2283";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
+        # "prefect.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.117.162.60:4200";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
       };
     };
   };
@@ -95,7 +131,8 @@ in
       443
 
       # Bore tunnels
-      # 7835
+      7835
+      4200
 
       # Bombsquad
       43210
