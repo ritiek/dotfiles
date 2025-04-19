@@ -64,7 +64,7 @@ jobs:
 
       - name: "Build: .#mishy"
         run: |
-          nix build .#nixosConfigurations.mishy.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.mishy.config.system.build.toplevel
 
   pilab:
     runs-on: ubuntu-24.04-arm
@@ -89,7 +89,7 @@ jobs:
 
       - name: "Build: .#pilab"
         run: |
-          nix build .#nixosConfigurations.pilab.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.pilab.config.system.build.toplevel
 
   clawsiecats:
     runs-on: ubuntu-latest
@@ -133,13 +133,13 @@ jobs:
 
       - name: "Build: .#clawsiecats-minimal"
         run: |
-          nix build .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
       - name: "Build: .#clawsiecats"
         run: |
-          nix build .#nixosConfigurations.clawsiecats.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.clawsiecats.config.system.build.toplevel
       - name: "Build: .#clawsiecats-luks"
         run: |
-          nix build .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
 
   keyberry:
     runs-on: ubuntu-24.04-arm
@@ -164,7 +164,7 @@ jobs:
 
       - name: "Build: .#keyberry"
         run: |
-          nix build .#nixosConfigurations.keyberry.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.keyberry.config.system.build.toplevel
 
   zerostash:
     runs-on: ubuntu-24.04-arm
@@ -189,7 +189,7 @@ jobs:
 
       - name: "Build: .#zerostash"
         run: |
-          nix build .#nixosConfigurations.zerostash.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.zerostash.config.system.build.toplevel
 
   radrubble:
     runs-on: ubuntu-24.04-arm
@@ -214,7 +214,7 @@ jobs:
 
       - name: "Build: .#radrubble"
         run: |
-          nix build .#nixosConfigurations.radrubble.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.radrubble.config.system.build.toplevel
 
   mangoshake:
     runs-on: ubuntu-24.04-arm
@@ -239,4 +239,4 @@ jobs:
 
       - name: "Build: .#mangoshake"
         run: |
-          nix build .#nixosConfigurations.mangoshake.config.system.build.toplevel
+          nix build --fallback .#nixosConfigurations.mangoshake.config.system.build.toplevel
