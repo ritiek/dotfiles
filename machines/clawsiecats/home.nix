@@ -92,6 +92,9 @@
         # diskonaut
         compsize
 
+        docker-compose
+        compose2nix
+
         iptables
         nmap
         dig
