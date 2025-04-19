@@ -3,7 +3,6 @@
 {
   imports = [
     ./home
-    ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
@@ -11,6 +10,7 @@
     ./../../modules/wifi.nix
     ./../../modules/tailscale.nix
     ./../../modules/usbipd.nix
+    ./../../modules/restic-server.nix
   ];
 
   networking.hostName = lib.mkDefault "zerostash";
