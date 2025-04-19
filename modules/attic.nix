@@ -12,9 +12,12 @@
         type = "zstd";
         level = 9;
       };
+      database = {
+        url = "sqlite://${config.fileSystems.nix-binary-cache.mountPoint}/server.db?mode=rwc";
+      };
       storage = {
         type = "local";
-        path = "/media/NIX_BINARY_CACHE";
+        path = config.fileSystems.nix-binary-cache.mountPoint;
       };
     };
   };
