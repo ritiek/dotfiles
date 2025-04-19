@@ -21,7 +21,7 @@
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
       "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "attic-action:tH4QQA1x0GVGf1GJoQOZpoT7kQ5poZfwNSGjzHLRGgg="
+      "attic-action:wjnBtx68f8TU7eahRKpVICGlIwOjQ7ENsCUiDd5Jqqs="
     ];
     trusted-users = [ "ritiek" ];
     # Fallback to building from source when cache server is not accessible.
