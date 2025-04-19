@@ -94,15 +94,6 @@
       };
       h.argument = "+i";
     };
-
-    "10-nix-binary-cache"."${config.fileSystems.nix-binary-cache.mountPoint}" = {
-      d = {
-        group = config.services.atticd.group;
-        mode = "0755";
-        user = config.services.atticd.user;
-      };
-      h.argument = "+i";
-    };
   };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
