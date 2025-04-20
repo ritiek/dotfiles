@@ -7,6 +7,19 @@
     format = "dotenv";
   };
 
+  networking.firewall = {
+    allowedTCPPorts = [
+      53
+      81
+    ];
+    allowedUDPPorts = [
+      53
+      67
+      547
+      123
+    ];
+  };
+
   # Runtime
   virtualisation.docker = {
     enable = true;
