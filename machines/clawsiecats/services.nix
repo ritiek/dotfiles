@@ -61,7 +61,7 @@ in
     headscale = {
       enable = true;
       settings = {
-        server_url = "controlplane.${domain}";
+        server_url = "https://${domain}";
         listen_addr = "127.0.0.1:8080";
         # listen_addr = "0.0.0.0:8080";
         dns = {
