@@ -55,6 +55,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-mishy
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -82,6 +83,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-pilab
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -128,6 +130,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-clawsiecats
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -161,6 +164,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-keyberry
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -188,6 +192,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-zerostash
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -215,6 +220,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-radrubble
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -242,6 +248,7 @@ jobs:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           args: --login-server https://controlplane.clawsiecats.omg.lol
           use-cache: true
+          hostname: gha-mangoshake
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
