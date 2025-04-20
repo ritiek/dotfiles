@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   sops.secrets."tailscale.authkey" = {};
 
@@ -8,6 +8,7 @@
     authKeyFile = config.sops.secrets."tailscale.authkey".path;
     useRoutingFeatures = "both";
     extraUpFlags = [
+      "--login-server=https://controlplane.clawsiecats.omg.lol"
       "--advertise-exit-node"
     ];
   };
