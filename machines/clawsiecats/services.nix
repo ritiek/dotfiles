@@ -155,7 +155,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.76.250.31:5100";
+        #     proxyPass = "http://100.64.0.7:5100";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -164,11 +164,24 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.76.250.31:2283";
+        #     proxyPass = "http://100.64.0.7:2283";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
         # };
+        "vaultwarden.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:9446";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+            extraConfig = ''
+              allow 120.138.111.195;
+              deny all;
+            '';
+          };
+        };
         "controlplane.${domain}" = {
           forceSSL = true;
           enableACME = true;
