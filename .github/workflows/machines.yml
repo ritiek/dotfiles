@@ -53,6 +53,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -78,6 +80,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -122,6 +126,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -153,6 +159,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -178,6 +186,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -203,6 +213,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
@@ -228,6 +240,8 @@ jobs:
         uses: tailscale/github-action@v3
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+          args: --login-server https://controlplane.clawsiecats.omg.lol
+          use-cache: true
 
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
