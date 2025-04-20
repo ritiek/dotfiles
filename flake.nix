@@ -90,7 +90,7 @@
     };
 
     headplane = {
-      url = "github:tale/headplane";
+      url = "github:ritiek/headplane";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
