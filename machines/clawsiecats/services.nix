@@ -69,7 +69,8 @@ in
           magic_dns = true;
           nameservers.global = [
             # PiHole
-            "100.76.250.31"
+            # "100.76.250.31"
+            "100.64.0.11"
             # Mullvad
             "194.242.2.2"
             "2a07:e340::2"
