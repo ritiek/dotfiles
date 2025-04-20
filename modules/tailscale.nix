@@ -1,6 +1,7 @@
 { config, ... }:
 {
   sops.secrets."tailscale.authkey" = {};
+
   services.tailscale = {
     enable = true;
     openFirewall = true;
