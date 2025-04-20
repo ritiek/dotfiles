@@ -8,7 +8,7 @@
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/sops.nix
-    ./../../modules/tailscale.nix
+    # ./../../modules/tailscale.nix
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];

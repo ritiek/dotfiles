@@ -10,7 +10,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
-    ./../../modules/tailscale.nix
+    ./../../modules/tailscale-controlplane.nix
     ./../../modules/attic.nix
     ./../../modules/usbipd.nix
     # Generated using:
