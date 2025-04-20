@@ -2,6 +2,7 @@
 
 let
   domain = "clawsiecats.omg.lol";
+
 in
 {
   imports = [
@@ -57,19 +58,81 @@ in
     #   nginx.enable = true;
     # };
 
-    headplane = {
+    headscale = {
       enable = true;
-      agent = {
-        enable = false;
+      settings = {
+        server_url = "controlplane.${domain}";
+        listen_addr = "127.0.0.1:8080";
+        # listen_addr = "0.0.0.0:8080";
+        dns = {
+          search_domains = [ "lion-zebra.ts.net" ];
+          magic_dns = true;
+          nameservers.global = [
+            # PiHole
+            "100.76.250.31"
+            # Mullvad
+            "194.242.2.2"
+            "2a07:e340::2"
+          ];
+          base_domain = "lion-zebra.ts.net";
+        };
+        derp = {
+          server.enable = true;
+        };
       };
     };
 
-    # headscale = {
-    #   enable = true;
-    #   settings = {
-    #     dns.base_domain = "clawsiecats.omg.lol";
-    #   };
-    # };
+    headplane = {
+      enable = true;
+      agent.enable = false;
+      # agent = {
+      #   # As an example only.
+      #   # Headplane Agent hasn't yet been ready at the moment of writing the doc.
+      #   enable = true;
+      #   settings = {
+      #     HEADPLANE_AGENT_DEBUG = true;
+      #     HEADPLANE_AGENT_HOSTNAME = "localhost";
+      #     HEADPLANE_AGENT_TS_SERVER = "https://example.com";
+      #     HEADPLANE_AGENT_TS_AUTHKEY = "xxxxxxxxxxxxxx";
+      #     HEADPLANE_AGENT_HP_SERVER = "https://example.com/admin/dns";
+      #     HEADPLANE_AGENT_HP_AUTHKEY = "xxxxxxxxxxxxxx";
+      #   };
+      # };
+      settings = {
+        server = {
+          # host = "127.0.0.1";
+          host = "0.0.0.0";
+          port = 3000;
+          cookie_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+          cookie_secure = false;
+        };
+        headscale = {
+          # url = "http://${domain}:8080";
+          # url = "https://controlplane.${domain}";
+          url = "http://127.0.0.1:8080";
+            # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
+          # config_path = (pkgs.formats.yaml {}).generate "headscale.yml" (lib.recursiveUpdate config.services.headscale.settings {
+          #   acme_email = "/dev/null";
+          #   tls_cert_path = "/dev/null";
+          #   tls_key_path = "/dev/null";
+          #   policy.path = "/dev/null";
+          #   oidc.client_secret_path = "/dev/null";
+          # });
+          config_strict = true;
+        };
+        integration.proc.enabled = true;
+        # oidc = {
+        #   issuer = "https://oidc.example.com";
+        #   client_id = "headplane";
+        #   client_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        #   disable_api_key_login = true;
+        #   # Might needed when integrating with Authelia.
+        #   token_endpoint_auth_method = "client_secret_basic";
+        #   headscale_api_key = "xxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+        #   redirect_uri = "https://oidc.example.com/admin/oidc/callback";
+        # };
+      };
+    };
 
     nginx = {
       enable = true;
@@ -87,20 +150,30 @@ in
         #   # locations."/".root = pkgs.miniserve;
         #   locations."/".proxyPass = "http://127.0.0.1:8081";
         # };
-        "puwush.${domain}" = {
+        # "puwush.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.76.250.31:5100";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
+        # "immich.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.76.250.31:2283";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
+        "controlplane.${domain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://100.76.250.31:5100";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "immich.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.76.250.31:2283";
+            proxyPass = "http://127.0.0.1:8080";
+            proxyWebsockets = true;
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
           };
@@ -129,6 +202,9 @@ in
       # NGINX and ACME
       80
       443
+
+      # Headplane
+      3000
 
       # Bore tunnels
       7835

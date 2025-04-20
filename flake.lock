@@ -251,13 +251,13 @@
       "locked": {
         "lastModified": 1744729211,
         "narHash": "sha256-X4x+kzLgKoVbsG/vOJgPGzn7UOtfiYyC4XJG11kv2u0=",
-        "owner": "tale",
+        "owner": "ritiek",
         "repo": "headplane",
         "rev": "c8507cff7cc2d61004896c41eec4b32f5e07221c",
         "type": "github"
       },
       "original": {
-        "owner": "tale",
+        "owner": "ritiek",
         "repo": "headplane",
         "type": "github"
       }
