@@ -14,6 +14,21 @@ in
       "/var/lib/acme"
       "/var/lib/jitsi-meet"
       "/var/lib/prosody"
+      "/var/lib/headscale"
+      # {
+      #     directory = "/var/lib/prosody";
+      #     user = config.ids.uids.prosody;
+      #     group = config.ids.gids.prosody;
+      #     mode = "u=rwx,g=rx,o=";
+      # }
+      {
+          directory = "/var/lib/syncthing";
+          # user = config.ids.uids.syncthing;
+          # group = config.ids.gids.syncthing;
+          user = "syncthing";
+          group = "syncthing";
+          mode = "u=rwx,g=rx,o=";
+      }
     ];
     files = [ ];
   };
@@ -27,6 +42,14 @@ in
   nixpkgs.config.permittedInsecurePackages = [
     "jitsi-meet-1.0.8043"
   ];
+
+  # systemd.tmpfiles.settings."10-syncthing" = {
+  #   "/var/lib/syncthing".d = {
+  #     mode = "0700";
+  #     user = config.ids.uids.syncthing;
+  #     group = config.ids.gids.syncthing;
+  #   };
+  # };
 
   services = {
     jitsi-meet = {
@@ -78,13 +101,22 @@ in
           base_domain = "lion-zebra.ts.net";
         };
         derp = {
-          server.enable = true;
+          server = {
+            enable = true;
+            region_id = 999;
+            region_code = domain;
+            region_name = domain + " DERP";
+            stun_listen_addr = "0.0.0.0:3478";
+            automatically_add_embedded_derp_region = true;
+          };
+          # urls = [ ];
         };
       };
     };
 
     headplane = {
-      enable = true;
+      # enable = true;
+      enable = false;
       agent.enable = false;
       # agent = {
       #   # As an example only.
@@ -149,7 +181,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   # locations."/".root = pkgs.miniserve;
-        #   locations."/".proxyPass = "http://127.0.0.1:8081";
+        #   locations."/".proxyPass = "http://127.0.0.1:3478";
         # };
         # "puwush.${domain}" = {
         #   forceSSL = true;
@@ -177,7 +209,7 @@ in
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
             extraConfig = ''
-              allow 120.138.111.195;
+              allow 120.138.111.221;
               deny all;
             '';
           };
@@ -203,6 +235,29 @@ in
         # };
       };
     };
+
+    syncthing = {
+      enable = true;
+      openDefaultPorts = true;
+      settings = {
+        devices.pilab = {
+          name = "pilab";
+          addresses = [
+            "tcp://pilab.lion-zebra.ts.net:51820"
+          ];
+          id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
+        };
+        folders.headscale = {
+          enable = true;
+          name = "Headscale Data";
+          path = "/var/lib/headscale";
+          devices = [
+            "pilab"
+          ];
+          id = "u233w-44w2s";
+        };
+      };
+    };
   };
 
   security.acme = {
@@ -226,10 +281,12 @@ in
 
       # Bombsquad
       43210
+      3478
     ];
     allowedUDPPorts = [
       # Bombsquad
       43210
+      3478
     ];
     # extraCommands = ''
     #   # Commenting these out for now as these rules interfere with running
