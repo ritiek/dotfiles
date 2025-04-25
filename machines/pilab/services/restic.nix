@@ -7,6 +7,7 @@
   # Copy pasto from here to keep restic user's UID & GID consistent with
   # services.restic.server:
   # https://github.com/NixOS/nixpkgs/blob/01115de/nixos/modules/services/backup/restic-rest-server.nix#L135-L142
+  # https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/misc/ids.nix
   #
   # Since backups through services.restic.server are created through the
   # restic user. Setting the same UID & GID allows to swap the same backup

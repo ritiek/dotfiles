@@ -16,7 +16,6 @@
   environment.persistence."/nix/persist/system" = {
     directories = [
       "/var/lib/tailscale"
-      "/var/lib/headscale"
     ];
     # files = [
     #   "/var/lib/tailscale/tailscaled.state"
