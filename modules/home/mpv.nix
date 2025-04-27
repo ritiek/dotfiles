@@ -22,14 +22,28 @@
     scripts = with pkgs; [
       mpvScripts.mpv-cheatsheet
       mpvScripts.mpris
-      # Pass magnet URLs to mpv.
-      # TODO: Switch to unstable once this PR is merged:
-      # https://github.com/NixOS/nixpkgs/pull/350461
-      stable.mpvScripts.webtorrent-mpv-hook
+      mpvScripts.webtorrent-mpv-hook
       mpvScripts.thumbnail
       mpvScripts.thumbfast
       # Doesn't install for some reason.
       # mpvScripts.mpv-notify-send
     ];
+  };
+
+  xdg.mimeApps = {
+    associations.added = {
+      "audio/mpeg" = [ "mpv.desktop" ];
+      "video/mp4" = [ "mpv.desktop" ];
+      "video/x-matroska"= [ "mpv.desktop" ];
+      "audio/x-wav" = [ "mpv.desktop" ];
+      "audio/flac" = [ "mpv.desktop" ];
+    };
+    defaultApplications = {
+      "audio/mpeg" = [ "mpv.desktop" ];
+      "video/mp4" = [ "mpv.desktop" ];
+      "video/x-matroska"= [ "mpv.desktop" ];
+      "audio/x-wav" = [ "mpv.desktop" ];
+      "audio/flac" = [ "mpv.desktop" ];
+    };
   };
 }
