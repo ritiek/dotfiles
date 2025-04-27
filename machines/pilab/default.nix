@@ -74,6 +74,11 @@
         inputs.home-manager.packages.${pkgs.system}.default
       ];
     };
+
+    users.immi.isNormalUser = true;
+    users.immi.extraGroups = [
+      "wheel"
+    ];
   };
 
   services = {
