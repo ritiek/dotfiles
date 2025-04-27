@@ -271,21 +271,16 @@ in
       80
       443
 
-      # Headplane
-      3000
-
       # Bore tunnels
       7835
       4200
 
       # Bombsquad
       43210
-      3478
     ];
     allowedUDPPorts = [
       # Bombsquad
       43210
-      3478
     ];
     # extraCommands = ''
     #   # Commenting these out for now as these rules interfere with running
