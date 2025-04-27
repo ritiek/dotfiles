@@ -8,4 +8,13 @@
       "should_launch_new_window" = "1";
     };
   };
+
+  xdg.mimeApps = {
+    associations.added = {
+      "application/pdf" = ["sioyek.desktop"];
+    };
+    defaultApplications = {
+      "application/pdf" = ["sioyek.desktop"];
+    };
+  };
 }

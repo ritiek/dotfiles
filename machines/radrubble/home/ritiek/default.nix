@@ -13,12 +13,12 @@
   };
   home-manager.users.ritiek = {
     imports = [
-      # ./../../../home/gnupg.nix
-      ./../../../modules/home/zsh
-      ./../../../modules/home/git
-      ./../../../modules/home/neovim
-      ./../../../modules/home/zellij.nix
-      ./../../../modules/home/btop.nix
+      # ./../../../../home/gnupg.nix
+      ./../../../../modules/home/zsh
+      ./../../../../modules/home/git
+      ./../../../../modules/home/neovim
+      ./../../../../modules/home/zellij.nix
+      ./../../../../modules/home/btop.nix
     ];
     home = {
       stateVersion = "24.11";

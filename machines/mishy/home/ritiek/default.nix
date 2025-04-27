@@ -13,27 +13,27 @@
   };
   home-manager.users.ritiek = {
     imports = [
-      ./../../../modules/home/sops.nix
-      ./../../../modules/home/nix.nix
-      ./../../../modules/home/gnupg.nix
-      ./../../../modules/home/hyprland
-      ./../../../modules/home/theme.nix
-      ./../../../modules/home/ghostty.nix
-      # ./../../../modules/home/wezterm
-      ./../../../modules/home/zsh
-      ./../../../modules/home/git
-      ./../../../modules/home/neovim
-      ./../../../modules/home/zellij.nix
-      ./../../../modules/home/btop.nix
-      ./../../../modules/home/rofi.nix
-      ./../../../modules/home/waybar
-      ./../../../modules/home/swaync
-      ./../../../modules/home/mpv.nix
-      # ./../../../modules/home/firefox.nix
-      ./../../../modules/home/librewolf.nix
-      # ./../../../moduleshome/nixconf/syncthing.nix
-      ./../../../modules/home/glava
-      ./../../../modules/home/sioyek.nix
+      ./../../../../modules/home/sops.nix
+      ./../../../../modules/home/nix.nix
+      ./../../../../modules/home/gnupg.nix
+      ./../../../../modules/home/hyprland
+      ./../../../../modules/home/theme.nix
+      ./../../../../modules/home/ghostty.nix
+      # ./../../../../modules/home/wezterm
+      ./../../../../modules/home/zsh
+      ./../../../../modules/home/git
+      ./../../../../modules/home/neovim
+      ./../../../../modules/home/zellij.nix
+      ./../../../../modules/home/btop.nix
+      ./../../../../modules/home/rofi.nix
+      ./../../../../modules/home/waybar
+      ./../../../../modules/home/swaync
+      ./../../../../modules/home/mpv.nix
+      # ./../../../../modules/home/firefox.nix
+      ./../../../../modules/home/librewolf.nix
+      # ./../../../../moduleshome/nixconf/syncthing.nix
+      ./../../../../modules/home/glava
+      ./../../../../modules/home/sioyek.nix
     ];
 
     home = {
@@ -220,14 +220,6 @@
     #   playerctld.enable = true;
     # };
 
-    xdg.mimeApps = {
-      enable = true;
-      associations.added = {
-        "application/pdf" = ["sioyek.desktop"];
-      };
-      defaultApplications = {
-        "application/pdf" = ["sioyek.desktop"];
-      };
-    };
+    xdg.mimeApps.enable = true;
   };
 }
