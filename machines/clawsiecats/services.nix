@@ -21,14 +21,15 @@ in
       #     group = config.ids.gids.prosody;
       #     mode = "u=rwx,g=rx,o=";
       # }
-      {
-          directory = "/var/lib/syncthing";
-          # user = config.ids.uids.syncthing;
-          # group = config.ids.gids.syncthing;
-          user = "syncthing";
-          group = "syncthing";
-          mode = "u=rwx,g=rx,o=";
-      }
+      "/var/lib/syncthing"
+      # {
+      #     directory = "/var/lib/syncthing";
+      #     # user = config.ids.uids.syncthing;
+      #     # group = config.ids.gids.syncthing;
+      #     user = "syncthing";
+      #     group = "syncthing";
+      #     mode = "u=rwx,g=rx,o=";
+      # }
     ];
     files = [ ];
   };
@@ -36,6 +37,7 @@ in
     "jitsi.htpasswd" = {
       owner = "nginx";
     };
+    "headplane.htpasswd" = {};
     "syncplay.password" = {};
   };
 
@@ -83,6 +85,8 @@ in
 
     headscale = {
       enable = true;
+      user = "root";
+      # group = "root";
       settings = {
         server_url = "https://${domain}";
         listen_addr = "127.0.0.1:8080";
@@ -115,8 +119,7 @@ in
     };
 
     headplane = {
-      # enable = true;
-      enable = false;
+      enable = true;
       agent.enable = false;
       # agent = {
       #   # As an example only.
@@ -133,8 +136,8 @@ in
       # };
       settings = {
         server = {
-          # host = "127.0.0.1";
-          host = "0.0.0.0";
+          host = "127.0.0.1";
+          # host = "0.0.0.0";
           port = 3000;
           cookie_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
           cookie_secure = false;
@@ -192,15 +195,16 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "immich.${domain}" = {
-        #   forceSSL = true;
-        #   enableACME = true;
-        #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:2283";
-        #     # Need this enabled to avoid header request issues.
-        #     recommendedProxySettings = true;
-        #   };
-        # };
+        "immich.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            # proxyPass = "http://100.64.0.7:2283";
+            proxyPass = "http://100.64.0.7:2283";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         "vaultwarden.${domain}" = {
           forceSSL = true;
           enableACME = true;
@@ -224,6 +228,16 @@ in
             recommendedProxySettings = true;
           };
         };
+        "headplane.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:3000";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+          basicAuthFile = config.sops.secrets."headplane.htpasswd".path;
+        };
         # "prefect.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
@@ -238,18 +252,16 @@ in
 
     syncthing = {
       enable = true;
-      openDefaultPorts = true;
+      openDefaultPorts = false;
+      # openDefaultPorts = true;
+      # guiAddress = "0.0.0.0:8384";
+      user = "root";
+      # group = "root";
       settings = {
-        devices.pilab = {
-          name = "pilab";
-          addresses = [
-            "tcp://pilab.lion-zebra.ts.net:51820"
-          ];
-          id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
-        };
+        devices.pilab.id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
         folders.headscale = {
           enable = true;
-          name = "Headscale Data";
+          label = "Headscale Data";
           path = "/var/lib/headscale";
           devices = [
             "pilab"
