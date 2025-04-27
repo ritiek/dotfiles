@@ -37,7 +37,6 @@ in
     "jitsi.htpasswd" = {
       owner = "nginx";
     };
-    "headplane.htpasswd" = {};
     "syncplay.password" = {};
   };
 
@@ -137,10 +136,9 @@ in
       settings = {
         server = {
           host = "127.0.0.1";
-          # host = "0.0.0.0";
           port = 3000;
-          cookie_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-          cookie_secure = false;
+          cookie_secret = "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX";
+          cookie_secure = true;
         };
         headscale = {
           # url = "http://${domain}:8080";
@@ -157,16 +155,6 @@ in
           config_strict = true;
         };
         integration.proc.enabled = true;
-        # oidc = {
-        #   issuer = "https://oidc.example.com";
-        #   client_id = "headplane";
-        #   client_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-        #   disable_api_key_login = true;
-        #   # Might needed when integrating with Authelia.
-        #   token_endpoint_auth_method = "client_secret_basic";
-        #   headscale_api_key = "xxxxxxxxxx.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-        #   redirect_uri = "https://oidc.example.com/admin/oidc/callback";
-        # };
       };
     };
 
@@ -236,7 +224,6 @@ in
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
           };
-          basicAuthFile = config.sops.secrets."headplane.htpasswd".path;
         };
         # "prefect.${domain}" = {
         #   forceSSL = true;
