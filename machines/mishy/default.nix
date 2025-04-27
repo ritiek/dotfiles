@@ -164,6 +164,10 @@
       linuxPackages.usbip
       # docker-compose
 
+      xdg-utils
+      xdg-desktop-portal
+      xdg-desktop-portal-hyprland
+
       inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
     ];
 
@@ -310,13 +314,12 @@
     udisks2.enable = true;
   };
 
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
-    # wlr.enable = true;
+    wlr.enable = true;
     config = {
-      common.default = [ "gtk" ];
+      common.default = [ "hyprland" ];
       hyprland.default = [ "gtk" "hyprland" ];
     };
     extraPortals = with pkgs; [
