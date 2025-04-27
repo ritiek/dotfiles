@@ -15,14 +15,14 @@ creation_rules:
   - path_regex: machines/mishy/secrets\.yaml$
     pgp: *ritiek
     age: *mishy
-  - path_regex: machines/mishy/home/*/secrets\.yaml$
+  - path_regex: machines/mishy/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *mishy
 
   - path_regex: machines/pilab/secrets\.yaml$
     pgp: *ritiek
     age: *pilab
-  - path_regex: machines/pilab/home/*/secrets\.yaml$
+  - path_regex: machines/pilab/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *pilab
   - path_regex: machines/pilab/compose/.*/stack\.env$
@@ -42,21 +42,21 @@ creation_rules:
   - path_regex: machines/keyberry/secrets\.yaml$
     pgp: *ritiek
     age: *keyberry
-  - path_regex: machines/keyberry/home/*/secrets\.yaml$
+  - path_regex: machines/keyberry/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *keyberry
 
   - path_regex: machines/zerostash/secrets\.yaml$
     pgp: *ritiek
     age: *zerostash
-  - path_regex: machines/zerostash/home/*/secrets\.yaml$
+  - path_regex: machines/zerostash/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *zerostash
 
   - path_regex: machines/radrubble/secrets\.yaml$
     pgp: *ritiek
     age: *radrubble
-  - path_regex: machines/radrubble/home/*/secrets\.yaml$
+  - path_regex: machines/radrubble/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *radrubble
 
