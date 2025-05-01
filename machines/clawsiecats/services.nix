@@ -158,6 +158,40 @@ in
       };
     };
 
+    syncthing = {
+      enable = true;
+      openDefaultPorts = false;
+      # openDefaultPorts = true;
+      # guiAddress = "0.0.0.0:8384";
+      user = "root";
+      # group = "root";
+      settings = {
+        devices.pilab.id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
+        folders.headscale = {
+          enable = true;
+          label = "Headscale Data";
+          path = "/var/lib/headscale";
+          devices = [
+            "pilab"
+          ];
+          id = "u233w-44w2s";
+        };
+      };
+    };
+
+    # uptime-kuma = {
+    #   enable = true;
+    #   # appriseSupport = false;
+    #   appriseSupport = true;
+    #   settings = {
+    #     # HOST = "0.0.0.0";
+    #     HOST = "127.0.0.1";
+    #     PORT = "3001";
+    #     # FIXME: This results in a permission error during nixos-rebuild.
+    #     # DATA_DIR = lib.mkForce "/root/uptime-kuma";
+    #   };
+    # };
+
     nginx = {
       enable = true;
       virtualHosts = {
@@ -168,12 +202,12 @@ in
           basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
           # basicAuthFile = ./jitsi.htpasswd;
         };
-        # "miniserve.${domain}" = {
-        #   forceSSL = true;
-        #   enableACME = true;
-        #   # locations."/".root = pkgs.miniserve;
-        #   locations."/".proxyPass = "http://127.0.0.1:3478";
-        # };
+        "miniserve.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          # locations."/".root = pkgs.miniserve;
+          locations."/".proxyPass = "http://100.64.0.7:7055";
+        };
         # "puwush.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
@@ -225,6 +259,15 @@ in
             recommendedProxySettings = true;
           };
         };
+        # "uptime-kuma.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://127.0.0.1:3001";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
         # "prefect.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
@@ -234,27 +277,6 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-      };
-    };
-
-    syncthing = {
-      enable = true;
-      openDefaultPorts = false;
-      # openDefaultPorts = true;
-      # guiAddress = "0.0.0.0:8384";
-      user = "root";
-      # group = "root";
-      settings = {
-        devices.pilab.id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
-        folders.headscale = {
-          enable = true;
-          label = "Headscale Data";
-          path = "/var/lib/headscale";
-          devices = [
-            "pilab"
-          ];
-          id = "u233w-44w2s";
-        };
       };
     };
   };
