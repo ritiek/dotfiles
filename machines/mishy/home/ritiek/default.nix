@@ -115,6 +115,9 @@
         sops
         ssh-to-age
         yubikey-manager
+        rage
+        age-plugin-yubikey
+        age-plugin-fido2-hmac
 
         # FIXME: Can't seem to install both these together.
         yubioath-flutter
