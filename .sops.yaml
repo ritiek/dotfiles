@@ -14,6 +14,9 @@ keys:
   - &yubisea age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq
 
 combination_keys:
+  - &security_keys >-
+      age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2,
+      age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq
   - &mishy >-
       age1ev6fc54zqnsw3fp6c3ue6uzakkk88a2x6ywn9ngelvus4dde29espr2y7a,
       age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2,
@@ -46,6 +49,7 @@ combination_keys:
 creation_rules:
   - path_regex: machines/secrets\.yaml$
     pgp: *ritiek
+    age: *security_keys
 
   - path_regex: machines/mishy/secrets\.yaml$
     pgp: *ritiek

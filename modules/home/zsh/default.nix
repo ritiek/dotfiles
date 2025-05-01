@@ -6,7 +6,7 @@
 export WAYLAND_DISPLAY=wayland-1
 # eval $(keychain --eval --quiet --noask)
     '';
-    initExtraFirst = ''
+    initContent = ''
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -31,12 +31,10 @@ function bgnotify_formatted {
   [ $1 -eq 0 ] && title="Succeeded" || title="Failed"
   bgnotify "$title in $3s" "$2";
 }
-    '';
-    initExtraBeforeCompInit = ''
+
 # Allow symlinks
 ZSH_DISABLE_COMPFIX=true
-    '';
-    initExtra = ''
+
 # ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
 
 # Make Enter key on the numpad work as Return key
@@ -118,15 +116,17 @@ PATH="/snap/bin:$PATH"
 export PATH
     '';
     shellAliases = {
-      # ll = "ls -l";
-      update = "sudo nixos-rebuild switch";
       # Check if xclip is even being used in hyprland
-      xclip = "xclip -selection clipboard";
+      # xclip = "xclip -selection clipboard";
       cp = "cp --reflink=auto --sparse=always";
-      sops-s2a = "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key') sops";
-      sops-s2a-home = "SOPS_AGE_KEY=$(nix-shell -p ssh-to-age --run 'ssh-to-age -private-key -i ~/.ssh/sops.id_ed25519') sops";
-      ssh-auth-sock = "echo SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent";
-      gpg-auth-sock = "echo SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)";
+
+      sops-ssh = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops";
+      sops-ssh-home = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /home/${config.home.username}/.ssh/sops.id_ed25519' sops";
+      sops-fido2-hmac = "SOPS_AGE_KEY_CMD='age-plugin-fido2-hmac -m' sops";
+
+      # Eval these in your shell manually, e.g: eval $(ssh-auth-sock)
+      ssh-auth-sock = "echo export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent";
+      gpg-auth-sock = "echo export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)";
     };
     localVariables = {
       SSH_AUTH_SOCK = (
