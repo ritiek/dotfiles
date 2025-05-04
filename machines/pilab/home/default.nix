@@ -28,7 +28,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {
-      # inherit inputs;
+      inherit inputs;
       hostName = config.networking.hostName;
     };
 

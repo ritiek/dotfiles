@@ -8,7 +8,7 @@ in
 {
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     # enableNvidiaPatches = true;
     xwayland.enable = true;
     plugins = [
@@ -36,7 +36,8 @@ in
 
   home.pointerCursor = {
     name = "rose-pine-hyprcursor";
-    package = inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default;
+    # package = inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default;
+    package = pkgs.rose-pine-cursor;
     hyprcursor = {
       enable = true;
       size = 27;
