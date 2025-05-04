@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
+    inputs.sops-nix.homeManagerModule
   ];
 
   systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/sops.id_ed25519" = {
