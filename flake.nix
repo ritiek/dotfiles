@@ -132,7 +132,19 @@
         # config.allowUnfree = true;
       };
       modules = [
-        ./machines/pilab/home/ritiek/home.nix
+        ./machines/pilab/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "pilab"; }
+      ];
+    };
+
+    homeConfigurations."immi@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/pilab/home/immi
         inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "pilab"; }
       ];

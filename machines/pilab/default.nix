@@ -75,10 +75,15 @@
       ];
     };
 
-    users.immi.isNormalUser = true;
-    users.immi.extraGroups = [
-      "wheel"
-    ];
+    users.immi = {
+      isNormalUser = true;
+      extraGroups = [
+        "wheel"
+      ];
+      packages = [
+        inputs.home-manager.packages.${pkgs.system}.default
+      ];
+    };
   };
 
   services = {

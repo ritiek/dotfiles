@@ -34,12 +34,17 @@
 
     users.ritiek = {
       imports = [
-        ./ritiek/home.nix
+        ./ritiek
         inputs.sops-nix.homeManagerModule
       ];
     };
 
-    # users.immi = import ./immi
+    users.immi = {
+      imports = [
+        ./immi
+        inputs.sops-nix.homeManagerModule
+      ];
+    };
 
     users.root = {
       imports = [
