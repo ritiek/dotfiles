@@ -27,12 +27,12 @@
       ];
     };
 
-    # users.root = {
-    #   imports = [
-    #     ./../../../modules/home/zsh
-    #     ./../../../modules/home/neovim
-    #   ];
-    #   home.stateVersion = "24.11";
-    # };
+    users.root = {
+      imports = [
+        ./../../../modules/home/zsh
+        ./../../../modules/home/neovim
+      ];
+      home.stateVersion = "24.11";
+    };
   };
 }
