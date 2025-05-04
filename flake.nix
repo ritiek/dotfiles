@@ -126,6 +126,18 @@
       specialArgs = { inherit inputs; };
     };
 
+    homeConfigurations."ritiek@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/pilab/home/ritiek/home.nix
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "pilab"; }
+      ];
+    };
+
     nixosConfigurations.pilab = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [

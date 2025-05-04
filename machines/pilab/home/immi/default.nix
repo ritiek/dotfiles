@@ -1,7 +1,7 @@
 { pkgs, inputs, config, ... }:
 {
   imports = [
-    inputs.home-manager.nixosModules.home-manager
+    # inputs.home-manager.nixosModules.home-manager
   ];
   home-manager.users.immi = { osConfig, config, ... }: {
     imports = [

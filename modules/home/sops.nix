@@ -1,11 +1,7 @@
-{ inputs, config, osConfig, ... }:
+{ config, hostName, ... }:
 {
-  imports = [
-    inputs.sops-nix.homeManagerModule
-  ];
-
   sops = {
-    defaultSopsFile = ./../../machines/${osConfig.networking.hostName}/home/${config.home.username}/secrets.yaml;
+    defaultSopsFile = ./../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
     age.sshKeyPaths = [ "${config.home.homeDirectory}/.ssh/sops.id_ed25519" ];
   };
 }
