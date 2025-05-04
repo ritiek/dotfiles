@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, inputs, ...}:
 let 
   homelab-mount = (pkgs.writeShellScriptBin "homelab-mount" ''
     set -x
@@ -29,10 +29,10 @@ in
     stateVersion = "24.11";
     username = "ritiek";
     homeDirectory = "/home/ritiek";
-    file.home-nix = {
-      source = ./.;
-      target = "${config.home.homeDirectory}/.config/home-manager";
-    };
+    # file.home-nix = {
+    #   source = ./.;
+    #   target = "${config.home.homeDirectory}/.config/home-manager";
+    # };
     packages = with pkgs; [
       any-nix-shell
 

@@ -126,6 +126,28 @@
       specialArgs = { inherit inputs; };
     };
 
+    homeConfigurations."ritiek@mishy" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/mishy/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "mishy"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
+    nixosConfigurations.pilab = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/pilab
+        ./machines/pilab/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
     homeConfigurations."ritiek@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         system = "aarch64-linux";
@@ -136,6 +158,7 @@
         inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "pilab"; }
       ];
+      extraSpecialArgs = { inherit inputs; };
     };
 
     homeConfigurations."immi@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -148,17 +171,8 @@
         inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "pilab"; }
       ];
+      extraSpecialArgs = { inherit inputs; };
     };
-
-    nixosConfigurations.pilab = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [
-        ./machines/pilab
-        ./machines/pilab/hw-config.nix
-      ];
-      specialArgs = { inherit inputs; };
-    };
-
     nixosConfigurations.clawsiecats-minimal = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
