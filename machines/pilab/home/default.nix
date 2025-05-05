@@ -35,14 +35,12 @@
     users.ritiek = {
       imports = [
         ./ritiek
-        inputs.sops-nix.homeManagerModule
       ];
     };
 
     users.immi = {
       imports = [
         ./immi
-        inputs.sops-nix.homeManagerModule
       ];
     };
 
