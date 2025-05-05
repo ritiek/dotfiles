@@ -1,0 +1,1 @@
+../../zerostash/home/default.nix
