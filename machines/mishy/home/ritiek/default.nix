@@ -1,6 +1,8 @@
 { pkgs, inputs, ... }:
 {
   imports = [
+    inputs.sops-nix.homeManagerModule
+
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
     ./../../../../modules/home/gnupg.nix

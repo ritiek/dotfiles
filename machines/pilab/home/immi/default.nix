@@ -1,6 +1,8 @@
 { pkgs, inputs, config, ... }:
 {
   imports = [
+    inputs.sops-nix.homeManagerModule
+
     ./../../../../scripts/home/immich-env.nix
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/zsh
