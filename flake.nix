@@ -133,7 +133,6 @@
       };
       modules = [
         ./machines/mishy/home/ritiek
-        inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "mishy"; }
       ];
       extraSpecialArgs = { inherit inputs; };
@@ -155,7 +154,6 @@
       };
       modules = [
         ./machines/pilab/home/ritiek
-        inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "pilab"; }
       ];
       extraSpecialArgs = { inherit inputs; };
