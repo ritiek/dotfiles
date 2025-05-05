@@ -1,5 +1,15 @@
 { pkgs, inputs, config, ... }:
 {
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+  ];
+
+  environment.pathsToLink = [
+    "/share/zsh"
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
+
   systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/sops.id_ed25519" = {
     "C+" = {
       mode = "0600";
@@ -13,13 +23,13 @@
     useUserPackages = true;
     extraSpecialArgs = {
       inherit inputs;
+      hostName = config.networking.hostName;
     };
 
     users.ritiek = {
       imports = [
         ./ritiek
       ];
-      home.stateVersion = "24.11";
     };
 
     users.root = {
@@ -30,10 +40,4 @@
       home.stateVersion = "24.11";
     };
   };
-
-  environment.pathsToLink = [
-    "/share/zsh"
-    "/share/xdg-desktop-portal"
-    "/share/applications"
-  ];
 }

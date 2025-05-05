@@ -220,7 +220,7 @@
 
     homeConfigurations."ritiek@keyberry" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
-        system = "x86_64-linux";
+        system = "aarch64-linux";
         # config.allowUnfree = true;
       };
       modules = [
