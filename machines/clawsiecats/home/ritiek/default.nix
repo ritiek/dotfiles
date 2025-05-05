@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.impermanence.nixosModules.home-manager.impermanence
+    inputs.sops-nix.homeManagerModule
 
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
