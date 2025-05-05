@@ -12,6 +12,8 @@
   ];
   home = {
     stateVersion = "24.11";
+    username = "ritiek";
+    homeDirectory = "/home/ritiek";
     packages = with pkgs; [
       any-nix-shell
 
