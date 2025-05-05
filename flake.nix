@@ -200,6 +200,19 @@
       specialArgs = { inherit inputs; };
     };
 
+    homeConfigurations."ritiek@clawsiecats" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/clawsiecats/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "clawsiecats"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.keyberry = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
