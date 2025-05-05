@@ -23,7 +23,6 @@
     users.ritiek = {
       imports = [
         ./ritiek
-        inputs.sops-nix.homeManagerModule
       ];
     };
 

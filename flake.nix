@@ -166,7 +166,6 @@
       };
       modules = [
         ./machines/pilab/home/immi
-        inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "pilab"; }
       ];
       extraSpecialArgs = { inherit inputs; };
@@ -205,7 +204,6 @@
       };
       modules = [
         ./machines/clawsiecats/home/ritiek
-        inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "clawsiecats"; }
       ];
       extraSpecialArgs = { inherit inputs; };
@@ -218,6 +216,18 @@
         ./machines/keyberry/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@keyberry" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/keyberry/home/ritiek
+        { _module.args.hostName = "keyberry"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
     };
 
     nixosConfigurations.zerostash = inputs.nixpkgs.lib.nixosSystem {
