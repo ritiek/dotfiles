@@ -12,6 +12,8 @@ let
 in
 {
   imports = [
+    inputs.sops-nix.homeManagerModule
+
     ./services/spotdl.nix
     ./services/paperless-ngx.nix
     ./services/whatsapp-backup-verify.nix
