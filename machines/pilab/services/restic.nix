@@ -1,7 +1,7 @@
 { lib, config, pkgs, ...}:
 
 let
-  ping-uptime-kuma = (pkgs.writeShellScriptBin "ping-uptime-kuma@restic-backups-homelab@pilab" ''
+  ping-uptime-kuma-pilab = (pkgs.writeShellScriptBin "ping-uptime-kuma@restic-backups-homelab@pilab" ''
     # TODO: I should make a common shell script for uptime kuma pings instead of
     # re-defining this shell script everywhere.
 
@@ -19,6 +19,33 @@ let
     source /home/ritiek/.config/sops-nix/secrets/uptime-kuma.env
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/BmioyeNZTb?status=$STATUS&msg=$SERVICE_RESULT&ping="
+
+    if [ $? -eq 0 ]; then
+      ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
+    else
+      ${pkgs.coreutils}/bin/echo "ping-uptime-kuma failed."
+      exit $?
+    fi
+  '');
+
+  ping-uptime-kuma-keyberry = (pkgs.writeShellScriptBin "ping-uptime-kuma@restic-backups-homelab@keyberry" ''
+    # TODO: I should make a common shell script for uptime kuma pings instead of
+    # re-defining this shell script everywhere.
+
+    if [ "$EXIT_STATUS" -eq 0 ]; then
+      STATUS=up
+    else
+      STATUS=down
+    fi
+
+    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
+    # to work:
+    # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
+    #
+    # TODO: Make this work work without hardcoding my username.
+    source /home/ritiek/.config/sops-nix/secrets/uptime-kuma.env
+
+    ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/lNLKLfskQD?status=$STATUS&msg=$SERVICE_RESULT&ping="
 
     if [ $? -eq 0 ]; then
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
@@ -149,7 +176,7 @@ in
       chown -R ${builtins.toString config.ids.uids.restic}:${builtins.toString config.ids.uids.restic} \
         "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA"
 
-      # ${ping-uptime-kuma}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
+      # ${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
     '';
     timerConfig = {
       # Every 20 minutes
@@ -159,7 +186,7 @@ in
   };
 
   systemd.services."restic-backups-homelab@pilab".serviceConfig.ExecStopPost = lib.mkAfter [
-    "${ping-uptime-kuma}/bin/ping-uptime-kuma@restic-backups-homelab@pilab"
+    "${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab"
   ];
 
   # systemd.timers."restic-backups-homelab@pilab" = {
@@ -239,4 +266,8 @@ in
       Persistent = true;
     };
   };
+
+  systemd.services."restic-backups-homelab@keyberry".serviceConfig.ExecStopPost = lib.mkAfter [
+    "${ping-uptime-kuma-keyberry}/bin/ping-uptime-kuma@restic-backups-homelab@keyberry"
+  ];
 }
