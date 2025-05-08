@@ -17,6 +17,7 @@ in
     ./services/spotdl.nix
     ./services/paperless-ngx.nix
     ./services/whatsapp-backup-verify.nix
+    ./services/verify-sqlcipher-integrity.nix
     ./../../../../scripts/home/immich-env.nix
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
@@ -56,6 +57,7 @@ in
       sops
       gnupg
       deploy-rs
+      ssh-to-age
 
       miniserve
       bore-cli
