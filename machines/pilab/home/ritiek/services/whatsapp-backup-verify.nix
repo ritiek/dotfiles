@@ -96,12 +96,13 @@ let
     source ~/.config/sops-nix/secrets/uptime-kuma.env
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/a0DWjFa9sb?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    curl_exit_code=$?
 
-    if [ $? -eq 0 ]; then
+    if [ $curl_exit_code -eq 0 ]; then
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
     else
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma failed."
-      exit $?
+      exit $curl_exit_code
     fi
   '');
 in
