@@ -24,9 +24,10 @@ let
 
     USERNAME=$(${pkgs.curl}/bin/curl -s -H "Authorization: Token $PAPERLESS_NGX_API_KEY" "$PAPERLESS_NGX_INSTANCE_URL/api/users/" | ${pkgs.jq}/bin/jq -r '.results[].username')
 
-    if [ $? -ne 0 ]; then
-      echo "/api/users/ returned status code $?, exiting."
-      exit $?
+    curl_exit_code=$?
+    if [ $curl_exit_code -ne 0 ]; then
+      echo "/api/users/ returned status code $curl_exit_code, exiting."
+      exit $curl_exit_code
     fi
 
     if [[ "$USERNAME" != "${config.home.username}" ]]; then
@@ -59,11 +60,13 @@ let
 
           if [[ "$FILE_CREATION_DATE" -gt "$LAST_RUN_TIMESTAMP" ]]; then
             # Requires ./scripts/home/paperless-ngx-push.nix
+            # TODO: Do not use this long path. Attempt to reference {pkgs} instead.
             /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push "$FILE"
+            paperless_ngx_push_exit_code=$?
 
-            if [ $? -ne 0 ]; then
-              echo "paperless-ngx-push returned status code $?, exiting."
-              exit $?
+            if [ $paperless_ngx_push_exit_code -ne 0 ]; then
+              echo "paperless-ngx-push returned status code $paperless_ngx_push_exit_code, exiting."
+              exit $paperless_ngx_push_exit_code
             fi
             echo
           fi
@@ -88,12 +91,13 @@ let
     source ~/.config/sops-nix/secrets/uptime-kuma.env
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/8sKmxnwk3t?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    curl_exit_code=$?
 
-    if [ $? -eq 0 ]; then
+    if [ $curl_exit_code -eq 0 ]; then
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
     else
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma failed."
-      exit $?
+      exit $curl_exit_code
     fi
   '');
 in

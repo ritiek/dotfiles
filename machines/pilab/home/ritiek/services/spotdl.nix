@@ -4,9 +4,10 @@ let
     for directory in */; do
       cd "$directory"
       ${pkgs.spotdl}/bin/spotdl sync *.spotdl
-      if [ $? -ne 0 ]; then
+      spotdl_exit_code=$?
+      if [ $spotdl_exit_code -ne 0 ]; then
         ${pkgs.coreutils}/bin/echo "Failed to sync *.spotdl."
-        exit $?
+        exit $spotdl_exit_code
       fi
       cd ..
       echo
@@ -26,12 +27,13 @@ let
     source ~/.config/sops-nix/secrets/uptime-kuma.env
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/jk2k8QAm9h?status=$STATUS&msg=$SERVICE_RESULT&ping="
+    curl_exit_code=$?
 
-    if [ $? -eq 0 ]; then
+    if [ $curl_exit_code -eq 0 ]; then
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma succeeded."
     else
       ${pkgs.coreutils}/bin/echo "ping-uptime-kuma failed."
-      exit $?
+      exit $curl_exit_code
     fi
   '');
 in
