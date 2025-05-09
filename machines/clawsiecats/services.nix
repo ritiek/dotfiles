@@ -2,7 +2,6 @@
 
 let
   domain = "clawsiecats.omg.lol";
-
 in
 {
   imports = [
@@ -206,7 +205,7 @@ in
           forceSSL = true;
           enableACME = true;
           # locations."/".root = pkgs.miniserve;
-          locations."/".proxyPass = "http://100.64.0.7:7055";
+          locations."/".proxyPass = "http://100.64.0.5:7055";
         };
         # "puwush.${domain}" = {
         #   forceSSL = true;
