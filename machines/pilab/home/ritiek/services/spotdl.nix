@@ -3,12 +3,20 @@ let
   spotdl-sync = (pkgs.writeShellScriptBin "spotdl-sync" ''
     for directory in */; do
       cd "$directory"
-      ${pkgs.spotdl}/bin/spotdl sync *.spotdl
-      spotdl_exit_code=$?
-      if [ $spotdl_exit_code -ne 0 ]; then
-        ${pkgs.coreutils}/bin/echo "Failed to sync *.spotdl."
-        exit $spotdl_exit_code
+        
+      # Check if any .spotdl files exist
+      if ${pkgs.coreutils}/bin/ls *.spotdl 1> /dev/null 2>&1; then
+        ${pkgs.spotdl}/bin/spotdl sync *.spotdl
+        spotdl_exit_code=$?
+            
+        if [ $spotdl_exit_code -ne 0 ]; then
+          ${pkgs.coreutils}/bin/echo "Failed to sync *.spotdl in $directory."
+          exit $spotdl_exit_code
+         fi
+      else
+        ${pkgs.coreutils}/bin/echo "No .spotdl files found in $directory. Skipping."
       fi
+        
       cd ..
       echo
     done
