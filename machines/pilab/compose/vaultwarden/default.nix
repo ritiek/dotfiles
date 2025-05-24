@@ -36,7 +36,7 @@
     labels = {
       "homepage.description" = "Password Manager";
       "homepage.group" = "Services";
-      "homepage.href" = "https://pilab.lion-zebra.ts.net:9445";
+      "homepage.href" = "https://pilab.lion-zebra.ts.net:9446";
       "homepage.icon" = "vaultwarden";
       "homepage.name" = "Vaultwarden";
     };
