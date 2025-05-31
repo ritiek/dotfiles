@@ -40,6 +40,7 @@
     ./compose/pwpush
     ./compose/dawarich
     ./compose/rustdesk.nix
+    ./compose/simplexchat
     # ./compose/kopia
   ];
 
