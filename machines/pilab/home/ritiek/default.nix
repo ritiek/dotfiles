@@ -38,6 +38,7 @@ in
     # };
     packages = with pkgs; [
       any-nix-shell
+      psmisc
 
       unzip
       unrar-wrapper
@@ -58,6 +59,7 @@ in
       gnupg
       deploy-rs
       ssh-to-age
+      age-plugin-fido2-hmac
 
       miniserve
       bore-cli
@@ -72,45 +74,6 @@ in
         set -x
         umount -l /media/HOMELAB_MEDIA
         cryptsetup close homelab_media
-      '')
-
-      (writeShellScriptBin "homelab-stop" ''
-        set -x
-        systemctl stop docker-compose-vaultwarden-root.target
-        # systemctl stop docker-compose-dashy-root.target
-        systemctl stop docker-compose-homepage-root.target
-        systemctl stop docker-compose-pihole-root.target
-        systemctl stop docker-compose-uptime-kuma-root.target
-        systemctl stop docker-compose-immich-root.target
-        systemctl stop docker-compose-tubearchivist-root.target
-        systemctl stop docker-compose-paperless-ngx-root.target
-        systemctl stop docker-compose-forgejo-root.target
-        systemctl stop docker-compose-navidrome-root.target
-        systemctl stop docker-compose-memos-root.target
-        systemctl stop docker-compose-syncthing-root.target
-        systemctl stop docker-compose-miniflux-root.target
-        systemctl stop docker-compose-gotify-root.target
-        systemctl stop docker-compose-shiori-root.target
-        systemctl stop docker-compose-homebox-root.target
-        systemctl stop docker-compose-conduwuit-root.target
-        systemctl stop docker-compose-grocy-root.target
-        systemctl stop docker-compose-changedetection-root.target
-        systemctl stop docker-compose-frigate-root.target
-        systemctl stop docker-compose-habitica-root.target
-        systemctl stop docker-compose-ollama-webui-root.target
-        systemctl stop docker-compose-pwpush-root.target
-        systemctl stop docker-compose-dawarich-root.target
-        systemctl stop docker-compose-rustdesk-root.target
-        # systemctl stop docker-compose-kopia-root.target
-        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.service
-        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
-        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.service
-        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.timer
-        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.service
-        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.timer
-        # systemctl stop spotdl-sync.timer
-
-        tailscale serve --https=9445 off
       '')
 
       (writeShellScriptBin "homelab-start" ''
@@ -141,6 +104,7 @@ in
           systemctl start docker-pwpush.service
           systemctl start docker-dawarich.service docker-dawarich_sidekiq.service
           systemctl start docker-rustdesk-hbbs.service
+          systemctl start docker-simplexchat-smp-server.service
           # systemctl start docker-kopia.service
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start paperless-ngx-sync.timer
@@ -149,6 +113,46 @@ in
 
           tailscale serve --bg --https=9445 127.0.0.1:9446
         )
+      '')
+
+      (writeShellScriptBin "homelab-stop" ''
+        set -x
+        systemctl stop docker-compose-vaultwarden-root.target
+        # systemctl stop docker-compose-dashy-root.target
+        systemctl stop docker-compose-homepage-root.target
+        systemctl stop docker-compose-pihole-root.target
+        systemctl stop docker-compose-uptime-kuma-root.target
+        systemctl stop docker-compose-immich-root.target
+        systemctl stop docker-compose-tubearchivist-root.target
+        systemctl stop docker-compose-paperless-ngx-root.target
+        systemctl stop docker-compose-forgejo-root.target
+        systemctl stop docker-compose-navidrome-root.target
+        systemctl stop docker-compose-memos-root.target
+        systemctl stop docker-compose-syncthing-root.target
+        systemctl stop docker-compose-miniflux-root.target
+        systemctl stop docker-compose-gotify-root.target
+        systemctl stop docker-compose-shiori-root.target
+        systemctl stop docker-compose-homebox-root.target
+        systemctl stop docker-compose-conduwuit-root.target
+        systemctl stop docker-compose-grocy-root.target
+        systemctl stop docker-compose-changedetection-root.target
+        systemctl stop docker-compose-frigate-root.target
+        systemctl stop docker-compose-habitica-root.target
+        systemctl stop docker-compose-ollama-webui-root.target
+        systemctl stop docker-compose-pwpush-root.target
+        systemctl stop docker-compose-dawarich-root.target
+        systemctl stop docker-compose-rustdesk-root.target
+        systemctl stop docker-compose-simplexchat-root.target
+        # systemctl stop docker-compose-kopia-root.target
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.service
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.timer
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.service
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.timer
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.service
+        # systemctl stop spotdl-sync.timer
+
+        tailscale serve --https=9445 off
       '')
 
     ];
