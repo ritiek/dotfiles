@@ -61,6 +61,7 @@
     packages = with pkgs; [
       # spotify
       # local.piano-rs
+      zip
       unzip
       unrar-wrapper
       tree
@@ -138,6 +139,7 @@
       age-plugin-yubikey
       age-plugin-fido2-hmac
 
+      totp-cli
       # FIXME: Can't seem to install both these together.
       yubioath-flutter
       # fluffychat
@@ -147,6 +149,8 @@
       # https://github.com/NixOS/nixpkgs/pull/334638#issuecomment-2289025802
       element-desktop
       simplex-chat-desktop
+      sqlcipher
+      sqldiff
 
       python312
       python312Packages.pip
@@ -163,6 +167,8 @@
       cmake
       texlive.combined.scheme-full
       pavucontrol
+      # dbeaver-bin
+      # sqlitebrowser
 
       slack
       # telegram-desktop

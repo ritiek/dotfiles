@@ -234,7 +234,7 @@ in
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
             extraConfig = ''
-              allow 109.248.161.186;
+              allow 120.138.111.213;
               deny all;
             '';
           };
