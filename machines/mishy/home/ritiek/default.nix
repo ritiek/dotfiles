@@ -61,6 +61,7 @@
     packages = with pkgs; [
       # spotify
       # local.piano-rs
+      psmisc
       zip
       unzip
       unrar-wrapper
