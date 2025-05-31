@@ -64,6 +64,7 @@ in
       immich-cli
       restic
       discordchatexporter-cli
+      sqlcipher
 
       homelab-mount
 
