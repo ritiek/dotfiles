@@ -58,7 +58,7 @@
     ];
   };
   virtualisation.oci-containers.containers."immich_postgres" = {
-    image = "tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0";
+    image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
     environment = {
       "TZ" = "Asia/Kolkata";
     };
