@@ -104,7 +104,7 @@ in
           systemctl start docker-pwpush.service
           systemctl start docker-dawarich.service docker-dawarich_sidekiq.service
           systemctl start docker-rustdesk-hbbs.service
-          systemctl start docker-simplexchat-smp-server.service
+          systemctl start docker-simplexchat-xftp-server.service docker-simplexchat-smp-server.service
           # systemctl start docker-kopia.service
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start paperless-ngx-sync.timer
@@ -142,7 +142,7 @@ in
         systemctl stop docker-compose-pwpush-root.target
         systemctl stop docker-compose-dawarich-root.target
         systemctl stop docker-compose-rustdesk-root.target
-        systemctl stop docker-compose-simplexchat-root.target
+        systemctl stop docker-compose-simplexchat-xftp-server-root.target docker-compose-simplexchat-smp-server-root.target
         # systemctl stop docker-compose-kopia-root.target
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.service
