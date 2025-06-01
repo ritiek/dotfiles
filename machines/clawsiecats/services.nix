@@ -234,11 +234,7 @@ in
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
             extraConfig = ''
-<<<<<<< Updated upstream
-              allow 120.138.111.213;
-=======
               allow 43.243.83.222;
->>>>>>> Stashed changes
               deny all;
             '';
           };
@@ -283,7 +279,11 @@ in
       };
       streamConfig = ''
         server {
-          # listen 0.0.0.0:5220 udp reuseport;
+          listen 0.0.0.0:5219;
+          proxy_timeout 20s;
+          proxy_pass 100.64.0.7:5219;
+        }
+        server {
           listen 0.0.0.0:5220;
           proxy_timeout 20s;
           proxy_pass 100.64.0.7:5220;
@@ -311,6 +311,7 @@ in
       # Bombsquad
       43210
 
+      5219
       5220
     ];
     allowedUDPPorts = [
