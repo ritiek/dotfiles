@@ -38,6 +38,7 @@
     };
     packages = with pkgs; [
       any-nix-shell
+      psmisc
 
       unzip
       unrar-wrapper
