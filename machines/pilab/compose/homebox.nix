@@ -11,7 +11,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."homebox" = {
-    image = "ghcr.io/hay-kot/homebox:latest";
+    image = "ghcr.io/sysadminsmedia/homebox:latest";
     environment = {
       "HBOX_LOG_FORMAT" = "text";
       "HBOX_LOG_LEVEL" = "info";
