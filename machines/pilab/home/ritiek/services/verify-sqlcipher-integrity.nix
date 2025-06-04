@@ -64,6 +64,8 @@ in
 
   home.packages = with pkgs; [
     verify-sqlcipher-integrity
+    curl
+    jq
   ];
 
   systemd.user.services.verify-sqlcipher-integrity = {

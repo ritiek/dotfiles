@@ -115,6 +115,8 @@ in
     whatsapp-chat-exporter-dev
     whatsapp-backup-verify
     whatsapp-backup-verify-latest-snapshot
+    curl
+    jq
   ];
 
   systemd.user.services.whatsapp-backup-verify-latest-snapshot = {
