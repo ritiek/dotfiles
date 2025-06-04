@@ -1,4 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
+
 let
   spotdl-sync = (pkgs.writeShellScriptBin "spotdl-sync" ''
     for directory in */; do
@@ -52,6 +53,7 @@ in
     spotdl
     spotdl-sync
     curl
+    jq
   ];
 
   systemd.user.services.spotdl-sync = {
