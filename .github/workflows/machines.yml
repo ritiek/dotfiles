@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 # NOTE: Attic can authenticate atticd through:
-# $ attic login --set-default attic-action http://pilab.lion-zebra.ts.net:8080 \
+# $ attic login --set-default attic-action http://pilab.lion-zebra.ts.net:7080 \
 # $(sudo atticd-atticadm make-token --sub ritiek --validity 1y --pull attic-action \
 # --push attic-action --create-cache attic-action --destroy-cache attic-action \
 # --configure-cache attic-action --configure-cache-retention attic-action)
@@ -60,7 +60,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -88,7 +88,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -135,7 +135,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -169,7 +169,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -197,7 +197,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -225,7 +225,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -253,7 +253,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:8080/
+          endpoint: http://pilab.lion-zebra.ts.net:7080/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}

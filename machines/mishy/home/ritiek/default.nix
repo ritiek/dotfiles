@@ -179,6 +179,7 @@
       dig
       fastgron
       nap
+      imagemagick
 
       # wl-gammarelay-rs
       # wayvnc
