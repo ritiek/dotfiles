@@ -10,6 +10,7 @@
     enable = true;
     environmentFile = config.sops.secrets."atticd.env".path;
     settings = {
+      listen = "[::]:7080";
       compression = {
         type = "zstd";
         level = 9;
