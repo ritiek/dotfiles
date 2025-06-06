@@ -92,5 +92,8 @@ in
       OnUnitActiveSec = "6h";
       Unit = "verify-sqlcipher-integrity.service";
     };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
   };
 }
