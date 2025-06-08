@@ -55,6 +55,7 @@
       cryptsetup
       openssl
       sops
+      ssh-to-age
 
       miniserve
       bore-cli
