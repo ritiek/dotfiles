@@ -233,10 +233,10 @@ in
             proxyPass = "http://100.64.0.7:9446";
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
-            extraConfig = ''
-              allow 43.243.83.222;
-              deny all;
-            '';
+            # extraConfig = ''
+            #   allow 127.0.0.1;
+            #   deny all;
+            # '';
           };
         };
         "controlplane.${domain}" = {
