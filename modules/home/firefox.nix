@@ -130,7 +130,7 @@
         youtube-shorts-block
         youtube-nonstop
 
-        vimium-c
+        # vimium-c
         # tridactyl
         web-archives
         to-deepl
@@ -222,7 +222,7 @@
         "privacy.clearOnShutdown.downloads" = false;
         "privacy.firstparty.isolate" = true;
         "privacy.resistFingerprinting" = true;
-        "privacy.resistFingerprinting.letterboxing" = false;
+        "privacy.resistFingerprinting.letterboxing" = true;
         "privacy.resistFingerprinting.pbmode" = true;
         "privacy.trackingprotection.enabled" = true;
         "privacy.trackingprotection.pbmode.enabled" = true;
@@ -308,7 +308,7 @@
 
       search = {
         force = true;
-        default = "Google";
+        default = "google";
         order = [
           "ddg"
           "Kagi"
