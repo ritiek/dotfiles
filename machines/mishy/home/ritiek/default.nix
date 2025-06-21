@@ -20,7 +20,7 @@
     ./../../../../modules/home/swaync
     ./../../../../modules/home/mpv.nix
     # ./../../../../modules/home/firefox.nix
-    ./../../../../modules/home/librewolf.nix
+    # ./../../../../modules/home/librewolf.nix
     ./../../../../modules/home/zen-browser.nix
     # ./../../../../moduleshome/nixconf/syncthing.nix
     ./../../../../modules/home/glava
