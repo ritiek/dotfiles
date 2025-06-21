@@ -62,9 +62,13 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
+    systems.url = "github:nix-systems/default";
+
     rose-pine-hyprcursor = {
       url = "github:ndom91/rose-pine-hyprcursor";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "flake-utils";
+      inputs.hyprlang.follows = "hyprlang";
     };
 
     nix-index-database = {
@@ -97,12 +101,26 @@
     hyprland = {
       url = "github:hyprwm/Hyprland";
       # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
     };
 
     headplane = {
       url = "github:tale/headplane";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+    };
+
+    hyprutils = {
+      url = "github:hyprwm/hyprutils";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+    };
+
+    hyprlang = {
+      url = "github:hyprwm/hyprlang";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+      inputs.hyprutils.follows = "hyprutils";
     };
 
     hyprgrass = {
@@ -125,9 +143,13 @@
     rockchip = {
       url = "github:nabam/nixos-rockchip";
       # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.utils.follows = "flake-utils";
     };
 
-    flake-utils.url = "github:numtide/flake-utils";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
