@@ -25,6 +25,12 @@
     nixpkgs-wayland = {
       url = "github:nix-community/nixpkgs-wayland";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.lib-aggregate.follows = "lib-aggregate";
+    };
+
+    lib-aggregate = {
+      url = "github:nix-community/lib-aggregate";
+      inputs.flake-utils.follows = "flake-utils";
     };
 
     pi400kb-nix = {
