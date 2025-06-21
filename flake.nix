@@ -28,6 +28,7 @@
       # url = "git+file:///home/ritiek/pi400kb?submodules=1";
       url = "git+https://github.com/ritiek/pi400kb?ref=main&submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixos-hardware.follows = "nixos-hardware";
     };
 
     home-manager = {
@@ -98,6 +99,12 @@
       url = "github:horriblename/hyprgrass";
       # inputs.nixpkgs.follows = "nixpkgs";
       inputs.hyprland.follows = "hyprland";
+    };
+
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     raspberry-pi-nix = {

@@ -1,8 +1,10 @@
 { lib, pkgs, inputs, config, ... }:
 let
   wallpaper = pkgs.fetchurl {
-    url = "https://i.imgur.com/gtGew3r.jpg";
-    sha256 = "0kjkj73szx2ahdh9kxyzy2z4alh2xz4z47fzbc9ns6mcxjwqsr1s";
+    # url = "https://i.imgur.com/gtGew3r.jpg";
+    # sha256 = "0kjkj73szx2ahdh9kxyzy2z4alh2xz4z47fzbc9ns6mcxjwqsr1s";
+    url = "https://i.imgur.com/iFHxPpc.png";
+    sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
   };
 in
 {
