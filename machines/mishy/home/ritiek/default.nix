@@ -21,6 +21,7 @@
     ./../../../../modules/home/mpv.nix
     # ./../../../../modules/home/firefox.nix
     ./../../../../modules/home/librewolf.nix
+    ./../../../../modules/home/zen-browser.nix
     # ./../../../../moduleshome/nixconf/syncthing.nix
     ./../../../../modules/home/glava
     ./../../../../modules/home/sioyek.nix
@@ -213,6 +214,13 @@
     imv.enable = true;
     timidity.enable = true;
     gradle.enable = true;
+
+    zen-browser = {
+      enable = true;
+      nativeMessagingHosts = with pkgs; [
+        ff2mpv-rust
+      ];
+    };
 
     thunderbird = {
       enable = true;

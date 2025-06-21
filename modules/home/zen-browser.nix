@@ -1,13 +1,14 @@
-{ pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 {
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-beta.override {
-      nativeMessagingHosts = with pkgs; [
-        ff2mpv-rust
-      ];
-    };
+  imports = [
+    inputs.zen-browser.homeModules.beta
+  ];
 
+  programs.zen-browser = {
+    enable = true;
+    nativeMessagingHosts = with pkgs; [
+      ff2mpv-rust
+    ];
     policies = {
       AppAutoUpdate = false; # Disable automatic application update
       BackgroundAppUpdate = false; # Disable automatic application update in the background, when the application is not running.
@@ -96,10 +97,10 @@
       isDefault = true;
       name = "Ritiek Malhotra";
 
-      extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+      extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         # https://nur.nix-community.org/repos/rycee/
 
-        ublock-origin
+        # ublock-origin
         canvasblocker
         # Consensus is that privacy-badger makes more prone to fingerprinting.
         # privacy-badger
@@ -138,6 +139,15 @@
         ff2mpv
 
         tubearchivist-companion
+
+        (buildFirefoxXpiAddon {
+          pname = "adnauseam";
+          version = "3.24.6";
+          addonId = "adnauseam@rednoise.org";
+          url = "https://addons.mozilla.org/firefox/downloads/file/4440960/adnauseam-3.24.6.xpi";
+          sha256 = "sha256-PSpEBz2A68R4UJxDKiDYTZPMc8yfZQDgOKbumHma6qY=";
+          meta = {};
+        })
 
         (buildFirefoxXpiAddon {
           pname = "shiori";

@@ -65,8 +65,9 @@
         youtube-shorts-block
         youtube-nonstop
 
-        vimium-c
+        # vimium-c
         # tridactyl
+
         web-archives
         to-deepl
         # languagetool
@@ -126,7 +127,7 @@
         force = true;
         default = "google";
         order = [
-          "dddg"
+          "ddg"
           "Kagi"
           "google"
         ];
