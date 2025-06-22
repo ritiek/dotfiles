@@ -12,10 +12,11 @@
   # Containers
   virtualisation.oci-containers.containers."homepage" = {
     image = "ghcr.io/gethomepage/homepage:latest";
-    # environment = {
-    #   "PGID" = "1000";
-    #   "PUID" = "1000";
-    # };
+    environment = {
+      # "PGID" = "1000";
+      # "PUID" = "1000";
+      "HOMEPAGE_ALLOWED_HOSTS" = "pilab.lion-zebra.ts.net";
+    };
     volumes = [
       "/media/HOMELAB_MEDIA/services/homepage:/app/config:rw"
       "/var/run/docker.sock:/var/run/docker.sock:ro"
@@ -26,6 +27,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--add-host=host.docker.internal:host-gateway"
       "--network-alias=homepage"
       "--network=homepage_default"
     ];

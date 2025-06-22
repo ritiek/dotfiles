@@ -2,9 +2,16 @@
 { pkgs, lib, config, ... }:
 
 {
-  sops.secrets."compose/pihole.env" = {
-    sopsFile = ./stack.env;
-    format = "dotenv";
+  sops.secrets = {
+    "compose/pihole.env" = {
+      sopsFile = ./stack.env;
+      format = "dotenv";
+    };
+    # "compose/pihole-api-key.txt" = {
+    #   sopsFile = ./stack.env;
+    #   format = "dotenv";
+    #   key = "HOMEPAGE_DASHBOARD_API_KEY";
+    # };
   };
 
   networking.firewall = {
@@ -32,7 +39,9 @@
     image = "pihole/pihole:latest";
     environment = {
       "TZ" = "Asia/Kolkata";
-      "WEB_PORT" = "81";
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
+      # "FTLCONF_dns_listeningMode" = "all";
+      "FTLCONF_webserver_port" = "81";
     };
     environmentFiles = [
       config.sops.secrets."compose/pihole.env".path
@@ -41,11 +50,30 @@
       "/media/HOMELAB_MEDIA/services/pihole:/etc/pihole:rw"
       "pihole_dnsmasq.d:/etc/dnsmasq.d:rw"
     ];
+    # ports = [
+    #   # DNS Ports
+    #   "53:53/tcp"
+    #   "53:53/udp"
+    #   # Default HTTP Port
+    #   "81:8080/tcp"
+    #   # Default HTTPs Port. FTL will generate a self-signed certificate
+    #   "443:443/tcp"
+    #   # Uncomment the below if using Pi-hole as your DHCP Server
+    #   "67:67/udp"
+    #   # Uncomment the line below if you are using Pi-hole as your NTP server
+    #   "123:123/udp"
+    # ];
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--cap-add=NET_ADMIN"
+      # See https://github.com/pi-hole/docker-pi-hole#note-on-capabilities
       "--network=host"
+      # Required if you are using Pi-hole as your DHCP server, else not needed
+      "--cap-add=NET_ADMIN"
+      # Required if you are using Pi-hole as your NTP client to be able to set the host's system time
+      "--cap-add=SYS_TIME"
+      # Optional, if Pi-hole should get some more processing time
+      "--cap-add=SYS_NICE"
     ];
     labels = {
       "homepage.description" = "DNS";
@@ -53,6 +81,15 @@
       "homepage.href" = "http://pilab.lion-zebra.ts.net:81/admin";
       "homepage.icon" = "pi-hole";
       "homepage.name" = "Pi-Hole";
+      # TODO: Make Homepage dashboard widgets work. Currently, one needs to hardcode
+      #       the API key in the compose file, which is not ideal. For more info, see:
+      #       https://discourse.nixos.org/t/how-to-assign-labels-to-oci-containers-securely/65907
+      # "homepage.name" = "$HOMEPAGE_DASHBOARD_API_KEY";
+      # "homepage.widget.type" = "pihole";
+      # "homepage.widget.url" = "http://host.docker.internal:81/";
+      # "homepage.widget.version" = "6";
+      # "homepage.widget.key" = config.sops.secrets."compose/pihole-api-key.txt".path;
+      # "homepage.widget.key" = "$HOMEPAGE_DASHBOARD_API_KEY";
     };
   };
   systemd.services."docker-pihole" = {
@@ -61,6 +98,7 @@
       RestartMaxDelaySec = lib.mkOverride 500 "1m";
       RestartSec = lib.mkOverride 500 "100ms";
       RestartSteps = lib.mkOverride 500 9;
+      EnvironmentFile = config.sops.secrets."compose/pihole.env".path;
     };
     after = [
       "docker-volume-pihole_dnsmasq.d.service"

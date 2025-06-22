@@ -34,6 +34,9 @@
       "homepage.href" = "http://pilab.lion-zebra.ts.net:8893";
       "homepage.icon" = "gotify";
       "homepage.name" = "Gotify";
+      # "homepage.widget.type" = "gotify";
+      # "homepage.widget.url" = "http://host.docker.internal:8893/";
+      # "homepage.widget.key" = "yayymykey";
     };
   };
   systemd.services."docker-gotify" = {
