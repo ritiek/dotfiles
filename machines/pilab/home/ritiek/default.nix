@@ -39,6 +39,7 @@ in
     packages = with pkgs; [
       any-nix-shell
       psmisc
+      wget
 
       unzip
       unrar-wrapper
@@ -111,7 +112,7 @@ in
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start whatsapp-backup-verify-latest-snapshot.timer
           # systemctl start spotdl-sync.timer
 
-          tailscale serve --bg --https=9445 127.0.0.1:9446
+          # tailscale serve --bg --https=9445 127.0.0.1:9446
         )
       '')
 
@@ -152,7 +153,7 @@ in
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.service
         # systemctl stop spotdl-sync.timer
 
-        tailscale serve --https=9445 off
+        # tailscale serve --https=9445 off
       '')
 
     ];

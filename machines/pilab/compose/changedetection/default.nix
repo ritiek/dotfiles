@@ -2,9 +2,16 @@
 { config, pkgs, lib, ... }:
 
 {
-  sops.secrets."compose/changedetection.env" = {
-    sopsFile = ./stack.env;
-    format = "dotenv";
+  sops.secrets = {
+    "compose/changedetection.env" = {
+      sopsFile = ./stack.env;
+      format = "dotenv";
+    };
+    # "compose/changedetection-api-key.txt" = {
+    #   sopsFile = ./stack.env;
+    #   format = "dotenv";
+    #   key = "HOMEPAGE_DASHBOARD_API_KEY";
+    # };
   };
 
   # Runtime
@@ -47,6 +54,9 @@
       "homepage.href" = "http://pilab.lion-zebra.ts.net:5000";
       "homepage.icon" = "changedetection";
       "homepage.name" = "ChangeDetection";
+      # "homepage.widget.type" = "changedetectionio";
+      # "homepage.widget.url" = "http://host.docker.internal:5000/";
+      # "homepage.widget.key" = config.sops.secrets."compose/changedetection-api-key.txt".path;
     };
   };
   systemd.services."docker-changedetection" = {
