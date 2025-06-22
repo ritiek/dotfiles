@@ -22,9 +22,9 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
-      "--dns=1.1.1.1"
-      "--dns=100.100.100.100"
       "--dns=127.0.0.1"
+      "--dns=100.100.100.100"
+      "--dns=1.1.1.1"
       "--dns=8.8.8.8"
       "--network-alias=uptime-kuma"
       "--network=uptime-kuma_default"
@@ -35,6 +35,11 @@
       "homepage.href" = "http://pilab.lion-zebra.ts.net:3001";
       "homepage.icon" = "uptime-kuma";
       "homepage.name" = "Uptime Kuma";
+      # "homepage.widget.type" = "uptimekuma";
+      # "homepage.widget.url" = "http://host.docker.internal:3001";
+      # "homepage.widget.url" = "http://pilab.lion-zebra.ts.net:3001";
+      # http://pilab.lion-zebra.ts.net:3001/status/systemd-services
+      # "homepage.widget.slug" = "systemd-services";
     };
   };
   systemd.services."docker-uptime-kuma" = {

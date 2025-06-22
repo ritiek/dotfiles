@@ -44,6 +44,13 @@
     # ./compose/kopia
   ];
 
+  sops.secrets = {
+    # "jitsi.htpasswd" = {
+    #   owner = "nginx";
+    # };
+    "syncplay.password" = {};
+  };
+
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
 
@@ -87,6 +94,10 @@
     };
   };
 
+  # nixpkgs.config.permittedInsecurePackages = [
+  #   "jitsi-meet-1.0.8043"
+  # ];
+
   services = {
     openssh = {
       enable = true;
@@ -98,6 +109,30 @@
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
       };
+    };
+
+    # NOTE: This doesn't seem to work as is since Jitsi requires HTTPS.
+    # jitsi-meet = {
+    #   enable = true;
+    #   hostName = "pilab.lion-zebra.ts.net";
+    #   nginx.enable = false;
+    #   config = {
+    #     enableInsecureRoomNameWarning = true;
+    #     fileRecordingsEnabled = false;
+    #     liveStreamingEnabled = false;
+    #     prejoinPageEnabled = true;
+    #   };
+    #   interfaceConfig = {
+    #     SHOW_JITSI_WATERMARK = false;
+    #     SHOW_WATERMARK_FOR_GUESTS = false;
+    #   };
+    # };
+    #
+    # jitsi-videobridge.openFirewall = true;
+
+    syncplay = {
+      enable = true;
+      passwordFile = config.sops.secrets."syncplay.password".path;
     };
   };
 
