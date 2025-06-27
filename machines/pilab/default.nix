@@ -41,6 +41,7 @@
     ./compose/dawarich
     ./compose/rustdesk.nix
     ./compose/simplexchat
+    ./compose/filebrowser-quantum.nix
     # ./compose/kopia
   ];
 
