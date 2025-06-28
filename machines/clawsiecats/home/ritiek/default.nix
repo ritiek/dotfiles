@@ -46,7 +46,7 @@
       # diskonaut
       compsize
 
-      docker-compose
+      # docker-compose
       compose2nix
 
       iptables

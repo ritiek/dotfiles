@@ -84,7 +84,7 @@
     };
   };
 
-  virtualisation.docker.enable = true;
+  # virtualisation.docker.enable = true;
 
   security = {
     sudo.enable = false;
