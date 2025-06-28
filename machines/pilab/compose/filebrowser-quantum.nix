@@ -32,7 +32,7 @@
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:8188/";
       "homepage.icon" = "filebrowser";
-      "homepage.name" = "Filebrowser Quantum";
+      "homepage.name" = "FileBrowser Quantum";
     };
   };
   systemd.services."docker-filebrowser-quantum" = {
@@ -65,8 +65,8 @@
     script = ''
       docker network inspect filebrowser_default || docker network create filebrowser_default
     '';
-    partOf = [ "docker-compose-filebrowser-root.target" ];
-    wantedBy = [ "docker-compose-filebrowser-root.target" ];
+    partOf = [ "docker-compose-filebrowser-quantum-root.target" ];
+    wantedBy = [ "docker-compose-filebrowser-quantum-root.target" ];
   };
 
   # Root service
