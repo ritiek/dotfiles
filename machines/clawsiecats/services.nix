@@ -258,6 +258,15 @@ in
             recommendedProxySettings = true;
           };
         };
+        "nitter.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:5095";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         # "uptime-kuma.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
