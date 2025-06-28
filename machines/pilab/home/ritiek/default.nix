@@ -107,6 +107,7 @@ in
           systemctl start docker-dawarich.service docker-dawarich_sidekiq.service
           systemctl start docker-rustdesk-hbbs.service
           systemctl start docker-simplexchat-xftp-server.service docker-simplexchat-smp-server.service
+          systemctl start docker-nitter.service
           # systemctl start docker-kopia.service
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start paperless-ngx-sync.timer
@@ -127,7 +128,7 @@ in
         systemctl stop docker-compose-immich-root.target
         systemctl stop docker-compose-tubearchivist-root.target
         systemctl stop docker-compose-paperless-ngx-root.target
-        systemctl stop docker-compose-filebrowser-quantum-root
+        systemctl stop docker-compose-filebrowser-quantum-root.target
         systemctl stop docker-compose-forgejo-root.target
         systemctl stop docker-compose-navidrome-root.target
         systemctl stop docker-compose-memos-root.target
@@ -146,6 +147,7 @@ in
         systemctl stop docker-compose-dawarich-root.target
         systemctl stop docker-compose-rustdesk-root.target
         systemctl stop docker-compose-simplexchat-xftp-server-root.target docker-compose-simplexchat-smp-server-root.target
+        systemctl stop docker-compose-nitter-root.target
         # systemctl stop docker-compose-kopia-root.target
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.service
