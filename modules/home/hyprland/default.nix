@@ -34,6 +34,7 @@ in
     hyprshot
     hyprsunset
     # hyprpolkitagent
+    # waypaper
   ];
 
   home.pointerCursor = {
@@ -83,6 +84,18 @@ in
         ];
       };
     };
+  };
+
+  programs = {
+    # mpvpaper = {
+    #   enable = true;
+    #   pauseList = ''
+    #     firefox
+    #   '';
+    #   stopList = ''
+    #     firefox
+    #   '';
+    # };
   };
 
   home.file = {
