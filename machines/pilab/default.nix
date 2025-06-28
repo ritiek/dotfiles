@@ -42,6 +42,7 @@
     ./compose/rustdesk.nix
     ./compose/simplexchat
     ./compose/filebrowser-quantum.nix
+    ./compose/nitter.nix
     # ./compose/kopia
   ];
 
@@ -154,7 +155,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 200;
+    memoryPercent = 275;
   };
 
   networking.localCommands = ''
