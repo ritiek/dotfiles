@@ -22,6 +22,17 @@
       "APPLICATION_PROTOCOL" = "http";
       "DATABASE_HOST" = "dawarich_db";
       "DATABASE_NAME" = "dawarich_development";
+
+      # # PostgreSQL database name for solid_queue
+      # "QUEUE_DATABASE_NAME" = "dawarich_development_queue";
+      # "QUEUE_DATABASE_PASSWORD" = "password";
+      # "QUEUE_DATABASE_USERNAME" = "postgres";
+      # "QUEUE_DATABASE_PORT" = "5432";
+      # "QUEUE_DATABASE_HOST" = "dawarich_db";
+      # # SQLite database paths for cache and cable databases
+      # "CACHE_DATABASE_PATH" = "/dawarich_sqlite_data/dawarich_development_cache.sqlite3";
+      # "CABLE_DATABASE_PATH" = "/dawarich_sqlite_data/dawarich_development_cable.sqlite3";
+
       "DISABLE_HOST_AUTHORIZATION" = "true";
       "DISTANCE_UNIT" = "km";
       "ENABLE_TELEMETRY" = "false";
@@ -30,7 +41,7 @@
       "PROMETHEUS_EXPORTER_HOST" = "0.0.0.0";
       "PROMETHEUS_EXPORTER_PORT" = "9394";
       "RAILS_ENV" = "development";
-      "REDIS_URL" = "redis://dawarich_redis:6379/0";
+      "REDIS_URL" = "redis://dawarich_redis:6379";
       "TIME_ZONE" = "Asia/Kolkata";
     };
     environmentFiles = [
@@ -39,6 +50,9 @@
     volumes = [
       "/media/HOMELAB_MEDIA/services/dawarich/public:/var/app/public:rw"
       "/media/HOMELAB_MEDIA/services/dawarich/watched:/var/app/tmp/imports/watched:rw"
+      "/media/HOMELAB_MEDIA/services/dawarich/storage:/var/app/storage"
+      "/media/HOMELAB_MEDIA/services/dawarich/db_data:/dawarich_db_data"
+      # "/media/HOMELAB_MEDIA/services/dawarich/sqlite_data:/dawarich_sqlite_data"
     ];
     ports = [
       "3030:3000/tcp"
@@ -93,7 +107,8 @@
     ];
   };
   virtualisation.oci-containers.containers."dawarich_db" = {
-    image = "imresamu/postgis-arm64:14-3.5.2-alpine3.20";
+    # image = "imresamu/postgis-arm64:14-3.5.2-alpine3.20";
+    image = "imresamu/postgis:17-3.5.3-alpine3.21";
     environmentFiles = [
       config.sops.secrets."compose/dawarich.env".path
     ];
@@ -181,7 +196,9 @@
       "PROMETHEUS_EXPORTER_HOST" = "dawarich";
       "PROMETHEUS_EXPORTER_PORT" = "9394";
       "RAILS_ENV" = "development";
-      "REDIS_URL" = "redis://dawarich_redis:6379/0";
+      "REDIS_URL" = "redis://dawarich_redis:6379";
+      "SELF_HOSTED" = "true";
+      "STORE_GEODATA" = "true";
     };
     environmentFiles = [
       config.sops.secrets."compose/dawarich.env".path
@@ -189,6 +206,7 @@
     volumes = [
       "/media/HOMELAB_MEDIA/services/dawarich/public:/var/app/public:rw"
       "/media/HOMELAB_MEDIA/services/dawarich/watched:/var/app/tmp/imports/watched:rw"
+      "/media/HOMELAB_MEDIA/services/dawarich/storage:/var/app/storage:rw"
     ];
     cmd = [ "sidekiq" ];
     dependsOn = [
