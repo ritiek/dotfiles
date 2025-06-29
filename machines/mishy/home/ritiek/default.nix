@@ -69,6 +69,7 @@
       tree
       gdb
       # jq
+      iotop
       # google-chrome
       sd
       playerctl

@@ -46,6 +46,7 @@ in
       sd
       # diskonaut
       compsize
+      iotop
 
       docker-compose
       compose2nix
