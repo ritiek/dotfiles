@@ -184,6 +184,8 @@
       nap
       imagemagick
 
+      esptool
+
       # wl-gammarelay-rs
       # wayvnc
       # wlvncc
