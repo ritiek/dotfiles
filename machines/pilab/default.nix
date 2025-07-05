@@ -43,6 +43,7 @@
     ./compose/simplexchat
     ./compose/filebrowser-quantum.nix
     ./compose/nitter.nix
+    ./compose/mealie
     # ./compose/kopia
   ];
 
