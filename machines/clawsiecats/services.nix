@@ -267,6 +267,24 @@ in
             recommendedProxySettings = true;
           };
         };
+        # "filebrowser.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:8188";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
+        # "habitica.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:3000";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
         # "uptime-kuma.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
