@@ -185,6 +185,7 @@
       imagemagick
 
       esptool
+      picocom
 
       # wl-gammarelay-rs
       # wayvnc
