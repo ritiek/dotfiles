@@ -46,6 +46,7 @@
     ./../../modules/ssh.nix
     ./../../modules/yubico-pam.nix
     ./../../modules/usbip.nix
+    ./../../modules/mullvad.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
 
@@ -135,6 +136,8 @@
   environment = {
     systemPackages = with pkgs; [
       # Flakes use Git to pull dependencies from data sources 
+      coreutils
+      systemd
       wget
       curl
       screen
@@ -186,6 +189,7 @@
       avahi = {
         enable = true;
       };
+
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
         enable = true;
