@@ -70,6 +70,8 @@ in
       restic
       discordchatexporter-cli
       sqlcipher
+      httrack
+      yt-dlp
 
       homelab-mount
 
