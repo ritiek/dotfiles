@@ -54,6 +54,10 @@ The configuration looks to work fine on the most minimal [Vultr](https://www.vul
    $ ssh vps.machine.ip.address
    ```
 
+10. Optional: Copy my headscale backup to `/var/lib/headscale/` on the server and and reload config with `systemctl restart headscale.service`.
+
+11. Register ACME certificates on the server with: `sudo nixos-rebuild switch --flake .#clawsiecats`.
+
 
 ## HostVDS (MBR)
 
