@@ -267,6 +267,15 @@ in
             recommendedProxySettings = true;
           };
         };
+        "attic.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:7080";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         # "filebrowser.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
