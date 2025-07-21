@@ -13,7 +13,8 @@
   virtualisation.oci-containers.containers."filebrowser-quantum" = {
     image = "gtstef/filebrowser";
     volumes = [
-      "/media/HOMELAB_MEDIA:/media/HOMELAB_MEDIA:ro"
+      "/media/HOMELAB_MEDIA/services:/media/HOMELAB_MEDIA/services:ro"
+      "/media/HOMELAB_MEDIA/files:/media/HOMELAB_MEDIA/files:rw"
       "/media/HOMELAB_MEDIA/services/filebrowser-quantum/config.yaml:/home/filebrowser/config.yaml:rw"
       "/media/HOMELAB_MEDIA/services/filebrowser-quantum/database.db:/home/filebrowser/data/database.db:rw"
       # "/media/HOMELAB_MEDIA/services/filebrowser-quantum/frontend:/home/frontend:rw"
