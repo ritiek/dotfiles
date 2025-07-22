@@ -38,7 +38,9 @@
       # ${mullvad}/bin/mullvad tunnel ipv6 set on
       # ${mullvad}/bin/mullvad set default \
       #     --block-ads --block-trackers --block-malware
+
       # ${mullvad}/bin/mullvad relay set tunnel wireguard --use-multihop on
+      # ${mullvad}/bin/mullvad relay set location any
 
       ${mullvad}/bin/mullvad auto-connect set off
       ${mullvad}/bin/mullvad lan set allow

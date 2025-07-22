@@ -108,10 +108,12 @@
       sonixd
       nemo
       calibre
-      unstable.krita
-      unstable.blender
       # protonvpn-gui
       lxqt.lxqt-policykit
+
+      unstable.krita
+      unstable.blender
+      gimp3
 
       wl-clipboard-rs
       wev
@@ -126,6 +128,7 @@
       transmission_4-gtk
       syncplay
       chiaki
+
       # diskonaut
       # woeusb-ng
       wifite2
