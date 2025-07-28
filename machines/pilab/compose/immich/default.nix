@@ -44,7 +44,7 @@
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
       RestartMaxDelaySec = lib.mkOverride 500 "1m";
-      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSec = lib.mkOverride 500 "5s";
       RestartSteps = lib.mkOverride 500 9;
     };
     after = [
@@ -79,7 +79,7 @@
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
       RestartMaxDelaySec = lib.mkOverride 500 "1m";
-      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSec = lib.mkOverride 500 "5s";
       RestartSteps = lib.mkOverride 500 9;
     };
     after = [
@@ -108,7 +108,7 @@
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
       RestartMaxDelaySec = lib.mkOverride 500 "1m";
-      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSec = lib.mkOverride 500 "5s";
       RestartSteps = lib.mkOverride 500 9;
     };
     after = [
@@ -149,7 +149,7 @@
     serviceConfig = {
       Restart = lib.mkOverride 500 "always";
       RestartMaxDelaySec = lib.mkOverride 500 "1m";
-      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSec = lib.mkOverride 500 "5s";
       RestartSteps = lib.mkOverride 500 9;
     };
     after = [
