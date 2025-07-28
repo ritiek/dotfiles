@@ -44,6 +44,7 @@
     ./compose/filebrowser-quantum.nix
     ./compose/nitter.nix
     ./compose/mealie
+    ./compose/karakeep
     # ./compose/kopia
   ];
 
@@ -143,6 +144,28 @@
     nix-index-database.comma.enable = true;
     zsh.enable = true;
     # gnupg.agent.enable = true;
+  };
+
+  virtualisation = {
+    oci-containers.backend = "docker";
+    docker = {
+      enable = true;
+      autoPrune.enable = true;
+      # Expand docker's pool of available subnets by creating
+      # smaller subnets.
+      # At the time of writing this - docker defaults this to
+      # 32, which means it can allocate subnets to a maximum
+      # of 32 docker compose swarms at the same time.
+      daemon.settings = {
+        bip = "10.255.0.1/24";
+        fixed-cidr = "10.255.0.0/24";
+        default-address-pools = [
+          { base = "10.240.0.0/12"; size = 24; }    # ~4096 /24 networks
+          { base = "172.20.0.0/16"; size = 24; }    # +256 /24 networks
+        ];
+        mtu = 9000;
+      };
+    };
   };
 
   security = {
