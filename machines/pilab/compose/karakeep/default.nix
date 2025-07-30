@@ -119,6 +119,8 @@
     ];
     requires = [
       "docker-network-karakeep_default.service"
+      "docker-karakeep-meilisearch.service"
+      "docker-karakeep-chrome.service"
     ];
     unitConfig.RequiresMountsFor = [
       "/media/HOMELAB_MEDIA/services/karakeep/data"
