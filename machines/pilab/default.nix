@@ -29,7 +29,7 @@
     ./compose/syncthing.nix
     ./compose/miniflux
     ./compose/gotify.nix
-    ./compose/shiori
+    # ./compose/shiori
     ./compose/homebox.nix
     ./compose/conduwuit
     ./compose/grocy

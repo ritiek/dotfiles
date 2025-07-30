@@ -99,7 +99,7 @@ in
           systemctl start docker-syncthing.service
           systemctl start docker-miniflux.service
           systemctl start docker-gotify.service
-          systemctl start docker-shiori.service
+          # systemctl start docker-shiori.service
           systemctl start docker-homebox.service
           systemctl start docker-conduwuit.service
           systemctl start docker-grocy.service
@@ -142,7 +142,7 @@ in
         systemctl stop docker-compose-syncthing-root.target
         systemctl stop docker-compose-miniflux-root.target
         systemctl stop docker-compose-gotify-root.target
-        systemctl stop docker-compose-shiori-root.target
+        # systemctl stop docker-compose-shiori-root.target
         systemctl stop docker-compose-homebox-root.target
         systemctl stop docker-compose-conduwuit-root.target
         systemctl stop docker-compose-grocy-root.target
