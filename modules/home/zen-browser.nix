@@ -139,6 +139,7 @@
         ff2mpv
 
         tubearchivist-companion
+        karakeep
 
         (buildFirefoxXpiAddon {
           pname = "adnauseam";
@@ -149,15 +150,15 @@
           meta = {};
         })
 
-        (buildFirefoxXpiAddon {
-          pname = "shiori";
-          version = "0.8.5";
-          addonId = "{c6e8bd66-ebb4-4b63-bd29-5ef59c795903}";
-          url = "https://addons.mozilla.org/firefox/downloads/file/3911467/shiori_ext-0.8.5.xpi";
-          sha256 = "sha256-ajRGlDfzKpk2b9JiWeLKdAH3Ymb7M1b4M95g0Tmaaks=";
-          # set `devtools.jsonview.enabled: false`
-          meta = {};
-        })
+        # (buildFirefoxXpiAddon {
+        #   pname = "shiori";
+        #   version = "0.8.5";
+        #   addonId = "{c6e8bd66-ebb4-4b63-bd29-5ef59c795903}";
+        #   url = "https://addons.mozilla.org/firefox/downloads/file/3911467/shiori_ext-0.8.5.xpi";
+        #   sha256 = "sha256-ajRGlDfzKpk2b9JiWeLKdAH3Ymb7M1b4M95g0Tmaaks=";
+        #   # set `devtools.jsonview.enabled: false`
+        #   meta = {};
+        # })
 
         (buildFirefoxXpiAddon {
           pname = "send-to-kindle";
