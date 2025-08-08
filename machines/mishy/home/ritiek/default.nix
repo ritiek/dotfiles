@@ -35,6 +35,12 @@
     inputs.nixpkgs-wayland.overlay
 
     (final: _prev: {
+      local = import inputs.local {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
+    (final: _prev: {
       stable = import inputs.stable {
         inherit (final) system;
         config.allowUnfree = true;
@@ -210,6 +216,8 @@
 
       # nur.repos.kira-bruneau.habitica
       # inputs.ghostty.packages."${pkgs.system}".default
+
+      local.BK7231GUIFlashTool
     ];
   };
 
