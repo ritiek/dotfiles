@@ -84,7 +84,7 @@ in
           {
             timeout = 3600;
             on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on";
+            on-resume = "hyprctl dispatch dpms on && (pidof swayosd-server || swayosd-server)";
           }
         ];
       };
@@ -121,10 +121,10 @@ in
   # XXX: Shouldn't hyprland's NixOS module be handling auto-reload by itself?
   home.activation.reload-hyprland = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ -e /run/user/1000/hypr/*/.socket.sock ]; then
-      HYPRLAND_INSTANCE_SIGNATURE=$(basename $(echo /run/user/$UID/hypr/*)) \
+      HYPRLAND_INSTANCE_SIGNATURE=$(${pkgs.coreutils}/bin/basename "$(${pkgs.coreutils}/bin/ls -td /run/user/$UID/hypr/*/ | ${pkgs.coreutils}/bin/head -n 1)") \
       ${pkgs.hyprland}/bin/hyprctl reload config-only
     else
-      echo "Hyprland socket file does not exist, skipping reload"
+      ${pkgs.coreutils}/bin/echo "Hyprland socket file does not exist, skipping reload"
     fi
   '';
 }
