@@ -7,7 +7,7 @@
     x11.enable = true;
     gtk.enable = true;
   };
- 
+
   qt = {
     enable = true;
     platformTheme.name = "qtct";
@@ -18,7 +18,7 @@
       [General]
       theme=GraphiteNordDark
     '';
-  
+
     "Kvantum/GraphiteNord".source = "${pkgs.graphite-kde-theme}/share/Kvantum/GraphiteNord";
   };
 

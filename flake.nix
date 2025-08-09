@@ -40,6 +40,12 @@
       inputs.nixos-hardware.follows = "nixos-hardware";
     };
 
+    # nixgl = {
+    #   url = "github:nix-community/nixGL";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.flake-utils.follows = "flake-utils";
+    # };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       # Using my patched home-manager to let root install systemd user services.
