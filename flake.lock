@@ -655,21 +655,6 @@
         "type": "github"
       }
     },
-    "local": {
-      "locked": {
-        "lastModified": 1754081841,
-        "narHash": "sha256-B7SOywxsYJhTnwqB9Ac3dxOH385YnczIBOGoQ/lliNQ=",
-        "ref": "refs/heads/init-BK7231GUIFlashTool",
-        "rev": "9158dc46e78d8be5a0cfe6681639daba5c485dc5",
-        "revCount": 835862,
-        "type": "git",
-        "url": "file:///home/ritiek/Downloads/nixpkgs"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:///home/ritiek/Downloads/nixpkgs"
-      }
-    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -977,7 +962,6 @@
         "hyprutils": "hyprutils_2",
         "impermanence": "impermanence",
         "lib-aggregate": "lib-aggregate",
-        "local": "local",
         "nix-index-database": "nix-index-database",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
