@@ -47,7 +47,6 @@
 
     users.ritiek = {
       isNormalUser = true;
-      # password = "ff";
       extraGroups = [
         "wheel"
       ];
