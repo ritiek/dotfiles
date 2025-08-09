@@ -13,7 +13,7 @@
     ./../../modules/restic-server.nix
   ];
 
-  sops.secrets."ritiek.hashedpassword" = {};
+  sops.secrets."ritiek.hashedpassword".neededForUsers = true;
 
   networking.hostName = lib.mkForce "keyberry";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
