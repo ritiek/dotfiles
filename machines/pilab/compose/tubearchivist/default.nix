@@ -48,7 +48,7 @@
     ];
   };
   virtualisation.oci-containers.containers."archivist-redis" = {
-    image = "redis/redis-stack-server";
+    image = "redis";
     environmentFiles = [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
