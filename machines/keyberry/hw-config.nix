@@ -12,13 +12,14 @@
 
   boot.kernelModules = [ "libcomposite" "cma=2048M" ];
 
-  hardware.raspberry-pi."4" = {
-    dwc2.enable = true;
-    fkms-3d = {
-      enable = true;
-      cma = 2048;
+  hardware = {
+    raspberry-pi."4" = {
+      dwc2.enable = true;
+      fkms-3d = {
+        enable = true;
+        cma = 2048;
+      };
     };
+    graphics.enable = true;
   };
-
-  hardware.graphics.enable = true;
 }
