@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, config, ... }:
+{ lib, pkgs, inputs, config, hostName, ... }:
 let
   wallpaper = pkgs.fetchurl {
     # url = "https://i.imgur.com/gtGew3r.jpg";
@@ -89,10 +89,10 @@ in
   };
 
   home.file = {
-    hyprland = {
-      source =  ./hypr/hyprland;
-      target = "${config.home.homeDirectory}/.config/hypr/hyprland";
-    };
+    # hyprland = {
+    #   source =  ./hypr/hyprland;
+    #   target = "${config.home.homeDirectory}/.config/hypr/hyprland";
+    # };
     # hypridle = {
     #   source =  ./hypr/hypridle.conf;
     #   target = "${config.home.homeDirectory}/.config/hypr/hypridle.conf";
@@ -132,17 +132,18 @@ in
         "XDG_CURRENT_DESKTOP,Hyprland"
         "XDG_SESSION_DESKTOP,Hyprland"
         "XDG_SESSION_TYPE,wayland"
+        "QT_FONT_DPI,74"
+        "SAL_USE_VCLPLUGIN,qt5"
+        "QT_SCALE_FACTOR,1"
+        "SAL_FORCEDPI,70"
+        "MOZ_USE_XINPUT2,1"
+      ] ++ pkgs.lib.optionals (hostName == "mishy") [
         "LIBVA_DRIVER_NAME,nvidia"
         "GBM_BACKEND,nvidia-drm"
         "__GLX_VENDOR_LIBRARY_NAME,nvidia"
         "WLR_NO_HARDWARE_CURSORS,1"
         "WLR_DRM_NO_ATOMIC,1"
         "WLR_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1"
-        "QT_FONT_DPI,74"
-        "SAL_USE_VCLPLUGIN,qt5"
-        "QT_SCALE_FACTOR,1"
-        "SAL_FORCEDPI,70"
-        "MOZ_USE_XINPUT2,1"
       ];
 
       # Variables (from var.conf)
@@ -259,11 +260,13 @@ in
       # Key bindings (from bind.conf)
       bind = [
         # Application bindings
-        "$mainMod, Q, exec, ghostty"
         "$mainMod, B, exec, zen-beta"
+        # Workaround for ghostty complaining "Unable to create gl context" on RPi400.
+        "$mainMod, Q, exec, ${pkgs.lib.optionalString pkgs.stdenv.hostPlatform.isAarch64 "LIBGL_ALWAYS_SOFTWARE=1 "}ghostty"
+        # "$mainMod, Q, exec, ghostty"
         "$mainMod, C, killactive,"
         "$mainMod CTRL, C, exec, kill -9 $(hyprctl activewindow -j | jq -r '.pid')"
-        "$mainMod, code:9, exit,"
+        "$mainMod CTRL, escape, exit,"
         "$mainMod, E, exec, nemo"
         "$mainMod, V, togglefloating,"
         "$mainMod, V, resizeactive, exact 900 700"
