@@ -163,7 +163,15 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
-  outputs = { self, ... }@inputs: {
+  outputs = { self, ... }@inputs:
+  let
+    cache = import ./substituters.nix;
+  in {
+    nixConfig = {
+      extra-substituters = cache.substituters;
+      extra-trusted-public-keys = cache.trusted-public-keys;
+    };
+
     nixosConfigurations.mishy = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
