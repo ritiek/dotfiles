@@ -14,32 +14,36 @@
   ];
 
   raspberry-pi-nix.board = "bcm2712";
-  hardware = {
-    raspberry-pi = {
-      config = {
-        all = {
-          base-dt-params = {
-            BOOT_UART = {
-              value = 1;
-              enable = true;
-            };
-            uart_2ndstage = {
-              value = 1;
-              enable = true;
-            };
-            # Force PCIe Gen 3 speeds.
-            pciex1_gen = {
-              value = 3;
-              enable = true;
-            };
-          };
-          dt-overlays = {
-            disable-bt = {
-              enable = true;
-              params = { };
-            };
-          };
-        };
+  hardware.raspberry-pi.config.all = {
+    options = {
+      usb_max_current_enable = {
+        enable = true;
+        value = 1;
+      };
+    };
+    base-dt-params = {
+      BOOT_UART = {
+        value = 1;
+        enable = true;
+      };
+      uart_2ndstage = {
+        value = 1;
+        enable = true;
+      };
+      # Force PCIe Gen 3 speeds.
+      pciex1_gen = {
+        value = 3;
+        enable = true;
+      };
+    };
+    dt-overlays = {
+      disable-bt = {
+        enable = true;
+        params = { };
+      };
+      vc4-kms-v3d = {
+        enable = false;
+        params = { };
       };
     };
   };
