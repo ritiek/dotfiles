@@ -232,7 +232,8 @@ in
       echo "Backing up '/media/HOMELAB_MEDIA'."
     '';
     timerConfig = {
-      OnCalendar = "*:0/20";
+      # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
+      OnCalendar = "0 0,6,12,18 * * *"; # Every day at 00:00, 06:00, 12:00, and 18:00
       Persistent = true;
     };
   };
@@ -265,7 +266,8 @@ in
       echo "Backing up '/media/HOMELAB_MEDIA'."
     '';
     timerConfig = {
-      OnCalendar = "0/6:00"; # Every 6 hours at minute 0
+      # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
+      OnCalendar = "0 0,6,12,18 * * *"; # Every day at 00:00, 06:00, 12:00, and 18:00
       Persistent = true;
     };
   };
