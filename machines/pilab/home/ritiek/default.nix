@@ -106,6 +106,7 @@ in
           systemctl start docker-changedetection.service
           systemctl start docker-frigate.service
           systemctl start docker-habitica-server.service
+          # systemctl start docker-ollama.service
           systemctl start docker-open-webui.service
           systemctl start docker-pwpush.service
           systemctl start docker-dawarich.service docker-dawarich_sidekiq.service
