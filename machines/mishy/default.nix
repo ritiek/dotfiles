@@ -138,6 +138,7 @@
       # Flakes use Git to pull dependencies from data sources 
       coreutils
       systemd
+      dconf
       wget
       curl
       screen
