@@ -7,7 +7,6 @@
     format = "dotenv";
   };
 
-  # Runtime
   virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
@@ -43,9 +42,9 @@
   };
   virtualisation.oci-containers.containers."open-webui" = {
     image = "ghcr.io/open-webui/open-webui:main";
-    environment = {
-      "OLLAMA_BASE_URL" = "http://ollama:11434";
-    };
+    # environment = {
+    #   "OLLAMA_BASE_URL" = "http://ollama:11434";
+    # };
     environmentFiles = [
       config.sops.secrets."compose/ollama-webui.env".path
     ];
@@ -55,9 +54,7 @@
     ports = [
       "3020:8080/tcp"
     ];
-    dependsOn = [
-      "ollama"
-    ];
+    # Removed dependsOn to make services independent
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
@@ -104,17 +101,17 @@
   };
 
   # Builds
-  systemd.services."docker-build-open-webui" = {
-    path = [ pkgs.docker pkgs.git ];
-    serviceConfig = {
-      Type = "oneshot";
-      TimeoutSec = 300;
-    };
-    script = ''
-      cd /etc/nixos
-      docker build -t ghcr.io/open-webui/open-webui:main --build-arg OLLAMA_BASE_URL=/ollama .
-    '';
-  };
+  # systemd.services."docker-build-open-webui" = {
+  #   path = [ pkgs.docker pkgs.git ];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     TimeoutSec = 300;
+  #   };
+  #   script = ''
+  #     cd /etc/nixos
+  #     docker build -t ghcr.io/open-webui/open-webui:main --build-arg OLLAMA_BASE_URL=/ollama .
+  #   '';
+  # };
 
   # Root service
   # When started, this will automatically create all resources and start
