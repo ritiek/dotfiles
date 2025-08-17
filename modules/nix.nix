@@ -10,7 +10,7 @@ in
 
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
-    trusted-users = [ "ritiek" ];
+    trusted-users = [ "nixos" "ritiek" ];
     # Fallback to building from source when cache server is not accessible.
     fallback = true;
   };
