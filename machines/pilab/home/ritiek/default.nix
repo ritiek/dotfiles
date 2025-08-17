@@ -94,7 +94,8 @@ in
           systemctl start docker-paperless-ngx-webserver.service
           systemctl start docker-filebrowser-quantum.service
           systemctl start docker-forgejo.service
-          systemctl start docker-navidrome.service
+          # systemctl start docker-navidrome.service
+          systemctl start navidrome-autostart.service
           systemctl start docker-memos.service
           systemctl start docker-syncthing.service
           systemctl start docker-miniflux.service
