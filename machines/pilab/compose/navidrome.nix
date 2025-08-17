@@ -9,12 +9,12 @@ let
   # Helper script to handle connections
   navidromeConnectionHandler = pkgs.writeShellScript "navidrome-connection-handler" ''
     echo "Connection received at $(date)" >&2
-    
+
     # Check if Navidrome container is running
     if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-navidrome.service; then
       echo "Starting Navidrome container..." >&2
       ${pkgs.systemd}/bin/systemctl start docker-navidrome.service
-      
+
       # Wait for Navidrome to be ready
       echo "Waiting for Navidrome to start..." >&2
       for i in $(seq 1 30); do
@@ -38,7 +38,7 @@ EOF
         sleep 2
       done
     fi
-    
+
     echo "Navidrome is ready, proxying connection..." >&2
     # Now proxy the connection to the running Navidrome
     exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalWebUIPort}
@@ -50,7 +50,7 @@ in {
     autoPrune.enable = true;
   };
   virtualisation.oci-containers.backend = "docker";
-  
+
   virtualisation.oci-containers.containers."navidrome" = {
     image = "deluan/navidrome:latest";
     environment = {
@@ -164,7 +164,7 @@ in {
       proxy_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString webUIPort}" | grep ESTABLISHED | wc -l)
       internal_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString internalWebUIPort}" | grep ESTABLISHED | wc -l)
       total_connections=$((proxy_connections + internal_connections))
-      
+
       if [ "$total_connections" -eq 0 ]; then
         echo "$(date): No active connections for 5+ minutes, stopping Navidrome"
         ${pkgs.systemd}/bin/systemctl stop docker-navidrome.service
