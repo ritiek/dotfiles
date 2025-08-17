@@ -15,7 +15,7 @@
 
   raspberry-pi-nix = {
     board = "bcm2712";
-    # kernel-version = "v6_12_17";
+    kernel-version = "v6_12_17";
   };
   hardware.raspberry-pi.config.all = {
     options = {
