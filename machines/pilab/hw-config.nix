@@ -1,8 +1,16 @@
 { config, inputs, lib, ... }:
 {
-  imports = [
-    inputs.raspberry-pi-nix.nixosModules.raspberry-pi
-    inputs.raspberry-pi-nix.nixosModules.sd-image
+  imports = with inputs.nixos-raspberrypi.nixosModules; [
+    raspberry-pi-5.base
+    usb-gadget-ethernet
+  ];
+
+  system.nixos.tags = let
+    cfg = config.boot.loader.raspberryPi;
+  in [
+    "raspberry-pi-${cfg.variant}"
+    cfg.bootloader
+    config.boot.kernelPackages.kernel.version
   ];
 
   # Needed for building SD images.
@@ -13,10 +21,6 @@
     })
   ];
 
-  raspberry-pi-nix = {
-    board = "bcm2712";
-    # kernel-version = "v6_12_17";
-  };
   hardware.raspberry-pi.config.all = {
     options = {
       usb_max_current_enable = {

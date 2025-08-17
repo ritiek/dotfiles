@@ -141,12 +141,19 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    raspberry-pi-nix = {
-      url = "github:nix-community/raspberry-pi-nix";
-      # XXX: Above to have gone into read-only mode. Here
-      # seems a better maintained fork for the moment in case.
-      # url = "github:cmyk/raspberry-pi-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+    # raspberry-pi-nix = {
+    #   url = "github:nix-community/raspberry-pi-nix";
+    #   # XXX: Above to have gone into read-only mode. Here
+    #   # seems a better maintained fork for the moment in case.
+    #   # url = "github:cmyk/raspberry-pi-nix";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi";
+      # Not overriding inputs.nixpkgs here as waiting for upstream
+      # to merge the PR:
+      # https://github.com/NixOS/nixpkgs/pull/398456
     };
 
     rockchip = {
@@ -194,13 +201,17 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.pilab = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.pilab = inputs.nixos-raspberrypi.lib.nixosSystem {
+      # nixpkgs = inputs.nixpkgs;
       system = "aarch64-linux";
       modules = [
         ./machines/pilab
         ./machines/pilab/hw-config.nix
       ];
-      specialArgs = { inherit inputs; };
+      specialArgs = {
+        inherit inputs;
+        nixos-raspberrypi = inputs.nixos-raspberrypi;
+      };
     };
 
     homeConfigurations."ritiek@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
@@ -212,7 +223,10 @@
         ./machines/pilab/home/ritiek
         { _module.args.hostName = "pilab"; }
       ];
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = {
+        inherit inputs;
+        nixos-raspberrypi = inputs.nixos-raspberrypi;
+      };
     };
 
     homeConfigurations."immi@pilab" = inputs.home-manager.lib.homeManagerConfiguration {

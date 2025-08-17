@@ -46,7 +46,21 @@
     ./compose/mealie
     ./compose/karakeep
     # ./compose/kopia
-  ];
+
+  ] ++ (with inputs.nixos-raspberrypi.nixosModules; [
+    # Required: Add necessary overlays with kernel, firmware, vendor packages
+    inputs.nixos-raspberrypi.lib.inject-overlays
+    # Binary cache with prebuilt packages for the currently locked `nixpkgs`,
+    # see `devshells/nix-build-to-cachix.nix` for a list
+    trusted-nix-caches
+    # Optional: All RPi and RPi-optimised packages to be available in `pkgs.rpi`
+    nixpkgs-rpi
+    # Optional: add overlays with optimised packages into the global scope
+    # provides: ffmpeg_{4,6,7}, kodi, libcamera, vlc, etc.
+    # This overlay may cause lots of rebuilds (however many 
+    #  packages should be available from the binary cache)
+    inputs.nixos-raspberrypi.lib.inject-overlays-global
+  ]);
 
   sops.secrets = {
     # "jitsi.htpasswd" = {
