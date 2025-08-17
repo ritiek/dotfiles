@@ -90,7 +90,8 @@ in
           systemctl start docker-pihole.service
           systemctl start docker-uptime-kuma.service
           systemctl start docker-immich.service
-          systemctl start docker-tubearchivist.service
+          # systemctl start docker-tubearchivist.service
+          systemctl start tubearchivist-autostart.service
           systemctl start docker-paperless-ngx-webserver.service
           systemctl start docker-filebrowser-quantum.service
           systemctl start docker-forgejo.service
