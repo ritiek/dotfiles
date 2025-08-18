@@ -1,7 +1,8 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  domain = "clawsiecats.omg.lol";
+  legacyDomain = "clawsiecats.omg.lol";
+  domain = "clawsiecats.lol";
 in
 {
   imports = [
@@ -54,7 +55,7 @@ in
   services = {
     jitsi-meet = {
       enable = true;
-      hostName = "jitsi.${domain}";
+      hostName = "jitsi.${legacyDomain}";
       config = {
         enableInsecureRoomNameWarning = true;
         fileRecordingsEnabled = false;
@@ -72,12 +73,12 @@ in
     syncplay = {
       enable = true;
       passwordFile = config.sops.secrets."syncplay.password".path;
-      useACMEHost = "syncplay.${domain}";
+      useACMEHost = "syncplay.${legacyDomain}";
     };
 
     # invidious = {
     #   enable = true;
-    #   domain = "invidious.${domain}";
+    #   legacyDomain = "invidious.${legacyDomain}";
     #   nginx.enable = true;
     # };
 
@@ -86,7 +87,7 @@ in
       user = "root";
       # group = "root";
       settings = {
-        server_url = "https://${domain}";
+        server_url = "https://${legacyDomain}";
         listen_addr = "127.0.0.1:8080";
         # listen_addr = "0.0.0.0:8080";
         dns = {
@@ -106,8 +107,8 @@ in
           server = {
             enable = true;
             region_id = 999;
-            region_code = domain;
-            region_name = domain + " DERP";
+            region_code = legacyDomain;
+            region_name = legacyDomain + " DERP";
             stun_listen_addr = "0.0.0.0:3478";
             automatically_add_embedded_derp_region = true;
           };
@@ -140,8 +141,8 @@ in
           cookie_secure = true;
         };
         headscale = {
-          # url = "http://${domain}:8080";
-          # url = "https://controlplane.${domain}";
+          # url = "http://${legacyDomain}:8080";
+          # url = "https://controlplane.${legacyDomain}";
           url = "http://127.0.0.1:8080";
             # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
           # config_path = (pkgs.formats.yaml {}).generate "headscale.yml" (lib.recursiveUpdate config.services.headscale.settings {
@@ -194,20 +195,20 @@ in
     nginx = {
       enable = true;
       virtualHosts = {
-        "jitsi.${domain}" = {
+        "jitsi.${legacyDomain}" = {
           # basicAuth = {
           #   jitsi = "notthepass";
           # };
           basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
           # basicAuthFile = ./jitsi.htpasswd;
         };
-        "miniserve.${domain}" = {
+        "miniserve.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           # locations."/".root = pkgs.miniserve;
           locations."/".proxyPass = "http://100.64.0.5:7055";
         };
-        # "puwush.${domain}" = {
+        # "puwush.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -217,6 +218,16 @@ in
         #   };
         # };
         "immich.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            # proxyPass = "http://100.64.0.7:2283";
+            proxyPass = "http://100.64.0.7:2283";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
+        "immich.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -239,7 +250,20 @@ in
             # '';
           };
         };
-        "controlplane.${domain}" = {
+        "vaultwarden.${legacyDomain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:9446";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+            # extraConfig = ''
+            #   allow 127.0.0.1;
+            #   deny all;
+            # '';
+          };
+        };
+        "controlplane.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -249,7 +273,7 @@ in
             recommendedProxySettings = true;
           };
         };
-        "headplane.${domain}" = {
+        "headplane.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -258,7 +282,7 @@ in
             recommendedProxySettings = true;
           };
         };
-        "nitter.${domain}" = {
+        "nitter.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -267,7 +291,7 @@ in
             recommendedProxySettings = true;
           };
         };
-        "attic.${domain}" = {
+        "attic.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -276,7 +300,7 @@ in
             recommendedProxySettings = true;
           };
         };
-        # "filebrowser.${domain}" = {
+        # "filebrowser.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -285,7 +309,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "habitica.${domain}" = {
+        # "habitica.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -294,7 +318,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "uptime-kuma.${domain}" = {
+        # "uptime-kuma.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -303,7 +327,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "prefect.${domain}" = {
+        # "prefect.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -331,7 +355,7 @@ in
   security.acme = {
     acceptTerms = true;
     defaults.email = "clawsiecats@omg.lol";
-    certs."syncplay.${domain}".webroot = "/var/lib/acme/acme-challenge";
+    certs."syncplay.${legacyDomain}".webroot = "/var/lib/acme/acme-challenge";
   };
 
   networking.firewall = {
