@@ -55,7 +55,7 @@ in
   services = {
     jitsi-meet = {
       enable = true;
-      hostName = "jitsi.${legacyDomain}";
+      hostName = "jitsi.${domain}";
       config = {
         enableInsecureRoomNameWarning = true;
         fileRecordingsEnabled = false;
@@ -73,7 +73,7 @@ in
     syncplay = {
       enable = true;
       passwordFile = config.sops.secrets."syncplay.password".path;
-      useACMEHost = "syncplay.${legacyDomain}";
+      useACMEHost = "syncplay.${domain}";
     };
 
     # invidious = {
@@ -87,7 +87,7 @@ in
       user = "root";
       # group = "root";
       settings = {
-        server_url = "https://${legacyDomain}";
+        server_url = "https://${domain}";
         listen_addr = "127.0.0.1:8080";
         # listen_addr = "0.0.0.0:8080";
         dns = {
@@ -107,8 +107,8 @@ in
           server = {
             enable = true;
             region_id = 999;
-            region_code = legacyDomain;
-            region_name = legacyDomain + " DERP";
+            region_code = domain;
+            region_name = domain + " DERP";
             stun_listen_addr = "0.0.0.0:3478";
             automatically_add_embedded_derp_region = true;
           };
@@ -141,8 +141,8 @@ in
           cookie_secure = true;
         };
         headscale = {
-          # url = "http://${legacyDomain}:8080";
-          # url = "https://controlplane.${legacyDomain}";
+          # url = "http://${domain}:8080";
+          # url = "https://controlplane.${domain}";
           url = "http://127.0.0.1:8080";
             # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
           # config_path = (pkgs.formats.yaml {}).generate "headscale.yml" (lib.recursiveUpdate config.services.headscale.settings {
@@ -195,12 +195,25 @@ in
     nginx = {
       enable = true;
       virtualHosts = {
+        "jitsi.${domain}" = {
+          # basicAuth = {
+          #   jitsi = "notthepass";
+          # };
+          basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
+          # basicAuthFile = ./jitsi.htpasswd;
+        };
         "jitsi.${legacyDomain}" = {
           # basicAuth = {
           #   jitsi = "notthepass";
           # };
           basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
           # basicAuthFile = ./jitsi.htpasswd;
+        };
+        "miniserve.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          # locations."/".root = pkgs.miniserve;
+          locations."/".proxyPass = "http://100.64.0.5:7055";
         };
         "miniserve.${legacyDomain}" = {
           forceSSL = true;
@@ -263,12 +276,31 @@ in
             # '';
           };
         };
+        "controlplane.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:8080";
+            proxyWebsockets = true;
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         "controlplane.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
             proxyPass = "http://127.0.0.1:8080";
             proxyWebsockets = true;
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
+        "headplane.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://127.0.0.1:3000";
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
           };
@@ -282,11 +314,29 @@ in
             recommendedProxySettings = true;
           };
         };
+        "nitter.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:5095";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         "nitter.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
             proxyPass = "http://100.64.0.7:5095";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
+        "attic.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:7080";
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
           };
@@ -354,8 +404,8 @@ in
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "clawsiecats@omg.lol";
-    certs."syncplay.${legacyDomain}".webroot = "/var/lib/acme/acme-challenge";
+    defaults.email = "ritiekmalhotra123@gmail.com";
+    certs."syncplay.${domain}".webroot = "/var/lib/acme/acme-challenge";
   };
 
   networking.firewall = {

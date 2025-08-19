@@ -11,7 +11,7 @@
 
     "http://pilab.lion-zebra.ts.net:7080/attic-action"
     # In case my server is not reachable over Tailscale.
-    "https://attic.clawsiecats.omg.lol/attic-action"
+    "https://attic.clawsiecats.lol/attic-action"
   ];
 
   trusted-public-keys = [
