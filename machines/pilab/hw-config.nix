@@ -15,7 +15,9 @@
 
   raspberry-pi-nix = {
     board = "bcm2712";
-    kernel-version = "v6_12_17";
+    # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
+    # kernel-version = "v6_12_17";
+    # kernel-version = "v6_6_78";
   };
   hardware.raspberry-pi.config.all = {
     options = {
