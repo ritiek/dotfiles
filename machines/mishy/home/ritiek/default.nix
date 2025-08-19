@@ -134,6 +134,7 @@
       transmission_4-gtk
       syncplay
       chiaki
+      moonlight-qt
 
       # diskonaut
       # woeusb-ng
