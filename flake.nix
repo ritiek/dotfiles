@@ -336,7 +336,7 @@
     };
 
     deploy.nodes.clawsiecats = {
-      hostname = "clawsiecats.omg.lol";
+      hostname = "clawsiecats.lol";
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.clawsiecats;
