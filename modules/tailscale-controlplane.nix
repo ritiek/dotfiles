@@ -8,7 +8,7 @@
     authKeyFile = config.sops.secrets."tailscale.authkey".path;
     useRoutingFeatures = "both";
     extraUpFlags = [
-      "--login-server=https://controlplane.clawsiecats.omg.lol"
+      "--login-server=https://controlplane.clawsiecats.lol"
       "--advertise-exit-node"
     ];
   };
