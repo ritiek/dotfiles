@@ -111,7 +111,10 @@
     };
 
     headplane = {
-      url = "github:tale/headplane";
+      # TOOD: Switch to upstream once this gets resolved:
+      # https://github.com/tale/headplane/pull/297
+      # url = "github:tale/headplane";
+      url = "github:ritiek/headplane/specify-pnpm-fetcher-version";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

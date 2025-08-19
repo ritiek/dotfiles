@@ -217,15 +217,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1753386722,
-        "narHash": "sha256-TPW/KfV5IYGvPaRC/UIbUCmsbPkIEdjgVIh3b+64cPU=",
-        "owner": "tale",
+        "lastModified": 1755603123,
+        "narHash": "sha256-Am3qa5sPSAdj5H4zDeR1sSS65ZpGx08oqaDFAQ1yN/E=",
+        "owner": "ritiek",
         "repo": "headplane",
-        "rev": "f0c1f617c7199c1855b312cbbeac3dd0b7130d86",
+        "rev": "f42d8598e57d95d7eea2de0d94c062d9bf61e544",
         "type": "github"
       },
       "original": {
-        "owner": "tale",
+        "owner": "ritiek",
+        "ref": "specify-pnpm-fetcher-version",
         "repo": "headplane",
         "type": "github"
       }
