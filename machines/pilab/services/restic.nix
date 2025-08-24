@@ -233,7 +233,7 @@ in
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
-      OnCalendar = "0 0,6,12,18 * * *"; # Every day at 00:00, 06:00, 12:00, and 18:00
+      OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
       Persistent = true;
     };
   };
@@ -267,7 +267,7 @@ in
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
-      OnCalendar = "0 0,6,12,18 * * *"; # Every day at 00:00, 06:00, 12:00, and 18:00
+      OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
       Persistent = true;
     };
   };
