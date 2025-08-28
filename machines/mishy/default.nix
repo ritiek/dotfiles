@@ -149,6 +149,7 @@
       # keychain
 
       btop
+      parted
       gparted
       xclip
       xorg.xhost
@@ -258,9 +259,12 @@
 
     logind = {
       lidSwitch = "ignore";
-      extraConfig = ''
-        HandlePowerKey=suspend
-      '';
+      # extraConfig = ''
+      #   HandlePowerKey=suspend
+      # '';
+      settings.Login = {
+        HandlePowerKey = "suspend";
+      };
     };
 
     pipewire = {
@@ -299,6 +303,7 @@
 
     udev = {
       packages = with pkgs; [
+        steam   # For gamepads like DS4?
         swayosd
         # android-tools
         # yubikey-personalization
