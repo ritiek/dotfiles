@@ -19,7 +19,8 @@
       theme=GraphiteNordDark
     '';
 
-    "Kvantum/GraphiteNord".source = "${pkgs.graphite-kde-theme}/share/Kvantum/GraphiteNord";
+    # GraphiteNord is no longer available for KDE Plasma 5.
+    # "Kvantum/GraphiteNord".source = "${pkgs.graphite-kde-theme}/share/Kvantum/GraphiteNord";
   };
 
   gtk = {
