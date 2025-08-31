@@ -158,13 +158,6 @@ in {
       "--network-alias=tubearchivist"
       "--network=tubearchivist_default"
     ];
-    labels = {
-      "homepage.description" = "Tube Archivist";
-      "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
-      "homepage.icon" = "tube-archivist";
-      "homepage.name" = "Tube Archivist";
-    };
   };
   systemd.services."docker-tubearchivist" = {
     serviceConfig = {
