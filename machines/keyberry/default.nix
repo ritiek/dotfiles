@@ -164,7 +164,7 @@
     cleanOnBoot = true;
   };
 
-  systemd.watchdog.runtimeTime = "360s";
+  systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
