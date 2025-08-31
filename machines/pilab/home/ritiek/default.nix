@@ -28,6 +28,9 @@ in
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
   ];
+
+  nixpkgs.config.allowUnfree = true;
+
   home = {
     stateVersion = "24.11";
     username = "ritiek";
@@ -40,6 +43,7 @@ in
       any-nix-shell
       psmisc
       wget
+      pv
 
       unzip
       unrar-wrapper
@@ -72,6 +76,8 @@ in
       sqlcipher
       httrack
       yt-dlp
+
+      # claude-code
 
       homelab-mount
 
@@ -181,5 +187,6 @@ in
     jq.enable = true;
     ripgrep.enable = true;
     fd.enable = true;
+    claude-code.enable = true;
   };
 }
