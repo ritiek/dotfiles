@@ -55,6 +55,8 @@
     "syncplay.password" = {};
   };
 
+  nixpkgs.config.allowUnfree = true;
+
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
 
@@ -194,7 +196,7 @@
     cleanOnBoot = true;
   };
 
-  systemd.watchdog.runtimeTime = "360s";
+  systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
