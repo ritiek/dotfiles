@@ -119,6 +119,9 @@ in
     #   "media.lock"
     #   "migration_lock"
     # ];
+    extraBackupArgs = [
+      "--compression=max"
+    ];
     pruneOpts = [
       "--keep-hourly 18"
       "--keep-daily 7"
@@ -212,6 +215,9 @@ in
     paths = [
       "/media/HOMELAB_MEDIA"
     ];
+    extraBackupArgs = [
+      "--compression=max"
+    ];
     pruneOpts = [
       "--keep-hourly 18"
       "--keep-daily 7"
@@ -245,6 +251,9 @@ in
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     paths = [
       "/media/HOMELAB_MEDIA"
+    ];
+    extraBackupArgs = [
+      "--compression=max"
     ];
     pruneOpts = [
       "--keep-hourly 18"
