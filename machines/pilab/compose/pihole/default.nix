@@ -40,7 +40,7 @@
     environment = {
       "TZ" = "Asia/Kolkata";
       # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
-      # "FTLCONF_dns_listeningMode" = "all";
+      "FTLCONF_dns_listeningMode" = "all";
       "FTLCONF_webserver_port" = "81";
     };
     environmentFiles = [
