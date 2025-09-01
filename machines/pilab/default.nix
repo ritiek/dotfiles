@@ -41,7 +41,8 @@
     ./compose/dawarich
     ./compose/rustdesk.nix
     ./compose/simplexchat
-    ./compose/filebrowser-quantum.nix
+    # ./compose/filebrowser-quantum.nix
+    ./compose/copyparty.nix
     ./compose/nitter.nix
     ./compose/mealie
     ./compose/karakeep

@@ -99,7 +99,8 @@ in
           # systemctl start docker-tubearchivist.service
           systemctl start tubearchivist-autostart.service
           systemctl start docker-paperless-ngx-webserver.service
-          systemctl start docker-filebrowser-quantum.service
+          # systemctl start docker-filebrowser-quantum.service
+          systemctl start docker-copyparty.service
           systemctl start docker-forgejo.service
           # systemctl start docker-navidrome.service
           systemctl start navidrome-autostart.service
@@ -144,7 +145,8 @@ in
         systemctl stop docker-compose-immich-root.target
         systemctl stop docker-compose-tubearchivist-root.target
         systemctl stop docker-compose-paperless-ngx-root.target
-        systemctl stop docker-compose-filebrowser-quantum-root.target
+        # systemctl stop docker-compose-filebrowser-quantum-root.target
+        systemctl stop docker-compose-copyparty-root.target
         systemctl stop docker-compose-forgejo-root.target
         systemctl stop docker-compose-navidrome-root.target
         systemctl stop docker-compose-memos-root.target
