@@ -92,7 +92,7 @@ in
         homelab-mount && (
           systemctl start vaultwarden-autostart.service
           # systemctl start docker-dashy.service
-          systemctl start docker-homepage.service
+          systemctl start homepage-autostart.service
           systemctl start docker-pihole.service
           systemctl start docker-uptime-kuma.service
           systemctl start docker-immich.service
