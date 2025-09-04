@@ -450,7 +450,7 @@
     cleanOnBoot = true;
   };
 
-  systemd.settings.Manager.RuntimeWatchdogSec = "360s";
+  systemd.settings.Manager.RuntimeWatchdogSec = 360;
 
   # Force Wayland on all apps.
   environment.sessionVariables = {

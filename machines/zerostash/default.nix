@@ -106,7 +106,17 @@
     cleanOnBoot = true;
   };
 
-  systemd.settings.Manager.RuntimeWatchdogSec = "360s";
+  systemd.settings.Manager.RuntimeWatchdogSec = 360;
+
+  # Save storage space
+  documentation = {
+    enable = false;
+    man.enable = false;
+    doc.enable = false;
+    dev.enable = false;
+    info.enable = false;
+    nixos.enable = false;
+  };
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
