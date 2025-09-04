@@ -74,6 +74,16 @@
     cleanOnBoot = true;
   };
 
+  # Save storage space
+  documentation = {
+    enable = false;
+    man.enable = false;
+    doc.enable = false;
+    dev.enable = false;
+    info.enable = false;
+    nixos.enable = false;
+  };
+
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
 }
