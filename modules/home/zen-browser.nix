@@ -111,6 +111,7 @@
         darkreader
         kagi-search
         multi-account-containers
+        violentmonkey
 
         movie-web
         musescore-downloader
