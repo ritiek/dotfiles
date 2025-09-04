@@ -31,6 +31,8 @@
 
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   nixpkgs.overlays = [
     # inputs.nixgl.overlay
     inputs.nur.overlays.default
@@ -69,5 +71,6 @@
     jq.enable = true;
     ripgrep.enable = true;
     fd.enable = true;
+    claude-code.enable = true;
   };
 }
