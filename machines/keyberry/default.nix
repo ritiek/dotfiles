@@ -18,6 +18,8 @@
   networking.hostName = lib.mkForce "keyberry";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
 
+  nixpkgs.config.allowUnfree = true;
+
   boot.supportedFilesystems = [ "ntfs" ];
 
   nix = {
