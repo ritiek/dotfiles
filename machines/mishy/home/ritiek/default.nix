@@ -275,6 +275,8 @@
         no_display = true;
       };
     };
+
+    claude-code.enable = true;
   };
 
   # services = {

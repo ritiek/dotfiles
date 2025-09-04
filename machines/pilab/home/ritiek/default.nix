@@ -52,6 +52,7 @@ in
       compsize
       iotop
       python313Packages.ipython
+      parted
 
       docker-compose
       compose2nix
