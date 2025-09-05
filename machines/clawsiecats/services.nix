@@ -350,6 +350,15 @@ in
             recommendedProxySettings = true;
           };
         };
+        "git.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:3033";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         # "filebrowser.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
