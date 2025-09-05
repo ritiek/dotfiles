@@ -16,7 +16,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."forgejo" = {
-    image = "codeberg.org/forgejo/forgejo:7";
+    image = "codeberg.org/forgejo/forgejo:12";
     environmentFiles = [
       config.sops.secrets."compose/forgejo.env".path
     ];
