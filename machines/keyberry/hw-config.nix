@@ -10,7 +10,8 @@
     inputs.pi400kb-nix.nixosModules.pi400kb
   ];
 
-  boot.kernelModules = [ "libcomposite" "cma=2048M" ];
+  # Kernel modules moved to default.nix for better GPIO support
+  # boot.kernelModules = [ "libcomposite" "cma=2048M" ];
 
   hardware = {
     raspberry-pi."4" = {
