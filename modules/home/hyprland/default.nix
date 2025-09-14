@@ -69,7 +69,7 @@ in
           {
             timeout = 3600;
             on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on && (pidof swayosd-server || swayosd-server)";
+            on-resume = "hyprctl dispatch dpms on && (pidof swayosd-server || __NV_PRIME_RENDER_OFFLOAD=0 swayosd-server)";
           }
         ];
       };
@@ -184,7 +184,7 @@ in
       ];
       
       exec = [
-        "swayosd-server"
+        "__NV_PRIME_RENDER_OFFLOAD=0 swayosd-server"
       ];
 
       # Workspace configuration (from rule.conf)
