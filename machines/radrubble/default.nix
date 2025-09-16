@@ -15,6 +15,8 @@
   networking.hostName = "radrubble";
   time.timeZone = "Asia/Kolkata";
 
+  nixpkgs.config.allowUnfree = true;
+
   boot.supportedFilesystems = [ "ntfs" ];
 
   nix = {
