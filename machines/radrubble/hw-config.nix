@@ -16,11 +16,15 @@ in
   ];
 
   # pkgs.armbian-firmware is non-free.
-  # nixpkgs.config.allowUnfree = true;
-  # hardware.firmware = with pkgs; [ armbian-firmware linux-firmware ];
+  nixpkgs.config.allowUnfree = true;
+  hardware.firmware = with pkgs; [
+    armbian-firmware
+    linux-firmware
+    rtl8192su-firmware
+  ];
 
   rockchip.uBoot = inputs.rockchip.packages."aarch64-linux".uBootRadxaCM3IO;
-  # boot.kernelPackages = inputs.rockchip.legacyPackages."aarch64-linux".kernel_linux_6_12_rockchip;
+  boot.kernelPackages = inputs.rockchip.legacyPackages."aarch64-linux".kernel_linux_6_12_rockchip;
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
 }
