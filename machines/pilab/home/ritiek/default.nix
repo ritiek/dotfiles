@@ -42,6 +42,7 @@ in
     packages = with pkgs; [
       any-nix-shell
       psmisc
+      lshw
       wget
       pv
 
