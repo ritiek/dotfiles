@@ -51,6 +51,7 @@
       sd
       # diskonaut
       compsize
+      lshw
 
       iptables
       nmap
