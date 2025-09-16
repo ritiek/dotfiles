@@ -20,6 +20,7 @@
       ./../../../../modules/home/zellij.nix
       ./../../../../modules/home/btop.nix
     ];
+    nixpkgs.config.allowUnfree = true;
     home = {
       stateVersion = "24.11";
       packages = with pkgs; [
@@ -49,6 +50,7 @@
       jq.enable = true;
       ripgrep.enable = true;
       fd.enable = true;
+      claude-code.enable = true;
     };
   };
 }
