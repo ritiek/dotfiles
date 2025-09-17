@@ -304,6 +304,19 @@
       specialArgs = { inherit inputs; };
     };
 
+    homeConfigurations."ritiek@radrubble" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/radrubble/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "radrubble"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
