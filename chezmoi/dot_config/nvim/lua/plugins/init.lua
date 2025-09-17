@@ -163,6 +163,18 @@ local plugins = {
     "cappyzawa/trim.nvim",
     opts = {},
   },
+
+  {
+    "greggh/claude-code.nvim",
+    event = "BufWinEnter",
+    dependencies = {
+      "nvim-lua/plenary.nvim", -- Required for git operations
+    },
+    config = function()
+      require("claude-code").setup()
+    end
+  }
+
   -- {
   --   "ojroques/nvim-osc52",
   -- }
