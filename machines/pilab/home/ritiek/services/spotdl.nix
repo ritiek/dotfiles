@@ -7,7 +7,7 @@ let
         
       # Check if any .spotdl files exist
       if ${pkgs.coreutils}/bin/ls *.spotdl 1> /dev/null 2>&1; then
-        ${pkgs.spotdl}/bin/spotdl sync *.spotdl
+        ${pkgs.spotdl}/bin/spotdl sync *.spotdl --scan-for-songs --overwrite=skip --threads=10
         spotdl_exit_code=$?
             
         if [ $spotdl_exit_code -ne 0 ]; then
