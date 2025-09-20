@@ -6,45 +6,24 @@ let
   webUIPort = 5230;
   internalWebUIPort = 15230;
 
-  # Helper script to handle connections
-  memosConnectionHandler = pkgs.writeShellScript "memos-connection-handler" ''
-    echo "Connection received at $(date)" >&2
+  # Import shared lazy-loading utilities
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
-    # Check if Memos container is running
-    if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-memos.service; then
-      echo "Starting Memos container..." >&2
-      ${pkgs.systemd}/bin/systemctl start docker-memos.service
+  # Generate lazy-loading services
+  lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
+    serviceName = "Memos";
+    dockerServiceName = "memos";
+    webUIPort = webUIPort;
+    internalPort = internalWebUIPort;
+    refreshInterval = 3;
+    requiredMounts = [
+      "/media/HOMELAB_MEDIA/services/memos"
+    ];
+  };
 
-      # Wait for Memos to be ready
-      echo "Waiting for Memos to start..." >&2
-      for i in $(seq 1 30); do
-        if ${pkgs.curl}/bin/curl -s -f --connect-timeout 2 http://127.0.0.1:${toString internalWebUIPort}/ >/dev/null 2>&1; then
-          echo "Memos is ready!" >&2
-          break
-        fi
-        if [ $i -eq 30 ]; then
-          echo "Memos failed to start, sending error page" >&2
-          cat << 'EOF'
-HTTP/1.1 503 Service Unavailable
-Content-Type: text/html
-Connection: close
-
-<!DOCTYPE html>
-<html><head><title>Service Starting</title></head>
-<body><h1>Memos is starting...</h1><p>Please wait a moment and refresh the page.</p></body></html>
-EOF
-          exit 1
-        fi
-        sleep 2
-      done
-    fi
-
-    echo "Memos is ready, proxying connection..." >&2
-    # Now proxy the connection to the running Memos
-    exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalWebUIPort}
-  '';
-
-in {
+in lib.mkMerge [
+  lazyLoadingServices
+  {
   # Runtime
   virtualisation.docker = {
     enable = true;
@@ -89,13 +68,6 @@ in {
     # Bind to root target
     partOf = [ "docker-compose-memos-root.target" ];
     wantedBy = [ "docker-compose-memos-root.target" ];
-    # Start timer when service starts, stop when service stops
-    postStart = ''
-      ${pkgs.systemd}/bin/systemctl start memos-idle-stop.timer
-    '';
-    preStop = ''
-      ${pkgs.systemd}/bin/systemctl stop memos-idle-stop.timer || true
-    '';
   };
 
   # Networks
@@ -120,57 +92,5 @@ in {
     };
   };
 
-  # Port listener that starts Memos on any connection attempt
-  systemd.services."memos-autostart" = {
-    description = "Memos auto-start on connection";
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-    };
-    script = ''
-      echo "Starting Memos auto-start proxy on port ${toString webUIPort}..."
-      exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${memosConnectionHandler}
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/memos"
-    ];
-    # Bind to root target so it stops when target stops
-    partOf = [ "docker-compose-memos-root.target" ];
-    wantedBy = [ "docker-compose-memos-root.target" ];
-    after = [ "docker.service" ];
-  };
-
-  # Timer-based service to stop when idle - started manually by docker-memos
-  systemd.timers."memos-idle-stop" = {
-    timerConfig = {
-      OnCalendar = "*:0/5";  # Every 5 minutes, more explicit format
-      Persistent = true;
-      Unit = "memos-idle-stop.service";
-    };
-  };
-
-  systemd.services."memos-idle-stop" = {
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      # Check for active connections (both proxy port and internal port)
-      proxy_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString webUIPort}" | grep ESTABLISHED | wc -l)
-      internal_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString internalWebUIPort}" | grep ESTABLISHED | wc -l)
-      total_connections=$((proxy_connections + internal_connections))
-
-      if [ "$total_connections" -eq 0 ]; then
-        echo "$(date): No active connections for 5+ minutes, stopping Memos"
-        ${pkgs.systemd}/bin/systemctl stop docker-memos.service
-        # Timer will automatically stop due to partOf dependency
-      else
-        echo "$(date): $total_connections active connections, keeping Memos running"
-      fi
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/memos"
-    ];
-    # Also bind to root target for additional safety
-    partOf = [ "docker-compose-memos-root.target" ];
-  };
-}
+  }
+]
