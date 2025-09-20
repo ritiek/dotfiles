@@ -9,15 +9,22 @@ let
   # Import shared lazy-loading utilities
   lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
-  # Helper script to handle connections
-  copypartyConnectionHandler = lazyLoadingLib.mkLazyLoadingHandler {
+  # Generate lazy-loading services
+  lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "Copyparty";
     dockerServiceName = "copyparty";
+    webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     refreshInterval = 3;
+    requiredMounts = [
+      "/media/HOMELAB_MEDIA"
+      "/media/HOMELAB_MEDIA/services/copyparty"
+    ];
   };
 
-in {
+in lib.mkMerge [
+  lazyLoadingServices
+  {
   # Runtime
   virtualisation.docker = {
     enable = true;
@@ -68,13 +75,6 @@ in {
     # Bind to root target
     partOf = [ "docker-compose-copyparty-root.target" ];
     wantedBy = [ "docker-compose-copyparty-root.target" ];
-    # Start timer when service starts, stop when service stops
-    postStart = ''
-      ${pkgs.systemd}/bin/systemctl start copyparty-idle-stop.timer
-    '';
-    preStop = ''
-      ${pkgs.systemd}/bin/systemctl stop copyparty-idle-stop.timer || true
-    '';
   };
 
   # Networks
@@ -99,59 +99,5 @@ in {
     };
   };
 
-  # Port listener that starts Copyparty on any connection attempt
-  systemd.services."copyparty-autostart" = {
-    description = "Copyparty auto-start on connection";
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-    };
-    script = ''
-      echo "Starting Copyparty auto-start proxy on port ${toString webUIPort}..."
-      exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${copypartyConnectionHandler}
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA"
-      "/media/HOMELAB_MEDIA/services/copyparty"
-    ];
-    # Bind to root target so it stops when target stops
-    partOf = [ "docker-compose-copyparty-root.target" ];
-    wantedBy = [ "docker-compose-copyparty-root.target" ];
-    after = [ "docker.service" ];
-  };
-
-  # Timer-based service to stop when idle - started manually by docker-copyparty
-  systemd.timers."copyparty-idle-stop" = {
-    timerConfig = {
-      OnCalendar = "*:0/5";  # Every 5 minutes, more explicit format
-      Persistent = true;
-      Unit = "copyparty-idle-stop.service";
-    };
-  };
-
-  systemd.services."copyparty-idle-stop" = {
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      # Check for active connections (both proxy port and internal port)
-      proxy_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString webUIPort}" | grep ESTABLISHED | wc -l)
-      internal_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString internalWebUIPort}" | grep ESTABLISHED | wc -l)
-      total_connections=$((proxy_connections + internal_connections))
-
-      if [ "$total_connections" -eq 0 ]; then
-        echo "$(date): No active connections for 5+ minutes, stopping Copyparty"
-        ${pkgs.systemd}/bin/systemctl stop docker-copyparty.service
-        # Timer will automatically stop due to partOf dependency
-      else
-        echo "$(date): $total_connections active connections, keeping Copyparty running"
-      fi
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA"
-      "/media/HOMELAB_MEDIA/services/copyparty"
-    ];
-    # Also bind to root target for additional safety
-    partOf = [ "docker-compose-copyparty-root.target" ];
-  };
-}
+  }
+]

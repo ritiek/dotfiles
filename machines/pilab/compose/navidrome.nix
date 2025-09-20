@@ -9,15 +9,22 @@ let
   # Import shared lazy-loading utilities
   lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
-  # Helper script to handle HTTP connections and show loading page
-  navidromeConnectionHandler = lazyLoadingLib.mkLazyLoadingHandler {
+  # Generate lazy-loading services
+  lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "Navidrome";
     dockerServiceName = "navidrome";
+    webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     refreshInterval = 3;
+    requiredMounts = [
+      "/media/HOMELAB_MEDIA/services/navidrome"
+      "/media/HOMELAB_MEDIA/services/spotdl"
+    ];
   };
 
-in {
+in lib.mkMerge [
+  lazyLoadingServices
+  {
   virtualisation.docker = {
     enable = true;
     autoPrune.enable = true;
@@ -82,13 +89,6 @@ in {
     # Bind to root target
     partOf = [ "docker-compose-navidrome-root.target" ];
     wantedBy = [ "docker-compose-navidrome-root.target" ];
-    # Start timer when service starts, stop when service stops
-    postStart = ''
-      ${pkgs.systemd}/bin/systemctl start navidrome-idle-stop.timer
-    '';
-    preStop = ''
-      ${pkgs.systemd}/bin/systemctl stop navidrome-idle-stop.timer || true
-    '';
   };
 
   # Root service
@@ -98,59 +98,5 @@ in {
     };
   };
 
-  # Port listener that starts Navidrome on any connection attempt
-  systemd.services."navidrome-autostart" = {
-    description = "Navidrome auto-start on connection";
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-    };
-    script = ''
-      echo "Starting Navidrome auto-start proxy on port ${toString webUIPort}..."
-      exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${navidromeConnectionHandler}
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/navidrome"
-      "/media/HOMELAB_MEDIA/services/spotdl"
-    ];
-    # Bind to root target so it stops when target stops
-    partOf = [ "docker-compose-navidrome-root.target" ];
-    wantedBy = [ "docker-compose-navidrome-root.target" ];
-    after = [ "docker.service" ];
-  };
-
-  # Timer-based service to stop when idle - started manually by docker-navidrome
-  systemd.timers."navidrome-idle-stop" = {
-    timerConfig = {
-      OnCalendar = "*:0/5";  # Every 5 minutes, more explicit format
-      Persistent = true;
-      Unit = "navidrome-idle-stop.service";
-    };
-  };
-
-  systemd.services."navidrome-idle-stop" = {
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      # Check for active connections (both proxy port and internal port)
-      proxy_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString webUIPort}" | grep ESTABLISHED | wc -l)
-      internal_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString internalWebUIPort}" | grep ESTABLISHED | wc -l)
-      total_connections=$((proxy_connections + internal_connections))
-
-      if [ "$total_connections" -eq 0 ]; then
-        echo "$(date): No active connections for 5+ minutes, stopping Navidrome"
-        ${pkgs.systemd}/bin/systemctl stop docker-navidrome.service
-        # Timer will automatically stop due to partOf dependency
-      else
-        echo "$(date): $total_connections active connections, keeping Navidrome running"
-      fi
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/navidrome"
-      "/media/HOMELAB_MEDIA/services/spotdl"
-    ];
-    # Also bind to root target for additional safety
-    partOf = [ "docker-compose-navidrome-root.target" ];
-  };
-}
+  }
+]

@@ -6,47 +6,30 @@ let
   webUIPort = 5100;
   internalWebUIPort = 15100;
 
-  # Helper script to handle connections
-  pwpushConnectionHandler = pkgs.writeShellScript "pwpush-connection-handler" ''
-    echo "Connection received at $(date)" >&2
+  # Import shared lazy-loading utilities
+  lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
 
-    # Check if Password Pusher container is running
-    if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-pwpush.service; then
-      echo "Starting Password Pusher stack..." >&2
-      ${pkgs.systemd}/bin/systemctl start docker-pwpush-db.service
-      ${pkgs.systemd}/bin/systemctl start docker-pwpush.service
-      ${pkgs.systemd}/bin/systemctl start docker-pwpush-worker.service
+  # Generate lazy-loading services for Password Pusher
+  lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
+    serviceName = "Password Pusher";
+    dockerServiceName = "pwpush";
+    webUIPort = webUIPort;
+    internalPort = internalWebUIPort;
+    refreshInterval = 3;
+    requiredMounts = [
+      "/media/HOMELAB_MEDIA/services/pwpush"
+    ];
+    rootTarget = "docker-compose-pwpush-root.target";
+    idleCheckInterval = "*:0/10";  # Every 10 minutes (Password Pusher has multiple services)
+    # Custom commands for multi-service stack
+    startCommand = "systemctl start docker-compose-pwpush-root.target";
+    stopCommand = "systemctl stop docker-compose-pwpush-root.target";
+    waitTimeout = 60;  # Password Pusher takes longer to start with database
+  };
 
-      # Wait for Password Pusher to be ready
-      echo "Waiting for Password Pusher to start..." >&2
-      for i in $(seq 1 60); do
-        if ${pkgs.curl}/bin/curl -s -f --connect-timeout 2 http://127.0.0.1:${toString internalWebUIPort}/ >/dev/null 2>&1; then
-          echo "Password Pusher is ready!" >&2
-          break
-        fi
-        if [ $i -eq 60 ]; then
-          echo "Password Pusher failed to start, sending error page" >&2
-          cat << 'EOF'
-HTTP/1.1 503 Service Unavailable
-Content-Type: text/html
-Connection: close
-
-<!DOCTYPE html>
-<html><head><title>Service Starting</title></head>
-<body><h1>Password Pusher is starting...</h1><p>Please wait a moment and refresh the page.</p></body></html>
-EOF
-          exit 1
-        fi
-        sleep 3
-      done
-    fi
-
-    echo "Password Pusher is ready, proxying connection..." >&2
-    # Now proxy the connection to the running Password Pusher
-    exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalWebUIPort}
-  '';
-
-in {
+in lib.mkMerge [
+  lazyLoadingServices
+  {
   sops.secrets."compose/pwpush.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
@@ -138,13 +121,6 @@ in {
     # Bind to root target
     partOf = [ "docker-compose-pwpush-root.target" ];
     wantedBy = [ "docker-compose-pwpush-root.target" ];
-    # Start timer when service starts, stop when service stops
-    postStart = ''
-      ${pkgs.systemd}/bin/systemctl start pwpush-idle-stop.timer
-    '';
-    preStop = ''
-      ${pkgs.systemd}/bin/systemctl stop pwpush-idle-stop.timer || true
-    '';
   };
   virtualisation.oci-containers.containers."pwpush-worker" = {
     image = "docker.io/pglombardo/pwpush-worker:stable";
@@ -202,61 +178,5 @@ in {
     };
   };
 
-  # Port listener that starts Password Pusher on any connection attempt
-  systemd.services."pwpush-autostart" = {
-    description = "Password Pusher auto-start on connection";
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-    };
-    script = ''
-      echo "Starting Password Pusher auto-start proxy on port ${toString webUIPort}..."
-      exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${pwpushConnectionHandler}
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/pwpush/pgdata"
-      "/media/HOMELAB_MEDIA/services/pwpush/settings.yml"
-    ];
-    # Bind to root target so it stops when target stops
-    partOf = [ "docker-compose-pwpush-root.target" ];
-    wantedBy = [ "docker-compose-pwpush-root.target" ];
-    after = [ "docker.service" ];
-  };
-
-  # Timer-based service to stop when idle - started manually by docker-pwpush
-  systemd.timers."pwpush-idle-stop" = {
-    timerConfig = {
-      OnCalendar = "*:0/5";  # Every 5 minutes, more explicit format
-      Persistent = true;
-      Unit = "pwpush-idle-stop.service";
-    };
-  };
-
-  systemd.services."pwpush-idle-stop" = {
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      # Check for active connections (both proxy port and internal port)
-      proxy_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString webUIPort}" | grep ESTABLISHED | wc -l)
-      internal_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString internalWebUIPort}" | grep ESTABLISHED | wc -l)
-      total_connections=$((proxy_connections + internal_connections))
-
-      if [ "$total_connections" -eq 0 ]; then
-        echo "$(date): No active connections for 5+ minutes, stopping Password Pusher stack"
-        ${pkgs.systemd}/bin/systemctl stop docker-pwpush.service
-        ${pkgs.systemd}/bin/systemctl stop docker-pwpush-worker.service
-        ${pkgs.systemd}/bin/systemctl stop docker-pwpush-db.service
-        # Timer will automatically stop due to partOf dependency
-      else
-        echo "$(date): $total_connections active connections, keeping Password Pusher running"
-      fi
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/pwpush/pgdata"
-      "/media/HOMELAB_MEDIA/services/pwpush/settings.yml"
-    ];
-    # Also bind to root target for additional safety
-    partOf = [ "docker-compose-pwpush-root.target" ];
-  };
-}
+  }
+]
