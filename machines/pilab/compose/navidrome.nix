@@ -6,76 +6,16 @@ let
   webUIPort = 4533;
   internalWebUIPort = 14533;
 
+  # Import shared lazy-loading utilities
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
+
   # Helper script to handle HTTP connections and show loading page
-  navidromeConnectionHandler = pkgs.writeShellScript "navidrome-connection-handler" ''
-    echo "Connection received at $(date)" >&2
-
-    # Check if Navidrome container is running first
-    if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-navidrome.service; then
-      echo "Starting Navidrome container..." >&2
-      ${pkgs.systemd}/bin/systemctl start docker-navidrome.service
-
-      # Send loading page immediately
-      cat << 'EOF'
-HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Navidrome - Starting</title>
-    <meta http-equiv="refresh" content="3">
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-    <h1>Navidrome is starting...</h1>
-    <div class="spinner"></div>
-    <p>Please wait while the service loads. This page will refresh automatically.</p>
-    <p><a href="/">Click here to refresh manually</a></p>
-</body>
-</html>
-EOF
-      exit 0
-    fi
-
-    # Service is already running, check if it's responding
-    if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalWebUIPort}/ >/dev/null 2>&1; then
-      echo "Navidrome is ready, proxying connection..." >&2
-      # Forward the entire HTTP connection to the actual service
-      exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalWebUIPort}
-    else
-      echo "Navidrome not responding, sending loading page..." >&2
-      # Send loading page
-      cat << 'EOF'
-HTTP/1.1 200 OK
-Content-Type: text/html
-Connection: close
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Navidrome - Starting</title>
-    <meta http-equiv="refresh" content="2">
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-    <h1>Navidrome is starting...</h1>
-    <div class="spinner"></div>
-    <p>Service is warming up. This page will refresh automatically.</p>
-</body>
-</html>
-EOF
-    fi
-  '';
+  navidromeConnectionHandler = lazyLoadingLib.mkLazyLoadingHandler {
+    serviceName = "Navidrome";
+    dockerServiceName = "navidrome";
+    internalPort = internalWebUIPort;
+    refreshInterval = 3;
+  };
 
 in {
   virtualisation.docker = {
