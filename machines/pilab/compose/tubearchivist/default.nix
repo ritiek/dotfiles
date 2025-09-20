@@ -6,45 +6,33 @@ let
   webUIPort = 8454;
   internalWebUIPort = 18454;
 
-  # Helper script to handle connections
-  tubearchivistConnectionHandler = pkgs.writeShellScript "tubearchivist-connection-handler" ''
-    echo "Connection received at $(date)" >&2
-    
-    # Check if TubeArchivist container is running
-    if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-tubearchivist.service; then
-      echo "Starting TubeArchivist stack..." >&2
-      ${pkgs.systemd}/bin/systemctl start docker-compose-tubearchivist-root.target
-      
-      # Wait for TubeArchivist to be ready
-      echo "Waiting for TubeArchivist to start..." >&2
-      for i in $(seq 1 60); do
-        if ${pkgs.curl}/bin/curl -s -f --connect-timeout 2 http://127.0.0.1:${toString internalWebUIPort}/health >/dev/null 2>&1; then
-          echo "TubeArchivist is ready!" >&2
-          break
-        fi
-        if [ $i -eq 60 ]; then
-          echo "TubeArchivist failed to start, sending error page" >&2
-          cat << 'EOF'
-HTTP/1.1 503 Service Unavailable
-Content-Type: text/html
-Connection: close
+  # Import shared lazy-loading utilities
+  lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
 
-<!DOCTYPE html>
-<html><head><title>Service Starting</title></head>
-<body><h1>TubeArchivist is starting...</h1><p>Please wait a moment and refresh the page. This may take up to 2 minutes for all services to initialize.</p></body></html>
-EOF
-          exit 1
-        fi
-        sleep 2
-      done
-    fi
-    
-    echo "TubeArchivist is ready, proxying connection..." >&2
-    # Now proxy the connection to the running TubeArchivist
-    exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalWebUIPort}
-  '';
+  # Generate lazy-loading services for TubeArchivist
+  lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
+    serviceName = "TubeArchivist";
+    dockerServiceName = "tubearchivist";
+    webUIPort = webUIPort;
+    internalPort = internalWebUIPort;
+    refreshInterval = 3;
+    requiredMounts = [
+      "/media/HOMELAB_MEDIA/services/tubearchivist/cache"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/videos"
+      "/media/HOMELAB_MEDIA/services/tubearchivist/es"
+    ];
+    rootTarget = "docker-compose-tubearchivist-root.target";
+    idleCheckInterval = "*:0/10";  # Every 10 minutes (TubeArchivist is heavier)
+    # Custom commands for multi-service stack
+    startCommand = "systemctl start docker-compose-tubearchivist-root.target";
+    stopCommand = "systemctl stop docker-compose-tubearchivist-root.target";
+    healthEndpoint = "/health";
+    waitTimeout = 60;  # TubeArchivist takes longer to start
+  };
 
-in {
+in lib.mkMerge [
+  lazyLoadingServices
+  {
   sops.secrets."compose/tubearchivist.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
@@ -178,13 +166,6 @@ in {
     ];
     partOf = [ "docker-compose-tubearchivist-root.target" ];
     wantedBy = [ "docker-compose-tubearchivist-root.target" ];
-    # Start timer when service starts, stop when service stops
-    postStart = ''
-      ${pkgs.systemd}/bin/systemctl start tubearchivist-idle-stop.timer
-    '';
-    preStop = ''
-      ${pkgs.systemd}/bin/systemctl stop tubearchivist-idle-stop.timer || true
-    '';
   };
 
   # Networks
@@ -226,58 +207,5 @@ in {
     };
   };
 
-  # Port listener that starts TubeArchivist on any connection attempt
-  systemd.services."tubearchivist-autostart" = {
-    description = "TubeArchivist auto-start on connection";
-    serviceConfig = {
-      Restart = "always";
-      RestartSec = "5s";
-    };
-    script = ''
-      echo "Starting TubeArchivist auto-start proxy on port ${toString webUIPort}..."
-      exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${tubearchivistConnectionHandler}
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/cache"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/videos"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/es"
-    ];
-    after = [ "docker.service" ];
-  };
-
-  # Timer-based service to stop when idle - started manually by docker-tubearchivist
-  systemd.timers."tubearchivist-idle-stop" = {
-    timerConfig = {
-      OnCalendar = "*:0/10";  # Every 10 minutes (TubeArchivist is heavier than Navidrome)
-      Persistent = true;
-      Unit = "tubearchivist-idle-stop.service";
-    };
-  };
-
-  systemd.services."tubearchivist-idle-stop" = {
-    serviceConfig = {
-      Type = "oneshot";
-    };
-    script = ''
-      # Check for active connections (both proxy port and internal port)
-      proxy_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString webUIPort}" | grep ESTABLISHED | wc -l)
-      internal_connections=$(${pkgs.unixtools.netstat}/bin/netstat -an | grep ":${toString internalWebUIPort}" | grep ESTABLISHED | wc -l)
-      total_connections=$((proxy_connections + internal_connections))
-      
-      if [ "$total_connections" -eq 0 ]; then
-        echo "$(date): No active connections for 10+ minutes, stopping TubeArchivist stack"
-        ${pkgs.systemd}/bin/systemctl stop docker-compose-tubearchivist-root.target
-        # Timer will automatically stop due to partOf dependency
-      else
-        echo "$(date): $total_connections active connections, keeping TubeArchivist running"
-      fi
-    '';
-    unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/cache"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/videos"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/es"
-    ];
-    # Also bind to root target for additional safety
-    partOf = [ "docker-compose-tubearchivist-root.target" ];
-  };
-}
+  }
+]
