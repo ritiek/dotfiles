@@ -140,37 +140,37 @@ in
 
       (writeShellScriptBin "homelab-stop" ''
         set -x
-        systemctl stop docker-compose-vaultwarden-root.target
+        systemctl stop autostart-vaultwarden.service docker-compose-vaultwarden-root.target
         # systemctl stop docker-compose-dashy-root.target
-        systemctl stop docker-compose-homepage-root.target
+        systemctl stop autostart-homepage.service docker-compose-homepage-root.target
         systemctl stop docker-compose-pihole-root.target
         systemctl stop docker-compose-uptime-kuma-root.target
         systemctl stop docker-compose-immich-root.target
-        systemctl stop docker-compose-tubearchivist-root.target
+        systemctl stop autostart-tubearchivist.service docker-compose-tubearchivist-root.target
         systemctl stop docker-compose-paperless-ngx-root.target
         # systemctl stop docker-compose-filebrowser-quantum-root.target
-        systemctl stop docker-compose-copyparty-root.target
-        systemctl stop docker-compose-forgejo-root.target
-        systemctl stop docker-compose-navidrome-root.target
-        systemctl stop docker-compose-memos-root.target
+        systemctl stop autostart-copyparty.service docker-compose-copyparty-root.target
+        systemctl stop autostart-forgejo.service docker-compose-forgejo-root.target
+        systemctl stop autostart-navidrome.service docker-compose-navidrome-root.target
+        systemctl stop autostart-memos.service docker-compose-memos-root.target
         systemctl stop docker-compose-syncthing-root.target
         systemctl stop docker-compose-miniflux-root.target
         systemctl stop docker-compose-gotify-root.target
         # systemctl stop docker-compose-shiori-root.target
-        systemctl stop docker-compose-homebox-root.target
+        systemctl stop autostart-homebox.service docker-compose-homebox-root.target
         systemctl stop docker-compose-conduwuit-root.target
-        systemctl stop docker-compose-grocy-root.target
+        systemctl stop autostart-grocy.service docker-compose-grocy-root.target
         systemctl stop docker-compose-changedetection-root.target
         systemctl stop docker-compose-frigate-root.target
-        systemctl stop docker-compose-habitica-root.target
-        systemctl stop docker-compose-ollama-webui-root.target
-        systemctl stop docker-compose-pwpush-root.target
+        systemctl stop autostart-habitica.service docker-compose-habitica-root.target
+        systemctl stop autostart-open-webui.service docker-compose-ollama-webui-root.target
+        systemctl stop autostart-pwpush.service docker-compose-pwpush-root.target
         systemctl stop docker-compose-dawarich-root.target
         systemctl stop docker-compose-rustdesk-root.target
         systemctl stop docker-compose-simplexchat-xftp-server-root.target docker-compose-simplexchat-smp-server-root.target
-        systemctl stop docker-compose-nitter-root.target
-        systemctl stop docker-compose-mealie-root.target
-        systemctl stop docker-compose-karakeep-root.target
+        systemctl stop autostart-nitter.service docker-compose-nitter-root.target
+        systemctl stop autostart-mealie.service docker-compose-mealie-root.target
+        systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
         # systemctl stop docker-compose-kopia-root.target
 
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
