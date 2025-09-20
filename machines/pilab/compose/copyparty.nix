@@ -6,43 +6,16 @@ let
   webUIPort = 3923;
   internalWebUIPort = 13923;
 
+  # Import shared lazy-loading utilities
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
+
   # Helper script to handle connections
-  copypartyConnectionHandler = pkgs.writeShellScript "copyparty-connection-handler" ''
-    echo "Connection received at $(date)" >&2
-
-    # Check if Copyparty container is running
-    if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-copyparty.service; then
-      echo "Starting Copyparty container..." >&2
-      ${pkgs.systemd}/bin/systemctl start docker-copyparty.service
-
-      # Wait for Copyparty to be ready
-      echo "Waiting for Copyparty to start..." >&2
-      for i in $(seq 1 30); do
-        if ${pkgs.curl}/bin/curl -s -f --connect-timeout 2 http://127.0.0.1:${toString internalWebUIPort}/ >/dev/null 2>&1; then
-          echo "Copyparty is ready!" >&2
-          break
-        fi
-        if [ $i -eq 30 ]; then
-          echo "Copyparty failed to start, sending error page" >&2
-          cat << 'EOF'
-HTTP/1.1 503 Service Unavailable
-Content-Type: text/html
-Connection: close
-
-<!DOCTYPE html>
-<html><head><title>Service Starting</title></head>
-<body><h1>Copyparty is starting...</h1><p>Please wait a moment and refresh the page.</p></body></html>
-EOF
-          exit 1
-        fi
-        sleep 2
-      done
-    fi
-
-    echo "Copyparty is ready, proxying connection..." >&2
-    # Now proxy the connection to the running Copyparty
-    exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalWebUIPort}
-  '';
+  copypartyConnectionHandler = lazyLoadingLib.mkLazyLoadingHandler {
+    serviceName = "Copyparty";
+    dockerServiceName = "copyparty";
+    internalPort = internalWebUIPort;
+    refreshInterval = 3;
+  };
 
 in {
   # Runtime
