@@ -165,7 +165,7 @@
     '';
   in {
     # Port listener that starts service on any connection attempt
-    systemd.services."${dockerServiceName}-autostart" = {
+    systemd.services."autostart-${dockerServiceName}" = {
       description = "${serviceName} auto-start on connection";
       serviceConfig = {
         Restart = "always";
@@ -182,15 +182,15 @@
     };
 
     # Timer-based service to stop when idle
-    systemd.timers."${dockerServiceName}-idle-stop" = {
+    systemd.timers."autostop-${dockerServiceName}" = {
       timerConfig = {
         OnCalendar = idleCheckInterval;
         Persistent = true;
-        Unit = "${dockerServiceName}-idle-stop.service";
+        Unit = "autostop-${dockerServiceName}.service";
       };
     };
 
-    systemd.services."${dockerServiceName}-idle-stop" = {
+    systemd.services."autostop-${dockerServiceName}" = {
       serviceConfig = {
         Type = "oneshot";
       };
@@ -217,10 +217,10 @@
     systemd.services."docker-${dockerServiceName}" = {
       # Start timer when service starts, stop when service stops
       postStart = ''
-        ${pkgs.systemd}/bin/systemctl start ${dockerServiceName}-idle-stop.timer
+        ${pkgs.systemd}/bin/systemctl start autostop-${dockerServiceName}.timer
       '';
       preStop = ''
-        ${pkgs.systemd}/bin/systemctl stop ${dockerServiceName}-idle-stop.timer || true
+        ${pkgs.systemd}/bin/systemctl stop autostop-${dockerServiceName}.timer || true
       '';
     };
   };
