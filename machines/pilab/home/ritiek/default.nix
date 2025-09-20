@@ -75,6 +75,7 @@ in
       immich-cli
       restic
       discordchatexporter-cli
+      slackdump
       sqlcipher
       httrack
       yt-dlp
