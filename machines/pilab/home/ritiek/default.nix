@@ -93,40 +93,40 @@ in
       (writeShellScriptBin "homelab-start" ''
         set -x
         homelab-mount && (
-          systemctl start vaultwarden-autostart.service
+          systemctl start autostart-vaultwarden.service
           # systemctl start docker-dashy.service
-          systemctl start homepage-autostart.service
+          systemctl start autostart-homepage.service
           systemctl start docker-pihole.service
           systemctl start docker-uptime-kuma.service
           systemctl start docker-immich.service
           # systemctl start docker-tubearchivist.service
-          systemctl start tubearchivist-autostart.service
+          systemctl start autostart-tubearchivist.service
           systemctl start docker-paperless-ngx-webserver.service
           # systemctl start docker-filebrowser-quantum.service
-          systemctl start copyparty-autostart.service
+          systemctl start autostart-copyparty.service
           systemctl start docker-forgejo.service
           # systemctl start docker-navidrome.service
-          systemctl start navidrome-autostart.service
-          systemctl start memos-autostart.service
+          systemctl start autostart-navidrome.service
+          systemctl start autostart-memos.service
           systemctl start docker-syncthing.service
           systemctl start docker-miniflux.service
           systemctl start docker-gotify.service
           # systemctl start docker-shiori.service
-          systemctl start homebox-autostart.service
+          systemctl start autostart-homebox.service
           # systemctl start docker-conduwuit.service
-          systemctl start grocy-autostart.service
+          systemctl start autostart-grocy.service
           systemctl start docker-changedetection.service
           systemctl start docker-frigate.service
-          systemctl start habitica-autostart.service
+          systemctl start autostart-habitica-server.service
           # systemctl start docker-ollama.service
-          systemctl start ollama-webui-autostart.service
-          systemctl start pwpush-autostart.service
+          systemctl start autostart-open-webui.service
+          systemctl start autostart-pwpush.service
           systemctl start docker-dawarich.service docker-dawarich_sidekiq.service
           # systemctl start docker-rustdesk-hbbs.service
           # systemctl start docker-simplexchat-xftp-server.service docker-simplexchat-smp-server.service
-          systemctl start nitter-autostart.service
-          systemctl start mealie-autostart.service
-          systemctl start karakeep-autostart.service
+          systemctl start autostart-nitter.service
+          systemctl start autostart-mealie.service
+          systemctl start autostart-karakeep.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
