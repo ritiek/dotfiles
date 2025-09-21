@@ -350,15 +350,34 @@ in
             recommendedProxySettings = true;
           };
         };
-        "git.${domain}" = {
+        "ollama.${domain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://100.64.0.7:3033";
+            proxyPass = "http://100.64.0.7:3020";
+            proxyWebsockets = true;
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
           };
         };
+        "paperless.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:8010";
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
+        # "git.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:3033";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
         # "filebrowser.${legacyDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
