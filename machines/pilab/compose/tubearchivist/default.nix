@@ -24,7 +24,7 @@ let
     rootTarget = "docker-compose-tubearchivist-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (TubeArchivist is heavier)
     # Custom commands for multi-service stack
-    startCommand = "systemctl start docker-compose-tubearchivist-root.target";
+    startCommand = "systemctl start docker-archivist-redis.service docker-archivist-es.service docker-tubearchivist.service";
     stopCommand = "systemctl stop docker-compose-tubearchivist-root.target";
     healthEndpoint = "/health";
     waitTimeout = 60;  # TubeArchivist takes longer to start
