@@ -22,7 +22,7 @@ let
     rootTarget = "docker-compose-mealie-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (Mealie is heavier with multiple services)
     # Custom commands for multi-service stack
-    startCommand = "systemctl start docker-compose-mealie-root.target";
+    startCommand = "systemctl start docker-mealie_dev_postgres.service docker-mealie_dev_mailpit.service docker-mealie.service";
     stopCommand = "systemctl stop docker-compose-mealie-root.target";
     waitTimeout = 60;  # Mealie takes longer to start with database
   };

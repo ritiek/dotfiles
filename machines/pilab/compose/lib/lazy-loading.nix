@@ -86,8 +86,8 @@
     idleCheckInterval ? "*:0/5",  # Every 5 minutes
     # Optional: custom startup command (defaults to starting the docker service)
     startCommand ? "systemctl start docker-${dockerServiceName}.service",
-    # Optional: custom stop command (defaults to stopping the docker service) 
-    stopCommand ? "systemctl stop docker-${dockerServiceName}.service",
+    # Optional: custom stop command (defaults to stopping the root target) 
+    stopCommand ? "systemctl stop docker-compose-${dockerServiceName}-root.target",
     # Optional: custom health check endpoint (defaults to root)
     healthEndpoint ? "/",
     # Optional: custom wait timeout in seconds (defaults to 30 seconds)
@@ -193,6 +193,7 @@
     systemd.services."autostop-${dockerServiceName}" = {
       serviceConfig = {
         Type = "oneshot";
+        TimeoutStartSec = "60s";  # Give more time for stop command to complete
       };
       script = ''
         # Check for active connections (both proxy port and internal port)
@@ -202,7 +203,7 @@
 
         if [ "$total_connections" -eq 0 ]; then
           echo "$(date): No active connections, stopping ${serviceName}"
-          ${pkgs.systemd}/bin/${stopCommand}
+          ${stopCommand}
           # Timer will automatically stop due to partOf dependency
         else
           echo "$(date): $total_connections active connections, keeping ${serviceName} running"
@@ -213,7 +214,7 @@
       partOf = [ rootTarget ];
     };
 
-    # Add timer start/stop hooks to the docker service
+    # Timer management hooks - extend existing docker service with timer controls
     systemd.services."docker-${dockerServiceName}" = {
       # Start timer when service starts, stop when service stops
       postStart = ''

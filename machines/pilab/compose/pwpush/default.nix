@@ -22,7 +22,7 @@ let
     rootTarget = "docker-compose-pwpush-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (Password Pusher has multiple services)
     # Custom commands for multi-service stack
-    startCommand = "systemctl start docker-compose-pwpush-root.target";
+    startCommand = "systemctl start docker-pwpush-db.service docker-pwpush-worker.service docker-pwpush.service";
     stopCommand = "systemctl stop docker-compose-pwpush-root.target";
     waitTimeout = 60;  # Password Pusher takes longer to start with database
   };
