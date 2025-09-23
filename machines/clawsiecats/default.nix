@@ -9,6 +9,7 @@
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/sops.nix
     ./../../modules/tailscale-controlplane.nix
+    # ./../../modules/mullvad.nix
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -31,6 +32,7 @@
 
   users.users.ritiek = {
     isNormalUser = true;
+    password = "jj";
     extraGroups = [
       "wheel"
     ];
