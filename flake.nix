@@ -68,6 +68,11 @@
     #   inputs.nixpkgs.follows = "nixpkgs";
     # };
 
+    simple-nixos-mailserver = {
+      url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     systems.url = "github:nix-systems/default";
 
     rose-pine-hyprcursor = {
