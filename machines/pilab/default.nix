@@ -65,6 +65,7 @@
 
   services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-routes"
+    "--accept-dns=false"
   ];
 
   users = {
