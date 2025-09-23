@@ -195,6 +195,7 @@
       fastgron
       nap
       imagemagick
+      qrencode
 
       esptool
       picocom
