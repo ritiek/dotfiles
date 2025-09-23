@@ -188,10 +188,6 @@
 
   systemd = {
     services = {
-      avahi = {
-        enable = true;
-      };
-
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
         enable = true;
@@ -240,6 +236,7 @@
     };
     pulseaudio.enable = false;
     dbus.enable = true;
+    avahi.enable = true;
     # Smartcard
     pcscd = {
       enable = true;
@@ -361,6 +358,7 @@
     #   xwayland.enable = true;
     # };
     zsh.enable = true;
+    traceroute.enable = true;
 
     nix-ld = {
       enable = true;
