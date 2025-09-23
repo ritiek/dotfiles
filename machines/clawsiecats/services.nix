@@ -7,6 +7,7 @@ in
 {
   imports = [
     inputs.headplane.nixosModules.headplane
+    inputs.simple-nixos-mailserver.nixosModule
   ];
 
   environment.persistence."/nix/persist/system" = {
@@ -33,11 +34,13 @@ in
     ];
     files = [ ];
   };
+
   sops.secrets = {
     "jitsi.htpasswd" = {
       owner = "nginx";
     };
     "syncplay.password" = {};
+    "mail.me" = {};
   };
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -430,6 +433,22 @@ in
     };
   };
 
+  mailserver = {
+    enable = false;
+    stateVersion = 3;
+    fqdn = "mail.clawsiecats.lol";
+    domains = [ "clawsiecats.lol" ];
+
+    loginAccounts = {
+      "me@clawsiecats.lol" = {
+        hashedPasswordFile = config.sops.secrets."mail.me".path;
+        # aliases = [ "" ];
+      };
+    };
+
+    certificateScheme = "acme-nginx";
+  };
+  
   security.acme = {
     acceptTerms = true;
     defaults.email = "ritiekmalhotra123@gmail.com";

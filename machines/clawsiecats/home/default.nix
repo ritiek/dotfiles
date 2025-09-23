@@ -10,20 +10,28 @@
     "/share/applications"
   ];
 
-  systemd.tmpfiles.settings."10-home" = {
-    "/nix/persist/home/ritiek".d = {
-      mode = "0700";
-      user = "ritiek";
-    };
-  };
-  systemd.tmpfiles.settings."20-ssh" = {
-    "/nix/persist/home/ritiek/.ssh".d = {
-      mode = "0700";
-      user = "ritiek";
-    };
-  };
-  systemd.tmpfiles.settings."30-sops-key" = {
-    "/nix/persist/home/ritiek/.ssh/sops.id_ed25519"."C+" = {
+  # systemd.tmpfiles.settings."10-home" = {
+  #   "/nix/persist/home/ritiek".d = {
+  #     mode = "0700";
+  #     user = "ritiek";
+  #   };
+  # };
+  # systemd.tmpfiles.settings."20-ssh" = {
+  #   "/nix/persist/home/ritiek/.ssh".d = {
+  #     mode = "0700";
+  #     user = "ritiek";
+  #   };
+  # };
+  # systemd.tmpfiles.settings."30-sops-key" = {
+  #   "/nix/persist/home/ritiek/.ssh/sops.id_ed25519"."C+" = {
+  #     mode = "0600";
+  #     user = "ritiek";
+  #     argument = "/etc/ssh/ssh_host_ed25519_key";
+  #   };
+  # };
+
+  systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/sops.id_ed25519" = {
+    "C+" = {
       mode = "0600";
       user = "ritiek";
       argument = "/etc/ssh/ssh_host_ed25519_key";
