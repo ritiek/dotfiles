@@ -3,7 +3,7 @@
 
 {
   # Generate a connection handler script for lazy-loading services
-  mkLazyLoadingHandler = { serviceName, dockerServiceName, internalPort, refreshInterval ? 3 }: 
+  mkLazyLoadingHandler = { serviceName, dockerServiceName, internalPort, refreshInterval ? 3 }:
     pkgs.writeShellScript "${serviceName}-connection-handler" ''
       echo "Connection received at $(date)" >&2
 
@@ -75,94 +75,138 @@
     '';
 
   # Generate complete lazy-loading systemd services configuration
-  mkLazyLoadingServices = { 
-    serviceName, 
-    dockerServiceName, 
-    webUIPort, 
-    internalPort, 
+  mkLazyLoadingServices = {
+    serviceName,
+    dockerServiceName,
+    webUIPort,
+    internalPort,
     refreshInterval ? 3,
     requiredMounts ? [],
     rootTarget ? "docker-compose-${dockerServiceName}-root.target",
-    idleCheckInterval ? "*:0/5",  # Every 5 minutes
+    idleCheckInterval ? "*:0/10",  # Every 5 minutes
     # Optional: custom startup command (defaults to starting the docker service)
     startCommand ? "systemctl start docker-${dockerServiceName}.service",
-    # Optional: custom stop command (defaults to stopping the root target) 
+    # Optional: custom stop command (defaults to stopping the root target)
     stopCommand ? "systemctl stop docker-compose-${dockerServiceName}-root.target",
     # Optional: custom health check endpoint (defaults to root)
     healthEndpoint ? "/",
     # Optional: custom wait timeout in seconds (defaults to 30 seconds)
-    waitTimeout ? 30
+    waitTimeout ? 30,
+    # Optional: silent mode - don't show loading pages, just wait for service
+    silent ? false
   }:
   let
-    connectionHandler = pkgs.writeShellScript "${serviceName}-connection-handler" ''
-      echo "Connection received at $(date)" >&2
+    connectionHandler = if silent then
+      # Silent mode: wait for service to be ready, then proxy
+      pkgs.writeShellScript "${serviceName}-connection-handler" ''
+        echo "Connection received at $(date)" >&2
 
-      # Check if service container is running first
-      if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-${dockerServiceName}.service; then
-        echo "Starting ${serviceName}..." >&2
-        ${pkgs.systemd}/bin/${startCommand}
+        # Check if service container is running first
+        if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-${dockerServiceName}.service; then
+          echo "Starting ${serviceName} silently..." >&2
+          ${pkgs.systemd}/bin/${startCommand}
 
-        # Send loading page immediately
-        cat << 'EOF'
-      HTTP/1.1 200 OK
-      Content-Type: text/html
-      Connection: close
+          # Wait for service to become ready (up to waitTimeout seconds)
+          for i in $(seq 1 ${toString waitTimeout}); do
+            if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
+              echo "${serviceName} is ready, proxying connection..." >&2
+              exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
+            fi
+            sleep 1
+          done
 
-      <!DOCTYPE html>
-      <html>
-      <head>
-          <title>${serviceName} - Starting</title>
-          <meta http-equiv="refresh" content="${toString refreshInterval}">
-          <style>
-              body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-              .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
-              @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-          </style>
-      </head>
-      <body>
-          <h1>${serviceName} is starting...</h1>
-          <div class="spinner"></div>
-          <p>Please wait while the service loads. This page will refresh automatically.</p>
-          <p><a href="/">Click here to refresh manually</a></p>
-      </body>
-      </html>
-      EOF
-        exit 0
-      fi
+          # If we get here, service didn't start properly - close connection
+          echo "${serviceName} failed to start within timeout" >&2
+          exit 1
+        fi
 
-      # Service is already running, check if it's responding
-      if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
-        echo "${serviceName} is ready, proxying connection..." >&2
-        # Forward the entire HTTP connection to the actual service
-        exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
-      else
-        echo "${serviceName} not responding, sending loading page..." >&2
-        # Send loading page
-        cat << 'EOF'
-      HTTP/1.1 200 OK
-      Content-Type: text/html
-      Connection: close
+        # Service is already running, check if it's responding
+        if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
+          echo "${serviceName} is ready, proxying connection..." >&2
+          exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
+        else
+          # Wait a moment and try again
+          sleep 2
+          if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
+            echo "${serviceName} is ready, proxying connection..." >&2
+            exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
+          else
+            echo "${serviceName} not responding after retry" >&2
+            exit 1
+          fi
+        fi
+      ''
+    else
+      # Normal mode: show loading pages
+      pkgs.writeShellScript "${serviceName}-connection-handler" ''
+        echo "Connection received at $(date)" >&2
 
-      <!DOCTYPE html>
-      <html>
-      <head>
-          <title>${serviceName} - Starting</title>
-          <meta http-equiv="refresh" content="2">
-          <style>
-              body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-              .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
-              @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-          </style>
-      </head>
-      <body>
-          <h1>${serviceName} is starting...</h1>
-          <div class="spinner"></div>
-          <p>Service is warming up. This page will refresh automatically.</p>
-      </body>
-      </html>
-      EOF
-      fi
-    '';
+        # Check if service container is running first
+        if ! ${pkgs.systemd}/bin/systemctl is-active --quiet docker-${dockerServiceName}.service; then
+          echo "Starting ${serviceName}..." >&2
+          ${pkgs.systemd}/bin/${startCommand}
+
+          # Send loading page immediately
+          cat << 'EOF'
+        HTTP/1.1 200 OK
+        Content-Type: text/html
+        Connection: close
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${serviceName} - Starting</title>
+            <meta http-equiv="refresh" content="${toString refreshInterval}">
+            <style>
+                body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+                .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        </head>
+        <body>
+            <h1>${serviceName} is starting...</h1>
+            <div class="spinner"></div>
+            <p>Please wait while the service loads. This page will refresh automatically.</p>
+            <p><a href="/">Click here to refresh manually</a></p>
+        </body>
+        </html>
+        EOF
+          exit 0
+        fi
+
+        # Service is already running, check if it's responding
+        if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
+          echo "${serviceName} is ready, proxying connection..." >&2
+          # Forward the entire HTTP connection to the actual service
+          exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
+        else
+          echo "${serviceName} not responding, sending loading page..." >&2
+          # Send loading page
+          cat << 'EOF'
+        HTTP/1.1 200 OK
+        Content-Type: text/html
+        Connection: close
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>${serviceName} - Starting</title>
+            <meta http-equiv="refresh" content="2">
+            <style>
+                body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+                .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; margin: 20px auto; }
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+            </style>
+        </head>
+        <body>
+            <h1>${serviceName} is starting...</h1>
+            <div class="spinner"></div>
+            <p>Service is warming up. This page will refresh automatically.</p>
+        </body>
+        </html>
+        EOF
+        fi
+      '';
   in {
     # Port listener that starts service on any connection attempt
     systemd.services."autostart-${dockerServiceName}" = {
@@ -226,7 +270,7 @@
     };
   };
 
-  # Generate an error page for services that fail to start  
+  # Generate an error page for services that fail to start
   mkErrorPage = { serviceName }:
     ''
       HTTP/1.1 503 Service Unavailable
