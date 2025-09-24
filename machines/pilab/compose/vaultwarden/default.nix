@@ -8,14 +8,15 @@ let
 
   # Import lazy-loading module
   lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
-  
-  # Generate lazy-loading services
+
+  # Generate lazy-loading services with silent mode enabled
   lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "Vaultwarden";
     dockerServiceName = "vaultwarden";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "/media/HOMELAB_MEDIA/services/vaultwarden" ];
+    silent = true;  # Enable silent mode for vaultwarden
   };
 
 in lib.mkMerge [
