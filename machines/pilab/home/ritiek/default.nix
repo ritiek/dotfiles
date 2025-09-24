@@ -55,6 +55,7 @@ in
       python313Packages.ipython
       parted
 
+      python313
       docker-compose
       compose2nix
 
