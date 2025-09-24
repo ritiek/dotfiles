@@ -13,6 +13,8 @@
     })
   ];
 
+  boot.kernelModules = [ "i2c-dev" ];
+
   raspberry-pi-nix = {
     board = "bcm2712";
     # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
@@ -38,6 +40,16 @@
       # Force PCIe Gen 3 speeds.
       pciex1_gen = {
         value = 3;
+        enable = true;
+      };
+      # Let BME680 work over I2C.
+      # https://github.com/pimoroni/bme680-python
+      i2c_arm = {
+        value = "on";
+        enable = true;
+      };
+      i2c_vc = {
+        value = "on";
         enable = true;
       };
     };
