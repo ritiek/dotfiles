@@ -1,5 +1,10 @@
 { config, inputs, lib, ... }:
+
+let
+  homelabMediaPath = "/media/HOMELAB_MEDIA";
+in
 {
+  _module.args.homelabMediaPath = homelabMediaPath;
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image
@@ -77,7 +82,7 @@
   # Ref:
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
   systemd.tmpfiles.settings = {
-    "10-homelab"."/media/HOMELAB_MEDIA" = {
+    "10-homelab"."${homelabMediaPath}" = {
       d = {
         group = "root";
         mode = "0755";

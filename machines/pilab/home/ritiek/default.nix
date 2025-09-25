@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ...}:
+{ config, pkgs, inputs, homelabMediaPath, ...}:
 let 
   homelab-mount = (pkgs.writeShellScriptBin "homelab-mount" ''
     set -x
@@ -7,7 +7,7 @@ let
       HOMELAB_MEDIA
     mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
       /dev/mapper/HOMELAB_MEDIA \
-      /media/HOMELAB_MEDIA
+      ${homelabMediaPath}
   '');
 in
 {
@@ -87,7 +87,7 @@ in
 
       (writeShellScriptBin "homelab-unmount" ''
         set -x
-        umount -l /media/HOMELAB_MEDIA
+        umount -l ${homelabMediaPath}
         cryptsetup close homelab_media
       '')
 
