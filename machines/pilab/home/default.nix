@@ -1,4 +1,4 @@
-{ inputs, pkgs, config, ... }:
+{ inputs, pkgs, config, homelabMediaPath, ... }:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -28,7 +28,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     extraSpecialArgs = {
-      inherit inputs;
+      inherit inputs homelabMediaPath;
       hostName = config.networking.hostName;
     };
 

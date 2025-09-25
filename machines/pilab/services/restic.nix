@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ...}:
+{ lib, config, pkgs, homelabMediaPath, ...}:
 
 let
   ping-uptime-kuma-pilab = (pkgs.writeShellScriptBin "ping-uptime-kuma@restic-backups-homelab@pilab" ''
@@ -110,7 +110,7 @@ in
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     # user = "restic";
     paths = [
-      "/media/HOMELAB_MEDIA"
+      homelabMediaPath
     ];
     # exclude = [
     #   "*.db-shm"
@@ -157,19 +157,19 @@ in
     #   ${pkgs.restic}/bin/restic unlock || true
     # '';
     backupPrepareCommand = ''
-      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
-        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping backup."
+      if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
+        echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
       fi
 
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
-      echo "Backing up '/media/HOMELAB_MEDIA'."
+      echo "Backing up '${homelabMediaPath}'."
     '';
     backupCleanupCommand = ''
-      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
-        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping post backup cleanup."
+      if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
+        echo "Error: '${homelabMediaPath}' is not mounted. Skipping post backup cleanup."
         exit 1 # Exit with a non-zero status to prevent the post backup cleanup
       fi
 
@@ -213,7 +213,7 @@ in
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     # user = "restic";
     paths = [
-      "/media/HOMELAB_MEDIA"
+      homelabMediaPath
     ];
     extraBackupArgs = [
       "--compression=max"
@@ -227,15 +227,15 @@ in
       "--keep-tag forever"
     ];
     backupPrepareCommand = ''
-      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
-        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping backup."
+      if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
+        echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
       fi
 
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
-      echo "Backing up '/media/HOMELAB_MEDIA'."
+      echo "Backing up '${homelabMediaPath}'."
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
@@ -250,7 +250,7 @@ in
     repositoryFile = config.sops.secrets."restic.keyberry.repository".path;
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     paths = [
-      "/media/HOMELAB_MEDIA"
+      homelabMediaPath
     ];
     extraBackupArgs = [
       "--compression=max"
@@ -264,15 +264,15 @@ in
       "--keep-tag forever"
     ];
     backupPrepareCommand = ''
-      if ! ${pkgs.util-linux}/bin/mountpoint -q "/media/HOMELAB_MEDIA"; then
-        echo "Error: '/media/HOMELAB_MEDIA' is not mounted. Skipping backup."
+      if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
+        echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
       fi
 
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
-      echo "Backing up '/media/HOMELAB_MEDIA'."
+      echo "Backing up '${homelabMediaPath}'."
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
