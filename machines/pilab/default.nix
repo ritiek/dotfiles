@@ -5,7 +5,6 @@
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./home
-    ./gpio.nix
     ./services/restic.nix
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
@@ -72,11 +71,13 @@
   users = {
     defaultUserShell = pkgs.zsh;
     mutableUsers = false;
+    groups.i2c = {};
 
     users.ritiek = {
       isNormalUser = true;
       extraGroups = [
         "wheel"
+        "i2c"
       ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
@@ -108,6 +109,10 @@
   # ];
 
   services = {
+    udev.extraRules = ''
+      KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+    '';
+    
     openssh = {
       enable = true;
       startWhenNeeded = true;
