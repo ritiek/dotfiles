@@ -83,6 +83,8 @@ in
       yt-dlp
       mosquitto
 
+      libgpiod
+      i2c-tools
       # claude-code
 
       homelab-mount

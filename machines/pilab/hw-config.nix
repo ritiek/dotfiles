@@ -57,6 +57,10 @@ in
         value = "on";
         enable = true;
       };
+      spi = {
+        value = "on";
+        enable = true;
+      };
     };
     dt-overlays = {
       disable-bt = {
