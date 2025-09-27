@@ -14,6 +14,7 @@ in
   imports = [
     inputs.sops-nix.homeManagerModule
 
+    ./gpio
     ./services/spotdl.nix
     ./services/paperless-ngx.nix
     ./services/whatsapp-backup-verify.nix
