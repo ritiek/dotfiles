@@ -80,6 +80,7 @@ in
       sqlcipher
       httrack
       yt-dlp
+      mosquitto
 
       # claude-code
 
