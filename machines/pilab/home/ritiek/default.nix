@@ -19,6 +19,7 @@ in
     ./services/paperless-ngx.nix
     ./services/whatsapp-backup-verify.nix
     ./services/verify-sqlcipher-integrity.nix
+    ./services/dns-resolution.nix
     ./../../../../scripts/home/immich-env.nix
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
@@ -137,6 +138,7 @@ in
           # machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start paperless-ngx-sync.timer
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start whatsapp-backup-verify-latest-snapshot.timer
+          machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start dns-resolution.timer
           # systemctl start spotdl-sync.timer
 
           # tailscale serve --bg --https=9445 127.0.0.1:9446
@@ -184,6 +186,8 @@ in
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop paperless-ngx-sync.service
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.timer
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop whatsapp-backup-verify-latest-snapshot.service
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop dns-resolution.timer
+        machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop dns-resolution.service
         # systemctl stop spotdl-sync.timer
 
         # tailscale serve --https=9445 off
