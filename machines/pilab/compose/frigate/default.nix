@@ -36,6 +36,10 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--dns=${lib.head (lib.splitString "/" config.virtualisation.docker.daemon.settings.bip)}"
+      "--dns=100.100.100.100"
+      "--dns=1.1.1.1"
+      "--dns=8.8.8.8"
       "--device=/dev/video10:/dev/video10:rwm"
       "--network-alias=frigate"
       "--network=frigate_default"
