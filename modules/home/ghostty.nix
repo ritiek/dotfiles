@@ -24,6 +24,7 @@
       # window-inherit-working-directory = true;
       # quick-terminal-screen = "main";
       # keybind = "ctrl+f=toggle_quick_terminal";
+      keybind = "unconsumed:ctrl+shift+j=ignore";
       term = "xterm-256color";
       theme = "dracula";
     };
