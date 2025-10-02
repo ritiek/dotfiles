@@ -7,6 +7,7 @@
     ./../../../../modules/home/nix.nix
     ./../../../../modules/home/gnupg.nix
     ./../../../../modules/home/hyprland
+    ./../../../../modules/home/niri
     ./../../../../modules/home/theme.nix
     ./../../../../modules/home/ghostty.nix
     # ./../../../../modules/home/wezterm
