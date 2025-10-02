@@ -158,4 +158,11 @@ end, { desc = "Harpoon toggle quick menu" })
 
 -- toggle_word_diff
 
+-- Window resize mappings
+vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-l>", "<cmd>vertical resize +5<cr>", { desc = "Increase width" })
+vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-h>", "<cmd>vertical resize -5<cr>", { desc = "Decrease width" })
+vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-k>", "<cmd>resize +5<cr>", { desc = "Increase height" })
+vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-j>", "<cmd>resize -5<cr>", { desc = "Decrease height" })
+vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-=>", "<cmd>wincmd =<cr>", { desc = "Make all windows equal size" })
+
 -- vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
