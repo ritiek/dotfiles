@@ -16,7 +16,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."frigate" = {
-    image = "ghcr.io/blakeblackshear/frigate:0.14.1-standard-arm64";
+    image = "ghcr.io/blakeblackshear/frigate:0.16.1-standard-arm64";
     environmentFiles = [
       config.sops.secrets."compose/frigate.env".path
     ];
