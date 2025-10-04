@@ -187,7 +187,7 @@
         # Performance settings
         "gfx.webrender.all" = true; # Force enable GPU acceleration
         "media.ffmpeg.vaapi.enabled" = true;
-        "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
+        "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes for screencasts to work
         "toolkit.telemetry.enabled" = false;
         "geo.provider.network.url" = "https://location.services.mozilla.com/v1/geolocate?key=%MOZILLA_API_KEY%";
         "media.peerconnection.ice.default_address_only" = true;
