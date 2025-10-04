@@ -46,7 +46,7 @@
     ./../../modules/ssh.nix
     ./../../modules/yubico-pam.nix
     ./../../modules/usbip.nix
-    ./../../modules/mullvad.nix
+    # ./../../modules/mullvad.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
 
