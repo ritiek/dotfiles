@@ -157,7 +157,7 @@ in
         systemctl stop docker-compose-paperless-ngx-root.target
         # systemctl stop docker-compose-filebrowser-quantum-root.target
         systemctl stop autostart-copyparty.service docker-compose-copyparty-root.target
-        systemctl stop autostart-forgejo.service docker-compose-forgejo-root.target
+        systemctl stop docker-compose-forgejo-root.target
         systemctl stop autostart-navidrome.service docker-compose-navidrome-root.target
         systemctl stop autostart-memos.service docker-compose-memos-root.target
         systemctl stop docker-compose-syncthing-root.target
@@ -169,7 +169,7 @@ in
         systemctl stop autostart-grocy.service docker-compose-grocy-root.target
         systemctl stop docker-compose-changedetection-root.target
         systemctl stop docker-compose-frigate-root.target
-        systemctl stop autostart-habitica.service docker-compose-habitica-root.target
+        systemctl stop autostart-habitica-server.service docker-compose-habitica-root.target
         systemctl stop autostart-open-webui.service docker-compose-ollama-webui-root.target
         systemctl stop autostart-pwpush.service docker-compose-pwpush-root.target
         systemctl stop docker-compose-dawarich-root.target
