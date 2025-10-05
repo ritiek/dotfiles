@@ -311,10 +311,10 @@ hotkey-overlay {
 // }
 
 spawn-at-startup "swaync"
-spawn-at-startup "waybar-launch"
+spawn-at-startup "waybar"
 spawn-at-startup "hyprpaper"
 spawn-at-startup "hypridle"
-spawn-at-startup "wlsunset" "-t" "4500"
+spawn-at-startup "wlsunset" "-t" "4300"
 spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "__NV_PRIME_RENDER_OFFLOAD=0 swayosd-server"
