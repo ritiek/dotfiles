@@ -162,7 +162,6 @@ class RouterARPFetcher:
             mac_formatted = mac.upper().replace("-", ":")
             entries.append((ip, mac_formatted))
         
-        print(f"Found {len(entries)} ARP entries")
         return entries
 
 
@@ -289,6 +288,17 @@ def main():
         sys.exit(1)
     
     print(f"Found {len(arp_entries)} ARP entries from router")
+    
+    print("\nDevice Information from Router:")
+    print("=" * 55)
+    print(f"{'#':<3} {'IP Address':<15} {'MAC Address':<18} {'Hostname'}")
+    print("-" * 55)
+    for i, (ip, mac) in enumerate(arp_entries, 1):
+        fallback_hostname = f"unknown-{mac.replace(':', '-').lower()}.pihole"
+        hostname = mac_to_hostname.get(mac, fallback_hostname)
+        print(f"{i:<3} {ip:<15} {mac:<18} {hostname}")
+    print("=" * 55)
+    print()
     
     if not pihole_updater.authenticate(pihole_password):
         print("Failed to authenticate with Pi-hole")
