@@ -24,7 +24,6 @@ in
     wlopm
     xwayland-satellite
     rose-pine-cursor
-    rose-pine-hyprcursor
   ];
 
   xdg.configFile."niri/config.kdl".text = ''
@@ -131,14 +130,14 @@ layout {
     //     inactive-color "#1a1a1a"
     // }
 
-    shadow {
-        on
-        softness 30
-        spread 5
-        offset x=0 y=5
-        draw-behind-window true
-        color "#00000070"
-    }
+    // shadow {
+    //     on
+    //     softness 30
+    //     spread 5
+    //     offset x=0 y=5
+    //     draw-behind-window true
+    //     color "#00000070"
+    // }
 
     tab-indicator {
         off
@@ -192,6 +191,12 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 
 hotkey-overlay {
     skip-at-startup
+}
+
+window-rule {
+  match app-id="zen-beta" title="Bitwarden"
+  min-width 470
+  max-width 470
 }
 
 // window-rule {
