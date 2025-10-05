@@ -396,6 +396,22 @@
     };
   };
 
+  # Disable blueman autostart for all users
+  environment.etc."xdg/autostart/blueman.desktop" = lib.mkIf config.services.blueman.enable {
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Blueman Applet
+      Comment=Bluetooth Manager
+      Icon=blueman
+      Exec=blueman-applet
+      Terminal=false
+      StartupNotify=false
+      NoDisplay=true
+      Hidden=true
+    '';
+  };
+
   security = {
     sudo.enable = false;
     sudo-rs.enable = true;
