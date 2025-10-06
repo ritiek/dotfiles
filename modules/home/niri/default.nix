@@ -13,7 +13,7 @@ in
     hyprpaper     # Instead of swaybg
     hypridle      # Instead of swayidle
     hyprpicker    # Color picker
-    hyprshot      # Screenshot tool
+    # hyprshot      # Screenshot tool
     # hyprcursor    # Cursor theme tool
     wlsunset      # Blue light filter (hyprsunset doesn't work with niri)
     xdg-desktop-portal-hyprland
@@ -731,9 +731,48 @@ animations {
 // }
   '';
 
-  # Use existing hyprpaper and hypridle services from hyprland module
-  # These will be configured to work with niri as well
-  
-  # The hyprlock and hypridle configs are already set up in the hyprland module
-  # and will work with niri since they're independent of the compositor
+  services = {
+    hyprpaper = {
+      enable = true;
+      settings = {
+        ipc = "on";
+        splash = false;
+        preload = [
+          (builtins.toString wallpaper)
+        ];
+        wallpaper = [
+          "eDP-1,${builtins.toString wallpaper}"
+          "HDMI-A-1,${builtins.toString wallpaper}"
+          "HDMI-A-2,${builtins.toString wallpaper}"
+        ];
+      };
+    };
+    hypridle = {
+      enable = true;
+      settings = {
+        general = {
+          before_sleep_cmd = "pidof hyprlock || hyprlock --immediate";
+          ignore_dbus_inhibit = false;
+        };
+        listener = [
+          {
+            timeout = 1800;
+            on-timeout = "hyprlock";
+          }
+          {
+            timeout = 3600;
+            on-timeout = "hyprctl dispatch dpms off";
+            on-resume = "hyprctl dispatch dpms on && (pidof swayosd-server || __NV_PRIME_RENDER_OFFLOAD=0 swayosd-server)";
+          }
+        ];
+      };
+    };
+  };
+
+  home.file = {
+    hyprlock = {
+      source = ../hyprland/hypr/hyprlock.conf;
+      target = "${config.home.homeDirectory}/.config/hypr/hyprlock.conf";
+    };
+  };
 }
