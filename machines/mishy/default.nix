@@ -254,6 +254,8 @@
 
     blueman.enable = true;
 
+    upower.enable = true;
+
     logind = {
       lidSwitch = "ignore";
       # extraConfig = ''
@@ -330,11 +332,12 @@
     config = {
       common.default = [ "hyprland" ];
       hyprland.default = [ "gtk" "hyprland" ];
+      niri.default = [ "gtk" "hyprland" ];
     };
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      # xdg-desktop-portal-hyprland
-      # xdg-desktop-portal-wlr
+      xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-gnome
     ];
     # gtkUsePortal = true;
   };
