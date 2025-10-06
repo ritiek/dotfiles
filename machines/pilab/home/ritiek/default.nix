@@ -133,6 +133,7 @@ in
           systemctl start autostart-nitter.service
           systemctl start autostart-mealie.service
           systemctl start autostart-karakeep.service
+          systemctl start docker-n8n-worker.service
           # systemctl start docker-kopia.service
 
           # machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -178,6 +179,7 @@ in
         systemctl stop autostart-nitter.service docker-compose-nitter-root.target
         systemctl stop autostart-mealie.service docker-compose-mealie-root.target
         systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
+        systemctl stop docker-compose-n8n-root.target
         # systemctl stop docker-compose-kopia-root.target
 
         # machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer

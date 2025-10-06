@@ -46,6 +46,7 @@
     ./compose/nitter.nix
     ./compose/mealie
     ./compose/karakeep
+    ./compose/n8n
     # ./compose/kopia
   ];
 
