@@ -46,7 +46,7 @@
     ./../../modules/ssh.nix
     ./../../modules/yubico-pam.nix
     ./../../modules/usbip.nix
-    ./../../modules/mullvad.nix
+    # ./../../modules/mullvad.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
 
@@ -254,6 +254,8 @@
 
     blueman.enable = true;
 
+    upower.enable = true;
+
     logind = {
       lidSwitch = "ignore";
       # extraConfig = ''
@@ -330,11 +332,12 @@
     config = {
       common.default = [ "hyprland" ];
       hyprland.default = [ "gtk" "hyprland" ];
+      niri.default = [ "gtk" "hyprland" ];
     };
     extraPortals = with pkgs; [
       xdg-desktop-portal-gtk
-      # xdg-desktop-portal-hyprland
-      # xdg-desktop-portal-wlr
+      xdg-desktop-portal-hyprland
+      # xdg-desktop-portal-gnome
     ];
     # gtkUsePortal = true;
   };
@@ -396,6 +399,22 @@
     };
   };
 
+  # Disable blueman autostart for all users
+  environment.etc."xdg/autostart/blueman.desktop" = lib.mkIf config.services.blueman.enable {
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Blueman Applet
+      Comment=Bluetooth Manager
+      Icon=blueman
+      Exec=blueman-applet
+      Terminal=false
+      StartupNotify=false
+      NoDisplay=true
+      Hidden=true
+    '';
+  };
+
   security = {
     sudo.enable = false;
     sudo-rs.enable = true;
@@ -410,6 +429,8 @@
       cantarell-fonts
       material-design-icons
       noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
 
       nerd-fonts.fantasque-sans-mono
       nerd-fonts.inconsolata-go
