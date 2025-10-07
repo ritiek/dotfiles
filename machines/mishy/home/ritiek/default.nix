@@ -70,6 +70,7 @@
       # spotify
       # local.piano-rs
       psmisc
+      unixtools.route
       zip
       unzip
       unrar-wrapper
