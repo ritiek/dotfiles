@@ -127,6 +127,7 @@ export PATH
       # Eval these in your shell manually, e.g: eval $(ssh-auth-sock)
       ssh-auth-sock = "echo export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent";
       gpg-auth-sock = "echo export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)";
+      "discordchatexporter-cli@env" = "discordchatexporter-cli export --media --reuse-media --markdown false --format Json --output . --channel";
     };
     localVariables = {
       SSH_AUTH_SOCK = (
