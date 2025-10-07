@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  update-pihole-dns = (pkgs.writers.writePython3Bin "update-pihole-dns" {
+  dns-update-pihole = (pkgs.writers.writePython3Bin "dns-update-pihole" {
     flakeIgnore = [ "E501" "W293" "E302" "F401" "E305" ];
   } ''
 import urllib.request
@@ -376,13 +376,96 @@ if __name__ == "__main__":
       exit $curl_exit_code
     fi
   '');
+
+  dns-fetch-pihole = (pkgs.writeShellScriptBin "dns-fetch-pihole" ''
+    source ~/.config/sops-nix/secrets/dns-resolution.env
+
+    if [ -z "$PIHOLE_HOST" ] || [ -z "$PIHOLE_APP_PASSWORD" ]; then
+      echo "Error: PIHOLE_HOST or PIHOLE_APP_PASSWORD not set"
+      exit 1
+    fi
+
+    PIHOLE_URL="http://$PIHOLE_HOST"
+
+    echo "Authenticating with Pi-hole..."
+    SID=$(${pkgs.curl}/bin/curl -s -X POST \
+      -H "Content-Type: application/json" \
+      -d "{\"password\":\"$PIHOLE_APP_PASSWORD\"}" \
+      "$PIHOLE_URL/api/auth" | ${pkgs.jq}/bin/jq -r '.session.sid // empty')
+
+    if [ -z "$SID" ]; then
+      echo "Error: Failed to authenticate with Pi-hole"
+      exit 1
+    fi
+
+    echo "Fetching DNS records from Pi-hole..."
+    echo "IP Address       Hostname"
+    echo "=================================="
+    ${pkgs.curl}/bin/curl -s "$PIHOLE_URL/api/config?sid=$SID" | \
+      ${pkgs.jq}/bin/jq -r '.config.dns.hosts[]? // empty' | \
+      while read -r entry; do
+        if [ -n "$entry" ]; then
+          ip=$(echo "$entry" | ${pkgs.coreutils}/bin/cut -d' ' -f1)
+          hostname=$(echo "$entry" | ${pkgs.coreutils}/bin/cut -d' ' -f2-)
+          printf "%-15s  %s\n" "$ip" "$hostname"
+        fi
+      done
+  '');
+
+  dns-fetch-router = (pkgs.writeShellScriptBin "dns-fetch-router" ''
+    source ~/.config/sops-nix/secrets/dns-resolution.env
+
+    if [ -z "$ROUTER_HOST" ] || [ -z "$ROUTER_USERNAME" ] || [ -z "$ROUTER_PASSWORD_HASH" ]; then
+      echo "Error: ROUTER_HOST, ROUTER_USERNAME, or ROUTER_PASSWORD_HASH not set"
+      exit 1
+    fi
+
+    ROUTER_URL="http://$ROUTER_HOST"
+    COOKIE_JAR=$(${pkgs.coreutils}/bin/mktemp)
+
+    echo "Authenticating with router..."
+    ${pkgs.curl}/bin/curl -s -c "$COOKIE_JAR" -X POST \
+      -H "Content-Type: application/x-www-form-urlencoded" \
+      -d "challenge=&username=$ROUTER_USERNAME&password=$ROUTER_PASSWORD_HASH&save=Login&submit-url=/admin/login.asp&postSecurityFlag=63179" \
+      "$ROUTER_URL/boaform/admin/formLogin" > /dev/null
+
+    if [ $? -ne 0 ]; then
+      echo "Error: Failed to authenticate with router"
+      ${pkgs.coreutils}/bin/rm -f "$COOKIE_JAR"
+      exit 1
+    fi
+
+    echo "Fetching ARP table from router..."
+    ARP_DATA=$(${pkgs.curl}/bin/curl -s -b "$COOKIE_JAR" "$ROUTER_URL/arptable.asp?v=1759053170000")
+
+    if [ $? -ne 0 ]; then
+      echo "Error: Failed to fetch ARP table"
+      ${pkgs.coreutils}/bin/rm -f "$COOKIE_JAR"
+      exit 1
+    fi
+
+    echo "IP Address       MAC Address        Status"
+    echo "============================================"
+    echo "$ARP_DATA" | ${pkgs.gnugrep}/bin/grep -oP '<td>[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+\s+</td><td>[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}-[a-fA-F0-9]{2}\s+</td>' | \
+      ${pkgs.gnused}/bin/sed 's/<td>\([0-9\.]*\)\s*<\/td><td>\([a-fA-F0-9:-]*\)\s*<\/td>/\1 \2/' | \
+      while read -r ip mac; do
+        if [ -n "$ip" ] && [ -n "$mac" ]; then
+          mac_formatted=$(echo "$mac" | ${pkgs.coreutils}/bin/tr 'a-f-' 'A-F:')
+          printf "%-15s  %-17s  Active\n" "$ip" "$mac_formatted"
+        fi
+      done
+
+    ${pkgs.coreutils}/bin/rm -f "$COOKIE_JAR"
+  '');
 in
 {
   sops.secrets."dns-resolution.env" = {};
   sops.secrets."uptime-kuma.env" = {};
 
   home.packages = with pkgs; [
-    update-pihole-dns
+    dns-update-pihole
+    dns-fetch-pihole
+    dns-fetch-router
     curl
     jq
   ];
@@ -395,7 +478,7 @@ in
     };
     Service = {
       Type = "oneshot";
-      ExecStart = "${update-pihole-dns}/bin/update-pihole-dns";
+      ExecStart = "${dns-update-pihole}/bin/dns-update-pihole";
       ExecStopPost = "${ping-uptime-kuma}/bin/ping-uptime-kuma@dns-resolution";
     };
   };
