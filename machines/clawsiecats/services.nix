@@ -373,6 +373,16 @@ in
             recommendedProxySettings = true;
           };
         };
+        "n8n.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            proxyPass = "http://100.64.0.7:5678";
+            proxyWebsockets = true;
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+          };
+        };
         # "git.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
