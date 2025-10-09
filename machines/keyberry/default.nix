@@ -22,24 +22,12 @@
 
   boot = {
     supportedFilesystems = [ "ntfs" ];
-
-    # Raspberry Pi kernel for better GPIO support
     kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
-
-    # GPIO and device tree related kernel modules
     kernelModules = [
       "libcomposite"
       "cma=2048M"
-      "pwm_bcm2835"
-      "w1-gpio"
       "i2c-dev"
       "spi-dev"
-    ];
-
-    # Kernel parameters for GPIO access
-    kernelParams = [
-      "iomem=relaxed"
-      "strict-devmem=0"
     ];
   };
 
@@ -103,15 +91,8 @@
     # mesa
     # libGL
 
-    # GPIO and hardware access tools
     libgpiod
-    lgpio
-    pigpio
-    gpio-utils
     i2c-tools
-    python3Packages.pigpio
-    python3Packages.gpiozero
-    python3Packages.lgpio
   ];
 
   programs = {
@@ -187,40 +168,6 @@
 
     pi400kb.enable = true;
   };
-
-  # Hardware configuration for GPIO support
-  hardware = {
-    deviceTree = {
-      enable = true;
-      overlays = [
-        {
-          name = "pwm-2chan";
-          dtboFile = "${pkgs.device-tree_rpi.overlays}/pwm-2chan.dtbo";
-        }
-        {
-          name = "w1-gpio";
-          dtboFile = "${pkgs.device-tree_rpi.overlays}/w1-gpio.dtbo";
-        }
-      ];
-    };
-    i2c.enable = true;
-    # SPI is enabled via kernel modules, no hardware.spi option exists
-  };
-
-  # Users need to be in gpio group for GPIO access
-  users.groups.gpio = {};
-  users.groups.i2c = {};
-  users.groups.spi = {};
-
-  # Udev rules for GPIO device permissions
-  services.udev.extraRules = ''
-    SUBSYSTEM=="gpio*", PROGRAM="/bin/sh -c 'chown -R root:gpio /sys/class/gpio && chmod -R 770 /sys/class/gpio; chown -R root:gpio /sys/devices/virtual/gpio && chmod -R 770 /sys/devices/virtual/gpio || true'"
-    SUBSYSTEM=="pwm*", PROGRAM="/bin/sh -c 'chown -R root:gpio /sys/class/pwm && chmod -R 770 /sys/class/pwm || true'"
-    KERNEL=="spidev*", GROUP="spi", MODE="0664"
-    KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0664"
-    KERNEL=="gpiochip*", GROUP="gpio", MODE="0664"
-    KERNEL=="gpio*", GROUP="gpio", MODE="0664"
-  '';
 
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
