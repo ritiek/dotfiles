@@ -62,8 +62,6 @@
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
 
-  boot.supportedFilesystems = [ "ntfs" ];
-
   services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-routes"
     "--accept-dns=false"
