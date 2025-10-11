@@ -45,6 +45,7 @@ in
       any-nix-shell
       psmisc
       lshw
+      pciutils
       wget
       pv
 
