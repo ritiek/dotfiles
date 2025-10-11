@@ -140,22 +140,27 @@ layout {
     // }
 
     tab-indicator {
-        off
-        // hide-when-single-tab
-        // place-within-column
-        // gap 5
-        // width 4
-        // length total-proportion=1.0
-        // position "right"
-        // gaps-between-tabs 2
-        // corner-radius 8
+        // off
+        hide-when-single-tab
+        place-within-column
+        gap 5
+        width 4
+        length total-proportion=0.95
+        position "right"
+        gaps-between-tabs 32
+        corner-radius 4
         // active-color "red"
         // inactive-color "gray"
-        // urgent-color "blue"
+        urgent-color "blue"
 
         // active-gradient from="#80c8ff" to="#bbddff" angle=45
-        // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
-        // urgent-gradient from="#800" to="#a33" angle=45
+        // active-gradient from="#A95C68" to="#FFA500" angle=45
+        // active-gradient from="#A95C68" to="#FF5C00" angle=45
+        active-gradient from="#A95C68" to="#FF8100" angle=45
+
+        inactive-gradient from="#202020" to="#606060" angle=45 relative-to="workspace-view"
+
+        urgent-gradient from="#800" to="#a33" angle=45
     }
 
     insert-hint {
@@ -363,6 +368,7 @@ binds {
     Mod+E repeat=false { spawn "nemo"; }
     Mod+V repeat=false { toggle-window-floating; }
     Mod+Shift+V repeat=false { switch-focus-between-floating-and-tiling; }
+    Mod+W repeat=false { toggle-column-tabbed-display; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     Mod+Ctrl+Escape { quit; }
