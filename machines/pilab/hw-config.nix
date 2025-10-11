@@ -1,4 +1,4 @@
-{ config, inputs, lib, ... }:
+{ config, inputs, pkgs, lib, ... }:
 
 let
   homelabMediaPath = "/media/HOMELAB_MEDIA";
@@ -19,6 +19,15 @@ in
   ];
 
   boot.kernelModules = [ "i2c-dev" ];
+
+  boot.supportedFilesystems = [ "ntfs" ];
+  
+  # Increase font size in TTY console logs. This applies after NixOS enters stage 2 boot.
+  console = {
+    font = "ter-v32b";
+    packages = with pkgs; [ terminus_font ];
+    keyMap = "us";
+  };
 
   raspberry-pi-nix = {
     board = "bcm2712";
