@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, pkgs, ... }:
 
 {
   imports = [
@@ -10,8 +10,14 @@
     inputs.pi400kb-nix.nixosModules.pi400kb
   ];
 
-  # Kernel modules moved to default.nix for better GPIO support
-  # boot.kernelModules = [ "libcomposite" "cma=2048M" ];
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
+  boot.kernelModules = [
+    "libcomposite"
+    "cma=2048M"
+    "i2c-dev"
+    "spi-dev"
+  ];
 
   hardware = {
     raspberry-pi."4" = {
