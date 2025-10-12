@@ -13,23 +13,15 @@
     ./../../modules/restic-server.nix
   ];
 
-  sops.secrets."ritiek.hashedpassword".neededForUsers = true;
+  sops.secrets = {
+    "ritiek.hashedpassword".neededForUsers = true;
+    # "cameras.porch.rtsp" = {};
+  };
 
   networking.hostName = lib.mkForce "keyberry";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
 
   nixpkgs.config.allowUnfree = true;
-
-  boot = {
-    supportedFilesystems = [ "ntfs" ];
-    kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
-    kernelModules = [
-      "libcomposite"
-      "cma=2048M"
-      "i2c-dev"
-      "spi-dev"
-    ];
-  };
 
   nix = {
     distributedBuilds = true;
@@ -47,6 +39,7 @@
       # mandatoryFeatures = [ ];
     }];
     # settings.builders-use-substitutes = true;
+    settings.sandbox = false;
   };
 
   users = {
@@ -167,7 +160,89 @@
     };
 
     pi400kb.enable = true;
+
+    # frigate = {
+    #   enable = true;
+    #   # Setting this to false as reading camera URLs from environment is flagged as invalid
+    #   # by this option.
+    #   checkConfig = false;
+    #   hostname = "keyberry.lion-zebra.ts.net";
+    #   settings = {
+    #     version = "0.16-0";
+    #     auth.enabled = false;
+    #     # auth.reset_admin_password = true;
+    #
+    #     mqtt = {
+    #       enabled = false;
+    #     };
+    #
+    #     go2rtc = {
+    #       streams = {
+    #         porch = [
+    #           "{FRIGATE_RTSP_SUBTYPE1}"
+    #           "ffmpeg:camera.porch#audio=aac"
+    #         ];
+    #       };
+    #     };
+    #
+    #     detectors = {
+    #       cpu1 = {
+    #         type = "cpu";
+    #         num_threads = 3;
+    #       };
+    #     };
+    #
+    #     cameras = {
+    #       porch = {
+    #         ffmpeg = {
+    #           input_args = "preset-rtsp-restream";
+    #           output_args = {
+    #             record = "preset-record-generic-audio-aac";
+    #           };
+    #           inputs = [
+    #             {
+    #               path = "{FRIGATE_RTSP_SUBTYPE0}";
+    #               roles = [ "record" ];
+    #             }
+    #             {
+    #               path = "{FRIGATE_RTSP_SUBTYPE1}";
+    #               roles = [ "audio" "detect" ];
+    #             }
+    #           ];
+    #         };
+    #         detect = {
+    #           enabled = true;
+    #           width = 1280;
+    #           height = 720;
+    #         };
+    #         objects = {
+    #           track = [ "person" ];
+    #           filters.person.threshold = 0.7;
+    #         };
+    #       };
+    #     };
+    #
+    #     audio.enabled = true;
+    #     record.enabled = true;
+    #     detect.enabled = true;
+    #     ui.timezone = "Asia/Kolkata";
+    #   };
+    # };
+
   };
+
+  # systemd.services.frigate.serviceConfig = {
+  #   EnvironmentFile = config.sops.templates."frigate-env".path;
+  # };
+  #
+  # sops.templates."frigate-env" = {
+  #   content = ''
+  #     FRIGATE_RTSP_SUBTYPE0=${config.sops.placeholder."cameras.porch.rtsp"}&subtype=0
+  #     FRIGATE_RTSP_SUBTYPE1=${config.sops.placeholder."cameras.porch.rtsp"}&subtype=1
+  #   '';
+  #   mode = "0400";
+  #   owner = config.users.users.frigate.name;
+  # };
 
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
