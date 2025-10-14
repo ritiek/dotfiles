@@ -27,51 +27,59 @@ let
 
   bme680-mqtt-loop = pkgs.writeShellScriptBin "bme680-mqtt-loop" ''
     echo "BME680 continuous service starting..."
-    
+
+    # Function to handle failures
+    handle_failure() {
+      # Notify Uptime Kuma of failure
+      source ${config.sops.secrets."uptime-kuma.env".path}
+      ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=down&msg=Failed&ping=" || true
+
+      # Blink Red LED on failure
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 27=1
+      ${pkgs.coreutils}/bin/sleep 0.4s
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 27=0
+    }
+
     while true; do
       echo "BME680 reading cycle starting..."
-      
+
       # Try to read temperature with detailed error output
       if temperature=$(${pkgs.python3.withPackages (ps: with ps; [ bme680 ])}/bin/python ${bme680Script} 2>&1); then
         if [ -n "$temperature" ]; then
           echo "Temperature reading: $temperature°C"
-          
+
           # Read MQTT configuration
           mqtt_host_port=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."mqtt.host".path})
           mqtt_host=$(echo "$mqtt_host_port" | ${pkgs.coreutils}/bin/cut -d: -f1)
           mqtt_port=$(echo "$mqtt_host_port" | ${pkgs.coreutils}/bin/cut -d: -f2)
           mqtt_topic_temperature=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."mqtt.topic.temperature".path})
-          
+
           # Publish to MQTT
           echo "Publishing to MQTT: $mqtt_host:$mqtt_port topic $mqtt_topic_temperature"
           if echo "$temperature" | ${pkgs.mosquitto}/bin/mosquitto_pub -h "$mqtt_host" -p "$mqtt_port" -t "$mqtt_topic_temperature" -l; then
             echo "MQTT publish successful"
-            
+
             # Notify Uptime Kuma of success
             source ${config.sops.secrets."uptime-kuma.env".path}
             ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=up&msg=OK&ping=" || true
+
+            # Blink Yellow LED on success
+            ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
+            ${pkgs.coreutils}/bin/sleep 0.4s
+            ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
           else
             echo "MQTT publish failed"
-            
-            # Notify Uptime Kuma of failure
-            source ${config.sops.secrets."uptime-kuma.env".path}
-            ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=down&msg=Failed&ping=" || true
+            handle_failure
           fi
         else
           echo "Temperature reading is empty"
-          
-          # Notify Uptime Kuma of failure
-          source ${config.sops.secrets."uptime-kuma.env".path}
-          ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=down&msg=Failed&ping=" || true
+          handle_failure
         fi
       else
         echo "Failed to read BME680 sensor: $temperature"
-        
-        # Notify Uptime Kuma of failure
-        source ${config.sops.secrets."uptime-kuma.env".path}
-        ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=down&msg=Failed&ping=" || true
+        handle_failure
       fi
-      
+
       echo "BME680 cycle completed, sleeping 30 seconds..."
       ${pkgs.coreutils}/bin/sleep 30
     done
