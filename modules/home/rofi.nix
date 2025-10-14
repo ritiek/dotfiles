@@ -2,24 +2,19 @@
 {
   home.packages = with pkgs; [
     rofi-bluetooth
-    # Use rofi for wayland instead of X11
     (rofi-pulse-select.override {
-      rofi-unwrapped = rofi-wayland;
+      rofi-unwrapped = rofi;
     })
     rofimoji
-    # (rofimoji.override {
-    #   rofi = rofi-wayland;
-    # })
   ];
   programs.rofi = {
     enable = true;
     plugins = with pkgs; [
       rofi-calc
       # (rofi-emoji.override {
-      #   rofi-unwrapped = rofi-wayland;
+      #   rofi-unwrapped = rofi;
       # })
     ];
-    package = pkgs.rofi-wayland;
     theme = builtins.toFile "rofi-theme.rasi" ''
       /*******************************************************************************
        * ROUNDED THEME FOR ROFI
