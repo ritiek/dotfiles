@@ -49,18 +49,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --login-server https://controlplane.clawsiecats.lol
-          use-cache: true
-          hostname: gha-mishy
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:7080/
+          endpoint: https://attic.clawsiecats.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -77,18 +69,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --login-server https://controlplane.clawsiecats.lol
-          use-cache: true
-          hostname: gha-pilab
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:7080/
+          endpoint: https://attic.clawsiecats.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -124,22 +108,6 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      # - name: Tailscale
-      #   uses: tailscale/github-action@v3
-      #   with:
-      #     authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-      #     args: --login-server https://controlplane.clawsiecats.lol
-      #     use-cache: true
-      #     hostname: gha-clawsiecats
-      #
-      # - name: Setup Attic cache
-      #   uses: ritiek/attic-action@main
-      #   with:
-      #     endpoint: http://pilab.lion-zebra.ts.net:7080/
-      #     cache: attic-action
-      #     create: true
-      #     token: ${{ secrets.ATTIC_PUSH_TOKEN }}
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
@@ -166,18 +134,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --login-server https://controlplane.clawsiecats.lol
-          use-cache: true
-          hostname: gha-keyberry
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:7080/
+          endpoint: https://attic.clawsiecats.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -194,18 +154,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --login-server https://controlplane.clawsiecats.lol
-          use-cache: true
-          hostname: gha-zerostash
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:7080/
+          endpoint: https://attic.clawsiecats.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -222,18 +174,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --login-server https://controlplane.clawsiecats.lol
-          use-cache: true
-          hostname: gha-radrubble
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:7080/
+          endpoint: https://attic.clawsiecats.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -250,18 +194,10 @@ jobs:
       - name: Clone Repository
         uses: actions/checkout@v4
 
-      - name: Tailscale
-        uses: tailscale/github-action@v3
-        with:
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          args: --login-server https://controlplane.clawsiecats.lol
-          use-cache: true
-          hostname: gha-mangoshake
-
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: http://pilab.lion-zebra.ts.net:7080/
+          endpoint: https://attic.clawsiecats.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
