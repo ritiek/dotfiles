@@ -112,7 +112,6 @@
         ];
       })
 
-      goldwarden
       sonixd
       nemo
       calibre
