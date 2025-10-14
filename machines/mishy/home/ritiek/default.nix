@@ -134,7 +134,7 @@
       # libreoffice-bin
       transmission_4-gtk
       syncplay
-      chiaki
+      chiaki-ng
       moonlight-qt
 
       # diskonaut
