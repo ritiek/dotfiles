@@ -72,7 +72,33 @@ in
         value = "on";
         enable = true;
       };
+
+      pwr_led_trigger = {
+        value = "default-on";
+        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+      };
+      pwr_led_activelow = {
+        value = "off";
+        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+      };
+      act_led_trigger = {
+        value = "default-on";
+        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+      };
+      act_led_activelow = {
+        value = "off";
+        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+      };
+      eth_led0 = {
+        value = 4;
+        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+      };
+      eth_led1 = {
+        value = 4;
+        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+      };
     };
+
     dt-overlays = {
       disable-bt = {
         enable = true;
