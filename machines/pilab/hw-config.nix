@@ -2,9 +2,11 @@
 
 let
   homelabMediaPath = "/media/HOMELAB_MEDIA";
+  enableLEDs = true;
 in
 {
   _module.args.homelabMediaPath = homelabMediaPath;
+  _module.args.enableLEDs = enableLEDs;
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image

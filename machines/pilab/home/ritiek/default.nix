@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, homelabMediaPath, ...}:
+{ config, pkgs, inputs, homelabMediaPath, enableLEDs, ...}:
 let 
   homelab-mount = (pkgs.writeShellScriptBin "homelab-mount" ''
     set -x

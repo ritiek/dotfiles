@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, enableLEDs, ... }:
 
 let
   bme680Script = pkgs.writeText "bme680_reader.py" ''
@@ -34,10 +34,12 @@ let
       source ${config.sops.secrets."uptime-kuma.env".path}
       ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=down&msg=Failed&ping=" || true
 
+      ${lib.optionalString enableLEDs ''
       # Blink Red LED on failure
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 27=1
       ${pkgs.coreutils}/bin/sleep 0.4s
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 27=0
+      ''}
     }
 
     while true; do
@@ -63,10 +65,12 @@ let
             source ${config.sops.secrets."uptime-kuma.env".path}
             ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=up&msg=OK&ping=" || true
 
+            ${lib.optionalString enableLEDs ''
             # Blink Yellow LED on success
             ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
             ${pkgs.coreutils}/bin/sleep 0.4s
             ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
+            ''}
           else
             echo "MQTT publish failed"
             handle_failure
