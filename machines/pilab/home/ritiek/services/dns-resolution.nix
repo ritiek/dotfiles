@@ -473,8 +473,10 @@ in
   systemd.user.services.dns-resolution = {
     Unit = {
       Description = "Update Pi-hole DNS entries with current network devices from router ARP table";
-      After = [ "network-online.target" ];
+      After = [ "network-online.target" "docker-pihole.service" ];
       Wants = [ "network-online.target" ];
+      Requires = [ "docker-pihole.service" ];
+      RequiresMountsFor = [ "/media/HOMELAB_MEDIA/services/pihole" ];
     };
     Service = {
       Type = "oneshot";
