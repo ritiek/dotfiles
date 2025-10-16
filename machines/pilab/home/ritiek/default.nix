@@ -1,13 +1,31 @@
-{ config, pkgs, inputs, homelabMediaPath, enableLEDs, ...}:
-let 
+{ config, pkgs, inputs, homelabMediaPath, everythingElsePath, enableLEDs, ...}:
+let
   homelab-mount = (pkgs.writeShellScriptBin "homelab-mount" ''
     set -x
-    cryptsetup open \
-      /dev/disk/by-label/HOMELAB_MEDIA \
-      HOMELAB_MEDIA
-    mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
-      /dev/mapper/HOMELAB_MEDIA \
-      ${homelabMediaPath}
+
+    # Mount HOMELAB_MEDIA partition only if not already mounted
+    if ! mountpoint -q ${homelabMediaPath}; then
+      if [ ! -e /dev/mapper/HOMELAB_MEDIA ]; then
+        cryptsetup open \
+          /dev/disk/by-label/HOMELAB_MEDIA \
+          HOMELAB_MEDIA
+      fi
+      mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
+        /dev/mapper/HOMELAB_MEDIA \
+        ${homelabMediaPath}
+    fi
+
+    # Mount EVERYTHING_ELSE partition only if not already mounted
+    if ! mountpoint -q ${everythingElsePath}; then
+      if [ ! -e /dev/mapper/EVERYTHING_ELSE ]; then
+        cryptsetup open \
+          /dev/disk/by-label/EVERYTHING_ELSE \
+          EVERYTHING_ELSE
+      fi
+      mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
+        /dev/mapper/EVERYTHING_ELSE \
+        ${everythingElsePath}
+    fi
   '');
 in
 {
@@ -93,8 +111,12 @@ in
 
       (writeShellScriptBin "homelab-unmount" ''
         set -x
+
         umount -l ${homelabMediaPath}
-        cryptsetup close homelab_media
+        umount -l ${everythingElsePath}
+
+        cryptsetup close HOMELAB_MEDIA
+        cryptsetup close EVERYTHING_ELSE
       '')
 
       (writeShellScriptBin "homelab-start" ''

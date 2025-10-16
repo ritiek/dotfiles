@@ -2,11 +2,14 @@
 
 let
   homelabMediaPath = "/media/HOMELAB_MEDIA";
+  everythingElsePath = "/media/EVERYTHING_ELSE";
   enableLEDs = true;
 in
 {
   _module.args.homelabMediaPath = homelabMediaPath;
+  _module.args.everythingElsePath = everythingElsePath;
   _module.args.enableLEDs = enableLEDs;
+
   imports = [
     inputs.raspberry-pi-nix.nixosModules.raspberry-pi
     inputs.raspberry-pi-nix.nixosModules.sd-image
@@ -124,6 +127,14 @@ in
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
   systemd.tmpfiles.settings = {
     "10-homelab"."${homelabMediaPath}" = {
+      d = {
+        group = "root";
+        mode = "0755";
+        user = "root";
+      };
+      h.argument = "+i";
+    };
+    "10-everything-else"."${everythingElsePath}" = {
       d = {
         group = "root";
         mode = "0755";
