@@ -23,8 +23,8 @@
     volumes = [
       "/tmp/frigate/cache:/tmp/cache:rw"
       "/etc/localtime:/etc/localtime:ro"
-      "/media/HOMELAB_MEDIA/services/frigate/config.yml:/config/config.yml:rw"
-      "/media/HOMELAB_MEDIA/services/frigate/storage:/media/frigate:rw"
+      "/media/EVERYTHING_ELSE/frigate/config.yml:/config/config.yml:rw"
+      "/media/EVERYTHING_ELSE/frigate/storage:/media/frigate:rw"
     ];
     ports = [
       "5010:5000/tcp"
@@ -70,8 +70,8 @@
     unitConfig.RequiresMountsFor = [
       ""
       "/etc/localtime"
-      "/media/HOMELAB_MEDIA/services/frigate/config.yml"
-      "/media/HOMELAB_MEDIA/services/frigate/storage"
+      "/media/EVERYTHING_ELSE/frigate/config.yml"
+      "/media/EVERYTHING_ELSE/frigate/storage"
     ];
   };
 
