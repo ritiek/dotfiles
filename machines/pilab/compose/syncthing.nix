@@ -30,6 +30,7 @@
     };
     volumes = [
       "/media/HOMELAB_MEDIA:/media/HOMELAB_MEDIA:rw"
+      "/media/EVERYTHING_ELSE:/media/EVERYTHING_ELSE:rw"
       "/media/HOMELAB_MEDIA/services/syncthing/config:/var/syncthing/config:rw"
     ];
     user = "1000:1000";
@@ -55,7 +56,6 @@
       RestartSteps = lib.mkOverride 500 9;
     };
     unitConfig.RequiresMountsFor = [
-      "/media"
       "/media/HOMELAB_MEDIA/services/syncthing"
     ];
   };

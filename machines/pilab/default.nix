@@ -47,6 +47,14 @@
     ./compose/mealie
     ./compose/karakeep
     ./compose/n8n
+    ./compose/transmission
+    ./compose/qbittorrent.nix
+    ./compose/jellyfin.nix
+    ./compose/radarr.nix
+    ./compose/sonarr.nix
+    ./compose/bazarr.nix
+    ./compose/prowlarr.nix
+    ./compose/jellyseerr.nix
     # ./compose/kopia
   ];
 

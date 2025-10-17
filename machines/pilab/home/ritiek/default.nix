@@ -157,6 +157,14 @@ in
           systemctl start autostart-mealie.service
           systemctl start autostart-karakeep.service
           systemctl start docker-n8n-worker.service
+          # systemctl start docker-transmission.service
+          systemctl start docker-qbittorrent.service
+          systemctl start docker-jellyfin.service
+          systemctl start docker-radarr.service
+          systemctl start docker-sonarr.service
+          systemctl start docker-bazarr.service
+          systemctl start docker-prowlarr.service
+          systemctl start docker-jellyseerr.service
           # systemctl start docker-kopia.service
 
           # machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -203,6 +211,14 @@ in
         systemctl stop autostart-mealie.service docker-compose-mealie-root.target
         systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
         systemctl stop docker-compose-n8n-root.target
+        # systemctl stop docker-transmission-root.target
+        systemctl stop docker-qbittorrent-root.target
+        systemctl stop docker-jellyfin-root.target
+        systemctl stop docker-radarr-root.target
+        systemctl stop docker-sonarr-root.target
+        systemctl stop docker-bazarr-root.target
+        systemctl stop docker-prowlarr-root.target
+        systemctl stop docker-jellyseerr-root.target
         # systemctl stop docker-compose-kopia-root.target
 
         # machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
