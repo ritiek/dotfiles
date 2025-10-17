@@ -61,6 +61,10 @@
     # })
   ];
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "qtwebengine-5.15.19"
+  ];
+
   home = {
     /* The home.stateVersion option does not have a default and must be set */
     stateVersion = "24.05";
@@ -71,6 +75,7 @@
       # local.piano-rs
       psmisc
       unixtools.route
+      unixtools.xxd
       zip
       unzip
       unrar-wrapper
@@ -167,6 +172,7 @@
       simplex-chat-desktop
       sqlcipher
       sqldiff
+      jellyfin-media-player
 
       python312
       python312Packages.pip
