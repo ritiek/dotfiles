@@ -40,7 +40,8 @@ in lib.mkMerge [
       "PYTHONUNBUFFERED" = "1";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA:/media/HOMELAB_MEDIA:rw,z"
+      "/media/HOMELAB_MEDIA:/mnt/HOMELAB_MEDIA:rw,z"
+      "/media/EVERYTHING_ELSE:/mnt/EVERYTHING_ELSE:rw,z"
       "/media/HOMELAB_MEDIA/services/copyparty:/cfg:rw,z"
     ];
     ports = [
