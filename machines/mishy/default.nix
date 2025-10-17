@@ -257,11 +257,11 @@
     upower.enable = true;
 
     logind = {
-      lidSwitch = "ignore";
       # extraConfig = ''
       #   HandlePowerKey=suspend
       # '';
       settings.Login = {
+        HandleLidSwitch = "ignore";
         HandlePowerKey = "suspend";
       };
     };

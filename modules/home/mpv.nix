@@ -25,8 +25,8 @@
       mpvScripts.webtorrent-mpv-hook
       mpvScripts.thumbnail
       mpvScripts.thumbfast
-      # Doesn't install for some reason.
-      # mpvScripts.mpv-notify-send
+      # mpvScripts.autosub  # Temporarily disabled due to subliminal build issues
+      mpvScripts.mpv-notify-send
     ];
   };
 

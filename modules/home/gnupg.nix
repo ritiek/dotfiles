@@ -8,7 +8,7 @@
       "5093E5BC80A747932DDBE3400EF3B45E3546EDCE"
     ];
     # pinentryPackage = pkgs.pinentry-curses;
-    pinentryPackage = pkgs.pinentry-gnome3;
+    pinentry.package = pkgs.pinentry-gnome3;
   };
   programs.gpg = {
     enable = true;
