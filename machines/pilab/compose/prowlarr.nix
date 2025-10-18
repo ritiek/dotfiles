@@ -32,7 +32,7 @@
       "--network=prowlarr_default"
     ];
     labels = {
-      "homepage.description" = "For PVR apps";
+      "homepage.description" = "For indexers";
       "homepage.group" = "*arr Stack";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:9696";
       "homepage.icon" = "prowlarr";
