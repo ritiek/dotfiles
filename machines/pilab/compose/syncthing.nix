@@ -58,6 +58,8 @@
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/syncthing"
     ];
+    partOf = [ "docker-compose-syncthing-root.target" ];
+    wantedBy = [ "docker-compose-syncthing-root.target" ];
   };
 
   # Root service
