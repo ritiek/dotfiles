@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, homelabMediaPath, ... }:
 
 {
   sops.secrets = {
@@ -28,7 +28,7 @@
       config.sops.secrets."compose/changedetection.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/changedetection:/datastore:rw"
+      "${homelabMediaPath}/services/changedetection:/datastore:rw"
     ];
     ports = [
       "5000:5000/tcp"
@@ -73,7 +73,7 @@
       "docker-network-changedetection_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/changedetection"
+      "${homelabMediaPath}/services/changedetection"
     ];
   };
   virtualisation.oci-containers.containers."changedetection-sockpuppetbrowser" = {

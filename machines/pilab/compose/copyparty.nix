@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, everythingElsePath, ... }:
 
 let
   # Configuration
@@ -17,8 +17,8 @@ let
     internalPort = internalWebUIPort;
     refreshInterval = 3;
     requiredMounts = [
-      "/media/HOMELAB_MEDIA"
-      "/media/HOMELAB_MEDIA/services/copyparty"
+      homelabMediaPath
+      "${homelabMediaPath}/services/copyparty"
     ];
   };
 
@@ -40,9 +40,9 @@ in lib.mkMerge [
       "PYTHONUNBUFFERED" = "1";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA:/mnt/HOMELAB_MEDIA:rw,z"
-      "/media/EVERYTHING_ELSE:/mnt/EVERYTHING_ELSE:rw,z"
-      "/media/HOMELAB_MEDIA/services/copyparty:/cfg:rw,z"
+      "${homelabMediaPath}:/mnt/HOMELAB_MEDIA:rw,z"
+      "${everythingElsePath}:/mnt/EVERYTHING_ELSE:rw,z"
+      "${homelabMediaPath}/services/copyparty:/cfg:rw,z"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:3923/tcp"  # Internal port only
@@ -70,8 +70,8 @@ in lib.mkMerge [
       "docker-network-copyparty_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA"
-      "/media/HOMELAB_MEDIA/services/copyparty"
+      homelabMediaPath
+      "${homelabMediaPath}/services/copyparty"
     ];
     # Bind to root target
     partOf = [ "docker-compose-copyparty-root.target" ];

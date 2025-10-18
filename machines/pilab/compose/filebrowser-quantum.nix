@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -13,11 +13,11 @@
   virtualisation.oci-containers.containers."filebrowser-quantum" = {
     image = "gtstef/filebrowser";
     volumes = [
-      "/media/HOMELAB_MEDIA/services:/media/HOMELAB_MEDIA/services:ro"
-      "/media/HOMELAB_MEDIA/files:/media/HOMELAB_MEDIA/files:rw"
-      "/media/HOMELAB_MEDIA/services/filebrowser-quantum/config.yaml:/home/filebrowser/config.yaml:rw"
-      "/media/HOMELAB_MEDIA/services/filebrowser-quantum/database.db:/home/filebrowser/data/database.db:rw"
-      # "/media/HOMELAB_MEDIA/services/filebrowser-quantum/frontend:/home/frontend:rw"
+      "${homelabMediaPath}/services:/media/HOMELAB_MEDIA/services:ro"
+      "${homelabMediaPath}/files:/media/HOMELAB_MEDIA/files:rw"
+      "${homelabMediaPath}/services/filebrowser-quantum/config.yaml:/home/filebrowser/config.yaml:rw"
+      "${homelabMediaPath}/services/filebrowser-quantum/database.db:/home/filebrowser/data/database.db:rw"
+      # "${homelabMediaPath}/services/filebrowser-quantum/frontend:/home/frontend:rw"
     ];
     ports = [
       "8188:80/tcp"
@@ -51,8 +51,8 @@
       "docker-network-filebrowser_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/filebrowser-quantum/config.yaml"
-      "/media/HOMELAB_MEDIA/services/filebrowser-quantum/frontend"
+      "${homelabMediaPath}/services/filebrowser-quantum/config.yaml"
+      "${homelabMediaPath}/services/filebrowser-quantum/frontend"
     ];
   };
 

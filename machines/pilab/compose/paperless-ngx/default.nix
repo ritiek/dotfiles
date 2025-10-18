@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/paperless-ngx.env" = {
@@ -52,7 +52,7 @@
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/paperless/pgdata:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/paperless/pgdata:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -128,7 +128,7 @@
       "docker-network-paperless-ngx_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/paperless/pgdata"
+      "${homelabMediaPath}/services/paperless/pgdata"
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-webserver" = {
@@ -137,10 +137,10 @@
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/paperless/consume:/usr/src/paperless/consume:rw"
-      "/media/HOMELAB_MEDIA/services/paperless/data:/usr/src/paperless/data:rw"
-      "/media/HOMELAB_MEDIA/services/paperless/export:/usr/src/paperless/export:rw"
-      "/media/HOMELAB_MEDIA/services/paperless/media:/usr/src/paperless/media:rw"
+      "${homelabMediaPath}/services/paperless/consume:/usr/src/paperless/consume:rw"
+      "${homelabMediaPath}/services/paperless/data:/usr/src/paperless/data:rw"
+      "${homelabMediaPath}/services/paperless/export:/usr/src/paperless/export:rw"
+      "${homelabMediaPath}/services/paperless/media:/usr/src/paperless/media:rw"
     ];
     ports = [
       "8010:8000/tcp"
@@ -183,10 +183,10 @@
       "docker-network-paperless-ngx_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/paperless/consume"
-      "/media/HOMELAB_MEDIA/services/paperless/data"
-      "/media/HOMELAB_MEDIA/services/paperless/export"
-      "/media/HOMELAB_MEDIA/services/paperless/media"
+      "${homelabMediaPath}/services/paperless/consume"
+      "${homelabMediaPath}/services/paperless/data"
+      "${homelabMediaPath}/services/paperless/export"
+      "${homelabMediaPath}/services/paperless/media"
     ];
   };
 

@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -17,8 +17,8 @@ let
     internalPort = internalWebUIPort;
     refreshInterval = 3;
     requiredMounts = [
-      "/media/HOMELAB_MEDIA/services/navidrome"
-      "/media/HOMELAB_MEDIA/services/spotdl"
+      "${homelabMediaPath}/services/navidrome"
+      "${homelabMediaPath}/services/spotdl"
     ];
   };
 
@@ -40,8 +40,8 @@ in lib.mkMerge [
       "ND_SESSIONTIMEOUT" = "24h";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA/services/navidrome:/data:rw"
-      "/media/HOMELAB_MEDIA/services/spotdl:/music:ro"
+      "${homelabMediaPath}/services/navidrome:/data:rw"
+      "${homelabMediaPath}/services/spotdl:/music:ro"
     ];
     ports = [ "127.0.0.1:${toString internalWebUIPort}:4533/tcp" ];  # Internal port only
     user = "1000:1000";
@@ -83,8 +83,8 @@ in lib.mkMerge [
       "docker-network-navidrome_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/navidrome"
-      "/media/HOMELAB_MEDIA/services/spotdl"
+      "${homelabMediaPath}/services/navidrome"
+      "${homelabMediaPath}/services/spotdl"
     ];
     # Bind to root target
     partOf = [ "docker-compose-navidrome-root.target" ];

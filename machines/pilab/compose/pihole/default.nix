@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets = {
@@ -47,7 +47,7 @@
       config.sops.secrets."compose/pihole.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/pihole:/etc/pihole:rw"
+      "${homelabMediaPath}/services/pihole:/etc/pihole:rw"
       "pihole_dnsmasq.d:/etc/dnsmasq.d:rw"
     ];
     # ports = [
@@ -107,7 +107,7 @@
       "docker-volume-pihole_dnsmasq.d.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/pihole"
+      "${homelabMediaPath}/services/pihole"
     ];
   };
 

@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -17,7 +17,7 @@ let
     internalPort = internalWebUIPort;
     refreshInterval = 3;
     requiredMounts = [
-      "/media/HOMELAB_MEDIA/services/mealie"
+      "${homelabMediaPath}/services/mealie"
     ];
     rootTarget = "docker-compose-mealie-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (Mealie is heavier with multiple services)
@@ -49,7 +49,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/mealie.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/mealie/data:/app/data:rw"
+      "${homelabMediaPath}/services/mealie/data:/app/data:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:9000/tcp"  # Internal port only
@@ -76,7 +76,7 @@ in lib.mkMerge [
       "docker-network-mealie_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/mealie/data"
+      "${homelabMediaPath}/services/mealie/data"
     ];
     # Bind to root target
     partOf = [ "docker-compose-mealie-root.target" ];
@@ -117,7 +117,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/mealie.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/mealie/postgresql:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/mealie/postgresql:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -140,7 +140,7 @@ in lib.mkMerge [
       "docker-network-mealie_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/mealie/postgresql"
+      "${homelabMediaPath}/services/mealie/postgresql"
     ];
     # Bind to root target
     partOf = [ "docker-compose-mealie-root.target" ];

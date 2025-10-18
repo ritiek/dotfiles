@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -17,7 +17,7 @@ let
     internalPort = internalWebUIPort;
     refreshInterval = 3;
     requiredMounts = [
-      "/media/HOMELAB_MEDIA/services/memos"
+      "${homelabMediaPath}/services/memos"
     ];
   };
 
@@ -35,7 +35,7 @@ in lib.mkMerge [
   virtualisation.oci-containers.containers."memos" = {
     image = "neosmemo/memos:latest";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/memos:/var/opt/memos:rw"
+      "${homelabMediaPath}/services/memos:/var/opt/memos:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:5230/tcp"  # Internal port only
@@ -63,7 +63,7 @@ in lib.mkMerge [
       "docker-network-memos_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/memos"
+      "${homelabMediaPath}/services/memos"
     ];
     # Bind to root target
     partOf = [ "docker-compose-memos-root.target" ];

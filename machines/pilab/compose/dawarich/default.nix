@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/dawarich.env" = {
@@ -48,11 +48,11 @@
       config.sops.secrets."compose/dawarich.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/dawarich/public:/var/app/public:rw"
-      "/media/HOMELAB_MEDIA/services/dawarich/watched:/var/app/tmp/imports/watched:rw"
-      "/media/HOMELAB_MEDIA/services/dawarich/storage:/var/app/storage"
-      "/media/HOMELAB_MEDIA/services/dawarich/db_data:/dawarich_db_data"
-      # "/media/HOMELAB_MEDIA/services/dawarich/sqlite_data:/dawarich_sqlite_data"
+      "${homelabMediaPath}/services/dawarich/public:/var/app/public:rw"
+      "${homelabMediaPath}/services/dawarich/watched:/var/app/tmp/imports/watched:rw"
+      "${homelabMediaPath}/services/dawarich/storage:/var/app/storage"
+      "${homelabMediaPath}/services/dawarich/db_data:/dawarich_db_data"
+      # "${homelabMediaPath}/services/dawarich/sqlite_data:/dawarich_sqlite_data"
     ];
     ports = [
       "3030:3000/tcp"
@@ -102,8 +102,8 @@
       "docker-network-dawarich_dawarich.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/dawarich/public"
-      "/media/HOMELAB_MEDIA/services/dawarich/watched"
+      "${homelabMediaPath}/services/dawarich/public"
+      "${homelabMediaPath}/services/dawarich/watched"
     ];
   };
   virtualisation.oci-containers.containers."dawarich_db" = {
@@ -113,8 +113,8 @@
       config.sops.secrets."compose/dawarich.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/dawarich/data:/var/lib/postgresql/data:rw"
-      "/media/HOMELAB_MEDIA/services/dawarich/shared:/var/shared:rw"
+      "${homelabMediaPath}/services/dawarich/data:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/dawarich/shared:/var/shared:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -143,14 +143,14 @@
       "docker-network-dawarich_dawarich.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/dawarich/data"
-      "/media/HOMELAB_MEDIA/services/dawarich/shared"
+      "${homelabMediaPath}/services/dawarich/data"
+      "${homelabMediaPath}/services/dawarich/shared"
     ];
   };
   virtualisation.oci-containers.containers."dawarich_redis" = {
     image = "redis:7.0-alpine";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/dawarich/shared:/data:rw"
+      "${homelabMediaPath}/services/dawarich/shared:/data:rw"
     ];
     cmd = [ "redis-server" ];
     log-driver = "journald";
@@ -179,7 +179,7 @@
       "docker-network-dawarich_dawarich.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/dawarich/shared"
+      "${homelabMediaPath}/services/dawarich/shared"
     ];
   };
   virtualisation.oci-containers.containers."dawarich_sidekiq" = {
@@ -204,9 +204,9 @@
       config.sops.secrets."compose/dawarich.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/dawarich/public:/var/app/public:rw"
-      "/media/HOMELAB_MEDIA/services/dawarich/watched:/var/app/tmp/imports/watched:rw"
-      "/media/HOMELAB_MEDIA/services/dawarich/storage:/var/app/storage:rw"
+      "${homelabMediaPath}/services/dawarich/public:/var/app/public:rw"
+      "${homelabMediaPath}/services/dawarich/watched:/var/app/tmp/imports/watched:rw"
+      "${homelabMediaPath}/services/dawarich/storage:/var/app/storage:rw"
     ];
     cmd = [ "sidekiq" ];
     dependsOn = [
@@ -241,8 +241,8 @@
       "docker-network-dawarich_dawarich.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/dawarich/public"
-      "/media/HOMELAB_MEDIA/services/dawarich/watched"
+      "${homelabMediaPath}/services/dawarich/public"
+      "${homelabMediaPath}/services/dawarich/watched"
     ];
   };
 

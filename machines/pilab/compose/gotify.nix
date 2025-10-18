@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -16,7 +16,7 @@
       "GOTIFY_DEFAULTUSER_PASS" = "custom";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA/services/gotify:/app/data:rw"
+      "${homelabMediaPath}/services/gotify:/app/data:rw"
     ];
     ports = [
       "8893:80/tcp"
@@ -53,7 +53,7 @@
       "docker-network-gotify_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/gotify"
+      "${homelabMediaPath}/services/gotify"
     ];
   };
 

@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "nitter";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/nitter/nitter.conf" "/media/HOMELAB_MEDIA/services/nitter/sessions.jsonl" ];
+    requiredMounts = [ "${homelabMediaPath}/services/nitter/nitter.conf" "${homelabMediaPath}/services/nitter/sessions.jsonl" ];
     rootTarget = "docker-compose-nitter-root.target";
     startCommand = "systemctl start docker-redis-nitter.service docker-nitter.service";
     stopCommand = "systemctl stop docker-compose-nitter-root.target";
@@ -36,8 +36,8 @@ in lib.mkMerge [
   virtualisation.oci-containers.containers."nitter" = {
     image = "zedeus/nitter:latest-arm64";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/nitter/nitter.conf:/src/nitter.conf:rw"
-      "/media/HOMELAB_MEDIA/services/nitter/sessions.jsonl:/src/sessions.jsonl:rw"
+      "${homelabMediaPath}/services/nitter/nitter.conf:/src/nitter.conf:rw"
+      "${homelabMediaPath}/services/nitter/sessions.jsonl:/src/sessions.jsonl:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:8080/tcp"  # Internal port only
@@ -66,8 +66,8 @@ in lib.mkMerge [
       "docker-network-nitter_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/nitter/nitter.conf"
-      "/media/HOMELAB_MEDIA/services/nitter/sessions.jsonl"
+      "${homelabMediaPath}/services/nitter/nitter.conf"
+      "${homelabMediaPath}/services/nitter/sessions.jsonl"
     ];
     # Bind to root target
     partOf = [ "docker-compose-nitter-root.target" ];

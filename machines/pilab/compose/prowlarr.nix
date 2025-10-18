@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -18,7 +18,7 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "/media/EVERYTHING_ELSE/downloads/prowlarr/config:/config:rw"
+      "${everythingElsePath}/downloads/prowlarr/config:/config:rw"
     ];
     ports = [
       "9696:9696/tcp"
@@ -53,7 +53,7 @@
       "docker-network-prowlarr_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/EVERYTHING_ELSE/downloads/prowlarr/config"
+      "${everythingElsePath}/downloads/prowlarr/config"
     ];
   };
 

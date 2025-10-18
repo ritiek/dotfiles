@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/simplexchat/smp.env" = {
@@ -21,8 +21,8 @@
       config.sops.secrets."compose/simplexchat/smp.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/simplexchat/smp/config:/etc/opt/simplex:rw"
-      "/media/HOMELAB_MEDIA/services/simplexchat/smp/state:/var/opt/simplex:rw"
+      "${homelabMediaPath}/services/simplexchat/smp/config:/etc/opt/simplex:rw"
+      "${homelabMediaPath}/services/simplexchat/smp/state:/var/opt/simplex:rw"
     ];
     ports = [
       "5220:5223/tcp"
@@ -56,8 +56,8 @@
       "docker-network-simplexchat-smp-server_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/simplexchat/smp/config"
-      "/media/HOMELAB_MEDIA/services/simplexchat/smp/state"
+      "${homelabMediaPath}/services/simplexchat/smp/config"
+      "${homelabMediaPath}/services/simplexchat/smp/state"
     ];
   };
 
