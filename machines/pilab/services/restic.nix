@@ -1,4 +1,4 @@
-{ lib, config, pkgs, homelabMediaPath, ...}:
+{ lib, config, pkgs, homelabMediaPath, enableLEDs, ...}:
 
 let
   ping-uptime-kuma-pilab = (pkgs.writeShellScriptBin "ping-uptime-kuma@restic-backups-homelab@pilab" ''
@@ -165,8 +165,10 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
+      ${lib.optionalString enableLEDs ''
       # Turn on Blue LED to indicate backup is starting
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 4=1
+      ''}
 
       echo "Backing up '${homelabMediaPath}'."
     '';
@@ -185,8 +187,10 @@ in
       chown -R ${builtins.toString config.ids.uids.restic}:${builtins.toString config.ids.uids.restic} \
         "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA"
 
+      ${lib.optionalString enableLEDs ''
       # Turn off LED now that backup is complete
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 4=0
+      ''}
 
       # ${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
     '';
@@ -278,14 +282,18 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
+      ${lib.optionalString enableLEDs ''
       # Turn on Yellow LED to indicate backup is starting
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
+      ''}
 
       echo "Backing up '${homelabMediaPath}'."
     '';
     backupCleanupCommand = ''
+      ${lib.optionalString enableLEDs ''
       # Turn off LED now that backup is complete
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
+      ''}
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
