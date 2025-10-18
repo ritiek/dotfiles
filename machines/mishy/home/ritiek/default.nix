@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, config, ... }:
 {
   imports = [
     inputs.sops-nix.homeManagerModule
@@ -180,7 +180,6 @@
       simplex-chat-desktop
       sqlcipher
       sqldiff
-      jellyfin-media-player
 
       python312
       python312Packages.pip
@@ -295,9 +294,13 @@
     claude-code.enable = true;
   };
 
-  # services = {
-  #   playerctld.enable = true;
-  # };
+  services = {
+    # playerctld.enable = true;
+    jellyfin-mpv-shim = {
+      enable = true;
+      mpvConfig = config.programs.mpv.config;
+    };
+  };
 
   xdg.mimeApps.enable = true;
 }
