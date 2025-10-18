@@ -211,14 +211,14 @@ in
         systemctl stop autostart-mealie.service docker-compose-mealie-root.target
         systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
         systemctl stop docker-compose-n8n-root.target
-        # systemctl stop docker-transmission-root.target
-        systemctl stop docker-qbittorrent-root.target
-        systemctl stop docker-jellyfin-root.target
-        systemctl stop docker-radarr-root.target
-        systemctl stop docker-sonarr-root.target
-        systemctl stop docker-bazarr-root.target
-        systemctl stop docker-prowlarr-root.target
-        systemctl stop docker-jellyseerr-root.target
+        # systemctl stop docker-compose-transmission-root.target
+        systemctl stop docker-compose-qbittorrent-root.target
+        systemctl stop docker-compose-jellyfin-root.target
+        systemctl stop docker-compose-radarr-root.target
+        systemctl stop docker-compose-sonarr-root.target
+        systemctl stop docker-compose-bazarr-root.target
+        systemctl stop docker-compose-prowlarr-root.target
+        systemctl stop docker-compose-jellyseerr-root.target
         # systemctl stop docker-compose-kopia-root.target
 
         # machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
