@@ -66,10 +66,10 @@ let
             ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/B1hhLs9hts?status=up&msg=OK&ping=" || true
 
             ${lib.optionalString enableLEDs ''
-            # Blink Yellow LED on success
-            ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
+            # Blink Green LED on success
+            ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 5=1
             ${pkgs.coreutils}/bin/sleep 0.4s
-            ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
+            ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 5=0
             ''}
           else
             echo "MQTT publish failed"
