@@ -165,6 +165,9 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
+      # Turn on Blue LED to indicate backup is starting
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 4=1
+
       echo "Backing up '${homelabMediaPath}'."
     '';
     backupCleanupCommand = ''
@@ -181,6 +184,9 @@ in
       echo "Assigning ownership to 'restic:restic' on '${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA'."
       chown -R ${builtins.toString config.ids.uids.restic}:${builtins.toString config.ids.uids.restic} \
         "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA"
+
+      # Turn off LED now that backup is complete
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 4=0
 
       # ${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
     '';
@@ -272,7 +278,14 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
+      # Turn on Yellow LED to indicate backup is starting
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
+
       echo "Backing up '${homelabMediaPath}'."
+    '';
+    backupCleanupCommand = ''
+      # Turn off LED now that backup is complete
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
