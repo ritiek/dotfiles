@@ -33,7 +33,7 @@
       "--network=jellyseerr_default"
     ];
     labels = {
-      "homepage.description" = "Media integrations";
+      "homepage.description" = "Media requests";
       "homepage.group" = "*arr Stack";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:5055";
       "homepage.icon" = "jellyseerr";
