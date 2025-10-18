@@ -42,14 +42,6 @@
     #   };
     # })
     (final: _prev: {
-      nur-nltch-spotify-fix = import inputs.nur-nltch-spotify-fix {
-        pkgs = import inputs.nixpkgs {
-          inherit (final) system;
-          config.allowUnfree = true;
-        };
-      };
-    })
-    (final: _prev: {
       stable = import inputs.stable {
         inherit (final) system;
         config.allowUnfree = true;
@@ -225,10 +217,10 @@
       deploy-rs
       # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
 
-      # nur.repos.nltch.spotify-adblock
-      # TODO: Revert back to above once this PR is merged:
-      # https://github.com/NL-TCH/nur-packages/pull/37
-      nur-nltch-spotify-fix.spotify-adblock
+      # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
+      nur.repos.nltch.spotify-adblock
+      # So installing directly from my source repo instead
+      # ritiek.spotify-adblock
 
       # nur.repos.kira-bruneau.habitica
       # inputs.ghostty.packages."${pkgs.system}".default

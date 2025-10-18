@@ -6,10 +6,6 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nur-nltch-spotify-fix = {
-      url = "github:ritiek/nur-packages/fix-hiding-of-spotify-advert-banner-placeholder";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
