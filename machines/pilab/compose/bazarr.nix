@@ -22,8 +22,8 @@
     ];
     volumes = [
       "/media/EVERYTHING_ELSE/downloads/bazarr/config:/config:rw"
-      "/media/EVERYTHING_ELSE/downloads/bazarr/movies:/movies:rw"
-      "/media/EVERYTHING_ELSE/downloads/bazarr/tv:/tv:rw"
+      "/media/EVERYTHING_ELSE/downloads/radarr/movies:/movies:rw"
+      "/media/EVERYTHING_ELSE/downloads/sonarr/tv:/tv:rw"
     ];
     ports = [
       "6767:6767/tcp"
