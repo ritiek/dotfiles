@@ -34,6 +34,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--add-host=host.docker.internal:host-gateway"
       "--network-alias=jellyfin"
       "--network=jellyfin_default"
     ];
