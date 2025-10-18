@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -13,7 +13,7 @@
   virtualisation.oci-containers.containers."uptime-kuma" = {
     image = "louislam/uptime-kuma:1";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/uptime-kuma:/app/data:rw"
+      "${homelabMediaPath}/services/uptime-kuma:/app/data:rw"
     ];
     ports = [
       "3001:3001/tcp"
@@ -55,7 +55,7 @@
       "docker-network-uptime-kuma_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/uptime-kuma"
+      "${homelabMediaPath}/services/uptime-kuma"
     ];
   };
 

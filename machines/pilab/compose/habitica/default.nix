@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "habitica-server";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/habitica/db" "/media/HOMELAB_MEDIA/services/habitica/dbconf" ];
+    requiredMounts = [ "${homelabMediaPath}/services/habitica/db" "${homelabMediaPath}/services/habitica/dbconf" ];
     rootTarget = "docker-compose-habitica-root.target";
     startCommand = "systemctl start docker-habitica-mongo.service docker-habitica-server.service";
     stopCommand = "systemctl stop docker-compose-habitica-root.target";
@@ -36,8 +36,8 @@ in lib.mkMerge [
   virtualisation.oci-containers.containers."habitica-mongo" = {
     image = "docker.io/mongo:5.0";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/habitica/db:/data/db:rw"
-      "/media/HOMELAB_MEDIA/services/habitica/dbconf:/data/configdb:rw"
+      "${homelabMediaPath}/services/habitica/db:/data/db:rw"
+      "${homelabMediaPath}/services/habitica/dbconf:/data/configdb:rw"
     ];
     cmd = [ "--replSet" "rs" "--bind_ip_all" "--port" "27017" ];
     log-driver = "journald";
@@ -69,8 +69,8 @@ in lib.mkMerge [
       "docker-network-habitica_habitica.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/habitica/db"
-      "/media/HOMELAB_MEDIA/services/habitica/dbconf"
+      "${homelabMediaPath}/services/habitica/db"
+      "${homelabMediaPath}/services/habitica/dbconf"
     ];
     # Bind to root target
     partOf = [ "docker-compose-habitica-root.target" ];

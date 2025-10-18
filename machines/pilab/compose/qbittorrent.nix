@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -23,8 +23,8 @@
       "/home/ritiek/.env"
     ];
     volumes = [
-      "/media/EVERYTHING_ELSE/downloads/qbittorrent/config:/config:rw"
-      "/media/EVERYTHING_ELSE/downloads/qbittorrent/downloads:/downloads:rw"
+      "${everythingElsePath}/downloads/qbittorrent/config:/config:rw"
+      "${everythingElsePath}/downloads/qbittorrent/downloads:/downloads:rw"
     ];
     ports = [
       "9082:9082/tcp"
@@ -59,8 +59,8 @@
       "docker-network-qbittorrent_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/EVERYTHING_ELSE/downloads/qbittorrent/config"
-      "/media/EVERYTHING_ELSE/downloads/qbittorrent/downloads"
+      "${everythingElsePath}/downloads/qbittorrent/config"
+      "${everythingElsePath}/downloads/qbittorrent/downloads"
     ];
   };
 

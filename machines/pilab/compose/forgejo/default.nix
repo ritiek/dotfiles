@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/forgejo.env" = {
@@ -23,7 +23,7 @@
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/etc/timezone:/etc/timezone:ro"
-      "/media/HOMELAB_MEDIA/services/forgejo/server:/data:rw"
+      "${homelabMediaPath}/services/forgejo/server:/data:rw"
     ];
     ports = [
       "3033:3033/tcp"
@@ -67,7 +67,7 @@
     unitConfig.RequiresMountsFor = [
       "/etc/localtime"
       "/etc/timezone"
-      "/media/HOMELAB_MEDIA/services/forgejo/server"
+      "${homelabMediaPath}/services/forgejo/server"
     ];
   };
   virtualisation.oci-containers.containers."forgejo-db" = {
@@ -76,7 +76,7 @@
       config.sops.secrets."compose/forgejo.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/forgejo/db:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/forgejo/db:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -99,7 +99,7 @@
       "docker-network-forgejo_forgejo.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/forgejo/db"
+      "${homelabMediaPath}/services/forgejo/db"
     ];
   };
 

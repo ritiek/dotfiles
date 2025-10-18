@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, everythingElsePath, ... }:
 
 {
   sops.secrets."compose/transmission.env" = {
@@ -21,9 +21,9 @@
       config.sops.secrets."compose/transmission.env".path
     ];
     volumes = [
-      "/media/EVERYTHING_ELSE/downloads/transmission/config:/config:rw"
-      "/media/EVERYTHING_ELSE/downloads/transmission/downloads:/downloads:rw"
-      "/media/EVERYTHING_ELSE/downloads/transmission/watch:/watch:rw"
+      "${everythingElsePath}/downloads/transmission/config:/config:rw"
+      "${everythingElsePath}/downloads/transmission/downloads:/downloads:rw"
+      "${everythingElsePath}/downloads/transmission/watch:/watch:rw"
     ];
     ports = [
       "9081:9091/tcp"
@@ -58,9 +58,9 @@
       "docker-network-transmission_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/EVERYTHING_ELSE/downloads/transmission/config"
-      "/media/EVERYTHING_ELSE/downloads/transmission/downloads"
-      "/media/EVERYTHING_ELSE/downloads/transmission/watch"
+      "${everythingElsePath}/downloads/transmission/config"
+      "${everythingElsePath}/downloads/transmission/downloads"
+      "${everythingElsePath}/downloads/transmission/watch"
     ];
   };
 

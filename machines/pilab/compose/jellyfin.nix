@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -21,9 +21,9 @@
       "/home/ritiek/.env"
     ];
     volumes = [
-      "/media/EVERYTHING_ELSE/downloads/jellyfin/config:/config:rw"
-      "/media/EVERYTHING_ELSE/downloads/radarr/movies:/data/movies:rw"
-      "/media/EVERYTHING_ELSE/downloads/sonarr/tv:/data/tvshows:rw"
+      "${everythingElsePath}/downloads/jellyfin/config:/config:rw"
+      "${everythingElsePath}/downloads/radarr/movies:/data/movies:rw"
+      "${everythingElsePath}/downloads/sonarr/tv:/data/tvshows:rw"
     ];
     ports = [
       "8096:8096/tcp"
@@ -59,9 +59,9 @@
       "docker-network-jellyfin_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/EVERYTHING_ELSE/downloads/jellyfin/config"
-      "/media/EVERYTHING_ELSE/downloads/radarr/movies"
-      "/media/EVERYTHING_ELSE/downloads/sonarr/tv"
+      "${everythingElsePath}/downloads/jellyfin/config"
+      "${everythingElsePath}/downloads/radarr/movies"
+      "${everythingElsePath}/downloads/sonarr/tv"
     ];
   };
 

@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/immich.env" = {
@@ -24,7 +24,7 @@
       config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/immich/model-cache:/cache:rw"
+      "${homelabMediaPath}/services/immich/model-cache:/cache:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -54,7 +54,7 @@
       "docker-network-immich_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/immich/model-cache"
+      "${homelabMediaPath}/services/immich/model-cache"
     ];
   };
   virtualisation.oci-containers.containers."immich_postgres" = {
@@ -66,7 +66,7 @@
       config.sops.secrets."compose/immich.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/immich/pgdata:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/immich/pgdata:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -89,7 +89,7 @@
       "docker-network-immich_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/immich/pgdata"
+      "${homelabMediaPath}/services/immich/pgdata"
     ];
   };
   virtualisation.oci-containers.containers."immich_redis" = {
@@ -128,7 +128,7 @@
     ];
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
-      "/media/HOMELAB_MEDIA/services/immich/photos:/usr/src/app/upload:rw"
+      "${homelabMediaPath}/services/immich/photos:/usr/src/app/upload:rw"
     ];
     ports = [
       "2283:2283/tcp"
@@ -160,7 +160,7 @@
     ];
     unitConfig.RequiresMountsFor = [
       "/etc/localtime"
-      "/media/HOMELAB_MEDIA/services/immich/photos"
+      "${homelabMediaPath}/services/immich/photos"
     ];
   };
 

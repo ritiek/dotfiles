@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -16,7 +16,7 @@
       "NODE_ENV" = "production";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA/services/dashy/config.yml:/app/user-data/conf.yml:rw"
+      "${homelabMediaPath}/services/dashy/config.yml:/app/user-data/conf.yml:rw"
     ];
     ports = [
       "80:8080/tcp"
@@ -50,7 +50,7 @@
       "docker-network-dashy_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/dashy/config.yml"
+      "${homelabMediaPath}/services/dashy/config.yml"
     ];
   };
 

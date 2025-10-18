@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "karakeep";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/karakeep/meilisearch" "/media/HOMELAB_MEDIA/services/karakeep/data" ];
+    requiredMounts = [ "${homelabMediaPath}/services/karakeep/meilisearch" "${homelabMediaPath}/services/karakeep/data" ];
     rootTarget = "docker-compose-karakeep-root.target";
     startCommand = "systemctl start docker-karakeep-chrome.service docker-karakeep-meilisearch.service docker-karakeep.service";
     stopCommand = "systemctl stop docker-compose-karakeep-root.target";
@@ -77,7 +77,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/karakeep.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/karakeep/meilisearch:/meili_data:rw"
+      "${homelabMediaPath}/services/karakeep/meilisearch:/meili_data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -100,7 +100,7 @@ in lib.mkMerge [
       "docker-network-karakeep_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/karakeep/meilisearch"
+      "${homelabMediaPath}/services/karakeep/meilisearch"
     ];
     # Bind to root target
     partOf = [ "docker-compose-karakeep-root.target" ];
@@ -117,7 +117,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/karakeep.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/karakeep/data:/data:rw"
+      "${homelabMediaPath}/services/karakeep/data:/data:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:3000/tcp"  # Internal port only
@@ -145,7 +145,7 @@ in lib.mkMerge [
       "docker-karakeep-chrome.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/karakeep/data"
+      "${homelabMediaPath}/services/karakeep/data"
     ];
     # Bind to root target
     partOf = [ "docker-compose-karakeep-root.target" ];
