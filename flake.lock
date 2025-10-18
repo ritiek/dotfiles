@@ -945,27 +945,6 @@
         "type": "github"
       }
     },
-    "nur-nltch-spotify-fix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1760786451,
-        "narHash": "sha256-TrENOBcIx3w1AF9qdPZq9yDwxTUjVwZmlDWxF74Qwtc=",
-        "owner": "ritiek",
-        "repo": "nur-packages",
-        "rev": "444fb9660522a79a4f1d08f195eea71ef5eb3606",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ritiek",
-        "ref": "fix-hiding-of-spotify-advert-banner-placeholder",
-        "repo": "nur-packages",
-        "type": "github"
-      }
-    },
     "pi400kb-nix": {
       "inputs": {
         "nixos-hardware": [
@@ -1085,7 +1064,6 @@
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
-        "nur-nltch-spotify-fix": "nur-nltch-spotify-fix",
         "pi400kb-nix": "pi400kb-nix",
         "raspberry-pi-nix": "raspberry-pi-nix",
         "rockchip": "rockchip",
