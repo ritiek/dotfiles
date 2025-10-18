@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "homepage";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/homepage" "/var/run/docker.sock" ];
+    requiredMounts = [ "${homelabMediaPath}/services/homepage" "/var/run/docker.sock" ];
   };
 in lib.mkMerge [
   lazyLoadingServices
@@ -36,7 +36,7 @@ in lib.mkMerge [
       "HOMEPAGE_ALLOWED_HOSTS" = "pilab.lion-zebra.ts.net";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA/services/homepage:/app/config:rw"
+      "${homelabMediaPath}/services/homepage:/app/config:rw"
       "/var/run/docker.sock:/var/run/docker.sock:ro"
     ];
     ports = [
@@ -64,7 +64,7 @@ in lib.mkMerge [
       "docker-network-homepage_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/homepage"
+      "${homelabMediaPath}/services/homepage"
       "/var/run/docker.sock"
     ];
   };

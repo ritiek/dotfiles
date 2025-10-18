@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -13,7 +13,7 @@
   virtualisation.oci-containers.containers."rustdesk-hbbr" = {
     image = "rustdesk/rustdesk-server:latest";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/rustdesk/hbbr:/root:rw"
+      "${homelabMediaPath}/services/rustdesk/hbbr:/root:rw"
     ];
     ports = [
       "21117:21117/tcp"
@@ -41,13 +41,13 @@
       "docker-network-rustdesk_rustdesk-net.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/rustdesk/hbbr"
+      "${homelabMediaPath}/services/rustdesk/hbbr"
     ];
   };
   virtualisation.oci-containers.containers."rustdesk-hbbs" = {
     image = "rustdesk/rustdesk-server:latest";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/rustdesk/hbbs:/root:rw"
+      "${homelabMediaPath}/services/rustdesk/hbbs:/root:rw"
     ];
     ports = [
       "21115:21115/tcp"
@@ -87,7 +87,7 @@
       "docker-network-rustdesk_rustdesk-net.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/rustdesk/hbbs"
+      "${homelabMediaPath}/services/rustdesk/hbbs"
     ];
   };
 

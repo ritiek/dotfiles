@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/kopia.env" = {
@@ -22,7 +22,7 @@
     ];
     volumes = [
       "/:/motionless2:ro"
-      "/media/HOMELAB_MEDIA/services/kopia/config:/app/config:rw"
+      "${homelabMediaPath}/services/kopia/config:/app/config:rw"
       "kopia_cache:/app/cache:rw"
       "kopia_logs:/app/logs:rw"
     ];
@@ -75,7 +75,7 @@
     ];
     unitConfig.RequiresMountsFor = [
       "/"
-      "/media/HOMELAB_MEDIA/services/kopia/config"
+      "${homelabMediaPath}/services/kopia/config"
     ];
   };
 

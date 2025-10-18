@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -17,9 +17,9 @@ let
     internalPort = internalWebUIPort;
     refreshInterval = 3;
     requiredMounts = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/cache"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/videos"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/es"
+      "${homelabMediaPath}/services/tubearchivist/cache"
+      "${homelabMediaPath}/services/tubearchivist/videos"
+      "${homelabMediaPath}/services/tubearchivist/es"
     ];
     rootTarget = "docker-compose-tubearchivist-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (TubeArchivist is heavier)
@@ -52,7 +52,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/es:/usr/share/elasticsearch/data:rw"
+      "${homelabMediaPath}/services/tubearchivist/es:/usr/share/elasticsearch/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -75,7 +75,7 @@ in lib.mkMerge [
       "docker-network-tubearchivist_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/es"
+      "${homelabMediaPath}/services/tubearchivist/es"
     ];
     partOf = [ "docker-compose-tubearchivist-root.target" ];
     wantedBy = [ "docker-compose-tubearchivist-root.target" ];
@@ -124,8 +124,8 @@ in lib.mkMerge [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/cache:/cache:rw"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/videos:/youtube:rw"
+      "${homelabMediaPath}/services/tubearchivist/cache:/cache:rw"
+      "${homelabMediaPath}/services/tubearchivist/videos:/youtube:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:8000/tcp"  # Internal port only
@@ -161,8 +161,8 @@ in lib.mkMerge [
       "docker-network-tubearchivist_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/tubearchivist/cache"
-      "/media/HOMELAB_MEDIA/services/tubearchivist/videos"
+      "${homelabMediaPath}/services/tubearchivist/cache"
+      "${homelabMediaPath}/services/tubearchivist/videos"
     ];
     partOf = [ "docker-compose-tubearchivist-root.target" ];
     wantedBy = [ "docker-compose-tubearchivist-root.target" ];

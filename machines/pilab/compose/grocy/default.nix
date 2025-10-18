@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "grocy";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/grocy" ];
+    requiredMounts = [ "${homelabMediaPath}/services/grocy" ];
   };
 
 in lib.mkMerge [
@@ -45,7 +45,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/grocy.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/grocy:/config:rw"
+      "${homelabMediaPath}/services/grocy:/config:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:80/tcp"  # Internal port only
@@ -71,7 +71,7 @@ in lib.mkMerge [
       "docker-network-grocy_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/grocy"
+      "${homelabMediaPath}/services/grocy"
     ];
     # Bind to root target
     partOf = [ "docker-compose-grocy-root.target" ];

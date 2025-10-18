@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -17,7 +17,7 @@ let
     internalPort = internalWebUIPort;
     refreshInterval = 3;
     requiredMounts = [
-      "/media/HOMELAB_MEDIA/services/pwpush"
+      "${homelabMediaPath}/services/pwpush"
     ];
     rootTarget = "docker-compose-pwpush-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (Password Pusher has multiple services)
@@ -49,7 +49,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/pwpush.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/pwpush/pgdata:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/pwpush/pgdata:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -72,7 +72,7 @@ in lib.mkMerge [
       "docker-network-pwpush_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/pwpush/pgdata"
+      "${homelabMediaPath}/services/pwpush/pgdata"
     ];
     # Bind to root target
     partOf = [ "docker-compose-pwpush-root.target" ];
@@ -86,7 +86,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/pwpush.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/pwpush/settings.yml:/opt/PasswordPusher/config/settings.yml:rw"
+      "${homelabMediaPath}/services/pwpush/settings.yml:/opt/PasswordPusher/config/settings.yml:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:5100/tcp"  # Internal port only
@@ -116,7 +116,7 @@ in lib.mkMerge [
       "docker-network-pwpush_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/pwpush/settings.yml"
+      "${homelabMediaPath}/services/pwpush/settings.yml"
     ];
     # Bind to root target
     partOf = [ "docker-compose-pwpush-root.target" ];

@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "vaultwarden";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/vaultwarden" ];
+    requiredMounts = [ "${homelabMediaPath}/services/vaultwarden" ];
     silent = true;  # Enable silent mode for vaultwarden
   };
 
@@ -41,7 +41,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/vaultwarden.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/vaultwarden:/data:rw"
+      "${homelabMediaPath}/services/vaultwarden:/data:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:80/tcp"  # Internal port only
@@ -68,7 +68,7 @@ in lib.mkMerge [
       "docker-network-vaultwarden_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/vaultwarden"
+      "${homelabMediaPath}/services/vaultwarden"
     ];
     # Bind to root target
     partOf = [ "docker-compose-vaultwarden-root.target" ];

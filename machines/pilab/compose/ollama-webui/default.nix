@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "open-webui";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/ollama-webui/ollama" "/media/HOMELAB_MEDIA/services/ollama-webui/open-webui" ];
+    requiredMounts = [ "${homelabMediaPath}/services/ollama-webui/ollama" "${homelabMediaPath}/services/ollama-webui/open-webui" ];
     rootTarget = "docker-compose-ollama-webui-root.target";
     startCommand = "systemctl start docker-ollama.service docker-open-webui.service";
     stopCommand = "systemctl stop docker-compose-ollama-webui-root.target";
@@ -40,7 +40,7 @@ in lib.mkMerge [
   virtualisation.oci-containers.containers."ollama" = {
     image = "ollama/ollama:latest";
     volumes = [
-      "/media/HOMELAB_MEDIA/services/ollama-webui/ollama:/root/.ollama:rw"
+      "${homelabMediaPath}/services/ollama-webui/ollama:/root/.ollama:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -63,7 +63,7 @@ in lib.mkMerge [
       "docker-network-ollama-webui_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/ollama-webui/ollama"
+      "${homelabMediaPath}/services/ollama-webui/ollama"
     ];
     # Bind to root target
     partOf = [ "docker-compose-ollama-webui-root.target" ];
@@ -78,7 +78,7 @@ in lib.mkMerge [
       config.sops.secrets."compose/ollama-webui.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/ollama-webui/open-webui:/app/backend/data:rw"
+      "${homelabMediaPath}/services/ollama-webui/open-webui:/app/backend/data:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:8080/tcp"  # Internal port only
@@ -106,7 +106,7 @@ in lib.mkMerge [
       "docker-network-ollama-webui_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/ollama-webui/open-webui"
+      "${homelabMediaPath}/services/ollama-webui/open-webui"
     ];
     # Bind to root target
     partOf = [ "docker-compose-ollama-webui-root.target" ];

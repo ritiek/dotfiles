@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets = {
@@ -23,7 +23,7 @@
       config.sops.secrets."compose/n8n.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/n8n/storage:/home/node/.n8n:rw"
+      "${homelabMediaPath}/services/n8n/storage:/home/node/.n8n:rw"
     ];
     ports = [
       "5678:5678/tcp"
@@ -60,7 +60,7 @@
       "docker-network-n8n_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/n8n/storage"
+      "${homelabMediaPath}/services/n8n/storage"
     ];
   };
   virtualisation.oci-containers.containers."n8n-worker" = {
@@ -69,7 +69,7 @@
       config.sops.secrets."compose/n8n.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/n8n/storage:/home/node/.n8n:rw"
+      "${homelabMediaPath}/services/n8n/storage:/home/node/.n8n:rw"
     ];
     cmd = [ "worker" ];
     dependsOn = [
@@ -98,7 +98,7 @@
       "docker-network-n8n_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/n8n/storage"
+      "${homelabMediaPath}/services/n8n/storage"
     ];
   };
   virtualisation.oci-containers.containers."n8n-postgres" = {
@@ -107,8 +107,8 @@
       config.sops.secrets."compose/n8n.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/n8n/db:/var/lib/postgresql/data:rw"
-      "/media/HOMELAB_MEDIA/services/n8n/init-data.sh:/docker-entrypoint-initdb.d/init-data.sh:rw"
+      "${homelabMediaPath}/services/n8n/db:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/n8n/init-data.sh:/docker-entrypoint-initdb.d/init-data.sh:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -135,8 +135,8 @@
       "docker-network-n8n_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/n8n/db"
-      "/media/HOMELAB_MEDIA/services/n8n/init-data.sh"
+      "${homelabMediaPath}/services/n8n/db"
+      "${homelabMediaPath}/services/n8n/init-data.sh"
     ];
   };
   virtualisation.oci-containers.containers."n8n-redis" = {
@@ -145,7 +145,7 @@
       config.sops.secrets."compose/n8n.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/n8n/redis:/data:rw"
+      "${homelabMediaPath}/services/n8n/redis:/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -172,7 +172,7 @@
       "docker-network-n8n_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/n8n/redis"
+      "${homelabMediaPath}/services/n8n/redis"
     ];
   };
 

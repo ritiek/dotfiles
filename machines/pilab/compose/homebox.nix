@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, ... }:
+{ pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -15,7 +15,7 @@ let
     dockerServiceName = "homebox";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
-    requiredMounts = [ "/media/HOMELAB_MEDIA/services/homebox" ];
+    requiredMounts = [ "${homelabMediaPath}/services/homebox" ];
   };
 
 in lib.mkMerge [
@@ -38,7 +38,7 @@ in lib.mkMerge [
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA/services/homebox:/data:rw"
+      "${homelabMediaPath}/services/homebox:/data:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:7745/tcp"  # Internal port only
@@ -65,7 +65,7 @@ in lib.mkMerge [
       "docker-network-homebox_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/homebox"
+      "${homelabMediaPath}/services/homebox"
     ];
     # Bind to root target
     partOf = [ "docker-compose-homebox-root.target" ];

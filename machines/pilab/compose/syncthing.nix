@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, everythingElsePath, ... }:
 
 {
   networking.firewall = {
@@ -29,9 +29,9 @@
       "TZ" = "'Asia/Kolkata'";
     };
     volumes = [
-      "/media/HOMELAB_MEDIA:/media/HOMELAB_MEDIA:rw"
-      "/media/EVERYTHING_ELSE:/media/EVERYTHING_ELSE:rw"
-      "/media/HOMELAB_MEDIA/services/syncthing/config:/var/syncthing/config:rw"
+      "${homelabMediaPath}:${homelabMediaPath}:rw"
+      "${everythingElsePath}:${everythingElsePath}:rw"
+      "${homelabMediaPath}/services/syncthing/config:/var/syncthing/config:rw"
     ];
     user = "1000:1000";
     log-driver = "journald";
@@ -56,7 +56,7 @@
       RestartSteps = lib.mkOverride 500 9;
     };
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/syncthing"
+      "${homelabMediaPath}/services/syncthing"
     ];
   };
 

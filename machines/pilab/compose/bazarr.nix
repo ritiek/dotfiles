@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -21,9 +21,9 @@
       "/home/ritiek/.env"
     ];
     volumes = [
-      "/media/EVERYTHING_ELSE/downloads/bazarr/config:/config:rw"
-      "/media/EVERYTHING_ELSE/downloads/radarr/movies:/movies:rw"
-      "/media/EVERYTHING_ELSE/downloads/sonarr/tv:/tv:rw"
+      "${everythingElsePath}/downloads/bazarr/config:/config:rw"
+      "${everythingElsePath}/downloads/radarr/movies:/movies:rw"
+      "${everythingElsePath}/downloads/sonarr/tv:/tv:rw"
     ];
     ports = [
       "6767:6767/tcp"
@@ -57,9 +57,9 @@
       "docker-network-bazarr_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/EVERYTHING_ELSE/downloads/bazarr/config"
-      "/media/EVERYTHING_ELSE/downloads/bazarr/movies"
-      "/media/EVERYTHING_ELSE/downloads/bazarr/tv"
+      "${everythingElsePath}/downloads/bazarr/config"
+      "${everythingElsePath}/downloads/radarr/movies"
+      "${everythingElsePath}/downloads/sonarr/tv"
     ];
   };
 

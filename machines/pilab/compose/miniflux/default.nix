@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/miniflux.env" = {
@@ -21,7 +21,7 @@
       config.sops.secrets."compose/miniflux.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/miniflux/data:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/miniflux/data:/var/lib/postgresql/data:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -47,7 +47,7 @@
       "docker-network-miniflux_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/miniflux/data"
+      "${homelabMediaPath}/services/miniflux/data"
     ];
   };
   virtualisation.oci-containers.containers."miniflux" = {

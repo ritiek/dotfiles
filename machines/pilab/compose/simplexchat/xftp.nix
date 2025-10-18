@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/simplexchat/xftp.env" = {
@@ -21,9 +21,9 @@
       config.sops.secrets."compose/simplexchat/xftp.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/simplexchat/xftp/config:/etc/opt/simplex-xftp:rw"
-      "/media/HOMELAB_MEDIA/services/simplexchat/xftp/files:/srv/xftp:rw"
-      "/media/HOMELAB_MEDIA/services/simplexchat/xftp/state:/var/opt/simplex-xftp:rw"
+      "${homelabMediaPath}/services/simplexchat/xftp/config:/etc/opt/simplex-xftp:rw"
+      "${homelabMediaPath}/services/simplexchat/xftp/files:/srv/xftp:rw"
+      "${homelabMediaPath}/services/simplexchat/xftp/state:/var/opt/simplex-xftp:rw"
     ];
     ports = [
       "5219:443/tcp"
@@ -49,8 +49,8 @@
       "docker-network-simplexchat-xftp-server_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/simplexchat/xftp/config"
-      "/media/HOMELAB_MEDIA/services/simplexchat/xftp/state"
+      "${homelabMediaPath}/services/simplexchat/xftp/config"
+      "${homelabMediaPath}/services/simplexchat/xftp/state"
     ];
   };
 

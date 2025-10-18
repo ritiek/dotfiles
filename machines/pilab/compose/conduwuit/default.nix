@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   sops.secrets."compose/conduwuit.env" = {
@@ -21,7 +21,7 @@
       config.sops.secrets."compose/conduwuit.env".path
     ];
     volumes = [
-      "/media/HOMELAB_MEDIA/services/conduwuit/data:/var/lib/matrix-conduit:rw"
+      "${homelabMediaPath}/services/conduwuit/data:/var/lib/matrix-conduit:rw"
     ];
     ports = [
       "6168:6168/tcp"
@@ -55,7 +55,7 @@
       "docker-network-conduwuit_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/conduwuit/data"
+      "${homelabMediaPath}/services/conduwuit/data"
     ];
   };
 

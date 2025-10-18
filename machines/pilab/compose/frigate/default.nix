@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.1.
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, everythingElsePath, ... }:
 
 {
   sops.secrets."compose/frigate.env" = {
@@ -23,8 +23,8 @@
     volumes = [
       "/tmp/frigate/cache:/tmp/cache:rw"
       "/etc/localtime:/etc/localtime:ro"
-      "/media/EVERYTHING_ELSE/frigate/config.yml:/config/config.yml:rw"
-      "/media/EVERYTHING_ELSE/frigate/storage:/media/frigate:rw"
+      "${everythingElsePath}/frigate/config.yml:/config/config.yml:rw"
+      "${everythingElsePath}/frigate/storage:/media/frigate:rw"
     ];
     ports = [
       "5010:5000/tcp"
@@ -68,10 +68,9 @@
       "docker-network-frigate_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      ""
       "/etc/localtime"
-      "/media/EVERYTHING_ELSE/frigate/config.yml"
-      "/media/EVERYTHING_ELSE/frigate/storage"
+      "${everythingElsePath}/frigate/config.yml"
+      "${everythingElsePath}/frigate/storage"
     ];
   };
 
