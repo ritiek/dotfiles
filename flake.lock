@@ -286,6 +286,31 @@
         "type": "github"
       }
     },
+    "gotify-desktop": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1760836000,
+        "narHash": "sha256-pH1B5OPcJ7gfWFqibC7SPXmqQ4imZ/W9rPyNA+zFY8M=",
+        "owner": "ritiek",
+        "repo": "gotify-desktop",
+        "rev": "84ab15b51264ab4a7462fa9c2e946b4b022822e5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ritiek",
+        "ref": "nix-flake",
+        "repo": "gotify-desktop",
+        "type": "github"
+      }
+    },
     "headplane": {
       "inputs": {
         "devshell": "devshell",
@@ -1050,6 +1075,7 @@
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "flake-utils": "flake-utils",
+        "gotify-desktop": "gotify-desktop",
         "headplane": "headplane",
         "home-manager": "home-manager",
         "hyprgrass": "hyprgrass",
@@ -1218,6 +1244,27 @@
         "owner": "raspberrypi",
         "ref": "v1.5.2",
         "repo": "rpicam-apps",
+        "type": "github"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "gotify-desktop",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1760754684,
+        "narHash": "sha256-B4+gmoRuvjZGKvDQtMjYkqyA89gZLjrXObZrXFrcKOk=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "16c233757f1b200936f1b39961c901733936c616",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
         "type": "github"
       }
     },
