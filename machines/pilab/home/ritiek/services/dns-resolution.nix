@@ -475,7 +475,10 @@ in
       Description = "Update Pi-hole DNS entries with current network devices from router ARP table";
       After = [ "network-online.target" "docker-pihole.service" ];
       Wants = [ "network-online.target" ];
-      Requires = [ "docker-pihole.service" ];
+      # FIXME: This doesn't work as it looks like docker-pihole.service runs as a system level
+      # service but dns-resolution works on user level. User service maybe is not  dependable
+      # on system service from here.
+      # Requires = [ "docker-pihole.service" ];
       RequiresMountsFor = [ "/media/HOMELAB_MEDIA/services/pihole" ];
     };
     Service = {
