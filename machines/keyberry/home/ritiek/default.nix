@@ -31,7 +31,7 @@
     ./../../../../modules/home/opencode.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = false;
 
   nixpkgs.overlays = [
     # inputs.nixgl.overlay

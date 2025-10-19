@@ -67,7 +67,7 @@
     "syncplay.password" = {};
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = false;
 
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
