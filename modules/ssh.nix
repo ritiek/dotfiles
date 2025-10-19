@@ -5,7 +5,7 @@
   programs.ssh = {
     extraConfig = ''
       Host *
-        SetEnv TERM=xterm-256color
+        SetEnv TERM=xterm-256color COLORTERM=truecolor
     '';
   };
 }
