@@ -6,6 +6,7 @@
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
+    ./../../../../modules/home/opencode.nix
   ];
   
   nixpkgs.config.allowUnfree = true;
@@ -43,6 +44,5 @@
     jq.enable = true;
     ripgrep.enable = true;
     fd.enable = true;
-    claude-code.enable = true;
   };
 }
