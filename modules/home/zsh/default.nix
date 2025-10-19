@@ -75,7 +75,10 @@ ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 # export VIM="$HOME/.config/nvim"
 # export VIMRUNTIME="/usr/share/nvim/runtime"
 
-export BROWSER="google-chrome-stable"
+# Required by Opencode.
+export COLORTERM=truecolor
+
+export BROWSER="zen-beta"
 export LESS="--mouse --wheel-lines=3 -r"
 export LESSOPEN="|$HOME/.lessfilter %s"
 # Reduce lag when switching between Normal and Insert mode with Vi
