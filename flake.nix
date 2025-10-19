@@ -166,12 +166,6 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-
-    gotify-desktop = {
-      url = "github:ritiek/gotify-desktop/nix-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
-    };
   };
 
   outputs = { self, ... }@inputs:
