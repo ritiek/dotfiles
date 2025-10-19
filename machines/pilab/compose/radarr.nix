@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, everythingElsePath, ... }:
+{ pkgs, lib, servicePaths, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -18,9 +18,9 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "${everythingElsePath}/downloads/radarr/config:/config:rw"
-      "${everythingElsePath}/downloads/radarr/movies:/movies:rw"
-      "${everythingElsePath}/downloads/qbittorrent/downloads/complete:/downloads:rw"
+      "${servicePaths.radarr.configSource}:/config:rw"
+      "${everythingElsePath}/arr/movies:/movies:rw"
+      "${everythingElsePath}/qbittorrent/downloads/complete:/downloads:rw"
     ];
     ports = [
       "7878:7878/tcp"
@@ -54,9 +54,9 @@
       "docker-network-radarr_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "${everythingElsePath}/downloads/radarr/config"
-      "${everythingElsePath}/downloads/radarr/movies"
-      "${everythingElsePath}/downloads/qbittorrent/downloads/complete"
+      servicePaths.radarr.configSource
+      "${everythingElsePath}/arr/movies"
+      "${everythingElsePath}/qbittorrent/downloads/complete"
     ];
   };
 

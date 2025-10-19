@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, everythingElsePath, ... }:
+{ pkgs, lib, servicePaths, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -21,9 +21,9 @@
       "/home/ritiek/.env"
     ];
     volumes = [
-      "${everythingElsePath}/downloads/sonarr/config:/config:rw"
-      "${everythingElsePath}/downloads/sonarr/tv:/tv:rw"
-      "${everythingElsePath}/downloads/qbittorrent/downloads:/downloads:rw"
+      "${servicePaths.sonarr.configSource}:/config:rw"
+      "${everythingElsePath}/arr/tv:/tv:rw"
+      "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
     ports = [
       "8989:8989/tcp"
@@ -57,9 +57,9 @@
       "docker-network-sonarr_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "${everythingElsePath}/downloads/sonarr/config"
-      "${everythingElsePath}/downloads/sonarr/tv"
-      "${everythingElsePath}/downloads/qbittorrent/downloads/complete"
+      servicePaths.sonarr.configSource
+      "${everythingElsePath}/arr/tv"
+      "${everythingElsePath}/qbittorrent/downloads/complete"
     ];
   };
 

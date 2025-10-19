@@ -5,7 +5,9 @@
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./home
+    ./services-paths.nix
     ./services/restic.nix
+    ./services/lsyncd.nix
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix

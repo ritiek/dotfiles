@@ -23,8 +23,8 @@
       "/home/ritiek/.env"
     ];
     volumes = [
-      "${everythingElsePath}/downloads/qbittorrent/config:/config:rw"
-      "${everythingElsePath}/downloads/qbittorrent/downloads:/downloads:rw"
+      "${everythingElsePath}/qbittorrent/config:/config:rw"
+      "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
     ports = [
       "9082:9082/tcp"
@@ -60,8 +60,8 @@
       "docker-network-qbittorrent_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "${everythingElsePath}/downloads/qbittorrent/config"
-      "${everythingElsePath}/downloads/qbittorrent/downloads"
+      "${everythingElsePath}/qbittorrent/config"
+      "${everythingElsePath}/qbittorrent/downloads"
     ];
   };
 
