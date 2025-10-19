@@ -88,8 +88,8 @@ in
       Description = "Run sync Spotify playlists service periodically.";
     };
     Timer = {
-      OnBootSec = "5m";
-      OnUnitActiveSec = "6h";
+      OnBootSec = "18h";
+      OnUnitActiveSec = "36h";
       Unit = "spotdl-sync.service";
     };
     # Install = {
