@@ -26,6 +26,7 @@
     # ./../../../../moduleshome/nixconf/syncthing.nix
     ./../../../../modules/home/glava
     ./../../../../modules/home/sioyek.nix
+    ./../../../../modules/home/opencode.nix
   ];
 
   # TODO: Make adjustments and set this to false.
@@ -280,22 +281,6 @@
         cpu_load_change = true;
         # Turn off display by default. Use Rshift + F12 to toggle.
         no_display = true;
-      };
-    };
-
-    opencode = {
-      enable = true;
-      settings = {
-        model = "claude-sonnet-4-5-20250929";
-        theme = "kanagawa";
-        tui.scroll_speed = 5;
-        autoupdate = false;
-        # mcp.context7 = {
-        #   enabled = true;
-        #   type = "remote";
-        #   url = "https://mcp.context7.com/mcp";
-        #   headers.CONTEXT7_API_KEY = "INSERT_COIN";
-        # };
       };
     };
   };
