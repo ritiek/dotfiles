@@ -6,6 +6,8 @@ let
   };
 in
 {
+  sops.secrets."gotify.token" = {};
+
   home.packages = with pkgs; [
     niri
     # Use Hyprland ecosystem tools instead of Sway equivalents
@@ -24,6 +26,7 @@ in
     wlopm
     xwayland-satellite
     rose-pine-cursor
+    gotify-desktop
   ];
 
   xdg.configFile."niri/config.kdl".text = ''
@@ -325,6 +328,7 @@ spawn-at-startup "waybar"
 spawn-at-startup "hyprpaper"
 spawn-at-startup "hypridle"
 spawn-at-startup "wlsunset" "-t" "4300"
+spawn-at-startup "gotify-desktop"
 spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "__NV_PRIME_RENDER_OFFLOAD=0 swayosd-server"
@@ -735,6 +739,18 @@ animations {
 //         off
 //     }
 // }
+  '';
+
+  xdg.configFile."gotify-desktop/config.toml".text = ''
+    [gotify]
+    auto_delete = false
+    url = "ws://pilab.lion-zebra.ts.net:8893"
+
+    [gotify.token]
+    command = "${pkgs.coreutils}/bin/cat ${config.sops.secrets."gotify.token".path}"
+
+    [notification]
+    min_priority = 0
   '';
 
   services = {
