@@ -47,6 +47,7 @@ in
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
+    ./../../../../modules/home/opencode.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -105,7 +106,6 @@ in
 
       libgpiod
       i2c-tools
-      # claude-code
 
       homelab-mount
 
@@ -242,6 +242,5 @@ in
     jq.enable = true;
     ripgrep.enable = true;
     fd.enable = true;
-    claude-code.enable = true;
   };
 }
