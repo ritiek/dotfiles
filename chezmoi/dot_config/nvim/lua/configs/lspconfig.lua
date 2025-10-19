@@ -4,6 +4,9 @@ local on_attach = configs.on_attach
 local on_init = configs.on_init
 local capabilities = configs.capabilities
 
+-- Suppress deprecation warning
+vim.deprecate = function() end
+
 local lspconfig = require "lspconfig"
 local servers = {
   "html",
