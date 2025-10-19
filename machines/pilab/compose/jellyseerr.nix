@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, everythingElsePath, ... }:
+{ pkgs, lib, servicePaths, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -20,7 +20,7 @@
       "/home/ritiek/.env"
     ];
     volumes = [
-      "${everythingElsePath}/downloads/jellyseerr/config:/app/config:rw"
+      "${servicePaths.jellyseerr.configSource}:/app/config:rw"
     ];
     ports = [
       "5055:5055/tcp"
@@ -54,7 +54,7 @@
       "docker-network-jellyseerr_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "${everythingElsePath}/downloads/jellyseerr/config"
+      servicePaths.jellyseerr.configSource
     ];
   };
 
