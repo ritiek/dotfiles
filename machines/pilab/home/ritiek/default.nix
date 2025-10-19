@@ -50,7 +50,7 @@ in
     ./../../../../modules/home/opencode.nix
   ];
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = false;
 
   home = {
     stateVersion = "24.11";
