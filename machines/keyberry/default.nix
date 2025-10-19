@@ -21,7 +21,7 @@
   networking.hostName = lib.mkForce "keyberry";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = false;
 
   nix = {
     distributedBuilds = true;
