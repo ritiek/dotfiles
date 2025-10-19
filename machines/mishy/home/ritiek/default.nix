@@ -20,6 +20,7 @@
     ./../../../../modules/home/waybar
     ./../../../../modules/home/swaync
     ./../../../../modules/home/mpv.nix
+    ./../../../../modules/home/jellyfin-mpv-shim.nix
     # ./../../../../modules/home/firefox.nix
     # ./../../../../modules/home/librewolf.nix
     ./../../../../modules/home/zen-browser.nix
@@ -287,10 +288,6 @@
 
   services = {
     # playerctld.enable = true;
-    jellyfin-mpv-shim = {
-      enable = true;
-      mpvConfig = config.programs.mpv.config;
-    };
   };
 
   xdg.mimeApps.enable = true;
