@@ -2,7 +2,6 @@
 {
   imports = [
     inputs.sops-nix.homeManagerModule
-    inputs.gotify-desktop.homeManagerModules.default
 
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
@@ -28,8 +27,6 @@
     ./../../../../modules/home/glava
     ./../../../../modules/home/sioyek.nix
   ];
-
-  sops.secrets."gotify.token" = {};
 
   # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
@@ -294,19 +291,6 @@
     jellyfin-mpv-shim = {
       enable = true;
       mpvConfig = config.programs.mpv.config;
-    };
-
-    gotify-desktop = {
-      enable = true;
-      settings = {
-        gotify = {
-          url = "ws://pilab.lion-zebra.ts.net:8893";
-          token.command = "${pkgs.coreutils}/bin/cat ${config.sops.secrets."gotify.token".path}";
-          auto_delete = false;
-        };
-        notification.min_priority = 0;
-        # action.on_msg_command = "${pkgs.libnotify}/bin/notify-send -u normal 'Gotify' \"$GOTIFY_MSG_TEXT\"";
-      };
     };
   };
 
