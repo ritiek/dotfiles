@@ -32,6 +32,8 @@
       gcc
       cargo
       rustfmt
+
+      lsof
     ];
 
     # plugins = with pkgs.vimPlugins; [
