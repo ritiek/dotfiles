@@ -20,7 +20,7 @@
     volumes = [
       "${servicePaths.radarr.configSource}:/config:rw"
       "${everythingElsePath}/arr/movies:/movies:rw"
-      "${everythingElsePath}/qbittorrent/downloads/complete:/downloads:rw"
+      "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
     ports = [
       "7878:7878/tcp"

@@ -31,7 +31,7 @@ in
     after = [
       "media-EVERYTHING_ELSE.mount"
       "media-HOMELAB_MEDIA.mount"
-      "network.target"
+      # "network.target"
     ];
     requires = [
       "media-EVERYTHING_ELSE.mount"
