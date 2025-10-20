@@ -165,4 +165,15 @@ vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-k>", "<cmd>resize +5<cr>", { desc =
 vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-j>", "<cmd>resize -5<cr>", { desc = "Decrease height" })
 vim.keymap.set({ "n", "i", "t", "v" }, "<C-S-=>", "<cmd>wincmd =<cr>", { desc = "Make all windows equal size" })
 
+vim.keymap.set({ "n", "x" }, "<leader>oa", function() require("opencode").ask("@this: ", { submit = true }) end, { desc = "Ask about this" })
+vim.keymap.set({ "n", "x" }, "<leader>os", function() require("opencode").select() end, { desc = "Select prompt" })
+vim.keymap.set({ "n", "x" }, "<leader>o+", function() require("opencode").prompt("@this") end, { desc = "Add this" })
+vim.keymap.set("n", "<leader>ot", function() require("opencode").toggle() end, { desc = "Toggle embedded" })
+vim.keymap.set("n", "<leader>oc", function() require("opencode").command() end, { desc = "Select command" })
+vim.keymap.set("n", "<leader>on", function() require("opencode").command("session_new") end, { desc = "New session" })
+vim.keymap.set("n", "<leader>oi", function() require("opencode").command("session_interrupt") end, { desc = "Interrupt session" })
+vim.keymap.set("n", "<leader>oA", function() require("opencode").command("agent_cycle") end, { desc = "Cycle selected agent" })
+vim.keymap.set("n", "<C-S-u>", function() require("opencode").command("messages_half_page_up") end, { desc = "Messages half page up" })
+vim.keymap.set("n", "<C-S-d>", function() require("opencode").command("messages_half_page_down") end, { desc = "Messages half page down" })
+
 -- vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
