@@ -3,7 +3,7 @@
     enable = true;
     settings = {
       model = "claude-sonnet-4-5-20250929";
-      theme = "cobalt2";
+      theme = "system";
       tui.scroll_speed = 5;
       autoupdate = false;
       # mcp.context7 = {
