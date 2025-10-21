@@ -244,7 +244,7 @@
   #   owner = config.users.users.frigate.name;
   # };
 
-  powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = "conservative";
   zramSwap = {
     enable = true;
     memoryPercent = 200;
