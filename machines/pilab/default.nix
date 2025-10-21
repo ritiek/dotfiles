@@ -198,7 +198,10 @@
     };
   };
 
-  powerManagement.cpuFreqGovernor = "performance";
+  # NOTE: For modes supported by the CPU, run:
+  # $ cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
+  powerManagement.cpuFreqGovernor = "powersave";
+
   zramSwap = {
     enable = true;
     memoryPercent = 275;
