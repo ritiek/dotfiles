@@ -8,6 +8,7 @@
     ./services-paths.nix
     ./services/restic.nix
     ./services/lsyncd.nix
+    ./services/home-assistant
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
