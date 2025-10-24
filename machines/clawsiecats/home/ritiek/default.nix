@@ -9,6 +9,7 @@
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
+    ./../../../../modules/home/opencode.nix
   ];
   home = {
     stateVersion = "24.05";
@@ -20,6 +21,7 @@
           ".zsh_history"
         ];
         directories = [
+          ".ssh"
           # "ballistica-personal-release"
           {
             directory = "ballistica-personal-release";
