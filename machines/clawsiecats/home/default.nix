@@ -30,11 +30,21 @@
   #   };
   # };
 
-  systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/sops.id_ed25519" = {
-    "C+" = {
-      mode = "0600";
-      user = "ritiek";
-      argument = "/etc/ssh/ssh_host_ed25519_key";
+  # Create sops key in the persist directory before home-manager mounts it
+  systemd.tmpfiles.settings."10-ssh" = {
+    "/nix/persist/home/ritiek/files/.ssh" = {
+      "d" = {
+        mode = "0700";
+        user = "ritiek";
+        group = "users";
+      };
+    };
+    "/nix/persist/home/ritiek/files/.ssh/sops.id_ed25519" = {
+      "C+" = {
+        mode = "0600";
+        user = "ritiek";
+        argument = "/etc/ssh/ssh_host_ed25519_key";
+      };
     };
   };
 
