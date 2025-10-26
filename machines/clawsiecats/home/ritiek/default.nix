@@ -4,6 +4,7 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.sops-nix.homeManagerModule
 
+    ./../../../../modules/home/nix.nix
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
