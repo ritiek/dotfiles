@@ -8,7 +8,9 @@ in
   imports = [
     inputs.headplane.nixosModules.headplane
     inputs.simple-nixos-mailserver.nixosModule
-  ];
+  ]; 
+
+  sops.secrets."tailscale.authkey" = {};
 
   environment.persistence."/nix/persist/system" = {
     directories = [
@@ -140,8 +142,8 @@ in
         server = {
           host = "127.0.0.1";
           port = 3000;
-          # cookie_secret = "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX";
-          cookie_secure = true;
+          cookie_secret_path = pkgs.writeText "headplane-cookie-secret" "xXxXxXxXxXxXxXxXx";
+          cookie_secure = false;
         };
         headscale = {
           # url = "http://${domain}:8080";
@@ -157,7 +159,10 @@ in
           # });
           config_strict = true;
         };
-        integration.proc.enabled = true;
+        integration = {
+          proc.enabled = true;
+          agent.pre_authkey_path = config.sops.secrets."tailscale.authkey".path;
+        };
       };
     };
 
