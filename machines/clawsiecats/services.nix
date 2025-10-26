@@ -57,6 +57,12 @@ in
   #   };
   # };
 
+  # Ensure tailscale-autoconnect waits for headscale to be ready
+  systemd.services.tailscaled-autoconnect = {
+    after = [ "headscale.service" ];
+    wants = [ "headscale.service" ];
+  };
+
   services = {
     jitsi-meet = {
       enable = true;
