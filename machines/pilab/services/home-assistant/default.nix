@@ -6,21 +6,29 @@
   # All secrets go directly in configuration.yaml (no separate secrets.yaml needed)
 
   # Decrypt entire HA configuration file
-  systemd.services.home-assistant-config = {
-    description = "Decrypt Home Assistant configuration";
-    wantedBy = [ "home-assistant.service" ];
-    before = [ "home-assistant.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-    };
-    script = ''
-      mkdir -p /var/lib/hass
-      export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key"
-      ${pkgs.sops}/bin/sops -d ${./configuration.yaml} > /var/lib/hass/configuration.yaml
-      chown hass:hass /var/lib/hass/configuration.yaml
-      chmod 0600 /var/lib/hass/configuration.yaml
-    '';
+  # systemd.services.home-assistant-config = {
+  #   description = "Decrypt Home Assistant configuration";
+  #   wantedBy = [ "home-assistant.service" ];
+  #   before = [ "home-assistant.service" ];
+  #   serviceConfig = {
+  #     Type = "oneshot";
+  #     RemainAfterExit = true;
+  #   };
+  #   script = ''
+  #     mkdir -p /var/lib/hass
+  #     export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key"
+  #     ${pkgs.sops}/bin/sops -d ${./configuration.yaml} > /var/lib/hass/configuration.yaml
+  #     chown hass:hass /var/lib/hass/configuration.yaml
+  #     chmod 0600 /var/lib/hass/configuration.yaml
+  #   '';
+  # };
+
+  sops.secrets."configuration" = {
+    sopsFile = ./configuration.yaml;
+    owner = "hass";
+    group = "hass";
+    path = "/var/lib/hass/configuration.yaml";
+    restartUnits = [ "home-assistant.service" ];
   };
 
   services.mosquitto = {
@@ -46,6 +54,12 @@
       "radio_browser"
       "pi_hole"
       "immich"
+      "mobile_app"
+    ];
+
+    extraPackages = python3Packages: with python3Packages; [
+      pynacl
+      pyjwt
     ];
 
     config = null;
