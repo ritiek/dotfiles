@@ -7,6 +7,7 @@
     ./services.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/tailscale-controlplane.nix
   ];
