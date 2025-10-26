@@ -51,6 +51,7 @@ in
       enable = true;
       debug = true;
       mode = "challenge-response";
+      control = "sufficient";
       id = [ "30084843" ];
     };
   };
