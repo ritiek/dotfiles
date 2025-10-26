@@ -9,6 +9,7 @@
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
+    ./../../../../modules/home/ssh.nix
     # XXX: Looks like HostVDS $1.99 VPS uses a CPU with older instruction set that doesn't
     # support Opencode. Commenting out for now.
     # ./../../../../modules/home/opencode.nix
