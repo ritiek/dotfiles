@@ -455,7 +455,6 @@
     };
   };
 
-  # powerManagement.cpuFreqGovernor = "ondemand";
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
