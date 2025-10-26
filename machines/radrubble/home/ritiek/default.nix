@@ -6,6 +6,7 @@
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
+    ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/opencode.nix
   ];
   
