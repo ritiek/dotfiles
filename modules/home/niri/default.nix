@@ -383,9 +383,6 @@ binds {
     Mod+K { focus-window-up; }
     Mod+J { focus-window-down; }
 
-    Mod+Left { focus-column-left; }
-    Mod+Right { focus-column-right; }
-
     // Move windows
     Mod+Ctrl+H { move-column-left; }
     Mod+Ctrl+L { move-column-right; }
@@ -450,16 +447,12 @@ binds {
     Mod+Shift+F12 repeat=false { move-column-to-workspace 22; }
 
     // Scroll through workspaces
-    Mod+Up repeat=false { focus-workspace-up; }
-    Mod+Down repeat=false { focus-workspace-down; }
     Mod+Page_Up repeat=false { focus-workspace-up; }
     Mod+Page_Down repeat=false { focus-workspace-down; }
 
-    Mod+Shift+Up repeat=false { move-column-to-workspace-up; }
-    Mod+Shift+Down repeat=false { move-column-to-workspace-down; }
     Mod+Shift+Page_Up repeat=false { move-column-to-workspace-up; }
     Mod+Shift+Page_Down repeat=false { move-column-to-workspace-down; }
-    
+
     // Last workspace
     Mod+grave repeat=false { focus-workspace-previous; }
     
@@ -607,8 +600,15 @@ binds {
     Mod+Ctrl+Shift+Down { move-workspace-to-monitor-down; }
     Mod+Ctrl+Shift+Left { move-workspace-to-monitor-left; }
     Mod+Ctrl+Shift+Right { move-workspace-to-monitor-right; }
-    
-    // Mouse button bindings removed - niri uses different mouse binding syntax
+
+    Mod+Up repeat=false { focus-monitor-up; }
+    Mod+Down repeat=false { focus-monitor-down; }
+    Mod+Left repeat=false { focus-monitor-left; }
+    Mod+Right repeat=false { focus-monitor-right; }
+    Mod+Shift+Up repeat=false { move-workspace-to-monitor-up; }
+    Mod+Shift+Down repeat=false { move-workspace-to-monitor-down; }
+    Mod+Shift+Left repeat=false { move-workspace-to-monitor-left; }
+    Mod+Shift+Right repeat=false { move-workspace-to-monitor-right; }
 }
 
 window-rule {
