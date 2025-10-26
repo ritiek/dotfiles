@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 {
   imports = [
+    ./../../../../modules/home/nix.nix
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
