@@ -16,6 +16,7 @@
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/btop.nix
+    ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/rofi.nix
     ./../../../../modules/home/waybar
     ./../../../../modules/home/swaync
@@ -245,13 +246,6 @@
     imv.enable = true;
     timidity.enable = true;
     gradle.enable = true;
-
-    zen-browser = {
-      enable = true;
-      nativeMessagingHosts = with pkgs; [
-        ff2mpv-rust
-      ];
-    };
 
     thunderbird = {
       enable = true;
