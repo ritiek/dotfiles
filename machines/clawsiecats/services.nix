@@ -95,12 +95,15 @@ in
 
     headscale = {
       enable = true;
+      # XXX: Required for Syncthing.
       user = "root";
       # group = "root";
+      address = "0.0.0.0";
+      port = 8080;
       settings = {
-        server_url = "https://${domain}";
-        listen_addr = "127.0.0.1:8080";
-        # listen_addr = "0.0.0.0:8080";
+        server_url = "https://controlplane.${domain}";
+        # listen_addr is auto-generated from address:port
+        # log.level = "debug";
         dns = {
           search_domains = [ "lion-zebra.ts.net" ];
           magic_dns = true;
@@ -116,14 +119,19 @@ in
         };
         derp = {
           server = {
-            enable = true;
-            region_id = 999;
-            region_code = domain;
-            region_name = domain + " DERP";
+            enabled = true;
             stun_listen_addr = "0.0.0.0:3478";
-            automatically_add_embedded_derp_region = true;
+            region_code = "headscale";
+            region_name = "Headscale Embedded DERP";
+            region_id = 999;
+            # Setting this to false lets people outside my Headscale network use
+            # this DERP relay.
+            verify_clients = true;
           };
-          # urls = [ ];
+          urls = [];
+          paths = [];
+          auto_update_enabled = false;
+          update_frequency = "24h";
         };
       };
     };
@@ -496,6 +504,9 @@ in
     allowedUDPPorts = [
       # Bombsquad
       43210
+
+      # DERP STUN
+      3478
     ];
     # extraCommands = ''
     #   # Commenting these out for now as these rules interfere with running
