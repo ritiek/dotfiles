@@ -16,12 +16,7 @@
     # ./../../../../modules/home/opencode.nix
   ];
 
-  nixpkgs.overlays = [
-    inputs.nur.overlays.default
-  ];
-
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
-    "crush"
     "claude-code"
   ];
 
@@ -76,8 +71,6 @@
       miniserve
       bore-cli
       iperf
-
-      nur.repos.charmbracelet.crush
     ];
   };
   programs = {
