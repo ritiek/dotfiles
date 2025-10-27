@@ -65,6 +65,7 @@
 
       miniserve
       bore-cli
+      iperf
     ];
   };
   programs = {
