@@ -104,6 +104,7 @@ in
       httrack
       yt-dlp
       mosquitto
+      iperf
 
       libgpiod
       i2c-tools

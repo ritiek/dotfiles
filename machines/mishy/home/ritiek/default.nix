@@ -214,6 +214,7 @@
       # wayvnc
       # wlvncc
       kooha
+      iperf
 
       nix-tree
 
