@@ -37,6 +37,7 @@
 
       miniserve
       bore-cli
+      iperf
     ];
   };
   
