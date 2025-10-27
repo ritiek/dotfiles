@@ -15,6 +15,16 @@
     # support Opencode. Commenting out for now.
     # ./../../../../modules/home/opencode.nix
   ];
+
+  nixpkgs.overlays = [
+    inputs.nur.overlays.default
+  ];
+
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
+    "crush"
+    "claude-code"
+  ];
+
   home = {
     stateVersion = "24.05";
     username = "ritiek";
@@ -66,6 +76,8 @@
       miniserve
       bore-cli
       iperf
+
+      nur.repos.charmbracelet.crush
     ];
   };
   programs = {
@@ -74,5 +86,6 @@
     jq.enable = true;
     ripgrep.enable = true;
     fd.enable = true;
+    claude-code.enable =true;
   };
 }
