@@ -120,7 +120,9 @@ in
         derp = {
           server = {
             enabled = true;
+            ipv4 = "188.130.207.234";
             stun_listen_addr = "0.0.0.0:3478";
+            # stun_listen_addr = "0.0.0.0:443";
             region_code = "headscale";
             region_name = "Headscale Embedded DERP";
             region_id = 999;
@@ -507,6 +509,7 @@ in
 
       # DERP STUN
       3478
+      41641
     ];
     # extraCommands = ''
     #   # Commenting these out for now as these rules interfere with running
