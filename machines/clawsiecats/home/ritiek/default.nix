@@ -28,9 +28,11 @@
       "/nix/persist/home/${config.home.username}/files" = {
         files = [
           ".zsh_history"
+          ".claude.json"
         ];
         directories = [
           ".ssh"
+          ".claude"
           # "ballistica-personal-release"
           {
             directory = "ballistica-personal-release";
