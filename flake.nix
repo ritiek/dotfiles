@@ -166,6 +166,11 @@
     };
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    # dawarich-home-assistant = {
+    #   url = "github:AlbinLind/dawarich-home-assistant";
+    #   flake = false;
+    # };
   };
 
   outputs = { self, ... }@inputs:

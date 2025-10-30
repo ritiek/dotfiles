@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   # Home Assistant configuration - SOPS encrypted
@@ -54,19 +54,95 @@
       "radio_browser"
       "pi_hole"
       "immich"
+      "qbittorrent"
+      "jellyfin"
+      "radarr"
+      "sonarr"
+      "overseerr"
+      "uptime_kuma"
       "mobile_app"
+      "http"
+      "frontend"
     ];
 
     extraPackages = python3Packages: with python3Packages; [
       pynacl
       pyjwt
+      gtts
+      # (buildPythonPackage rec {
+      #   pname = "dawarich_api";
+      #   version = "0.4.1";
+      #   pyproject = true;
+      #   build-system = [ setuptools ];
+      #   src = fetchPypi {
+      #     inherit pname version;
+      #     sha256 = "159e7b577f8bbcf992ed5a8439caafddcd9082e5518324fb3202c1fafbbd20b1";
+      #   };
+      #   doCheck = false;
+      #   propagatedBuildInputs = [ aiohttp pydantic ];
+      # })
     ];
 
-    config = null;
+    config = {
+      lovelace = {
+        mode = "storage";
+        resources = [
+          {
+            url = "/local/uptime-card/uptime-card.js";
+            type = "module";
+          }
+        ];
+      };
+    };
 
     # Config is managed via SOPS-encrypted file, not writable via UI
     configWritable = false;
+
   };
+
+  # Copy dawarich custom component to Home Assistant config directory
+  systemd.services.home-assistant.serviceConfig.ExecStartPre = [
+    ("+${pkgs.writeShellScript "install-dawarich" ''
+      mkdir -p /var/lib/hass/custom_components
+      if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then
+        cp -r ${pkgs.fetchFromGitHub {
+          owner = "AlbinLind";
+          repo = "dawarich-home-assistant";
+          rev = "main";
+          sha256 = "sha256-VliFRJFBut586xWpZSPQ8OrDttoFdrlZyHvktI6AjgM=";
+        }}/custom_components/dawarich /var/lib/hass/custom_components/
+        chown -R hass:hass /var/lib/hass/custom_components/dawarich
+      fi
+    ''}")
+    ("+${pkgs.writeShellScript "install-uptime-card" ''
+      mkdir -p /var/lib/hass/www/community/uptime-card
+      if [ ! -f "/var/lib/hass/www/community/uptime-card/uptime-card.js" ]; then
+        ${pkgs.curl}/bin/curl -L -o /var/lib/hass/www/community/uptime-card/uptime-card.js https://github.com/dylandoamaral/uptime-card/releases/download/v0.16.0/uptime-card.js
+        ${pkgs.curl}/bin/curl -L -o /var/lib/hass/www/community/uptime-card/uptime-card.js.map https://github.com/dylandoamaral/uptime-card/releases/download/v0.16.0/uptime-card.js.map
+        chown -R hass:hass /var/lib/hass/www/community/uptime-card
+      fi
+    ''}")
+    ("+${pkgs.writeShellScript "install-lovelace-resources" ''
+      mkdir -p /var/lib/hass/.storage
+      cat > /var/lib/hass/.storage/lovelace_resources << 'EOF'
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace_resources",
+  "data": {
+    "items": [
+      {
+        "url": "/local/uptime-card/uptime-card.js",
+        "type": "module",
+        "id": "uptime-card"
+      }
+    ]
+  }
+}
+EOF
+      chown hass:hass /var/lib/hass/.storage/lovelace_resources
+    ''}")
+  ];
 
   networking.firewall.allowedTCPPorts = [ 8123 ];
 }
