@@ -47,6 +47,13 @@ in
         value = 1;
       };
     };
+    # Settings currently on my Pi5.
+    # [all]
+    # BOOT_UART=1
+    # BOOT_ORDER=0xf461
+    # NET_INSTALL_AT_POWER_ON=1
+    # POWER_OFF_ON_HALT=1
+    # WAKE_ON_GPIO=0
     base-dt-params = {
       BOOT_UART = {
         value = 1;
