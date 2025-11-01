@@ -187,7 +187,7 @@
       modules = [
         ./machines/mishy
         ./machines/mishy/boot.nix
-        ./machines/mishy/hw-config.nix
+        ./machines/mishy/hw-config/fs-nvme.nix
       ];
       specialArgs = { inherit inputs; };
     };
@@ -200,6 +200,35 @@
       modules = [
         ./machines/mishy/home/ritiek
         { _module.args.hostName = "mishy"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
+    nixosConfigurations.mishy-usb = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/mishy
+        ./machines/mishy/boot.nix
+        ./machines/mishy/hw-config/disko-usb.nix
+        ./machines/mishy/impermanence.nix
+        inputs.disko.nixosModules.disko
+        inputs.impermanence.nixosModules.impermanence
+        {
+          networking.hostName = "mishy-usb";
+        }
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@mishy-usb" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+      };
+      modules = [
+        ./machines/mishy/home/ritiek
+        ./machines/mishy/home/ritiek/impermanence.nix
+        inputs.impermanence.nixosModules.home-manager.impermanence
+        { _module.args.hostName = "mishy-usb"; }
       ];
       extraSpecialArgs = { inherit inputs; };
     };
