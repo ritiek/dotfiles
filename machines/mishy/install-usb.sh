@@ -3,7 +3,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
-BASEDIR="$SCRIPT_DIR/mnt-usb"
+BASEDIR="$SCRIPT_DIR/mnt"
 
 if [ $# -lt 1 ]; then
     echo "Usage: $0 <disk-device> [--write-efi-boot-entries]"
@@ -65,13 +65,18 @@ ssh-keygen -y -f \
 echo "Copying NixOS configuration..."
 mkdir -p "$BASEDIR/nix/persist/system/etc/nixos"
 rsync -rl \
-  --exclude '*/mnt*' \
   --exclude '*/.git' \
   "$SCRIPT_DIR/../../" \
   "$BASEDIR/nix/persist/system/etc/nixos/"
 
 echo "$passphrase" > /tmp/disk.key
 chmod 600 /tmp/disk.key
+
+# Generate Yubikey salt for LUKS
+echo "Generating Yubikey salt..."
+SALT_LENGTH=16
+ITERATIONS=1000000
+salt="$(dd if=/dev/random bs=1 count=$SALT_LENGTH 2>/dev/null | od -An -vtx1 | tr -d ' \n')"
 
 echo ""
 echo "Running disko-install..."
@@ -88,6 +93,12 @@ fi
 
 eval "sudo $DISKO_CMD"
 
+# Store Yubikey salt on boot partition
+echo "Setting up Yubikey salt storage..."
+sudo mkdir -p /mnt/boot/crypt-storage
+echo -ne "$salt\n$ITERATIONS" | sudo tee /mnt/boot/crypt-storage/default > /dev/null
+sudo chmod 600 /mnt/boot/crypt-storage/default
+
 rm -f /tmp/disk.key
 
 echo ""
@@ -95,8 +106,10 @@ echo "Installation complete!"
 echo ""
 echo "Next steps:"
 echo "1. Reboot and select the USB drive in your boot menu"
-echo "2. Enter your LUKS passphrase at boot"
-echo "3. Log in as ritiek (password is empty, configure it!)"
+echo "2. Unlock LUKS with either:"
+echo "   - Your LUKS passphrase, OR"
+echo "   - Your Yubikey (slot 1, touch required)"
+echo "3. Log in as ritiek"
 echo "4. Run: sudo nixos-rebuild switch --flake /etc/nixos#mishy-usb"
 echo ""
 echo "Note: The system uses impermanence with tmpfs root."

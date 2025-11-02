@@ -159,6 +159,7 @@
       sops
       ssh-to-age
       yubikey-manager
+      yubikey-personalization
       rage
       age-plugin-yubikey
       age-plugin-fido2-hmac
