@@ -25,7 +25,7 @@
             ## Guidelines
             - Understand how the program runs through the various control flows defined
             - Perform thorough analysis of the code
-            - Only make changes to the code if absolutely necessary to debug better
+            - Only make changes to the code if absolutely necessary in order to debug better
             - Provide detailed debugging information
             - Suggest improvements for any issues found
             - Search on the Internet if you're not really 100% sure about something, especially

@@ -1,5 +1,53 @@
 { config, pkgs, lib, inputs, enableLEDs, ... }:
 
+# #!/bin/bash
+#
+# # CAP1208 I2C address
+# I2C_ADDR=0x28
+#
+# # I2C bus (1 for Raspberry Pi)
+# BUS=1
+#
+# # Register addresses
+# MAIN_CONTROL_REG=0x00
+# INPUT_STATUS_REG=0x03
+#
+# # Bitmasks for buttons
+# declare -A BUTTON_MAP=(
+#     [0]="Button 5"
+#     [1]="Button 6"
+#     [2]="Button 7"
+#     [3]="Button 8"
+#     [4]="Button 1"
+#     [5]="Button 2"
+#     [6]="Button 3"
+#     [7]="Button 4"
+# )
+#
+# echo "Monitoring capacitive touch buttons (CAP1208)..."
+# echo "Press Ctrl+C to exit."
+#
+# while true; do
+#     # Read input status (latched)
+#     raw_status=$(i2cget -y $BUS $I2C_ADDR $INPUT_STATUS_REG)
+#     status=$((raw_status))
+#
+#     if [ "$status" -ne 0 ]; then
+#         echo -n "Touched: "
+#         for i in {0..7}; do
+#             if (( (status >> i) & 1 )); then
+#                 echo -n "${BUTTON_MAP[$i]} "
+#             fi
+#         done
+#         echo ""
+#     fi
+#
+#     # Clear interrupt & latches by writing 0x00 to MAIN_CONTROL
+#     i2cset -y $BUS $I2C_ADDR $MAIN_CONTROL_REG 0x00 > /dev/null
+#
+#     sleep 0.1
+# done
+
 let
   bme680Script = pkgs.writeText "bme680_reader.py" ''
     #!/usr/bin/env python3
