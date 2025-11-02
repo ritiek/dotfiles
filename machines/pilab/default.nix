@@ -61,6 +61,7 @@
     ./compose/glances.nix
     ./compose/calibre-web-automated
     ./compose/calibre-web-automated-book-downloader.nix
+    ./compose/audiobookshelf.nix
     # ./compose/kopia
   ];
 
