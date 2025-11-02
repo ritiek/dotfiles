@@ -55,6 +55,8 @@
   #   senderMailAddress = "ritiekmalhotra123@gmail.com";
   # };
 
+  sops.secrets.ritiek_password_hash = {};
+
   # Select internationalisation properties.
   i18n = {
     defaultLocale = "en_US.UTF-8";
@@ -102,7 +104,7 @@
     users.ritiek = {
       isNormalUser = true;
       description = "Ritiek Malhotra";
-      password = "";
+      hashedPasswordFile = config.sops.secrets."ritiek_password_hash".path;
       extraGroups = [
         # "networkmanager"
         "wheel"
@@ -305,7 +307,6 @@
         steam   # For gamepads like DS4?
         swayosd
         # android-tools
-        # yubikey-personalization
       ];
       extraRules = ''
       #   # FIXME: Try getting ADB to work non-root users.

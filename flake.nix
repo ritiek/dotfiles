@@ -214,7 +214,7 @@
         inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
         {
-          networking.hostName = "mishy-usb";
+          networking.hostName = inputs.nixpkgs.lib.mkForce "mishy-usb";
         }
       ];
       specialArgs = { inherit inputs; };
