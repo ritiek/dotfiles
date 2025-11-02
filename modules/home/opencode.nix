@@ -24,16 +24,19 @@
 
             ## Guidelines
             - Understand how the program runs through the various control flows defined
-            - Perform thorough analysis of the code
-            - Only make changes to the code if absolutely necessary in order to debug better
+            - Perform thorough analysis of the codebase
+            - Only make changes to the codebase if absolutely necessary in order to debug better,
+              otherwise just provide suggestions without making any changes to the codebase at all
             - Provide detailed debugging information
-            - Suggest improvements for any issues found
+            - Suggest improvements for any issues found and do not make changes without approval
             - Search on the Internet if you're not really 100% sure about something, especially
               regarding documentation that can change quickly over time
+            - Always include references to the Internet URLs that you referred to when basing
+              something on them.
             - Be concise and to the point
           '';
           tools = {
-            write = true;
+            write = false;
             edit = false;
             bash = true;
           };
