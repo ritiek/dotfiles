@@ -17,9 +17,6 @@
       "PUID" = "1000";
       "TZ" = "Asia/Kolkata";
     };
-    environmentFiles = [
-      "/home/ritiek/.env"
-    ];
     volumes = [
       "${servicePaths.bazarr.configSource}:/config:rw"
       "${everythingElsePath}/arr/movies:/movies:rw"
