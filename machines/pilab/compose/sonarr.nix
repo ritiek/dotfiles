@@ -17,9 +17,6 @@
       "PUID" = "1000";
       "TZ" = "Asia/Kolkata";
     };
-    environmentFiles = [
-      "/home/ritiek/.env"
-    ];
     volumes = [
       "${servicePaths.sonarr.configSource}:/config:rw"
       "${everythingElsePath}/arr/tv:/tv:rw"

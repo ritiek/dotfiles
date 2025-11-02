@@ -58,6 +58,9 @@
     ./compose/bazarr.nix
     ./compose/prowlarr.nix
     ./compose/jellyseerr.nix
+    ./compose/glances.nix
+    ./compose/calibre-web-automated
+    ./compose/calibre-web-automated-book-downloader.nix
     # ./compose/kopia
   ];
 

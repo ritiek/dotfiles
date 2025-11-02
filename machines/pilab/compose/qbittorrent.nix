@@ -19,9 +19,6 @@
       "TZ" = "Asia/Kolkata";
       "WEBUI_PORT" = "9082";
     };
-    environmentFiles = [
-      "/home/ritiek/.env"
-    ];
     volumes = [
       "${everythingElsePath}/qbittorrent/config:/config:rw"
       "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"

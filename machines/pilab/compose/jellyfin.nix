@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, servicePaths, everythingElsePath, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -17,13 +17,12 @@
       "PUID" = "1000";
       "TZ" = "Asia/Kolkata";
     };
-    environmentFiles = [
-      "/home/ritiek/.env"
-    ];
     volumes = [
       "${servicePaths.jellyfin.configSource}:/config:rw"
       "${everythingElsePath}/arr/movies:/data/movies:rw"
       "${everythingElsePath}/arr/tv:/data/tvshows:rw"
+      "${homelabMediaPath}/services/spotdl:/data/music:rw"
+      "${homelabMediaPath}/services/immich/photos/library:/data/photos:rw"
     ];
     ports = [
       "8096:8096/tcp"
