@@ -23,13 +23,13 @@
   #   '';
   # };
 
-  sops.secrets."configuration" = {
-    sopsFile = ./configuration.yaml;
-    owner = "hass";
-    group = "hass";
-    path = "/var/lib/hass/configuration.yaml";
-    restartUnits = [ "home-assistant.service" ];
-  };
+  # sops.secrets."configuration" = {
+  #   sopsFile = ./configuration.yaml;
+  #   owner = "hass";
+  #   group = "hass";
+  #   path = "/var/lib/hass/configuration.yaml";
+  #   restartUnits = [ "home-assistant.service" ];
+  # };
 
   services.mosquitto = {
     enable = true;
@@ -52,6 +52,8 @@
       "esphome"
       "mqtt"
       "radio_browser"
+      "recorder"
+      "history"
       "pi_hole"
       "immich"
       "qbittorrent"
@@ -63,27 +65,41 @@
       "mobile_app"
       "http"
       "frontend"
+      "raspberry_pi"
+      "spotify"
+      "tailscale"
+      "glances"
+      # "geojson"
+      "syncthing"
     ];
 
     extraPackages = python3Packages: with python3Packages; [
       pynacl
       pyjwt
       gtts
-      # (buildPythonPackage rec {
-      #   pname = "dawarich_api";
-      #   version = "0.4.1";
-      #   pyproject = true;
-      #   build-system = [ setuptools ];
-      #   src = fetchPypi {
-      #     inherit pname version;
-      #     sha256 = "159e7b577f8bbcf992ed5a8439caafddcd9082e5518324fb3202c1fafbbd20b1";
-      #   };
-      #   doCheck = false;
-      #   propagatedBuildInputs = [ aiohttp pydantic ];
-      # })
+      (buildPythonPackage rec {
+        pname = "dawarich_api";
+        version = "0.4.1";
+        pyproject = true;
+        build-system = [ setuptools ];
+        src = fetchPypi {
+          inherit pname version;
+          sha256 = "159e7b577f8bbcf992ed5a8439caafddcd9082e5518324fb3202c1fafbbd20b1";
+        };
+        doCheck = false;
+        propagatedBuildInputs = [ aiohttp pydantic ];
+      })
     ];
 
     config = {
+      homeassistant = {
+        name = "Home";
+        latitude = 19.1280123;
+        longitude = 72.8590069;
+        radius = 60;
+        unit_system = "metric";
+        time_zone = "Asia/Kolkata";
+      };
       lovelace = {
         mode = "storage";
         resources = [
@@ -92,6 +108,24 @@
             type = "module";
           }
         ];
+      };
+      recorder = {};
+      history = {};
+      http = {
+        server_host = "0.0.0.0";
+        server_port = 8123;
+        cors_allowed_origins = [ "*" ];
+        use_x_forwarded_for = true;
+        trusted_proxies = [
+          "127.0.0.1"
+          "::1"
+          "10.0.0.0/8"
+          "172.16.0.0/12"
+          "192.168.0.0/16"
+          "100.64.0.0/10"
+        ];
+        ip_ban_enabled = false;
+        base_url = "https://ha.clawsiecats.lol/";
       };
     };
 
@@ -102,18 +136,18 @@
 
   # Copy dawarich custom component to Home Assistant config directory
   systemd.services.home-assistant.serviceConfig.ExecStartPre = [
-    ("+${pkgs.writeShellScript "install-dawarich" ''
-      mkdir -p /var/lib/hass/custom_components
-      if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then
-        cp -r ${pkgs.fetchFromGitHub {
-          owner = "AlbinLind";
-          repo = "dawarich-home-assistant";
-          rev = "main";
-          sha256 = "sha256-VliFRJFBut586xWpZSPQ8OrDttoFdrlZyHvktI6AjgM=";
-        }}/custom_components/dawarich /var/lib/hass/custom_components/
-        chown -R hass:hass /var/lib/hass/custom_components/dawarich
-      fi
-    ''}")
+    # ("+${pkgs.writeShellScript "install-dawarich" ''
+    #   mkdir -p /var/lib/hass/custom_components
+    #   if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then
+    #     cp -r ${pkgs.fetchFromGitHub {
+    #       owner = "AlbinLind";
+    #       repo = "dawarich-home-assistant";
+    #       rev = "main";
+    #       sha256 = "sha256-VliFRJFBut586xWpZSPQ8OrDttoFdrlZyHvktI6AjgM=";
+    #     }}/custom_components/dawarich /var/lib/hass/custom_components/
+    #     chown -R hass:hass /var/lib/hass/custom_components/dawarich
+    #   fi
+    # ''}")
     ("+${pkgs.writeShellScript "install-uptime-card" ''
       mkdir -p /var/lib/hass/www/community/uptime-card
       if [ ! -f "/var/lib/hass/www/community/uptime-card/uptime-card.js" ]; then

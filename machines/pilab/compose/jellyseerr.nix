@@ -16,9 +16,6 @@
       "LOG_LEVEL" = "debug";
       "TZ" = "Asia/Kolkata";
     };
-    environmentFiles = [
-      "/home/ritiek/.env"
-    ];
     volumes = [
       "${servicePaths.jellyseerr.configSource}:/app/config:rw"
     ];

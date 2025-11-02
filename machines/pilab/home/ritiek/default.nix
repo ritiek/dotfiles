@@ -167,6 +167,9 @@ in
           systemctl start docker-bazarr.service
           systemctl start docker-prowlarr.service
           systemctl start docker-jellyseerr.service
+          systemctl start docker-glances.service
+          systemctl start docker-calibre-web-automated.service
+          systemctl start docker-calibre-web-automated-book-downloader.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -221,7 +224,11 @@ in
         systemctl stop docker-compose-bazarr-root.target
         systemctl stop docker-compose-prowlarr-root.target
         systemctl stop docker-compose-jellyseerr-root.target
+        systemctl stop docker-compose-glances-root.target
+        systemctl stop compose-compose-calibre-web-automated-root.target
+        systemctl stop docker-compose-calibre-web-automated-book-downloader-root.target
         # systemctl stop docker-compose-kopia-root.target
+
 
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.timer
         machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user stop spotdl-sync.service
