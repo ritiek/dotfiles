@@ -45,7 +45,7 @@
       "--network=calibre-web-automated_default"
     ];
     labels = {
-      "homepage.description" = "Books";
+      "homepage.description" = "Read books";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:8083";
       "homepage.icon" = "calibre-web";
