@@ -33,7 +33,7 @@
       "--network=audiobookshelf_default"
     ];
     labels = {
-      "homepage.description" = "Read books";
+      "homepage.description" = "Read books & listen to audiobooks";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:13378";
       "homepage.icon" = "audiobookshelf";
