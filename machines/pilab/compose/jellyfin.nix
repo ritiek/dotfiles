@@ -23,6 +23,7 @@
       "${everythingElsePath}/arr/tv:/data/tvshows:rw"
       "${homelabMediaPath}/services/spotdl:/data/music:rw"
       "${homelabMediaPath}/services/immich/photos/library:/data/photos:rw"
+      "${homelabMediaPath}/services/calibre/library:/data/books:rw"
     ];
     ports = [
       "8096:8096/tcp"
