@@ -71,12 +71,17 @@
       "glances"
       # "geojson"
       "syncthing"
+      "mcp_server"
     ];
 
     extraPackages = python3Packages: with python3Packages; [
       pynacl
       pyjwt
       gtts
+      # Required for MCP Server integration
+      aiohttp-sse
+      mcp
+      anyio
       (buildPythonPackage rec {
         pname = "dawarich_api";
         version = "0.4.1";
