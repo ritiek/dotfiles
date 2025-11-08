@@ -4,6 +4,7 @@
   imports = [
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./hw-config.nix
     ./home
     ./services-paths.nix
     ./services/restic.nix
