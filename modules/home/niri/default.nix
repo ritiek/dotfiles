@@ -27,6 +27,13 @@ in
     xwayland-satellite
     rose-pine-cursor
     gotify-desktop
+
+    # Wrapper to disable NVIDIA offload (use Intel GPU instead)
+    # for screenshare to work.
+    (pkgs.writeShellScriptBin "nvidia-unoffload" ''
+      export __NV_PRIME_RENDER_OFFLOAD=0
+      exec "$@"
+    '')
   ];
 
   xdg.configFile."niri/config.kdl".text = ''
