@@ -516,7 +516,7 @@ in
     };
     Timer = {
       OnBootSec = "5m";
-      OnUnitActiveSec = "30m";
+      OnUnitActiveSec = "180m";
       Unit = "dns-resolution.service";
     };
     Install = {
