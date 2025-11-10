@@ -14,7 +14,8 @@
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
-    ./../../../../modules/home/zellij.nix
+    # ./../../../../modules/home/zellij.nix
+    ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/rofi.nix
@@ -29,6 +30,8 @@
     ./../../../../modules/home/glava
     ./../../../../modules/home/sioyek.nix
     ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/direnv.nix
+    ./../../../../modules/home/rbw.nix
   ];
 
   # TODO: Make adjustments and set this to false.
@@ -136,7 +139,7 @@
       android-tools
       android-studio
       unstable.libreoffice-fresh
-      whatsapp-for-linux
+      # wasistlos
       # thunderbird-bin
       # Looks like this available only for darwin:
       # libreoffice-bin
@@ -182,16 +185,16 @@
       python312Packages.ipython
       python312Packages.bk7231tools
 
-      rustc
-      cargo
-      rustfmt
-      clippy
-      go
+      # rustc
+      # cargo
+      # rustfmt
+      # clippy
+      # go
 
-      gcc
-      gnumake
-      cmake
-      texlive.combined.scheme-full
+      # gcc
+      # gnumake
+      # cmake
+      # texlive.combined.scheme-full
       pavucontrol
       # dbeaver-bin
       # sqlitebrowser

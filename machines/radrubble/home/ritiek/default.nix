@@ -5,10 +5,12 @@
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
-    ./../../../../modules/home/zellij.nix
+    # ./../../../../modules/home/zellij.nix
+    ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/direnv.nix
   ];
   
   nixpkgs.config.allowUnfree = true;
