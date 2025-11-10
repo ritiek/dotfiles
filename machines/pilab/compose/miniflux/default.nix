@@ -64,6 +64,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--add-host=host.docker.internal:host-gateway"
       "--health-cmd=[\"/usr/bin/miniflux\",\"-healthcheck\",\"auto\"]"
       "--network-alias=miniflux"
       "--network=miniflux_default"
