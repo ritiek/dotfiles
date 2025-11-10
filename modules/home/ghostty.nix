@@ -1,6 +1,8 @@
 {
   programs.ghostty = {
     enable = true;
+    # TODO: Enable systemd service when it I've my updated my nixpkgs flake.
+    # systemd = true;
     enableZshIntegration = true;
     installVimSyntax = true;
     settings = {
@@ -24,9 +26,14 @@
       # window-inherit-working-directory = true;
       # quick-terminal-screen = "main";
       # keybind = "ctrl+f=toggle_quick_terminal";
-      keybind = "unconsumed:ctrl+shift+j=ignore";
       term = "xterm-256color";
       theme = "dracula";
+
+      keybind = [
+        "unconsumed:ctrl+shift+j=ignore"
+        "ctrl+f=write_scrollback_file:copy"
+        # "ctrl+f=write_scrollback_file:paste"
+      ];
     };
 
     themes.dracula = {
