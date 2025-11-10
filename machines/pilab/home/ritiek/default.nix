@@ -160,7 +160,8 @@ in
           # systemctl start docker-simplexchat-xftp-server.service docker-simplexchat-smp-server.service
           systemctl start autostart-nitter.service
           systemctl start autostart-mealie.service
-          systemctl start autostart-karakeep.service
+          # systemctl start autostart-karakeep.service
+          systemctl start docker-karakeep.service
           systemctl start docker-n8n-worker.service
           # systemctl start docker-transmission.service
           systemctl start docker-qbittorrent.service
@@ -218,7 +219,8 @@ in
         systemctl stop docker-compose-simplexchat-xftp-server-root.target docker-compose-simplexchat-smp-server-root.target
         systemctl stop autostart-nitter.service docker-compose-nitter-root.target
         systemctl stop autostart-mealie.service docker-compose-mealie-root.target
-        systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
+        # systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
+        systemctl stop docker-compose-karakeep-root.target
         systemctl stop docker-compose-n8n-root.target
         # systemctl stop docker-compose-transmission-root.target
         systemctl stop docker-compose-qbittorrent-root.target
