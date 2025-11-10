@@ -735,6 +735,26 @@
         "type": "github"
       }
     },
+    "mcp-servers-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762777791,
+        "narHash": "sha256-7shlHizRTcHT+qRMVKMSY0Fv5kVpKy7/wQLzQKvPYuo=",
+        "owner": "natsukium",
+        "repo": "mcp-servers-nix",
+        "rev": "755fa76231ef313ffec7d2df709b411f492b4454",
+        "type": "github"
+      },
+      "original": {
+        "owner": "natsukium",
+        "repo": "mcp-servers-nix",
+        "type": "github"
+      }
+    },
     "nix-index-database": {
       "inputs": {
         "nixpkgs": [
@@ -1023,6 +1043,23 @@
         "type": "github"
       }
     },
+    "rbw": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1757680732,
+        "narHash": "sha256-W+XnriAdCao8OVUz7Wz3+aVQUXP+4WCJNvuMs1MMHuY=",
+        "owner": "natsukagami",
+        "repo": "rbw",
+        "rev": "4f654938d1845d1be51a02791914227c3862d0e4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "natsukagami",
+        "ref": "fix-repeat-password-prompt",
+        "repo": "rbw",
+        "type": "github"
+      }
+    },
     "rockchip": {
       "inputs": {
         "nixpkgsStable": "nixpkgsStable",
@@ -1058,6 +1095,7 @@
         "hyprutils": "hyprutils_2",
         "impermanence": "impermanence",
         "lib-aggregate": "lib-aggregate",
+        "mcp-servers-nix": "mcp-servers-nix",
         "nix-index-database": "nix-index-database",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
@@ -1066,6 +1104,7 @@
         "nur": "nur",
         "pi400kb-nix": "pi400kb-nix",
         "raspberry-pi-nix": "raspberry-pi-nix",
+        "rbw": "rbw",
         "rockchip": "rockchip",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "simple-nixos-mailserver": "simple-nixos-mailserver",

@@ -7,7 +7,8 @@
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
-    ./../../../../modules/home/zellij.nix
+    # ./../../../../modules/home/zellij.nix
+    ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
   ];

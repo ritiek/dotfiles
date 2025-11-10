@@ -8,12 +8,14 @@
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
-    ./../../../../modules/home/zellij.nix
+    # ./../../../../modules/home/zellij.nix
+    ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
     # XXX: Looks like HostVDS $1.99 VPS uses a CPU with older instruction set that doesn't
     # support Opencode. Commenting out for now.
     # ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/direnv.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [

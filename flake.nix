@@ -167,6 +167,19 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
+    mcp-servers-nix = {
+      url = "github:natsukium/mcp-servers-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # XXX: Switch back to vanilla rbw from nixpkgs once this PR gets merged
+    # and released:
+    # https://github.com/doy/rbw/pull/280
+    rbw = {
+      url = "github:natsukagami/rbw/fix-repeat-password-prompt";
+      flake = false;
+    };
+
     # dawarich-home-assistant = {
     #   url = "github:AlbinLind/dawarich-home-assistant";
     #   flake = false;
