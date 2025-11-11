@@ -4,6 +4,7 @@
     source =  ./allowed_signers;
     target = "${config.home.homeDirectory}/.ssh/allowed_signers";
   };
+
   programs.git = {
     enable = true;
     userName = "Ritiek Malhotra";
@@ -39,5 +40,10 @@
         # diff-so-fancy = true;
       };
     };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
   };
 }
