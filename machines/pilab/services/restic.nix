@@ -195,8 +195,8 @@ in
       # ${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
     '';
     timerConfig = {
-      # Every 20 minutes
-      OnCalendar = "*:0/20";
+      # Every 40 minutes
+      OnCalendar = "*:0/40";
       Persistent = true;
     };
   };
