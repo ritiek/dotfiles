@@ -166,7 +166,7 @@
       libnotify
       lshw
       pv
-      glxinfo
+      mesa-demos
       sof-firmware
       intel-gpu-tools
       cpulimit
@@ -366,7 +366,6 @@
 
     nix-ld = {
       enable = true;
-      package = pkgs.nix-ld-rs;
       libraries = with pkgs; [
         # Bombsquad Game.
         # Now installing these packages using Lutris in home-manager.
