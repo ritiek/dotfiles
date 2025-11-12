@@ -127,7 +127,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8pxSJhzTQav5ZHhaqDMy3zMcOBRyXdvNAE2gXM8y6h"
       ];
       packages = [
-        inputs.home-manager.packages.${pkgs.system}.default
+        inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
   };
@@ -177,7 +177,7 @@
       xdg-desktop-portal
       xdg-desktop-portal-hyprland
 
-      inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+      inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     # variables.EDITOR = "nvim";
@@ -357,8 +357,8 @@
     neovim.enable = true;
     # hyprland = {
     #   enable = true;
-    #   # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-    #   # portalPackage = inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
+    #   # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    #   # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     #   xwayland.enable = true;
     # };
     zsh.enable = true;

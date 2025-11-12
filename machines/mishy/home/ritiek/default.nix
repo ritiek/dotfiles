@@ -223,7 +223,7 @@
       nix-tree
 
       deploy-rs
-      # inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+      # inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
       nur.repos.nltch.spotify-adblock
@@ -231,7 +231,7 @@
       # ritiek.spotify-adblock
 
       # nur.repos.kira-bruneau.habitica
-      # inputs.ghostty.packages."${pkgs.system}".default
+      # inputs.ghostty.packages."${pkgs.stdenv.hostPlatform.system}".default
 
       # local.BK7231GUIFlashTool
     ];
