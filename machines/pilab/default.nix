@@ -106,7 +106,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8pxSJhzTQav5ZHhaqDMy3zMcOBRyXdvNAE2gXM8y6h"
       ];
       packages = [
-        inputs.home-manager.packages.${pkgs.system}.default
+        inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
 
@@ -116,7 +116,7 @@
         "wheel"
       ];
       packages = [
-        inputs.home-manager.packages.${pkgs.system}.default
+        inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
   };
