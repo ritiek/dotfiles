@@ -12,8 +12,8 @@
   };
 
   boot.loader.grub.enable = true;
-  boot.loader.grib.device = "/dev/sda";;
-  boot.loader.grib.useOSProber = true;
+  boot.loader.grub.device = "/dev/sda";
+  boot.loader.grub.useOSProber = true;
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "xhci_pci" "usbhid" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
