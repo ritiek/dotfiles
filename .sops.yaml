@@ -85,6 +85,13 @@ creation_rules:
     pgp: *ritiek
     age: *keyberry
 
+  - path_regex: machines/rig/secrets\.yaml$
+    pgp: *ritiek
+    age: *rig
+  - path_regex: machines/rig/home/.*/secrets\.yaml$
+    pgp: *ritiek
+    age: *rig
+
   - path_regex: machines/zerostash/secrets\.yaml$
     pgp: *ritiek
     age: *zerostash

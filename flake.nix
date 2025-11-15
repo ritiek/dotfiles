@@ -343,6 +343,27 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.rig = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/rig
+        ./machines/rig/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@rig" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/rig/home/ritiek
+        { _module.args.hostName = "rig"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.zerostash = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -416,6 +437,15 @@
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.keyberry;
+      };
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.rig = {
+      hostname = "rig.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.rig;
       };
       sshUser = "ritiek";
     };

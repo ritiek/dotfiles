@@ -151,7 +151,6 @@
       # Superseded by programs.ssh.startAgent = true;
       # keychain
 
-      btop
       parted
       gparted
       xclip
@@ -305,7 +304,6 @@
 
     udev = {
       packages = with pkgs; [
-        steam   # For gamepads like DS4?
         swayosd
         # android-tools
       ];
@@ -354,8 +352,6 @@
       # enableSSHSupport = true;
     };
 
-    git.enable = true;
-    neovim.enable = true;
     # hyprland = {
     #   enable = true;
     #   # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
