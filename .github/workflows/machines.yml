@@ -146,6 +146,31 @@ jobs:
         run: |
           nix build --fallback .#nixosConfigurations.keyberry.config.system.build.toplevel
 
+  rig:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bind mount /nix
+        run: |
+          sudo mkdir /mnt/nix /nix
+          sudo chmod 0755 /nix
+          sudo mount --bind /mnt/nix /nix
+      - name: Install Nix
+        uses: cachix/install-nix-action@v27
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Attic cache
+        uses: ritiek/attic-action@main
+        with:
+          endpoint: https://attic.clawsiecats.lol/
+          cache: attic-action
+          create: true
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#rig"
+        run: |
+          nix build --fallback .#nixosConfigurations.rig.config.system.build.toplevel
+
   zerostash:
     runs-on: ubuntu-24.04-arm
     steps:
