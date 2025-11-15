@@ -233,7 +233,7 @@
       };
     };
 
-    displayManager.autlogin = {
+    displayManager.autLogin = {
       enable = true;
       user = "ritiek";
     };
@@ -317,7 +317,9 @@
   programs = {
     firefox.enable = true;
     nix-index-database.comma.enable = true;
-    ssh.startAgent = true;
+    # XXX: Had to disable this otherwise it conflicts with gnome display manager
+    #      and breaks config rebuild.
+    # ssh.startAgent = true;
     gnupg.agent = {
       enable = true;
       # pinentryPackage = lib.mkForce pkgs.pinentry-qt;

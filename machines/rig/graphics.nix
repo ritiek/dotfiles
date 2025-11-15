@@ -8,7 +8,7 @@
       intel-media-driver  # LIBVA_DRIVER_NAME=iHD
       intel-vaapi-driver  # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       nvidia-vaapi-driver # LIBVA_DRIVER_NAME=not_sure...
-      vaapiVdpau
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
     # driSupport = true;
