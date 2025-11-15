@@ -40,6 +40,11 @@
       inputs.nixos-hardware.follows = "nixos-hardware";
     };
 
+    # apollo-flake = {
+    #   url = "github:nil-andreas/apollo-flake";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+
     # nixgl = {
     #   url = "github:nix-community/nixGL";
     #   inputs.nixpkgs.follows = "nixpkgs";
