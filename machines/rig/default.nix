@@ -6,9 +6,8 @@
 
 {
   time.timeZone = "Asia/Kolkata";
-  networking.hostName = "mishy";
+  networking.hostName = "rig";
 
-  # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.overlays = [
@@ -44,17 +43,10 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/ssh.nix
-    ./../../modules/yubico-pam.nix
-    ./../../modules/usbip.nix
-    ./../../modules/sunshine.nix
-    # ./../../modules/mullvad.nix
-    # inputs.shabitica-nix.nixosModules."x86_64-linux".default
+    # ./../../modules/yubico-pam.nix
+    # ./../../modules/usbip.nix
+    # ./../../modules/sunshine.nix
   ];
-
-  # shabitica = {
-  #   adminMailAddress = "ritiekmalhotra123@gmail.com";
-  #   senderMailAddress = "ritiekmalhotra123@gmail.com";
-  # };
 
   sops.secrets.ritiek_password_hash = {};
 
@@ -74,7 +66,6 @@
     };
   };
 
-  # Enable networking
   networking = {
     networkmanager.enable = true;
 
@@ -105,7 +96,8 @@
     users.ritiek = {
       isNormalUser = true;
       description = "Ritiek Malhotra";
-      hashedPasswordFile = config.sops.secrets."ritiek_password_hash".path;
+      # hashedPasswordFile = config.sops.secrets."ritiek_password_hash".path;
+      password = "test";
       extraGroups = [
         # "networkmanager"
         "wheel"
@@ -175,9 +167,6 @@
 
       xdg-utils
       xdg-desktop-portal
-      xdg-desktop-portal-hyprland
-
-      inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     # variables.EDITOR = "nvim";
@@ -190,6 +179,10 @@
 
   systemd = {
     services = {
+      # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+      "getty@tty1".enable = false;
+      "autovt@tty1".enable = false;
+
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
         enable = true;
@@ -228,6 +221,23 @@
   };
 
   services = {
+    # Enable the X11 windowing system.
+    xserver = {
+      enable = true;
+      # Enable the GNOME Desktop Environment.
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
+
+    displayManager.autlogin = {
+      enable = true;
+      user = "ritiek";
+    };
+
     openssh = {
       enable = true;
       startWhenNeeded = true;
@@ -253,8 +263,6 @@
     # swayosd.enable = true;
 
     tailscale.enable = true;
-
-    blueman.enable = true;
 
     upower.enable = true;
 
@@ -302,47 +310,12 @@
     #   xkbVariant = "";
     # };
 
-    udev = {
-      packages = with pkgs; [
-        swayosd
-        # android-tools
-      ];
-      extraRules = ''
-      #   # FIXME: Try getting ADB to work non-root users.
-      #   SUBSYSTEM=="usb", ATTR{idVendor}=="22b8", ATTR{idProduct}=="2e81", MODE="0666", GROUP="plugdev"
-      #   # FIXME: Auto-lock screen on unplugging Yubikey.
-      #   ACTION=="remove",\
-      #    ENV{ID_BUS}=="usb",\
-      #    ENV{ID_MODEL_ID}=="0402",\
-      #    ENV{ID_VENDOR_ID}=="1050",\
-      #    ENV{ID_VENDOR}=="Yubico",\
-      #    RUN+="${pkgs.libnotify}/bin/notify-send locking"
-      '';
-      # # RUN+="${pkgs.procps} hyprlock || ${pkgs.unstable.hyprlock}/bin/hyprlock"
-    };
-
     # Allows `calibre` to detect attached Kindle devices.
     udisks2.enable = true;
   };
 
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    wlr.enable = true;
-    config = {
-      common.default = [ "hyprland" ];
-      hyprland.default = [ "gtk" "hyprland" ];
-      niri.default = [ "gtk" "hyprland" ];
-    };
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal-hyprland
-      # xdg-desktop-portal-gnome
-    ];
-    # gtkUsePortal = true;
-  };
-
   programs = {
+    firefox.enable = true;
     nix-index-database.comma.enable = true;
     ssh.startAgent = true;
     gnupg.agent = {
@@ -352,12 +325,6 @@
       # enableSSHSupport = true;
     };
 
-    # hyprland = {
-    #   enable = true;
-    #   # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    #   # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    #   xwayland.enable = true;
-    # };
     zsh.enable = true;
     traceroute.enable = true;
 
@@ -389,35 +356,30 @@
       enable = true;
       enableRenice = true;
     };
-
-    yubikey-touch-detector = {
-      enable = true;
-      libnotify = true;
-    };
   };
 
   # Disable blueman autostart for all users
-  environment.etc."xdg/autostart/blueman.desktop" = lib.mkIf config.services.blueman.enable {
-    text = ''
-      [Desktop Entry]
-      Type=Application
-      Name=Blueman Applet
-      Comment=Bluetooth Manager
-      Icon=blueman
-      Exec=blueman-applet
-      Terminal=false
-      StartupNotify=false
-      NoDisplay=true
-      Hidden=true
-    '';
-  };
+  # environment.etc."xdg/autostart/blueman.desktop" = lib.mkIf config.services.blueman.enable {
+  #   text = ''
+  #     [Desktop Entry]
+  #     Type=Application
+  #     Name=Blueman Applet
+  #     Comment=Bluetooth Manager
+  #     Icon=blueman
+  #     Exec=blueman-applet
+  #     Terminal=false
+  #     StartupNotify=false
+  #     NoDisplay=true
+  #     Hidden=true
+  #   '';
+  # };
 
   security = {
     sudo.enable = false;
     sudo-rs.enable = true;
 
     rtkit.enable = true;
-    polkit.enable = true;
+    # polkit.enable = true;
   };
 
   fonts = {
@@ -444,7 +406,7 @@
     # this value at the release version of the first install of this system.
     # Before changing this value read the documentation for this option
     # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-    stateVersion = "23.11"; # Did you read the comment?
+    stateVersion = "25.05"; # Did you read the comment?
     autoUpgrade = {
       enable = false;
       channel = "https://nixos.org/channels/nixos-unstable";
@@ -467,9 +429,11 @@
 
   systemd.settings.Manager.RuntimeWatchdogSec = 360;
 
-  # Force Wayland on all apps.
-  environment.sessionVariables = {
-    NIXOS_OZONE_WL = "1";
-    # WAYLAND_DISPLAY = "wayland-1";
-  };
+  # services.ollama.enable = true;
+  # services.ollama.acceleration = "cuda";
+  # services.ollama.package = pkgs.ollama-cuda;
+  # services.ollama.host = "0.0.0.0";
+  #
+  # services.open-webui.enable = true;
+  # services.open-webui.host = "0.0.0.0";
 }
