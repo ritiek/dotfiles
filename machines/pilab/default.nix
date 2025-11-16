@@ -6,6 +6,7 @@
     inputs.nix-index-database.nixosModules.nix-index
     ./hw-config.nix
     ./home
+    # ./pipewire-fix.nix
     ./services-paths.nix
     ./services/restic.nix
     ./services/lsyncd.nix
@@ -28,6 +29,7 @@
     ./compose/paperless-ngx
     ./compose/forgejo
     ./compose/vaultwarden
+    ./compose/backvault
     ./compose/navidrome.nix
     ./compose/memos.nix
     ./compose/syncthing.nix

@@ -39,6 +39,8 @@ in
     # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
     # kernel-version = "v6_12_17";
     # kernel-version = "v6_6_78";
+    # So sticking with this older kernel for now.
+    kernel-version = "v6_6_51";
   };
   hardware.raspberry-pi.config.all = {
     options = {

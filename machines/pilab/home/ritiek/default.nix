@@ -51,7 +51,7 @@ in
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
-    ./../../../../modules/home/rbw.nix
+    # ./../../../../modules/home/rbw.nix
   ];
 
   nixpkgs.config.allowUnfree = false;
@@ -128,6 +128,7 @@ in
         set -x
         homelab-mount && (
           systemctl start autostart-vaultwarden.service
+          systemctl start docker-backvault.service
           # systemctl start docker-dashy.service
           systemctl start autostart-homepage.service
           systemctl start docker-pihole.service
@@ -190,6 +191,7 @@ in
       (writeShellScriptBin "homelab-stop" ''
         set -x
         systemctl stop autostart-vaultwarden.service docker-compose-vaultwarden-root.target
+        systemctl stop docker-compose-backvault-root.target
         # systemctl stop docker-compose-dashy-root.target
         systemctl stop autostart-homepage.service docker-compose-homepage-root.target
         systemctl stop docker-compose-pihole-root.target
