@@ -24,7 +24,7 @@
       config.sops.secrets."compose/backvault.env".path
     ];
     volumes = [
-      "${homelabMediaPath}/services/backvault/backups:/app/backups:rw"
+      "${homelabMediaPath}/services/backvault/backups/exports:/app/backups:rw"
       "${homelabMediaPath}/services/backvault/db:/app/db:rw"
     ];
     # ports = [

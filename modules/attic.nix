@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   sops.secrets."atticd.env" = {};
 
@@ -25,6 +25,10 @@
     };
   };
 
+  # Disable PrivateUsers to allow access to root-owned mount point
+  # while maintaining other security hardening features.
+  systemd.services.atticd.serviceConfig.PrivateUsers = lib.mkForce false;
+
   fileSystems.nix-binary-cache = {
     mountPoint = "/media/${config.fileSystems.nix-binary-cache.label}";
     device = "/dev/disk/by-label/${config.fileSystems.nix-binary-cache.label}";
@@ -39,6 +43,14 @@
       "x-systemd.mount-timeout=5s"
     ];
   };
+
+
+  # Set world-writable permissions for the mount point
+  # Required because DynamicUser creates the atticd group at runtime,
+  # so we can't use group-based permissions in tmpfiles rules.
+  systemd.tmpfiles.rules = [
+    "d ${config.fileSystems.nix-binary-cache.mountPoint} 0777 root root - -"
+  ];
 
   services.udev.extraRules = ''
     # Restart atticd whenever storage is inserted to let atticd re-lookup database.
