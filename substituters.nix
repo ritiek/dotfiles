@@ -24,6 +24,6 @@
     # "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
     "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
 
-    "attic-action:wjnBtx68f8TU7eahRKpVICGlIwOjQ7ENsCUiDd5Jqqs="
+    "attic-action:KzjQMFuIL/gl+NzXja3S80zOF14w4yv2qocKn9EVtKI="
   ];
 }
