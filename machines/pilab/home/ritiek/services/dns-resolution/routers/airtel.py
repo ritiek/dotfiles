@@ -52,7 +52,7 @@ class AirtelRouter(BaseRouter):
         """Login to Airtel router admin interface"""
         print(f"Navigating to Airtel router at {self.router_ip}...")
         try:
-            await page.goto(f"https://{self.router_ip}/web_whw/#/login", timeout=60000)
+            await page.goto(f"https://{self.router_ip}/web_whw/#/login", timeout=120000)
             print("Page loaded, waiting for login form...")
             await page.wait_for_selector('input[name="value"]', timeout=30000)
 
