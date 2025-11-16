@@ -233,7 +233,7 @@
       };
     };
 
-    displayManager.autLogin = {
+    displayManager.autoLogin = {
       enable = true;
       user = "ritiek";
     };
