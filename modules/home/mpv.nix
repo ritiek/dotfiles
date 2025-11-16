@@ -18,6 +18,7 @@
       # profile = "gpu-hq";
       # gpu-context = "wayland";
       osc = "yes";
+      gamma = 10;
     };
     scripts = with pkgs; [
       mpvScripts.mpv-cheatsheet
