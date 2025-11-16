@@ -1,7 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  legacyDomain = "clawsiecats.omg.lol";
   domain = "clawsiecats.lol";
 in
 {
@@ -87,12 +86,6 @@ in
       useACMEHost = "syncplay.${domain}";
     };
 
-    # invidious = {
-    #   enable = true;
-    #   legacyDomain = "invidious.${legacyDomain}";
-    #   nginx.enable = true;
-    # };
-
     headscale = {
       enable = true;
       # XXX: Required for Syncthing.
@@ -130,7 +123,7 @@ in
             # this DERP relay.
             verify_clients = true;
           };
-          urls = [];
+          # urls = [];
           paths = [];
           auto_update_enabled = false;
           update_frequency = "24h";
@@ -219,7 +212,7 @@ in
 
     nginx = {
       enable = true;
-      clientMaxBodySize = "256M";
+      clientMaxBodySize = "512M";
       virtualHosts = {
         "jitsi.${domain}" = {
           # basicAuth = {
@@ -228,26 +221,13 @@ in
           basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
           # basicAuthFile = ./jitsi.htpasswd;
         };
-        "jitsi.${legacyDomain}" = {
-          # basicAuth = {
-          #   jitsi = "notthepass";
-          # };
-          basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
-          # basicAuthFile = ./jitsi.htpasswd;
-        };
-        "miniserve.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          # locations."/".root = pkgs.miniserve;
-          locations."/".proxyPass = "http://100.64.0.5:7055";
-        };
-        "miniserve.${legacyDomain}" = {
-          forceSSL = true;
-          enableACME = true;
-          # locations."/".root = pkgs.miniserve;
-          locations."/".proxyPass = "http://100.64.0.5:7055";
-        };
-        # "puwush.${legacyDomain}" = {
+        # "miniserve.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   # locations."/".root = pkgs.miniserve;
+        #   locations."/".proxyPass = "http://100.64.0.5:7055";
+        # };
+        # "puwush.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -257,16 +237,6 @@ in
         #   };
         # };
         "immich.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            # proxyPass = "http://100.64.0.7:2283";
-            proxyPass = "http://100.64.0.7:2283";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "immich.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -289,30 +259,7 @@ in
             # '';
           };
         };
-        "vaultwarden.${legacyDomain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:9446";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-            # extraConfig = ''
-            #   allow 127.0.0.1;
-            #   deny all;
-            # '';
-          };
-        };
         "controlplane.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8080";
-            proxyWebsockets = true;
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "controlplane.${legacyDomain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
@@ -331,33 +278,15 @@ in
             recommendedProxySettings = true;
           };
         };
-        "headplane.${legacyDomain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:3000";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "nitter.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:5095";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "nitter.${legacyDomain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:5095";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
+        # "nitter.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:5095";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
         "attic.${domain}" = {
           forceSSL = true;
           enableACME = true;
@@ -367,44 +296,44 @@ in
             recommendedProxySettings = true;
           };
         };
-        "attic.${legacyDomain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:7080";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "ollama.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:3020";
-            proxyWebsockets = true;
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "paperless.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:8010";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "n8n.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://100.64.0.7:5678";
-            proxyWebsockets = true;
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
+        # "ollama.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:3020";
+        #     proxyWebsockets = true;
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
+        # "ha.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:8123";
+        #     proxyWebsockets = true;
+        #     recommendedProxySettings = true;
+        #   };
+        # };
+        # "paperless.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:8010";
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
+        # "n8n.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     proxyPass = "http://100.64.0.7:5678";
+        #     proxyWebsockets = true;
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #   };
+        # };
         # "git.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
@@ -414,7 +343,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "filebrowser.${legacyDomain}" = {
+        # "filebrowser.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -423,7 +352,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "habitica.${legacyDomain}" = {
+        # "habitica.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -432,7 +361,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "uptime-kuma.${legacyDomain}" = {
+        # "uptime-kuma.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -441,7 +370,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "prefect.${legacyDomain}" = {
+        # "prefect.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
