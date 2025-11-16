@@ -8,6 +8,7 @@
     };
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-for-raspberry-pi-nix.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
     # ghostty = {
@@ -156,7 +157,10 @@
       # XXX: Above to have gone into read-only mode. Here
       # seems a better maintained fork for the moment in case.
       # url = "github:cmyk/raspberry-pi-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # XXX: Pinning nixpkgs to last known good commit that worked
+      # for me.
+      inputs.nixpkgs.follows = "nixpkgs-for-raspberry-pi-nix";
+      # inputs.nixpkgs.follows = "unstable";
     };
 
     rockchip = {
