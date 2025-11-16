@@ -15,6 +15,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
+    ./../../modules/wifi-hotspot-fallback.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/attic.nix
     ./../../modules/usbipd.nix
@@ -73,6 +74,8 @@
     #   owner = "nginx";
     # };
     "syncplay.password" = {};
+    "wifi-hotspot.ssid" = {};
+    "wifi-hotspot.password" = {};
   };
 
   nixpkgs.config.allowUnfree = false;
@@ -228,6 +231,14 @@
   };
 
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
+
+  services.wifi-hotspot-fallback = {
+    enable = true;
+    ssidFile = config.sops.secrets."wifi-hotspot.ssid".path;
+    passwordFile = config.sops.secrets."wifi-hotspot.password".path;
+    interface = "wlan0";
+    channel = 6;
+  };
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";

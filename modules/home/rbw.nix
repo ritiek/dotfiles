@@ -4,6 +4,10 @@
     enable = true;
     package = pkgs.rbw.overrideAttrs (old: {
       src = inputs.rbw;
+      # XXX: Running tests causes test run timeout failures on Pi5 although
+      #      it works fine on my lappy. Actually, this doesn't to stop the
+      #      tests from running on RPi5 either later when I tried to rebuild.
+      # doCheck = false;
     });
     settings = {
       email = "ritiekmalhotra123@gmail.com";

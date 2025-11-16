@@ -153,8 +153,8 @@
 
     raspberry-pi-nix = {
       url = "github:nix-community/raspberry-pi-nix";
-      # XXX: Above to have gone into read-only mode. Here
-      # seems a better maintained fork for the moment in case.
+      # XXX: Above to have gone into read-only mode. Here seems
+      #      a better maintained fork for the moment in case.
       # url = "github:cmyk/raspberry-pi-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
