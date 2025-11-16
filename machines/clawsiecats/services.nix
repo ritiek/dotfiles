@@ -219,6 +219,7 @@ in
 
     nginx = {
       enable = true;
+      clientMaxBodySize = "256M";
       virtualHosts = {
         "jitsi.${domain}" = {
           # basicAuth = {
