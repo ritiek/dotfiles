@@ -872,6 +872,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-for-raspberry-pi-nix": {
+      "locked": {
+        "lastModified": 1759381078,
+        "narHash": "sha256-gTrEEp5gEspIcCOx9PD8kMaF1iEmfBcTbO0Jag2QhQs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7df7ff7d8e00218376575f0acdcc5d66741351ee",
+        "type": "github"
+      }
+    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1754788789,
@@ -1033,7 +1049,7 @@
         "libcamera-src": "libcamera-src",
         "libpisp-src": "libpisp-src",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-for-raspberry-pi-nix"
         ],
         "rpi-bluez-firmware-src": "rpi-bluez-firmware-src",
         "rpi-firmware-nonfree-src": "rpi-firmware-nonfree-src",
@@ -1114,6 +1130,7 @@
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-for-raspberry-pi-nix": "nixpkgs-for-raspberry-pi-nix",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
         "pi400kb-nix": "pi400kb-nix",
