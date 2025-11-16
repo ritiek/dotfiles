@@ -13,7 +13,8 @@
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  # We're running in a dedicated Proxmox VM, so don't need osprober.
+  # boot.loader.grub.useOSProber = true;
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "xhci_pci" "usbhid" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
