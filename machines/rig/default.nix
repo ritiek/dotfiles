@@ -43,6 +43,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/ssh.nix
+    ./../../modules/tailscale-controlplane.nix
     # ./../../modules/yubico-pam.nix
     # ./../../modules/usbip.nix
     # ./../../modules/sunshine.nix
@@ -96,8 +97,7 @@
     users.ritiek = {
       isNormalUser = true;
       description = "Ritiek Malhotra";
-      # hashedPasswordFile = config.sops.secrets."ritiek_password_hash".path;
-      password = "test";
+      hashedPasswordFile = config.sops.secrets."ritiek_password_hash".path;
       extraGroups = [
         # "networkmanager"
         "wheel"
@@ -233,10 +233,12 @@
 
     # Enable the GNOME Desktop Environment.
     desktopManager.gnome.enable = true;
-    displayManager.gdm.enable = true;
-    displayManager.autoLogin = {
-      enable = true;
-      user = "ritiek";
+    displayManager = {
+      autoLogin = {
+        enable = true;
+        user = "ritiek";
+      };
+      gdm.enable = true;
     };
 
     openssh = {
@@ -256,14 +258,13 @@
       # plugins = with pkgs.pcsc; [
       #   pcsc-safenet
       # ];
+
     };
 
     # Enable CUPS to print documents.
     # printing.enable = true;
 
     # swayosd.enable = true;
-
-    tailscale.enable = true;
 
     upower.enable = true;
 
@@ -286,37 +287,20 @@
       wireplumber.enable = true;
       pulse.enable = true;
       jack.enable = true;
-
-      # use the example session manager (no others are packaged yet so this is enabled by default,
-      # no need to redefine it in your config for now)
     };
-
-    # xserver = {
-    #   # Enable the X11 windowing system.
-    #   enable = true;
-    #
-    #   # Enable the GNOME Desktop Environment.
-    #   displayManager.gdm.enable = true;
-    #   desktopManager.gnome.enable = true
-    #
-    #   # Enable KDE.
-    #   displayManager.sddm.enable = true;
-    #   desktopManager.plasma5.enable = true
-    #
-    #   # Enable touchpad support (enabled default in most desktopManager).
-    #   libinput.enable = true;
-    #
-    #   # Configure keymap in X11
-    #   layout = "us";
-    #   xkbVariant = "";
-    # };
 
     # Allows `calibre` to detect attached Kindle devices.
     udisks2.enable = true;
+
+    ollama = {
+      enable = true;
+      package = pkgs.ollama-cuda;
+      acceleration = "cuda";
+      host = "0.0.0.0";
+    };
   };
 
   programs = {
-    firefox.enable = true;
     nix-index-database.comma.enable = true;
     # XXX: Had to disable this otherwise it conflicts with gnome display manager
     #      and breaks config rebuild.
@@ -431,12 +415,4 @@
   };
 
   systemd.settings.Manager.RuntimeWatchdogSec = 360;
-
-  # services.ollama.enable = true;
-  # services.ollama.acceleration = "cuda";
-  # services.ollama.package = pkgs.ollama-cuda;
-  # services.ollama.host = "0.0.0.0";
-  #
-  # services.open-webui.enable = true;
-  # services.open-webui.host = "0.0.0.0";
 }
