@@ -117,6 +117,11 @@ PATH="$HOME/Android/flutter/bin:$PATH"
 PATH="$HOME/.gem/ruby/2.5.0/bin:$PATH"
 PATH="/snap/bin:$PATH"
 export PATH
+
+if [ -n "$SSH_CONNECTION" ] && [ -z "$DISPLAY" ]; then
+  export DISPLAY=:0
+  export XAUTHORITY="$(ls /run/user/$(id -u)/.mutter-Xwaylandauth* 2>/dev/null | head -1)"
+fi
     '';
     shellAliases = {
       # Check if xclip is even being used in hyprland
