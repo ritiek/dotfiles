@@ -12,10 +12,20 @@
     ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
-    # XXX: Looks like HostVDS $1.99 VPS uses a CPU with older instruction set that doesn't
-    # support Opencode. Commenting out for now.
-    # ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
+  ];
+
+  nixpkgs.overlays = [
+    # Bun baseline overlay for CPUs without AVX2
+    (final: prev: {
+      bun = prev.bun.overrideAttrs (oldAttrs: {
+        src = prev.fetchurl {
+          url = "https://github.com/oven-sh/bun/releases/download/bun-v${oldAttrs.version}/bun-linux-x64-baseline.zip";
+          hash = "sha256-f/CaSlGeggbWDXt2MHLL82Qvg3BpAWVYbTA/ryFpIXI=";
+        };
+      });
+    })
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [

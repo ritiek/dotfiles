@@ -14,6 +14,16 @@
     inputs.nur.overlays.default
     inputs.nixpkgs-wayland.overlay
 
+    # Bun baseline overlay for CPUs without AVX2
+    (final: prev: {
+      bun = prev.bun.overrideAttrs (oldAttrs: {
+        src = prev.fetchurl {
+          url = "https://github.com/oven-sh/bun/releases/download/bun-v${oldAttrs.version}/bun-linux-x64-baseline.zip";
+          hash = "sha256-f/CaSlGeggbWDXt2MHLL82Qvg3BpAWVYbTA/ryFpIXI=";
+        };
+      });
+    })
+
     (final: _prev: {
       stable = import inputs.stable {
         inherit (final) system;

@@ -24,6 +24,28 @@
     inputs.nur.overlays.default
     inputs.nixpkgs-wayland.overlay
 
+    # Bun baseline overlay for CPUs without AVX2
+    (final: prev: {
+      bun = prev.bun.overrideAttrs (oldAttrs: {
+        src = prev.fetchurl {
+          url = "https://github.com/oven-sh/bun/releases/download/bun-v${oldAttrs.version}/bun-linux-x64-baseline.zip";
+          hash = "sha256-f/CaSlGeggbWDXt2MHLL82Qvg3BpAWVYbTA/ryFpIXI=";
+        };
+      });
+
+      # Rebuild opencode with baseline bun to avoid AVX2 illegal instruction errors
+      opencode = prev.opencode.overrideAttrs (oldAttrs: {
+        # Replace bun in nativeBuildInputs with our baseline version
+        nativeBuildInputs = prev.lib.lists.map (drv:
+          if prev.lib.hasInfix "bun" (drv.name or "")
+          then final.bun
+          else drv
+        ) oldAttrs.nativeBuildInputs;
+        # Add an environment variable to force different derivation hash
+        BUN_BASELINE = "1";
+      });
+    })
+
     (final: _prev: {
       stable = import inputs.stable {
         inherit (final) system;
