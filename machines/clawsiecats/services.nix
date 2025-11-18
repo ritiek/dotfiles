@@ -9,7 +9,10 @@ in
     inputs.simple-nixos-mailserver.nixosModule
   ]; 
 
-  sops.secrets."tailscale.authkey" = {};
+  sops.secrets = {
+    "tailscale.authkey" = {};
+    "syncthing.gui_password" = {};
+  };
 
   environment.persistence."/nix/persist/system" = {
     directories = [
@@ -184,15 +187,42 @@ in
       user = "root";
       # group = "root";
       settings = {
-        devices.pilab.id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
-        folders.headscale = {
-          enable = true;
-          label = "Headscale Data";
-          path = "/var/lib/headscale";
-          devices = [
-            "pilab"
-          ];
-          id = "u233w-44w2s";
+        devices = {
+          pilab = {
+            id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
+            autoAcceptFolders = true;
+          };
+          redmi-note-11 = {
+            id = "DKK6FNQ-JCCB3XM-SD7G6RF-S22N4HW-OVRC35N-VICROEH-CMS6JCF-DY72SAJ";
+            autoAcceptFolders = true;
+          };
+          keyberry = {
+            id = "BK2AFLY-Z672PPH-HMKYCFW-HD6OQOZ-4TZWZDC-2IPGC6T-3Q6BCRZ-YL4KVQM";
+            autoAcceptFolders = true;
+          };
+        };
+        folders = {
+          headscale = {
+            enable = true;
+            label = "Headscale Data";
+            path = "/var/lib/headscale";
+            devices = [
+              "pilab"
+            ];
+            id = "u233w-44w2s";
+          };
+          vaultwarden-exports = {
+            enable = true;
+            label = "Vaultwarden Exports";
+            path = "/var/lib/vaultwarden-exports";
+            devices = [
+              "pilab"
+              "redmi-note-11"
+              "keyberry"
+            ];
+            id = "epeoa-hjrkf";
+            type = "receiveonly";
+          };
         };
       };
     };

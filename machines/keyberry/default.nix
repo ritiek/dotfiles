@@ -15,6 +15,7 @@
 
   sops.secrets = {
     "ritiek.hashedpassword".neededForUsers = true;
+    "syncthing.gui_password" = {};
     # "cameras.porch.rtsp" = {};
   };
 
@@ -146,6 +147,44 @@
 
       # use the example session manager (no others are packaged yet so this is enabled by default,
       # no need to redefine it in your config for now)
+    };
+
+    syncthing = {
+      enable = true;
+      openDefaultPorts = false;
+      guiAddress = "127.0.0.1:8384";
+      guiPasswordFile = "abc";
+      # guiAddress = "0.0.0.0:8384";
+      user = "root";
+      # group = "root";
+      settings = {
+        devices = {
+          pilab = {
+            id = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
+            autoAcceptFolders = true;
+          };
+          redmi-note-11 = {
+            id = "DKK6FNQ-JCCB3XM-SD7G6RF-S22N4HW-OVRC35N-VICROEH-CMS6JCF-DY72SAJ";
+            autoAcceptFolders = true;
+          };
+          clawsiecats = {
+            id = "EQEUH35-SRGMYNH-CBPVSLD-SN6KMJ5-TBUYER5-722IZZA-IRZGJJL-TAYFLAX";
+            autoAcceptFolders = true;
+          };
+        };
+        folders.vaultwarden-exports = {
+          enable = true;
+          label = "Vaultwarden Exports";
+          path = "/media/RESTIC_BACKUP/vaultwarden-exports";
+          devices = [
+            "pilab"
+            "redmi-note-11"
+            "clawsiecats"
+          ];
+          id = "epeoa-hjrkf";
+          type = "receiveonly";
+        };
+      };
     };
 
     uptime-kuma = {
