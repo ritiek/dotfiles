@@ -28,10 +28,6 @@
     })
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
-    "claude-code"
-  ];
-
   home = {
     stateVersion = "24.05";
     username = "ritiek";
@@ -40,11 +36,9 @@
       "/nix/persist/home/${config.home.username}/files" = {
         files = [
           ".zsh_history"
-          ".claude.json"
         ];
         directories = [
           ".ssh"
-          ".claude"
           # "ballistica-personal-release"
           {
             directory = "ballistica-personal-release";
@@ -93,6 +87,5 @@
     jq.enable = true;
     ripgrep.enable = true;
     fd.enable = true;
-    claude-code.enable =true;
   };
 }

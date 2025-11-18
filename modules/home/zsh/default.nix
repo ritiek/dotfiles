@@ -119,8 +119,7 @@ PATH="/snap/bin:$PATH"
 export PATH
 
 if [ -n "$SSH_CONNECTION" ] && [ -z "$DISPLAY" ]; then
-  export DISPLAY=:0
-  export XAUTHORITY="$(ls /run/user/$(id -u)/.mutter-Xwaylandauth* 2>/dev/null | head -1)"
+  export XAUTHORITY="$(ls "/run/user/$(id -u)/.mutter-Xwaylandauth*" 2>/dev/null | head -1)"
 fi
     '';
     shellAliases = {
