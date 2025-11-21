@@ -90,6 +90,25 @@
       gjs = final.nixpkgs-for-raspberry-pi-nix.gjs or prev.gjs;
       libsecret = final.nixpkgs-for-raspberry-pi-nix.libsecret or prev.libsecret;
     })
+
+     # (final: _prev: {
+     #   stable = import inputs.stable {
+     #     inherit (final) system;
+     #     config.allowUnfree = true;
+     #   };
+     # })
+     (final: _prev: {
+       unstable = import inputs.unstable {
+         inherit (final) system;
+         config.allowUnfree = true;
+       };
+     })
+     # (final: _prev: {
+     #   local = import inputs.local {
+     #     inherit (final) system;
+     #     config.allowUnfree = true;
+     #   };
+     # })
   ];
 
   networking.hostName = "pilab";
