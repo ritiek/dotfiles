@@ -214,6 +214,11 @@ window-rule {
   max-width 470
 }
 
+window-rule {
+  match app-id="chromium-browser"
+  default-column-width { fixed 1271; }
+}
+
 // window-rule {
 //     match app-id="^org\.gnome\.Nautilus$"
 //     default-column-width { fixed 800; }
