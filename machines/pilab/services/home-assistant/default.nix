@@ -47,6 +47,10 @@
   services.home-assistant = {
     enable = true;
 
+    customComponents = with pkgs.home-assistant-custom-components; [
+      philips_airpurifier_coap
+    ];
+
     extraComponents = [
       "met"
       "esphome"
@@ -82,13 +86,6 @@
       aiohttp-sse
       mcp
       anyio
-      # Required for Philips Air Purifier CoAP integration
-      aioairctrl
-      getmac
-      # Additional dependencies for aioairctrl
-      pycryptodomex
-      aiocoap
-      propcache
       (buildPythonPackage rec {
         pname = "dawarich_api";
         version = "0.4.1";
@@ -146,7 +143,7 @@
 
   };
 
-  # Copy custom components to Home Assistant config directory
+  # Copy other custom components to Home Assistant config directory
   systemd.services.home-assistant.serviceConfig.ExecStartPre = [
     # ("+${pkgs.writeShellScript "install-dawarich" ''
     #   mkdir -p /var/lib/hass/custom_components
@@ -160,18 +157,6 @@
     #     chown -R hass:hass /var/lib/hass/custom_components/dawarich
     #   fi
     # ''}")
-    ("+${pkgs.writeShellScript "install-philips-airpurifier" ''
-      mkdir -p /var/lib/hass/custom_components
-      # Always reinstall to ensure clean files
-      rm -rf /var/lib/hass/custom_components/philips_airpurifier_coap
-      cp -r ${pkgs.fetchFromGitHub {
-        owner = "kongo09";
-        repo = "philips-airpurifier-coap";
-        rev = "9de7ba3552e8ce697a93b343d2f452cc4bd7459d";
-        sha256 = "sha256-jZmFvozkmmCCeKmdOV/FKXj0V8iGP3tnAqED/PBZrrY=";
-      }}/custom_components/philips_airpurifier_coap /var/lib/hass/custom_components/
-      chown -R hass:hass /var/lib/hass/custom_components/philips_airpurifier_coap
-    ''}")
     ("+${pkgs.writeShellScript "install-uptime-card" ''
       mkdir -p /var/lib/hass/www/community/uptime-card
       if [ ! -f "/var/lib/hass/www/community/uptime-card/uptime-card.js" ]; then

@@ -75,6 +75,9 @@
   };
 
   nixpkgs.config.allowUnfree = false;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+    "kongo09/philips_airpurifier_coap"
+  ];
 
   nixpkgs.overlays = [
     (final: _prev: {
