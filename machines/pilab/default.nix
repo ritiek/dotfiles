@@ -245,6 +245,25 @@
     };
   };
 
+  # This are needed when forwarding X11 over SSH or otherwise if I setup a
+  # desktop environment in the future.
+  fonts = {
+    fontDir.enable = true;
+    packages = with pkgs; [
+      cantarell-fonts
+      material-design-icons
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+
+      nerd-fonts.fantasque-sans-mono
+      nerd-fonts.inconsolata-go
+      nerd-fonts.jetbrains-mono
+      # nerd-fonts.fira-code
+      # nerd-fonts.noto
+    ];
+  };
+
   # NOTE: For modes supported by the CPU, run:
   # $ cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
   powerManagement.cpuFreqGovernor = "conservative";
