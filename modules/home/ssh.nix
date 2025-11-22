@@ -3,10 +3,19 @@
     enable = true;
     enableDefaultConfig = false;
     matchBlocks = {
+      "*.lion-zebra.ts.net" = {
+        extraOptions = {
+          PubkeyAuthentication = "unbound";
+          # Since encryption can't be disabled on newer OpenSSH versions, we'll settle for
+          # the most lightweight encryption. Tailscale already encrypts everything so this
+          # another layer of encryption can be avoided.
+          Ciphers = "chacha20-poly1305@openssh.com,aes128-gcm@openssh.com";
+        };
+      };
       "*" = {
         forwardAgent = false;
         addKeysToAgent = "no";
-        compression = false;
+        compression = true;
         serverAliveInterval = 0;
         serverAliveCountMax = 3;
         hashKnownHosts = false;
@@ -14,11 +23,6 @@
         controlMaster = "no";
         controlPath = "~/.ssh/master-%r@%n:%p";
         controlPersist = "no";
-      };
-      "*.lion-zebra.ts.net" = {
-        extraOptions = {
-          PubkeyAuthentication = "unbound";
-        };
       };
     };
   };

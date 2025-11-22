@@ -156,6 +156,7 @@
       gparted
       xclip
       xorg.xhost
+      xorg.xauth
       # helix
       parallel
       libarchive
@@ -235,6 +236,7 @@
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
+        X11Forwarding = true;
       };
     };
     pulseaudio.enable = false;
