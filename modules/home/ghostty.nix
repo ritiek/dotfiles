@@ -1,8 +1,7 @@
 {
   programs.ghostty = {
     enable = true;
-    # TODO: Enable systemd service when it I've my updated my nixpkgs flake.
-    # systemd = true;
+    systemd.enable = true;
     enableZshIntegration = true;
     installVimSyntax = true;
     settings = {
