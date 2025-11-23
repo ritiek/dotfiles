@@ -217,6 +217,7 @@ window-rule {
 window-rule {
   match app-id="chromium-browser"
   default-column-width { fixed 1271; }
+  open-focused false
 }
 
 // window-rule {
