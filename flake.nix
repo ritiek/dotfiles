@@ -44,6 +44,7 @@
     # apollo-flake = {
     #   url = "github:nil-andreas/apollo-flake";
     #   inputs.nixpkgs.follows = "nixpkgs";
+    #   inputs.flake-utils.follows = "flake-utils";
     # };
 
     # nixgl = {
