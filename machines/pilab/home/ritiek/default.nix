@@ -108,6 +108,7 @@ in
       yt-dlp
       mosquitto
       iperf
+      chafa
 
       libgpiod
       i2c-tools

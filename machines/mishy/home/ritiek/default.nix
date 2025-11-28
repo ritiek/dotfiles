@@ -171,6 +171,7 @@
       # FIXME: Can't seem to install both these together.
       yubioath-flutter
       # fluffychat
+      chafa
 
       # element-desktop-wayland
       # XXX: error: Package ‘jitsi-meet-1.0.8043’ is marked as insecure, refusing to evaluate.
