@@ -127,6 +127,7 @@ fi
       # xclip = "xclip -selection clipboard";
       cp = "cp --reflink=auto --sparse=always";
       a = "shpool attach";
+      chafa = "chafa --format=kitty";
 
       sops-ssh = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops";
       sops-ssh-home = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /home/${config.home.username}/.ssh/sops.id_ed25519' sops";
