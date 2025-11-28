@@ -3,6 +3,9 @@
     enable = true;
     enableDefaultConfig = false;
     matchBlocks = {
+      "github.com" = {
+        user = "git";
+      };
       "*.lion-zebra.ts.net" = {
         extraOptions = {
           PubkeyAuthentication = "unbound";
