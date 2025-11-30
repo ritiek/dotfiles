@@ -190,6 +190,12 @@
       flake = false;
     };
 
+    sops-shell = {
+      url = "github:ritiek/sops-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     # dawarich-home-assistant = {
     #   url = "github:AlbinLind/dawarich-home-assistant";
     #   flake = false;
