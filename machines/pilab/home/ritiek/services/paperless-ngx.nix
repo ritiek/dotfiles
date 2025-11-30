@@ -20,7 +20,7 @@ let
     # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
     # to work:
     # source $\{osConfig.sops.secrets."paperless-ngx-push.env".path}
-    source ~/.config/sops-nix/secrets/paperless-ngx-push.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/paperless-ngx-push.env"
 
     USERNAME=$(${pkgs.curl}/bin/curl -s -H "Authorization: Token $PAPERLESS_NGX_API_KEY" "$PAPERLESS_NGX_INSTANCE_URL/api/users/" | ${pkgs.jq}/bin/jq -r '.results[].username')
 
@@ -88,7 +88,7 @@ let
     # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
     # to work:
     # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
-    source ~/.config/sops-nix/secrets/uptime-kuma.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/8sKmxnwk3t?status=$STATUS&msg=$SERVICE_RESULT&ping="
     curl_exit_code=$?

@@ -58,7 +58,7 @@ let
 
     def load_sops_env():
         """Load environment variables from SOPS secrets file"""
-        sops_env_path = os.path.expanduser("~/.config/sops-nix/secrets/dns-resolution.env")
+        sops_env_path = "${config.home.homeDirectory}/.config/sops-nix/secrets/dns-resolution.env"
 
         if os.path.exists(sops_env_path):
             print("Loading credentials from dns-resolution.env")
@@ -419,7 +419,7 @@ let
     # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
     # to work:
     # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
-    source ~/.config/sops-nix/secrets/uptime-kuma.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/aI5UREFqil?status=$STATUS&msg=$SERVICE_RESULT&ping="
     curl_exit_code=$?
@@ -433,7 +433,7 @@ let
   '');
 
   dns-fetch-pihole = (pkgs.writeShellScriptBin "dns-fetch-pihole" ''
-    source ~/.config/sops-nix/secrets/dns-resolution.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/dns-resolution.env"
 
     if [ -z "$PIHOLE_HOST" ] || [ -z "$PIHOLE_APP_PASSWORD" ]; then
       echo "Error: PIHOLE_HOST or PIHOLE_APP_PASSWORD not set"
@@ -469,7 +469,7 @@ let
 
   dns-fetch-router = (pkgs.writeShellScriptBin "dns-fetch-router" ''
     set -a
-    source ~/.config/sops-nix/secrets/dns-resolution.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/dns-resolution.env"
     set +a
 
     export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1

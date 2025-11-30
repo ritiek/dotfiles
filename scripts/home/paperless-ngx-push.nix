@@ -13,7 +13,7 @@
       # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
       # to work:
       # source $\{osConfig.sops.secrets."paperless-ngx-push.env".path}
-      source ~/.config/sops-nix/secrets/paperless-ngx-push.env
+      source ${config.sops.secrets."paperless-ngx-push.env".path}
 
       # Loop through all provided files
       for FILE in "$@"; do
