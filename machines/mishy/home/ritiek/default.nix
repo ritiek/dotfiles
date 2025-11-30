@@ -224,6 +224,7 @@
       nix-tree
 
       deploy-rs
+      inputs.sops-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
       # inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707

@@ -121,6 +121,8 @@ export PATH
 if [ -n "$SSH_CONNECTION" ] && [ -z "$DISPLAY" ]; then
   export XAUTHORITY="$(ls "/run/user/$(id -u)/.mutter-Xwaylandauth*" 2>/dev/null | head -1)"
 fi
+
+export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${config.home.homeDirectory}/.ssh/sops.id_ed25519"
     '';
     shellAliases = {
       # Check if xclip is even being used in hyprland
@@ -130,7 +132,7 @@ fi
       chafa = "chafa --format=kitty";
 
       sops-ssh = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops";
-      sops-ssh-home = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /home/${config.home.username}/.ssh/sops.id_ed25519' sops";
+      sops-ssh-home = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i ${config.home.homeDirectory}/.ssh/sops.id_ed25519' sops";
       sops-fido2-hmac = "SOPS_AGE_KEY_CMD='age-plugin-fido2-hmac -m' sops";
 
       # Eval these in your shell manually, e.g: eval $(ssh-auth-sock)

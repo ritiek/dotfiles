@@ -1140,6 +1140,7 @@
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "simple-nixos-mailserver": "simple-nixos-mailserver",
         "sops-nix": "sops-nix",
+        "sops-shell": "sops-shell",
         "stable": "stable",
         "systems": "systems_2",
         "unstable": "unstable",
@@ -1291,6 +1292,27 @@
         "type": "github"
       }
     },
+    "rust-overlay": {
+      "inputs": {
+        "nixpkgs": [
+          "sops-shell",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1764383863,
+        "narHash": "sha256-KA5F0137hLvk576mfucWvFu8Z8g8MTm+6c3gw2mZcKI=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "4f5a90bf043a57add9b3288bbd25ed534bfaffb5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
     "simple-nixos-mailserver": {
       "inputs": {
         "blobs": "blobs",
@@ -1331,6 +1353,30 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "sops-shell": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "rust-overlay": "rust-overlay"
+      },
+      "locked": {
+        "lastModified": 1764459358,
+        "narHash": "sha256-XAHP7fCKuf2+8dH3XEu1Kcdu4BPAOx9UjrqqLrjlbvs=",
+        "owner": "ritiek",
+        "repo": "sops-shell",
+        "rev": "d1b8d0fd101d7d50a07eeedbcb2285bd95476b70",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ritiek",
+        "repo": "sops-shell",
         "type": "github"
       }
     },
