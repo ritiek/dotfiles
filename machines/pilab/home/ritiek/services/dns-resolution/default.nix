@@ -416,10 +416,7 @@ let
       STATUS=down
     fi
 
-    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
-    # to work:
-    # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
-    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
+    source "${config.sops.secrets."uptime-kuma.env".path}"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/aI5UREFqil?status=$STATUS&msg=$SERVICE_RESULT&ping="
     curl_exit_code=$?
@@ -433,7 +430,7 @@ let
   '');
 
   dns-fetch-pihole = (pkgs.writeShellScriptBin "dns-fetch-pihole" ''
-    source "${config.home.homeDirectory}/.config/sops-nix/secrets/dns-resolution.env"
+    source "${config.sops.secrets."uptime-kuma.env".path}"
 
     if [ -z "$PIHOLE_HOST" ] || [ -z "$PIHOLE_APP_PASSWORD" ]; then
       echo "Error: PIHOLE_HOST or PIHOLE_APP_PASSWORD not set"
@@ -469,7 +466,7 @@ let
 
   dns-fetch-router = (pkgs.writeShellScriptBin "dns-fetch-router" ''
     set -a
-    source "${config.home.homeDirectory}/.config/sops-nix/secrets/dns-resolution.env"
+    source "${config.sops.secrets."uptime-kuma.env".path}"
     set +a
 
     export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1
