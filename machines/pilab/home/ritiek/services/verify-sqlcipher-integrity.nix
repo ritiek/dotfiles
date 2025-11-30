@@ -44,7 +44,7 @@ let
     # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
     # to work:
     # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
-    source ~/.config/sops-nix/secrets/uptime-kuma.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/VxzbnLNAau?status=$STATUS&msg=$SERVICE_RESULT&ping="
     curl_exit_code=$?

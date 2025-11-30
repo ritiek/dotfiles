@@ -16,7 +16,7 @@ let
     # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
     #
     # TODO: Make this work work without hardcoding my username.
-    source /home/ritiek/.config/sops-nix/secrets/uptime-kuma.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/BmioyeNZTb?status=$STATUS&msg=$SERVICE_RESULT&ping="
     curl_exit_code=$?
@@ -44,7 +44,7 @@ let
     # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
     #
     # TODO: Make this work work without hardcoding my username.
-    source /home/ritiek/.config/sops-nix/secrets/uptime-kuma.env
+    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/lNLKLfskQD?status=$STATUS&msg=$SERVICE_RESULT&ping="
 
