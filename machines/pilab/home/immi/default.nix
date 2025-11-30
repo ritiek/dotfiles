@@ -4,7 +4,7 @@
     inputs.sops-nix.homeManagerModule
 
     ./../../../../scripts/home/immich-env.nix
-    ./../../../../modules/home/nix.nix
+    # ./../../../../modules/home/nix.nix
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/zsh
   ];
