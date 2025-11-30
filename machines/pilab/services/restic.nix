@@ -11,12 +11,7 @@ let
       STATUS=down
     fi
 
-    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
-    # to work:
-    # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
-    #
-    # TODO: Make this work work without hardcoding my username.
-    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
+    source "${config.sops.secrets."uptime-kuma.env".path}"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/BmioyeNZTb?status=$STATUS&msg=$SERVICE_RESULT&ping="
     curl_exit_code=$?
@@ -39,12 +34,7 @@ let
       STATUS=down
     fi
 
-    # TODO: Shouldn't have to hardcode the path here. But I couldn't get the following
-    # to work:
-    # source $\{osConfig.sops.secrets."uptime-kuma.env".path}
-    #
-    # TODO: Make this work work without hardcoding my username.
-    source "${config.home.homeDirectory}/.config/sops-nix/secrets/uptime-kuma.env"
+    source "${config.sops.secrets."uptime-kuma.env".path}"
 
     ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/lNLKLfskQD?status=$STATUS&msg=$SERVICE_RESULT&ping="
 
@@ -59,6 +49,8 @@ let
   '');
 in
 {
+  sops.secrets."uptime-kuma.env" = {};
+
   sops.secrets."restic.homelab.password" = {};
   # sops.secrets."restic.homelab.password".owner = "restic";
 
@@ -73,7 +65,7 @@ in
   users.users.restic = {
     group = "restic";
     home = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
-    createHome = true;
+    # createHome = true;
     uid = config.ids.uids.restic;
   };
 
