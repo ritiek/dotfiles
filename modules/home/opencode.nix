@@ -1,7 +1,6 @@
 { osConfig, config, pkgs, inputs, lib, hostName, ... }:
 let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
-  playwright-mcp = mcp-servers-nix.playwright-mcp;
 
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
@@ -97,7 +96,6 @@ let
     # sleep 30 && cleanup &
 
     # Launch playwright MCP server with copied profile
-    # exec ${playwright-mcp}/bin/mcp-server-playwright "''${ARGS[@]}" "$@"
     exec ${mcp-servers-nix.playwright-mcp}/bin/mcp-server-playwright "''${ARGS[@]}" "$@"
   '';
 in
@@ -117,11 +115,14 @@ in
     mcp-servers-nix.playwright-mcp
     mcp-servers-nix.context7-mcp
 
-    pkgs.unstable.chromium
     pkgs.rsync
     pkgs.psmisc
     pkgs.procps
   ];
+  programs.chromium = {
+    enable = true;
+    package = pkgs.unstable.chromium;
+  };
   programs.opencode = {
     enable = true;
     rules = ''
@@ -357,7 +358,7 @@ in
             edit = true;
             bash = true;
           };
-          temperature = 0.4;
+          temperature = 0.35;
         };
         browser = {
           mode = "primary";
@@ -410,6 +411,21 @@ in
             write = false;
           };
           temperature = 0.3;
+        };
+        conversational = {
+          mode = "primary";
+          description = "Conversational Agent";
+          prompt = ''
+            # Conversational Agent
+
+            Engage in meaningful and context-aware conversations with the user.
+          '';
+          tools = {
+            write = false;
+            bash = false;
+            playwright_browser_install = false;
+          };
+          temperature = 0.4;
         };
       };
 
