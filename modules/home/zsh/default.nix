@@ -130,6 +130,7 @@ export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${con
       cp = "cp --reflink=auto --sparse=always";
       a = "shpool attach";
       chafa = "chafa --format=kitty";
+      mpv-kitty = "mpv --profile=sw-fast --vo=kitty --vo-kitty-use-shm=yes --really-quiet";
 
       sops-ssh = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops";
       sops-ssh-home = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i ${config.home.homeDirectory}/.ssh/sops.id_ed25519' sops";
