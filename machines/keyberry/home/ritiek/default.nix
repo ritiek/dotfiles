@@ -31,8 +31,8 @@
     # ./../../../../modules/home/glava
     # ./../../../../modules/home/sioyek.nix
     ./../../../../modules/home/opencode.nix
-    ./../../../../modules/home/direnv.nix
-  ];
+     ./../../../../modules/home/direnv.nix
+   ];
 
   nixpkgs.config.allowUnfree = false;
 

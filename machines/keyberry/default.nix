@@ -11,6 +11,7 @@
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/usbipd.nix
     ./../../modules/restic-server.nix
+    ./gpio/dht22.nix
   ];
 
   sops.secrets = {
@@ -87,6 +88,7 @@
 
     libgpiod
     i2c-tools
+    mosquitto
   ];
 
   programs = {
@@ -301,3 +303,4 @@
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
 }
+
