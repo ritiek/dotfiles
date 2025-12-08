@@ -69,7 +69,7 @@ creation_rules:
   - path_regex: machines/pilab/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *pilab
-  - path_regex: machines/pilab/home/.*/gpio/secrets\.env$
+  - path_regex: machines/pilab/home/.*/gpio/secrets\.yaml$
     pgp: *ritiek
     age: *pilab
   - path_regex: machines/pilab/compose/.*/stack\.env$
@@ -87,6 +87,9 @@ creation_rules:
     pgp: *ritiek
     age: *keyberry
   - path_regex: machines/keyberry/home/.*/secrets\.yaml$
+    pgp: *ritiek
+    age: *keyberry
+  - path_regex: machines/keyberry/home/.*/gpio/secrets\.yaml$
     pgp: *ritiek
     age: *keyberry
 
