@@ -4,6 +4,7 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.sops-nix.homeManagerModule
 
+    ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
@@ -12,7 +13,7 @@
     ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
-    ./../../../../modules/home/opencode.nix
+    # ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
   ];
 
@@ -73,8 +74,6 @@
       dig
       cryptsetup
       openssl
-      sops
-      ssh-to-age
 
       miniserve
       bore-cli
