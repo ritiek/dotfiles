@@ -1,5 +1,6 @@
 { config, pkgs, lib, inputs, ... }:
 let
+  # Updated to support tags from sync_paths.txt - v2
   paperless-ngx-sync = (pkgs.writeShellScriptBin "paperless-ngx-sync" ''
     SYNC_PATHS_FILE="sync_paths.txt"
     TIMESTAMP_FILE=".last_sync_timestamp"
@@ -35,7 +36,19 @@ let
     LAST_RUN_TIMESTAMP=$(${pkgs.coreutils}/bin/cat "$TIMESTAMP_FILE")
 
     # Process each path pattern in the sync paths file
-    while IFS= read -r PATH_PATTERN; do
+    while IFS= read -r LINE; do
+      # Skip empty lines and comments
+      [[ -z "$LINE" || "$LINE" == \#* ]] && continue
+
+      # Parse path and tags (format: path|tag1,tag2,tag3)
+      PATH_PATTERN="$LINE"
+      TAGS=""
+
+      if [[ "$LINE" == *"|"* ]]; then
+        PATH_PATTERN="''${LINE%%|*}"
+        TAGS="''${LINE##*|}"
+      fi
+
       # Split pattern into directory and filename components
       dir_part="$(${pkgs.coreutils}/bin/dirname "$PATH_PATTERN")"
       file_pattern="$(${pkgs.coreutils}/bin/basename "$PATH_PATTERN")"
@@ -58,7 +71,11 @@ let
           if [[ "$FILE_CREATION_DATE" -gt "$LAST_RUN_TIMESTAMP" ]]; then
             # Requires ./scripts/home/paperless-ngx-push.nix
             # TODO: Do not use this long path. Attempt to reference {pkgs} instead.
-            /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push "$FILE"
+            if [[ -n "$TAGS" ]]; then
+              /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push --tags "$TAGS" "$FILE"
+            else
+              /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push "$FILE"
+            fi
             paperless_ngx_push_exit_code=$?
 
             if [ $paperless_ngx_push_exit_code -ne 0 ]; then
