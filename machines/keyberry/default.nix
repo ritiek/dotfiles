@@ -202,6 +202,18 @@
 
     pi400kb.enable = true;
 
+    nginx = {
+      enable = true;
+      virtualHosts."jellyfin-proxy" = {
+        listen = [ { addr = "0.0.0.0"; port = 8096; } ];
+        locations."/" = {
+          proxyPass = "http://pilab.lion-zebra.ts.net:8096";
+          proxyWebsockets = true;
+          recommendedProxySettings = true;
+        };
+      };
+    };
+
     # frigate = {
     #   enable = true;
     #   # Setting this to false as reading camera URLs from environment is flagged as invalid
@@ -290,6 +302,8 @@
     enable = true;
     memoryPercent = 200;
   };
+
+  networking.firewall.allowedTCPPorts = [ 8096 ];
 
   boot.tmp = {
     # Not using tmpfs as it causes nixos-generators to eat
