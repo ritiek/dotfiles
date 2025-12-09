@@ -104,8 +104,6 @@
       cryptsetup
       openssl
       miniserve
-      sops
-      ssh-to-age
       pavucontrol
       nmap
       dig
