@@ -30,7 +30,6 @@
       dig
       cryptsetup
       openssl
-      sops
       deploy-rs
 
       miniserve

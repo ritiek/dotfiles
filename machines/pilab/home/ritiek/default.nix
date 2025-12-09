@@ -41,7 +41,7 @@ in
     ./../../../../scripts/home/immich-env.nix
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
-    # ./../../../../modules/home/gnupg.nix
+    ./../../../../modules/home/gnupg.nix
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
@@ -91,11 +91,7 @@ in
       cryptsetup
       btrfs-progs
       openssl
-      sops
-      gnupg
       deploy-rs
-      ssh-to-age
-      age-plugin-fido2-hmac
 
       miniserve
       bore-cli

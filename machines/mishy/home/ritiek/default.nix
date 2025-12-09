@@ -147,6 +147,7 @@
       syncplay
       chiaki-ng
       moonlight-qt
+      qtscrcpy
 
       # diskonaut
       # woeusb-ng
@@ -159,13 +160,10 @@
       miniserve
       bore-cli
 
-      sops
-      ssh-to-age
       yubikey-manager
       yubikey-personalization
       rage
       age-plugin-yubikey
-      age-plugin-fido2-hmac
 
       totp-cli
       # FIXME: Can't seem to install both these together.

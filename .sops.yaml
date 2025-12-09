@@ -82,6 +82,9 @@ creation_rules:
   - path_regex: machines/clawsiecats/secrets\.yaml$
     pgp: *ritiek
     age: *clawsiecats
+  - path_regex: machines/clawsiecats/home/.*/secrets\.yaml$
+    pgp: *ritiek
+    age: *clawsiecats
 
   - path_regex: machines/keyberry/secrets\.yaml$
     pgp: *ritiek

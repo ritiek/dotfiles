@@ -131,6 +131,11 @@ export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${con
       a = "shpool attach";
       chafa = "chafa --format=kitty";
       mpv-kitty = "mpv --profile=sw-fast --vo=kitty --vo-kitty-use-shm=yes --really-quiet";
+      scrcpy-opengl = "scrcpy --render-driver=opengl";
+
+      # $ ffmpeg-intel-hw-accel -i Big_Buck_Bunny_1080_10s_5MB.mp4 -c:v hevc_qsv output_qsv.mp4
+      # $ ffmpeg-intel-hw-accel -i Big_Buck_Bunny_1080_10s_5MB.mp4 -vf 'format=nv12,hwupload' -c:v h264_vaapi output_h264.mp4
+      ffmpeg-intel-hw-accel = "LIBVA_DRIVER_NAME=iHD ffmpeg -hwaccel vaapi -vaapi_device /dev/dri/renderD128";
 
       sops-ssh = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key' sops";
       sops-ssh-home = "SOPS_AGE_KEY_CMD='ssh-to-age -private-key -i ${config.home.homeDirectory}/.ssh/sops.id_ed25519' sops";

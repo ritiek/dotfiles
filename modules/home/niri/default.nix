@@ -106,7 +106,7 @@ output "HDMI-A-1" {
     position x=-3840 y=0
     scale 1.0
     transform "normal"
-    variable-refresh-rate on-demand=true
+    variable-refresh-rate on-demand=false
 }
 
 output "HDMI-A-2" {

@@ -68,9 +68,7 @@
       dig
       cryptsetup
       openssl
-      sops
       deploy-rs
-      ssh-to-age
 
       miniserve
       bore-cli
