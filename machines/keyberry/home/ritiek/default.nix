@@ -31,7 +31,7 @@
     # ./../../../../modules/home/glava
     # ./../../../../modules/home/sioyek.nix
     ./../../../../modules/home/opencode.nix
-     ./../../../../modules/home/direnv.nix
+    ./../../../../modules/home/direnv.nix
    ];
 
   nixpkgs.config.allowUnfree = false;
@@ -39,6 +39,13 @@
   nixpkgs.overlays = [
     # inputs.nixgl.overlay
     inputs.nur.overlays.default
+
+    (final: _prev: {
+      unstable = import inputs.unstable {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
   ];
 
   home = {
