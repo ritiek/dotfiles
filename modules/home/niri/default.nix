@@ -1,8 +1,16 @@
 { lib, pkgs, inputs, config, hostName, ... }:
 let
-  wallpaper = pkgs.fetchurl {
-    url = "https://immich.clawsiecats.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?key=Qzi8AiA3FeSAJHXANoLZ2odUs5_2LxA5pfmb3Cr9-xfnBzZCI8UeZodZdr5TfFL0uJU";
+  cactus = pkgs.fetchurl {
+    url = "https://immich.clawsiecats.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?slug=cactus";
     sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
+  };
+  sunrise = pkgs.fetchurl {
+    url = "https://immich.clawsiecats.lol/api/assets/f7c51f4f-16b5-4e94-951b-bb2286059e7d/original?slug=sunrise";
+    sha256 = "sha256-5MVdhQSPWTAGwa990Edqjyh4HcwfuPlQ67KvrDh6eew=";
+  };
+  sakura = pkgs.fetchurl {
+    url = "https://immich.clawsiecats.lol/api/assets/07d2afcd-335c-4a0e-a0cf-ee53a0118bc1/original?slug=sakura";
+    sha256 = "sha256-get3dCQed94LTx8sByjU5fj45iotaPrHmfvV8AMzRgo=";
   };
 in
 {
@@ -779,12 +787,14 @@ animations {
         ipc = "on";
         splash = false;
         preload = [
-          (builtins.toString wallpaper)
+          (builtins.toString sunrise)
+          (builtins.toString sakura)
+          (builtins.toString cactus)
         ];
         wallpaper = [
-          "eDP-1,${builtins.toString wallpaper}"
-          "HDMI-A-1,${builtins.toString wallpaper}"
-          "HDMI-A-2,${builtins.toString wallpaper}"
+          "eDP-1,${builtins.toString sunrise}"
+          "HDMI-A-1,${builtins.toString sakura}"
+          "HDMI-A-2,${builtins.toString cactus}"
         ];
       };
     };
