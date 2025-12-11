@@ -248,54 +248,55 @@ in
   };
 
   sops.secrets."restic.keyberry.repository" = {};
-  # services.restic.backups."homelab@keyberry" = {
-  #   initialize = true;
-  #   repositoryFile = config.sops.secrets."restic.keyberry.repository".path;
-  #   passwordFile = config.sops.secrets."restic.homelab.password".path;
-  #   paths = [
-  #     homelabMediaPath
-  #   ];
-  #   extraBackupArgs = [
-  #     "--compression=max"
-  #   ];
-  #   pruneOpts = [
-  #     "--keep-hourly 18"
-  #     "--keep-daily 7"
-  #     "--keep-weekly 5"
-  #     "--keep-monthly 12"
-  #     "--keep-yearly 75"
-  #     "--keep-tag forever"
-  #   ];
-  #   backupPrepareCommand = ''
-  #     if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
-  #       echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
-  #       exit 1 # Exit with a non-zero status to prevent the backup
-  #     fi
-  #
-  #     # Remove any stale locks.
-  #     ${pkgs.restic}/bin/restic unlock || true
-  #
-  #     ${lib.optionalString enableLEDs ''
-  #     # Turn on Yellow LED to indicate backup is starting
-  #     ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
-  #     ''}
-  #
-  #     echo "Backing up '${homelabMediaPath}'."
-  #   '';
-  #   backupCleanupCommand = ''
-  #     ${lib.optionalString enableLEDs ''
-  #     # Turn off LED now that backup is complete
-  #     ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
-  #     ''}
-  #   '';
-  #   timerConfig = {
-  #     # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
-  #     OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
-  #     Persistent = true;
-  #   };
-  # };
-  #
-  # systemd.services."restic-backups-homelab@keyberry".serviceConfig.ExecStopPost = lib.mkAfter [
-  #   "${ping-uptime-kuma-keyberry}/bin/ping-uptime-kuma@restic-backups-homelab@keyberry"
-  # ];
+  services.restic.backups."homelab@keyberry" = {
+    initialize = true;
+    repositoryFile = config.sops.secrets."restic.keyberry.repository".path;
+    passwordFile = config.sops.secrets."restic.homelab.password".path;
+    paths = [
+      homelabMediaPath
+    ];
+    extraBackupArgs = [
+      "--compression=max"
+    ];
+    pruneOpts = [
+      "--keep-hourly 18"
+      "--keep-daily 7"
+      "--keep-weekly 5"
+      "--keep-monthly 12"
+      "--keep-yearly 75"
+      "--keep-tag forever"
+    ];
+    backupPrepareCommand = ''
+      if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
+        echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
+        exit 1 # Exit with a non-zero status to prevent the backup
+      fi
+
+      # Remove any stale locks.
+      ${pkgs.restic}/bin/restic unlock || true
+
+      ${lib.optionalString enableLEDs ''
+      # Turn on Yellow LED to indicate backup is starting
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
+      ''}
+
+      echo "Backing up '${homelabMediaPath}'."
+    '';
+    backupCleanupCommand = ''
+      ${lib.optionalString enableLEDs ''
+      # Turn off LED now that backup is complete
+      ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=0
+      ''}
+    '';
+    timerConfig = {
+      # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
+      # OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
+      OnCalendar = "06:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
+      Persistent = true;
+    };
+  };
+
+  systemd.services."restic-backups-homelab@keyberry".serviceConfig.ExecStopPost = lib.mkAfter [
+    "${ping-uptime-kuma-keyberry}/bin/ping-uptime-kuma@restic-backups-homelab@keyberry"
+  ];
 }
