@@ -108,13 +108,11 @@ output "eDP-1" {
 }
 
 output "HDMI-A-1" {
-    // mode "1920x1080@60"
-    mode "3440x1440@100"
-    // position x=-1920 y=0
-    position x=-3840 y=0
+    // mode "3440x1440@100"
+    position x=0 y=-4160
     scale 1.0
     transform "normal"
-    variable-refresh-rate on-demand=false
+    variable-refresh-rate on-demand=true
 }
 
 output "HDMI-A-2" {
@@ -399,7 +397,7 @@ binds {
     Mod+E repeat=false { spawn "nemo"; }
     Mod+V repeat=false { toggle-window-floating; }
     Mod+Shift+V repeat=false { switch-focus-between-floating-and-tiling; }
-    Mod+W repeat=false { toggle-column-tabbed-display; }
+    Mod+T repeat=false { toggle-column-tabbed-display; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
     Mod+Ctrl+Escape { quit; }
@@ -485,7 +483,6 @@ binds {
     
     // Special workspace equivalents
     // Mod+Return { focus-workspace "empty"; }
-    Mod+T repeat=false { move-column-to-workspace-down; }
 
     // Launchers (force Wayland mode by unsetting DISPLAY)
     Ctrl+Semicolon { spawn-sh "ROFI_WIDTH=700 ROFI_LINES=10 rofi -show combi"; }
@@ -619,23 +616,23 @@ binds {
     Mod+Ctrl+WheelScrollLeft  { move-column-left; }
     
     // Caps lock indicator (removed - invalid syntax in niri)
+
+    Mod+Ctrl+Shift+K repeat=false { move-workspace-up; }
+    Mod+Ctrl+Shift+J repeat=false { move-workspace-down; }
     
     // Monitor management keybindings
-    Mod+Ctrl+Shift+Page_Up { move-workspace-to-monitor-up; }
-    Mod+Ctrl+Shift+Page_Down { move-workspace-to-monitor-down; }
-    Mod+Ctrl+Shift+Up { move-workspace-to-monitor-up; }
-    Mod+Ctrl+Shift+Down { move-workspace-to-monitor-down; }
-    Mod+Ctrl+Shift+Left { move-workspace-to-monitor-left; }
-    Mod+Ctrl+Shift+Right { move-workspace-to-monitor-right; }
-
-    Mod+Up repeat=false { focus-monitor-up; }
-    Mod+Down repeat=false { focus-monitor-down; }
-    Mod+Left repeat=false { focus-monitor-left; }
-    Mod+Right repeat=false { focus-monitor-right; }
-    Mod+Shift+Up repeat=false { move-workspace-to-monitor-up; }
-    Mod+Shift+Down repeat=false { move-workspace-to-monitor-down; }
-    Mod+Shift+Left repeat=false { move-workspace-to-monitor-left; }
-    Mod+Shift+Right repeat=false { move-workspace-to-monitor-right; }
+    Mod+W repeat=false { focus-monitor-up; }
+    Mod+A repeat=false { focus-monitor-left; }
+    Mod+S repeat=false { focus-monitor-down; }
+    Mod+D repeat=false { focus-monitor-right; }
+    Mod+Shift+W repeat=false { move-column-to-monitor-up; }
+    Mod+Shift+A repeat=false { move-column-to-monitor-left; }
+    Mod+Shift+S repeat=false { move-column-to-monitor-down; }
+    Mod+Shift+D repeat=false { move-column-to-monitor-right; }
+    Mod+Ctrl+W repeat=false { move-workspace-to-monitor-up; }
+    Mod+Ctrl+A repeat=false { move-workspace-to-monitor-left; }
+    Mod+Ctrl+S repeat=false { move-workspace-to-monitor-down; }
+    Mod+Ctrl+D repeat=false { move-workspace-to-monitor-right; }
 }
 
 window-rule {
