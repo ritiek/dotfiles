@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, homelabMediaPath, ... }:
+{ config, pkgs, lib, servicePaths, everythingElsePath, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -9,6 +9,17 @@
   };
   virtualisation.oci-containers.backend = "docker";
 
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /export/                        *(rw,fsid=0,insecure,no_subtree_check,no_root_squash)
+      /export/jellyfin/config         *(rw,nohide,insecure,no_subtree_check,no_root_squash)
+      /export/jellyfin/data/movies    *(rw,nohide,insecure,no_subtree_check,no_root_squash)
+      /export/jellyfin/data/tvshows   *(rw,nohide,insecure,no_subtree_check,no_root_squash)
+    '';
+  };
+  networking.firewall.allowedTCPPorts = [ 2049 ];   # For NFS^
+
   # Containers
   virtualisation.oci-containers.containers."jellyfin" = {
     image = "lscr.io/linuxserver/jellyfin:latest";
@@ -16,14 +27,22 @@
       "PGID" = "1000";
       "PUID" = "1000";
       "TZ" = "Asia/Kolkata";
+      "DOCKER_MODS" = "linuxserver/mods:jellyfin-rffmpeg";
+      "RFFMPEG_USER" = "ritiek";
+      "RFFMPEG_HOST" = "mishy.lion-zebra.ts.net";
+      "FFMPEG_PATH" = "/usr/local/bin/ffmpeg";
     };
     volumes = [
+      "${servicePaths.jellyfin.configSource}:/var/lib/jellyfin:rw"
+      # XXX: Also keeping :/config mount for saving log files as I wasn't
+      #      able to find a way to change log directory in Jellyfin.
       "${servicePaths.jellyfin.configSource}:/config:rw"
-      "${everythingElsePath}/arr/movies:/data/movies:rw"
-      "${everythingElsePath}/arr/tv:/data/tvshows:rw"
-      "${homelabMediaPath}/services/spotdl:/data/music:rw"
-      "${homelabMediaPath}/services/immich/photos/library:/data/photos:rw"
-      "${homelabMediaPath}/services/calibre/library:/data/books:rw"
+
+      "${everythingElsePath}/arr/movies:/var/data/jellyfin/movies:rw"
+      "${everythingElsePath}/arr/tv:/var/data/jellyfin/tvshows:rw"
+      "${homelabMediaPath}/services/spotdl:/var/data/jellyfin/music:rw"
+      "${homelabMediaPath}/services/immich/photos/library:/var/data/jellyfin/photos:rw"
+      "${homelabMediaPath}/services/calibre/library:/var/data/jellyfin/books:rw"
     ];
     ports = [
       "8096:8096/tcp"
@@ -35,6 +54,7 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
+      "--dns=${lib.head (lib.splitString "/" config.virtualisation.docker.daemon.settings.bip)}"
       "--network-alias=jellyfin"
       "--network=jellyfin_default"
     ];
@@ -59,11 +79,28 @@
     requires = [
       "docker-network-jellyfin_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      servicePaths.jellyfin.configSource
-      "${everythingElsePath}/arr/movies"
-      "${everythingElsePath}/arr/tv"
-    ];
+
+    preStart = ''
+      ${pkgs.coreutils}/bin/mkdir -p /export/jellyfin/{config,data}
+
+      if ! ${pkgs.util-linux}/bin/mountpoint -q /export/jellyfin/config; then
+        ${pkgs.util-linux}/bin/mount --bind ${servicePaths.jellyfin.configSource} /export/jellyfin/config
+      fi
+      if ! ${pkgs.util-linux}/bin/mountpoint -q /export/jellyfin/data/movies; then
+        ${pkgs.coreutils}/bin/mkdir -p /export/jellyfin/data/movies
+        ${pkgs.util-linux}/bin/mount --bind ${everythingElsePath}/arr/movies /export/jellyfin/data/movies
+      fi
+      if ! ${pkgs.util-linux}/bin/mountpoint -q /export/jellyfin/data/tvshows; then
+        ${pkgs.coreutils}/bin/mkdir -p /export/jellyfin/data/tvshows
+        ${pkgs.util-linux}/bin/mount --bind ${everythingElsePath}/arr/tv /export/jellyfin/data/tvshows
+      fi
+    '';
+
+    postStop = ''
+      ${pkgs.util-linux}/bin/umount /export/jellyfin/data/tvshows 2>/dev/null || true
+      ${pkgs.util-linux}/bin/umount /export/jellyfin/data/movies 2>/dev/null || true
+      ${pkgs.util-linux}/bin/umount /export/jellyfin/config 2>/dev/null || true
+    '';
   };
 
   # Networks
