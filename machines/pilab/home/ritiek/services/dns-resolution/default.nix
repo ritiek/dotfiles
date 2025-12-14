@@ -58,7 +58,7 @@ let
 
     def load_sops_env():
         """Load environment variables from SOPS secrets file"""
-        sops_env_path = "${config.home.homeDirectory}/.config/sops-nix/secrets/dns-resolution.env"
+        sops_env_path = "${config.sops.secrets."dns-resolution.env".path}"
 
         if os.path.exists(sops_env_path):
             print("Loading credentials from dns-resolution.env")
@@ -430,7 +430,7 @@ let
   '');
 
   dns-fetch-pihole = (pkgs.writeShellScriptBin "dns-fetch-pihole" ''
-    source "${config.sops.secrets."uptime-kuma.env".path}"
+    source "${config.sops.secrets."dns-resolution.env".path}"
 
     if [ -z "$PIHOLE_HOST" ] || [ -z "$PIHOLE_APP_PASSWORD" ]; then
       echo "Error: PIHOLE_HOST or PIHOLE_APP_PASSWORD not set"
@@ -466,7 +466,7 @@ let
 
   dns-fetch-router = (pkgs.writeShellScriptBin "dns-fetch-router" ''
     set -a
-    source "${config.sops.secrets."uptime-kuma.env".path}"
+    source "${config.sops.secrets."dns-resolution.env".path}"
     set +a
 
     export PLAYWRIGHT_SKIP_VALIDATE_HOST_REQUIREMENTS=1
