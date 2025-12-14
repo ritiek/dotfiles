@@ -156,6 +156,7 @@
       docker-compose
       cryptsetup
       openssl
+      jellyfin-ffmpeg
 
       miniserve
       bore-cli
