@@ -154,7 +154,7 @@ in
         server = {
           host = "127.0.0.1";
           port = 3000;
-          cookie_secret_path = pkgs.writeText "headplane-cookie-secret" "xXxXxXxXxXxXxXxXx";
+          cookie_secret_path = pkgs.writeText "headplane-cookie-secret" "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX";
           cookie_secure = false;
         };
         headscale = {
@@ -438,7 +438,7 @@ in
       };
     };
 
-    certificateScheme = "acme-nginx";
+    # certificateScheme = "acme-nginx";
   };
   
   security.acme = {
