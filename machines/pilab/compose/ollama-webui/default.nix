@@ -71,9 +71,6 @@ in lib.mkMerge [
   };
   virtualisation.oci-containers.containers."open-webui" = {
     image = "ghcr.io/open-webui/open-webui:main";
-    # environment = {
-    #   "OLLAMA_BASE_URL" = "http://ollama:11434";
-    # };
     environmentFiles = [
       config.sops.secrets."compose/ollama-webui.env".path
     ];
