@@ -148,7 +148,7 @@ in
           # systemctl start docker-conduwuit.service
           systemctl start autostart-grocy.service
           systemctl start docker-changedetection.service
-          systemctl start docker-frigate.service
+          # systemctl start docker-frigate.service
           systemctl start autostart-habitica-server.service
           # systemctl start docker-ollama.service
           systemctl start autostart-open-webui.service
@@ -210,7 +210,7 @@ in
         systemctl stop docker-compose-conduwuit-root.target
         systemctl stop autostart-grocy.service docker-compose-grocy-root.target
         systemctl stop docker-compose-changedetection-root.target
-        systemctl stop docker-compose-frigate-root.target
+        # systemctl stop docker-compose-frigate-root.target
         systemctl stop autostart-habitica-server.service docker-compose-habitica-root.target
         systemctl stop autostart-open-webui.service docker-compose-ollama-webui-root.target
         systemctl stop autostart-pwpush.service docker-compose-pwpush-root.target
