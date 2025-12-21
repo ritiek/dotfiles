@@ -76,6 +76,7 @@
       # "geojson"
       "syncthing"
       "mcp_server"
+      "tuya"
     ];
 
     extraPackages = ps: with ps; [
@@ -86,6 +87,10 @@
       aiohttp-sse
       mcp
       anyio
+      # Required for Tuya integration
+      tuya-device-sharing-sdk
+      requests
+      urllib3
       (buildPythonPackage rec {
         pname = "dawarich_api";
         version = "0.4.1";
