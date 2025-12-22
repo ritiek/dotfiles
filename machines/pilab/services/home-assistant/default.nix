@@ -143,25 +143,37 @@
       };
     };
 
-    # Config is managed via SOPS-encrypted file, not writable via UI
-    configWritable = false;
+    # Allow UI configuration changes
+    configWritable = true;
 
   };
 
   # Copy other custom components to Home Assistant config directory
   systemd.services.home-assistant.serviceConfig.ExecStartPre = [
-    # ("+${pkgs.writeShellScript "install-dawarich" ''
-    #   mkdir -p /var/lib/hass/custom_components
-    #   if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then
-    #     cp -r ${pkgs.fetchFromGitHub {
-    #       owner = "AlbinLind";
-    #       repo = "dawarich-home-assistant";
-    #       rev = "main";
-    #       sha256 = "sha256-VliFRJFBut586xWpZSPQ8OrDttoFdrlZyHvktI6AjgM=";
-    #     }}/custom_components/dawarich /var/lib/hass/custom_components/
-    #     chown -R hass:hass /var/lib/hass/custom_components/dawarich
-    #   fi
-    # ''}")
+    # Add automation include after config is copied
+    ("+${pkgs.writeShellScript "add-automation-include" ''
+      # Wait for config to be copied by the main pre-start script
+      sleep 2
+      # Add automation include if not present
+      if ! grep -q "automation:" /var/lib/hass/configuration.yaml; then
+        echo "" >> /var/lib/hass/configuration.yaml
+        echo "# Include automations from separate file" >> /var/lib/hass/configuration.yaml
+        echo "automation: !include automations.yaml" >> /var/lib/hass/configuration.yaml
+        chown hass:hass /var/lib/hass/configuration.yaml
+      fi
+    ''}")
+    ("+${pkgs.writeShellScript "install-dawarich" ''
+      mkdir -p /var/lib/hass/custom_components
+      if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then
+        cp -r ${pkgs.fetchFromGitHub {
+          owner = "AlbinLind";
+          repo = "dawarich-home-assistant";
+          rev = "main";
+          sha256 = "sha256-VliFRJFBut586xWpZSPQ8OrDttoFdrlZyHvktI6AjgM=";
+        }}/custom_components/dawarich /var/lib/hass/custom_components/
+        chown -R hass:hass /var/lib/hass/custom_components/dawarich
+      fi
+    ''}")
     ("+${pkgs.writeShellScript "install-uptime-card" ''
       mkdir -p /var/lib/hass/www/community/uptime-card
       if [ ! -f "/var/lib/hass/www/community/uptime-card/uptime-card.js" ]; then
