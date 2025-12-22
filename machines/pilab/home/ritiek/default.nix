@@ -51,7 +51,7 @@ in
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
-    # ./../../../../modules/home/rbw.nix
+    ./../../../../modules/home/rbw.nix
   ];
 
   nixpkgs.config.allowUnfree = false;
@@ -174,6 +174,7 @@ in
           systemctl start docker-calibre-web-automated-book-downloader.service
           systemctl start docker-audiobookshelf.service
           systemctl start docker-baikal.service
+          systemctl start docker-qdrant.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -235,6 +236,7 @@ in
         systemctl stop docker-compose-calibre-web-automated-book-downloader-root.target
         systemctl stop docker-compose-audiobookshelf-root.target
         systemctl stop docker-compose-baikal-root.target
+        systemctl stop docker-compose-qdrant-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 

@@ -65,6 +65,7 @@
     ./compose/calibre-web-automated-book-downloader.nix
     ./compose/audiobookshelf.nix
     ./compose/baikal.nix
+    ./compose/qdrant
     # ./compose/kopia
   ];
 
