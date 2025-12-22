@@ -108,7 +108,7 @@
   };
   virtualisation.oci-containers.containers."dawarich_db" = {
     # image = "imresamu/postgis-arm64:14-3.5.2-alpine3.20";
-    image = "imresamu/postgis:17-3.5.3-alpine3.21";
+    image = "imresamu/postgis:17-3.5-alpine";
     environmentFiles = [
       config.sops.secrets."compose/dawarich.env".path
     ];
@@ -148,7 +148,7 @@
     ];
   };
   virtualisation.oci-containers.containers."dawarich_redis" = {
-    image = "redis:7.0-alpine";
+    image = "redis:7.4-alpine";
     volumes = [
       "${homelabMediaPath}/services/dawarich/shared:/data:rw"
     ];
@@ -156,7 +156,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--health-cmd=[\"redis-cli\", \"--raw\", \"incr\", \"ping\"]"
+      "--health-cmd=redis-cli incr ping"
       "--health-interval=10s"
       "--health-retries=5"
       "--health-start-period=30s"
