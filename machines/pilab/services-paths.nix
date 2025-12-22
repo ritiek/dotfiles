@@ -2,6 +2,11 @@
 
 let
   services = {
+    home-assistant = {
+      configSource = "/var/lib/hass";
+      configBackup = "${homelabMediaPath}/services/hass";
+    };
+
     radarr = {
       configSource = "${everythingElsePath}/arr/configs/radarr";
       configBackup = "${homelabMediaPath}/services/arr/radarr/config";
