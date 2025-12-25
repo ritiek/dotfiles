@@ -142,7 +142,7 @@ in
       # Provider name and model name schema in opencode can be found here:
       # $ curl -s https://opencode.ai/zen/v1/models | jq
 
-      model = "zai-coding-plan/glm-4.6";
+      model = "zai-coding-plan/glm-4.7";
       small_model = "opencode/gpt-5-nano";
       provider = {
         "opencode".options.timeout = false;
@@ -150,8 +150,8 @@ in
         "zai-coding-plan" = {
           options.timeout = false;
           models = {
-            "glm-4.6" = {
-              name = "GLM 4.6";
+            "glm-4.7" = {
+              name = "GLM 4.7";
               options = {
                 reasoningEffort = "high";
                 reasoningSummary = "auto";
