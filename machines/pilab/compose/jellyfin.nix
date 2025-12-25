@@ -25,10 +25,10 @@
     image = "lscr.io/linuxserver/jellyfin:latest";
     environment = {
       "PGID" = "1000";
-      "PUID" = "1000";
+      "PUID" = "4311";
       "TZ" = "Asia/Kolkata";
       "DOCKER_MODS" = "linuxserver/mods:jellyfin-rffmpeg";
-      "RFFMPEG_USER" = "ritiek";
+      "RFFMPEG_USER" = "jellyfin";
       "RFFMPEG_HOST" = "mishy.lion-zebra.ts.net";
       "FFMPEG_PATH" = "/usr/local/bin/ffmpeg";
     };

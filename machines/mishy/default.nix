@@ -132,6 +132,19 @@
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
+    groups.jellyfin = {};
+    users.jellyfin = {
+      isSystemUser = true;
+      group = "jellyfin";
+      uid = 4311;
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFjN848EiSTbrOTSy6DK8OViIKgR+c0xSSe99NAf7ic/"
+      ];
+      packages = with pkgs; [
+        jellyfin-ffmpeg
+      ];
+    };
   };
 
   # List packages installed in system profile. To search, run:
