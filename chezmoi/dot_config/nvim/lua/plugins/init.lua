@@ -75,6 +75,8 @@ local plugins = {
         "markdown",
         "markdown_inline",
         "svelte",
+        -- "norg",
+        -- "norg_meta",
       },
       indent = {
         enable = true,
@@ -216,6 +218,26 @@ local plugins = {
       -- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
       smear_insert_mode = true,
     },
+  },
+
+  {
+    "nvim-neorg/neorg",
+    lazy = false,
+    config = function()
+      require("neorg").setup({
+        load = {
+          ["core.defaults"] = {},
+          ["core.concealer"] = {},
+          ["core.dirman"] = {
+            config = {
+              workspaces = {
+                notes = "~/notes",
+              },
+            },
+          },
+        },
+      })
+    end,
   },
 
   -- {
