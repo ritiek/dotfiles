@@ -48,7 +48,7 @@
     enable = true;
 
     customComponents = with pkgs.home-assistant-custom-components; [
-      philips_airpurifier_coap
+      # philips_airpurifier_coap  # Using custom fork from ritiek
     ];
 
     extraComponents = [
@@ -91,6 +91,9 @@
       tuya-device-sharing-sdk
       requests
       urllib3
+      # Required for Philips Air Purifier component
+      aioairctrl
+      getmac
       (buildPythonPackage rec {
         pname = "dawarich_api";
         version = "0.4.1";
@@ -183,6 +186,19 @@
           sha256 = "sha256-VliFRJFBut586xWpZSPQ8OrDttoFdrlZyHvktI6AjgM=";
         }}/custom_components/dawarich /var/lib/hass/custom_components/
         chown -R hass:hass /var/lib/hass/custom_components/dawarich
+      fi
+    ''}")
+    ("+${pkgs.writeShellScript "install-philips-airpurifier-coap" ''
+      mkdir -p /var/lib/hass/custom_components
+      # Copy from ritiek's fork on make-api-compatible-with-upstream-ha branch
+      if [ ! -d "/var/lib/hass/custom_components/philips_airpurifier_coap" ]; then
+        cp -r ${pkgs.fetchFromGitHub {
+          owner = "ritiek";
+          repo = "philips-airpurifier-coap";
+          rev = "make-api-compatible-with-upstream-ha";
+          sha256 = "sha256-7zzL18s0FLdc3XatVITnP4vt85JOWspD2X94y+Onwt8=";
+        }}/custom_components/philips_airpurifier_coap /var/lib/hass/custom_components/
+        chown -R hass:hass /var/lib/hass/custom_components/philips_airpurifier_coap
       fi
     ''}")
     ("+${pkgs.writeShellScript "install-uptime-card" ''
