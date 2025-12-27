@@ -16,6 +16,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+vim.api.nvim_create_autocmd({"BufEnter", "BufWinEnter"}, {
+  pattern = {"*.norg", "*.md"},
+  command = "set conceallevel=3"
+})
+
 -- vim.o.clipboard = "unnamedplus"
 -- vim.o.clipboard = "wl-copy"
 

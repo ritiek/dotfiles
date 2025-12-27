@@ -36,9 +36,10 @@
       lsof
     ];
 
-    # plugins = with pkgs.vimPlugins; [
-    #   nvim-osc52
-    # ];
+    plugins = with pkgs.vimPlugins; [
+      # nvim-osc52
+      # neorg
+    ];
   };
 
   # xdg.configFile = {
