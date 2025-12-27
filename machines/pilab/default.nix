@@ -66,6 +66,7 @@
     ./compose/audiobookshelf.nix
     ./compose/baikal.nix
     ./compose/qdrant
+    ./compose/scriberr.nix
     # ./compose/kopia
   ];
 
