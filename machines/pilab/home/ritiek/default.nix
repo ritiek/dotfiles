@@ -175,6 +175,7 @@ in
           systemctl start docker-audiobookshelf.service
           systemctl start docker-baikal.service
           systemctl start docker-qdrant.service
+          systemctl start docker-scriberr.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -237,6 +238,7 @@ in
         systemctl stop docker-compose-audiobookshelf-root.target
         systemctl stop docker-compose-baikal-root.target
         systemctl stop docker-compose-qdrant-root.target
+        systemctl stop docker-compose-scriberr-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
