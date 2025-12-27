@@ -211,8 +211,11 @@ class AirtelRouter(BaseRouter):
             standardized_clients = []
 
             for client in self.clients:
+                ip = client["ipv4"] if client["ipv4"] else client["ipv6"]
+                if not ip:
+                    continue
                 standardized_client = {
-                    "ip": client["ipv4"],
+                    "ip": ip,
                     "mac": client["mac"],
                     "name": client["name"] if client["name"] else None,
                     "connection_type": client["network"],
