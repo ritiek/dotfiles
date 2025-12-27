@@ -344,9 +344,18 @@ let
         # Get current DNS entries
         current_entries = pihole_updater.get_current_dns_entries()
 
-        # Build new entries
-        new_entries = current_entries.copy()
-        existing_ips = {entry.split()[0]: entry for entry in current_entries if ' ' in entry}
+        # Build mapping of hostname -> IP for current entries
+        existing_hostname_to_ip = {}
+        # Keep ALL entries (including managed ones) - preserve existing DNS
+        new_entries = list(current_entries)
+
+        for entry in current_entries:
+            if ' ' in entry:
+                parts = entry.split()
+                ip = parts[0]
+                hostname = ' '.join(parts[1:])
+                if hostname:
+                    existing_hostname_to_ip[hostname] = ip
 
         added_count = 0
         updated_count = 0
@@ -363,18 +372,18 @@ let
 
             new_entry = f"{ip} {hostname}"
 
-            if ip in existing_ips:
-                current_entry = existing_ips[ip]
-                entry_parts = current_entry.split()
-                current_hostname = entry_parts[1] if len(entry_parts) > 1 else ""
-                if current_hostname != hostname:
-                    print(f"Updating entry for {ip}: {current_hostname} -> {hostname}")
-                    for i, entry in enumerate(new_entries):
-                        if entry.split()[0] == ip:
-                            new_entries[i] = new_entry
-                            break
+            # Check if hostname already exists at a different IP
+            if hostname in existing_hostname_to_ip:
+                old_ip = existing_hostname_to_ip[hostname]
+                if old_ip != ip:
+                    # Update entry in-place - remove old specific entry and add new
+                    new_entries = [e for e in new_entries if not (e.startswith(old_ip) and e.endswith(hostname))]
+                    new_entries.append(new_entry)
+                    print(f"Updating hostname {hostname}: {old_ip} -> {ip}")
                     updated_count += 1
-            else:
+                # If same IP, entry already exists, no action needed
+            elif not any(hostname in entry for entry in new_entries if ' ' in entry):
+                # New hostname - add if not already present
                 print(f"Adding new entry: {new_entry}")
                 new_entries.append(new_entry)
                 added_count += 1
