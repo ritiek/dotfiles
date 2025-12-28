@@ -59,6 +59,12 @@
         bindkey '^K' autosuggest-accept
         bindkey '^_' autosuggest-execute
 
+        # Bind Ctrl+Enter specifically for vi insert mode
+        bindkey -M viins '^J' autosuggest-execute
+        # Ghostty sends Ctrl+Enter as CSI sequence: ^[[27;5;13~ (ESC + [27;5;13~)
+        bindkey -M viins '^[[27;5;13~' autosuggest-execute
+        bindkey -M viins '^[[13;5u' autosuggest-execute  # Kitty protocol
+
         # Reverse search like in Bash
         # bindkey '^R' history-incremental-search-backward
         # bindkey '^S' history-incremental-search-forward

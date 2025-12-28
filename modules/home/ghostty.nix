@@ -32,6 +32,8 @@
         "unconsumed:ctrl+shift+j=ignore"
         "ctrl+f=write_scrollback_file:copy"
         # "ctrl+f=write_scrollback_file:paste"
+        # Unbind default Ctrl+Enter=fullscreen to let it send default CSI sequence to zsh
+        "ctrl+enter=unbind"
       ];
     };
 
