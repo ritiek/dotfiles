@@ -6,12 +6,15 @@
       export WAYLAND_DISPLAY=wayland-1
       # eval $(keychain --eval --quiet --noask)
     '';
-    initContent = let
-      zshConfigBeforeCompInit = lib.mkOrder 550 ''
-        # Source fzf-tab before oh-my-zsh/compinit to override completion
+    initContent = ''
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
-      '';
-      zshConfigEarlyInit = lib.mkOrder 500 ''
+
+        # This isn't needed if programs.fzf.enableZshIntegration is set to true.
+        # if [ -n "$\{commands[fzf-share]}" ]; then
+        #   source "$(fzf-share)/key-bindings.zsh"
+        #   source "$(fzf-share)/completion.zsh"
+        # fi
+
         # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
         # Initialization code that may require console input (password prompts, [y/n]
         # confirmations, etc.) must go above this block; everything else may go below.
@@ -71,9 +74,8 @@
         bindkey "^?" backward-delete-char
 
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
-              '';
-            in lib.mkMerge [ zshConfigEarlyInit zshConfigBeforeCompInit ];
-              envExtra = ''
+      '';
+      envExtra = ''
         # the default umask is set in /etc/profile; for setting the umask
         # for ssh logins, install and configure the libpam-umask package.
         #umask 022
@@ -136,7 +138,7 @@
         export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${config.home.homeDirectory}/.ssh/sops.id_ed25519"
 
         # Make Tab use fzf fuzzy completion instead of needing **
-        export FZF_COMPLETION_TRIGGER=""
+        export FZF_COMPLETION_TRIGGER="**"
     '';
     shellAliases = {
       # Check if xclip is even being used in hyprland
