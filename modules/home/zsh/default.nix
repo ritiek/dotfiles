@@ -6,7 +6,12 @@
 export WAYLAND_DISPLAY=wayland-1
 # eval $(keychain --eval --quiet --noask)
     '';
-    initContent = ''
+    initContent = let
+      zshConfigBeforeCompInit = lib.mkOrder 550 ''
+        # Source fzf-tab before oh-my-zsh/compinit to override completion
+        source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+      '';
+      zshConfigEarlyInit = lib.mkOrder 500 ''
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -55,8 +60,10 @@ bindkey '^K' autosuggest-execute
 # Reverse search like in Bash
 # bindkey '^R' history-incremental-search-backward
 # bindkey '^S' history-incremental-search-forward
-bindkey '^R' history-incremental-pattern-search-backward
-bindkey '^S' history-incremental-pattern-search-forward
+
+# Commented out to allow fzf's fuzzy Ctrl+R history search
+# bindkey '^R' history-incremental-pattern-search-backward
+# bindkey '^S' history-incremental-pattern-search-forward
 
 autoload edit-command-line
 zle -N edit-command-line
@@ -65,6 +72,7 @@ bindkey "^?" backward-delete-char
 
 ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
       '';
+    in lib.mkMerge [ zshConfigEarlyInit zshConfigBeforeCompInit ];
       envExtra = ''
 # the default umask is set in /etc/profile; for setting the umask
 # for ssh logins, install and configure the libpam-umask package.
@@ -81,6 +89,9 @@ export COLORTERM=truecolor
 export BROWSER="zen-beta"
 export LESS="--mouse --wheel-lines=3 -r"
 export LESSOPEN="|$HOME/.lessfilter %s"
+
+# FZF options: hide progress counter
+export FZF_DEFAULT_OPTS='--info=hidden --height=30%'
 # Reduce lag when switching between Normal and Insert mode with Vi
 # bindings in zsh
 export KEYTIMEOUT=1
@@ -123,6 +134,9 @@ if [ -n "$SSH_CONNECTION" ] && [ -z "$DISPLAY" ]; then
 fi
 
 export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${config.home.homeDirectory}/.ssh/sops.id_ed25519"
+
+# Make Tab use fzf fuzzy completion instead of needing **
+export FZF_COMPLETION_TRIGGER=""
     '';
     shellAliases = {
       # Check if xclip is even being used in hyprland
@@ -212,6 +226,12 @@ export SOPS_AGE_KEY_CMD="${pkgs.ssh-to-age}/bin/ssh-to-age -private-key -i ${con
         "brackets"
       ];
     };
+  };
+
+  # Enable fzf with zsh integration
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
   };
 
   home.file = {
