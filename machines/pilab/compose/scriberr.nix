@@ -15,6 +15,7 @@
     image = "ghcr.io/rishikanthc/scriberr:latest";
     environment = {
       "APP_ENV" = "production";
+      "SECURE_COOKIES" = "false";
       "PGID" = "1000";
       "PUID" = "1000";
     };

@@ -24,6 +24,7 @@
     log-driver = "journald";
     autoStart = true;
     extraOptions = [
+      "--add-host=host.docker.internal:host-gateway"
       "--network-alias=chrome"
       "--network=karakeep_default"
     ];
