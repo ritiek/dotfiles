@@ -56,9 +56,8 @@
         bindkey -v
 
         # zsh-autosuggetsions maps
-        ## map autosuggest-accept to ctrl+/
-        bindkey '^_' autosuggest-accept
-        bindkey '^K' autosuggest-execute
+        bindkey '^K' autosuggest-accept
+        bindkey '^_' autosuggest-execute
 
         # Reverse search like in Bash
         # bindkey '^R' history-incremental-search-backward
