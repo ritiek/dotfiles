@@ -70,8 +70,8 @@
         # bindkey '^S' history-incremental-search-forward
 
         # Commented out to allow fzf's fuzzy Ctrl+R history search
-        # bindkey '^R' history-incremental-pattern-search-backward
-        # bindkey '^S' history-incremental-pattern-search-forward
+        bindkey '^R' history-incremental-pattern-search-backward
+        bindkey '^S' history-incremental-pattern-search-forward
 
         autoload edit-command-line
         zle -N edit-command-line
@@ -99,6 +99,7 @@
 
         # FZF options: hide progress counter
         export FZF_DEFAULT_OPTS='--info=hidden --height=30%'
+        FZF_DEFAULT_OPTS='--info=hidden --height=30% --bind=ctrl-/:accept'
         # Reduce lag when switching between Normal and Insert mode with Vi
         # bindings in zsh
         export KEYTIMEOUT=1
