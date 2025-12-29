@@ -70,13 +70,34 @@
         # bindkey '^S' history-incremental-search-forward
 
         # Commented out to allow fzf's fuzzy Ctrl+R history search
-        bindkey '^R' history-incremental-pattern-search-backward
-        bindkey '^S' history-incremental-pattern-search-forward
+        # bindkey '^R' history-incremental-pattern-search-backward
+        # bindkey '^S' history-incremental-pattern-search-forward
 
         autoload edit-command-line
         zle -N edit-command-line
         bindkey -M vicmd ' ' edit-command-line
         bindkey "^?" backward-delete-char
+
+        # Custom Ctrl+R widget that executes command immediately
+        fzf-history-execute-widget() {
+          local selected
+          setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases noglob nobash_rematch 2> /dev/null
+          selected="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
+            fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0)"
+          local ret=$?
+          if [ -n "$selected" ]; then
+            if [[ $(awk '{print $1; exit}' <<< "$selected") =~ ^[1-9][0-9]* ]]; then
+              zle vi-fetch-history -n $MATCH
+            else
+              LBUFFER="$selected"
+            fi
+            zle accept-line
+          fi
+          zle reset-prompt
+          return $ret
+        }
+        zle -N fzf-history-execute-widget
+        bindkey '^R' fzf-history-execute-widget
 
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
       '';
@@ -100,6 +121,7 @@
         # FZF options: hide progress counter
         export FZF_DEFAULT_OPTS='--info=hidden --height=30%'
         FZF_DEFAULT_OPTS='--info=hidden --height=30% --bind=ctrl-/:accept'
+        # FZF_CTRL_R_OPTS='--bind=enter:accept'
         # Reduce lag when switching between Normal and Insert mode with Vi
         # bindings in zsh
         export KEYTIMEOUT=1
