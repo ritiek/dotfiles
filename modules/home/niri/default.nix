@@ -262,7 +262,7 @@ window-rule {
   shadow {
     off
   }
-  default-floating-position x=397 y=982 relative-to="top-left"
+  default-floating-position x=394 y=982 relative-to="top-left"
   default-column-width { fixed 1130; }
   default-window-height { fixed 49; }
 }
