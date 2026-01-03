@@ -19,10 +19,13 @@ in
   home.packages = with pkgs; [
     niri
     # Use Hyprland ecosystem tools instead of Sway equivalents
-    hyprlock      # Instead of swaylock
     hyprpaper     # Instead of swaybg
     hypridle      # Instead of swayidle
     hyprpicker    # Color picker
+    # Wrapper to automatically run hyprlock without NVIDIA offload
+    (pkgs.writeShellScriptBin "hyprlock" ''
+      exec nvidia-unoffload "${pkgs.hyprlock}/bin/hyprlock" "$@"
+    '')
     # hyprshot      # Screenshot tool
     # hyprcursor    # Cursor theme tool
     wlsunset      # Blue light filter (hyprsunset doesn't work with niri)
@@ -41,6 +44,16 @@ in
     (pkgs.writeShellScriptBin "nvidia-unoffload" ''
       export __NV_PRIME_RENDER_OFFLOAD=0
       exec "$@"
+    '')
+
+    # Wrapper to automatically run swayosd-server without NVIDIA offload
+    (pkgs.writeShellScriptBin "swayosd-server" ''
+      exec nvidia-unoffload "${pkgs.swayosd}/bin/swayosd-server" "$@"
+    '')
+
+    # Wrapper to automatically run swayosd-client without NVIDIA offload
+    (pkgs.writeShellScriptBin "swayosd-client" ''
+      exec nvidia-unoffload "${pkgs.swayosd}/bin/swayosd-client" "$@"
     '')
   ];
 
@@ -356,7 +369,7 @@ spawn-at-startup "wlsunset" "-t" "4300"
 spawn-at-startup "gotify-desktop"
 spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
-spawn-sh-at-startup "__NV_PRIME_RENDER_OFFLOAD=0 swayosd-server"
+spawn-sh-at-startup "swayosd-server"
 
 environment {
     ELECTRON_OZONE_PLATFORM_HINT "auto"
@@ -810,7 +823,7 @@ animations {
           {
             timeout = 3600;
             on-timeout = "hyprctl dispatch dpms off";
-            on-resume = "hyprctl dispatch dpms on && (pidof swayosd-server || __NV_PRIME_RENDER_OFFLOAD=0 swayosd-server)";
+            on-resume = "hyprctl dispatch dpms on && (pidof swayosd-server || swayosd-server)";
           }
         ];
       };
