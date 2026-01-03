@@ -454,6 +454,21 @@
               "@paperless"
             ];
           };
+          "Invidious" = {
+            urls = [{
+              template = "http://pilab.lion-zebra.ts.net:6030/search";
+              params = [
+                { name = "q"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "http://pilab.lion-zebra.ts.net:6030/safari-pinned-tab.svg";
+            definedAliases = [
+              "@inv"
+              "@invidious"
+              "@yt"
+              "@youtube"
+            ];
+          };
         };
       };
     };
