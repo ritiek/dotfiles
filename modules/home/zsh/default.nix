@@ -182,6 +182,7 @@
     shellAliases = {
       # Check if xclip is even being used in hyprland
       # xclip = "xclip -selection clipboard";
+      cd = "z";
       cp = "cp --reflink=auto --sparse=always";
       a = "shpool attach";
       chafa = "chafa --format=kitty";
