@@ -182,7 +182,6 @@
     shellAliases = {
       # Check if xclip is even being used in hyprland
       # xclip = "xclip -selection clipboard";
-      cd = "z";
       cp = "cp --reflink=auto --sparse=always";
       a = "shpool attach";
       chafa = "chafa --format=kitty";
@@ -201,7 +200,7 @@
       ssh-auth-sock = "echo export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent";
       gpg-auth-sock = "echo export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)";
       "discordchatexporter-cli@env" = "discordchatexporter-cli export --media --reuse-media --markdown false --format Json --output . --channel";
-    };
+    } // lib.optionalAttrs config.programs.zoxide.enable { cd = "z"; };
     localVariables = {
       SSH_AUTH_SOCK = (
         if config.services.gpg-agent.enableSshSupport then
