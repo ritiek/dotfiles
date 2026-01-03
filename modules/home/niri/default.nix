@@ -249,6 +249,24 @@ window-rule {
   open-focused false
 }
 
+window-rule {
+  match app-id="GLava"
+  open-floating true
+  open-focused false
+  focus-ring {
+    off
+  }
+  border {
+    off
+  }
+  shadow {
+    off
+  }
+  default-floating-position x=397 y=982 relative-to="top-left"
+  default-column-width { fixed 1130; }
+  default-window-height { fixed 49; }
+}
+
 // window-rule {
 //     match app-id="^org\.gnome\.Nautilus$"
 //     default-column-width { fixed 800; }
