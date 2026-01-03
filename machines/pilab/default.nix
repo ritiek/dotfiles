@@ -67,6 +67,7 @@
     ./compose/baikal.nix
     ./compose/qdrant
     ./compose/scriberr.nix
+    ./compose/atuin
     ./compose/searxng.nix
     ./compose/invidious
     ./compose/redlib.nix

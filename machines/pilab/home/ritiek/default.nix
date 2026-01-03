@@ -177,6 +177,7 @@ in
           systemctl start docker-baikal.service
           systemctl start docker-qdrant.service
           systemctl start docker-scriberr.service
+          systemctl start docker-atuin.service
           systemctl start docker-searxng.service
           systemctl start docker-invidious.service
           systemctl start docker-redlib.service
@@ -243,6 +244,7 @@ in
         systemctl stop docker-compose-baikal-root.target
         systemctl stop docker-compose-qdrant-root.target
         systemctl stop docker-compose-scriberr-root.target
+        systemctl stop docker-compose-atuin-root.target
         systemctl stop docker-compose-searxng-root.target
         systemctl stop docker-compose-invidious-root.target
         systemctl stop docker-compose-redlib-root.target
