@@ -56,8 +56,8 @@
         bindkey -v
 
         # zsh-autosuggetsions maps
-        bindkey '^K' autosuggest-accept
-        bindkey '^_' autosuggest-execute
+        bindkey '^_' autosuggest-accept
+        bindkey '^K' autosuggest-execute
 
         # Bind Ctrl+Enter specifically for vi insert mode
         bindkey -M viins '^J' autosuggest-execute
@@ -80,20 +80,28 @@
         bindkey -M vicmd ' ' edit-command-line
         bindkey "^?" backward-delete-char
 
-        # Custom Ctrl+R widget that executes command immediately
+        # Custom Ctrl+R widget - Enter selects only, Ctrl-/ selects and executes
         fzf-history-execute-widget() {
+          local output
           local selected
+          local key
           setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases noglob nobash_rematch 2> /dev/null
-          selected="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
-            fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0)"
+          output="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
+            fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0 --expect=ctrl-/)"
           local ret=$?
-          if [ -n "$selected" ]; then
-            if [[ $(awk '{print $1; exit}' <<< "$selected") =~ ^[1-9][0-9]* ]]; then
-              zle vi-fetch-history -n $MATCH
-            else
-              LBUFFER="$selected"
+          if [ $ret -eq 0 ] && [ -n "$output" ]; then
+            key=$(echo "$output" | head -n1)
+            selected=$(echo "$output" | tail -n +2)
+            if [ -n "$selected" ]; then
+              if [[ $(awk '{print $1; exit}' <<< "$selected") =~ ^[1-9][0-9]* ]]; then
+                zle vi-fetch-history -n $MATCH
+              else
+                LBUFFER="$selected"
+              fi
+              if [[ "$key" != "ctrl-/" ]]; then
+                zle accept-line
+              fi
             fi
-            zle accept-line
           fi
           zle reset-prompt
           return $ret
