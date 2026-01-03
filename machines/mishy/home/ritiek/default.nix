@@ -15,6 +15,7 @@
     ./../../../../modules/home/git
     ./../../../../modules/home/neovim
     ./../../../../modules/home/zoxide.nix
+    ./../../../../modules/home/atuin.nix
     # ./../../../../modules/home/zellij.nix
     ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
