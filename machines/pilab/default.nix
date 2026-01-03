@@ -69,6 +69,7 @@
     ./compose/scriberr.nix
     ./compose/searxng.nix
     ./compose/invidious
+    ./compose/redlib.nix
     # ./compose/kopia
   ];
 
