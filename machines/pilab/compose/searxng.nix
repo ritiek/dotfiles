@@ -11,43 +11,6 @@
   virtualisation.oci-containers.backend = "docker";
 
   # Containers
-  virtualisation.oci-containers.containers."redis" = {
-    image = "docker.io/valkey/valkey:8-alpine";
-    volumes = [
-      "${homelabMediaPath}/searxng/redis:/data:rw"
-    ];
-    cmd = [ "valkey-server" "--save" "30" "1" "--loglevel" "warning" ];
-    log-driver = "journald";
-    autoStart = false;
-    extraOptions = [
-      "--network-alias=redis"
-      "--network=searxng_searxng"
-    ];
-    labels = {
-      "homepage.description" = "Meta search engine";
-      "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:6040";
-      "homepage.icon" = "searxng";
-      "homepage.name" = "SearXNG";
-    };
-  };
-  systemd.services."docker-redis" = {
-    serviceConfig = {
-      Restart = lib.mkOverride 90 "always";
-      RestartMaxDelaySec = lib.mkOverride 90 "1m";
-      RestartSec = lib.mkOverride 90 "100ms";
-      RestartSteps = lib.mkOverride 90 9;
-    };
-    after = [
-      "docker-network-searxng_searxng.service"
-    ];
-    requires = [
-      "docker-network-searxng_searxng.service"
-    ];
-    unitConfig.RequiresMountsFor = [
-      "${homelabMediaPath}/services/searxng/redis"
-    ];
-  };
   virtualisation.oci-containers.containers."searxng" = {
     image = "docker.io/searxng/searxng:latest";
     environment = {
@@ -67,6 +30,13 @@
       "--network-alias=searxng"
       "--network=searxng_searxng"
     ];
+    labels = {
+      "homepage.description" = "Meta search engine";
+      "homepage.group" = "Frontends";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:6040";
+      "homepage.icon" = "searxng";
+      "homepage.name" = "SearXNG";
+    };
   };
   systemd.services."docker-searxng" = {
     serviceConfig = {
@@ -84,6 +54,36 @@
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/searxng/cache"
       "${homelabMediaPath}/services/searxng/config"
+    ];
+  };
+  virtualisation.oci-containers.containers."redis" = {
+    image = "docker.io/valkey/valkey:8-alpine";
+    volumes = [
+      "${homelabMediaPath}/searxng/redis:/data:rw"
+    ];
+    cmd = [ "valkey-server" "--save" "30" "1" "--loglevel" "warning" ];
+    log-driver = "journald";
+    autoStart = false;
+    extraOptions = [
+      "--network-alias=redis"
+      "--network=searxng_searxng"
+    ];
+  };
+  systemd.services."docker-redis" = {
+    serviceConfig = {
+      Restart = lib.mkOverride 90 "always";
+      RestartMaxDelaySec = lib.mkOverride 90 "1m";
+      RestartSec = lib.mkOverride 90 "100ms";
+      RestartSteps = lib.mkOverride 90 9;
+    };
+    after = [
+      "docker-network-searxng_searxng.service"
+    ];
+    requires = [
+      "docker-network-searxng_searxng.service"
+    ];
+    unitConfig.RequiresMountsFor = [
+      "${homelabMediaPath}/services/searxng/redis"
     ];
   };
 

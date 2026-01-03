@@ -68,6 +68,7 @@
     ./compose/qdrant
     ./compose/scriberr.nix
     ./compose/searxng.nix
+    ./compose/invidious
     # ./compose/kopia
   ];
 

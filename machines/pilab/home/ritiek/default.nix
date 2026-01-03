@@ -177,6 +177,7 @@ in
           systemctl start docker-qdrant.service
           systemctl start docker-scriberr.service
           systemctl start docker-searxng.service
+          systemctl start docker-invidious.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -241,6 +242,7 @@ in
         systemctl stop docker-compose-qdrant-root.target
         systemctl stop docker-compose-scriberr-root.target
         systemctl stop docker-compose-searxng-root.target
+        systemctl stop docker-compose-invidious-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
