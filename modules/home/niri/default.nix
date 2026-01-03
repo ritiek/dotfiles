@@ -1,4 +1,5 @@
-{ lib, pkgs, inputs, config, hostName, ... }:
+{ lib, pkgs, inputs, config, osConfig, ... }:
+
 let
   cactus = pkgs.fetchurl {
     url = "https://immich.clawsiecats.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?slug=cactus";
@@ -22,10 +23,6 @@ in
     hyprpaper     # Instead of swaybg
     hypridle      # Instead of swayidle
     hyprpicker    # Color picker
-    # Wrapper to automatically run hyprlock without NVIDIA offload
-    (pkgs.writeShellScriptBin "hyprlock" ''
-      exec nvidia-unoffload "${pkgs.hyprlock}/bin/hyprlock" "$@"
-    '')
     # hyprshot      # Screenshot tool
     # hyprcursor    # Cursor theme tool
     wlsunset      # Blue light filter (hyprsunset doesn't work with niri)
@@ -38,12 +35,17 @@ in
     xwayland-satellite
     rose-pine-cursor
     gotify-desktop
-
+  ] ++ (if osConfig.hardware.nvidia.enabled then [
     # Wrapper to disable NVIDIA offload (use Intel GPU instead)
     # for screenshare to work.
     (pkgs.writeShellScriptBin "nvidia-unoffload" ''
       export __NV_PRIME_RENDER_OFFLOAD=0
       exec "$@"
+    '')
+
+    # Wrapper to automatically run hyprlock without NVIDIA offload
+    (pkgs.writeShellScriptBin "hyprlock" ''
+      exec nvidia-unoffload "${pkgs.hyprlock}/bin/hyprlock" "$@"
     '')
 
     # Wrapper to automatically run swayosd-server without NVIDIA offload
@@ -55,7 +57,9 @@ in
     (pkgs.writeShellScriptBin "swayosd-client" ''
       exec nvidia-unoffload "${pkgs.swayosd}/bin/swayosd-client" "$@"
     '')
-  ];
+  ] else [
+    hyprlock
+  ]);
 
   xdg.configFile."niri/config.kdl".text = ''
 // Niri configuration equivalent to Hyprland setup
@@ -382,7 +386,7 @@ environment {
     SAL_FORCEDPI "70"
     MOZ_USE_XINPUT2 "1"
     DISPLAY ":0"
-  ${lib.optionalString (hostName == "mishy") ''
+  ${lib.optionalString osConfig.hardware.nvidia.enabled ''
     LIBVA_DRIVER_NAME "nvidia"
     GBM_BACKEND "nvidia-drm"
     __GLX_VENDOR_LIBRARY_NAME "nvidia"
