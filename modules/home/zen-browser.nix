@@ -251,8 +251,8 @@
         "browser.ctrlTab.recentlyUsedOrder" = false;
         "browser.discovery.enabled" = false;
         "browser.safebrowsing.downloads.enabled" = false;
-        "browser.search.defaultenginename" = "Kagi";
-        "browser.search.order.1" = "Kagi";
+        "browser.search.defaultenginename" = "SearXNG";
+        "browser.search.order.1" = "SearXNG";
         "browser.sessionstore.resume_from_crash" = true;
         "browser.shell.checkDefaultBrowser" = false;
         "browser.ssb.enabled" = true;
@@ -320,8 +320,9 @@
 
       search = {
         force = true;
-        default = "google";
+        default = "SearXNG";
         order = [
+          "SearXNG"
           "ddg"
           "Kagi"
           "google"
@@ -329,6 +330,19 @@
         engines = {
           "bing".metaData.hidden = true;
           "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+          "SearXNG" = {
+            urls = [{
+              template = "http://pilab.lion-zebra.ts.net:6040/search";
+              params = [
+                { name = "q"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/searxng.svg";
+            definedAliases = [
+              "@sx"
+              "@searx"
+            ];
+          };
           "Nix Packages" = {
             urls = [{
               template = "https://search.nixos.org/packages";
@@ -340,7 +354,7 @@
             icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             definedAliases = [
               "@np"
-              "@packages"
+              "@nixpackages"
             ];
           };
           "NixOS Options" = {
@@ -354,8 +368,22 @@
             icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
             definedAliases = [
               "@no"
-              "@options"
+              "@nixoptions"
+            ];
+          };
+          "NixOS Home Manager Options" = {
+            urls = [{
+              template = "https://home-manager-options.extranix.com";
+              params = [
+                { name = "query"; value = "{searchTerms}"; }
+                { name = "release"; value = "master"; }
               ];
+            }];
+            icon = "''${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [
+              "@nho"
+              "@nixhomeoptions"
+            ];
           };
           "NixOS Wiki" = {
             urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
@@ -363,7 +391,7 @@
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [
               "@nw"
-              "@wiki"
+              "@nixwiki"
             ];
           };
         };
