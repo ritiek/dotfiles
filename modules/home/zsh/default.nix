@@ -87,7 +87,7 @@
           local key
           setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases noglob nobash_rematch 2> /dev/null
           output="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
-            fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0 --expect=ctrl-/)"
+            fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0 --expect=ctrl-/ --bind=ctrl-r:up,ctrl-s:down)"
           local ret=$?
           if [ $ret -eq 0 ] && [ -n "$output" ]; then
             key=$(echo "$output" | head -n1)
@@ -107,7 +107,8 @@
           return $ret
         }
         zle -N fzf-history-execute-widget
-        bindkey '^R' fzf-history-execute-widget
+        bindkey -M viins '^R' fzf-history-execute-widget
+        bindkey -M vicmd '^R' fzf-history-execute-widget
 
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
       '';
