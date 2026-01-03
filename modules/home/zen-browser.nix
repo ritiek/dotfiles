@@ -337,7 +337,7 @@
                 { name = "q"; value = "{searchTerms}"; }
               ];
             }];
-            icon = "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/searxng.svg";
+            icon = "http://pilab.lion-zebra.ts.net:6040/static/themes/simple/img/favicon.svg";
             definedAliases = [
               "@sx"
               "@searx"
@@ -386,12 +386,72 @@
             ];
           };
           "NixOS Wiki" = {
-            urls = [{ template = "https://nixos.wiki/index.php?search={searchTerms}"; }];
+            urls = [{
+              template = "https://nixos.wiki/index.php";
+              params = [
+                { name = "search"; value = "{searchTerms}"; }
+              ];
+            }];
             icon = "https://nixos.wiki/favicon.png";
             updateInterval = 24 * 60 * 60 * 1000; # every day
             definedAliases = [
               "@nw"
               "@nixwiki"
+            ];
+          };
+          "Jellyfin" = {
+            urls = [{
+              template = "http://pilab.lion-zebra.ts.net:8096/web/#/search.html";
+              params = [
+                { name = "query"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "http://pilab.lion-zebra.ts.net:8096/web/assets/img/icon-transparent.png";
+            definedAliases = [
+              "@jf"
+              "@jellyfin"
+            ];
+          };
+          "Jellyseer" = {
+            urls = [{
+              template = "http://pilab.lion-zebra.ts.net:5055/search";
+              params = [
+                { name = "query"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "http://pilab.lion-zebra.ts.net:5055/os_icon.svg";
+            definedAliases = [
+              "@js"
+              "@jellyseer"
+            ];
+          };
+          "Immich" = {
+            urls = [{
+              template = "http://pilab.lion-zebra.ts.net:2283/search";
+              params = [
+                { name = "query"; value = "{\"query\":\"{searchTerms}\"}"; }
+              ];
+            }];
+            icon = "http://pilab.lion-zebra.ts.net:2283/favicon-144.png";
+            definedAliases = [
+              "@im"
+              "@immich"
+            ];
+          };
+          "PaperlessNGX" = {
+            urls = [{
+              template = "http://pilab.lion-zebra.ts.net:8010/documents?title_content=aadhar%20card&sort=created&reverse=1&page=1";
+              params = [
+                { name = "title_content"; value = "{searchTerms}"; }
+                { name = "sort"; value = "created"; }
+                { name = "reverse"; value = 1; }
+                { name = "page"; value = 1; }
+              ];
+            }];
+            icon = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/refs/heads/main/svg/paperless.svg";
+            definedAliases = [
+              "@pa"
+              "@paperless"
             ];
           };
         };
