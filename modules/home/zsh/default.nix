@@ -285,7 +285,7 @@
       filter_mode = "host";
       # filter_mode_shell_up_key_binding = "session";
       filter_mode_shell_up_key_binding = "host";
-      inline_height = 15;
+      inline_height = 6;
       style = "compact";
       enter_accept = true;
       show_tabs = false;
