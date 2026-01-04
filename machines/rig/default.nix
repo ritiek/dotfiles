@@ -56,7 +56,7 @@
     ./../../modules/tailscale-controlplane.nix
     # ./../../modules/yubico-pam.nix
     # ./../../modules/usbip.nix
-    # ./../../modules/sunshine.nix
+    ./../../modules/sunshine.nix
   ];
 
   sops.secrets.ritiek_password_hash = {};
@@ -305,7 +305,6 @@
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
-      acceleration = "cuda";
       host = "0.0.0.0";
     };
   };
@@ -425,4 +424,10 @@
   };
 
   systemd.settings.Manager.RuntimeWatchdogSec = 360;
+
+  # Force Wayland on all apps.
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    WAYLAND_DISPLAY = "wayland-0";
+  };
 }

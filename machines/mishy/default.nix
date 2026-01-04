@@ -490,6 +490,6 @@
   # Force Wayland on all apps.
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    # WAYLAND_DISPLAY = "wayland-1";
+    WAYLAND_DISPLAY = "wayland-1";
   };
 }
