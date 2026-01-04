@@ -17,7 +17,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."atuin" = {
-    image = "ghcr.io/atuinsh/atuin:8a010fe-aarch64";
+    image = "ghcr.io/atuinsh/atuin:18.10.0";
     environmentFiles = [
       config.sops.secrets."compose/atuin.env".path
     ];
