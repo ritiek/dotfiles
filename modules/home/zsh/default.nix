@@ -294,6 +294,11 @@
     };
   };
 
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   home.file = {
     p10k-config = {
       source = ./p10k-config/p10k-config.zsh;
