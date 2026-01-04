@@ -81,34 +81,34 @@
         bindkey "^?" backward-delete-char
 
         # Custom Ctrl+R widget - Enter selects only, Ctrl-/ selects and executes
-        fzf-history-execute-widget() {
-          local output
-          local selected
-          local key
-          setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases noglob nobash_rematch 2> /dev/null
-          output="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
-            fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0 --expect=ctrl-/ --bind=ctrl-r:up,ctrl-s:down)"
-          local ret=$?
-          if [ $ret -eq 0 ] && [ -n "$output" ]; then
-            key=$(echo "$output" | head -n1)
-            selected=$(echo "$output" | tail -n +2)
-            if [ -n "$selected" ]; then
-              if [[ $(awk '{print $1; exit}' <<< "$selected") =~ ^[1-9][0-9]* ]]; then
-                zle vi-fetch-history -n $MATCH
-              else
-                LBUFFER="$selected"
-              fi
-              if [[ "$key" != "ctrl-/" ]]; then
-                zle accept-line
-              fi
-            fi
-          fi
-          zle reset-prompt
-          return $ret
-        }
-        zle -N fzf-history-execute-widget
-        bindkey -M viins '^R' fzf-history-execute-widget
-        bindkey -M vicmd '^R' fzf-history-execute-widget
+        # fzf-history-execute-widget() {
+        #   local output
+        #   local selected
+        #   local key
+        #   setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases noglob nobash_rematch 2> /dev/null
+        #   output="$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
+        #     fzf --info=hidden --height=30% -n2..,.. --scheme=history --wrap-sign '\t↳ ' --highlight-line +m --exit-0 --expect=ctrl-/ --bind=ctrl-r:up,ctrl-s:down)"
+        #   local ret=$?
+        #   if [ $ret -eq 0 ] && [ -n "$output" ]; then
+        #     key=$(echo "$output" | head -n1)
+        #     selected=$(echo "$output" | tail -n +2)
+        #     if [ -n "$selected" ]; then
+        #       if [[ $(awk '{print $1; exit}' <<< "$selected") =~ ^[1-9][0-9]* ]]; then
+        #         zle vi-fetch-history -n $MATCH
+        #       else
+        #         LBUFFER="$selected"
+        #       fi
+        #       if [[ "$key" != "ctrl-/" ]]; then
+        #         zle accept-line
+        #       fi
+        #     fi
+        #   fi
+        #   zle reset-prompt
+        #   return $ret
+        # }
+        # zle -N fzf-history-execute-widget
+        # bindkey -M viins '^R' fzf-history-execute-widget
+        # bindkey -M vicmd '^R' fzf-history-execute-widget
 
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
       '';
@@ -269,10 +269,29 @@
     };
   };
 
-  # Enable fzf with zsh integration
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    daemon.enable = true;
+    settings = {
+      sync_address = "http://pilab.lion-zebra.ts.net:7235";
+      sync_frequency = 0;
+      auto_sync = true;
+      filter_mode = "host";
+      # filter_mode_shell_up_key_binding = "session";
+      filter_mode_shell_up_key_binding = "host";
+      inline_height = 15;
+      style = "compact";
+      enter_accept = true;
+      show_tabs = false;
+      max_preview_height = 40;
+      secrets_filter = false;
+    };
   };
 
   home.file = {
