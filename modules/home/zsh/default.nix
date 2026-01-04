@@ -278,6 +278,9 @@
     enable = true;
     enableZshIntegration = true;
     daemon.enable = true;
+    flags = [
+      "--disable-up-arrow"
+    ];
     settings = {
       sync_address = "http://pilab.lion-zebra.ts.net:7235";
       sync_frequency = 0;
