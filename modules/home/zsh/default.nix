@@ -1,10 +1,10 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, osConfig, lib, ... }:
 {
   programs.zsh = {
     enable = true;
     profileExtra = ''
-      export WAYLAND_DISPLAY=wayland-1
-      # eval $(keychain --eval --quiet --noask)
+        export WAYLAND_DISPLAY=${osConfig.environment.sessionVariables.WAYLAND_DISPLAY}
+        # eval $(keychain --eval --quiet --noask)
     '';
     initContent = ''
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
