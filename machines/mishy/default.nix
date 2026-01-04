@@ -142,7 +142,12 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFjN848EiSTbrOTSy6DK8OViIKgR+c0xSSe99NAf7ic/"
       ];
       packages = with pkgs; [
-        jellyfin-ffmpeg
+        # Not using jellyfin-ffmpeg due to it not supporting overrides.
+        # jellyfin-ffmpeg
+        (ffmpeg-full.override {
+          # Enable libfdk_aac (and potentially other codecs) needed by Jellyfin.
+          withUnfree = true;
+        })
       ];
     };
   };
