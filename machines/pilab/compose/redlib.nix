@@ -29,7 +29,7 @@
       "--security-opt=no-new-privileges:true"
     ];
     labels = {
-      "homepage.description" = "Frontends";
+      "homepage.description" = "Reddit";
       "homepage.group" = "Frontends";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:6020";
       "homepage.icon" = "redlib";
