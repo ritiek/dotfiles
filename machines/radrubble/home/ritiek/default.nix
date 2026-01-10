@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 {
   imports = [
+    ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
@@ -14,7 +15,16 @@
   ];
   
   nixpkgs.config.allowUnfree = true;
-  
+
+  nixpkgs.overlays = [
+    (final: _prev: {
+      unstable = import inputs.unstable {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
+  ];
+
   home = {
     stateVersion = "24.11";
     username = "ritiek";
