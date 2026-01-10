@@ -3,7 +3,7 @@
   programs.zsh = {
     enable = true;
     profileExtra = ''
-        export WAYLAND_DISPLAY=${osConfig.environment.sessionVariables.WAYLAND_DISPLAY}
+        export WAYLAND_DISPLAY=${lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig}
         # eval $(keychain --eval --quiet --noask)
     '';
     initContent = ''
