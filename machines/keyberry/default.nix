@@ -214,73 +214,74 @@
       };
     };
 
-    # frigate = {
-    #   enable = true;
-    #   # Setting this to false as reading camera URLs from environment is flagged as invalid
-    #   # by this option.
-    #   checkConfig = false;
-    #   hostname = "keyberry.lion-zebra.ts.net";
-    #   settings = {
-    #     version = "0.16-0";
-    #     auth.enabled = false;
-    #     # auth.reset_admin_password = true;
-    #
-    #     mqtt = {
-    #       enabled = false;
-    #     };
-    #
-    #     go2rtc = {
-    #       streams = {
-    #         porch = [
-    #           "{FRIGATE_RTSP_SUBTYPE1}"
-    #           "ffmpeg:camera.porch#audio=aac"
-    #         ];
-    #       };
-    #     };
-    #
-    #     detectors = {
-    #       cpu1 = {
-    #         type = "cpu";
-    #         num_threads = 3;
-    #       };
-    #     };
-    #
-    #     cameras = {
-    #       porch = {
-    #         ffmpeg = {
-    #           input_args = "preset-rtsp-restream";
-    #           output_args = {
-    #             record = "preset-record-generic-audio-aac";
-    #           };
-    #           inputs = [
-    #             {
-    #               path = "{FRIGATE_RTSP_SUBTYPE0}";
-    #               roles = [ "record" ];
-    #             }
-    #             {
-    #               path = "{FRIGATE_RTSP_SUBTYPE1}";
-    #               roles = [ "audio" "detect" ];
-    #             }
-    #           ];
-    #         };
-    #         detect = {
-    #           enabled = true;
-    #           width = 1280;
-    #           height = 720;
-    #         };
-    #         objects = {
-    #           track = [ "person" ];
-    #           filters.person.threshold = 0.7;
-    #         };
-    #       };
-    #     };
-    #
-    #     audio.enabled = true;
-    #     record.enabled = true;
-    #     detect.enabled = true;
-    #     ui.timezone = "Asia/Kolkata";
-    #   };
-    # };
+  #   frigate = {
+  #     enable = true;
+  #     # Setting this to false as reading camera URLs from environment is flagged as invalid
+  #     # by this option.
+  #     checkConfig = false;
+  #     hostname = "keyberry.lion-zebra.ts.net";
+  #     settings = {
+  #       version = "0.16-0";
+  #       auth.enabled = false;
+  #       # auth.reset_admin_password = true;
+  #
+  #       mqtt = {
+  #         enabled = false;
+  #       };
+  #
+  #       go2rtc = {
+  #         streams = {
+  #           porch = [
+  #             "{FRIGATE_RTSP_SUBTYPE1}"
+  #             "ffmpeg:camera.porch#audio=aac"
+  #           ];
+  #         };
+  #       };
+  #
+  #       detectors = {
+  #         cpu1 = {
+  #           type = "cpu";
+  #           num_threads = 3;
+  #         };
+  #       };
+  #
+  #       cameras = {
+  #         porch = {
+  #           ffmpeg = {
+  #             input_args = "preset-rtsp-restream";
+  #             output_args = {
+  #               record = "preset-record-generic-audio-aac";
+  #             };
+  #             hwaccel_args = "preset-rpi-64-h264";
+  #             inputs = [
+  #               {
+  #                 path = "{FRIGATE_RTSP_SUBTYPE0}";
+  #                 roles = [ "record" ];
+  #               }
+  #               {
+  #                 path = "{FRIGATE_RTSP_SUBTYPE1}";
+  #                 roles = [ "audio" "detect" ];
+  #               }
+  #             ];
+  #           };
+  #           detect = {
+  #             enabled = true;
+  #             width = 1280;
+  #             height = 720;
+  #           };
+  #           objects = {
+  #             track = [ "person" ];
+  #             filters.person.threshold = 0.7;
+  #           };
+  #         };
+  #       };
+  #
+  #       audio.enabled = true;
+  #       record.enabled = true;
+  #       detect.enabled = true;
+  #       ui.timezone = "Asia/Kolkata";
+  #     };
+  #   };
 
   };
 
@@ -317,4 +318,3 @@
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
 }
-
