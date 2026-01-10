@@ -20,7 +20,7 @@ in
   # hardware.firmware = with pkgs; [ armbian-firmware linux-firmware ];
 
   rockchip.uBoot = inputs.rockchip.packages."aarch64-linux".uBootRadxaCM3IO;
-  # boot.kernelPackages = inputs.rockchip.legacyPackages."aarch64-linux".kernel_linux_6_12_rockchip;
+  # boot.kernelPackages = inputs.rockchip.legacyPackages."aarch64-linux".kernel_linux_latest_rockchip_unstable;
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
