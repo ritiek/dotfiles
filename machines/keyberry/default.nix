@@ -18,6 +18,11 @@
     "ritiek.hashedpassword".neededForUsers = true;
     "syncthing.gui_password" = {};
     # "cameras.porch.rtsp" = {};
+    "rnixbld.id_ed25519" = {
+      mode = "600";
+      owner = "root";
+      group = "nixbld";
+    };
   };
 
   networking.hostName = lib.mkForce "keyberry";
@@ -28,20 +33,32 @@
   nix = {
     distributedBuilds = true;
     buildMachines = [{
-      hostName = "pilab.lion-zebra.ts.net";
-      system = "aarch64-linux";
-      # system = pkgs.stdenv.hostPlatform;
+      # hostName = "pilab.lion-zebra.ts.net";
+      hostName = "keyberry.lion-zebra.ts.net";
+      # system = "aarch64-linux";
+      system = pkgs.stdenv.hostPlatform.system;
       # systems = [ "aarch64-linux" ];
       # protocol = "ssh-ng";
       protocol = "ssh";
-      sshUser = "ritiek";
+      sshUser = "rnixbld";
+      sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
       maxJobs = 8;
       speedFactor = 5;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      supportedFeatures = [
+        "nixos-test"
+        "benchmark"
+        "big-parallel"
+        "kvm"
+      ];
       # mandatoryFeatures = [ ];
     }];
-    # settings.builders-use-substitutes = true;
-    settings.sandbox = false;
+    # NOTE: Moved to modules/nix.nix
+    # settings = {
+    #   # Let remote builders fetch derivation dependencies from cache configured
+    #   # on remote builders.
+    #   builders-use-substitutes = true;
+    #   sandbox = false;
+    # };
   };
 
   users = {
@@ -77,6 +94,27 @@
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    };
+
+    users.rnixbld = {
+      isSystemUser = true;
+      # group = "nixbld";
+      group = "users";
+      # gid = 30000;
+      extraGroups = [
+        "wheel"
+        "video"
+        "input"
+        "render"
+        "gpio"
+        "i2c"
+        "spi"
+        "dialout"
+      ];
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPlUpYpBOffFgrMAViDxiTCrVCRP6wQIFWd7/KiNkV2"
       ];
     };
   };
