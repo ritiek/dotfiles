@@ -112,19 +112,7 @@
 
     users.rnixbld = {
       isSystemUser = true;
-      # group = "nixbld";
       group = "users";
-      # gid = 30000;
-      extraGroups = [
-        "wheel"
-        "video"
-        "input"
-        "render"
-        "gpio"
-        "i2c"
-        "spi"
-        "dialout"
-      ];
       shell = pkgs.bash;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPlUpYpBOffFgrMAViDxiTCrVCRP6wQIFWd7/KiNkV2"
