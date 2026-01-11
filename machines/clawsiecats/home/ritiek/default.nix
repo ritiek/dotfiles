@@ -52,6 +52,7 @@
       "/nix/persist/home/${config.home.username}/cache" = {
         directories = [
           ".local/share/nvim"
+          ".local/share/atuin"
         ];
         allowOther = false;
       };
