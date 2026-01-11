@@ -79,12 +79,71 @@
     #   owner = "nginx";
     # };
     "syncplay.password" = {};
+    "rnixbld.id_ed25519" = {
+      mode = "600";
+      owner = "root";
+      group = "nixbld";
+    };
   };
 
   nixpkgs.config.allowUnfree = false;
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "kongo09/philips_airpurifier_coap"
   ];
+
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [
+      {
+        hostName = "keyberry.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU93TTJ6N0JENWhrbGJSZURkT056OStOQUh5TVdtMmY1dHhKMlhDZTA2dXUK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "radrubble.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJSRjdFcXYxUHJTQlBmQnFaenBLalBxUGZiSjhNc25qKzNFSFA4V2NweFYK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "zerostash.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU0rdjFsZVJwVGR5SGxNSlFsWStLZ1NnUHVSZlUwRzNWdG1hQ0pOeGpBbWwK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+    ];
+  };
 
   nixpkgs.overlays = [
     (final: _prev: {
@@ -176,6 +235,15 @@
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    };
+
+    users.rnixbld = {
+      isSystemUser = true;
+      group = "users";
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPlUpYpBOffFgrMAViDxiTCrVCRP6wQIFWd7/KiNkV2"
       ];
     };
   };
