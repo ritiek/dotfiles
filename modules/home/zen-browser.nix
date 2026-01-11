@@ -251,8 +251,8 @@
         "browser.ctrlTab.recentlyUsedOrder" = false;
         "browser.discovery.enabled" = false;
         "browser.safebrowsing.downloads.enabled" = false;
-        "browser.search.defaultenginename" = "SearXNG";
-        "browser.search.order.1" = "SearXNG";
+        "browser.search.defaultenginename" = "Startpage";
+        "browser.search.order.1" = "Startpage";
         "browser.sessionstore.resume_from_crash" = true;
         "browser.shell.checkDefaultBrowser" = false;
         "browser.ssb.enabled" = true;
@@ -320,16 +320,32 @@
 
       search = {
         force = true;
-        default = "SearXNG";
+        default = "Startpage";
         order = [
-          "SearXNG"
+          "Startpage"
           "ddg"
-          "Kagi"
+          "SearXNG"
+          "kagi"
           "google"
         ];
         engines = {
           "bing".metaData.hidden = true;
           "google".metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+          "Startpage" = {
+            urls = [{
+              template = "https://www.startpage.com/sp/search";
+              params = [
+                { name = "query"; value = "{searchTerms}"; }
+                # { name = "language"; value = "auto"; }
+              ];
+            }];
+            icon = "https://www.startpage.com/sp/cdn/favicons/mobile/android-icon-192x192.png";
+            updateInterval = 24 * 60 * 60 * 1000; # every day
+            definedAliases = [
+              "@sp"
+              "@startpage"
+            ];
+          };
           "SearXNG" = {
             urls = [{
               template = "http://pilab.lion-zebra.ts.net:6040/search";
