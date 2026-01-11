@@ -242,7 +242,14 @@ in
 
     nginx = {
       enable = true;
-      clientMaxBodySize = "512M";
+      clientMaxBodySize = "2g";
+      eventsConfig = ''
+        worker_connections 10240;
+      '';
+      commonHttpConfig = ''
+        # Connection pooling for parallel uploads (global HTTP context)
+        keepalive_timeout 600s;
+      '';
       virtualHosts = {
         "jitsi.${domain}" = {
           # basicAuth = {
@@ -322,8 +329,30 @@ in
           enableACME = true;
           locations."/" = {
             proxyPass = "http://100.64.0.7:7080";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
+            extraConfig = ''
+              # Critical for large file uploads - disable buffering
+              proxy_request_buffering off;
+              proxy_buffering off;
+              proxy_max_temp_file_size 0;
+
+              # Timeouts for large binary cache uploads (10 minutes)
+              proxy_read_timeout 600s;
+              proxy_send_timeout 600s;
+              proxy_connect_timeout 600s;
+
+              # Increase body size limit for large NAR files
+              client_max_body_size 2g;
+
+              # Use HTTP/1.1 for better connection handling
+              proxy_http_version 1.1;
+
+              # Preserve headers needed by attic
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+              proxy_set_header X-Forwarded-Proto $scheme;
+              proxy_set_header Connection "";
+            '';
           };
         };
         # "ollama.${domain}" = {
