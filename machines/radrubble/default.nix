@@ -12,30 +12,74 @@
     ./../../modules/usbipd.nix
   ];
 
+  sops.secrets = {
+    "rnixbld.id_ed25519" = {
+      mode = "600";
+      owner = "root";
+      group = "nixbld";
+    };
+  };
+
   networking.hostName = "radrubble";
   time.timeZone = "Asia/Kolkata";
 
   nixpkgs.config.allowUnfree = true;
 
-  boot.supportedFilesystems = [ "ntfs" ];
-
   nix = {
     distributedBuilds = true;
-    buildMachines = [{
-      hostName = "pilab.lion-zebra.ts.net";
-      system = "aarch64-linux";
-      # system = pkgs.stdenv.hostPlatform;
-      # systems = [ "aarch64-linux" ];
-      # protocol = "ssh-ng";
-      protocol = "ssh";
-      sshUser = "ritiek";
-      maxJobs = 8;
-      speedFactor = 5;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-      # mandatoryFeatures = [ ];
-    }];
-    # settings.builders-use-substitutes = true;
+    buildMachines = [
+      {
+        hostName = "pilab.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBCT1IvaGthQzM4YlhZcGZ5RURXaUJMSUF6TnJ2WldUS2ZDb3lDOHNVMFEK";
+        maxJobs = 4;
+        speedFactor = 3;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "keyberry.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU93TTJ6N0JENWhrbGJSZURkT056OStOQUh5TVdtMmY1dHhKMlhDZTA2dXUK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "zerostash.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU0rdjFsZVJwVGR5SGxNSlFsWStLZ1NnUHVSZlUwRzNWdG1hQ0pOeGpBbWwK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+    ];
   };
+
+  boot.supportedFilesystems = [ "ntfs" ];
 
   users = {
     defaultUserShell = pkgs.zsh;
@@ -63,6 +107,27 @@
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    };
+
+    users.rnixbld = {
+      isSystemUser = true;
+      # group = "nixbld";
+      group = "users";
+      # gid = 30000;
+      extraGroups = [
+        "wheel"
+        "video"
+        "input"
+        "render"
+        "gpio"
+        "i2c"
+        "spi"
+        "dialout"
+      ];
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPlUpYpBOffFgrMAViDxiTCrVCRP6wQIFWd7/KiNkV2"
       ];
     };
   };
