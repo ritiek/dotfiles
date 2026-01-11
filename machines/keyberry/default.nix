@@ -32,33 +32,58 @@
 
   nix = {
     distributedBuilds = true;
-    buildMachines = [{
-      # hostName = "pilab.lion-zebra.ts.net";
-      hostName = "keyberry.lion-zebra.ts.net";
-      # system = "aarch64-linux";
-      system = pkgs.stdenv.hostPlatform.system;
-      # systems = [ "aarch64-linux" ];
-      # protocol = "ssh-ng";
-      protocol = "ssh";
-      sshUser = "rnixbld";
-      sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-      maxJobs = 8;
-      speedFactor = 5;
-      supportedFeatures = [
-        "nixos-test"
-        "benchmark"
-        "big-parallel"
-        "kvm"
-      ];
-      # mandatoryFeatures = [ ];
-    }];
-    # NOTE: Moved to modules/nix.nix
-    # settings = {
-    #   # Let remote builders fetch derivation dependencies from cache configured
-    #   # on remote builders.
-    #   builders-use-substitutes = true;
-    #   sandbox = false;
-    # };
+    buildMachines = [
+      {
+        hostName = "pilab.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        # Run on remote machine (make sure /etc/ssh/ssh_host_ed25519_key octal perms are set 600):
+        # $ sudo ssh-keygen -f /etc/ssh/ssh_host_ed25519_key -y | awk '{print $1 " " $2}' | base64 -w0
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBCT1IvaGthQzM4YlhZcGZ5RURXaUJMSUF6TnJ2WldUS2ZDb3lDOHNVMFEK";
+        maxJobs = 4;
+        speedFactor = 3;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "radrubble.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJSRjdFcXYxUHJTQlBmQnFaenBLalBxUGZiSjhNc25qKzNFSFA4V2NweFYK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "zerostash.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU0rdjFsZVJwVGR5SGxNSlFsWStLZ1NnUHVSZlUwRzNWdG1hQ0pOeGpBbWwK";
+        maxJobs = 4;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+    ];
   };
 
   users = {
