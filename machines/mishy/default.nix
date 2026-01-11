@@ -101,6 +101,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users = {
     defaultUserShell = pkgs.zsh;
+    mutableUsers = false;
     users.root.password = "";
     users.ritiek = {
       isNormalUser = true;
