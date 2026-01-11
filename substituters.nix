@@ -6,7 +6,7 @@
     "https://cache.garnix.io"
     "https://nixos-raspberrypi.cachix.org"
     "https://nixpkgs-wayland.cachix.org"
-    # "https://nabam-nixos-rockchip.cachix.org"
+    "https://nabam-nixos-rockchip.cachix.org"
     "https://hyprland.cachix.org"
 
     "http://pilab.lion-zebra.ts.net:7080/attic-action"
@@ -21,7 +21,7 @@
     "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     "nixos-raspberrypi.cachix.org-1:4iMO9LXa8BqhU+Rpg6LQKiGa2lsNh/j2oiYLNOQ5sPI="
     "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
-    # "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
+    "nabam-nixos-rockchip.cachix.org-1:BQDltcnV8GS/G86tdvjLwLFz1WeFqSk7O9yl+DR0AVM="
     "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
 
     "attic-action:KzjQMFuIL/gl+NzXja3S80zOF14w4yv2qocKn9EVtKI="
