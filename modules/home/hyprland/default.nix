@@ -8,8 +8,8 @@ let
     # sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
     # url = "https://filebrowser.clawsiecats.lol/api/public/dl?path=/&hash=_fTtyPc1heMt5Ypxi68MZQ&inline=true";
     # sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
-    url = "https://immich.clawsiecats.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?key=Qzi8AiA3FeSAJHXANoLZ2odUs5_2LxA5pfmb3Cr9-xfnBzZCI8UeZodZdr5TfFL0uJU";
-    sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
+    url = "https://immich.clawsiecats.lol/api/assets/f7c51f4f-16b5-4e94-951b-bb2286059e7d/original?slug=sunrise";
+    sha256 = "sha256-5MVdhQSPWTAGwa990Edqjyh4HcwfuPlQ67KvrDh6eew=";
   };
 in
 {
