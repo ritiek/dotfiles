@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
 
@@ -58,7 +58,7 @@ jobs:
   #     #   with:
   #     #     swap-size-gb: 10
   #     - name: Install Nix
-  #       uses: cachix/install-nix-action@v27
+  #       uses: cachix/install-nix-action@v31
   #     - name: Clone Repository
   #       uses: actions/checkout@v4
   #
@@ -88,7 +88,7 @@ jobs:
           sudo chmod 0755 /nix
           sudo mount --bind /mnt/nix /nix
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
 
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
 
@@ -112,7 +112,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
 
@@ -124,7 +124,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
 
@@ -136,7 +136,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Install Nix
-        uses: cachix/install-nix-action@v27
+        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
 
