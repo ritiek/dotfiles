@@ -75,6 +75,7 @@
       dig
       cryptsetup
       openssl
+      depoy-rs
 
       miniserve
       bore-cli
