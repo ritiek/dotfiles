@@ -23,6 +23,7 @@
   networking.hostName = "radrubble";
   time.timeZone = "Asia/Kolkata";
 
+  # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
 
   nix = {
