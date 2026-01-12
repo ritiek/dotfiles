@@ -5,11 +5,63 @@
 { config, lib, pkgs, modulesPath, options, inputs, ... }:
 
 {
-  time.timeZone = "Asia/Kolkata";
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    inputs.nix-index-database.nixosModules.nix-index
+    inputs.sops-nix.nixosModules.sops
+    ./home
+    ./graphics.nix
+    ./../../modules/nix.nix
+    ./../../modules/sops.nix
+    ./../../modules/ssh.nix
+    ./../../modules/yubico-pam.nix
+    ./../../modules/usbip.nix
+    ./../../modules/sunshine.nix
+    # ./../../modules/mullvad.nix
+    # inputs.shabitica-nix.nixosModules."x86_64-linux".default
+  ];
+
+  # shabitica = {
+  #   adminMailAddress = "ritiekmalhotra123@gmail.com";
+  #   senderMailAddress = "ritiekmalhotra123@gmail.com";
+  # };
+
+  sops.secrets = {
+    ritiek_password_hash = {};
+    "rnixbld.id_ed25519" = {
+      mode = "600";
+      owner = "root";
+      group = "nixbld";
+    };
+  };
+
   networking.hostName = "mishy";
+  time.timeZone = "Asia/Kolkata";
 
   # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
+
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [
+      {
+        hostName = "clawsiecats.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJkT0NlbFNRL3RqTVFBbTJMVUwydHJISFpqa2RuQnUxb1N0VDJGY1NSN3IK";
+        maxJobs = 1;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+    ];
+  };
 
   nixpkgs.overlays = [
     inputs.nur.overlays.default
@@ -34,29 +86,6 @@
     #   };
     # })
   ];
-
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    inputs.nix-index-database.nixosModules.nix-index
-    inputs.sops-nix.nixosModules.sops
-    ./home
-    ./graphics.nix
-    ./../../modules/nix.nix
-    ./../../modules/sops.nix
-    ./../../modules/ssh.nix
-    ./../../modules/yubico-pam.nix
-    ./../../modules/usbip.nix
-    ./../../modules/sunshine.nix
-    # ./../../modules/mullvad.nix
-    # inputs.shabitica-nix.nixosModules."x86_64-linux".default
-  ];
-
-  # shabitica = {
-  #   adminMailAddress = "ritiekmalhotra123@gmail.com";
-  #   senderMailAddress = "ritiekmalhotra123@gmail.com";
-  # };
-
-  sops.secrets.ritiek_password_hash = {};
 
   # Select internationalisation properties.
   i18n = {
@@ -104,6 +133,7 @@
     # mutableUsers = false;
 
     users.root.password = "";
+
     users.ritiek = {
       isNormalUser = true;
       description = "Ritiek Malhotra";
@@ -135,6 +165,7 @@
       ];
     };
     groups.jellyfin = {};
+
     users.jellyfin = {
       isSystemUser = true;
       group = "jellyfin";
@@ -150,6 +181,15 @@
           # Enable libfdk_aac (and potentially other codecs) needed by Jellyfin.
           withUnfree = true;
         })
+      ];
+    };
+
+    users.rnixbld = {
+      isSystemUser = true;
+      group = "users";
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPlUpYpBOffFgrMAViDxiTCrVCRP6wQIFWd7/KiNkV2"
       ];
     };
   };
