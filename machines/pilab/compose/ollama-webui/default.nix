@@ -43,7 +43,9 @@ in lib.mkMerge [
       "${homelabMediaPath}/services/ollama-webui/ollama:/root/.ollama:rw"
     ];
     ports = [
-      "127.0.0.1:11434:11434/tcp"
+      # TODO: Make ollama listen only to connections through host.docker.internal instead
+      #       of having it listen to 0.0.0.0.
+      "11434:11434/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
