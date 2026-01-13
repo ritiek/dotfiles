@@ -275,6 +275,14 @@
   };
 
   programs.atuin = {
+    # NOTE: In case of decryption key issues, running the following should fix things:
+    # Ref: https://github.com/atuinsh/atuin/issues/2096#issuecomment-2154989475
+    # atuin store purge
+    # atuin store verify
+    # atuin store push --force
+    # atuin store pull --force
+    # atuin store rebuild history
+    # atuin sync
     enable = true;
     enableZshIntegration = true;
     daemon.enable = true;
