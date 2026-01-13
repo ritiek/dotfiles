@@ -5,10 +5,72 @@
 { config, lib, pkgs, modulesPath, options, inputs, ... }:
 
 {
-  time.timeZone = "Asia/Kolkata";
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    inputs.nix-index-database.nixosModules.nix-index
+    inputs.sops-nix.nixosModules.sops
+    ./home
+    ./graphics.nix
+    ./../../modules/nix.nix
+    ./../../modules/sops.nix
+    ./../../modules/ssh.nix
+    ./../../modules/tailscale-controlplane.nix
+    # ./../../modules/yubico-pam.nix
+    # ./../../modules/usbip.nix
+    ./../../modules/sunshine.nix
+  ];
+
+  sops.secrets = {
+    ritiek_password_hash = {};
+    "rnixbld.id_ed25519" = {
+      mode = "600";
+      owner = "root";
+      group = "nixbld";
+    };
+  };
+
   networking.hostName = "rig";
+  time.timeZone = "Asia/Kolkata";
 
   nixpkgs.config.allowUnfree = true;
+
+  nix = {
+    distributedBuilds = true;
+    buildMachines = [
+      {
+        hostName = "clawsiecats.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJkT0NlbFNRL3RqTVFBbTJMVUwydHJISFpqa2RuQnUxb1N0VDJGY1NSN3IK";
+        maxJobs = 1;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+      {
+        hostName = "mishy.lion-zebra.ts.net";
+        system = pkgs.stdenv.hostPlatform.system;
+        protocol = "ssh-ng";
+        sshUser = "rnixbld";
+        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUl3R0phWjZFTkdoUk9EKzZQdGxOM29Md1NRVkJBSU9PNmFLTjdqYUJWenYK";
+        maxJobs = 8;
+        speedFactor = 1;
+        supportedFeatures = [
+          "nixos-test"
+          "benchmark"
+          "big-parallel"
+          "kvm"
+        ];
+      }
+    ];
+  };
 
   nixpkgs.overlays = [
     inputs.nur.overlays.default
@@ -43,23 +105,6 @@
     #   };
     # })
   ];
-
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-    inputs.nix-index-database.nixosModules.nix-index
-    inputs.sops-nix.nixosModules.sops
-    ./home
-    ./graphics.nix
-    ./../../modules/nix.nix
-    ./../../modules/sops.nix
-    ./../../modules/ssh.nix
-    ./../../modules/tailscale-controlplane.nix
-    # ./../../modules/yubico-pam.nix
-    # ./../../modules/usbip.nix
-    ./../../modules/sunshine.nix
-  ];
-
-  sops.secrets.ritiek_password_hash = {};
 
   # Select internationalisation properties.
   i18n = {
