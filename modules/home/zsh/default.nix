@@ -282,6 +282,7 @@
       "--disable-up-arrow"
     ];
     settings = {
+      sync.records = true;
       sync_address = "http://pilab.lion-zebra.ts.net:7235";
       sync_frequency = 0;
       auto_sync = true;
