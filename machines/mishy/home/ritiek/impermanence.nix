@@ -41,6 +41,6 @@
       ".bash_history"
       ".claude.json"
     ];
-    allowOther = true;
+    # allowOther = true;
   };
 }
