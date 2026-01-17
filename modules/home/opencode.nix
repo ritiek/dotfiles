@@ -429,14 +429,6 @@ in
         };
       };
 
-      # XXX: Claude doesn't work with Opencode anymore.
-      #      Discussions:
-      #      https://github.com/anomalyco/opencode/issues/7456
-      #      https://github.com/anthropics/claude-code/issues/17118
-      # plugin = [
-      #   "opencode-anthropic-auth@0.0.7"
-      # ];
-
       theme = "system";
       tui.scroll_speed = 5;
       autoupdate = false;
