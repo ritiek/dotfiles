@@ -44,7 +44,7 @@
           {
             directory = "ballistica-personal-release";
             # Symlinking as mounting sets nosuid which is not what I want.
-            method = "symlink";
+            # method = "symlink";
           }
         ];
         # allowOther = false;
