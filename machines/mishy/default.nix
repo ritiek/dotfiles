@@ -44,22 +44,22 @@
   nix = {
     distributedBuilds = true;
     buildMachines = [
-      {
-        hostName = "clawsiecats.lion-zebra.ts.net";
-        system = pkgs.stdenv.hostPlatform.system;
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJkT0NlbFNRL3RqTVFBbTJMVUwydHJISFpqa2RuQnUxb1N0VDJGY1NSN3IK";
-        maxJobs = 1;
-        speedFactor = 1;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
+      # {
+      #   hostName = "clawsiecats.lion-zebra.ts.net";
+      #   system = pkgs.stdenv.hostPlatform.system;
+      #   protocol = "ssh-ng";
+      #   sshUser = "rnixbld";
+      #   sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+      #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJkT0NlbFNRL3RqTVFBbTJMVUwydHJISFpqa2RuQnUxb1N0VDJGY1NSN3IK";
+      #   maxJobs = 1;
+      #   speedFactor = 1;
+      #   supportedFeatures = [
+      #     "nixos-test"
+      #     "benchmark"
+      #     "big-parallel"
+      #     "kvm"
+      #   ];
+      # }
       {
         hostName = "rig.lion-zebra.ts.net";
         system = pkgs.stdenv.hostPlatform.system;
