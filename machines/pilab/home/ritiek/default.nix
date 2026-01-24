@@ -52,6 +52,7 @@ in
     ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
+    ./../../../../modules/home/meshtastic.nix
   ];
 
   nixpkgs.config.allowUnfree = false;
@@ -71,6 +72,7 @@ in
       pciutils
       wget
       pv
+      tio
 
       unzip
       unrar-wrapper
@@ -180,6 +182,7 @@ in
           systemctl start docker-searxng.service
           systemctl start docker-invidious.service
           systemctl start docker-redlib.service
+          systemctl start docker-meshmonitor.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -247,6 +250,7 @@ in
         systemctl stop docker-compose-searxng-root.target
         systemctl stop docker-compose-invidious-root.target
         systemctl stop docker-compose-redlib-root.target
+        systemctl stop docker-compose-meshmonitor-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
