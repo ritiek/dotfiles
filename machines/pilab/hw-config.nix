@@ -48,6 +48,10 @@ in
         enable = true;
         value = 1;
       };
+      # console = {
+      #   enable = true;
+      #   value = "serial0,115200 console=tty1";
+      # };
     };
     # Settings currently on my Pi5.
     # [all]
@@ -120,6 +124,10 @@ in
         enable = false;
         params = { };
       };
+      # uart0 = {
+      #   enable = true;
+      #   params = { };
+      # };
     };
   };
 

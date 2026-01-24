@@ -211,7 +211,7 @@
       qrencode
 
       esptool
-      picocom
+      tio
       python312Packages.tinytuya
 
       # wl-gammarelay-rs
