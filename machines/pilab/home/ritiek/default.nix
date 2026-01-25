@@ -183,6 +183,7 @@ in
           systemctl start docker-invidious.service
           systemctl start docker-redlib.service
           systemctl start docker-meshmonitor.service
+          systemctl start docker-manyfold.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -251,6 +252,7 @@ in
         systemctl stop docker-compose-invidious-root.target
         systemctl stop docker-compose-redlib-root.target
         systemctl stop docker-compose-meshmonitor-root.target
+        systemctl stop docker-compose-manyfold-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
