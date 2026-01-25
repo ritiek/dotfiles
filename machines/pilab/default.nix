@@ -72,6 +72,7 @@
     ./compose/invidious
     ./compose/redlib.nix
     ./compose/meshmonitor.nix
+    ./compose/manyfold
     # ./compose/kopia
   ];
 

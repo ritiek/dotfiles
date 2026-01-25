@@ -34,6 +34,11 @@ in
     keyMap = "us";
   };
 
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
   raspberry-pi-nix = {
     board = "bcm2712";
     # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
@@ -116,10 +121,10 @@ in
     };
 
     dt-overlays = {
-      disable-bt = {
-        enable = true;
-        params = { };
-      };
+      # disable-bt = {
+      #   enable = true;
+      #   params = { };
+      # };
       vc4-kms-v3d = {
         enable = false;
         params = { };
