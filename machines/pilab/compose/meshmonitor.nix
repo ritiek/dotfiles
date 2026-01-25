@@ -16,12 +16,17 @@
     environment = {
       "ALLOWED_ORIGINS" = "*";
       "MESHTASTIC_NODE_IP" = "serial-bridge";
+      "ENABLE_VIRTUAL_NODE" = "true";
+      "VIRTUAL_NODE_ALLOW_ADMIN_COMMANDS" = "true";
+      "DISABLE_ANONYMOUS" = "true";
+      "TZ" = "Asia/Kolkata";
     };
     volumes = [
       "${homelabMediaPath}/services/meshmonitor:/data:rw"
     ];
     ports = [
       "5819:3001/tcp"
+      "4404:4404/tcp"
     ];
     dependsOn = [
       "meshtastic-serial-bridge"
@@ -83,6 +88,46 @@
     };
   };
   systemd.services."docker-meshtastic-serial-bridge" = {
+    serviceConfig = {
+      Restart = lib.mkOverride 90 "always";
+      RestartMaxDelaySec = lib.mkOverride 90 "1m";
+      RestartSec = lib.mkOverride 90 "100ms";
+      RestartSteps = lib.mkOverride 90 9;
+    };
+    after = [
+      "docker-network-meshmonitor_default.service"
+    ];
+    requires = [
+      "docker-network-meshmonitor_default.service"
+    ];
+  };
+  virtualisation.oci-containers.containers."mqtt-proxy" = {
+    image = "ghcr.io/ln4cy/mqtt-proxy:master";
+    environment = {
+      "INTERFACE_TYPE" = "tcp";
+      "TCP_NODE_HOST" = "meshmonitor";
+      "TCP_NODE_PORT" = "4404";
+      "LOG_LEVEL" = "INFO";
+      "TCP_TIMEOUT" = "300";
+      "CONFIG_WAIT_TIMEOUT" = "60";
+      "HEALTH_CHECK_ACTIVITY_TIMEOUT" = "300";
+    };
+    dependsOn = [
+      "meshmonitor"
+    ];
+    log-driver = "journald";
+    autoStart = false;
+    extraOptions = [
+      "--health-cmd=[\"CMD-SHELL\",\"test -f /tmp/healthy && find /tmp/healthy -mmin -1 | grep -q healthy\"]"
+      "--health-interval=30s"
+      "--health-retries=3"
+      "--health-start-period=60s"
+      "--health-timeout=10s"
+      "--network-alias=mqtt-proxy"
+      "--network=meshmonitor_default"
+    ];
+  };
+  systemd.services."docker-mqtt-proxy" = {
     serviceConfig = {
       Restart = lib.mkOverride 90 "always";
       RestartMaxDelaySec = lib.mkOverride 90 "1m";
