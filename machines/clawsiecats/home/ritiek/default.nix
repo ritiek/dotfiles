@@ -1,7 +1,6 @@
 { pkgs, inputs, config, ... }:
 {
   imports = [
-    inputs.impermanence.nixosModules.home-manager.impermanence
     inputs.sops-nix.homeManagerModule
 
     ./../../../../modules/home/sops.nix
@@ -34,7 +33,7 @@
     username = "ritiek";
     homeDirectory = "/home/ritiek";
     persistence = {
-      "/nix/persist/home/${config.home.username}/files" = {
+      "/nix/persist/files" = {
         files = [
           ".zsh_history"
         ];
@@ -49,7 +48,7 @@
         ];
         # allowOther = false;
       };
-      "/nix/persist/home/${config.home.username}/cache" = {
+      "/nix/persist/cache" = {
         directories = [
           ".local/share/nvim"
           ".local/share/atuin"
