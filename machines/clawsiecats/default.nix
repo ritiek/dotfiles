@@ -13,6 +13,7 @@
   ];
 
   sops.secrets = {
+    "ritiek.hashedpassword".neededForUsers = true;
     "rnixbld.id_ed25519" = {
       mode = "600";
       owner = "root";
@@ -73,6 +74,7 @@
   users = {
     users.ritiek = {
       isNormalUser = true;
+      hashedPasswordFile = config.sops.secrets."ritiek.hashedpassword".path;
       extraGroups = [
         "wheel"
       ];
