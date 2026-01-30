@@ -64,13 +64,6 @@ in lib.mkMerge [
       "--network-alias=app"
       "--network=manyfold_manyfold"
     ];
-    labels = {
-      "homepage.description" = "3D models";
-      "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3214";
-      "homepage.icon" = "manyfold";
-      "homepage.name" = "Manyfold";
-    };
   };
   systemd.services."docker-manyfold" = {
     serviceConfig = {
