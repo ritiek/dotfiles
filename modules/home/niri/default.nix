@@ -824,9 +824,21 @@ animations {
           (builtins.toString cactus)
         ];
         wallpaper = [
-          "eDP-1,${builtins.toString sunrise}"
-          "HDMI-A-1,${builtins.toString sakura}"
-          "HDMI-A-2,${builtins.toString cactus}"
+          {
+            monitor = "eDP-1";
+            path = builtins.toString sunrise;
+            fit_mode = "cover";
+          }
+          {
+            monitor = "HDMI-A-1";
+            path = builtins.toString sakura;
+            fit_mode = "cover";
+          }
+          {
+            monitor = "HDMI-A-2";
+            path = builtins.toString cactus;
+            fit_mode = "cover";
+          }
         ];
       };
     };
