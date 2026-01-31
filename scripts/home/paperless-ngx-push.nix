@@ -96,19 +96,29 @@
           ${pkgs.coreutils}/bin/echo "Applying tags: ''${TAGS[*]}"
         fi
 
-        # Build curl command dynamically
-        CURL_CMD="${pkgs.curl}/bin/curl -s -H \"Authorization: Token $PAPERLESS_NGX_API_KEY\" -F \"document=@$FILE\""
+        # Handle filenames with special characters by using a temp file
+        TEMP_FILE=$(${pkgs.coreutils}/bin/mktemp -u)
+        ${pkgs.coreutils}/bin/cp "$FILE" "$TEMP_FILE"
 
-        # Add tag IDs to curl command if any are provided
+        # Build curl command using temp file
+        CURL_CMD="${pkgs.curl}/bin/curl -s -H \"Authorization: Token $PAPERLESS_NGX_API_KEY\" -F \"document=@$TEMP_FILE\""
+
+        # Add tag IDs if provided
         for tag_id in $TAG_IDS; do
           CURL_CMD="$CURL_CMD -F \"tags=$tag_id\""
         done
 
         CURL_CMD="$CURL_CMD \"$PAPERLESS_NGX_INSTANCE_URL/api/documents/post_document/\""
 
+        # Debug: print what curl will execute
+        ${pkgs.coreutils}/bin/echo "DEBUG: $CURL_CMD" >&2
+
         # Execute curl command
         eval "$CURL_CMD"
         curl_exit_code=$?
+
+        # Clean up temp file
+        ${pkgs.coreutils}/bin/rm -f "$TEMP_FILE"
 
         if [ $curl_exit_code -eq 0 ]; then
           ${pkgs.coreutils}/bin/echo "$FILE uploaded successfully."

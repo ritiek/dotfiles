@@ -18,7 +18,7 @@ let
       echo "0" > "$TIMESTAMP_FILE"
     fi
 
-    source "${config.sops.secrets."uptime-kuma.env".path}"
+    source "${config.sops.secrets."paperless-ngx-push.env".path}"
 
     USERNAME=$(${pkgs.curl}/bin/curl -s -H "Authorization: Token $PAPERLESS_NGX_API_KEY" "$PAPERLESS_NGX_INSTANCE_URL/api/users/" | ${pkgs.jq}/bin/jq -r '.results[].username')
 
@@ -116,7 +116,10 @@ in
   imports = [
     ./../../../../../scripts/home/paperless-ngx-push.nix
   ];
-  sops.secrets."uptime-kuma.env" = {};
+  sops.secrets = {
+    "paperless-ngx-push.env" = {};
+    "uptime-kuma.env" = {};
+  };
 
   home.packages = with pkgs; [
     paperless-ngx-sync
