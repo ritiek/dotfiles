@@ -2,7 +2,8 @@ name: update-flake-lock
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 8 * * *' # runs daily at 08:30 UTC, which is 2:00 PM IST
+    # - cron: '30 8 * * *' # runs daily at 08:30 UTC, which is 2:00 PM IST
+    - cron: '30 22 * * *' # runs daily at 04:00 AM IST
 
 jobs:
   lockfile:
