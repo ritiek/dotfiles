@@ -22,7 +22,7 @@
     ];
     cmd = [ "--no-sandbox" "--disable-gpu" "--disable-dev-shm-usage" "--remote-debugging-address=0.0.0.0" "--remote-debugging-port=9222" "--hide-scrollbars" ];
     log-driver = "journald";
-    autoStart = true;
+    autoStart = false;
     extraOptions = [
       "--network-alias=chrome"
       "--network=karakeep_default"
@@ -57,7 +57,7 @@
       "${homelabMediaPath}/services/karakeep/meilisearch:/meili_data:rw"
     ];
     log-driver = "journald";
-    autoStart = true;
+    autoStart = false;
     extraOptions = [
       "--network-alias=meilisearch"
       "--network=karakeep_default"
@@ -100,7 +100,7 @@
       "2398:3000/tcp"
     ];
     log-driver = "journald";
-    autoStart = true;
+    autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
       "--network-alias=web"
