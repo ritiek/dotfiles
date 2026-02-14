@@ -165,6 +165,8 @@ in
           models = {
             "qwen3:8b" = {
               name = "Qwen 3 8B";
+            # "granite4:3b" = {
+            #   name = "Granite4 3B";
               tools = true;
               reasoning = true;
             };
@@ -180,10 +182,26 @@ in
       };
 
       mcp = {
-        zai-websearch = {
+        zai-web-search = {
           enabled = true;
           type = "remote";
           url = "https://api.z.ai/api/mcp/web_search_prime/mcp";
+          headers = {
+            Authorization = "Bearer {file:${config.sops.secrets."z_ai_api.key".path}}";
+          };
+        };
+        zai-web-reader = {
+          enabled = true;
+          type = "remote";
+          url = "https://api.z.ai/api/mcp/web_reader/mcp";
+          headers = {
+            Authorization = "Bearer {file:${config.sops.secrets."z_ai_api.key".path}}";
+          };
+        };
+        zai-zread = {
+          enabled = true;
+          type = "remote";
+          url = "https://api.z.ai/api/mcp/zread/mcp";
           headers = {
             Authorization = "Bearer {file:${config.sops.secrets."z_ai_api.key".path}}";
           };
@@ -384,7 +402,9 @@ in
             bash = false;
             # gmail = false;
             webfetch = false;
-            zai-websearch = false;
+            zai-web-search = false;
+            zai-web-reader = false;
+            zai-zread = false;
             # Avoid installing browsers during confusion since browsers can't be installed
             # in NixOS through the approach taken by this tool.
             playwright_browser_install = false;
