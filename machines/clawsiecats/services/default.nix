@@ -227,6 +227,13 @@ in
     nginx = {
       enable = true;
       clientMaxBodySize = "2g";
+      # Use systemd-resolved's stub as the nginx resolver so that .ts.net
+      # upstream hostnames (resolved via Tailscale MagicDNS) are looked up at
+      # request time rather than at nginx startup. Combined with variable-based
+      # proxy_pass below, this prevents nginx from failing to start on boot
+      # before Tailscale is connected. 127.0.0.53 is always available since
+      # systemd-resolved starts independently of Tailscale.
+      resolver.addresses = [ "127.0.0.53" ];
       eventsConfig = ''
         worker_connections 10240;
       '';
@@ -261,22 +268,26 @@ in
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://pilab.lion-zebra.ts.net:2283";
-            # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
+            extraConfig = ''
+              set $upstream "pilab.lion-zebra.ts.net:2283";
+              proxy_pass http://$upstream;
+            '';
           };
         };
         "vaultwarden.${domain}" = {
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://pilab.lion-zebra.ts.net:9446";
-            # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
             # extraConfig = ''
             #   allow 127.0.0.1;
             #   deny all;
             # '';
+            extraConfig = ''
+              set $upstream "pilab.lion-zebra.ts.net:9446";
+              proxy_pass http://$upstream;
+            '';
           };
         };
         "controlplane.${domain}" = {
@@ -438,8 +449,9 @@ in
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://pilab.lion-zebra.ts.net:7080";
             extraConfig = ''
+              set $upstream "pilab.lion-zebra.ts.net:7080";
+              proxy_pass http://$upstream;
               # Critical for large file uploads - disable buffering
               proxy_request_buffering off;
               proxy_buffering off;
@@ -550,15 +562,18 @@ in
         # };
       };
       streamConfig = ''
+        resolver 127.0.0.53;
         server {
           listen 0.0.0.0:5219;
           proxy_timeout 20s;
-          proxy_pass pilab.lion-zebra.ts.net:5219;
+          set $upstream "pilab.lion-zebra.ts.net:5219";
+          proxy_pass $upstream;
         }
         server {
           listen 0.0.0.0:5220;
           proxy_timeout 20s;
-          proxy_pass pilab.lion-zebra.ts.net:5220;
+          set $upstream "pilab.lion-zebra.ts.net:5220";
+          proxy_pass $upstream;
         }
       '';
     };
