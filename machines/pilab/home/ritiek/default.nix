@@ -73,6 +73,7 @@ in
       wget
       pv
       tio
+      usbutils
 
       unzip
       unrar-wrapper
