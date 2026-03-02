@@ -242,7 +242,7 @@ in
         systemctl stop docker-compose-prowlarr-root.target
         systemctl stop docker-compose-jellyseerr-root.target
         systemctl stop docker-compose-glances-root.target
-        systemctl stop compose-compose-calibre-web-automated-root.target
+        systemctl stop docker-compose-calibre-web-automated-root.target
         systemctl stop docker-compose-calibre-web-automated-book-downloader-root.target
         systemctl stop docker-compose-audiobookshelf-root.target
         systemctl stop docker-compose-baikal-root.target
