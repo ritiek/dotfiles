@@ -22,7 +22,7 @@ let
       "${homelabMediaPath}/services/tubearchivist/es"
     ];
     rootTarget = "docker-compose-tubearchivist-root.target";
-    idleCheckInterval = "*:0/10";  # Every 10 minutes (TubeArchivist is heavier)
+    idleCheckInterval = "*:0/45";  # Every 45 minutes (TubeArchivist is heavier)
     # Custom commands for multi-service stack
     startCommand = "systemctl start docker-archivist-redis.service docker-archivist-es.service docker-tubearchivist.service";
     stopCommand = "systemctl stop docker-compose-tubearchivist-root.target";
