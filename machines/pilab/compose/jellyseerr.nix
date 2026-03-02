@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, servicePaths, ... }:
 
 {
   # Runtime
@@ -11,7 +11,8 @@
 
   # Containers
   virtualisation.oci-containers.containers."jellyseerr" = {
-    image = "fallenbagel/jellyseerr:latest";
+    # image = "fallenbagel/jellyseerr:latest";
+    image = "ghcr.io/seerr-team/seerr:develop";
     environment = {
       "LOG_LEVEL" = "debug";
       "TZ" = "Asia/Kolkata";
