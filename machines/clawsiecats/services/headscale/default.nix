@@ -26,7 +26,6 @@ in
     "headscale.db.sqlite" = {
       sopsFile = ./db.sqlite;
       format = "binary";
-      path = "/var/lib/headscale/db.sqlite";
       mode = "0600";
     };
   };
@@ -35,6 +34,26 @@ in
     directories = [
       "/var/lib/headscale"
     ];
+  };
+
+  # Copy the decrypted db.sqlite seed only when no persisted DB exists yet.
+  # After the first boot headscale owns the file and all changes persist.
+  systemd.services.headscale-db-seed = {
+    description = "Seed headscale db.sqlite from sops secret (first boot only)";
+    wantedBy = [ "headscale.service" ];
+    before = [ "headscale.service" ];
+    after = [ "sops-nix.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      if [ ! -f /var/lib/headscale/db.sqlite ]; then
+        install -m 0600 -o root -g root \
+          ${config.sops.secrets."headscale.db.sqlite".path} \
+          /var/lib/headscale/db.sqlite
+      fi
+    '';
   };
 
   systemd.services.tailscaled-autoconnect = {
