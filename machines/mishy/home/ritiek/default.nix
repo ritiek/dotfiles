@@ -127,7 +127,7 @@
 
       sonixd
       nemo
-      calibre
+      # calibre
       # protonvpn-gui
       lxqt.lxqt-policykit
 
