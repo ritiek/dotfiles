@@ -11,8 +11,8 @@
 
   # Containers
   virtualisation.oci-containers.containers."jellyseerr" = {
-    # image = "fallenbagel/jellyseerr:latest";
-    image = "ghcr.io/seerr-team/seerr:develop";
+    image = "fallenbagel/jellyseerr:latest";
+    # image = "ghcr.io/seerr-team/seerr:develop";
     environment = {
       "LOG_LEVEL" = "debug";
       "TZ" = "Asia/Kolkata";
