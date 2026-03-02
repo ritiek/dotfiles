@@ -128,6 +128,14 @@
   };
 
   services = {
+    # systemd-resolved provides a local DNS stub on 127.0.0.53 that is always
+    # available regardless of Tailscale state. nginx uses it as its resolver so
+    # that .ts.net upstream hostnames are only looked up at request time (via
+    # variable proxy_pass) rather than at startup. This breaks the boot deadlock
+    # where nginx wouldn't start without MagicDNS, and Tailscale couldn't connect
+    # to headscale without nginx being up first.
+    resolved.enable = config.services.nginx.enable;
+
     openssh = {
       openFirewall = true; 
       knownHosts = {

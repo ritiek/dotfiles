@@ -8,6 +8,7 @@
   ];
 
   networking.hostName = "clawsiecats";
+
   time.timeZone = "Asia/Kolkata";
 
   environment.persistence."/nix/persist/system" = {
