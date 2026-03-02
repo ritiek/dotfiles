@@ -190,18 +190,10 @@
     "--accept-dns=false"
   ];
 
-  # Hardcode Tailscale IPs for local network access when --accept-dns=false is passed.
-  networking.hosts = {
-    "100.64.0.3"  = [ "m2" "m2.lion-zebra.ts.net" ];
-    "100.64.0.14" = [ "clawsiecats" "clawsiecats.lion-zebra.ts.net" ];
-    "100.64.1.54" = [ "keyberry" "keyberry.lion-zebra.ts.net" ];
-    "100.64.0.5"  = [ "mishy" "mishy.lion-zebra.ts.net" ];
-    "100.64.0.7"  = [ "pilab" "pilab.lion-zebra.ts.net" ];
-    "100.64.0.2"  = [ "radrubble" "radrubble.lion-zebra.ts.net" ];
-    "100.64.0.78" = [ "redmi-note-11" "redmi-note-11.lion-zebra.ts.net" ];
-    "100.64.0.1"  = [ "rig" "rig.lion-zebra.ts.net" ];
-    "100.64.0.17" = [ "zerostash" "zerostash.lion-zebra.ts.net" ];
-  };
+  # Use pihole as the system DNS resolver. Pihole forwards *.lion-zebra.ts.net
+  # to 100.100.100.100 (Tailscale MagicDNS) via dnsmasq.d/tailscale-dns.conf,
+  # avoiding the recursive loop that would occur with --accept-dns=true.
+  networking.nameservers = [ "127.0.0.1" ];
 
   users = {
     defaultUserShell = pkgs.zsh;

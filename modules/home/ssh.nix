@@ -13,6 +13,7 @@
           # the most lightweight encryption. Tailscale already encrypts everything so this
           # another layer of encryption can be avoided.
           Ciphers = "chacha20-poly1305@openssh.com,aes128-gcm@openssh.com";
+          # ConnectTimeout = "3";
         };
       };
       "*" = {

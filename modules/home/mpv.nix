@@ -21,7 +21,7 @@
       gamma = 10;
     };
     scripts = with pkgs; [
-      mpvScripts.mpv-cheatsheet
+      mpvScripts.mpv-cheatsheet-ng
       mpvScripts.mpris
       mpvScripts.webtorrent-mpv-hook
       # XXX: Commenting for now cause this results in the following error:
