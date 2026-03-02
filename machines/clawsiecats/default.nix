@@ -4,7 +4,7 @@
   imports = [
     ./home
     ./minimal.nix
-    ./services.nix
+    ./services
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix

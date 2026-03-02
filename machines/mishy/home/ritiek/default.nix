@@ -36,6 +36,7 @@
 
   # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.segger-jlink.acceptLicense = true;
 
   nixpkgs.overlays = [
     inputs.nur.overlays.default
@@ -69,6 +70,7 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     "qtwebengine-5.15.19"
+    "segger-jlink-qt4-874"
   ];
 
   home = {
@@ -209,10 +211,19 @@
       nap
       imagemagick
       qrencode
+      netbird-ui
 
       esptool
       tio
       python312Packages.tinytuya
+
+      # nrfutil
+      # nrf5-sdk
+      # nrf-udev
+      # nrfconnect
+      # nrf-command-line-tools
+      # nrfconnect-bluetooth-low-energy
+      # python314Packages.west
 
       # wl-gammarelay-rs
       # wayvnc

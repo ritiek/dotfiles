@@ -17,6 +17,7 @@
     ./../../modules/yubico-pam.nix
     ./../../modules/usbip.nix
     ./../../modules/sunshine.nix
+    ./../../modules/tailscale-controlplane.nix
     # ./../../modules/mullvad.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
@@ -160,7 +161,7 @@
         "video"
         "audio"
         "input"
-        # "dialout"
+        "dialout"
         "polkituser"
         # "users"
         "plugdev"
@@ -305,7 +306,7 @@
     };
   };
 
-  services = {
+    services = {
     openssh = {
       enable = true;
       startWhenNeeded = true;
@@ -331,7 +332,15 @@
 
     # swayosd.enable = true;
 
-    tailscale.enable = true;
+    netbird = {
+      enable = true;
+      # clients.default.config = {
+      #   DisableAutoConnect = false;
+      #   WgIface = "wt0";
+      #   WgPort = 51820;
+      #   AdminURL = "http://localhost:33073";
+      # };
+    };
 
     blueman.enable = true;
 

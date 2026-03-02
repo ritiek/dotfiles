@@ -5,13 +5,17 @@ let
 in
 {
   imports = [
-    inputs.headplane.nixosModules.headplane
     inputs.simple-nixos-mailserver.nixosModule
-  ]; 
+    ./headscale
+  ];
 
   sops.secrets = {
-    "tailscale.authkey" = {};
     "syncthing.gui_password" = {};
+    "jitsi.htpasswd" = {
+      owner = "nginx";
+    };
+    "syncplay.password" = {};
+    "mail.me" = {};
   };
 
   environment.persistence."/nix/persist/system" = {
@@ -19,7 +23,8 @@ in
       "/var/lib/acme"
       "/var/lib/jitsi-meet"
       "/var/lib/prosody"
-      "/var/lib/headscale"
+      "/var/lib/netbird"
+      "/var/lib/netbird-mgmt"
       # {
       #     directory = "/var/lib/prosody";
       #     user = config.ids.uids.prosody;
@@ -39,14 +44,6 @@ in
     files = [ ];
   };
 
-  sops.secrets = {
-    "jitsi.htpasswd" = {
-      owner = "nginx";
-    };
-    "syncplay.password" = {};
-    "mail.me" = {};
-  };
-
   nixpkgs.config.permittedInsecurePackages = [
     "jitsi-meet-1.0.8792"
   ];
@@ -58,12 +55,6 @@ in
   #     group = config.ids.gids.syncthing;
   #   };
   # };
-
-  # Ensure tailscale-autoconnect waits for headscale to be ready
-  systemd.services.tailscaled-autoconnect = {
-    after = [ "headscale.service" ];
-    wants = [ "headscale.service" ];
-  };
 
   services = {
     jitsi-meet = {
@@ -89,94 +80,87 @@ in
     #   useACMEHost = "syncplay.${domain}";
     # };
 
-    headscale = {
-      enable = true;
-      # XXX: Required for Syncthing.
-      user = "root";
-      # group = "root";
-      address = "0.0.0.0";
-      port = 8080;
-      settings = {
-        server_url = "https://controlplane.${domain}";
-        # listen_addr is auto-generated from address:port
-        # log.level = "debug";
-        dns = {
-          search_domains = [ "lion-zebra.ts.net" ];
-          magic_dns = true;
-          nameservers.global = [
-            # PiHole
-            # "100.76.250.31"
-            "100.64.0.7"
-            # Mullvad
-            "194.242.2.2"
-            "2a07:e340::2"
-          ];
-          base_domain = "lion-zebra.ts.net";
-        };
-        derp = {
-          server = {
-            enabled = true;
-            ipv4 = "188.130.207.234";
-            stun_listen_addr = "0.0.0.0:3478";
-            # stun_listen_addr = "0.0.0.0:443";
-            region_code = "headscale";
-            region_name = "Headscale Embedded DERP";
-            region_id = 999;
-            # Setting this to false lets people outside my Headscale network use
-            # this DERP relay.
-            verify_clients = true;
-          };
-          # urls = [];
-          paths = [];
-          auto_update_enabled = false;
-          update_frequency = "24h";
-        };
-      };
-    };
-
-    headplane = {
-      enable = true;
-      # agent.enable = false;
-      # agent = {
-      #   # As an example only.
-      #   # Headplane Agent hasn't yet been ready at the moment of writing the doc.
-      #   enable = true;
-      #   settings = {
-      #     HEADPLANE_AGENT_DEBUG = true;
-      #     HEADPLANE_AGENT_HOSTNAME = "localhost";
-      #     HEADPLANE_AGENT_TS_SERVER = "https://example.com";
-      #     HEADPLANE_AGENT_TS_AUTHKEY = "xxxxxxxxxxxxxx";
-      #     HEADPLANE_AGENT_HP_SERVER = "https://example.com/admin/dns";
-      #     HEADPLANE_AGENT_HP_AUTHKEY = "xxxxxxxxxxxxxx";
-      #   };
-      # };
-      settings = {
-        server = {
-          host = "127.0.0.1";
-          port = 3000;
-          cookie_secret_path = pkgs.writeText "headplane-cookie-secret" "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX";
-          cookie_secure = false;
-        };
-        headscale = {
-          # url = "http://${domain}:8080";
-          # url = "https://controlplane.${domain}";
-          url = "http://127.0.0.1:8080";
-            # A workaround generate a valid Headscale config accepted by Headplane when `config_strict == true`.
-          # config_path = (pkgs.formats.yaml {}).generate "headscale.yml" (lib.recursiveUpdate config.services.headscale.settings {
-          #   acme_email = "/dev/null";
-          #   tls_cert_path = "/dev/null";
-          #   tls_key_path = "/dev/null";
-          #   policy.path = "/dev/null";
-          #   oidc.client_secret_path = "/dev/null";
-          # });
-          config_strict = true;
-        };
-        integration = {
-          proc.enabled = true;
-          agent.pre_authkey_path = config.sops.secrets."tailscale.authkey".path;
-        };
-      };
-    };
+    # netbird = {
+    #   enable = true;
+    #   # useRoutingFeatures = "both";
+    #   server = {
+    #     enable = true;
+    #     domain = "netbird.${domain}";
+    #     enableNginx = false;
+    #     management = {
+    #       enable = true;
+    #       domain = "management.netbird.${domain}";
+    #       turnDomain = lib.mkForce "coturn.netbird.${domain}";
+    #       turnPort = lib.mkForce 3478;
+    #       enableNginx = false;
+    #       oidcConfigEndpoint = "";
+    #       settings = {
+    #         EmbeddedIdP = {
+    #           Enabled = true;
+    #           DataDir = "/var/lib/netbird/idp";
+    #           Issuer = "https://management.netbird.${domain}/oauth2";
+    #           DashboardRedirectURIs = [
+    #             "https://dashboard.netbird.${domain}/#callback"
+    #             "https://dashboard.netbird.${domain}/silent-callback"
+    #           ];
+    #         };
+    #         # TODO: For testing only. Re-generate and replace this key through SOPS.
+    #         EncryptionKey = "i3LIydgHhOqGaRXkusvnwwobWY8eMtMQqHtg/x61jy8=";
+    #         # TODO: For testing only. Re-generate and replace this key through SOPS.
+    #         DataStoreEncryptionKey = "Zuwae/z43fZyHLtugmeS2XdachsBBIKMuKrdevGKYTE=";
+    #         Signal = {
+    #           Proto = "https";
+    #           URI = "signal.netbird.${domain}:443";
+    #           Username = "";
+    #           Password = null;
+    #         };
+    #         Stuns = [
+    #           {
+    #             Proto = "udp";
+    #             URI = "stun:coturn.netbird.${domain}:3478";
+    #             Username = "";
+    #             Password = null;
+    #           }
+    #         ];
+    #         TURNConfig = {
+    #           CredentialsTTL = "12h";
+    #           Secret = "not-secure-secret";
+    #           TimeBasedCredentials = false;
+    #           Turns = [
+    #             {
+    #               Proto = "udp";
+    #               URI = "turn:coturn.netbird.${domain}:3478";
+    #               Username = "netbird";
+    #               Password = "netbird";
+    #             }
+    #           ];
+    #         };
+    #       };
+    #     };
+    #     signal = {
+    #       enable = true;
+    #       domain = "signal.netbird.${domain}";
+    #       enableNginx = false;
+    #     };
+    #     dashboard = {
+    #       enable = false;  # We're serving static files manually
+    #       domain = "dashboard.netbird.${domain}";
+    #       enableNginx = false;
+    #       settings = {
+    #         AUTH_AUTHORITY = "https://management.netbird.${domain}/oauth2";
+    #         AUTH_CLIENT_ID = "netbird-dashboard";
+    #         AUTH_AUDIENCE = "https://management.netbird.${domain}/oauth2";
+    #         USE_AUTH0 = false;
+    #       };
+    #     };
+    #     coturn = {
+    #       enable = true;
+    #       domain = "coturn.netbird.${domain}";
+    #       useAcmeCertificates = true;
+    #       password = "netbird";
+    #     };
+    #   };
+    # };
 
     syncthing = {
       enable = true;
@@ -268,7 +252,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:5100";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:5100";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -277,8 +261,7 @@ in
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            # proxyPass = "http://100.64.0.7:2283";
-            proxyPass = "http://100.64.0.7:2283";
+            proxyPass = "http://pilab.lion-zebra.ts.net:2283";
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
           };
@@ -287,7 +270,7 @@ in
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://100.64.0.7:9446";
+            proxyPass = "http://pilab.lion-zebra.ts.net:9446";
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
             # extraConfig = ''
@@ -300,7 +283,7 @@ in
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://127.0.0.1:8080";
+            proxyPass = "http://127.0.0.1:8088";
             proxyWebsockets = true;
             # Need this enabled to avoid header request issues.
             recommendedProxySettings = true;
@@ -315,11 +298,138 @@ in
             recommendedProxySettings = true;
           };
         };
+
+        # # Netbird dashboard - serve static files with injected config
+        # "dashboard.netbird.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   root = pkgs.runCommand "netbird-dashboard-configured" {
+        #     nativeBuildInputs = [ pkgs.gettext ];
+        #     USE_AUTH0 = "false";
+        #     AUTH_AUTHORITY = "https://management.netbird.${domain}/oauth2";
+        #     AUTH_CLIENT_ID = "netbird-dashboard";
+        #     AUTH_CLIENT_SECRET = "";
+        #     AUTH_SUPPORTED_SCOPES = "openid profile email offline_access";
+        #     AUTH_AUDIENCE = "https://management.netbird.${domain}/oauth2";
+        #     NETBIRD_MGMT_API_ENDPOINT = "https://netbird.${domain}";
+        #     NETBIRD_MGMT_GRPC_API_ENDPOINT = "https://netbird.${domain}";
+        #     AUTH_REDIRECT_URI = "";
+        #     AUTH_SILENT_REDIRECT_URI = "";
+        #     NETBIRD_TOKEN_SOURCE = "accessToken";
+        #     NETBIRD_DRAG_QUERY_PARAMS = "";
+        #     NETBIRD_HOTJAR_TRACK_ID = "";
+        #     NETBIRD_GOOGLE_ANALYTICS_ID = "";
+        #     NETBIRD_GOOGLE_TAG_MANAGER_ID = "";
+        #     NETBIRD_WASM_PATH = "";
+        #   } ''
+        #     cp -r ${pkgs.netbird-dashboard} $out
+        #     chmod -R +w $out
+        #     # Replace only our specific $VARIABLE placeholders, not arbitrary $ in JS
+        #     for f in $(find $out -type f \( -name "*.js" -o -name "*.html" \)); do
+        #       envsubst '$USE_AUTH0 $AUTH_AUTHORITY $AUTH_CLIENT_ID $AUTH_CLIENT_SECRET $AUTH_SUPPORTED_SCOPES $AUTH_AUDIENCE $NETBIRD_MGMT_API_ENDPOINT $NETBIRD_MGMT_GRPC_API_ENDPOINT $AUTH_REDIRECT_URI $AUTH_SILENT_REDIRECT_URI $NETBIRD_TOKEN_SOURCE $NETBIRD_DRAG_QUERY_PARAMS $NETBIRD_HOTJAR_TRACK_ID $NETBIRD_GOOGLE_ANALYTICS_ID $NETBIRD_GOOGLE_TAG_MANAGER_ID $NETBIRD_WASM_PATH' < "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+        #     done
+        #   '';
+        #   extraConfig = ''
+        #     # Strip trailing slash internally, then try .html variant for Next.js static export
+        #     location ~ ^(.+)/$ {
+        #       try_files $uri $1.html /index.html;
+        #     }
+        #     location / {
+        #       try_files $uri $uri.html /index.html;
+        #     }
+        #   '';
+        # };
+        # # Netbird management API
+        # "management.netbird.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   http2 = true;
+        #   extraConfig = ''
+        #     location /signalexchange.SignalExchange {
+        #       grpc_pass grpc://127.0.0.1:10000;
+        #       grpc_set_header Host $host;
+        #       grpc_set_header X-Real-IP $remote_addr;
+        #       grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       grpc_read_timeout 3600s;
+        #       grpc_send_timeout 3600s;
+        #     }
+        #     location / {
+        #       grpc_pass grpc://127.0.0.1:33073;
+        #       grpc_set_header Host $host;
+        #       grpc_set_header X-Real-IP $remote_addr;
+        #       grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       grpc_read_timeout 3600s;
+        #       grpc_send_timeout 3600s;
+        #     }
+        #     location /api {
+        #       proxy_pass http://127.0.0.1:8011;
+        #       proxy_set_header Host $host;
+        #       proxy_set_header X-Real-IP $remote_addr;
+        #       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       proxy_set_header X-Forwarded-Proto $scheme;
+        #     }
+        #     location /oauth2 {
+        #       proxy_pass http://127.0.0.1:8011;
+        #       proxy_set_header Host $host;
+        #       proxy_set_header X-Real-IP $remote_addr;
+        #       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       proxy_set_header X-Forwarded-Proto $scheme;
+        #     }
+        #   '';
+        # };
+        # # Netbird API / management gRPC endpoint
+        # "netbird.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   http2 = true;
+        #   extraConfig = ''
+        #     location /signalexchange.SignalExchange {
+        #       grpc_pass grpc://127.0.0.1:10000;
+        #       grpc_set_header Host $host;
+        #       grpc_set_header X-Real-IP $remote_addr;
+        #       grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       grpc_read_timeout 3600s;
+        #       grpc_send_timeout 3600s;
+        #     }
+        #     location / {
+        #       grpc_pass grpc://127.0.0.1:33073;
+        #       grpc_set_header Host $host;
+        #       grpc_set_header X-Real-IP $remote_addr;
+        #       grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       grpc_read_timeout 3600s;
+        #       grpc_send_timeout 3600s;
+        #     }
+        #     location /api {
+        #       proxy_pass http://127.0.0.1:8011;
+        #       proxy_set_header Host $host;
+        #       proxy_set_header X-Real-IP $remote_addr;
+        #       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       proxy_set_header X-Forwarded-Proto $scheme;
+        #     }
+        #   '';
+        # };
+        # # Netbird signal server
+        # "signal.netbird.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   http2 = true;
+        #   extraConfig = ''
+        #     location / {
+        #       grpc_pass grpc://127.0.0.1:10000;
+        #       grpc_set_header Host $host;
+        #       grpc_set_header X-Real-IP $remote_addr;
+        #       grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #       grpc_read_timeout 3600s;
+        #       grpc_send_timeout 3600s;
+        #     }
+        #   '';
+        # };
+
         # "nitter.${domain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:5095";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:5095";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -328,7 +438,7 @@ in
           forceSSL = true;
           enableACME = true;
           locations."/" = {
-            proxyPass = "http://100.64.0.7:7080";
+            proxyPass = "http://pilab.lion-zebra.ts.net:7080";
             extraConfig = ''
               # Critical for large file uploads - disable buffering
               proxy_request_buffering off;
@@ -359,7 +469,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:3020";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:3020";
         #     proxyWebsockets = true;
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
@@ -369,7 +479,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:8123";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:8123";
         #     proxyWebsockets = true;
         #     recommendedProxySettings = true;
         #   };
@@ -378,7 +488,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:8010";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:8010";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -387,7 +497,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:5678";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:5678";
         #     proxyWebsockets = true;
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
@@ -397,7 +507,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:3033";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:3033";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -406,7 +516,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:8188";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:8188";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -415,7 +525,7 @@ in
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
-        #     proxyPass = "http://100.64.0.7:3000";
+        #     proxyPass = "http://pilab.lion-zebra.ts.net:3000";
         #     # Need this enabled to avoid header request issues.
         #     recommendedProxySettings = true;
         #   };
@@ -443,12 +553,12 @@ in
         server {
           listen 0.0.0.0:5219;
           proxy_timeout 20s;
-          proxy_pass 100.64.0.7:5219;
+          proxy_pass pilab.lion-zebra.ts.net:5219;
         }
         server {
           listen 0.0.0.0:5220;
           proxy_timeout 20s;
-          proxy_pass 100.64.0.7:5220;
+          proxy_pass pilab.lion-zebra.ts.net:5220;
         }
       '';
     };
@@ -474,6 +584,7 @@ in
     acceptTerms = true;
     defaults.email = "ritiekmalhotra123@gmail.com";
     certs."syncplay.${domain}".webroot = "/var/lib/acme/acme-challenge";
+    certs."coturn.netbird.${domain}".webroot = "/var/lib/acme/acme-challenge";
   };
 
   networking.firewall = {
@@ -491,6 +602,12 @@ in
 
       5219
       5220
+
+      # Coturn TURN/STUN
+      3478
+      3479
+      5349
+      5350
     ];
     allowedUDPPorts = [
       # Bombsquad
@@ -499,6 +616,11 @@ in
       # DERP STUN
       3478
       41641
+
+      # Coturn TURN/STUN
+      3479
+      5349
+      5350
     ];
     # extraCommands = ''
     #   # Commenting these out for now as these rules interfere with running

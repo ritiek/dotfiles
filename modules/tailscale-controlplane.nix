@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   sops.secrets."tailscale.authkey" = {};
 
@@ -10,6 +10,7 @@
     extraUpFlags = [
       "--login-server=https://controlplane.clawsiecats.lol"
       "--advertise-exit-node"
+      "--reset"
     ];
-  };
+ };
 }

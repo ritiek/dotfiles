@@ -181,6 +181,10 @@ in
         };
       };
 
+      permission = {
+        external_directory = "allow";
+      };
+
       mcp = {
         zai-web-search = {
           enabled = true;
@@ -191,7 +195,9 @@ in
           };
         };
         zai-web-reader = {
-          enabled = true;
+          # TODO: Set this true later. Browser agent isn't able to override this to enable = false
+          #       so have changed it explicitly here.
+          enabled = false;
           type = "remote";
           url = "https://api.z.ai/api/mcp/web_reader/mcp";
           headers = {
@@ -389,13 +395,13 @@ in
 
             ## Guidelines
             - Skip captchas.
-            - Do not write ANY file on the local filesystem whatsoever.
+            - Do not write ANY file on the local filesystem WHATSOEVER.
             - Close browser tabs opened by you after you're done with them.
             - Take a step back and think the broader picture if you feel yourself stuck in a loop.
           '';
           tools = {
             read = true;
-            edit = true;
+            edit = false;
             zai-vision = true;
 
             write = false;

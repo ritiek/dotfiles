@@ -42,13 +42,14 @@
       # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
       "FTLCONF_dns_listeningMode" = "all";
       "FTLCONF_webserver_port" = "81";
+      "FTLCONF_misc_etc_dnsmasq_d" = "true";
     };
     environmentFiles = [
       config.sops.secrets."compose/pihole.env".path
     ];
     volumes = [
-      "${homelabMediaPath}/services/pihole:/etc/pihole:rw"
-      "pihole_dnsmasq.d:/etc/dnsmasq.d:rw"
+      "${homelabMediaPath}/services/pihole/data:/etc/pihole:rw"
+      "${homelabMediaPath}/services/pihole/dnsmasq.d:/etc/dnsmasq.d:rw"
     ];
     # ports = [
     #   # DNS Ports
@@ -100,30 +101,9 @@
       RestartSteps = lib.mkOverride 500 9;
       EnvironmentFile = config.sops.secrets."compose/pihole.env".path;
     };
-    after = [
-      "docker-volume-pihole_dnsmasq.d.service"
-    ];
-    requires = [
-      "docker-volume-pihole_dnsmasq.d.service"
-    ];
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/pihole"
     ];
-  };
-
-  # Volumes
-  systemd.services."docker-volume-pihole_dnsmasq.d" = {
-    path = [ pkgs.docker ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStop = "docker volume rm -f pihole_dnsmasq.d";
-    };
-    script = ''
-      docker volume inspect pihole_dnsmasq.d || docker volume create pihole_dnsmasq.d
-    '';
-    partOf = [ "docker-compose-pihole-root.target" ];
-    wantedBy = [ "docker-compose-pihole-root.target" ];
   };
 
   # Root service

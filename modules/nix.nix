@@ -17,6 +17,7 @@ in
     ];
     # Fallback to building from source when cache server is not accessible.
     fallback = true;
+    connect-timeout = 3;
     # Let remote builders fetch derivation dependencies from cache configured
     # on remote builders.
     builders-use-substitutes = true;
