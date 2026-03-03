@@ -1,11 +1,13 @@
 { config, inputs, pkgs, ... }:
 {
   imports = [
-    inputs.zen-browser.homeModules.beta
+    # inputs.zen-browser.homeModules.beta
+    inputs.zen-browser.homeModules.twilight
   ];
 
   programs.zen-browser = {
     enable = true;
+    suppressXdgMigrationWarning = true;
     nativeMessagingHosts = with pkgs; [
       ff2mpv-rust
     ];
