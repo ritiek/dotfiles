@@ -7,6 +7,7 @@
     openFirewall = true;
     authKeyFile = config.sops.secrets."tailscale.authkey".path;
     useRoutingFeatures = "both";
+    extraSetFlags = [ "--operator=ritiek" ];
     extraUpFlags = [
       "--login-server=https://controlplane.clawsiecats.lol"
       "--advertise-exit-node"
