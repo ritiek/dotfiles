@@ -14,13 +14,11 @@ in
     "headscale.noise_private.key" = {
       sopsFile = ./secrets.yaml;
       key = "noise_private.key";
-      path = "/var/lib/headscale/noise_private.key";
       mode = "0600";
     };
     "headscale.derp_server_private.key" = {
       sopsFile = ./secrets.yaml;
       key = "derp_server_private.key";
-      path = "/var/lib/headscale/derp_server_private.key";
       mode = "0600";
     };
     "headscale.db.sqlite" = {
@@ -36,23 +34,32 @@ in
     ];
   };
 
-  # Copy the decrypted db.sqlite seed only when no persisted DB exists yet.
-  # After the first boot headscale owns the file and all changes persist.
+  # Seed headscale files from sops secrets on first boot only.
+  # sops-nix deploys secrets to /run/secrets/ (tmpfs). The path override to
+  # /var/lib/headscale/ does not work because the impermanence bind mount for
+  # that directory comes up after sops-nix runs in stage-2, shadowing anything
+  # sops wrote there. So we copy manually here, skipping if already persisted.
   systemd.services.headscale-db-seed = {
-    description = "Seed headscale db.sqlite from sops secret (first boot only)";
+    description = "Seed headscale data from sops secrets (first boot only)";
     wantedBy = [ "headscale.service" ];
     before = [ "headscale.service" ];
-    after = [ "sops-nix.service" ];
+    after = [ "sops-nix.service" "var-lib-headscale.mount" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
     };
     script = ''
-      if [ ! -f /var/lib/headscale/db.sqlite ]; then
-        install -m 0600 -o root -g root \
-          ${config.sops.secrets."headscale.db.sqlite".path} \
-          /var/lib/headscale/db.sqlite
-      fi
+      for src_dest in \
+        "${config.sops.secrets."headscale.noise_private.key".path}:/var/lib/headscale/noise_private.key" \
+        "${config.sops.secrets."headscale.derp_server_private.key".path}:/var/lib/headscale/derp_server_private.key" \
+        "${config.sops.secrets."headscale.db.sqlite".path}:/var/lib/headscale/db.sqlite"
+      do
+        src="''${src_dest%%:*}"
+        dest="''${src_dest##*:}"
+        if [ ! -f "$dest" ]; then
+          install -m 0600 -o root -g root "$src" "$dest"
+        fi
+      done
     '';
   };
 
