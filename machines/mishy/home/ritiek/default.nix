@@ -125,7 +125,7 @@
         ];
       })
 
-      sonixd
+      feishin
       nemo
       # calibre
       # protonvpn-gui
