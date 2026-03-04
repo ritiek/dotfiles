@@ -10,6 +10,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/netbird.nix
   ];
 
   sops.secrets = {

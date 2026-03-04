@@ -4,7 +4,7 @@
 
   services.netbird = {
     enable = true;
-    ui.enable = true;
+    ui.enable = config.hardware.graphics.enable;
     clients.birdnet = {
       login = {
         enable = true;
