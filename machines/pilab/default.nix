@@ -15,6 +15,7 @@
     ./../../modules/sops.nix
     ./../../modules/wifi.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/netbird.nix
     ./../../modules/attic.nix
     ./../../modules/usbipd.nix
     # Generated using:
