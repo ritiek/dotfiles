@@ -15,6 +15,7 @@
     ./../../modules/sops.nix
     ./../../modules/ssh.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/netbird.nix
     # ./../../modules/yubico-pam.nix
     # ./../../modules/usbip.nix
     ./../../modules/sunshine.nix
