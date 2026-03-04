@@ -211,7 +211,6 @@
       nap
       imagemagick
       qrencode
-      netbird-ui
 
       esptool
       tio
