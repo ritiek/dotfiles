@@ -18,6 +18,7 @@
     ./../../modules/usbip.nix
     ./../../modules/sunshine.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/netbird.nix
     # ./../../modules/mullvad.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
@@ -306,7 +307,7 @@
     };
   };
 
-    services = {
+  services = {
     openssh = {
       enable = true;
       startWhenNeeded = true;
@@ -331,16 +332,6 @@
     # printing.enable = true;
 
     # swayosd.enable = true;
-
-    netbird = {
-      enable = true;
-      # clients.default.config = {
-      #   DisableAutoConnect = false;
-      #   WgIface = "wt0";
-      #   WgPort = 51820;
-      #   AdminURL = "http://localhost:33073";
-      # };
-    };
 
     blueman.enable = true;
 
