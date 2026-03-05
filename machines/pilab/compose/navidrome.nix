@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     refreshInterval = 3;
+    silent = true;
     requiredMounts = [
       "${homelabMediaPath}/services/navidrome"
       "${homelabMediaPath}/services/spotdl"
