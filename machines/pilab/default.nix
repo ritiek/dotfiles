@@ -191,10 +191,18 @@
     "--accept-dns=false"
   ];
 
-  # Use pihole as the system DNS resolver. Pihole forwards *.lion-zebra.ts.net
-  # to 100.100.100.100 (Tailscale MagicDNS) via dnsmasq.d/tailscale-dns.conf,
-  # avoiding the recursive loop that would occur with --accept-dns=true.
-  networking.nameservers = [ "127.0.0.1" ];
+  services.dnsmasq = {
+    enable = true;
+    settings = {
+      server = [ "/lion-zebra.ts.net/100.100.100.100" "127.0.0.1#5335" "1.1.1.1" ];
+      strict-order = true;
+      # Don't read /etc/resolv.conf for upstream servers; we define them above.
+      no-resolv = true;
+    };
+  };
+
+  # Prevent dhcpcd from overwriting resolved's stub with DHCP-supplied servers.
+  networking.dhcpcd.extraConfig = "nooption domain_name_servers";
 
   users = {
     defaultUserShell = pkgs.zsh;

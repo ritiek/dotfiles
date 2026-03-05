@@ -43,6 +43,8 @@
       "FTLCONF_dns_listeningMode" = "all";
       "FTLCONF_webserver_port" = "81";
       "FTLCONF_misc_etc_dnsmasq_d" = "true";
+      # Listen on port 5335 so NixOS dnsmasq can own port 53 and forward to us.
+      "FTLCONF_dns_port" = "5335";
     };
     environmentFiles = [
       config.sops.secrets."compose/pihole.env".path
