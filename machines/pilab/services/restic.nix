@@ -104,13 +104,14 @@ in
     paths = [
       homelabMediaPath
     ];
-    # exclude = [
+    exclude = [
+      "*.no-backup"
     #   "*.db-shm"
     #   "*.db-wal"
     #   "LOCK"
     #   "media.lock"
     #   "migration_lock"
-    # ];
+    ];
     extraBackupArgs = [
       "--compression=max"
     ];
@@ -217,6 +218,9 @@ in
     paths = [
       homelabMediaPath
     ];
+    exclude = [
+      "*.no-backup"
+    ];
     extraBackupArgs = [
       "--compression=max"
     ];
@@ -254,6 +258,9 @@ in
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     paths = [
       homelabMediaPath
+    ];
+    exclude = [
+      "*.no-backup"
     ];
     extraBackupArgs = [
       "--compression=max"
