@@ -140,5 +140,6 @@ in
       OnUnitActiveSec = "6h";
       Unit = "whatsapp-backup-verify-latest-snapshot.service";
     };
+    Install.WantedBy = [ "timers.target" ];
   };
 }
