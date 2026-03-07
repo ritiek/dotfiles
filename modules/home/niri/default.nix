@@ -238,6 +238,12 @@ hotkey-overlay {
 }
 
 window-rule {
+  match app-id="zen-beta" title="Bitwarden"
+  min-width 470
+  max-width 470
+}
+
+window-rule {
   match app-id="zen-twilight" title="Bitwarden"
   min-width 470
   max-width 470
@@ -425,7 +431,7 @@ cursor {
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
     // Applications
-    Mod+B repeat=false { spawn "zen-twilight"; }
+    Mod+B repeat=false { spawn "zen-beta"; }
     Mod+Q { spawn "${if pkgs.stdenv.hostPlatform.isAarch64 then "LIBGL_ALWAYS_SOFTWARE=1 " else ""}ghostty"; }
     Mod+C repeat=false { close-window; }
     // Mod+Ctrl+C repeat=false { spawn "sh" "-c" "kill -9 $(niri msg focused-window | jq -r '.pid // empty')"; }
