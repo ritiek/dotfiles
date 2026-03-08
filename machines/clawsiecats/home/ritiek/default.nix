@@ -63,8 +63,7 @@
       unzip
       unrar-wrapper
       sd
-      # diskonaut
-      compsize
+      gdu
 
       # docker-compose
       compose2nix

@@ -35,9 +35,9 @@
       unzip
       unrar-wrapper
       sd
-      # diskonaut
       compsize
       lshw
+      gdu
 
       iptables
       nmap

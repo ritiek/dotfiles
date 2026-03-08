@@ -78,11 +78,11 @@ in
       unzip
       unrar-wrapper
       sd
-      # diskonaut
       compsize
       iotop
       python313Packages.ipython
       parted
+      gdu
 
       python313
       docker-compose

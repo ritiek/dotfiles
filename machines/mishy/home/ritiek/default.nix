@@ -151,7 +151,6 @@
       moonlight-qt
       qtscrcpy
 
-      # diskonaut
       # woeusb-ng
       wifite2
       mitmproxy
@@ -159,6 +158,7 @@
       cryptsetup
       openssl
       ffmpeg
+      gdu
 
       miniserve
       bore-cli
