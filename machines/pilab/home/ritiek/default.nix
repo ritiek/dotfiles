@@ -33,6 +33,7 @@ in
     inputs.sops-nix.homeManagerModule
 
     ./gpio/bme680.nix
+    ./gpio/clawsiecats-ping-monitor.nix
     ./services/spotdl.nix
     ./services/paperless-ngx.nix
     ./services/whatsapp-backup-verify.nix
