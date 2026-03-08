@@ -151,8 +151,8 @@ in
       OnUnitActiveSec = "1h";
       Unit = "paperless-ngx-sync.service";
     };
-    # Install = {
-    #   WantedBy = [ "timers.target" ];
-    # };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
   };
 }
