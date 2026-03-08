@@ -32,6 +32,7 @@ in
       #     mode = "u=rwx,g=rx,o=";
       # }
       "/var/lib/syncthing"
+      "/var/lib/vaultwarden-exports"
       # {
       #     directory = "/var/lib/syncthing";
       #     # user = config.ids.uids.syncthing;
@@ -186,15 +187,15 @@ in
           # };
         };
         folders = {
-          headscale = {
-            enable = true;
-            label = "Headscale Data";
-            path = "/var/lib/headscale";
-            devices = [
-              "pilab"
-            ];
-            id = "u233w-44w2s";
-          };
+          # headscale = {
+          #   enable = true;
+          #   label = "Headscale Data";
+          #   path = "/var/lib/headscale";
+          #   devices = [
+          #     "pilab"
+          #   ];
+          #   id = "u233w-44w2s";
+          # };
           vaultwarden-exports = {
             enable = true;
             label = "Vaultwarden Exports";
