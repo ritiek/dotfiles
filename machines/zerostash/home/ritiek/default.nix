@@ -22,8 +22,8 @@
       unzip
       unrar-wrapper
       sd
-      # diskonaut
       compsize
+      gdu
 
       iptables
       nmap

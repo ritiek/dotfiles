@@ -80,6 +80,7 @@
       gdb
       iotop
       sd
+      gdu
       playerctl
       nwg-look
       (unstable.lutris.override {
