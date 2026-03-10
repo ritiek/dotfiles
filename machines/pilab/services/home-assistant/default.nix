@@ -183,7 +183,7 @@
           owner = "AlbinLind";
           repo = "dawarich-home-assistant";
           rev = "main";
-          sha256 = "sha256-+DY9/Q5hWNHPFjlOmSLU76npXLX34i8cV+3AtZk9wqI=";
+          sha256 = "sha256-a7ETEX2XBQSaD+xclDY4yFqafJ7GClbQ1ydU21NY3Es=";
         }}/custom_components/dawarich /var/lib/hass/custom_components/
         chown -R hass:hass /var/lib/hass/custom_components/dawarich
       fi
