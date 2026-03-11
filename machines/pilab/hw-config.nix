@@ -1,18 +1,19 @@
-{ config, inputs, pkgs, lib, ... }:
+{ config, inputs, pkgs, lib, nixos-raspberrypi, ... }:
 
 let
   homelabMediaPath = "/media/HOMELAB_MEDIA";
   everythingElsePath = "/media/EVERYTHING_ELSE";
   enableLEDs = true;
+  isRpi5 = config.boot.loader.raspberry-pi.variant == "5";
 in
 {
   _module.args.homelabMediaPath = homelabMediaPath;
   _module.args.everythingElsePath = everythingElsePath;
   _module.args.enableLEDs = enableLEDs;
 
-  imports = [
-    inputs.raspberry-pi-nix.nixosModules.raspberry-pi
-    inputs.raspberry-pi-nix.nixosModules.sd-image
+  imports = with nixos-raspberrypi.nixosModules; [
+    raspberry-pi-5.base
+    sd-image
   ];
 
   # Needed for building SD images.
@@ -22,6 +23,12 @@ in
         super.makeModulesClosure (x // { allowMissing = true; });
     })
   ];
+
+  # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
+  # boot.kernelPackages = pkgs.linuxAndFirmware.v6_12_17.linuxPackages_rpi5;
+  # boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_78.linuxPackages_rpi5;
+  # So sticking with this older kernel for now.
+  boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_51.linuxPackages_rpi5;
 
   boot.kernelModules = [ "i2c-dev" ];
 
@@ -39,14 +46,6 @@ in
     powerOnBoot = true;
   };
 
-  raspberry-pi-nix = {
-    board = "bcm2712";
-    # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
-    # kernel-version = "v6_12_17";
-    # kernel-version = "v6_6_78";
-    # So sticking with this older kernel for now.
-    kernel-version = "v6_6_51";
-  };
   hardware.raspberry-pi.config.all = {
     options = {
       usb_max_current_enable = {
@@ -96,27 +95,27 @@ in
 
       pwr_led_trigger = {
         value = "default-on";
-        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+        enable = !enableLEDs && isRpi5;
       };
       pwr_led_activelow = {
         value = "off";
-        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+        enable = !enableLEDs && isRpi5;
       };
       act_led_trigger = {
         value = "default-on";
-        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+        enable = !enableLEDs && isRpi5;
       };
       act_led_activelow = {
         value = "off";
-        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+        enable = !enableLEDs && isRpi5;
       };
       eth_led0 = {
         value = 4;
-        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+        enable = !enableLEDs && isRpi5;
       };
       eth_led1 = {
         value = 4;
-        enable = !enableLEDs && (config.raspberry-pi-nix.board == "bcm2712");
+        enable = !enableLEDs && isRpi5;
       };
     };
 
