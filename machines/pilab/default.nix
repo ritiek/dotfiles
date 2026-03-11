@@ -149,19 +149,19 @@
   # };
 
   nixpkgs.overlays = [
-    (final: _prev: {
-      nixpkgs-for-raspberry-pi-nix = import inputs.nixpkgs-for-raspberry-pi-nix {
-        inherit (final) system;
-        config.allowUnfree = true;
-      };
-    })
+    # (final: _prev: {
+    #   nixpkgs-for-raspberry-pi-nix = import inputs.nixpkgs-for-raspberry-pi-nix {
+    #     inherit (final) system;
+    #     config.allowUnfree = true;
+    #   };
+    # })
     # XXX: Pin pipewire to nixpkgs-for-raspberry-pi-nix (last known good commit) for
     # now since it's been failing to build from master.
-    (final: prev: {
-      pipewire = final.nixpkgs-for-raspberry-pi-nix.pipewire or prev.pipewire;
-      gjs = final.nixpkgs-for-raspberry-pi-nix.gjs or prev.gjs;
-      libsecret = final.nixpkgs-for-raspberry-pi-nix.libsecret or prev.libsecret;
-    })
+    # (final: prev: {
+    #   pipewire = final.nixpkgs-for-raspberry-pi-nix.pipewire or prev.pipewire;
+    #   gjs = final.nixpkgs-for-raspberry-pi-nix.gjs or prev.gjs;
+    #   libsecret = final.nixpkgs-for-raspberry-pi-nix.libsecret or prev.libsecret;
+    # })
 
      # (final: _prev: {
      #   stable = import inputs.stable {

@@ -8,7 +8,7 @@
     };
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-for-raspberry-pi-nix.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
+    # nixpkgs-for-raspberry-pi-nix.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
     # ghostty = {
@@ -157,15 +157,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    raspberry-pi-nix = {
-      url = "github:nix-community/raspberry-pi-nix";
-      # XXX: Above to have gone into read-only mode. Here
-      # seems a better maintained fork for the moment in case.
-      # url = "github:cmyk/raspberry-pi-nix";
-      # XXX: Pinning nixpkgs to last known good commit that worked
-      # for me.
-      inputs.nixpkgs.follows = "nixpkgs-for-raspberry-pi-nix";
-      # inputs.nixpkgs.follows = "unstable";
+    nixos-raspberrypi = {
+      url = "github:nvmd/nixos-raspberrypi/main";
+      # NOTE: nixpkgs is NOT followed here; instead we patch inputs.nixpkgs
+      # at build time in nixosConfigurations.pilab below using nixpkgs.applyPatches.
+      # See the comment there for details.
     };
 
     rockchip = {
@@ -266,14 +262,44 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.pilab = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [
-        ./machines/pilab
-        ./machines/pilab/hw-config.nix
-      ];
-      specialArgs = { inherit inputs; };
-    };
+    nixosConfigurations.pilab =
+      let
+        # nixos-raspberrypi's bootloader module uses `disabledModules = [{ key = "..."; }]`
+        # to disable the conflicting boot.loader.raspberryPi option from nixpkgs rename.nix.
+        # This requires nixpkgs PR #398456 (not yet merged as of 2026-03-11) which adds a
+        # `key` attribute to mkRemovedOptionModule and mkRenamedOptionModule (via doRename).
+        # We re-implement the two-line patch here in pure Nix using lib.extend so that
+        # nixos-raspberrypi can use our vanilla nixpkgs (26.05) instead of nvmd/nixpkgs.
+        # Once PR #398456 is merged, remove this let block and set
+        # `nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs"` in inputs instead.
+        patchedLib = inputs.nixpkgs.lib.extend (final: prev: {
+          mkRemovedOptionModule = optionName: replacementInstructions:
+            { options, ... }:
+            {
+              key = "removedOptionModule#" + final.concatStringsSep "_" optionName;
+            } // (prev.mkRemovedOptionModule optionName replacementInstructions { inherit options; });
+
+          doRename = args@{ from, to, ... }:
+            { config, options, ... }@moduleArgs:
+            {
+              key = "renamedOptionModule#" + final.concatStringsSep "_" from
+                  + "->" + final.concatStringsSep "_" to;
+            } // (prev.doRename args (builtins.removeAttrs moduleArgs ["key"]));
+        });
+        nixpkgs-patched = inputs.nixpkgs // {
+          lib = patchedLib // {
+            nixosSystem = args: patchedLib.nixosSystem args;
+          };
+        };
+      in
+      inputs.nixos-raspberrypi.lib.nixosSystem {
+        nixpkgs = nixpkgs-patched;
+        specialArgs = inputs // { inherit inputs; nixos-raspberrypi = inputs.nixos-raspberrypi; };
+        modules = [
+          ./machines/pilab
+          ./machines/pilab/hw-config.nix
+        ];
+      };
 
     homeConfigurations."ritiek@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
