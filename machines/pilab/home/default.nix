@@ -25,8 +25,26 @@
   ];
 
   home-manager = {
-    useGlobalPkgs = true;
+    # useGlobalPkgs = false so home-manager builds its own pkgs from inputs.nixpkgs
+    # (vanilla 26.05) rather than the system pkgs which go through nixos-raspberrypi's
+    # overlays (vendor kernel/firmware etc.) and may be missing packages like
+    # `neovimUtils.makeVimPackageInfo`.
+    useGlobalPkgs = false;
     useUserPackages = true;
+    # Apply the same overlays the NixOS system pkgs has, so that `pkgs.unstable` etc.
+    # are available in home-manager modules.
+    sharedModules = [
+      {
+        nixpkgs.overlays = [
+          (final: _prev: {
+            unstable = import inputs.unstable {
+              inherit (final) system;
+              config.allowUnfree = true;
+            };
+          })
+        ];
+      }
+    ];
     extraSpecialArgs = {
       inherit inputs homelabMediaPath everythingElsePath enableLEDs;
       hostName = config.networking.hostName;
