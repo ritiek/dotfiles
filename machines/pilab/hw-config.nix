@@ -24,11 +24,10 @@ in
     })
   ];
 
-  # Both these kernels makes end0 ethernet network interface unable to get a DHCP lease.
-  # boot.kernelPackages = pkgs.linuxAndFirmware.v6_12_17.linuxPackages_rpi5;
-  # boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_78.linuxPackages_rpi5;
-  # So sticking with this older kernel for now.
-  boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_51.linuxPackages_rpi5;
+  # To see available kernel versions, run:
+  # $ nix eval --impure --expr 'builtins.attrNames (builtins.getFlake "path:/etc/nixos").inputs.nixos-raspberrypi.legacyPackages.aarch64-linux.linuxAndFirmware
+  # boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_51.linuxPackages_rpi5;
+  boot.kernelPackages = pkgs.linuxAndFirmware.latest.linuxPackages_rpi5;
 
   boot.kernelModules = [ "i2c-dev" ];
 
