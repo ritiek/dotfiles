@@ -7,7 +7,6 @@
 
   programs.zen-browser = {
     enable = true;
-    suppressXdgMigrationWarning = true;
     nativeMessagingHosts = with pkgs; [
       ff2mpv-rust
     ];
