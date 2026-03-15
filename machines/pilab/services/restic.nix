@@ -1,6 +1,35 @@
 { lib, config, pkgs, homelabMediaPath, enableLEDs, ...}:
 
 let
+  make-snapshot = machine: pkgs.writeShellScript "make-snapshot-${machine}" ''
+    SNAPSHOT_DIR="${homelabMediaPath}/.snapshots/${machine}"
+    TIMESTAMP=$(${pkgs.coreutils}/bin/date +%Y%m%dT%H%M)
+    TARGET="$SNAPSHOT_DIR/HOMELAB_MEDIA.$TIMESTAMP"
+
+    ${pkgs.coreutils}/bin/mkdir -p "$TARGET"
+    ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r \
+      ${homelabMediaPath}/files "$TARGET/files"
+    ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r \
+      ${homelabMediaPath}/services "$TARGET/services"
+
+    # Update the stable symlink to point to the latest snapshot
+    ${pkgs.coreutils}/bin/ln -sfn "$TARGET" "$SNAPSHOT_DIR/HOMELAB_MEDIA.latest"
+
+    # Retain only 30 newest snapshots, delete the rest
+    ${pkgs.coreutils}/bin/ls -1dt "$SNAPSHOT_DIR"/HOMELAB_MEDIA.[0-9]* \
+      | ${pkgs.coreutils}/bin/tail -n +31 \
+      | while read -r old; do
+          ${pkgs.btrfs-progs}/bin/btrfs subvolume delete "$old/files"
+          ${pkgs.btrfs-progs}/bin/btrfs subvolume delete "$old/services"
+          ${pkgs.coreutils}/bin/rmdir "$old"
+        done
+  '';
+
+  find-latest-snapshot = machine: pkgs.writeShellScript "find-latest-snapshot-${machine}" ''
+    echo "${homelabMediaPath}/.snapshots/${machine}/HOMELAB_MEDIA.latest/files"
+    echo "${homelabMediaPath}/.snapshots/${machine}/HOMELAB_MEDIA.latest/services"
+  '';
+
   ping-uptime-kuma-pilab = (pkgs.writeShellScriptBin "ping-uptime-kuma@restic-backups-homelab@pilab" ''
     # TODO: I should make a common shell script for uptime kuma pings instead of
     # re-defining this shell script everywhere.
@@ -101,9 +130,7 @@ in
     repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     # user = "restic";
-    paths = [
-      homelabMediaPath
-    ];
+    dynamicFilesFrom = "${find-latest-snapshot "pilab"}";
     exclude = [
       "*.no-backup"
     #   "*.db-shm"
@@ -158,12 +185,15 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
+      # Create a btrfs snapshot before backing up
+      ${make-snapshot "pilab"}
+
       ${lib.optionalString enableLEDs ''
       # Turn on Blue LED to indicate backup is starting
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 4=1
       ''}
 
-      echo "Backing up '${homelabMediaPath}'."
+      echo "Backing up '${homelabMediaPath}' snapshot."
     '';
     backupCleanupCommand = ''
       if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
@@ -188,8 +218,8 @@ in
       # ${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
     '';
     timerConfig = {
-      # Every 40 minutes
-      OnCalendar = "*:0/40";
+      # Every 59 minutes
+      OnCalendar = "*:0/59";
       Persistent = true;
     };
   };
@@ -215,9 +245,7 @@ in
     repositoryFile = config.sops.secrets."restic.zerostash.repository".path;
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     # user = "restic";
-    paths = [
-      homelabMediaPath
-    ];
+    dynamicFilesFrom = "${find-latest-snapshot "zerostash"}";
     exclude = [
       "*.no-backup"
     ];
@@ -241,7 +269,10 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
-      echo "Backing up '${homelabMediaPath}'."
+      # Create a btrfs snapshot before backing up
+      ${make-snapshot "zerostash"}
+
+      echo "Backing up '${homelabMediaPath}' snapshot."
     '';
     timerConfig = {
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
@@ -256,9 +287,7 @@ in
     initialize = true;
     repositoryFile = config.sops.secrets."restic.keyberry.repository".path;
     passwordFile = config.sops.secrets."restic.homelab.password".path;
-    paths = [
-      homelabMediaPath
-    ];
+    dynamicFilesFrom = "${find-latest-snapshot "keyberry"}";
     exclude = [
       "*.no-backup"
     ];
@@ -282,12 +311,15 @@ in
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
 
+      # Create a btrfs snapshot before backing up
+      ${make-snapshot "keyberry"}
+
       ${lib.optionalString enableLEDs ''
       # Turn on Yellow LED to indicate backup is starting
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 17=1
       ''}
 
-      echo "Backing up '${homelabMediaPath}'."
+      echo "Backing up '${homelabMediaPath}' snapshot."
     '';
     backupCleanupCommand = ''
       ${lib.optionalString enableLEDs ''
