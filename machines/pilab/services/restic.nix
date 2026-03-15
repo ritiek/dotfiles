@@ -25,6 +25,42 @@ let
         done
   '';
 
+  # Reads a restic REST repositoryFile (format: rest:password@host:port/path or rest:host:port/path)
+  # and checks whether the host:port is reachable. Exits with code 2 if not.
+  check-repository-host = pkgs.writeShellScript "check-repository-host" ''
+    REPO_FILE="$1"
+    if [ -z "$REPO_FILE" ]; then
+      echo "Error: no repositoryFile path provided to check-repository-host." >&2
+      exit 2
+    fi
+
+    REPO=$(${pkgs.coreutils}/bin/cat "$REPO_FILE")
+
+    # Strip leading "rest:" scheme
+    REPO_NOSCHEME=$(${pkgs.gnused}/bin/sed 's|^rest:||' <<< "$REPO")
+
+    # Strip credentials (user:pass@) if present
+    REPO_NOAUTH=$(${pkgs.gnused}/bin/sed 's|^[^@]*@||' <<< "$REPO_NOSCHEME")
+
+    # Strip any trailing path after the port
+    HOST_PORT=$(${pkgs.gnused}/bin/sed 's|/.*||' <<< "$REPO_NOAUTH")
+
+    HOST=$(${pkgs.gnused}/bin/sed 's|:.*||' <<< "$HOST_PORT")
+    PORT=$(${pkgs.gnused}/bin/sed 's|^[^:]*:||' <<< "$HOST_PORT")
+
+    if [ -z "$HOST" ] || [ -z "$PORT" ]; then
+      echo "Error: could not parse host/port from repository file." >&2
+      exit 2
+    fi
+
+    echo "Checking reachability of $HOST:$PORT ..."
+    if ! ${pkgs.netcat}/bin/nc -z -w 5 "$HOST" "$PORT"; then
+      echo "Error: $HOST:$PORT is not reachable. Skipping backup." >&2
+      exit 2
+    fi
+    echo "$HOST:$PORT is reachable."
+  '';
+
   find-latest-snapshot = machine: pkgs.writeShellScript "find-latest-snapshot-${machine}" ''
     echo "${homelabMediaPath}/.snapshots/${machine}/HOMELAB_MEDIA.latest/files"
     echo "${homelabMediaPath}/.snapshots/${machine}/HOMELAB_MEDIA.latest/services"
@@ -177,6 +213,8 @@ in
     #   ${pkgs.restic}/bin/restic unlock || true
     # '';
     backupPrepareCommand = ''
+      set -e
+
       if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
         echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
@@ -261,10 +299,15 @@ in
       "--keep-tag forever"
     ];
     backupPrepareCommand = ''
+      set -e
+
       if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
         echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
       fi
+
+      # Check whether the restic REST server host is reachable
+      ${check-repository-host} "${config.sops.secrets."restic.zerostash.repository".path}"
 
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
@@ -303,10 +346,15 @@ in
       "--keep-tag forever"
     ];
     backupPrepareCommand = ''
+      set -e
+
       if ! ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
         echo "Error: '${homelabMediaPath}' is not mounted. Skipping backup."
         exit 1 # Exit with a non-zero status to prevent the backup
       fi
+
+      # Check whether the restic REST server host is reachable
+      ${check-repository-host} "${config.sops.secrets."restic.keyberry.repository".path}"
 
       # Remove any stale locks.
       ${pkgs.restic}/bin/restic unlock || true
