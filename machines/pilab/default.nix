@@ -194,7 +194,12 @@
   services.dnsmasq = {
     enable = true;
     settings = {
-      server = [ "/lion-zebra.ts.net/100.100.100.100" "127.0.0.1#5335" "1.1.1.1" ];
+      server = [
+        "/lion-zebra.ts.net/100.100.100.100"
+        "/pihole/127.0.0.1#5335"
+        "127.0.0.1#5335"
+        "1.1.1.1"
+      ];
       strict-order = true;
       # Don't read /etc/resolv.conf for upstream servers; we define them above.
       no-resolv = true;
