@@ -16,6 +16,7 @@ install -d -m755 "$BASEDIR"/boot/
 ssh-keygen -t ed25519 -a 100 -N "" -f "$BASEDIR"/boot/ssh_host_ed25519_key
 
 # Machine ID.
+install -d -m755 "$BASEDIR"/nix/persist/system/etc/
 systemd-machine-id-setup --root="$BASEDIR"/nix/persist/system/
 
 # Host SSH keys; also used by sops-nix for decrypting secrets.
