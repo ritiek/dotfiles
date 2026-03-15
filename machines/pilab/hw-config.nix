@@ -167,7 +167,7 @@ in
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [
-      "/media/HOMELAB_MEDIA"
+      homelabMediaPath
     ];
   };
 

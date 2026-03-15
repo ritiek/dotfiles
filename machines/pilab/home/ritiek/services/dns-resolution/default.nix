@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, homelabMediaPath, ... }:
 
 let
   # Router configuration - enable/disable routers and set priorities
@@ -54,7 +54,7 @@ let
     from airtel import AirtelRouter
 
     # Load configuration from JSON file
-    CONFIG_FILE = "/media/HOMELAB_MEDIA/services/pihole/dns-resolution.json"
+    CONFIG_FILE = "${homelabMediaPath}/services/pihole/data/dns-resolution.json"
 
     def load_sops_env():
         """Load environment variables from SOPS secrets file"""
