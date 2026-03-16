@@ -310,7 +310,12 @@
         ./machines/pilab/home/ritiek
         { _module.args.hostName = "pilab"; }
       ];
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = inputs // {
+        inherit inputs;
+        homelabMediaPath = "/media/HOMELAB_MEDIA";
+        everythingElsePath = "/media/EVERYTHING_ELSE";
+        enableLEDs = true;
+      };
     };
 
     homeConfigurations."immi@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
