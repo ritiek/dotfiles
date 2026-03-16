@@ -70,11 +70,10 @@ let
 
           if [[ "$FILE_CREATION_DATE" -gt "$LAST_RUN_TIMESTAMP" ]]; then
             # Requires ./scripts/home/paperless-ngx-push.nix
-            # TODO: Do not use this long path. Attempt to reference {pkgs} instead.
             if [[ -n "$TAGS" ]]; then
-              /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push --tags "$TAGS" "$FILE"
+              paperless-ngx-push --tags "$TAGS" "$FILE"
             else
-              /etc/profiles/per-user/${config.home.username}/bin/paperless-ngx-push "$FILE"
+              paperless-ngx-push "$FILE"
             fi
             paperless_ngx_push_exit_code=$?
 
