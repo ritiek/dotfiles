@@ -84,7 +84,7 @@
 
       # Loop through all provided files
       for FILE in "''${FILES[@]}"; do
-        # Check if the file exists and is a regular file
+        # Check if file exists and is a regular file
         if [ ! -f "$FILE" ]; then
           ${pkgs.coreutils}/bin/echo "Error: $FILE does not exist or is not a valid file."
           continue
@@ -96,29 +96,33 @@
           ${pkgs.coreutils}/bin/echo "Applying tags: ''${TAGS[*]}"
         fi
 
-        # Handle filenames with special characters by using a temp file
-        TEMP_FILE=$(${pkgs.coreutils}/bin/mktemp -u)
-        ${pkgs.coreutils}/bin/cp "$FILE" "$TEMP_FILE"
+        # Get original filename for upload
+        ORIGINAL_NAME=$(${pkgs.coreutils}/bin/basename "$FILE")
 
-        # Build curl command using temp file
-        CURL_CMD="${pkgs.curl}/bin/curl -s -H \"Authorization: Token $PAPERLESS_NGX_API_KEY\" -F \"document=@$TEMP_FILE\""
+        # Use a temp symlink with no spaces so curl's @path;filename= parser works correctly
+        TEMP_DIR=$(${pkgs.coreutils}/bin/mktemp -d)
+        ${pkgs.coreutils}/bin/ln -s "$(${pkgs.coreutils}/bin/realpath "$FILE")" "$TEMP_DIR/upload"
+
+        # Build curl args as an array
+        CURL_ARGS=(
+          -s
+          -H "Authorization: Token $PAPERLESS_NGX_API_KEY"
+          -F "document=@$TEMP_DIR/upload;filename=\"$ORIGINAL_NAME\""
+        )
 
         # Add tag IDs if provided
         for tag_id in $TAG_IDS; do
-          CURL_CMD="$CURL_CMD -F \"tags=$tag_id\""
+          CURL_ARGS+=(-F "tags=$tag_id")
         done
 
-        CURL_CMD="$CURL_CMD \"$PAPERLESS_NGX_INSTANCE_URL/api/documents/post_document/\""
-
-        # Debug: print what curl will execute
-        ${pkgs.coreutils}/bin/echo "DEBUG: $CURL_CMD" >&2
+        CURL_ARGS+=("$PAPERLESS_NGX_INSTANCE_URL/api/documents/post_document/")
 
         # Execute curl command
-        eval "$CURL_CMD"
+        ${pkgs.curl}/bin/curl "''${CURL_ARGS[@]}"
         curl_exit_code=$?
 
-        # Clean up temp file
-        ${pkgs.coreutils}/bin/rm -f "$TEMP_FILE"
+        # Clean up temp symlink
+        ${pkgs.coreutils}/bin/rm -rf "$TEMP_DIR"
 
         if [ $curl_exit_code -eq 0 ]; then
           ${pkgs.coreutils}/bin/echo "$FILE uploaded successfully."

@@ -74,7 +74,7 @@ let
 
     # Build command arguments
     ARGS=(
-      --executable-path "${pkgs.unstable.chromium}/bin/chromium"
+      --executable-path "${pkgs.chromium}/bin/chromium"
       --user-data-dir "$TEMP_PROFILE"
       --ignore-https-errors
       --caps vision
@@ -121,7 +121,7 @@ in
   ];
   programs.chromium = {
     enable = true;
-    package = pkgs.unstable.chromium;
+    package = pkgs.chromium;
   };
   programs.opencode = {
     enable = true;
