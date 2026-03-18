@@ -256,9 +256,9 @@ in
       # ${ping-uptime-kuma-pilab}/bin/ping-uptime-kuma@restic-backups-homelab@pilab
     '';
     timerConfig = {
-      # Every 59 minutes
-      OnCalendar = "*:0/59";
-      Persistent = true;
+      # Every 2 hours
+      OnCalendar = "0/2:00";
+      Persistent = false;
     };
   };
 
@@ -321,7 +321,7 @@ in
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
       # OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
       OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
-      Persistent = true;
+      Persistent = false;
     };
   };
 
@@ -379,7 +379,7 @@ in
       # OnCalendar = "0/6:00"; # Every 6 hours at minute 0
       # OnCalendar = "0,6,12,18:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
       OnCalendar = "06:00"; # Every day at 00:00, 06:00, 12:00, and 18:00
-      Persistent = true;
+      Persistent = false;
     };
   };
 
