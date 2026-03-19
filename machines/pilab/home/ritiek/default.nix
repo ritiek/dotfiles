@@ -35,7 +35,7 @@ in
     inputs.sops-nix.homeManagerModule
 
     ./gpio/bme680.nix
-    ./services/clawsiecats-ping-monitor.nix
+    ./services/ping-monitor.nix
     ./services/homelab-media-mount-monitor.nix
     ./services/spotdl.nix
     ./services/paperless-ngx.nix
