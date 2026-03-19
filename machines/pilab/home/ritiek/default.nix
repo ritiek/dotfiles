@@ -26,6 +26,8 @@ let
         /dev/mapper/EVERYTHING_ELSE \
         ${everythingElsePath}
     fi
+
+    ${pkgs.util-linux}/bin/runuser -u ${config.home.username} -- env XDG_RUNTIME_DIR=/run/user/$(id -u ${config.home.username}) ${pkgs.systemd}/bin/systemctl --user stop homelab-media-mount-monitor.service
   '');
 in
 {
@@ -34,6 +36,7 @@ in
 
     ./gpio/bme680.nix
     ./gpio/clawsiecats-ping-monitor.nix
+    ./services/homelab-media-mount-monitor.nix
     ./services/spotdl.nix
     ./services/paperless-ngx.nix
     ./services/whatsapp-backup-verify.nix
@@ -123,6 +126,8 @@ in
 
         cryptsetup close HOMELAB_MEDIA
         cryptsetup close EVERYTHING_ELSE
+
+        ${pkgs.util-linux}/bin/runuser -u ${config.home.username} -- env XDG_RUNTIME_DIR=/run/user/$(id -u ${config.home.username}) ${pkgs.systemd}/bin/systemctl --user start homelab-media-mount-monitor.service
       '')
 
       (writeShellScriptBin "homelab-start" ''

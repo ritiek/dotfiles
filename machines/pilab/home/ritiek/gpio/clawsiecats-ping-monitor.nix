@@ -19,7 +19,7 @@ let
         if ${pkgs.iputils}/bin/ping -c 1 -W 5 "$TARGET" > /dev/null 2>&1; then
           echo "$TARGET is reachable"
           success=true
-          # Turn off solid red LED on success.
+          # Turn off solid Red LED on success.
           ${lib.optionalString enableLEDs ''
           ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 27=0
           ''}
@@ -35,7 +35,7 @@ let
       else
         echo "$TARGET is unreachable"
         ${pkgs.curl}/bin/curl -s "$UPTIME_KUMA_INSTANCE_URL/api/push/Ir6oz6IbFN?status=down&msg=Unreachable&ping=" || true
-        # Turn on solid red LED on failure.
+        # Turn on solid Red LED on failure.
         ${lib.optionalString enableLEDs ''
         ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 27=1
         ''}
