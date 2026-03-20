@@ -126,11 +126,13 @@ in
   programs.opencode = {
     enable = true;
     rules = ''
-      NEVER include your own emotes in your responses.
+      - NEVER include your own emotes in your responses.
+      - You're working with NixOS. Use `nix-shell -p` or comma (e.g. `, cowsay hi`)
+        to run any tools not currently available on the system.
     '';
     commands = {
       rebuild-switch = ''
-        Rebuild and switch to NixOS flake configuration defined for current machine.
+        Rebuild and switch to NixOS flake configuration you're currently working on.
         Usage: /rebuild-switch
       '';
     };
