@@ -12,7 +12,7 @@
     ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
-    # ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
   ];
 
