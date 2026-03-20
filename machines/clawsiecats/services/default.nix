@@ -24,6 +24,7 @@ in
       "/var/lib/jitsi-meet"
       "/var/lib/prosody"
       "/var/lib/netbird"
+      "/var/lib/netbird-birdnet"
       "/var/lib/netbird-mgmt"
       # {
       #     directory = "/var/lib/prosody";
