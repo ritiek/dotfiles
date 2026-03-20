@@ -22,12 +22,17 @@ let
           LED_PID=$!
           ;;
         off)
+          ${pkgs.libgpiod}/bin/gpioset -c gpiochip0 27=0 &
+          LED_PID=$!
           ;;
       esac
     }
 
     cleanup() {
       kill "$LED_PID" 2>/dev/null; wait "$LED_PID" 2>/dev/null
+      ${pkgs.libgpiod}/bin/gpioset -c gpiochip0 27=0 &
+      sleep 0.5
+      kill $! 2>/dev/null; wait $! 2>/dev/null
       exit 0
     }
     trap cleanup EXIT INT TERM
