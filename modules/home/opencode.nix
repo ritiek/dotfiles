@@ -96,7 +96,7 @@ let
     # sleep 30 && cleanup &
 
     # Launch playwright MCP server with copied profile
-    exec ${mcp-servers-nix.playwright-mcp}/bin/mcp-server-playwright "''${ARGS[@]}" "$@"
+    exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp "''${ARGS[@]}" "$@"
   '';
 in
 {
@@ -231,6 +231,26 @@ in
             ];
             Z_AI_MODE = "ZAI";
             Z_AI_API_KEY = "{file:${config.sops.secrets."z_ai_api.key".path}}";
+          };
+        };
+        kindly-web-search = {
+          enabled = true;
+          type = "local";
+          command = [
+            "${pkgs.uv}/bin/uvx"
+            "--from"
+            "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
+            "kindly-web-search-mcp-server"
+            "start-mcp-server"
+          ];
+          environment = {
+            PATH = pkgs.lib.makeBinPath [
+              pkgs.uv
+              pkgs.coreutils
+              pkgs.python3
+            ];
+            GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
+            SEARXNG_BASE_URL = "http://pilab.lion-zebra.ts.net:6040/";
           };
         };
         # NOTE: context7-mcp is automatically disabled on machines with baseline bun
