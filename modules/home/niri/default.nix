@@ -25,7 +25,12 @@ in
     hyprpicker    # Color picker
     # hyprshot      # Screenshot tool
     # hyprcursor    # Cursor theme tool
-    wlsunset      # Blue light filter (hyprsunset doesn't work with niri)
+
+    # Fixed color temperature:
+    # 1. hyprsunset doesn't work on NixOS
+    # 2. had trouble with wlsunset to maintain constant temp recently
+    gammastep
+
     xdg-desktop-portal-hyprland
     # wl-clipboard  # Already provided by wl-clipboard-rs in main config
     grim
@@ -393,7 +398,7 @@ spawn-at-startup "swaync"
 spawn-at-startup "waybar"
 spawn-at-startup "hyprpaper"
 spawn-at-startup "hypridle"
-spawn-at-startup "wlsunset" "-t" "4300"
+spawn-at-startup "gammastep" "-O" "4300" "-r" "-m" "wayland"
 spawn-at-startup "gotify-desktop"
 spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
