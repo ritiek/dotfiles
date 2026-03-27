@@ -71,6 +71,7 @@
     homeDirectory = "/home/ritiek";
     packages = with pkgs; [
       psmisc
+      moreutils
       unixtools.route
       unixtools.xxd
       zip

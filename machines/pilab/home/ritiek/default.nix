@@ -72,6 +72,7 @@ in
     packages = with pkgs; [
       any-nix-shell
       psmisc
+      moreutils
       lshw
       pciutils
       wget
