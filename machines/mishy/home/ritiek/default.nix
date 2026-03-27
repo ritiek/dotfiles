@@ -82,6 +82,7 @@
       # spotify
       # local.piano-rs
       psmisc
+      moreutils
       unixtools.route
       unixtools.xxd
       zip
