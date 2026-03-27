@@ -74,6 +74,7 @@
     ./compose/redlib.nix
     ./compose/meshmonitor.nix
     ./compose/manyfold
+    ./compose/linkding
     # ./compose/kopia
   ];
 
