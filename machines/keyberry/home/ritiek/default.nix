@@ -55,6 +55,8 @@
     packages = with pkgs; [
       # nixgl.nixGLMesa
       any-nix-shell
+      psmisc
+      moreutils
 
       unzip
       unrar-wrapper

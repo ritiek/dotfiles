@@ -59,6 +59,7 @@
     packages = with pkgs; [
       any-nix-shell
       psmisc
+      moreutils
 
       unzip
       unrar-wrapper
