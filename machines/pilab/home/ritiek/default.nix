@@ -192,6 +192,7 @@ in
           systemctl start docker-redlib.service
           systemctl start docker-meshmonitor.service
           systemctl start autostart-manyfold.service
+          systemctl start docker-linkding.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -261,6 +262,7 @@ in
         systemctl stop docker-compose-redlib-root.target
         systemctl stop docker-compose-meshmonitor-root.target
         systemctl stop docker-compose-manyfold-root.target
+        systemctl stop docker-compose-linkding-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
