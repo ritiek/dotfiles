@@ -33,7 +33,7 @@
       "--network=immich_default"
     ];
     labels = {
-      "homepage.description" = "Photos Backup";
+      "homepage.description" = "Photos backup";
       "homepage.group" = "Services";
       "homepage.href" = "http://pilab.lion-zebra.ts.net:2283";
       "homepage.icon" = "immich";
