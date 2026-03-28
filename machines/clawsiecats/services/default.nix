@@ -470,6 +470,9 @@ in
               # Use HTTP/1.1 for better connection handling
               proxy_http_version 1.1;
 
+              # Limit download bandwidth to 6 MB/s
+              limit_rate 6m;
+
               # Preserve headers needed by attic
               proxy_set_header Host $host;
               proxy_set_header X-Real-IP $remote_addr;
