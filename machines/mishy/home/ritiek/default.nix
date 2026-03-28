@@ -32,6 +32,7 @@
     ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
+    ./../../../../scripts/home/spotdl-patched.nix
   ];
 
   # TODO: Make adjustments and set this to false.
