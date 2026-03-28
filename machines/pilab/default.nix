@@ -75,6 +75,7 @@
     ./compose/meshmonitor.nix
     ./compose/manyfold
     ./compose/linkding
+    ./compose/open-archiver
     # ./compose/kopia
   ];
 
