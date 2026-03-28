@@ -478,7 +478,10 @@ in
         };
       };
 
-      theme = "system";
+      # XXX: I like the `system` theme but it takes a while to load:
+      # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
+      theme = "lucent-orng";
+
       tui.scroll_speed = 5;
       autoupdate = false;
     };
