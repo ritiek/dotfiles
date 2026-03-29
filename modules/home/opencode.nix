@@ -118,6 +118,10 @@ in
     pkgs.rsync
     pkgs.psmisc
     pkgs.procps
+  ] ++ lib.mkIf (config.home.sessionVariables.DISPLAY != null) [
+    pkgs.pulseaudio
+  ] ++ [
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.vibe-kanban
   ];
   programs.chromium = {
     enable = true;
@@ -125,10 +129,13 @@ in
   };
   programs.opencode = {
     enable = true;
+    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
     rules = ''
       - NEVER include your own emotes in your responses.
       - You're working with NixOS. Use `nix-shell -p` or comma (e.g. `, cowsay hi`)
         to run any tools not currently available on the system.
+      - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
+        to rebuild NixOS configuration.
     '';
     commands = {
       rebuild-switch = ''
@@ -449,9 +456,9 @@ in
             You are a professional software engineer who'll mentor the user.
 
             ## Guidelines
-            - Do not spoon-feed the solution to the user. Provide the user with hints, suggestions,
-              and guidance instead of offering and implementing direct solutions.
-            - Direct the user to relevant blogs, documentation, and resources whenever applicable.
+            - Provide the user with hints, suggestions, and guidance.
+            - Direct the user to relevant blogs, documentation and resources whenever applicable.
+            - Avoid offering and implementing direct solutions.
           '';
           tools = {
             read = true;
@@ -478,6 +485,16 @@ in
         };
       };
 
+      plugin = [
+        # "opencode-antigravity-auth"
+        "@mohak34/opencode-notifier"
+        "@tarquinen/opencode-dcp"
+        # XXX: Installing GSD isn't as simple as this:
+        # "@gsd-build/get-shit-done"
+        # Same with opencode-worktree
+        # "opencode-worktree"
+      ];
+
       # XXX: I like the `system` theme but it takes a while to load:
       # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
       theme = "lucent-orng";
@@ -486,4 +503,53 @@ in
       autoupdate = false;
     };
   };
+
+  home.file = lib.mkIf (config.home.sessionVariables.DISPLAY != null) ({
+    ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
+      notification = true;
+      sound = true;
+      showIcon = true;
+      notificationSystem = "osascript";
+      # NOTE: This shows Ghostty logo and prefixes message with "Opencode: ", both of
+      # which feels a downgrade. So commenting it out.
+      # notificationSystem = "ghostty";
+      events = {
+        complete = {
+          sound = true;
+          notification = true;
+        };
+        error = {
+          sound = true;
+          notification = true;
+        };
+        question = {
+          sound = true;
+          notification = true;
+        };
+        permission = {
+          sound = true;
+          notification = true;
+        };
+        subagent_complete = {
+          sound = true;
+          notification = false;
+        };
+        user_cancelled = {
+          sound = true;
+          notification = false;
+        };
+      };
+      messages = {
+        permission = "Permission: {sessionTitle}";
+        complete = "Complete: {sessionTitle}";
+        subagent_complete = "Subagent complete: {sessionTitle}";
+        error = "Error: {sessionTitle}";
+        question = "Question: {sessionTitle}";
+        user_cancelled = "User cancelled: {sessionTitle}";
+      };
+      showProjectName = true;
+      showSessionTitle = true;
+      suppressWhenFocused = false;
+    };
+  });
 }
