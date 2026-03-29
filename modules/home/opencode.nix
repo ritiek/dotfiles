@@ -118,6 +118,9 @@ in
     pkgs.rsync
     pkgs.psmisc
     pkgs.procps
+    # TODO: Enable `rtk` and its home.activation script at the end of this file once
+    # I update my nixpkgs flake input.
+    # pkgs.rtk
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
@@ -505,52 +508,61 @@ in
     };
   };
 
-  home.file = lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") ({
-    ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
-      notification = true;
-      sound = true;
-      showIcon = true;
-      notificationSystem = "osascript";
-      # NOTE: This shows Ghostty logo and prefixes message with "Opencode: ", both of
-      # which feels a downgrade. So commenting it out.
-      # notificationSystem = "ghostty";
-      events = {
-        complete = {
-          sound = true;
-          notification = true;
-        };
-        error = {
-          sound = true;
-          notification = true;
-        };
-        question = {
-          sound = true;
-          notification = true;
-        };
-        permission = {
-          sound = true;
-          notification = true;
-        };
-        subagent_complete = {
-          sound = false;
-          notification = false;
-        };
-        user_cancelled = {
-          sound = true;
-          notification = false;
-        };
+  home.file =
+    {
+      ".config/rtk/config.toml".source = (pkgs.formats.toml {}).generate "rtk-config" {
+        telemetry.enabled = false;
       };
-      messages = {
-        permission = "Permission: {sessionTitle}";
-        complete = "Complete: {sessionTitle}";
-        subagent_complete = "Subagent complete: {sessionTitle}";
-        error = "Error: {sessionTitle}";
-        question = "Question: {sessionTitle}";
-        user_cancelled = "User cancelled: {sessionTitle}";
+    }
+    // lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") {
+      ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
+        notification = true;
+        sound = true;
+        showIcon = true;
+        notificationSystem = "osascript";
+        events = {
+          complete = {
+            sound = true;
+            notification = true;
+          };
+          error = {
+            sound = true;
+            notification = true;
+          };
+          question = {
+            sound = true;
+            notification = true;
+          };
+          permission = {
+            sound = true;
+            notification = true;
+          };
+          subagent_complete = {
+            sound = false;
+            notification = false;
+          };
+          user_cancelled = {
+            sound = true;
+            notification = false;
+          };
+        };
+        messages = {
+          permission = "Permission: {sessionTitle}";
+          complete = "Complete: {sessionTitle}";
+          subagent_complete = "Subagent complete: {sessionTitle}";
+          error = "Error: {sessionTitle}";
+          question = "Question: {sessionTitle}";
+          user_cancelled = "User cancelled: {sessionTitle}";
+        };
+        showProjectName = true;
+        showSessionTitle = true;
+        suppressWhenFocused = false;
       };
-      showProjectName = true;
-      showSessionTitle = true;
-      suppressWhenFocused = false;
     };
-  });
+
+  # home.activation.rtk-init = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  #   if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
+  #     ${pkgs.rtk}/bin/rtk init -g --opencode
+  #   fi
+  # '';
 }
