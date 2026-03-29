@@ -532,7 +532,7 @@ in
           notification = true;
         };
         subagent_complete = {
-          sound = true;
+          sound = false;
           notification = false;
         };
         user_cancelled = {
