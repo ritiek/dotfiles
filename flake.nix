@@ -27,6 +27,7 @@
       url = "github:nix-community/nixpkgs-wayland";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.lib-aggregate.follows = "lib-aggregate";
+      inputs.flake-compat.follows = "flake-compat";
     };
 
     lib-aggregate = {
@@ -78,9 +79,14 @@
     simple-nixos-mailserver = {
       url = "gitlab:simple-nixos-mailserver/nixos-mailserver";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
     };
 
     systems.url = "github:nix-systems/default";
+    flake-compat = {
+      url = "github:NixOS/flake-compat";
+      flake = false;
+    };
 
     rose-pine-hyprcursor = {
       url = "github:ndom91/rose-pine-hyprcursor";
@@ -113,6 +119,7 @@
     deploy-rs = {
       url = "github:serokell/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-compat.follows = "flake-compat";
     };
 
     nixos-generators = {
@@ -159,6 +166,7 @@
 
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi/main";
+      inputs.flake-compat.follows = "flake-compat";
       # NOTE: nixpkgs is NOT followed here; instead we patch inputs.nixpkgs
       # at build time in nixosConfigurations.pilab below using nixpkgs.applyPatches.
       # See the comment there for details.
@@ -194,6 +202,23 @@
       url = "github:ritiek/sops-shell";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
+    };
+
+    rosa-flake-pkgs = {
+      url = "git+https://rosa.radicle.xyz/rad:z3xKxmF48Drxap7N7D3qDChV9bPAy";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+    };
+
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # dawarich-home-assistant = {
