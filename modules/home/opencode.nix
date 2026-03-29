@@ -135,6 +135,8 @@ in
         to run any tools not currently available on the system.
       - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
         to rebuild NixOS configuration.
+      - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
+        through code and files.
     '';
     commands = {
       rebuild-switch = ''
