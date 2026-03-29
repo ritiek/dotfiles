@@ -1,6 +1,65 @@
 { pkgs, inputs, ... }:
 
 let
+  oldSearchStr = builtins.concatStringsSep "\n" [
+    "    def search(self, query, limit=50, offset=0, type=\"track\", *args, **kwargs):"
+    "        results = spotapi.Search().search(query)[\"data\"]"
+    ""
+    "        key = type + \"s\""
+    "        items = results.get(key, {}).get(\"items\", [])"
+    ""
+    "        total = len(items)"
+    ""
+    "        if limit == -1:"
+    "            limit = total"
+    ""
+    "        end = offset + limit"
+    "        sliced = items[offset:end]"
+    ""
+    "        self._next = lambda: self.search(query, limit=limit, offset=end, type=type)"
+    "        return(self._formatAlbum(sliced, total, limit, offset, end))"
+  ];
+
+  newSearchStr = builtins.concatStringsSep "\n" [
+    "    def search(self, query, limit=50, offset=0, type=\"track\", *args, **kwargs):"
+    "        results = spotapi.Song().query_songs(query, limit=limit, offset=offset)"
+    "        raw_items = results[\"data\"][\"searchV2\"][\"tracksV2\"][\"items\"]"
+    "        total = results[\"data\"][\"searchV2\"][\"tracksV2\"][\"totalCount\"]"
+    "        items = []"
+    "        for item in raw_items:"
+    "            track_data = item[\"item\"][\"data\"]"
+    "            track_id = track_data[\"uri\"].replace(\"spotify:track:\", \"\")"
+    "            items.append({\"id\": track_id, \"name\": track_data[\"name\"], \"url\": \"https://open.spotify.com/track/\" + track_id})"
+    "        self._next = lambda: self.search(query, limit=limit, offset=offset + limit, type=type)"
+    "        return {\"tracks\": {\"items\": items, \"total\": total, \"limit\": limit, \"offset\": offset}}"
+  ];
+
+  oldSearchFile = pkgs.writeText "old_search.txt" oldSearchStr;
+  newSearchFile = pkgs.writeText "new_search.txt" newSearchStr;
+
+  patchScript = pkgs.writeText "patch-spotipyfree.py" ''
+    content = open("src/SpotipyFree/Spotify.py").read()
+
+    # Fix isUrl to handle http:// URLs
+    content = content.replace(
+        'test.startswith("https://open.spotify.com/") or test.startswith("open.spotify")',
+        'test.startswith("https://open.spotify.com/") or test.startswith("http://open.spotify.com/") or test.startswith("open.spotify")'
+    )
+
+    # Fix track() method: albumId -> trackId
+    content = content.replace(
+        '        if self.isUrl(trackId):\n            albumId = self.urlToId(trackId)',
+        '        if self.isUrl(trackId):\n            trackId = self.urlToId(trackId)'
+    )
+
+    # Fix search() method: spotapi.Search -> spotapi.Song().query_songs
+    old_search = open("${oldSearchFile}").read()
+    new_search = open("${newSearchFile}").read()
+    assert old_search in content, "Could not find old search method"
+    content = content.replace(old_search, new_search)
+    open("src/SpotipyFree/Spotify.py", "w").write(content)
+  '';
+
   pythonOverrides = pyFinal: pyPrev: {
     validators = pyPrev.buildPythonPackage rec {
       pname = "validators";
@@ -87,7 +146,10 @@ let
       pythonRelaxDeps = true;
       dependencies = with pyPrev; [ pyFinal.spotapi pymongo ];
       doCheck = false;
+
+      postPatch = "python3 ${patchScript}";
     };
+
   };
 
   myPython = pkgs.python312.override {
