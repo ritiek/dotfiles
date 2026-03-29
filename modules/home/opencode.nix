@@ -114,14 +114,13 @@ in
   home.packages = [
     mcp-servers-nix.playwright-mcp
     mcp-servers-nix.context7-mcp
-
+    # inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.vibe-kanban
     pkgs.rsync
     pkgs.psmisc
     pkgs.procps
-  ] ++ lib.mkIf (config.home.sessionVariables.DISPLAY != null) [
+  ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
+    # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
-  ] ++ [
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.vibe-kanban
   ];
   programs.chromium = {
     enable = true;
@@ -504,7 +503,7 @@ in
     };
   };
 
-  home.file = lib.mkIf (config.home.sessionVariables.DISPLAY != null) ({
+  home.file = lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") ({
     ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
       notification = true;
       sound = true;
