@@ -244,6 +244,7 @@
       netdiscover
       usbutils
       libnotify
+      # yubikey-touch-detector
       lshw
       pv
       mesa-demos
@@ -474,6 +475,11 @@
       libnotify = true;
     };
   };
+
+  # Needed for GTK apps (swaync) to resolve icon names from hicolor theme.
+  # Without the cache, Gtk.IconTheme.has_icon() can't find icons installed
+  # via environment.systemPackages (e.g. yubikey-touch-detector's icon).
+  gtk.iconCache.enable = true;
 
   # Disable blueman autostart for all users
   environment.etc."xdg/autostart/blueman.desktop" = lib.mkIf config.services.blueman.enable {
