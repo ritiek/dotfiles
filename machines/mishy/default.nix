@@ -244,7 +244,8 @@
       netdiscover
       usbutils
       libnotify
-      # yubikey-touch-detector
+      # Needed so the notification icon resolves correctly in swaync via icon-theme.cache
+      yubikey-touch-detector
       lshw
       pv
       mesa-demos
