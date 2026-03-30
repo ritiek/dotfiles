@@ -580,6 +580,12 @@ in
           set $upstream "pilab.lion-zebra.ts.net:5220";
           proxy_pass $upstream;
         }
+        server {
+          listen 0.0.0.0:8776;
+          proxy_timeout 600s;
+          set $upstream "pilab.lion-zebra.ts.net:8776";
+          proxy_pass $upstream;
+        }
       '';
     };
   };
@@ -622,6 +628,8 @@ in
 
       5219
       5220
+
+      8776  # Radicle
 
       # Coturn TURN/STUN
       3478
