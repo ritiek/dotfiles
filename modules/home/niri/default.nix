@@ -15,6 +15,10 @@ let
   };
 in
 {
+  imports = [
+    ./../../../scripts/home/swaync-focus-window.nix
+  ];
+
   sops.secrets."gotify.token" = {};
 
   home.packages = with pkgs; [
@@ -593,7 +597,7 @@ binds {
     F10 allow-when-locked=true { spawn "swayosd-client" "--playerctl=play-pause"; }
 
     // Window management (group management from Hyprland - niri doesn't have groups but these are window navigation)
-    Mod+Tab { spawn "swaync-client" "-a" "0"; }
+    Mod+Tab { spawn "swaync-client" "-t"; }
     // Mod+Shift+Tab { focus-window-up-or-column-left; }
     // Alt+Tab { focus-window-down-or-column-right; }
     

@@ -49,6 +49,13 @@
       hide-on-action = true;
       script-fail-notify = true;
 
+      scripts = {
+        focus-window = {
+          exec = "swaync-focus-window";
+          run-on = "action";
+        };
+      };
+
       widgets = [
         "inhibitors"
         "title"
