@@ -2,6 +2,23 @@
 let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
 
+  ocx-pkg = pkgs.stdenv.mkDerivation {
+    pname = "ocx";
+    version = "2.0.4";
+    src = pkgs.fetchurl {
+      url = "https://registry.npmjs.org/ocx/-/ocx-2.0.4.tgz";
+      hash = "sha256-3Jq+QJju8Iy2tEztc0JaChWFaj3TWmwQlsVdFvzOJWw=";
+    };
+    dontBuild = true;
+    installPhase = ''
+      mkdir -p $out
+      tar xzf $src --strip-components=1 -C $out
+    '';
+  };
+  ocx = pkgs.writeShellScriptBin "ocx" ''
+    exec ${pkgs.bun}/bin/bun --no-env-file "${ocx-pkg}/dist/index.js" "$@"
+  '';
+
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
 
@@ -112,6 +129,8 @@ in
   };
 
   home.packages = [
+    pkgs.bun
+    ocx
     mcp-servers-nix.playwright-mcp
     mcp-servers-nix.context7-mcp
     # inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.vibe-kanban
@@ -491,13 +510,8 @@ in
       };
 
       plugin = [
-        # "opencode-antigravity-auth"
         "@mohak34/opencode-notifier"
         "@tarquinen/opencode-dcp"
-        # XXX: Installing GSD isn't as simple as this:
-        # "@gsd-build/get-shit-done"
-        # Same with opencode-worktree
-        # "opencode-worktree"
       ];
 
       # XXX: I like the `system` theme but it takes a while to load:
@@ -509,13 +523,13 @@ in
     };
   };
 
-  home.file =
+  home.file = lib.mkMerge [
     {
       ".config/rtk/config.toml".source = (pkgs.formats.toml {}).generate "rtk-config" {
         telemetry.enabled = false;
       };
     }
-    // lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") {
+    (lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") {
       ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
         notification = true;
         sound = true;
@@ -559,7 +573,8 @@ in
         showSessionTitle = true;
         suppressWhenFocused = false;
       };
-    };
+    })
+  ];
 
   # home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
   #   if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
@@ -570,6 +585,13 @@ in
   home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
       ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
+    fi
+  '';
+
+  home.activation.opencode-worktree = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/worktree.ts" ]; then
+      ${ocx}/bin/ocx init --cwd "${config.home.homeDirectory}" || true
+      ${ocx}/bin/ocx add kdco/worktree --from https://registry.kdco.dev --cwd "${config.home.homeDirectory}"
     fi
   '';
 }
