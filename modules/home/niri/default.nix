@@ -593,7 +593,7 @@ binds {
     F10 allow-when-locked=true { spawn "swayosd-client" "--playerctl=play-pause"; }
 
     // Window management (group management from Hyprland - niri doesn't have groups but these are window navigation)
-    // Mod+Tab { focus-window-down-or-column-right; }
+    Mod+Tab { spawn "swaync-client" "-a" "0"; }
     // Mod+Shift+Tab { focus-window-up-or-column-left; }
     // Alt+Tab { focus-window-down-or-column-right; }
     
