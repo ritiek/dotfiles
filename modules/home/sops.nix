@@ -16,5 +16,6 @@
     sops
     ssh-to-age
     age-plugin-fido2-hmac
+    gettext
   ];
 }

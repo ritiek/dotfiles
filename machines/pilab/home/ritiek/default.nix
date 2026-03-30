@@ -42,6 +42,7 @@ in
     ./services/whatsapp-backup-verify.nix
     ./services/verify-sqlcipher-integrity.nix
     ./services/dns-resolution
+    ./services/radicle.nix
     ./../../../../scripts/home/spotdl-patched.nix
     ./../../../../scripts/home/immich-env.nix
     ./../../../../modules/home/sops.nix
