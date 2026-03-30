@@ -118,6 +118,7 @@ in
     pkgs.rsync
     pkgs.psmisc
     pkgs.procps
+    pkgs.nodejs_24
     # TODO: Enable `rtk` and its home.activation script at the end of this file once
     # I update my nixpkgs flake input.
     # pkgs.rtk
@@ -560,9 +561,15 @@ in
       };
     };
 
-  # home.activation.rtk-init = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  # home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
   #   if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
   #     ${pkgs.rtk}/bin/rtk init -g --opencode
   #   fi
   # '';
+
+  home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
+      ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
+    fi
+  '';
 }
