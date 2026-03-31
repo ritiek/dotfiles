@@ -534,7 +534,8 @@ in
         notification = true;
         sound = true;
         showIcon = true;
-        notificationSystem = "osascript";
+        # notificationSystem = "osascript";
+        notificationSystem = "ghostty";
         events = {
           complete = {
             sound = true;
@@ -582,18 +583,16 @@ in
   #   fi
   # '';
 
-  home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    export PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]}
+home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
-      ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
+      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
     fi
   '';
 
   home.activation.opencode-worktree = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    export PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]}
     if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/worktree.ts" ]; then
-      ${ocx}/bin/ocx init --cwd "${config.home.homeDirectory}" || true
-      ${ocx}/bin/ocx add kdco/worktree --from https://registry.kdco.dev --cwd "${config.home.homeDirectory}"
+      PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx init --cwd "${config.home.homeDirectory}" || true
+      PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx add kdco/worktree --from https://registry.kdco.dev --cwd "${config.home.homeDirectory}"
     fi
   '';
 }
