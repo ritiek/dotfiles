@@ -40,7 +40,7 @@
       "PROMETHEUS_EXPORTER_ENABLED" = "false";
       "PROMETHEUS_EXPORTER_HOST" = "0.0.0.0";
       "PROMETHEUS_EXPORTER_PORT" = "9394";
-      "RAILS_ENV" = "development";
+      "RAILS_ENV" = "production";
       "REDIS_URL" = "redis://dawarich_redis:6379";
       "TIME_ZONE" = "Asia/Kolkata";
     };
