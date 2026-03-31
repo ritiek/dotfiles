@@ -1,7 +1,9 @@
 {
   programs.ghostty = {
     enable = true;
-    systemd.enable = true;
+    # Enabling this causes ghostty instances to close during home-manager activation
+    # when running rebuild switch config.
+    systemd.enable = false;
     enableZshIntegration = true;
     installVimSyntax = true;
     settings = {
