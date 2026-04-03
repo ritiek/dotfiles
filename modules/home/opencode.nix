@@ -1,6 +1,7 @@
 { osConfig, config, pkgs, inputs, lib, hostName, ... }:
 let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
+  isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
 
   ocx-pkg = pkgs.stdenv.mkDerivation {
     pname = "ocx";
@@ -152,6 +153,30 @@ in
   programs.opencode = {
     enable = true;
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+    skills = lib.mkIf isNiriEnabled {
+      "niri-screenshot" = ''
+        ---
+        name: niri-screenshot
+        description: Take screenshots using niri compositor
+        ---
+
+        ## What I do
+
+        - Capture the focused screen, window, or selected region
+        - Save to a specified path via `--path` flag
+
+        ## Commands
+
+        - `niri msg action screenshot --path /tmp/screenshot.png` - Interactive region selection
+        - `niri msg action screenshot-screen --path /tmp/screenshot.png` - Capture focused screen
+        - `niri msg action screenshot-window --path /tmp/screenshot.png` - Capture focused window
+
+        ## When to use me
+
+        Use this when you are asked to take a screenshot or capture what's on screen.
+        Ask clarifying questions if it's unclear whether to capture the full screen, window, or region.
+      '';
+    };
     rules = ''
       - NEVER include your own emotes in your responses.
       - You're working with NixOS. Use `nix-shell -p` or comma (e.g. `, cowsay hi`)
@@ -534,8 +559,7 @@ in
         notification = true;
         sound = true;
         showIcon = true;
-        # notificationSystem = "osascript";
-        notificationSystem = "ghostty";
+        notificationSystem = "osascript";
         events = {
           complete = {
             sound = true;
