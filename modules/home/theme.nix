@@ -25,6 +25,7 @@
 
   gtk = {
     enable = true;
+    gtk4.theme = null;
     cursorTheme = {
       name = "Qogir";
       package = pkgs.qogir-icon-theme;

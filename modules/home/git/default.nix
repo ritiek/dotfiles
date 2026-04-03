@@ -7,14 +7,14 @@
 
   programs.git = {
     enable = true;
+    signing.format = lib.mkIf (!config.services.gpg-agent.enableSshSupport) "openpgp";
     settings = {
       user = {
         name = "Ritiek Malhotra";
         email = "ritiekmalhotra123@gmail.com";
         signingkey = lib.mkIf config.services.gpg-agent.enableSshSupport "ECAA33C16AE3563A";
       };
-    };
-    settings = {
+
       init.defaultBranch = "main";
       core.editor = "nvim";
 
