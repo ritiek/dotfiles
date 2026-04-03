@@ -470,8 +470,8 @@ in
               # Use HTTP/1.1 for better connection handling
               proxy_http_version 1.1;
 
-              # Limit download bandwidth to 6 MB/s
-              limit_rate 6m;
+              # Limit download bandwidth to 4 MB/s
+              limit_rate 4m;
 
               # Preserve headers needed by attic
               proxy_set_header Host $host;
