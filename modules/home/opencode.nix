@@ -173,7 +173,7 @@ in
 
         ## When to use me
 
-        Use this when you are asked to take a screenshot or capture what's on screen.
+        Use this when you require taking screenshot or need to capture what's on the screen.
         Ask clarifying questions if it's unclear whether to capture the full screen, window, or region.
       '';
     };
