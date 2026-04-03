@@ -32,7 +32,7 @@
     buildMachines = [
       {
         hostName = "pilab.lion-zebra.ts.net";
-        system = pkgs.stdenv.hostPlatform.system;
+        systems = [ pkgs.stdenv.hostPlatform.system ];
         protocol = "ssh-ng";
         sshUser = "rnixbld";
         sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
@@ -48,7 +48,7 @@
       }
       {
         hostName = "keyberry.lion-zebra.ts.net";
-        system = pkgs.stdenv.hostPlatform.system;
+        systems = [ pkgs.stdenv.hostPlatform.system ];
         protocol = "ssh-ng";
         sshUser = "rnixbld";
         sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
@@ -64,7 +64,7 @@
       }
       {
         hostName = "zerostash.lion-zebra.ts.net";
-        system = pkgs.stdenv.hostPlatform.system;
+        systems = [ pkgs.stdenv.hostPlatform.system ];
         protocol = "ssh-ng";
         sshUser = "rnixbld";
         sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
