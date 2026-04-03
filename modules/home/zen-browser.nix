@@ -101,7 +101,7 @@
       extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
         # https://nur.nix-community.org/repos/rycee/
 
-        # ublock-origin
+        ublock-origin
         canvasblocker
         # Consensus is that privacy-badger makes more prone to fingerprinting.
         # privacy-badger
@@ -143,14 +143,14 @@
         tubearchivist-companion
         karakeep
 
-        (buildFirefoxXpiAddon {
-          pname = "adnauseam";
-          version = "3.24.6";
-          addonId = "adnauseam@rednoise.org";
-          url = "https://addons.mozilla.org/firefox/downloads/file/4440960/adnauseam-3.24.6.xpi";
-          sha256 = "sha256-PSpEBz2A68R4UJxDKiDYTZPMc8yfZQDgOKbumHma6qY=";
-          meta = {};
-        })
+        # (buildFirefoxXpiAddon {
+        #   pname = "adnauseam";
+        #   version = "3.24.6";
+        #   addonId = "adnauseam@rednoise.org";
+        #   url = "https://addons.mozilla.org/firefox/downloads/file/4440960/adnauseam-3.24.6.xpi";
+        #   sha256 = "sha256-PSpEBz2A68R4UJxDKiDYTZPMc8yfZQDgOKbumHma6qY=";
+        #   meta = {};
+        # })
 
         # (buildFirefoxXpiAddon {
         #   pname = "shiori";
