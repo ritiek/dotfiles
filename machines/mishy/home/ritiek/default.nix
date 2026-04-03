@@ -248,10 +248,10 @@
 
       # local.BK7231GUIFlashTool
 
-      (pkgs.writeScriptBin "openwork" ''
-        #!${pkgs.bash}/bin/bash
-        exec "${inputs.rosa-flake-pkgs.packages.${pkgs.stdenv.hostPlatform.system}.openwork}/bin/OpenWork-Dev" "$@"
-      '')
+      # (pkgs.writeScriptBin "openwork" ''
+      #   #!${pkgs.bash}/bin/bash
+      #   exec "${inputs.rosa-flake-pkgs.packages.${pkgs.stdenv.hostPlatform.system}.openwork}/bin/OpenWork-Dev" "$@"
+      # '')
     ];
   };
 

@@ -40,7 +40,7 @@
     buildMachines = [
       {
         hostName = "clawsiecats.lion-zebra.ts.net";
-        system = pkgs.stdenv.hostPlatform.system;
+        systems = [ pkgs.stdenv.hostPlatform.system ];
         protocol = "ssh-ng";
         sshUser = "rnixbld";
         sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
@@ -56,7 +56,7 @@
       }
       {
         hostName = "mishy.lion-zebra.ts.net";
-        system = pkgs.stdenv.hostPlatform.system;
+        systems = [ pkgs.stdenv.hostPlatform.system ];
         protocol = "ssh-ng";
         sshUser = "rnixbld";
         sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
@@ -203,13 +203,13 @@
       parted
       gparted
       xclip
-      xorg.xhost
+      xhost
       # helix
       parallel
       libarchive
       # android-tools
 
-      xorg.xeyes
+      xeyes
       netdiscover
       usbutils
       libnotify
