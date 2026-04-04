@@ -1,4 +1,16 @@
 { lib, pkgs, osConfig, hostName, ... }:
+let
+  # XXX: Patch swaync with PR #712 (invoke default action support).
+  # Remove this override once the PR is merged and available in nixpkgs.
+  # https://github.com/ErikReider/SwayNotificationCenter/pull/712
+  swaync-pr-712 = builtins.fetchurl {
+    url = "https://github.com/ErikReider/SwayNotificationCenter/pull/712.diff";
+    sha256 = "1682bbd44s2k07m64csppdjlqmqccvchgldndrxnifhbfccm4rsb";
+  };
+  swaync-patched = pkgs.swaynotificationcenter.overrideAttrs (old: {
+    patches = (old.patches or []) ++ [ swaync-pr-712 ];
+  });
+in
 {
   # home.packages = with pkgs; [
   #   swaynotificationcenter
@@ -17,6 +29,7 @@
 
   services.swaync = {
     enable = true;
+    package = swaync-patched;
 
     settings = {
       positionX = "right";
