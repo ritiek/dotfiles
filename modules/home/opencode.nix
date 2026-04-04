@@ -3,6 +3,13 @@ let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
   isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
 
+  secretsFile =
+    if hostName == "mishy-usb"
+    then ./../../machines/mishy/home/${config.home.username}/secrets.yaml
+    else ./../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
+  secretsContent = builtins.readFile secretsFile;
+  hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
+
   ocx-pkg = pkgs.stdenv.mkDerivation {
     pname = "ocx";
     version = "2.0.4";
@@ -119,7 +126,7 @@ let
 in
 {
   sops.secrets = {
-    "z_ai_api.key" = {};
+    "z_ai_api.key" = lib.mkIf hasZaiApiKey {};
     "github.token" = {};
     "karakeep_api.address" = {};
     "karakeep_api.key" = {};
@@ -245,7 +252,7 @@ in
       };
 
       mcp = {
-        zai-web-search = {
+        zai-web-search = lib.mkIf hasZaiApiKey {
           enabled = true;
           type = "remote";
           url = "https://api.z.ai/api/mcp/web_search_prime/mcp";
@@ -253,17 +260,15 @@ in
             Authorization = "Bearer {file:${config.sops.secrets."z_ai_api.key".path}}";
           };
         };
-        zai-web-reader = {
-          # TODO: Set this true later. Browser agent isn't able to override this to enable = false
-          #       so have changed it explicitly here.
-          enabled = false;
+        zai-web-reader = lib.mkIf hasZaiApiKey {
+          enabled = true;
           type = "remote";
           url = "https://api.z.ai/api/mcp/web_reader/mcp";
           headers = {
             Authorization = "Bearer {file:${config.sops.secrets."z_ai_api.key".path}}";
           };
         };
-        zai-zread = {
+        zai-zread = lib.mkIf hasZaiApiKey {
           enabled = true;
           type = "remote";
           url = "https://api.z.ai/api/mcp/zread/mcp";
@@ -271,7 +276,7 @@ in
             Authorization = "Bearer {file:${config.sops.secrets."z_ai_api.key".path}}";
           };
         };
-        zai-vision = {
+        zai-vision = lib.mkIf hasZaiApiKey {
           enabled = true;
           type = "local";
           command = [
