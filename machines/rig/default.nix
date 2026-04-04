@@ -364,6 +364,14 @@
     #   package = pkgs.ollama-cuda;
     #   host = "0.0.0.0";
     # };
+
+    # open-webui = {
+    #   enable = true;
+    #   openFirewall = true;
+    #   environment = {
+    #     OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
+    #   };
+    # };
   };
 
   programs = {
