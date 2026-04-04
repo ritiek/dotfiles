@@ -7,7 +7,7 @@
 
   programs.git = {
     enable = true;
-    signing.format = lib.mkIf (!config.services.gpg-agent.enableSshSupport) "openpgp";
+    signing.format = if config.services.gpg-agent.enableSshSupport then "ssh" else "openpgp";
     settings = {
       user = {
         name = "Ritiek Malhotra";
