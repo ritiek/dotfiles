@@ -219,22 +219,23 @@ in
           };
         };
         ollama = {
-          npm = "@ai-sdk/openai-compatible";
+          npm = "ai-sdk-ollama";
           models = {
             "qwen3:8b" = {
-              name = "Qwen 3 8B";
-            # "granite4:3b" = {
-            #   name = "Granite4 3B";
+              name = "qwen3:8b";
               tools = true;
-              reasoning = true;
+            };
+            "gemma4:latest" = {
+              name = "gemma4:latest";
+              tools = true;
+            };
+            "gemma4:e2b" = {
+              name = "gemma4:e2b";
+              tools = true;
             };
           };
           options = {
-            baseURL = "http://rig.lion-zebra.ts.net:11434/v1";
-            reasoningEffort = "high";
-            reasoningSummary = "auto";
-            textVerbosity = "low";
-            timeout = false;
+            baseURL = "http://rig.lion-zebra.ts.net:11434";
           };
         };
       };
