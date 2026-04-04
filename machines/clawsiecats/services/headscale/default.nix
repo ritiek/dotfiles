@@ -157,7 +157,6 @@ in
         };
         integration = {
           proc.enabled = true;
-          agent.pre_authkey_path = config.sops.secrets."tailscale.authkey".path;
         };
       };
     };
