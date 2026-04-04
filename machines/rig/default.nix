@@ -38,22 +38,22 @@
   nix = {
     distributedBuilds = true;
     buildMachines = [
-      {
-        hostName = "clawsiecats.lion-zebra.ts.net";
-        systems = [ pkgs.stdenv.hostPlatform.system ];
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJkT0NlbFNRL3RqTVFBbTJMVUwydHJISFpqa2RuQnUxb1N0VDJGY1NSN3IK";
-        maxJobs = 1;
-        speedFactor = 1;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
+      # {
+      #   hostName = "clawsiecats.lion-zebra.ts.net";
+      #   systems = [ pkgs.stdenv.hostPlatform.system ];
+      #   protocol = "ssh-ng";
+      #   sshUser = "rnixbld";
+      #   sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+      #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUJkT0NlbFNRL3RqTVFBbTJMVUwydHJISFpqa2RuQnUxb1N0VDJGY1NSN3IK";
+      #   maxJobs = 1;
+      #   speedFactor = 1;
+      #   supportedFeatures = [
+      #     "nixos-test"
+      #     "benchmark"
+      #     "big-parallel"
+      #     "kvm"
+      #   ];
+      # }
       {
         hostName = "mishy.lion-zebra.ts.net";
         systems = [ pkgs.stdenv.hostPlatform.system ];
@@ -178,6 +178,15 @@
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    };
+
+    users.rnixbld = {
+      isSystemUser = true;
+      group = "users";
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHPlUpYpBOffFgrMAViDxiTCrVCRP6wQIFWd7/KiNkV2"
       ];
     };
   };
@@ -348,11 +357,13 @@
     # Allows `calibre` to detect attached Kindle devices.
     udisks2.enable = true;
 
-    ollama = {
-      enable = true;
-      package = pkgs.ollama-cuda;
-      host = "0.0.0.0";
-    };
+    # XXX: Ollama 0.20.0 fails to build so commenting this out and falling
+    #      back to Ollama from official Docker images instead.
+    # ollama = {
+    #   enable = true;
+    #   package = pkgs.ollama-cuda;
+    #   host = "0.0.0.0";
+    # };
   };
 
   programs = {
