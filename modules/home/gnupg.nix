@@ -3,7 +3,7 @@
   services.gpg-agent = {
     enable = true;
     # enableExtraSocket = true;
-    enableSshSupport = true;
+    enableSshSupport = false;
     sshKeys = [
       "5093E5BC80A747932DDBE3400EF3B45E3546EDCE"
     ];
