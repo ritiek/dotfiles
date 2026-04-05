@@ -134,6 +134,11 @@ in
     "paperless_api.key" = {};
     "paperless_public.url" = {};
     "home_assistant.long_lived_token" = {};
+    "opencode_api.key" = {};
+    "openai_api.key" = {};
+    "xiaomi_api.key" = {};
+    "github_copilot.refresh" = {};
+    "github_copilot.access" = {};
   };
 
   home.packages = [
@@ -624,5 +629,42 @@ home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBou
       PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx init --cwd "${config.home.homeDirectory}" || true
       PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx add kdco/worktree --from https://registry.kdco.dev --cwd "${config.home.homeDirectory}"
     fi
+  '';
+
+  home.activation.opencode-auth = lib.hm.dag.entryAfter ["writeBoundary" "sops-nix"] ''
+    AUTH_FILE="${config.home.homeDirectory}/.local/share/opencode/auth.json"
+    NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
+
+    ZAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})
+    OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
+    OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
+    XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
+    GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
+    GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
+
+    ${pkgs.jq}/bin/jq -n \
+      --arg zai_key "$ZAI_KEY" \
+      --arg opencode_key "$OPENCODE_KEY" \
+      --arg openai_key "$OPENAI_KEY" \
+      --arg xiaomi_key "$XIAOMI_KEY" \
+      --arg gh_refresh "$GH_REFRESH" \
+      --arg gh_access "$GH_ACCESS" \
+      '{
+        "zai-coding-plan": { type: "api", key: $zai_key },
+        "opencode": { type: "api", key: $opencode_key },
+        "openai": { type: "api", key: $openai_key },
+        "xiaomi": { type: "api", key: $xiaomi_key },
+        "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
+      }' > "$NIXOS_JSON"
+
+    if [ -f "$AUTH_FILE" ]; then
+      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$AUTH_FILE" "$NIXOS_JSON" > "$AUTH_FILE.tmp" \
+        && mv "$AUTH_FILE.tmp" "$AUTH_FILE"
+    else
+      mkdir -p "$(${pkgs.coreutils}/bin/dirname "$AUTH_FILE")"
+      cp "$NIXOS_JSON" "$AUTH_FILE"
+    fi
+    chmod 600 "$AUTH_FILE"
+    rm -f "$NIXOS_JSON"
   '';
 }
