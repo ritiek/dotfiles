@@ -20,6 +20,7 @@ let
     startCommand = "systemctl start docker-habitica-mongo.service docker-habitica-server.service";
     stopCommand = "systemctl stop docker-compose-habitica-root.target";
     waitTimeout = 180; # 3 minutes for habitica + mongo stack
+    silent = true;
   };
 
 in lib.mkMerge [
