@@ -162,6 +162,11 @@ in
 
   services.restic.backups."homelab@pilab" = {
     initialize = true;
+    # Use only 1 CPU core and set higher GC percentage to reduce memory accumulation.
+    environmentFile = toString (pkgs.writeText "restic-env-homelab-pilab" ''
+      GOMAXPROCS=1
+      GOGC=20
+    '');
     # repositoryFile = config.sops.secrets."pilab.repository".path;
     repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
     passwordFile = config.sops.secrets."restic.homelab.password".path;
@@ -280,6 +285,10 @@ in
   # sops.secrets."restic.zerostash.repository".owner = "restic";
   services.restic.backups."homelab@zerostash" = {
     initialize = true;
+    environmentFile = toString (pkgs.writeText "restic-env-homelab-zerostash" ''
+      GOMAXPROCS=1
+      GOGC=20
+    '');
     repositoryFile = config.sops.secrets."restic.zerostash.repository".path;
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     # user = "restic";
@@ -328,6 +337,10 @@ in
   sops.secrets."restic.keyberry.repository" = {};
   services.restic.backups."homelab@keyberry" = {
     initialize = true;
+    environmentFile = toString (pkgs.writeText "restic-env-homelab-keyberry" ''
+      GOMAXPROCS=1
+      GOGC=20
+    '');
     repositoryFile = config.sops.secrets."restic.keyberry.repository".path;
     passwordFile = config.sops.secrets."restic.homelab.password".path;
     dynamicFilesFrom = "${find-latest-snapshot "keyberry"}";
