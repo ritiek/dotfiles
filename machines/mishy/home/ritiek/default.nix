@@ -176,10 +176,7 @@
       # fluffychat
       chafa
 
-      # element-desktop-wayland
-      # XXX: error: Package ‘jitsi-meet-1.0.8043’ is marked as insecure, refusing to evaluate.
-      # https://github.com/NixOS/nixpkgs/pull/334638#issuecomment-2289025802
-      # element-desktop
+      element-desktop
       simplex-chat-desktop
       sqlcipher
       sqldiff
