@@ -22,7 +22,7 @@
       wl-clipboard-rs
 
       stylua
-      deno
+      # deno    # Not available on armv6l
       clang-tools
       lua-language-server
       python312

@@ -211,6 +211,31 @@ jobs:
         run: |
           nix build --fallback --keep-going .#nixosConfigurations.radrubble.config.system.build.toplevel
 
+  minimachine-minimal:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bind mount /nix
+        run: |
+          sudo mkdir /mnt/nix /nix
+          sudo chmod 0755 /nix
+          sudo mount --bind /mnt/nix /nix
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Attic cache
+        uses: ritiek/attic-action@main
+        with:
+          endpoint: https://attic.clawsiecats.lol/
+          cache: attic-action
+          create: true
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#minimachine-minimal"
+        run: |
+          nix build --fallback --keep-going .#nixosConfigurations.minimachine-minimal.config.system.build.toplevel
+
   mangoshake:
     runs-on: ubuntu-24.04-arm
     steps:
