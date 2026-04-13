@@ -5,7 +5,7 @@ let
   # https://github.com/ErikReider/SwayNotificationCenter/pull/712
   swaync-pr-712 = builtins.fetchurl {
     url = "https://github.com/ErikReider/SwayNotificationCenter/pull/712.diff";
-    sha256 = "1682bbd44s2k07m64csppdjlqmqccvchgldndrxnifhbfccm4rsb";
+    sha256 = "12pmiwa0c20gbplcqjm4m7l6k5irwilwvmvs4yk1sgqv7faqgcka";
   };
   swaync-patched = pkgs.swaynotificationcenter.overrideAttrs (old: {
     patches = (old.patches or []) ++ [ swaync-pr-712 ];
