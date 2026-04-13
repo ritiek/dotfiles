@@ -8,7 +8,6 @@
     };
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # nixpkgs-for-raspberry-pi-nix.url = "github:NixOS/nixpkgs/7df7ff7d8e00218376575f0acdcc5d66741351ee";
     # local.url = "git+file:///home/ritiek/Downloads/nixpkgs";
     # local.url = "github:ritiek/nixpkgs/init-piano-rs";
     # ghostty = {
@@ -475,6 +474,36 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.minimachine-minimal = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        {
+          nixpkgs.crossSystem = {
+            system = "armv6l-linux";
+          };
+        }
+        "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+        ./machines/minimachine/minimal.nix
+        ./machines/minimachine/hw-config.nix
+      ];
+    };
+
+    nixosConfigurations.minimachine = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        {
+          nixpkgs.crossSystem = {
+            system = "armv6l-linux";
+          };
+        }
+        "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+        ./machines/minimachine
+        ./machines/minimachine/hw-config.nix
+      ];
+    };
+
 
     deploy.nodes.mishy = {
       hostname = "mishy.lion-zebra.ts.net";
@@ -644,5 +673,16 @@
       specialArgs = { inherit inputs; };
       format = "sd-aarch64";
     };
+
+    minimachine-minimal-sd =
+      let
+        pkgs = inputs.nixpkgs.legacyPackages.aarch64-linux;
+      in
+      self.nixosConfigurations.minimachine-minimal.config.system.build.image.overrideAttrs {
+        preInstall = ''
+          ${pkgs.gptfdisk}/bin/sgdisk --hybrid 1:EE ${self.nixosConfigurations.minimachine-minimal.config.image.baseName}.raw
+          echo -e "M\nt\n1\n0b\nw\nr\nw\n" | ${pkgs.util-linux}/bin/fdisk ${self.nixosConfigurations.minimachine-minimal.config.image.baseName}.raw
+        '';
+      };
   };
 }

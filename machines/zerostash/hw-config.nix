@@ -32,4 +32,8 @@
   #   device = "/var/lib/swapfile";
   #   size = 1*1024;  # 1GB
   # }];
+
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

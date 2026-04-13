@@ -78,6 +78,22 @@
           "kvm"
         ];
       }
+      # {
+      #   hostName = "pilab.lion-zebra.ts.net";
+      #   systems = [ "aarch64-linux" "armv6l-linux" ];
+      #   protocol = "ssh-ng";
+      #   sshUser = "rnixbld";
+      #   sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+      #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBCT1IvaGthQzM4YlhZcGZ5RURXaUJMSUF6TnJ2WldUS2ZDb3lDOHNVMFEK";
+      #   maxJobs = 4;
+      #   speedFactor = 5;
+      #   supportedFeatures = [
+      #     "nixos-test"
+      #     "benchmark"
+      #     "big-parallel"
+      #     "gccarch-armv6kz"
+      #   ];
+      # }
     ];
   };
 
@@ -545,7 +561,14 @@
     memoryPercent = 200;
   };
 
+  # boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv6l-linux" ];
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
+
+  nix.settings = {
+    # extra-platforms = [ "armv6l-linux" ];
+    # system-features = [ "benchmark" "big-parallel" "kvm" "nixos-test" "gccarch-armv6kz" ];
+    system-features = [ "benchmark" "big-parallel" "kvm" "nixos-test" ];
+  };
   boot.tmp = {
     useTmpfs = false;
     cleanOnBoot = true;

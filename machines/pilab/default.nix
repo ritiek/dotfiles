@@ -385,6 +385,11 @@
 
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
+  # nix.settings = {
+  #   extra-platforms = [ "armv6l-linux" ];
+  #   system-features = [ "benchmark" "big-parallel" "nixos-test" "gccarch-armv6kz" ];
+  # };
+
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
 }
