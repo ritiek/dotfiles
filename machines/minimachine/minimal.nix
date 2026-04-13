@@ -12,7 +12,7 @@
     interfaces = [ "wlan0" ];
     # FIXME: Add in correct WiFi creds before building the image.
     networks = {
-      "SSID".psk = "PASS";
+      "SSID".psk = "PASSWORD";
     };
   };
   time.timeZone = "Asia/Kolkata";
