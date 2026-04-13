@@ -246,7 +246,7 @@ jobs:
         run: |
           nix build --fallback --keep-going .#nixosConfigurations.radrubble.config.system.build.toplevel
 
-  minimachine-minimal:
+  minimachine:
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
