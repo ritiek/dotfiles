@@ -7,11 +7,16 @@ on:
 jobs:
   minimal:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#minimal-iso"
         run: |
@@ -57,10 +62,12 @@ jobs:
   #     #   uses: pierotofy/set-swap-space@master
   #     #   with:
   #     #     swap-size-gb: 10
-  #     - name: Install Nix
-  #       uses: cachix/install-nix-action@v31
   #     - name: Clone Repository
   #       uses: actions/checkout@v4
+  #     - name: Install Nix
+  #       uses: DeterminateSystems/nix-installer-action@main
+  #     - name: Setup Nix Cache
+  #       uses: DeterminateSystems/magic-nix-cache-action@main
   #
   #     - name: "Build: .#mishi-raw-efi"
   #       run: |
@@ -68,6 +75,9 @@ jobs:
 
   pilab:
     runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
       - name: Maximize build space
         uses: AdityaGarg8/remove-unwanted-software@v5
@@ -87,10 +97,12 @@ jobs:
           sudo mkdir /mnt/nix /nix
           sudo chmod 0755 /nix
           sudo mount --bind /mnt/nix /nix
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#pilab-sd"
         run: |
@@ -98,6 +110,9 @@ jobs:
 
   keyberry:
     runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
       - name: Maximize build space
         uses: AdityaGarg8/remove-unwanted-software@v5
@@ -117,10 +132,12 @@ jobs:
           sudo mkdir /mnt/nix /nix
           sudo chmod 0755 /nix
           sudo mount --bind /mnt/nix /nix
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#keyberry-sd"
         run: |
@@ -128,11 +145,16 @@ jobs:
 
   zerostash:
     runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#zerostash-sd"
         run: |
@@ -140,11 +162,16 @@ jobs:
 
   radrubble:
     runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#radrubble-sd"
         run: |
@@ -152,11 +179,16 @@ jobs:
 
   mangoshake:
     runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#mangoshake-sd"
         run: |
@@ -164,11 +196,16 @@ jobs:
 
   minimachine:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: "write"
+      contents: "read"
     steps:
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
       - name: Clone Repository
         uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: "Build: .#minimachine-minimal-sd"
         run: |
