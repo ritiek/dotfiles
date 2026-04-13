@@ -161,3 +161,15 @@ jobs:
       - name: "Build: .#mangoshake-sd"
         run: |
           nix build .#mangoshake-sd
+
+  minimachine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Clone Repository
+        uses: actions/checkout@v4
+
+      - name: "Build: .#minimachine-minimal-sd"
+        run: |
+          nix build .#minimachine-minimal-sd
