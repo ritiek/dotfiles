@@ -454,9 +454,7 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:7080";
               proxy_pass http://$upstream;
-              # Critical for large file uploads - disable buffering
               proxy_request_buffering off;
-              proxy_buffering off;
               proxy_max_temp_file_size 0;
 
               # Timeouts for large binary cache uploads (10 minutes)
