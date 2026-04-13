@@ -299,14 +299,6 @@ in
     extraBackupArgs = [
       "--compression=max"
     ];
-    pruneOpts = [
-      "--keep-hourly 18"
-      "--keep-daily 7"
-      "--keep-weekly 5"
-      "--keep-monthly 12"
-      "--keep-yearly 75"
-      "--keep-tag forever"
-    ];
     backupPrepareCommand = ''
       set -e
 
@@ -349,14 +341,6 @@ in
     ];
     extraBackupArgs = [
       "--compression=max"
-    ];
-    pruneOpts = [
-      "--keep-hourly 18"
-      "--keep-daily 7"
-      "--keep-weekly 5"
-      "--keep-monthly 12"
-      "--keep-yearly 75"
-      "--keep-tag forever"
     ];
     backupPrepareCommand = ''
       set -e

@@ -1,7 +1,11 @@
 { config, pkgs, lib, inputs, ... }:
 
+let
+  repository = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
+in
 {
   sops.secrets."restic.htpasswd".owner = "restic";
+  sops.secrets."restic.homelab.password".owner = "restic";
 
   # The following don't seem to be needed for auto-mount when the
   # "x-systemd.automount" filesystem mount option is set.
@@ -12,12 +16,41 @@
   services.restic.server = {
     enable = true;
     listenAddress = "0.0.0.0:52525";
-    dataDir = "${config.fileSystems.restic-backup.mountPoint}/HOMELAB_MEDIA";
+    dataDir = repository;
     # privateRepos = true;
+    appendOnly = true;
     extraFlags = [
       "--htpasswd-file=${config.sops.secrets."restic.htpasswd".path}"
     ];
     prometheus = true;
+  };
+
+  systemd.services."restic-forget-HOMELAB_MEDIA" = {
+    description = "Restic forget+prune and check for HOMELAB_MEDIA (server-side)";
+    path = with pkgs; [ restic util-linux ];
+    environment.RESTIC_REPOSITORY = repository;
+    serviceConfig = {
+      Type = "oneshot";
+      User = "restic";
+      Group = "restic";
+      ExecStart = [
+        "${pkgs.restic}/bin/restic forget --prune --keep-within-hourly 18h --keep-within-daily 7d --keep-within-weekly 5w --keep-within-monthly 12m --keep-within-yearly 75y --keep-tag forever"
+        "${pkgs.restic}/bin/restic check"
+      ];
+      Environment = "RESTIC_PASSWORD_FILE=${config.sops.secrets."restic.homelab.password".path}";
+      Nice = 19;
+      IOSchedulingClass = "idle";
+      ConditionPathIsMountPoint = repository;
+    };
+  };
+
+  systemd.timers."restic-forget-HOMELAB_MEDIA" = {
+    description = "Weekly restic forget+prune for HOMELAB_MEDIA (server-side)";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "Mon *-*-* 01:00:00";
+      Persistent = true;
+    };
   };
 
   fileSystems.restic-backup = {
