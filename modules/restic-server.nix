@@ -34,14 +34,16 @@ in
       User = "restic";
       Group = "restic";
       ExecStart = [
-        "${pkgs.restic}/bin/restic forget --prune --keep-within-hourly 18h --keep-within-daily 7d --keep-within-weekly 5w --keep-within-monthly 12m --keep-within-yearly 75y --keep-tag forever"
+        "${pkgs.restic}/bin/restic forget --prune --keep-within-hourly 18h --keep-within-daily 7d --keep-within-weekly 1m --keep-within-monthly 1y --keep-within-yearly 75y --keep-tag forever"
         "${pkgs.restic}/bin/restic check"
       ];
       Environment = "RESTIC_PASSWORD_FILE=${config.sops.secrets."restic.homelab.password".path}";
       Nice = 19;
       IOSchedulingClass = "idle";
-      ConditionPathIsMountPoint = repository;
     };
+    unitConfig.RequiresMountsFor = [
+      repository
+    ];
   };
 
   systemd.timers."restic-forget-HOMELAB_MEDIA" = {
