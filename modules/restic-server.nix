@@ -25,6 +25,11 @@ in
     prometheus = true;
   };
 
+  systemd.services.restic-rest-server.environment = {
+    GOMAXPROCS = "1";
+    GOGC = "20";
+  };
+
   systemd.services."restic-forget-HOMELAB_MEDIA" = {
     description = "Restic forget+prune and check for HOMELAB_MEDIA (server-side)";
     path = with pkgs; [ restic util-linux ];
