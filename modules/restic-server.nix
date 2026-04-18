@@ -42,7 +42,11 @@ in
         "${pkgs.restic}/bin/restic forget --prune --keep-within-hourly 18h --keep-within-daily 7d --keep-within-weekly 1m --keep-within-monthly 1y --keep-within-yearly 75y --keep-tag forever"
         "${pkgs.restic}/bin/restic check"
       ];
-      Environment = "RESTIC_PASSWORD_FILE=${config.sops.secrets."restic.homelab.password".path}";
+      Environment = [
+        "RESTIC_PASSWORD_FILE=${config.sops.secrets."restic.homelab.password".path}"
+        "GOMAXPROCS=1"
+        "GOGC=20"
+      ];
       Nice = 19;
       IOSchedulingClass = "idle";
     };
