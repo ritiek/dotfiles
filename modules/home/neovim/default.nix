@@ -4,6 +4,7 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    sideloadInitLua = true;
 
     # colorschemes.gruvbox.enable = true;
     # plugins.lightline.enable = true;
