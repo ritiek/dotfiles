@@ -256,10 +256,7 @@
     },
     "flake-parts": {
       "inputs": {
-        "nixpkgs-lib": [
-          "llm-agents",
-          "nixpkgs"
-        ]
+        "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
         "lastModified": 1775087534,
@@ -267,27 +264,6 @@
         "owner": "hercules-ci",
         "repo": "flake-parts",
         "rev": "3107b77cd68437b9a76194f0f7f9c55f2329ca5b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "flake-parts_2": {
-      "inputs": {
-        "nixpkgs-lib": [
-          "nur",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1733312601,
-        "narHash": "sha256-4pDvzqnegAfRkPwO3wmwBhVi/Sye1mzps0zHWYnP88c=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "205b12d8b7cd4802fbcb8e8ef6a0f1408781a4f9",
         "type": "github"
       },
       "original": {
@@ -886,7 +862,7 @@
         "flake-utils": [
           "flake-utils"
         ],
-        "nixpkgs-lib": "nixpkgs-lib"
+        "nixpkgs-lib": "nixpkgs-lib_2"
       },
       "locked": {
         "lastModified": 1774789463,
@@ -906,7 +882,9 @@
       "inputs": {
         "blueprint": "blueprint",
         "bun2nix": "bun2nix",
-        "flake-parts": "flake-parts",
+        "flake-parts": [
+          "flake-parts"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ],
@@ -927,6 +905,33 @@
         "owner": "numtide",
         "repo": "llm-agents.nix",
         "type": "github"
+      }
+    },
+    "matthew-hardware": {
+      "inputs": {
+        "disko": [
+          "disko"
+        ],
+        "flake-parts": [
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "unf": "unf"
+      },
+      "locked": {
+        "lastModified": 1776122647,
+        "narHash": "sha256-fMyqkF7Y5NkLg3Fq7hzqzHggTL/XaaYz3wHAEcLu8o4=",
+        "ref": "refs/heads/master",
+        "rev": "2076a7b2db86febbaadbec2dc335fb44d695a03d",
+        "revCount": 6,
+        "type": "git",
+        "url": "https://codeberg.org/matthewcroughan/matthew-hardware"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://codeberg.org/matthewcroughan/matthew-hardware"
       }
     },
     "mcp-servers-nix": {
@@ -967,6 +972,24 @@
       "original": {
         "owner": "microvm-nix",
         "repo": "microvm.nix",
+        "type": "github"
+      }
+    },
+    "ndg": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1776100292,
+        "narHash": "sha256-3Hc3VqlU/cjSdGFx0BwsobXyG8xG+rdn4JGCGt7Rlno=",
+        "owner": "feel-co",
+        "repo": "ndg",
+        "rev": "617ec9165b84f6f2364bc37340d3a367ab4fd596",
+        "type": "github"
+      },
+      "original": {
+        "owner": "feel-co",
+        "repo": "ndg",
         "type": "github"
       }
     },
@@ -1074,7 +1097,7 @@
           "flake-compat"
         ],
         "nixos-images": "nixos-images",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1773704510,
@@ -1108,6 +1131,21 @@
       }
     },
     "nixpkgs-lib": {
+      "locked": {
+        "lastModified": 1774748309,
+        "narHash": "sha256-+U7gF3qxzwD5TZuANzZPeJTZRHS29OFQgkQ2kiTJBIQ=",
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "rev": "333c4e0545a6da976206c74db8773a1645b5870a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixpkgs.lib",
+        "type": "github"
+      }
+    },
+    "nixpkgs-lib_2": {
       "locked": {
         "lastModified": 1774748309,
         "narHash": "sha256-+U7gF3qxzwD5TZuANzZPeJTZRHS29OFQgkQ2kiTJBIQ=",
@@ -1182,6 +1220,35 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1775036866,
+        "narHash": "sha256-ByAX1LkhCwZ94+KnFAmnJSMAvui7kgCxjHgUHsWAbfI=",
+        "rev": "6201e203d09599479a3b3450ed24fa81537ebc4e",
+        "type": "tarball",
+        "url": "https://releases.nixos.org/nixos/unstable/nixos-26.05pre972949.6201e203d095/nixexprs.tar.xz?lastModified=1775036866&rev=6201e203d09599479a3b3450ed24fa81537ebc4e"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1775888245,
+        "narHash": "sha256-nwASzrRDD1JBEu/o8ekKYEXm/oJW6EMCzCRdrwcLe90=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "13043924aaa7375ce482ebe2494338e058282925",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
         "lastModified": 1773375660,
         "narHash": "sha256-SEzUWw2Rf5Ki3bcM26nSKgbeoqi2uYy8IHVBqOKjX3w=",
         "owner": "NixOS",
@@ -1196,7 +1263,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1775245818,
         "narHash": "sha256-rGp+VKR0/oxiBrbgQpC2uLHDimyF/4G+K75l6jFI/DY=",
@@ -1213,7 +1280,9 @@
     },
     "nur": {
       "inputs": {
-        "flake-parts": "flake-parts_2",
+        "flake-parts": [
+          "flake-parts"
+        ],
         "nixpkgs": [
           "nixpkgs"
         ]
@@ -1357,6 +1426,7 @@
         "deploy-rs": "deploy-rs",
         "disko": "disko",
         "flake-compat": "flake-compat",
+        "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "headplane": "headplane",
         "home-manager": "home-manager",
@@ -1367,13 +1437,14 @@
         "impermanence": "impermanence",
         "lib-aggregate": "lib-aggregate",
         "llm-agents": "llm-agents",
+        "matthew-hardware": "matthew-hardware",
         "mcp-servers-nix": "mcp-servers-nix",
         "microvm": "microvm",
         "nix-index-database": "nix-index-database",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware",
         "nixos-raspberrypi": "nixos-raspberrypi",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": "nixpkgs_5",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
         "pi400kb-nix": "pi400kb-nix",
@@ -1615,6 +1686,25 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "type": "github"
+      }
+    },
+    "unf": {
+      "inputs": {
+        "ndg": "ndg",
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1760178630,
+        "narHash": "sha256-oxRMTQtzIO1yFRhY++Ss8+ea1cTH40bD/+FAE+m5NFk=",
+        "ref": "refs/heads/main",
+        "rev": "8a6aa536039f1b207888b1369c5cabf0b131e07b",
+        "revCount": 5,
+        "type": "git",
+        "url": "https://git.atagen.co/atagen/unf"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://git.atagen.co/atagen/unf"
       }
     },
     "unstable": {

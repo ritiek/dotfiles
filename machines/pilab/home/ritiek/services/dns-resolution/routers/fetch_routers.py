@@ -9,7 +9,7 @@ from airtel import AirtelRouter
 from tplink import TPLinkRouter
 from arpscrape import ARPRouter
 
-CONFIG_FILE = os.path.expanduser("/media/HOMELAB_MEDIA/services/pihole/dns-resolution.json")
+CONFIG_FILE = os.path.expanduser("/media/HOMELAB_MEDIA/services/pihole/data/dns-resolution.json")
 
 def load_config():
     """Load MAC to hostname mapping from JSON file"""
