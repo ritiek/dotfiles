@@ -5,6 +5,7 @@
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
     };
     stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -182,7 +183,18 @@
       inputs.systems.follows = "systems";
     };
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+    };
+
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    matthew-hardware = {
+      url = "git+https://codeberg.org/matthewcroughan/matthew-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.disko.follows = "disko";
+      inputs.flake-parts.follows = "flake-parts";
+    };
 
     mcp-servers-nix = {
       url = "github:natsukium/mcp-servers-nix";
@@ -213,6 +225,7 @@
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.systems.follows = "systems";
+      inputs.flake-parts.follows = "flake-parts";
     };
 
     microvm = {
@@ -675,14 +688,6 @@
     };
 
     minimachine-minimal-sd =
-      let
-        pkgs = inputs.nixpkgs.legacyPackages.aarch64-linux;
-      in
-      self.nixosConfigurations.minimachine-minimal.config.system.build.image.overrideAttrs {
-        preInstall = ''
-          ${pkgs.gptfdisk}/bin/sgdisk --hybrid 1:EE ${self.nixosConfigurations.minimachine-minimal.config.image.baseName}.raw
-          echo -e "M\nt\n1\n0b\nw\nr\nw\n" | ${pkgs.util-linux}/bin/fdisk ${self.nixosConfigurations.minimachine-minimal.config.image.baseName}.raw
-        '';
-      };
+      self.nixosConfigurations.minimachine-minimal.config.system.build.image-with-pmbr;
   };
 }
