@@ -4,7 +4,7 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
-    sideloadInitLua = true;
+    initLua = builtins.readFile ./nvim/init.lua;
 
     # colorschemes.gruvbox.enable = true;
     # plugins.lightline.enable = true;
@@ -50,10 +50,6 @@
   # };
 
   home.file = {
-    init = {
-      source = ./nvim/init.lua;
-      target = "${config.home.homeDirectory}/.config/nvim/init.lua";
-    };
     lua = {
       source = ./nvim/lua;
       target = "${config.home.homeDirectory}/.config/nvim/lua";
