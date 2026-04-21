@@ -1,5 +1,7 @@
 { config, pkgs, lib, inputs, ... }:
 let
+  paperless-ngx-push = import ./../../../../../scripts/home/paperless-ngx-push.nix { inherit pkgs config; };
+
   # Updated to support tags from sync_paths.txt - v2
   paperless-ngx-sync = (pkgs.writeShellScriptBin "paperless-ngx-sync" ''
     SYNC_PATHS_FILE="sync_paths.txt"
@@ -69,11 +71,10 @@ let
           FILE_CREATION_DATE=$(${pkgs.coreutils}/bin/stat -c %W "$FILE")
 
           if [[ "$FILE_CREATION_DATE" -gt "$LAST_RUN_TIMESTAMP" ]]; then
-            # Requires ./scripts/home/paperless-ngx-push.nix
             if [[ -n "$TAGS" ]]; then
-              paperless-ngx-push --tags "$TAGS" "$FILE"
+              ${paperless-ngx-push}/bin/paperless-ngx-push --tags "$TAGS" "$FILE"
             else
-              paperless-ngx-push "$FILE"
+              ${paperless-ngx-push}/bin/paperless-ngx-push "$FILE"
             fi
             paperless_ngx_push_exit_code=$?
 
@@ -112,19 +113,18 @@ let
   '');
 in
 {
-  imports = [
-    ./../../../../../scripts/home/paperless-ngx-push.nix
-  ];
   sops.secrets = {
     "paperless-ngx-push.env" = {};
     "uptime-kuma.env" = {};
   };
 
-  home.packages = with pkgs; [
+  home.packages = [
     paperless-ngx-sync
+    paperless-ngx-push
+  ] ++ (with pkgs; [
     curl
     jq
-  ];
+  ]);
 
   systemd.user.services.paperless-ngx-sync = {
     Unit = {
