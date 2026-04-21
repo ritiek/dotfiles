@@ -6,7 +6,7 @@ let
   webUIPort = 3025;
   internalWebUIPort = 13025;
 
-  lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
   lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "Scriberr";

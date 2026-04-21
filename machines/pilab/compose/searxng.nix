@@ -6,7 +6,7 @@ let
   webUIPort = 6040;
   internalWebUIPort = 16040;
 
-  lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
   lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "SearXNG";
