@@ -11,7 +11,9 @@
     extraUpFlags = [
       "--login-server=https://controlplane.clawsiecats.lol"
       "--advertise-exit-node"
-      "--reset"
+     "--reset"
     ];
- };
+  };
+
+  systemd.services.tailscaled.serviceConfig.OOMScoreAdjust = -1000;
 }

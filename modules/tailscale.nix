@@ -11,4 +11,6 @@
       "--advertise-exit-node"
     ];
   };
+
+  systemd.services.tailscaled.serviceConfig.OOMScoreAdjust = -1000;
 }
