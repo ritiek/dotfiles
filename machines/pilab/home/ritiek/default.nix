@@ -172,7 +172,7 @@ in
           systemctl start autostart-mealie.service
           # systemctl start autostart-karakeep.service
           systemctl start docker-karakeep.service
-          systemctl start docker-n8n-worker.service
+          # systemctl start docker-n8n-worker.service
           # systemctl start docker-transmission.service
           systemctl start docker-qbittorrent.service
           systemctl start docker-jellyfin.service
@@ -182,19 +182,19 @@ in
           systemctl start docker-prowlarr.service
           systemctl start docker-jellyseerr.service
           systemctl start docker-glances.service
-          systemctl start docker-calibre-web-automated.service
-          systemctl start docker-calibre-web-automated-book-downloader.service
-          systemctl start docker-audiobookshelf.service
-          systemctl start docker-baikal.service
-          systemctl start docker-qdrant.service
-          systemctl start docker-scriberr.service
+          systemctl start autostart-calibre-web-automated.service
+          systemctl start autostart-calibre-web-automated-book-downloader.service
+          systemctl start autostart-audiobookshelf.service
+          systemctl start autostart-baikal.service
+          systemctl start autostart-qdrant.service
+          systemctl start autostart-scriberr.service
           systemctl start docker-atuin.service
-          systemctl start docker-searxng.service
-          systemctl start docker-invidious.service
-          systemctl start docker-redlib.service
+          systemctl start autostart-searxng.service
+          systemctl start autostart-invidious.service
+          systemctl start autostart-redlib.service
           systemctl start docker-meshmonitor.service
           systemctl start autostart-manyfold.service
-          systemctl start docker-linkding.service
+          systemctl start autostart-linkding.service
           systemctl start docker-open-archiver.service
           # systemctl start docker-kopia.service
 
@@ -243,7 +243,7 @@ in
         systemctl stop autostart-mealie.service docker-compose-mealie-root.target
         # systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
         systemctl stop docker-compose-karakeep-root.target
-        systemctl stop docker-compose-n8n-root.target
+        # systemctl stop docker-compose-n8n-root.target
         # systemctl stop docker-compose-transmission-root.target
         systemctl stop docker-compose-qbittorrent-root.target
         systemctl stop docker-compose-jellyfin-root.target
@@ -253,19 +253,19 @@ in
         systemctl stop docker-compose-prowlarr-root.target
         systemctl stop docker-compose-jellyseerr-root.target
         systemctl stop docker-compose-glances-root.target
-        systemctl stop docker-compose-calibre-web-automated-root.target
-        systemctl stop docker-compose-calibre-web-automated-book-downloader-root.target
-        systemctl stop docker-compose-audiobookshelf-root.target
-        systemctl stop docker-compose-baikal-root.target
-        systemctl stop docker-compose-qdrant-root.target
-        systemctl stop docker-compose-scriberr-root.target
+        systemctl stop autostart-calibre-web-automated.service docker-compose-calibre-web-automated-root.target
+        systemctl stop autostart-calibre-web-automated-book-downloader.service docker-compose-calibre-web-automated-book-downloader-root.target
+        systemctl stop autostart-audiobookshelf.service docker-compose-audiobookshelf-root.target
+        systemctl stop autostart-baikal.service docker-compose-baikal-root.target
+        systemctl stop autostart-qdrant.service docker-compose-qdrant-root.target
+        systemctl stop autostart-scriberr.service docker-compose-scriberr-root.target
         systemctl stop docker-compose-atuin-root.target
-        systemctl stop docker-compose-searxng-root.target
-        systemctl stop docker-compose-invidious-root.target
-        systemctl stop docker-compose-redlib-root.target
+        systemctl stop autostart-searxng.service docker-compose-searxng-root.target
+        systemctl stop autostart-invidious.service docker-compose-invidious-root.target
+        systemctl stop autostart-redlib.service docker-compose-redlib-root.target
         systemctl stop docker-compose-meshmonitor-root.target
         systemctl stop docker-compose-manyfold-root.target
-        systemctl stop docker-compose-linkding-root.target
+        systemctl stop autostart-linkding.service docker-compose-linkding-root.target
         systemctl stop docker-compose-open-archiver-root.target
         # systemctl stop docker-compose-kopia-root.target
 
