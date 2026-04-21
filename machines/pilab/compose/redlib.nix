@@ -6,7 +6,7 @@ let
   webUIPort = 6020;
   internalWebUIPort = 16020;
 
-  lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
   lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "Redlib";

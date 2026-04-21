@@ -5,7 +5,7 @@ let
   webUIPort = 8084;
   internalWebUIPort = 18084;
 
-  lazyLoadingLib = import ../lib/lazy-loading.nix { inherit pkgs lib; };
+  lazyLoadingLib = import ./lib/lazy-loading.nix { inherit pkgs lib; };
 
   lazyLoadingServices = lazyLoadingLib.mkLazyLoadingServices {
     serviceName = "Calibre Web Automated Book Downloader";
