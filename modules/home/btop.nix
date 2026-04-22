@@ -8,6 +8,7 @@
       vim_keys = true;
       cpu_graph_lower = "iowait";
       proc_sorting = "memory";
+      net_auto = false;
     };
   };
 }
