@@ -49,13 +49,6 @@ in lib.mkMerge [
       "--network-alias=jellyseerr"
       "--network=jellyseerr_default"
     ];
-    labels = {
-      "homepage.description" = "Media requests";
-      "homepage.group" = "*arr Stack";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:5055";
-      "homepage.icon" = "jellyseerr";
-      "homepage.name" = "Jellyseerr";
-    };
   };
   systemd.services."docker-jellyseerr" = {
     serviceConfig = {
