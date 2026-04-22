@@ -20,7 +20,7 @@ jobs:
 
       - name: "Build: .#minimal-iso"
         run: |
-          nix build .#minimal-iso
+          timeout -k 300 17400 nix build .#minimal-iso
       # - name: Upload .#minimal-iso
       #   uses: actions/upload-artifact@v4
       #   with:
@@ -28,7 +28,7 @@ jobs:
       #     path: ./result/iso/nixos.iso
       - name: "Build: .#minimal-install-iso"
         run: |
-          nix build .#minimal-install-iso
+          timeout -k 300 17400 nix build .#minimal-install-iso
       # - name: Upload .#minimal-install-iso
       #   uses: actions/upload-artifact@v4
       #   with:
@@ -106,7 +106,7 @@ jobs:
 
       - name: "Build: .#pilab-sd"
         run: |
-          nix build .#pilab-sd
+          timeout -k 300 17400 nix build .#pilab-sd
 
   keyberry:
     runs-on: ubuntu-24.04-arm
@@ -141,7 +141,7 @@ jobs:
 
       - name: "Build: .#keyberry-sd"
         run: |
-          nix build .#keyberry-sd
+          timeout -k 300 17400 nix build .#keyberry-sd
 
   zerostash:
     runs-on: ubuntu-24.04-arm
@@ -158,7 +158,7 @@ jobs:
 
       - name: "Build: .#zerostash-sd"
         run: |
-          nix build .#zerostash-sd
+          timeout -k 300 17400 nix build .#zerostash-sd
 
   radrubble:
     runs-on: ubuntu-24.04-arm
@@ -175,7 +175,7 @@ jobs:
 
       - name: "Build: .#radrubble-sd"
         run: |
-          nix build .#radrubble-sd
+          timeout -k 300 17400 nix build .#radrubble-sd
 
   mangoshake:
     runs-on: ubuntu-24.04-arm
@@ -192,7 +192,7 @@ jobs:
 
       - name: "Build: .#mangoshake-sd"
         run: |
-          nix build .#mangoshake-sd
+          timeout -k 300 17400 nix build .#mangoshake-sd
 
   minimachine:
     runs-on: ubuntu-latest
@@ -209,4 +209,4 @@ jobs:
 
       - name: "Build: .#minimachine-minimal-sd"
         run: |
-          nix build .#minimachine-minimal-sd
+          timeout -k 300 17400 nix build .#minimachine-minimal-sd
