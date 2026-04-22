@@ -19,9 +19,16 @@
       ];
       authorizedKeys = config.users.users.ritiek.openssh.authorizedKeys.keys;
     };
-    postCommands = ''
-      echo 'cryptsetup-askpass' >> /root/.profile
-    '';
+  };
+
+  boot.initrd.systemd.services.initrd-ssh-profile = {
+    description = "Add cryptsetup-askpass to root profile for remote LUKS unlocking";
+    wantedBy = [ "initrd.target" ];
+    before = [ "sshd.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "-/bin/sh -c 'echo cryptsetup-askpass >> /root/.profile'";
+    };
   };
 
   boot.loader.systemd-boot.enable = true;
