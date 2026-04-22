@@ -180,7 +180,7 @@ in
           systemctl start docker-sonarr.service
           systemctl start docker-bazarr.service
           systemctl start docker-prowlarr.service
-          systemctl start docker-jellyseerr.service
+          systemctl start autostart-jellyseerr.service
           systemctl start docker-glances.service
           systemctl start autostart-calibre-web-automated.service
           systemctl start autostart-calibre-web-automated-book-downloader.service
