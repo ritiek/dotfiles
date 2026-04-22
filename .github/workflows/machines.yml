@@ -64,7 +64,7 @@ jobs:
 
       - name: "Build: .#mishy"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.mishy.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.mishy.config.system.build.toplevel
 
   pilab:
     runs-on: ubuntu-24.04-arm
@@ -89,7 +89,7 @@ jobs:
 
       - name: "Build: .#pilab"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.pilab.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.pilab.config.system.build.toplevel
 
   clawsiecats:
     runs-on: ubuntu-latest
@@ -133,13 +133,13 @@ jobs:
 
       - name: "Build: .#clawsiecats-minimal"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.clawsiecats-minimal.config.system.build.toplevel
       - name: "Build: .#clawsiecats"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.clawsiecats.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.clawsiecats.config.system.build.toplevel
       - name: "Build: .#clawsiecats-luks"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
 
   keyberry:
     runs-on: ubuntu-24.04-arm
@@ -164,7 +164,7 @@ jobs:
 
       - name: "Build: .#keyberry"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.keyberry.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.keyberry.config.system.build.toplevel
 
   rig:
     runs-on: ubuntu-latest
@@ -194,7 +194,7 @@ jobs:
 
       - name: "Build: .#rig"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.rig.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.rig.config.system.build.toplevel
 
   zerostash:
     runs-on: ubuntu-24.04-arm
@@ -219,7 +219,7 @@ jobs:
 
       - name: "Build: .#zerostash"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.zerostash.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.zerostash.config.system.build.toplevel
 
   radrubble:
     runs-on: ubuntu-24.04-arm
@@ -244,7 +244,7 @@ jobs:
 
       - name: "Build: .#radrubble"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.radrubble.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.radrubble.config.system.build.toplevel
 
   minimachine:
     runs-on: ubuntu-latest
@@ -274,7 +274,7 @@ jobs:
 
       - name: "Build: .#minimachine-minimal"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.minimachine-minimal.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.minimachine-minimal.config.system.build.toplevel
 
   mangoshake:
     runs-on: ubuntu-24.04-arm
@@ -299,4 +299,4 @@ jobs:
 
       - name: "Build: .#mangoshake"
         run: |
-          nix build --fallback --keep-going .#nixosConfigurations.mangoshake.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.mangoshake.config.system.build.toplevel
