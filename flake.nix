@@ -129,7 +129,7 @@
 
     hyprland = {
       url = "github:hyprwm/Hyprland";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.systems.follows = "systems";
     };
 
@@ -154,7 +154,7 @@
 
     hyprgrass = {
       url = "github:horriblename/hyprgrass";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
       inputs.hyprland.follows = "hyprland";
     };
 
@@ -167,14 +167,11 @@
     nixos-raspberrypi = {
       url = "github:nvmd/nixos-raspberrypi/main";
       inputs.flake-compat.follows = "flake-compat";
-      # NOTE: nixpkgs is NOT followed here; instead we patch inputs.nixpkgs
-      # at build time in nixosConfigurations.pilab below using nixpkgs.applyPatches.
-      # See the comment there for details.
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     rockchip = {
       url = "github:nabam/nixos-rockchip";
-      # inputs.nixpkgs.follows = "nixpkgs";
       inputs.utils.follows = "flake-utils";
     };
 
@@ -226,10 +223,31 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.systems.follows = "systems";
       inputs.flake-parts.follows = "flake-parts";
+      inputs.bun2nix.follows = "bun2nix";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
+
+    meridian = {
+      url = "github:rynfar/meridian";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
+      inputs.bun2nix.follows = "bun2nix";
     };
 
     microvm = {
       url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    bun2nix = {
+      url = "github:nix-community/bun2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
+
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

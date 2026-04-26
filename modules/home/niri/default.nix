@@ -1,6 +1,8 @@
-{ lib, pkgs, inputs, config, osConfig, ... }:
+{ lib, pkgs, inputs, config, osConfig ? null, ... }:
 
 let
+  # Safely access nvidia enablement with fallback
+  nvidiaEnabled = if osConfig != null then osConfig.hardware.nvidia.enable or false else false;
   cactus = pkgs.fetchurl {
     url = "https://immich.clawsiecats.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?slug=cactus";
     sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
@@ -44,7 +46,7 @@ in
     xwayland-satellite
     rose-pine-cursor
     gotify-desktop
-  ] ++ (if osConfig.hardware.nvidia.enabled then [
+  ] ++ (if nvidiaEnabled then [
     # Wrapper to disable NVIDIA offload (use Intel GPU instead)
     # for screenshare to work.
     (pkgs.writeShellScriptBin "nvidia-unoffload" ''
@@ -420,7 +422,7 @@ environment {
     SAL_FORCEDPI "70"
     MOZ_USE_XINPUT2 "1"
     DISPLAY ":0"
-  ${lib.optionalString osConfig.hardware.nvidia.enabled ''
+  ${lib.optionalString nvidiaEnabled ''
     LIBVA_DRIVER_NAME "nvidia"
     GBM_BACKEND "nvidia-drm"
     __GLX_VENDOR_LIBRARY_NAME "nvidia"

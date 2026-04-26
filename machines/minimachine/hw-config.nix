@@ -1,10 +1,16 @@
-{ lib, config, inputs, ... }:
+{ lib, config, pkgs, inputs, ... }:
 
 {
   imports = [
     inputs.disko.nixosModules.disko
     inputs.matthew-hardware.nixosModules.rpi-zero-w
     inputs.matthew-hardware.nixosModules.rpi-zero-w-disko
+  ];
+
+  nixpkgs.overlays = [
+    (self: super: {
+      makeModulesClosure = x: super.makeModulesClosure (x // { allowMissing = true; });
+    })
   ];
 
   boot.kernelPatches = [
@@ -21,6 +27,12 @@
 
   boot.initrd.systemd.enable = true;
   boot.initrd.systemd.root = "gpt-auto";
+  boot.initrd.systemd.tpm2.enable = false;
+
+  boot.loader = {
+    generic-extlinux-compatible.enable = lib.mkForce false;
+    grub.enable = lib.mkForce false;
+  };
 
   hardware.rpi-zero-w = {
     enable = true;
@@ -31,9 +43,10 @@
         kernel=u-boot.bin
         disable_overscan=1
         boot_delay=1
-        sdhci_bounce4=1
 
         [all]
+        dtparam=sd_overclock=25
+        dtparam=sd_force_pio=on
         enable_uart=1
         avoid_warnings=1
       '';

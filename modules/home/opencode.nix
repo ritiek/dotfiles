@@ -125,6 +125,29 @@ let
   '';
 in
 {
+  imports = [ inputs.meridian.homeManagerModules.default ];
+
+  services.meridian = {
+    enable = true;
+    settings = {
+      port = 3456;
+      host = "127.0.0.1";
+      passthrough = true;
+      defaultAgent = "anthropic";
+      sonnetModel = "claude-sonnet-4-6";
+    };
+    environment = {
+      MERIDIAN_DEFER_TOOL_THRESHOLD = "0";
+      MERIDIAN_BETA_POLICY = "strip-all";
+      MERIDIAN_STRIP_CACHE_CONTROL = "1";
+    };
+  };
+
+  home.sessionVariables = {
+    ANTHROPIC_API_KEY = "x";
+    ANTHROPIC_BASE_URL = "http://127.0.0.1:3456";
+  };
+
   sops.secrets = {
     "z_ai_api.key" = lib.mkIf hasZaiApiKey {};
     "github.token" = {};
@@ -143,6 +166,7 @@ in
 
   home.packages = [
     pkgs.bun
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
     ocx
     mcp-servers-nix.playwright-mcp
     mcp-servers-nix.context7-mcp
@@ -151,9 +175,7 @@ in
     pkgs.psmisc
     pkgs.procps
     pkgs.nodejs_24
-    # TODO: Enable `rtk` and its home.activation script at the end of this file once
-    # I update my nixpkgs flake input.
-    # pkgs.rtk
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
@@ -165,7 +187,7 @@ in
   programs.opencode = {
     enable = true;
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
-    skills = lib.mkIf isNiriEnabled {
+    skills = lib.optionalAttrs isNiriEnabled {
       "niri-screenshot" = ''
         ---
         name: niri-screenshot
@@ -189,15 +211,21 @@ in
         Ask clarifying questions if it's unclear whether to capture the full screen, window, or region.
       '';
     };
-    rules = ''
+    context = ''
       - NEVER include your own emotes in your responses.
       - You're working with NixOS. Use `nix-shell -p` or comma (e.g. `, cowsay hi`)
         to run any tools not currently available on the system.
       - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
         to rebuild NixOS configuration.
-      - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
-        through code and files.
     '';
+      # - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
+      #   through code and files.
+      # - Terse like caveman. Technical substance exact. Only fluff die.
+      #   Drop: articles, filler (just/really/basically), pleasantries, hedging.
+      #   Fragments OK. Short synonyms. Code unchanged.
+      #   Pattern: [thing] [action] [reason]. [next step].
+      #   ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift.
+      #   Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
     commands = {
       rebuild-switch = ''
         Rebuild and switch to NixOS flake configuration you're currently working on.
@@ -216,7 +244,12 @@ in
       small_model = "opencode/gpt-5-nano";
       provider = {
         "opencode".options.timeout = false;
-        "anthropic".options.timeout = false;
+        "anthropic" = {
+          options = {
+            timeout = false;
+            baseURL = "http://127.0.0.1:3456";
+          };
+        };
         "zai-coding-plan" = {
           options.timeout = false;
           models = {
@@ -543,19 +576,29 @@ in
           };
           temperature = 0.4;
         };
+        mcpless = {
+          mode = "primary";
+          description = "MCP-less Agent (no MCP tools)";
+          tools = {
+            "*" = false;
+          };
+        };
       };
 
       plugin = [
+        config.services.meridian.opencode.pluginPath
         "@mohak34/opencode-notifier"
         "@tarquinen/opencode-dcp"
       ];
 
+      autoupdate = false;
+    };
+
+    tui = {
       # XXX: I like the `system` theme but it takes a while to load:
       # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
       theme = "lucent-orng";
-
-      tui.scroll_speed = 5;
-      autoupdate = false;
+      scroll_speed = 5;
     };
   };
 
@@ -612,11 +655,25 @@ in
     })
   ];
 
-  # home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
-  #   if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
-  #     ${pkgs.rtk}/bin/rtk init -g --opencode
-  #   fi
-  # '';
+  home.activation.opencode-skills-caveman = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "${config.home.homeDirectory}/.agents/skills/caveman" ]; then
+      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
+        ${pkgs.nodejs_24}/bin/npx --yes skills add juliusbrussee/caveman -g -a opencode -y
+    fi
+  '';
+
+  home.activation.opencode-skills-karpathy = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "${config.home.homeDirectory}/.agents/skills/karpathy-guidelines" ]; then
+      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
+        ${pkgs.nodejs_24}/bin/npx --yes skills add forrestchang/andrej-karpathy-skills -g -a opencode -y
+    fi
+  '';
+
+  home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
+      ${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk}/bin/rtk init -g --opencode
+    fi
+  '';
 
 home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
@@ -654,6 +711,7 @@ home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBou
         "opencode": { type: "api", key: $opencode_key },
         "openai": { type: "api", key: $openai_key },
         "xiaomi": { type: "api", key: $xiaomi_key },
+        "anthropic": { type: "api", key: "x" },
         "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
       }' > "$NIXOS_JSON"
 
