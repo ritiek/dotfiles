@@ -12,7 +12,7 @@
     interfaces = [ "wlan0" ];
     # FIXME: Add in correct WiFi creds before building the image.
     networks = {
-      "SSID".psk = "PASSWORD";
+      # "SSID".psk = "PASSWORD";
     };
   };
   time.timeZone = "Asia/Kolkata";
@@ -43,6 +43,11 @@
       settings = {
         PermitRootLogin = "no";
         PasswordAuthentication = false;
+        KexAlgorithms = [
+          "curve25519-sha256"
+          "curve25519-sha256@libssh.org"
+          "diffie-hellman-group-exchange-sha256"
+        ];
       };
     };
   };
