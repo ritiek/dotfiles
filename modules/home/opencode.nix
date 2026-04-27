@@ -190,8 +190,12 @@ in
     environment = {
       MERIDIAN_BETA_POLICY = "strip-all";
       MERIDIAN_STRIP_CACHE_CONTROL = "1";
+      MERIDIAN_IDLE_TIMEOUT_SECONDS = "300";
     };
   };
+
+  # Don't start meridian on boot — opencode wrapper starts it on demand
+  systemd.user.services.meridian.Install.WantedBy = lib.mkForce [];
 
   home.sessionVariables = {
     ANTHROPIC_API_KEY = "x";
@@ -236,7 +240,19 @@ in
   };
   programs.opencode = {
     enable = true;
-    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+    package =
+      let
+        real-opencode = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+      in
+      pkgs.symlinkJoin {
+        name = "opencode-with-meridian";
+        paths = [ real-opencode ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/opencode \
+            --run 'systemctl --user start meridian'
+        '';
+      };
     skills = lib.optionalAttrs isNiriEnabled {
       "niri-screenshot" = ''
         ---
