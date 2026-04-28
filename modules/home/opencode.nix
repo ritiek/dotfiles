@@ -521,6 +521,11 @@ in
             Authorization = "Bearer {file:${config.sops.secrets."home_assistant.long_lived_token".path}}";
           };
         };
+        indmoney = {
+          enabled = true;
+          type = "remote";
+          url = "https://mcp.indmoney.com/mcp";
+        };
         # gmail = {
         #   enabled = true;
         #   type = "local";
