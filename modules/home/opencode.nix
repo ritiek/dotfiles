@@ -297,6 +297,15 @@ in
         Rebuild and switch to NixOS flake configuration you're currently working on.
         Usage: /rebuild-switch
       '';
+      caveman = ''
+        Activate caveman ultra-compressed communication mode.
+        Supports intensity levels: lite, full (default), ultra.
+        Usage: /caveman [level]
+      '';
+      karpathy-guidelines = ''
+        Load Andrej Karpathy behavioral guidelines skill.
+        Usage: /karpathy-guidelines
+      '';
     };
     settings = {
       # NOTE: This requires `programs.mcp` to be configured. For now, I've defined
@@ -399,27 +408,27 @@ in
             Z_AI_API_KEY = "{file:${config.sops.secrets."z_ai_api.key".path}}";
           };
         };
-        # NOTE: Using opencode's built-in Exa search for now.
-        # kindly-web-search = {
-        #   enabled = true;
-        #   type = "local";
-        #   command = [
-        #     "${pkgs.uv}/bin/uvx"
-        #     "--from"
-        #     "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
-        #     "kindly-web-search-mcp-server"
-        #     "start-mcp-server"
-        #   ];
-        #   environment = {
-        #     PATH = pkgs.lib.makeBinPath [
-        #       pkgs.uv
-        #       pkgs.coreutils
-        #       pkgs.python3
-        #     ];
-        #     GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
-        #     SEARXNG_BASE_URL = "http://pilab.lion-zebra.ts.net:6040/";
-        #   };
-        # };
+        kindly-web-search = lib.mkIf (!hasZaiApiKey) {
+          enabled = true;
+          type = "local";
+          command = [
+            "${pkgs.uv}/bin/uvx"
+            "--from"
+            "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
+            "kindly-web-search-mcp-server"
+            "start-mcp-server"
+          ];
+          environment = {
+            PATH = pkgs.lib.makeBinPath [
+              pkgs.uv
+              pkgs.git
+              pkgs.coreutils
+              pkgs.python3
+            ];
+            GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
+            SEARXNG_BASE_URL = "http://pilab.lion-zebra.ts.net:6040/";
+          };
+        };
         # NOTE: context7-mcp is automatically disabled on machines with baseline bun
         # (rig, clawsiecats) because it uses buildBunPackage which creates a
         # Fixed-Output Derivation (FOD) for dependencies. The FOD is cached and
@@ -758,7 +767,7 @@ home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBou
     AUTH_FILE="${config.home.homeDirectory}/.local/share/opencode/auth.json"
     NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
 
-    ZAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})
+    ZAI_KEY=${if hasZaiApiKey then "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})" else "\"\""}
     OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
     OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
     XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
