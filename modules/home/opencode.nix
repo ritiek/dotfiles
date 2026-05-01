@@ -133,12 +133,13 @@ in
     settings = {
       port = 3456;
       host = "0.0.0.0";
+      idleTimeoutSeconds = 300;
+      passthrough = true;
       defaultAgent = "opencode";
-      sonnetModel = "claude-sonnet-4-6";
+      sonnetModel = "sonnet";
     };
     environment = {
       PATH = pkgs.lib.makeBinPath [ pkgs.nodejs_24 ] + ":/etc/profiles/per-user/${config.home.username}/bin";
-      MERIDIAN_IDLE_TIMEOUT_SECONDS = "300";
     };
   };
 
