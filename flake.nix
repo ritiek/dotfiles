@@ -233,12 +233,6 @@
       inputs.treefmt-nix.follows = "treefmt-nix";
     };
 
-    meridian = {
-      url = "github:rynfar/meridian";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.systems.follows = "systems";
-      inputs.bun2nix.follows = "bun2nix";
-    };
 
     microvm = {
       url = "github:microvm-nix/microvm.nix";

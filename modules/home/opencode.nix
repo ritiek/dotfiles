@@ -126,31 +126,6 @@ let
   '';
 in
 {
-  imports = [ inputs.meridian.homeManagerModules.default ];
-
-  services.meridian = {
-    enable = true;
-    settings = {
-      port = 3456;
-      host = "0.0.0.0";
-      idleTimeoutSeconds = 300;
-      passthrough = true;
-      defaultAgent = "opencode";
-      sonnetModel = "sonnet";
-    };
-    environment = {
-      PATH = pkgs.lib.makeBinPath [ pkgs.nodejs_24 ] + ":/etc/profiles/per-user/${config.home.username}/bin";
-    };
-  };
-
-  # Don't start meridian on boot — opencode wrapper starts it on demand
-  systemd.user.services.meridian.Install.WantedBy = lib.mkForce [];
-
-  home.sessionVariables = {
-    ANTHROPIC_API_KEY = "x";
-    ANTHROPIC_BASE_URL = "http://127.0.0.1:3456";
-  };
-
   sops.secrets = {
     "z_ai_api.key" = lib.mkIf hasZaiApiKey {};
     "github.token" = {};
@@ -191,19 +166,7 @@ in
   };
   programs.opencode = {
     enable = true;
-    package =
-      let
-        real-opencode = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
-      in
-      pkgs.symlinkJoin {
-        name = "opencode-with-meridian";
-        paths = [ real-opencode ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/opencode \
-            --run 'systemctl --user start meridian'
-        '';
-      };
+    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
     skills = lib.optionalAttrs isNiriEnabled {
       "niri-screenshot" = ''
         ---
@@ -266,29 +229,28 @@ in
       # Provider name and model name schema in opencode can be found here:
       # $ curl -s https://opencode.ai/zen/v1/models | jq
 
-      model = "zai-coding-plan/glm-4.7";
+      model = "anthropic/claude-sonnet-4-6";
       small_model = "opencode/gpt-5-nano";
       provider = {
         "opencode".options.timeout = false;
         "anthropic" = {
           options = {
             timeout = false;
-            baseURL = "http://127.0.0.1:3456";
           };
         };
-        "zai-coding-plan" = {
-          options.timeout = false;
-          models = {
-            "glm-4.7" = {
-              name = "GLM 4.7";
-              options = {
-                reasoningEffort = "high";
-                reasoningSummary = "auto";
-                textVerbosity = "low";
-              };
-            };
-          };
-        };
+        # "zai-coding-plan" = {
+        #   options.timeout = false;
+        #   models = {
+        #     "glm-4.7" = {
+        #       name = "GLM 4.7";
+        #       options = {
+        #         reasoningEffort = "high";
+        #         reasoningSummary = "auto";
+        #         textVerbosity = "low";
+        #       };
+        #     };
+        #   };
+        # };
         ollama = {
           npm = "ai-sdk-ollama";
           models = {
@@ -656,7 +618,7 @@ in
       };
 
       plugin = [
-        config.services.meridian.opencode.pluginPath
+        "opencode-claude-auth@latest"
         "@mohak34/opencode-notifier"
         "@tarquinen/opencode-dcp"
       ];
@@ -769,19 +731,25 @@ home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBou
     GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
     GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
 
+    # ${pkgs.jq}/bin/jq -n \
+    #   --arg zai_key "$ZAI_KEY" \
+    #   --arg opencode_key "$OPENCODE_KEY" \
+    #   --arg openai_key "$OPENAI_KEY" \
+    #   --arg xiaomi_key "$XIAOMI_KEY" \
+    #   --arg gh_refresh "$GH_REFRESH" \
+    #   --arg gh_access "$GH_ACCESS" \
+    #   '{
+    #     "zai-coding-plan": { type: "api", key: $zai_key },
+    #     "opencode": { type: "api", key: $opencode_key },
+    #     "openai": { type: "api", key: $openai_key },
+    #     "xiaomi": { type: "api", key: $xiaomi_key },
+    #     "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
+    #   }' > "$NIXOS_JSON"
+
     ${pkgs.jq}/bin/jq -n \
-      --arg zai_key "$ZAI_KEY" \
-      --arg opencode_key "$OPENCODE_KEY" \
-      --arg openai_key "$OPENAI_KEY" \
-      --arg xiaomi_key "$XIAOMI_KEY" \
       --arg gh_refresh "$GH_REFRESH" \
       --arg gh_access "$GH_ACCESS" \
       '{
-        "zai-coding-plan": { type: "api", key: $zai_key },
-        "opencode": { type: "api", key: $opencode_key },
-        "openai": { type: "api", key: $openai_key },
-        "xiaomi": { type: "api", key: $xiaomi_key },
-        "anthropic": { type: "api", key: "x" },
         "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
       }' > "$NIXOS_JSON"
 
