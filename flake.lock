@@ -1073,32 +1073,6 @@
         "type": "github"
       }
     },
-    "meridian": {
-      "inputs": {
-        "bun2nix": [
-          "bun2nix"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": [
-          "systems"
-        ]
-      },
-      "locked": {
-        "lastModified": 1777053780,
-        "narHash": "sha256-bWsWTC/Y0FXvdWvM1jgKMNCa+6dPjld2n4ECHeRZbIM=",
-        "owner": "rynfar",
-        "repo": "meridian",
-        "rev": "90fd26f22f8fbd37c24a34f6766606fab58a4808",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rynfar",
-        "repo": "meridian",
-        "type": "github"
-      }
-    },
     "microvm": {
       "inputs": {
         "nixpkgs": [
@@ -1556,7 +1530,6 @@
         "llm-agents": "llm-agents",
         "matthew-hardware": "matthew-hardware",
         "mcp-servers-nix": "mcp-servers-nix",
-        "meridian": "meridian",
         "microvm": "microvm",
         "nix-index-database": "nix-index-database",
         "nixos-generators": "nixos-generators",
