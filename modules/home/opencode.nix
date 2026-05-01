@@ -220,6 +220,7 @@ in
   };
 
   home.packages = [
+    pkgs.uv
     pkgs.bun
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
     ocx
@@ -414,6 +415,7 @@ in
           type = "local";
           command = [
             "${pkgs.uv}/bin/uvx"
+            "--refresh"
             "--from"
             "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
             "kindly-web-search-mcp-server"
@@ -428,7 +430,16 @@ in
             ];
             GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
             SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}";
-            # XXX: Disable external browser due to memory constraints causing MCP timeouts in OpenCode.
+            # XXX: Disable external browser in case of memory constraints as they cause
+            # MCP timeouts in OpenCode.
+            # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+            # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.writeShellScript "chromium-for-nodriver" ''
+            #   exec ${pkgs.chromium}/bin/chromium \
+            #     --no-sandbox \
+            #     --disable-gpu \
+            #     --disable-dev-shm-usage \
+            #     "$@"
+            # ''}";
             KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.writeShellScript "lightpanda-cdp-wrapper" ''
               PORT=9222
               for arg in "$@"; do
@@ -438,6 +449,10 @@ in
               done
               exec ${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda serve --host 127.0.0.1 --port "$PORT"
             ''}";
+            KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "300";
+            KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
+            KINDLY_WEB_SEARCH_MAX_CONCURRENCY = "3";
+            # KINDLY_DIAGNOSTICS = "1";
           };
         };
         # NOTE: context7-mcp is automatically disabled on machines with baseline bun
