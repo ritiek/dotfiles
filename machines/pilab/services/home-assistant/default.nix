@@ -128,6 +128,12 @@
       };
       recorder = {};
       history = {};
+      logger = {
+        default = "warning";
+        logs = {
+          "custom_components.philips_airpurifier_coap" = "debug";
+        };
+      };
       http = {
         server_host = "0.0.0.0";
         server_port = 8123;
@@ -190,15 +196,18 @@
     ''}")
     ("+${pkgs.writeShellScript "install-philips-airpurifier-coap" ''
       mkdir -p /var/lib/hass/custom_components
-      # Copy from ritiek's fork on make-api-compatible-with-upstream-ha branch
-      if [ ! -d "/var/lib/hass/custom_components/philips_airpurifier_coap" ]; then
-        cp -r ${pkgs.fetchFromGitHub {
-          owner = "ritiek";
-          repo = "philips-airpurifier-coap";
-          rev = "make-api-compatible-with-upstream-ha";
-          sha256 = "sha256-7zzL18s0FLdc3XatVITnP4vt85JOWspD2X94y+Onwt8=";
-        }}/custom_components/philips_airpurifier_coap /var/lib/hass/custom_components/
-        chown -R hass:hass /var/lib/hass/custom_components/philips_airpurifier_coap
+      SRC=${pkgs.fetchFromGitHub {
+        owner = "kongo09";
+        repo = "philips-airpurifier-coap";
+        rev = "v0.36.2";
+        sha256 = "sha256-aVCfUuwPW+0L+OuOoLV0cPezZVKHtO39p/TK/gy2jdg=";
+      }}/custom_components/philips_airpurifier_coap
+      DST=/var/lib/hass/custom_components/philips_airpurifier_coap
+      if [ ! -f "$DST/.nix-src" ] || [ "$(cat $DST/.nix-src)" != "$SRC" ]; then
+        rm -rf "$DST"
+        cp -r "$SRC" "$DST"
+        echo "$SRC" > "$DST/.nix-src"
+        chown -R hass:hass "$DST"
       fi
     ''}")
     ("+${pkgs.writeShellScript "install-uptime-card" ''
