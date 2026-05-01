@@ -283,7 +283,7 @@
           };
           aarch64-linux = {
             url = "https://github.com/lightpanda-io/browser/releases/download/${version}/lightpanda-aarch64-linux";
-            hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+            hash = "sha256-jKHb2a+6w2hGbpWmCHyyiFyoTN08YphxebiycL4SAic=";
           };
         };
         platformBin = binaries.${system} or null;
