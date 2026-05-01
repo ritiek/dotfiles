@@ -198,6 +198,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    lightpanda-browser = {
+      url = "github:lightpanda-io/browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     # XXX: Switch back to vanilla rbw from nixpkgs once this PR gets merged
     # and released:
     # https://github.com/doy/rbw/pull/280
@@ -265,6 +271,39 @@
       extra-substituters = cache.substituters;
       extra-trusted-public-keys = cache.trusted-public-keys;
     };
+
+    packages = inputs.flake-utils.lib.eachDefaultSystemMap (system:
+      let
+        pkgs = import inputs.nixpkgs { inherit system; };
+        version = "0.2.9";
+        binaries = {
+          x86_64-linux = {
+            url = "https://github.com/lightpanda-io/browser/releases/download/${version}/lightpanda-x86_64-linux";
+            hash = "sha256-VL65btP2Ob7MT9JjproKabYOXn4D72/lDZxjR6PqOV0=";
+          };
+          aarch64-linux = {
+            url = "https://github.com/lightpanda-io/browser/releases/download/${version}/lightpanda-aarch64-linux";
+            hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          };
+        };
+        platformBin = binaries.${system} or null;
+      in pkgs.lib.optionalAttrs (platformBin != null) {
+        lightpanda = pkgs.stdenv.mkDerivation {
+          pname = "lightpanda";
+          inherit version;
+          src = pkgs.fetchurl {
+            url = platformBin.url;
+            hash = platformBin.hash;
+          };
+          dontUnpack = true;
+          nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+          buildInputs = [ pkgs.glibc ];
+          installPhase = ''
+            install -Dm755 $src $out/bin/lightpanda
+          '';
+        };
+      }
+    );
 
     nixosConfigurations.mishy = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
