@@ -216,6 +216,7 @@ in
     "xiaomi_api.key" = {};
     "github_copilot.refresh" = {};
     "github_copilot.access" = {};
+    "searx.url" = {};
   };
 
   home.packages = [
@@ -282,7 +283,7 @@ in
       - You're working with NixOS. Use `nix-shell -p` or comma (e.g. `, cowsay hi`)
         to run any tools not currently available on the system.
       - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
-        to rebuild NixOS configuration.
+        to rebuild NixOS configuration and do NOT use `home-manager switch`.
     '';
       # - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
       #   through code and files.
@@ -426,7 +427,17 @@ in
               pkgs.python3
             ];
             GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
-            SEARXNG_BASE_URL = "http://pilab.lion-zebra.ts.net:6040/";
+            SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}";
+            # XXX: Disable external browser due to memory constraints causing MCP timeouts in OpenCode.
+            KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.writeShellScript "lightpanda-cdp-wrapper" ''
+              PORT=9222
+              for arg in "$@"; do
+                case "$arg" in
+                  --remote-debugging-port=*) PORT="''${arg#*=}" ;;
+                esac
+              done
+              exec ${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda serve --host 127.0.0.1 --port "$PORT"
+            ''}";
           };
         };
         # NOTE: context7-mcp is automatically disabled on machines with baseline bun
@@ -445,6 +456,7 @@ in
         playwright = {
           enabled = true;
           type = "local";
+          timeout = 10000;
           # Use wrapper script instead of direct command to enable parallel agents
           # with copied user-data-dir (preserves login sessions without conflicts)
           command = [
@@ -559,9 +571,12 @@ in
           mode = "primary";
           description = "Code Debugging Agent";
           prompt = ''
-            # Code Debugging Agent
-
             You are a senior software engineer specializing in code analysis and debugging.
+
+            ## Startup
+            At the start of every session, load the following skills using the skill tool:
+            - `karpathy-guidelines` — behavioral guidelines for careful, minimal code changes
+            - `caveman` — ultra-compressed communication mode (full intensity)
 
             ## Guidelines
             - Skim through the codebase initially. Continue gaining a better understanding of the
@@ -591,8 +606,6 @@ in
           mode = "primary";
           description = "Browser Agent";
           prompt = ''
-            # Browser Agent
-
             You are a professional software engineer who uses the playwright tool to interact
             with the Internet.
 
@@ -617,6 +630,7 @@ in
             # Avoid installing browsers during confusion since browsers can't be installed
             # in NixOS through the approach taken by this tool.
             playwright_browser_install = false;
+            task = false;
           };
           temperature = 0.2;
         };
@@ -624,8 +638,6 @@ in
           mode = "primary";
           description = "Sensei Agent";
           prompt = ''
-            # Sensei Agent
-
             You are a professional software engineer who'll mentor the user.
 
             ## Guidelines
@@ -645,8 +657,6 @@ in
           mode = "primary";
           description = "Conversational Agent";
           prompt = ''
-            # Conversational Agent
-
             Engage in meaningful and context-aware conversations with the user. Be rational.
           '';
           tools = {
@@ -661,6 +671,22 @@ in
           description = "MCP-less Agent (no MCP tools)";
           tools = {
             "*" = false;
+          };
+        };
+        research = {
+          mode = "subagent";
+          description = "Research and Web-Search Agent";
+          prompt = ''
+            You are in research mode. Focus on:
+
+            - Multiple web-searches using variety of search terms by playing the devil's advocate
+              to challenge assumptions and gather perspective.
+            - Return concise, structured information and strip raw data dumps.
+          '';
+          temperature = 0.2;
+          tools = {
+            "*" = false;
+            "kindly-web-search*" = true;
           };
         };
       };
