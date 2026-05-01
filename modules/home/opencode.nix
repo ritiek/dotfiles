@@ -10,56 +10,6 @@ let
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
 
-   # Patched meridian that strips Claude Code detection triggers from system prompts.
-   # Triggers: github.com/*/opencode URLs and <env>...</env> XML blocks.
-   meridian-patched = pkgs.stdenv.mkDerivation {
-    pname = "meridian-patched";
-    version = "1.38.0";
-    src = inputs.meridian.packages.${pkgs.stdenv.hostPlatform.system}.meridian;
-    dontUnpack = true;
-    dontBuild = true;
-    nativeBuildInputs = [ pkgs.nodejs_22 ];
-    installPhase = ''
-      cp -r $src $out
-      chmod -R u+w $out
-
-      # Patch cli-fhhxrkyc.js to strip detection triggers from system prompts
-      export OUT="$out"
-      node << 'PATCH_EOF'
-        const fs = require('fs');
-        const f = process.env.OUT + '/lib/meridian/dist/cli-fhhxrkyc.js';
-        let c = fs.readFileSync(f, 'utf8');
-        // Patch 1: OpenAI-format path (result.system = systemPrompt)
-        const before1 = 'result.system = systemPrompt;';
-        const after1 = [
-          'result.system = systemPrompt',
-          '  .replace(/https:\\/\\/github\\.com\\/[^\\/\\s]+\\/opencode\\b/g, "")',
-          '  .replace(/<env>[\\s\\S]*?<\\/env>/g, "");'
-        ].join('\n    ');
-        if (!c.includes(before1)) { console.error("PATCH1 FAILED: target string not found"); process.exit(1); }
-        c = c.replace(before1, after1);
-        console.log('Patched cli-fhhxrkyc.js patch1 OK');
-
-        // Patch 2: Anthropic-format path (systemContext from body.system array)
-        const before2 = 'const adapterTransforms = getAdapterTransforms(adapter.name);';
-        const after2 = [
-          'systemContext = systemContext',
-          '  .replace(/https:\\/\\/github\\.com\\/[^\\/\\s]+\\/opencode\\b/g, "")',
-          '  .replace(/<env>[\\s\\S]*?<\\/env>/g, "");',
-          'const adapterTransforms = getAdapterTransforms(adapter.name);'
-        ].join('\n        ');
-        if (!c.includes(before2)) { console.error("PATCH2 FAILED: target string not found"); process.exit(1); }
-        c = c.replace(before2, after2);
-        fs.writeFileSync(f, c);
-        console.log('Patched cli-fhhxrkyc.js patch2 OK');
-PATCH_EOF
-
-      # Fix bin/meridian wrapper to point to patched cli.js in $out
-      printf '#! %s/bin/bash -e\nexec "%s/bin/node" "%s/lib/meridian/dist/cli.js" "$@"\n' \
-        "${pkgs.bash}" "${pkgs.nodejs_22}" "$out" > $out/bin/meridian
-      chmod +x $out/bin/meridian
-    '';
-  };
 
   ocx-pkg = pkgs.stdenv.mkDerivation {
     pname = "ocx";
@@ -180,16 +130,14 @@ in
 
   services.meridian = {
     enable = true;
-    package = meridian-patched;
     settings = {
       port = 3456;
-      host = "127.0.0.1";
+      host = "0.0.0.0";
       defaultAgent = "opencode";
       sonnetModel = "claude-sonnet-4-6";
     };
     environment = {
-      MERIDIAN_BETA_POLICY = "strip-all";
-      MERIDIAN_STRIP_CACHE_CONTROL = "1";
+      PATH = pkgs.lib.makeBinPath [ pkgs.nodejs_24 ] + ":/etc/profiles/per-user/${config.home.username}/bin";
       MERIDIAN_IDLE_TIMEOUT_SECONDS = "300";
     };
   };
@@ -471,7 +419,7 @@ in
         playwright = {
           enabled = true;
           type = "local";
-          timeout = 10000;
+          timeout = 30000;
           # Use wrapper script instead of direct command to enable parallel agents
           # with copied user-data-dir (preserves login sessions without conflicts)
           command = [
