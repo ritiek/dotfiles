@@ -606,12 +606,17 @@ in
             You are in research mode. Focus on:
 
             - Multiple web-searches using variety of search terms by playing the devil's advocate
-              to challenge assumptions and gather perspective.
-            - Return concise, structured information and strip raw data dumps.
+              to challenge assumptions and gather perspective from ALL angles.
+            - Most relevant sources AFTER explicitly finding out today's date and time using
+              `homeassistant_GetDateTime` tool or (if that is unavailable) from `https://time.now/developer/api/ip`
+              JSON API endpoint.
+            - Concise, structured information and strip raw data dumps.
           '';
           temperature = 0.2;
           tools = {
             "*" = false;
+            homeassistant_GetDateTime = true;
+            webfetch = true;
             "kindly-web-search*" = true;
           };
         };
