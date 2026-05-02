@@ -11,6 +11,7 @@
     ./../../modules/sops.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
+    ./../../modules/3proxy.nix
   ];
 
   sops.secrets = {

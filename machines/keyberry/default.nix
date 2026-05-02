@@ -11,6 +11,7 @@
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
+    ./../../modules/3proxy.nix
     ./../../modules/restic-server.nix
     ./gpio/dht22.nix
   ];

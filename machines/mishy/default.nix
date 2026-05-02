@@ -19,6 +19,7 @@
     ./../../modules/sunshine.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
+    ./../../modules/3proxy.nix
     # ./../../modules/mullvad.nix
     # inputs.shabitica-nix.nixosModules."x86_64-linux".default
   ];
