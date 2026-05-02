@@ -658,6 +658,9 @@ in
 
   networking.firewall = {
     allowedTCPPorts = [
+      # 3proxy HTTP proxy
+      8090
+
       # NGINX and ACME
       80
       443
