@@ -10,7 +10,7 @@
       {
         type = "proxy";
         bindAddress = "0.0.0.0";
-        bindPort = 8888;
+        bindPort = 8090;
         auth = [ "strong" ];
         acl = [
           { rule = "allow"; }
