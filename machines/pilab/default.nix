@@ -77,6 +77,7 @@
     ./compose/manyfold
     ./compose/linkding
     ./compose/open-archiver
+    ./compose/meridian
     # ./compose/kopia
   ];
 
