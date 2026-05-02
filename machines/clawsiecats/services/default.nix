@@ -16,9 +16,6 @@ in
     };
     "syncplay.password" = {};
     "mail.me" = {};
-    "searx.env" = {
-      owner = "searx";
-    };
     "searx.htpasswd" = {
       owner = "nginx";
     };
@@ -27,7 +24,6 @@ in
   environment.persistence."/nix/persist/system" = {
     directories = [
       "/var/lib/acme"
-      "/var/lib/searx"
       "/var/lib/jitsi-meet"
       "/var/lib/prosody"
       "/var/lib/netbird"
@@ -66,26 +62,6 @@ in
   # };
 
   services = {
-    searx = {
-      enable = true;
-      package = pkgs.searxng;
-      settings = {
-        use_default_settings = true;
-        server = {
-          port = 8085;
-          bind_address = "127.0.0.1";
-          secret_key = "$SEARX_SECRET_KEY";
-        };
-        ui = {
-          default_locale = "en";
-        };
-        search = {
-          formats = [ "html" "json" ];
-        };
-      };
-      environmentFile = config.sops.secrets."searx.env".path;
-    };
-
     jitsi-meet = {
       enable = true;
       hostName = "jitsi.${domain}";
@@ -479,8 +455,11 @@ in
           enableACME = true;
           basicAuthFile = config.sops.secrets."searx.htpasswd".path;
           locations."/" = {
-            proxyPass = "http://searxng_pool";
             recommendedProxySettings = true;
+            extraConfig = ''
+              set $upstream "pilab.lion-zebra.ts.net:6040";
+              proxy_pass http://$upstream;
+            '';
           };
         };
 
@@ -600,14 +579,6 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-      };
-      upstreams."searxng_pool" = {
-        extraConfig = ''
-          random;
-          server 127.0.0.1:8085 max_fails=2 fail_timeout=5s;
-          server pilab.lion-zebra.ts.net:6040 max_fails=2 fail_timeout=5s;
-          keepalive 4;
-        '';
       };
       streamConfig = ''
         resolver 127.0.0.53;
