@@ -10,6 +10,7 @@
     ./services/restic.nix
     ./services/lsyncd.nix
     ./services/home-assistant
+    ./services/3proxy.nix
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
