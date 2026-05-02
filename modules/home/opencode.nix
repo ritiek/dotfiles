@@ -592,13 +592,13 @@ in
           };
           temperature = 0.4;
         };
-        mcpless = {
-          mode = "primary";
-          description = "MCP-less Agent (no MCP tools)";
-          tools = {
-            "*" = false;
-          };
-        };
+        # mcpless = {
+        #   mode = "primary";
+        #   description = "MCP-less Agent (no MCP tools)";
+        #   tools = {
+        #     "*" = false;
+        #   };
+        # };
         research = {
           mode = "subagent";
           description = "Research and Web-Search Agent";
@@ -618,6 +618,10 @@ in
             homeassistant_GetDateTime = true;
             webfetch = true;
             "kindly-web-search*" = true;
+            "github*" = true;
+            "context7*" = true;
+            "nixos*" = true;
+            "indmoney*" = true;
           };
         };
       };
