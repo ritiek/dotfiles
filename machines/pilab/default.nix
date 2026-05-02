@@ -10,7 +10,6 @@
     ./services/restic.nix
     ./services/lsyncd.nix
     ./services/home-assistant
-    ./services/3proxy.nix
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
@@ -19,6 +18,7 @@
     ./../../modules/netbird.nix
     ./../../modules/attic.nix
     ./../../modules/usbipd.nix
+    ./../../modules/3proxy.nix
     # Generated using:
     # $ compose2nix --env_files=stack.env --include_env_files=true --check_systemd_mounts=true --auto_start=false --remove_volumes=true --runtime=docker
     ./compose/pihole
