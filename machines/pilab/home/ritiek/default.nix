@@ -45,6 +45,7 @@ in
     ./services/radicle.nix
     ./../../../../scripts/home/spotdl-patched.nix
     ./../../../../scripts/home/immich-env.nix
+    ./../../../../scripts/home/tradingagents.nix
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
     ./../../../../modules/home/gnupg.nix
