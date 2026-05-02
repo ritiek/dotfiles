@@ -197,6 +197,7 @@ in
           systemctl start autostart-manyfold.service
           systemctl start autostart-linkding.service
           systemctl start docker-open-archiver.service
+          systemctl start autostart-meridian-proxy.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -268,6 +269,7 @@ in
         systemctl stop docker-compose-manyfold-root.target
         systemctl stop autostart-linkding.service docker-compose-linkding-root.target
         systemctl stop docker-compose-open-archiver-root.target
+        systemctl stop autostart-meridian-proxy.service autostart-docker-compose-meridian-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
