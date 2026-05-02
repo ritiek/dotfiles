@@ -124,6 +124,15 @@ let
     # Launch playwright MCP server with copied profile
     exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp "''${ARGS[@]}" "$@"
   '';
+
+  lightpanda-cdp-proxy-py = pkgs.writeText "lightpanda-cdp-proxy.py" (builtins.readFile ./lightpanda-cdp-proxy.py);
+  lightpanda-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
+  # Named "chromium" so nodriver's find_chrome_executable() finds it in PATH.
+  # nodriver searches PATH for: google-chrome, chromium, chromium-browser, chrome, google-chrome-stable.
+  lightpanda-cdp-wrapper = pkgs.writeShellScriptBin "chromium" ''
+    export LIGHTPANDA_BIN=${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda
+    exec ${lightpanda-proxy-env}/bin/python3 ${lightpanda-cdp-proxy-py} "$@"
+  '';
 in
 {
   sops.secrets = {
@@ -338,6 +347,7 @@ in
               pkgs.git
               pkgs.coreutils
               pkgs.python3
+              lightpanda-cdp-wrapper
             ];
             GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
             SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}";
@@ -351,15 +361,7 @@ in
             #     --disable-dev-shm-usage \
             #     "$@"
             # ''}";
-            KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.writeShellScript "lightpanda-cdp-wrapper" ''
-              PORT=9222
-              for arg in "$@"; do
-                case "$arg" in
-                  --remote-debugging-port=*) PORT="''${arg#*=}" ;;
-                esac
-              done
-              exec ${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda serve --host 127.0.0.1 --port "$PORT"
-            ''}";
+            KINDLY_BROWSER_EXECUTABLE_PATH = "${lightpanda-cdp-wrapper}/bin/chromium";
             KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "300";
             KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
             KINDLY_WEB_SEARCH_MAX_CONCURRENCY = "3";
