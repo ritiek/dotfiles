@@ -78,6 +78,7 @@
     ./compose/linkding
     ./compose/open-archiver
     ./compose/meridian
+    ./compose/audiomuse
     # ./compose/kopia
   ];
 
