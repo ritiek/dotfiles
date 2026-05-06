@@ -725,7 +725,7 @@ home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBou
   '';
 
   home.activation.opencode-worktree = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/worktree.ts" ]; then
+    if [ ! -f "${config.home.homeDirectory}/.opencode/plugins/worktree.ts" ]; then
       PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx init --cwd "${config.home.homeDirectory}" || true
       PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx add kdco/worktree --from https://registry.kdco.dev --cwd "${config.home.homeDirectory}"
     fi

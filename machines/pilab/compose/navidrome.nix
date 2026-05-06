@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, homelabMediaPath, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -39,16 +39,22 @@ in lib.mkMerge [
       "ND_LOGLEVEL" = "info";
       "ND_SCANSCHEDULE" = "1h";
       "ND_SESSIONTIMEOUT" = "24h";
+      "ND_PLUGINS_ENABLED" = "true";
+      "ND_PLUGINS_AUTORELOAD" = "true";
+      "ND_AGENTS" = "audiomuseai,lastfm,spotify,deezer";
+      "ND_DEVARTISTINFOTIMETOLIVE" = "1s";
     };
     volumes = [
       "${homelabMediaPath}/services/navidrome:/data:rw"
       "${homelabMediaPath}/services/spotdl:/music:ro"
     ];
-    ports = [ "127.0.0.1:${toString internalWebUIPort}:4533/tcp" ];  # Internal port only
+    ports = [ "0.0.0.0:${toString internalWebUIPort}:4533/tcp" ];  # Bind on all interfaces so Docker DNAT works for container-to-container access
     user = "1000:1000";
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
+      "--add-host=host.docker.internal:host-gateway"
+      "--dns=${lib.head (lib.splitString "/" config.virtualisation.docker.daemon.settings.bip)}"
       "--network-alias=navidrome"
       "--network=navidrome_default"
     ];

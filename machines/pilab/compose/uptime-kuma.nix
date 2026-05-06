@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, homelabMediaPath, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -22,9 +22,7 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
-      "--dns=100.100.100.100"
-      "--dns=1.1.1.1"
-      "--dns=8.8.8.8"
+      "--dns=${lib.head (lib.splitString "/" config.virtualisation.docker.daemon.settings.bip)}"
       "--network-alias=uptime-kuma"
       "--network=uptime-kuma_default"
     ];

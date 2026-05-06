@@ -59,10 +59,14 @@
     after = [
       "docker-network-audiomuse_default.service"
       "docker-volume-audiomuse_temp-audio-flask.service"
+      "docker-audiomuse-redis.service"
+      "docker-audiomuse-postgres.service"
     ];
     requires = [
       "docker-network-audiomuse_default.service"
       "docker-volume-audiomuse_temp-audio-flask.service"
+      "docker-audiomuse-redis.service"
+      "docker-audiomuse-postgres.service"
     ];
   };
   virtualisation.oci-containers.containers."audiomuse-ai-worker-instance" = {
@@ -90,6 +94,7 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
+      "--cpus=1"
       "--dns=${lib.head (lib.splitString "/" config.virtualisation.docker.daemon.settings.bip)}"
       "--network-alias=audiomuse-ai-worker"
       "--network=audiomuse_default"
@@ -105,10 +110,14 @@
     after = [
       "docker-network-audiomuse_default.service"
       "docker-volume-audiomuse_temp-audio-worker.service"
+      "docker-audiomuse-redis.service"
+      "docker-audiomuse-postgres.service"
     ];
     requires = [
       "docker-network-audiomuse_default.service"
       "docker-volume-audiomuse_temp-audio-worker.service"
+      "docker-audiomuse-redis.service"
+      "docker-audiomuse-postgres.service"
     ];
   };
   virtualisation.oci-containers.containers."audiomuse-postgres" = {
@@ -145,7 +154,7 @@
       "docker-network-audiomuse_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/audiomuse/postgresql"
+      "${homelabMediaPath}/services/audiomuse/postgresql"
     ];
   };
   virtualisation.oci-containers.containers."audiomuse-redis" = {
@@ -179,7 +188,7 @@
       "docker-network-audiomuse_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "/media/HOMELAB_MEDIA/services/audiomuse/redis"
+      "${homelabMediaPath}/services/audiomuse/redis"
     ];
   };
 
