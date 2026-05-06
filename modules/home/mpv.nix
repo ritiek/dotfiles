@@ -15,6 +15,8 @@
       force-seekable = "";
       # hwdec = "auto-safe";
       # vo = "gpu";
+      # vo = "wlshm";
+      vo = "dmabuf-wayland";
       # profile = "gpu-hq";
       # gpu-context = "wayland";
       osc = "yes";
