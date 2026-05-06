@@ -251,5 +251,7 @@ let
 
 in
 {
+  _module.args.spotdl-patched-pkg = spotdl-patched;
+
   home.packages = [ spotdl-patched ];
 }

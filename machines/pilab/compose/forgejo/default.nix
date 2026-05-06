@@ -36,10 +36,7 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
-      "--dns=1.1.1.1"
-      "--dns=100.100.100.100"
-      "--dns=172.17.0.1"
-      "--dns=8.8.8.8"
+      "--dns=${lib.head (lib.splitString "/" config.virtualisation.docker.daemon.settings.bip)}"
       "--network-alias=server"
       "--network=forgejo_forgejo"
     ];

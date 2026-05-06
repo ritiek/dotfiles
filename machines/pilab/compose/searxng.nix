@@ -80,7 +80,7 @@ in lib.mkMerge [
   virtualisation.oci-containers.containers."redis" = {
     image = "docker.io/valkey/valkey:8-alpine";
     volumes = [
-      "${homelabMediaPath}/searxng/redis:/data:rw"
+      "${homelabMediaPath}/services/searxng/redis:/data:rw"
     ];
     cmd = [ "valkey-server" "--save" "30" "1" "--loglevel" "warning" ];
     log-driver = "journald";
