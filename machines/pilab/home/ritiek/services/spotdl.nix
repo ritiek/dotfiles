@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, spotdl-patched-pkg, ... }:
 
 let
   spotdl-sync = (pkgs.writeShellScriptBin "spotdl-sync" ''
@@ -7,7 +7,7 @@ let
         
       # Check if any .spotdl files exist
       if ${pkgs.coreutils}/bin/ls *.spotdl 1> /dev/null 2>&1; then
-        spotdl-patched sync *.spotdl --sync-without-deleting --scan-for-songs --overwrite=skip --threads=10
+        ${spotdl-patched-pkg}/bin/spotdl-patched sync *.spotdl --sync-without-deleting --scan-for-songs --overwrite=skip --threads=10
         spotdl_exit_code=$?
             
         if [ $spotdl_exit_code -ne 0 ]; then
