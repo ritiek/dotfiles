@@ -363,8 +363,8 @@ in
             #     "$@"
             # ''}";
             KINDLY_BROWSER_EXECUTABLE_PATH = "${lightpanda-cdp-wrapper}/bin/chromium";
-            KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "45";
-            KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "60";
+            KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "300";
+            KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
             KINDLY_WEB_SEARCH_MAX_CONCURRENCY = "3";
             # KINDLY_DIAGNOSTICS = "1";
           };
