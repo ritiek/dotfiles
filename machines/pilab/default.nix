@@ -79,6 +79,7 @@
     ./compose/open-archiver
     ./compose/meridian
     ./compose/audiomuse
+    ./compose/grampsweb.nix
     # ./compose/kopia
   ];
 

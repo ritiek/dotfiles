@@ -83,7 +83,7 @@
     refreshInterval ? 3,
     requiredMounts ? [],
     rootTarget ? "docker-compose-${dockerServiceName}-root.target",
-    idleCheckInterval ? "*:0/10",  # Every 5 minutes
+    idleCheckInterval ? "*:0/10",  # Every 10 minutes
     # Optional: custom startup command (defaults to starting the docker service)
     startCommand ? "systemctl start docker-${dockerServiceName}.service",
     # Optional: custom stop command (defaults to stopping the root target)

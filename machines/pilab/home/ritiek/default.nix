@@ -199,6 +199,7 @@ in
           systemctl start docker-open-archiver.service
           systemctl start autostart-meridian-proxy.service
           systemctl start docker-audiomuse-ai-flask-app.service docker-audiomuse-ai-worker-instance.service
+          systemctl start autostart-grampsweb.service
           # systemctl start docker-kopia.service
 
           machinectl shell ${config.home.username}@ ${pkgs.systemd}/bin/systemctl --user start spotdl-sync.timer
@@ -273,6 +274,7 @@ in
         systemctl stop autostart-meridian-proxy.service autostart-docker-compose-meridian-root.target
         systemctl stop docker-compose-open-archiver-root.target
         systemctl stop docker-compose-audiomuse-root.target
+        systemctl stop autostart-grampsweb.service docker-compose-grampsweb-root.target
         # systemctl stop docker-compose-kopia-root.target
 
 
