@@ -18,6 +18,7 @@ let
       "${homelabMediaPath}/services/searxng/config"
     ];
     silent = true;
+    waitTimeout = 60;
     startCommand = "systemctl start docker-redis.service docker-searxng.service";
     stopCommand = "systemctl stop docker-compose-searxng-root.target";
   };
