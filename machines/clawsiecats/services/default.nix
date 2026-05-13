@@ -295,6 +295,18 @@ in
             '';
           };
         };
+        "calibre.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+            extraConfig = ''
+              set $upstream "pilab.lion-zebra.ts.net:8083";
+              proxy_pass http://$upstream;
+            '';
+          };
+        };
         "controlplane.${domain}" = {
           forceSSL = true;
           enableACME = true;
