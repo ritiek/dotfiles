@@ -459,6 +459,8 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:6040";
               proxy_pass http://$upstream;
+              proxy_read_timeout 120s;
+              proxy_connect_timeout 120s;
             '';
           };
         };
