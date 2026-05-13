@@ -12,6 +12,7 @@ let
     dockerServiceName = "calibre-web-automated";
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
+    silent = true;
     requiredMounts = [
       "${homelabMediaPath}/services/calibre/config"
       "${homelabMediaPath}/services/calibre/ingest"
