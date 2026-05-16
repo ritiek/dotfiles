@@ -304,9 +304,24 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:8083";
               proxy_pass http://$upstream;
+              proxy_buffer_size   1024k;
+              proxy_buffers       4 512k;
+              proxy_busy_buffers_size 1024k;
             '';
           };
         };
+        # "trmnl.${domain}" = {
+        #   forceSSL = true;
+        #   enableACME = true;
+        #   locations."/" = {
+        #     # Need this enabled to avoid header request issues.
+        #     recommendedProxySettings = true;
+        #     extraConfig = ''
+        #       set $upstream "pilab.lion-zebra.ts.net:8093";
+        #       proxy_pass http://$upstream;
+        #     '';
+        #   };
+        # };
         "controlplane.${domain}" = {
           forceSSL = true;
           enableACME = true;
