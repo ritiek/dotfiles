@@ -16,7 +16,8 @@
       # hwdec = "auto-safe";
       # vo = "gpu";
       # vo = "wlshm";
-      vo = "dmabuf-wayland";
+      # vo = "dmabuf-wayland";
+      vo = "gpu-next";
       # profile = "gpu-hq";
       # gpu-context = "wayland";
       osc = "yes";
