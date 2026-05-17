@@ -158,7 +158,47 @@ async def handle_ws_root(reader, writer):
                 await writer.drain()
                 continue
             if opcode in (1, 2):
-                await lp.send(payload.decode() if opcode == 1 else payload)
+                # nodriver sends "params": [] for commands with no params; normalize to {}
+                try:
+                    msg = json.loads(payload)
+                    if isinstance(msg.get("params"), list) and not msg["params"]:
+                        msg["params"] = {}
+                    # lightpanda doesn't support Target.attachToBrowserTarget; fake success
+                    if msg.get("method") == "Target.attachToBrowserTarget":
+                        # First send AttachedToTarget event so nodriver sets browser.target.type_ = "browser"
+                        event = {
+                            "method": "Target.attachedToTarget",
+                            "params": {
+                                "sessionId": "proxy-browser-session",
+                                "targetInfo": {
+                                    "targetId": "browser",
+                                    "type": "browser",
+                                    "title": "Lightpanda",
+                                    "url": "",
+                                    "attached": True,
+                                    "canAccessOpener": False,
+                                    "browserContextId": ""
+                                },
+                                "waitingForDebugger": False
+                            }
+                        }
+                        q.put_nowait(event)
+                        fake = {"id": msg["id"], "result": {"sessionId": "proxy-browser-session"}}
+                        q.put_nowait(fake)
+                        continue
+                    # strip fake browser session id before forwarding to lightpanda
+                    if msg.get("sessionId") == "proxy-browser-session":
+                        msg.pop("sessionId", None)
+                    # lightpanda hangs on DOM.getDocument(depth=-1) for complex pages;
+                    # use depth=0 instead - nodriver will then call DOM.getOuterHTML
+                    # which works correctly with backendNodeId=1
+                    if msg.get("method") == "DOM.getDocument":
+                        params = msg.get("params") or {}
+                        if isinstance(params, dict) and params.get("depth") == -1:
+                            msg["params"] = {"depth": 0, "pierce": False}
+                    await lp.send(json.dumps(msg))
+                except (json.JSONDecodeError, TypeError):
+                    await lp.send(payload.decode() if opcode == 1 else payload)
 
     async def l2c():
         while True:
@@ -202,6 +242,9 @@ async def handle_ws_target(reader, writer, target_id: str):
                 msg["sessionId"] = sid
                 if mid is not None:
                     _session_pending[mid] = sid
+                # nodriver sends "params": [] for commands with no params; normalize to {}
+                if isinstance(msg.get("params"), list) and not msg["params"]:
+                    msg["params"] = {}
                 await lp.send(json.dumps(msg))
 
     async def l2c():
@@ -339,6 +382,16 @@ async def main():
     else:
         print(f"lightpanda failed to start on port {LP_PORT}", file=sys.stderr)
         sys.exit(1)
+
+    # Pre-create a blank page target so that Target.getTargets returns at least one
+    # page target. The kindly-web-search worker requires an existing page target;
+    # without one it falls back to browser.connection.send() which is always None
+    # in the nodriver Browser class.
+    try:
+        r = await lp_cmd("Target.createTarget", {"url": "about:blank"})
+        print(f"Pre-created lightpanda target: {r.get('result', {}).get('targetId')}", file=sys.stderr)
+    except Exception as e:
+        print(f"Warning: could not pre-create lightpanda target: {e}", file=sys.stderr)
 
     server = await asyncio.start_server(handle_connection, PROXY_HOST, PROXY_PORT)
     try:
