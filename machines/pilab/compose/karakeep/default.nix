@@ -16,7 +16,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."karakeep-chrome" = {
-    image = "gcr.io/zenika-hub/alpine-chrome:123";
+    image = "gcr.io/zenika-hub/alpine-chrome:124";
     environmentFiles = [
       config.sops.secrets."compose/karakeep.env".path
     ];
@@ -46,7 +46,7 @@
     wantedBy = [ "docker-compose-karakeep-root.target" ];
   };
   virtualisation.oci-containers.containers."karakeep-meilisearch" = {
-    image = "getmeili/meilisearch:v1.13.3";
+    image = "getmeili/meilisearch:v1.41.0";
     environment = {
       "MEILI_NO_ANALYTICS" = "true";
     };
