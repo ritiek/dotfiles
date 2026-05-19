@@ -120,21 +120,9 @@
           exit 1
         fi
 
-        # Service is already running, check if it's responding
-        if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
-          echo "${serviceName} is ready, proxying connection..." >&2
-          exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
-        else
-          # Wait a moment and try again
-          sleep 2
-          if ${pkgs.curl}/bin/curl -s --connect-timeout 2 http://127.0.0.1:${toString internalPort}${healthEndpoint} >/dev/null 2>&1; then
-            echo "${serviceName} is ready, proxying connection..." >&2
-            exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
-          else
-            echo "${serviceName} not responding after retry" >&2
-            exit 1
-          fi
-        fi
+        # Service is already running, proxy directly
+        echo "${serviceName} is ready, proxying connection..." >&2
+        exec ${pkgs.socat}/bin/socat - TCP:127.0.0.1:${toString internalPort}
       ''
     else
       # Normal mode: show loading pages
