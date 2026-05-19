@@ -277,6 +277,8 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:2283";
               proxy_pass http://$upstream;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
             '';
           };
         };
@@ -292,6 +294,8 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:9446";
               proxy_pass http://$upstream;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
             '';
           };
         };
@@ -304,6 +308,25 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:8083";
               proxy_pass http://$upstream;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
+              proxy_buffer_size   1024k;
+              proxy_buffers       4 512k;
+              proxy_busy_buffers_size 1024k;
+            '';
+          };
+        };
+        "readeck.${domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          locations."/" = {
+            # Need this enabled to avoid header request issues.
+            recommendedProxySettings = true;
+            extraConfig = ''
+              set $upstream "pilab.lion-zebra.ts.net:2399";
+              proxy_pass http://$upstream;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
               proxy_buffer_size   1024k;
               proxy_buffers       4 512k;
               proxy_busy_buffers_size 1024k;
@@ -486,6 +509,8 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:6040";
               proxy_pass http://$upstream;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
               proxy_read_timeout 120s;
               proxy_connect_timeout 120s;
             '';
@@ -499,6 +524,8 @@ in
             extraConfig = ''
               set $upstream "pilab.lion-zebra.ts.net:7080";
               proxy_pass http://$upstream;
+              proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
               proxy_request_buffering off;
               proxy_max_temp_file_size 0;
 
@@ -518,6 +545,7 @@ in
 
               # Preserve headers needed by attic
               proxy_set_header Host $host;
+              proxy_set_header X-Forwarded-Proto $scheme;
               proxy_set_header X-Real-IP $remote_addr;
               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
               proxy_set_header X-Forwarded-Proto $scheme;
