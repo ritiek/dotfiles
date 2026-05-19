@@ -80,6 +80,7 @@
     ./compose/meridian
     ./compose/audiomuse
     ./compose/grampsweb.nix
+    ./compose/readeck.nix
     # ./compose/kopia
   ];
 
