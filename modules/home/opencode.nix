@@ -125,13 +125,25 @@ let
     exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp "''${ARGS[@]}" "$@"
   '';
 
-  lightpanda-cdp-proxy-py = pkgs.writeText "lightpanda-cdp-proxy.py" (builtins.readFile ./lightpanda-cdp-proxy.py);
-  lightpanda-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
+  # lightpanda-cdp-proxy-py = pkgs.writeText "lightpanda-cdp-proxy.py" (builtins.readFile ./lightpanda-cdp-proxy.py);
+  # lightpanda-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
+  # # Named "chromium" so nodriver's find_chrome_executable() finds it in PATH.
+  # # nodriver searches PATH for: google-chrome, chromium, chromium-browser, chrome, google-chrome-stable.
+  # lightpanda-cdp-wrapper = pkgs.writeShellScriptBin "chromium" ''
+  #   export LIGHTPANDA_BIN=${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda
+  #   exec ${lightpanda-proxy-env}/bin/python3 ${lightpanda-cdp-proxy-py} "$@"
+  # '';
+
+  # Cloud CDP proxy: tunnels nodriver's local CDP connections to Lightpanda cloud.
+  # Real Chrome backend -- no lightpanda CDP quirk workarounds needed.
+  # SearXNG is accessed directly by MCP code over HTTP (Tailscale), not through this proxy.
+  cloud-cdp-proxy-py = pkgs.writeText "cloud-cdp-proxy.py" (builtins.readFile ./cloud-cdp-proxy.py);
+  cloud-cdp-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
   # Named "chromium" so nodriver's find_chrome_executable() finds it in PATH.
-  # nodriver searches PATH for: google-chrome, chromium, chromium-browser, chrome, google-chrome-stable.
-  lightpanda-cdp-wrapper = pkgs.writeShellScriptBin "chromium" ''
-    export LIGHTPANDA_BIN=${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda
-    exec ${lightpanda-proxy-env}/bin/python3 ${lightpanda-cdp-proxy-py} "$@"
+  cloud-cdp-wrapper = pkgs.writeShellScriptBin "chromium" ''
+    TOKEN=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."lightpanda_cdp.token".path})
+    export CLOUD_CDP_WSS="wss://euwest.cloud.lightpanda.io/ws?token=$TOKEN&browser=chrome"
+    exec ${cloud-cdp-proxy-env}/bin/python3 ${cloud-cdp-proxy-py} "$@"
   '';
 in
 {
@@ -150,6 +162,7 @@ in
     "github_copilot.refresh" = {};
     "github_copilot.access" = {};
     "searx.url" = {};
+    "lightpanda_cdp.token" = {};
   };
 
   home.packages = [
@@ -165,6 +178,8 @@ in
     pkgs.procps
     pkgs.nodejs_24
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
@@ -239,7 +254,7 @@ in
       # $ curl -s https://opencode.ai/zen/v1/models | jq
 
       model = "anthropic/claude-sonnet-4-6";
-      small_model = "opencode/gpt-5-nano";
+      small_model = "anthropic/claude-haiku-4-5";
       provider = {
         "opencode".options.timeout = false;
         "anthropic" = {
@@ -348,7 +363,7 @@ in
               pkgs.git
               pkgs.coreutils
               pkgs.python3
-              lightpanda-cdp-wrapper
+              cloud-cdp-wrapper
             ];
             GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
             SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}";
@@ -362,7 +377,7 @@ in
             #     --disable-dev-shm-usage \
             #     "$@"
             # ''}";
-            KINDLY_BROWSER_EXECUTABLE_PATH = "${lightpanda-cdp-wrapper}/bin/chromium";
+            KINDLY_BROWSER_EXECUTABLE_PATH = "${cloud-cdp-wrapper}/bin/chromium";
             KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "300";
             KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
             KINDLY_WEB_SEARCH_MAX_CONCURRENCY = "3";
@@ -460,6 +475,25 @@ in
           url = "http://pilab.lion-zebra.ts.net:8123/mcp_server/sse";
           headers = {
             Authorization = "Bearer {file:${config.sops.secrets."home_assistant.long_lived_token".path}}";
+          };
+        };
+        codegraph = {
+          enabled = true;
+          type = "local";
+          command = [
+            "${pkgs.nodejs_24}/bin/node"
+            "${pkgs.nodejs_24}/bin/npx"
+            "-y"
+            "@colbymchenry/codegraph"
+            "serve"
+            "--mcp"
+          ];
+          environment = {
+            PATH = pkgs.lib.makeBinPath [
+              pkgs.nodejs_24
+              pkgs.bash
+              pkgs.coreutils
+            ];
           };
         };
         indmoney = {
@@ -719,7 +753,7 @@ in
     fi
   '';
 
-home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
       PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
     fi
