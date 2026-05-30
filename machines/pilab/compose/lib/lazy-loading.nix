@@ -217,7 +217,6 @@
     systemd.timers."autostop-${dockerServiceName}" = {
       timerConfig = {
         OnCalendar = idleCheckInterval;
-        Persistent = true;
         Unit = "autostop-${dockerServiceName}.service";
       };
     };

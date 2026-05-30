@@ -182,6 +182,17 @@
         chown hass:hass /var/lib/hass/configuration.yaml
       fi
     ''}")
+    ("+${pkgs.writeShellScript "add-script-include" ''
+      # Wait for config to be copied
+      sleep 2
+      # Add script include if not present
+      if ! grep -q "^script:" /var/lib/hass/configuration.yaml; then
+        echo "" >> /var/lib/hass/configuration.yaml
+        echo "# Include scripts from separate file" >> /var/lib/hass/configuration.yaml
+        echo "script: !include scripts.yaml" >> /var/lib/hass/configuration.yaml
+        chown hass:hass /var/lib/hass/configuration.yaml
+      fi
+    ''}")
     ("+${pkgs.writeShellScript "install-dawarich" ''
       mkdir -p /var/lib/hass/custom_components
       if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then

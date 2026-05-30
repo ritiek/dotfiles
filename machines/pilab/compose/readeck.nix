@@ -23,8 +23,10 @@ let
 in lib.mkMerge [
   lazyLoadingServices
   {
-  # Allow Docker containers to reach the lazy-loading proxy via host.docker.internal
-  networking.firewall.interfaces."docker0".allowedTCPPorts = [ webUIPort ];
+  # Allow Docker containers to reach the lazy-loading socat proxy via host.docker.internal.
+  # The socat listener binds to 0.0.0.0, so opening the port globally is sufficient.
+  # External access is blocked at the network perimeter (not exposed to WAN).
+  networking.firewall.allowedTCPPorts = [ webUIPort ];
 
   # Runtime
   virtualisation.docker = {
