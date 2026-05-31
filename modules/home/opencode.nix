@@ -28,6 +28,8 @@ let
     exec ${pkgs.bun}/bin/bun --no-env-file "${ocx-pkg}/dist/index.js" "$@"
   '';
 
+  searxDomain = "clawsiecats.lol";
+
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
 
@@ -366,7 +368,7 @@ in
               cloud-cdp-wrapper
             ];
             GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
-            SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}";
+            SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}.${searxDomain}/";
             # XXX: Disable external browser in case of memory constraints as they cause
             # MCP timeouts in OpenCode.
             # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
