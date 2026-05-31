@@ -1,7 +1,138 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  domain = "clawsiecats.lol";
+  primaryDomain = "clawsiecats.lol";
+  domains = [ primaryDomain "clawsiecats.omg.lol" ];
+
+  mkVhosts = domain: {
+    "jitsi.${domain}" = {
+      basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
+    };
+    "immich.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        recommendedProxySettings = true;
+        extraConfig = ''
+          set $upstream "pilab.lion-zebra.ts.net:2283";
+          proxy_pass http://$upstream;
+        '';
+      };
+    };
+    "vaultwarden.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        recommendedProxySettings = true;
+        extraConfig = ''
+          set $upstream "pilab.lion-zebra.ts.net:9446";
+          proxy_pass http://$upstream;
+        '';
+      };
+    };
+    "calibre.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        recommendedProxySettings = true;
+        extraConfig = ''
+          set $upstream "pilab.lion-zebra.ts.net:8083";
+          proxy_pass http://$upstream;
+          proxy_buffer_size   1024k;
+          proxy_buffers       4 512k;
+          proxy_busy_buffers_size 1024k;
+        '';
+      };
+    };
+    "controlplane.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8088";
+        proxyWebsockets = true;
+        recommendedProxySettings = true;
+      };
+    };
+    "headplane.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:3000";
+        recommendedProxySettings = true;
+      };
+    };
+    "search.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      basicAuthFile = config.sops.secrets."searx.htpasswd".path;
+      locations."/" = {
+        recommendedProxySettings = true;
+        extraConfig = ''
+          set $upstream "pilab.lion-zebra.ts.net:6040";
+          proxy_pass http://$upstream;
+          proxy_read_timeout 120s;
+          proxy_connect_timeout 120s;
+        '';
+      };
+    };
+    "attic.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        extraConfig = ''
+          set $upstream "pilab.lion-zebra.ts.net:7080";
+          proxy_pass http://$upstream;
+          proxy_request_buffering off;
+          proxy_max_temp_file_size 0;
+
+          # Timeouts for large binary cache uploads (10 minutes)
+          proxy_read_timeout 600s;
+          proxy_send_timeout 600s;
+          proxy_connect_timeout 600s;
+
+          # Increase body size limit for large NAR files
+          client_max_body_size 2g;
+
+          # Use HTTP/1.1 for better connection handling
+          proxy_http_version 1.1;
+
+          # Limit download bandwidth to 4 MB/s
+          limit_rate 4m;
+
+          # Preserve headers needed by attic
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Connection "";
+
+        # Preserve headers needed by attic
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Connection "";
+
+        '';
+      };
+    };
+    "readeck.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        recommendedProxySettings = true;
+        extraConfig = ''
+          set $upstream "pilab.lion-zebra.ts.net:2399";
+          proxy_pass http://$upstream;
+          proxy_set_header Host $host;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_buffer_size   1024k;
+          proxy_buffers       4 512k;
+          proxy_busy_buffers_size 1024k;
+        '';
+      };
+    };
+  };
 in
 {
   imports = [
@@ -64,7 +195,7 @@ in
   services = {
     jitsi-meet = {
       enable = true;
-      hostName = "jitsi.${domain}";
+      hostName = "jitsi.${primaryDomain}";
       config = {
         enableInsecureRoomNameWarning = true;
         fileRecordingsEnabled = false;
@@ -82,7 +213,7 @@ in
     # syncplay = {
     #   enable = true;
     #   passwordFile = config.sops.secrets."syncplay.password".path;
-    #   useACMEHost = "syncplay.${domain}";
+    #   useACMEHost = "syncplay.${primaryDomain}";
     # };
 
     # netbird = {
@@ -90,12 +221,12 @@ in
     #   # useRoutingFeatures = "both";
     #   server = {
     #     enable = true;
-    #     domain = "netbird.${domain}";
+    #     domain = "netbird.${primaryDomain}";
     #     enableNginx = false;
     #     management = {
     #       enable = true;
-    #       domain = "management.netbird.${domain}";
-    #       turnDomain = lib.mkForce "coturn.netbird.${domain}";
+    #       domain = "management.netbird.${primaryDomain}";
+    #       turnDomain = lib.mkForce "coturn.netbird.${primaryDomain}";
     #       turnPort = lib.mkForce 3478;
     #       enableNginx = false;
     #       oidcConfigEndpoint = "";
@@ -103,10 +234,10 @@ in
     #         EmbeddedIdP = {
     #           Enabled = true;
     #           DataDir = "/var/lib/netbird/idp";
-    #           Issuer = "https://management.netbird.${domain}/oauth2";
+    #           Issuer = "https://management.netbird.${primaryDomain}/oauth2";
     #           DashboardRedirectURIs = [
-    #             "https://dashboard.netbird.${domain}/#callback"
-    #             "https://dashboard.netbird.${domain}/silent-callback"
+    #             "https://dashboard.netbird.${primaryDomain}/#callback"
+    #             "https://dashboard.netbird.${primaryDomain}/silent-callback"
     #           ];
     #         };
     #         # TODO: For testing only. Re-generate and replace this key through SOPS.
@@ -115,14 +246,14 @@ in
     #         DataStoreEncryptionKey = "Zuwae/z43fZyHLtugmeS2XdachsBBIKMuKrdevGKYTE=";
     #         Signal = {
     #           Proto = "https";
-    #           URI = "signal.netbird.${domain}:443";
+    #           URI = "signal.netbird.${primaryDomain}:443";
     #           Username = "";
     #           Password = null;
     #         };
     #         Stuns = [
     #           {
     #             Proto = "udp";
-    #             URI = "stun:coturn.netbird.${domain}:3478";
+    #             URI = "stun:coturn.netbird.${primaryDomain}:3478";
     #             Username = "";
     #             Password = null;
     #           }
@@ -134,7 +265,7 @@ in
     #           Turns = [
     #             {
     #               Proto = "udp";
-    #               URI = "turn:coturn.netbird.${domain}:3478";
+    #               URI = "turn:coturn.netbird.${primaryDomain}:3478";
     #               Username = "netbird";
     #               Password = "netbird";
     #             }
@@ -144,23 +275,23 @@ in
     #     };
     #     signal = {
     #       enable = true;
-    #       domain = "signal.netbird.${domain}";
+    #       domain = "signal.netbird.${primaryDomain}";
     #       enableNginx = false;
     #     };
     #     dashboard = {
     #       enable = false;  # We're serving static files manually
-    #       domain = "dashboard.netbird.${domain}";
+    #       domain = "dashboard.netbird.${primaryDomain}";
     #       enableNginx = false;
     #       settings = {
-    #         AUTH_AUTHORITY = "https://management.netbird.${domain}/oauth2";
+    #         AUTH_AUTHORITY = "https://management.netbird.${primaryDomain}/oauth2";
     #         AUTH_CLIENT_ID = "netbird-dashboard";
-    #         AUTH_AUDIENCE = "https://management.netbird.${domain}/oauth2";
+    #         AUTH_AUDIENCE = "https://management.netbird.${primaryDomain}/oauth2";
     #         USE_AUTH0 = false;
     #       };
     #     };
     #     coturn = {
     #       enable = true;
-    #       domain = "coturn.netbird.${domain}";
+    #       domain = "coturn.netbird.${primaryDomain}";
     #       useAcmeCertificates = true;
     #       password = "netbird";
     #     };
@@ -246,21 +377,14 @@ in
         # Connection pooling for parallel uploads (global HTTP context)
         keepalive_timeout 600s;
       '';
-      virtualHosts = {
-        "jitsi.${domain}" = {
-          # basicAuth = {
-          #   jitsi = "notthepass";
-          # };
-          basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
-          # basicAuthFile = ./jitsi.htpasswd;
-        };
-        # "miniserve.${domain}" = {
+      virtualHosts = lib.mkMerge (map mkVhosts domains) // {
+        # "miniserve.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   # locations."/".root = pkgs.miniserve;
         #   locations."/".proxyPass = "http://100.64.0.5:7055";
         # };
-        # "puwush.${domain}" = {
+        # "puwush.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -269,71 +393,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        "immich.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            recommendedProxySettings = true;
-            extraConfig = ''
-              set $upstream "pilab.lion-zebra.ts.net:2283";
-              proxy_pass http://$upstream;
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-            '';
-          };
-        };
-        "vaultwarden.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            recommendedProxySettings = true;
-            # extraConfig = ''
-            #   allow 127.0.0.1;
-            #   deny all;
-            # '';
-            extraConfig = ''
-              set $upstream "pilab.lion-zebra.ts.net:9446";
-              proxy_pass http://$upstream;
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-            '';
-          };
-        };
-        "calibre.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-            extraConfig = ''
-              set $upstream "pilab.lion-zebra.ts.net:8083";
-              proxy_pass http://$upstream;
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_buffer_size   1024k;
-              proxy_buffers       4 512k;
-              proxy_busy_buffers_size 1024k;
-            '';
-          };
-        };
-        "readeck.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-            extraConfig = ''
-              set $upstream "pilab.lion-zebra.ts.net:2399";
-              proxy_pass http://$upstream;
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_buffer_size   1024k;
-              proxy_buffers       4 512k;
-              proxy_busy_buffers_size 1024k;
-            '';
-          };
-        };
-        # "trmnl.${domain}" = {
+        # "trmnl.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -345,40 +405,21 @@ in
         #     '';
         #   };
         # };
-        "controlplane.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:8088";
-            proxyWebsockets = true;
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
-        "headplane.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            proxyPass = "http://127.0.0.1:3000";
-            # Need this enabled to avoid header request issues.
-            recommendedProxySettings = true;
-          };
-        };
 
         # # Netbird dashboard - serve static files with injected config
-        # "dashboard.netbird.${domain}" = {
+        # "dashboard.netbird.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   root = pkgs.runCommand "netbird-dashboard-configured" {
         #     nativeBuildInputs = [ pkgs.gettext ];
         #     USE_AUTH0 = "false";
-        #     AUTH_AUTHORITY = "https://management.netbird.${domain}/oauth2";
+        #     AUTH_AUTHORITY = "https://management.netbird.${primaryDomain}/oauth2";
         #     AUTH_CLIENT_ID = "netbird-dashboard";
         #     AUTH_CLIENT_SECRET = "";
         #     AUTH_SUPPORTED_SCOPES = "openid profile email offline_access";
-        #     AUTH_AUDIENCE = "https://management.netbird.${domain}/oauth2";
-        #     NETBIRD_MGMT_API_ENDPOINT = "https://netbird.${domain}";
-        #     NETBIRD_MGMT_GRPC_API_ENDPOINT = "https://netbird.${domain}";
+        #     AUTH_AUDIENCE = "https://management.netbird.${primaryDomain}/oauth2";
+        #     NETBIRD_MGMT_API_ENDPOINT = "https://netbird.${primaryDomain}";
+        #     NETBIRD_MGMT_GRPC_API_ENDPOINT = "https://netbird.${primaryDomain}";
         #     AUTH_REDIRECT_URI = "";
         #     AUTH_SILENT_REDIRECT_URI = "";
         #     NETBIRD_TOKEN_SOURCE = "accessToken";
@@ -406,7 +447,7 @@ in
         #   '';
         # };
         # # Netbird management API
-        # "management.netbird.${domain}" = {
+        # "management.netbird.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   http2 = true;
@@ -444,7 +485,7 @@ in
         #   '';
         # };
         # # Netbird API / management gRPC endpoint
-        # "netbird.${domain}" = {
+        # "netbird.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   http2 = true;
@@ -475,7 +516,7 @@ in
         #   '';
         # };
         # # Netbird signal server
-        # "signal.netbird.${domain}" = {
+        # "signal.netbird.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   http2 = true;
@@ -491,7 +532,7 @@ in
         #   '';
         # };
 
-        # "nitter.${domain}" = {
+        # "nitter.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -500,60 +541,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        "search.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          basicAuthFile = config.sops.secrets."searx.htpasswd".path;
-          locations."/" = {
-            recommendedProxySettings = true;
-            extraConfig = ''
-              set $upstream "pilab.lion-zebra.ts.net:6040";
-              proxy_pass http://$upstream;
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_read_timeout 120s;
-              proxy_connect_timeout 120s;
-            '';
-          };
-        };
-
-        "attic.${domain}" = {
-          forceSSL = true;
-          enableACME = true;
-          locations."/" = {
-            extraConfig = ''
-              set $upstream "pilab.lion-zebra.ts.net:7080";
-              proxy_pass http://$upstream;
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_request_buffering off;
-              proxy_max_temp_file_size 0;
-
-              # Timeouts for large binary cache uploads (10 minutes)
-              proxy_read_timeout 600s;
-              proxy_send_timeout 600s;
-              proxy_connect_timeout 600s;
-
-              # Increase body size limit for large NAR files
-              client_max_body_size 2g;
-
-              # Use HTTP/1.1 for better connection handling
-              proxy_http_version 1.1;
-
-              # Limit download bandwidth to 4 MB/s
-              limit_rate 4m;
-
-              # Preserve headers needed by attic
-              proxy_set_header Host $host;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto $scheme;
-              proxy_set_header Connection "";
-            '';
-          };
-        };
-        # "ollama.${domain}" = {
+        # "ollama.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -563,7 +551,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "ha.${domain}" = {
+        # "ha.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -572,7 +560,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "paperless.${domain}" = {
+        # "paperless.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -581,7 +569,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "n8n.${domain}" = {
+        # "n8n.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -591,7 +579,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "git.${domain}" = {
+        # "git.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -600,7 +588,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "filebrowser.${domain}" = {
+        # "filebrowser.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -609,7 +597,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "habitica.${domain}" = {
+        # "habitica.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -618,7 +606,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "uptime-kuma.${domain}" = {
+        # "uptime-kuma.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -627,7 +615,7 @@ in
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "prefect.${domain}" = {
+        # "prefect.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
         #   locations."/" = {
@@ -664,11 +652,11 @@ in
   mailserver = {
     enable = false;
     stateVersion = 3;
-    fqdn = "mail.clawsiecats.lol";
-    domains = [ "clawsiecats.lol" ];
+    fqdn = "mail.${primaryDomain}";
+    domains = [ primaryDomain ];
 
-    loginAccounts = {
-      "me@clawsiecats.lol" = {
+    accounts = {
+      "me@${primaryDomain}" = {
         hashedPasswordFile = config.sops.secrets."mail.me".path;
         # aliases = [ "" ];
       };
@@ -680,8 +668,8 @@ in
   security.acme = {
     acceptTerms = true;
     defaults.email = "ritiekmalhotra123@gmail.com";
-    certs."syncplay.${domain}".webroot = "/var/lib/acme/acme-challenge";
-    certs."coturn.netbird.${domain}".webroot = "/var/lib/acme/acme-challenge";
+    certs."syncplay.${primaryDomain}".webroot = "/var/lib/acme/acme-challenge";
+    certs."coturn.netbird.${primaryDomain}".webroot = "/var/lib/acme/acme-challenge";
   };
 
   networking.firewall = {
