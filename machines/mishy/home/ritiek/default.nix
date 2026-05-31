@@ -30,6 +30,7 @@
     ./../../../../modules/home/glava
     ./../../../../modules/home/sioyek.nix
     ./../../../../modules/home/opencode.nix
+    # ./../../../../modules/home/pi.nix
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
     ./../../../../scripts/home/spotdl-patched.nix
