@@ -224,6 +224,12 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-parts.follows = "flake-parts";
+    };
+
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -384,6 +390,7 @@
         nixpkgs = nixpkgs-patched;
         specialArgs = inputs // { inherit inputs; nixos-raspberrypi = inputs.nixos-raspberrypi; };
         modules = [
+          inputs.hermes-agent.nixosModules.default
           ./machines/pilab
           ./machines/pilab/hw-config.nix
         ];

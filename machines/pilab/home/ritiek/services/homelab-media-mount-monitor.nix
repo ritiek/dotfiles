@@ -2,6 +2,10 @@
 
 let
   blink-blue-led = pkgs.writeShellScriptBin "blink-blue-led" ''
+    # Exit immediately if HOMELAB_MEDIA is already mounted
+    if ${pkgs.util-linux}/bin/mountpoint -q /media/HOMELAB_MEDIA; then
+      exit 0
+    fi
     while true; do
       ${pkgs.libgpiod}/bin/gpioset -t 0 -c gpiochip0 4=1
       ${pkgs.coreutils}/bin/sleep 2
