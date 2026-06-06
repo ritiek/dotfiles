@@ -123,6 +123,8 @@ in
     "paperless_public.url" = { owner = "ritiek"; };
     "home_assistant.long_lived_token" = { owner = "ritiek"; };
     "searx.url" = { owner = "ritiek"; };
+    "discord.bot_token" = { owner = "ritiek"; };
+    "discord.allowed_users" = { owner = "ritiek"; };
   };
 
   nixpkgs.config.allowUnfree = false;
