@@ -1,0 +1,170 @@
+--- /nix/store/jh37lda6kp1c2v52ib9y5vb72czxnxjl-hermes-agent-0.15.1/lib/python3.12/site-packages/gateway/platforms/matrix.py	1970-01-01 05:30:01.000000000 +0530
++++ /tmp/matrix_patched.py	2026-06-07 04:38:08.486818251 +0530
+@@ -1854,6 +1854,20 @@
+         if body.startswith(("!", "/")):
+             msg_type = MessageType.COMMAND
+ 
++        # Inject prior thread history when the bot enters a thread for the first time.
++        if thread_id and msg_type == MessageType.TEXT and not self._has_active_session_for_thread(
++            room_id=room_id,
++            thread_id=thread_id,
++            user_id=sender,
++        ):
++            thread_context = await self._fetch_thread_context(
++                room_id=room_id,
++                thread_id=thread_id,
++                current_event_id=event_id,
++            )
++            if thread_context:
++                body = thread_context + body
++
+         msg_event = MessageEvent(
+             text=body,
+             message_type=msg_type,
+@@ -2275,6 +2289,146 @@
+             logger.debug("Matrix: scheduled bot reaction redaction %s (%s)", emoji, evt_id)
+ 
+     # ------------------------------------------------------------------
++    # Thread context injection (no-session first-turn backfill)
++    # ------------------------------------------------------------------
++
++    def _has_active_session_for_thread(
++        self,
++        room_id: str,
++        thread_id: str,
++        user_id: str,
++    ) -> bool:
++        """Return True if there is already an active gateway session for this thread.
++
++        Used to guard _fetch_thread_context so we only inject prior history on
++        the very first turn — after that the session history already holds it.
++        """
++        session_store = getattr(self, "_session_store", None)
++        if not session_store:
++            return False
++        try:
++            from gateway.session import SessionSource, build_session_key
++
++            source = SessionSource(
++                platform=Platform.MATRIX,
++                chat_id=room_id,
++                chat_type="dm",  # conservative default; key is thread_id match
++                user_id=user_id,
++                thread_id=thread_id,
++            )
++            store_cfg = getattr(session_store, "config", None)
++            gspu = getattr(store_cfg, "group_sessions_per_user", True) if store_cfg else True
++            tspu = getattr(store_cfg, "thread_sessions_per_user", False) if store_cfg else False
++            session_key = build_session_key(
++                source,
++                group_sessions_per_user=gspu,
++                thread_sessions_per_user=tspu,
++            )
++            session_store._ensure_loaded()
++            return session_key in session_store._entries
++        except Exception:
++            return False
++
++    async def _fetch_thread_context(
++        self,
++        room_id: str,
++        thread_id: str,
++        current_event_id: str,
++        limit: int = 30,
++    ) -> str:
++        """Fetch prior messages in a Matrix thread to inject as context.
++
++        Only called when there is no existing session for the thread
++        (guarded by _has_active_session_for_thread at the call site).
++
++        Uses the Matrix Relations API (MSC3856 / v1.3+) to fetch events
++        related to the thread root via rel_type=m.thread, then formats them
++        like the Slack adapter does.
++
++        Returns a formatted string, or empty string on failure / empty thread.
++        """
++        if not self._client:
++            return ""
++        try:
++            # Use the Matrix Relations API: GET /rooms/{roomId}/relations/{eventId}/m.thread
++            from mautrix.api import Method, Path
++            resp = await self._client.api.request(
++                Method.GET,
++                f"/_matrix/client/v1/rooms/{room_id}/relations/{thread_id}/m.thread",
++                query_params={"limit": str(limit), "dir": "b"},
++            )
++            events = resp.get("chunk", [])
++        except Exception as exc:
++            logger.debug("[Matrix] _fetch_thread_context relations API failed: %s", exc)
++            # Fallback: fetch room timeline and filter manually
++            try:
++                from mautrix.client.api.types import PaginationDirection
++                from mautrix.types import RoomID
++                paginated = await self._client.get_messages(
++                    RoomID(room_id),
++                    direction=PaginationDirection.BACKWARD,
++                    limit=limit * 2,
++                )
++                raw_events = paginated.events if hasattr(paginated, "events") else []
++                # Filter to events that belong to this thread
++                events = []
++                for evt in raw_events:
++                    content = getattr(evt, "content", {}) or {}
++                    if isinstance(content, dict):
++                        rel = content.get("m.relates_to", {})
++                    else:
++                        rel = getattr(content, "relates_to", None) or {}
++                        if hasattr(rel, "serialize"):
++                            rel = rel.serialize()
++                    if (
++                        isinstance(rel, dict)
++                        and rel.get("rel_type") == "m.thread"
++                        and rel.get("event_id") == thread_id
++                    ):
++                        events.append(getattr(evt, "serialize", lambda: evt.__dict__)())
++            except Exception as exc2:
++                logger.debug("[Matrix] _fetch_thread_context fallback failed: %s", exc2)
++                return ""
++
++        if not events:
++            return ""
++
++        bot_user_id = getattr(self._client, "mxid", None) or ""
++        context_parts = []
++        for raw_evt in reversed(events):  # oldest first
++            if isinstance(raw_evt, dict):
++                evt_id = raw_evt.get("event_id", "")
++                evt_sender = raw_evt.get("sender", "")
++                content = raw_evt.get("content", {}) or {}
++                body = content.get("body", "").strip() if isinstance(content, dict) else ""
++            else:
++                evt_id = getattr(raw_evt, "event_id", "")
++                evt_sender = getattr(raw_evt, "sender", "")
++                content = getattr(raw_evt, "content", {}) or {}
++                body = (getattr(content, "body", "") or "").strip()
++
++            # Skip the current triggering event
++            if evt_id == current_event_id:
++                continue
++            # Skip our own prior bot replies (avoid circular context)
++            if bot_user_id and evt_sender == bot_user_id:
++                continue
++            if not body:
++                continue
++
++            display = evt_sender.split(":")[0].lstrip("@") if evt_sender else "unknown"
++            context_parts.append(f"{display}: {body}")
++
++        if not context_parts:
++            return ""
++
++        return (
++            "[Thread context — prior messages in this thread (not yet in conversation history):]\n"
++            + "\n".join(context_parts)
++            + "\n[End of thread context]\n\n"
++        )
++
++    # ------------------------------------------------------------------
+     # Text message aggregation (handles Matrix client-side splits)
+     # ------------------------------------------------------------------
+ 
