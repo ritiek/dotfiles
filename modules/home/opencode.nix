@@ -207,8 +207,6 @@ in
     "github_copilot.access" = {};
     "searx.url" = {};
     "lightpanda_cdp.token" = {};
-    "groq_api.key" = {};
-    "elevenlabs_api.key" = {};
   };
 
   home.packages = [
