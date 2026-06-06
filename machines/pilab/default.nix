@@ -107,6 +107,22 @@ in
     };
     "yubiluks.env" = {};
     "hermes.env" = {};
+
+    # Hermes-only secrets (system-level; read by hermes-agent ExecStartPre as root).
+    "groq_api.key" = { owner = "ritiek"; };
+    "elevenlabs_api.key" = { owner = "ritiek"; };
+
+    # Shared secrets: also declared at home-manager level (opencode.nix) for
+    # opencode's MCPs. Declared here independently so the system-level hermes
+    # service reads from /run/secrets instead of opencode's home-manager path.
+    "github.token" = { owner = "ritiek"; };
+    "karakeep_api.address" = { owner = "ritiek"; };
+    "karakeep_api.key" = { owner = "ritiek"; };
+    "paperless.url" = { owner = "ritiek"; };
+    "paperless_api.key" = { owner = "ritiek"; };
+    "paperless_public.url" = { owner = "ritiek"; };
+    "home_assistant.long_lived_token" = { owner = "ritiek"; };
+    "searx.url" = { owner = "ritiek"; };
   };
 
   nixpkgs.config.allowUnfree = false;

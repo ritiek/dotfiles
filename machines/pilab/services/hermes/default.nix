@@ -37,13 +37,13 @@ let
     withAlignment = false;
   };
 
-  # Home-manager sops-nix secrets base path (deployed for user ritiek).
-  # These are available at service start time (home-manager runs before or
-  # alongside system activation, and ExecStartPre runs after both).
-  secretsBase = "/home/ritiek/.config/sops-nix/secrets";
+  # System-level sops-nix secrets base path (deployed at /run/secrets via
+  # the system sops module). Declared in machines/pilab/default.nix sops.secrets.
+  # ExecStartPre runs as root (+ prefix) so it can read these root-owned files.
+  secretsBase = "/run/secrets";
 
   # Script run as root ('+' prefix) before hermes starts.
-  # Reads home-manager sops secrets and appends MCP credentials to .hermes/.env
+  # Reads system-level sops secrets and appends MCP credentials to .hermes/.env
   # so Hermes can interpolate ${VAR} in mcp_servers config at runtime.
   # Uses append-or-update to preserve keys written by the activation script.
   hermesPopulateMcpEnv = pkgs.writeShellScript "hermes-populate-mcp-env" ''
