@@ -89,3 +89,13 @@ try:
     _install_hook()
 except Exception as _exc:
     sys.stderr.write(f"[hermes-claude-auth] hook install failed: {_exc}\n")
+
+
+# Pre-load libopus for discord.py voice channel support.
+# ctypes.util.find_library("opus") returns None on NixOS, so we load explicitly.
+try:
+    import discord.opus as _discord_opus
+    if not _discord_opus.is_loaded():
+        _discord_opus.load_opus("/nix/store/ra5vs7g3r55qsnwrzk201929d8w8x44z-libopus-1.6.1/lib/libopus.so.0")
+except Exception:
+    pass

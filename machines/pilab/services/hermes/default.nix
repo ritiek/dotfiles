@@ -37,14 +37,9 @@ let
     withAlignment = false;
   };
 
-  # System-level sops-nix secrets base path (deployed at /run/secrets via
-  # the system sops module). Declared in machines/pilab/default.nix sops.secrets.
-  # ExecStartPre runs as root (+ prefix) so it can read these root-owned files.
-  secretsBase = "/run/secrets";
-
   # Script run as root ('+' prefix) before hermes starts.
-  # Reads system-level sops secrets and appends MCP credentials to .hermes/.env
-  # so Hermes can interpolate ${VAR} in mcp_servers config at runtime.
+  # Reads system-level sops secrets via config.sops.secrets.<name>.path so the
+  # paths are derived from the actual sops declarations rather than hardcoded.
   # Uses append-or-update to preserve keys written by the activation script.
   hermesPopulateMcpEnv = pkgs.writeShellScript "hermes-populate-mcp-env" ''
     set -euo pipefail
@@ -59,16 +54,19 @@ let
       printf '%s=%s\n' "$key" "$val" >> "$ENV_FILE"
     }
 
-    set_env HERMES_MCP_GITHUB_TOKEN        "$(cat ${secretsBase}/github.token)"
-    set_env HERMES_MCP_KARAKEEP_ADDR       "$(cat ${secretsBase}/karakeep_api.address)"
-    set_env HERMES_MCP_KARAKEEP_KEY        "$(cat ${secretsBase}/karakeep_api.key)"
-    set_env HERMES_MCP_PAPERLESS_URL       "$(cat ${secretsBase}/paperless.url)"
-    set_env HERMES_MCP_PAPERLESS_API_KEY   "$(cat ${secretsBase}/paperless_api.key)"
-    set_env HERMES_MCP_PAPERLESS_PUB_URL   "$(cat ${secretsBase}/paperless_public.url)"
-    set_env HERMES_MCP_SEARX_URL           "$(cat ${secretsBase}/searx.url).clawsiecats.lol/"
+    set_env HERMES_MCP_GITHUB_TOKEN        "$(cat ${config.sops.secrets."github.token".path})"
+    set_env HERMES_MCP_KARAKEEP_ADDR       "$(cat ${config.sops.secrets."karakeep_api.address".path})"
+    set_env HERMES_MCP_KARAKEEP_KEY        "$(cat ${config.sops.secrets."karakeep_api.key".path})"
+    set_env HERMES_MCP_PAPERLESS_URL       "$(cat ${config.sops.secrets."paperless.url".path})"
+    set_env HERMES_MCP_PAPERLESS_API_KEY   "$(cat ${config.sops.secrets."paperless_api.key".path})"
+    set_env HERMES_MCP_PAPERLESS_PUB_URL   "$(cat ${config.sops.secrets."paperless_public.url".path})"
+    set_env HERMES_MCP_SEARX_URL           "$(cat ${config.sops.secrets."searx.url".path}).clawsiecats.lol/"
 
-    set_env GROQ_API_KEY             "$(cat ${secretsBase}/groq_api.key)"
-    set_env ELEVENLABS_API_KEY       "$(cat ${secretsBase}/elevenlabs_api.key)"
+    set_env GROQ_API_KEY             "$(cat ${config.sops.secrets."groq_api.key".path})"
+    set_env ELEVENLABS_API_KEY       "$(cat ${config.sops.secrets."elevenlabs_api.key".path})"
+
+    set_env DISCORD_BOT_TOKEN        "$(cat ${config.sops.secrets."discord.bot_token".path})"
+    set_env DISCORD_ALLOWED_USERS    "$(cat ${config.sops.secrets."discord.allowed_users".path})"
 
     chown ritiek:users "$ENV_FILE"
     chmod 0640 "$ENV_FILE"
@@ -80,7 +78,7 @@ in
   # addToSystemPackages CLI, which would shadow this wrapper and skip the
   # billing bypass). Export HERMES_HOME system-wide so non-hermes tooling and
   # already-correct shells still see it.
-  environment.systemPackages = [ hermesWrapped ];
+  environment.systemPackages = [ hermesWrapped pkgs.libopus ];
   environment.variables.HERMES_HOME = "/var/lib/hermes/.hermes";
 
   # Inject the bypass at the Python interpreter level:
@@ -93,7 +91,7 @@ in
     HERMES_PATCHES_DIR = "${hermesClaudeAuth}";
     # ffmpeg required for TTS (Edge TTS audio conversion)
     PATH = lib.mkForce (lib.makeBinPath [ pkgs.ffmpeg ] + ":/run/wrappers/bin:/run/current-system/sw/bin");
-    LD_LIBRARY_PATH = "${pkgs.gcc-unwrapped.lib}/lib";
+    LD_LIBRARY_PATH = "${pkgs.gcc-unwrapped.lib}/lib:${pkgs.libopus}/lib";
   };
 
   # Populate MCP secrets into .hermes/.env before the service starts.
