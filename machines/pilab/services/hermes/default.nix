@@ -31,18 +31,14 @@ let
   # XXX: Patch hermes-agent with PR #25995 (Matrix channel_prompts, channel_skill_bindings, topic_as_prompt).
   # Remove once merged and available in the pinned flake input.
   # https://github.com/NousResearch/hermes-agent/pull/25995
-  # Patches generated against pinned rev 61268ff7 (0.15.1) since the PR diff
-  # does not apply cleanly to the pinned source.
-  hermes-agent-patched = (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default).overrideAttrs (old: {
-    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.patch ];
-    postInstall = (old.postInstall or "") + ''
-      sitePackages=$(find $out -path "*/site-packages/gateway/platforms/matrix.py" | head -1 | xargs dirname | xargs dirname | xargs dirname)
-      if [ -n "$sitePackages" ]; then
-        patch -p1 -d "$sitePackages" < ${./patches/pr-25995/matrix.patch}
-        patch -p1 -d "$sitePackages" < ${./patches/pr-25995/config.patch}
-      fi
-    '';
-  });
+  # Strategy: hermes uses uv2nix which pre-builds a sealed venv -- overrideAttrs
+  # patches/postInstall cannot reach gateway/ in the env. Instead we maintain a
+  # gateway-overlay/ directory with patched copies of the two changed files, and
+  # prepend it to PYTHONPATH so it shadows the sealed env.
+  # The overlay must be kept in sync when hermes-agent is updated (regenerate by
+  # running: cp <env>/site-packages/gateway/{config,platforms/matrix}.py to
+  # gateway-overlay and re-applying the patches).
+  gatewayOverlay = "/var/lib/hermes/.hermes/gateway-overlay";
 
   # piper-tts built against python312 (nixpkgs defaults to python313).
   # Minimal build: no training, no HTTP server, no alignment extras.
@@ -103,7 +99,7 @@ in
   # Scoped to the gateway service only (a global PYTHONPATH would inject this
   # into every Python program on the system).
   systemd.services.hermes-agent.environment = {
-    PYTHONPATH = "${hermesClaudeAuth}:${pkgs.python312.withPackages (ps: [ ps.edge-tts ])}/lib/python3.12/site-packages:/var/lib/hermes/.hermes/local-packages";
+    PYTHONPATH = "${gatewayOverlay}:${hermesClaudeAuth}:${pkgs.python312.withPackages (ps: [ ps.edge-tts ])}/lib/python3.12/site-packages:/var/lib/hermes/.hermes/local-packages";
     HERMES_PATCHES_DIR = "${hermesClaudeAuth}";
     # ffmpeg required for TTS (Edge TTS audio conversion)
     PATH = lib.mkForce (lib.makeBinPath [ pkgs.ffmpeg ] + ":/run/wrappers/bin:/run/current-system/sw/bin");
@@ -143,7 +139,6 @@ in
 
   services.hermes-agent = {
     enable = true;
-    package = hermes-agent-patched;
 
     # NOTE: addToSystemPackages is intentionally NOT set. It would add the bare
     # dep-complete CLI to PATH and shadow our hermesWrapped wrapper (collision
