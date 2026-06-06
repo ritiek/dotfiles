@@ -34,10 +34,14 @@ let
   # Patches generated against pinned rev 61268ff7 (0.15.1) since the PR diff
   # does not apply cleanly to the pinned source.
   hermes-agent-patched = (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default).overrideAttrs (old: {
-    patches = (old.patches or []) ++ [
-      ./patches/pr-25995/matrix.patch
-      ./patches/pr-25995/config.patch
-    ];
+    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.patch ];
+    postInstall = (old.postInstall or "") + ''
+      sitePackages=$(find $out -path "*/site-packages/gateway/platforms/matrix.py" | head -1 | xargs dirname | xargs dirname | xargs dirname)
+      if [ -n "$sitePackages" ]; then
+        patch -p1 -d "$sitePackages" < ${./patches/pr-25995/matrix.patch}
+        patch -p1 -d "$sitePackages" < ${./patches/pr-25995/config.patch}
+      fi
+    '';
   });
 
   # piper-tts built against python312 (nixpkgs defaults to python313).
