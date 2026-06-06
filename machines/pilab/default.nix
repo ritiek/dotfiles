@@ -1,5 +1,15 @@
 { config, pkgs, lib, inputs, ... }:
 
+let
+  # Dynamically extract sudo target paths from HA shell_command definitions.
+  # Any command using "sudo -E <path>" will automatically get a sudo-rs rule.
+  haShellCmds = config.services.home-assistant.config.shell_command or {};
+  extractSudoPath = cmd:
+    let m = builtins.match ".*/sudo -E ([^ ]+).*" cmd;
+    in if m != null then builtins.head m else null;
+  hasSudoPaths = lib.filter (p: p != null) (map extractSudoPath (lib.attrValues haShellCmds));
+in
+
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
@@ -9,7 +19,9 @@
     ./services-paths.nix
     ./services/restic.nix
     ./services/lsyncd.nix
+    ./services/hermes
     ./services/home-assistant
+    ./services/homelab-trigger.nix
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
@@ -38,7 +50,6 @@
     ./compose/gotify.nix
     # ./compose/shiori
     ./compose/homebox.nix
-    ./compose/conduwuit
     ./compose/grocy
     ./compose/changedetection
     ./compose/frigate
@@ -52,7 +63,7 @@
     ./compose/copyparty.nix
     ./compose/nitter.nix
     ./compose/mealie
-    ./compose/karakeep
+    # ./compose/karakeep
     ./compose/n8n
     ./compose/transmission
     ./compose/qbittorrent.nix
@@ -94,6 +105,8 @@
       owner = "root";
       group = "nixbld";
     };
+    "yubiluks.env" = {};
+    "hermes.env" = {};
   };
 
   nixpkgs.config.allowUnfree = false;
@@ -228,6 +241,8 @@
         "wheel"
         "i2c"
         "gpio"
+        "adbusers"
+        "hermes"
       ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
@@ -310,7 +325,27 @@
       enable = true;
       passwordFile = config.sops.secrets."syncplay.password".path;
     };
+
+    # Migrated from the conduwuit/continuwuity Docker container to the native
+    # NixOS module. The upstream Docker image ships jemalloc compiled for 4KB
+    # pages and crashes on this Pi 5's 16KB-page kernel; the nixpkgs build
+    # (compiled locally) uses the correct page size.
+    matrix-continuwuity = {
+      enable = true;
+      settings.global = {
+        server_name = "pilab.lion-zebra.ts.net";
+        port = [ 6168 ];
+        address = [ "0.0.0.0" "::" ];
+        allow_registration = false;
+        allow_federation = false;
+        allow_encryption = true;
+        trusted_servers = [ ];
+        max_request_size = 20000000;
+      };
+    };
   };
+
+  networking.firewall.allowedTCPPorts = [ 6168 ];
 
   programs = {
     nix-index-database.comma.enable = true;
@@ -345,6 +380,13 @@
     sudo-rs = {
       enable = true;
       wheelNeedsPassword = lib.mkDefault false;
+      extraRules = lib.optional (hasSudoPaths != []) {
+        users = [ "hass" ];
+        commands = map (path: {
+          command = path;
+          options = [ "NOPASSWD" "SETENV" ];
+        }) hasSudoPaths;
+      };
     };
   };
 
