@@ -28,6 +28,17 @@ let
 
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
 
+  # XXX: Patch hermes-agent with PR #25995 (Matrix channel_prompts, channel_skill_bindings, topic_as_prompt).
+  # Remove once merged and available in the pinned flake input.
+  # https://github.com/NousResearch/hermes-agent/pull/25995
+  hermes-pr-25995 = builtins.fetchurl {
+    url = "https://github.com/NousResearch/hermes-agent/pull/25995.diff";
+    sha256 = "09xgyqw1rzi68ybjq3jbqr7zp7bdwsw64759x8a65g1cphifk713";
+  };
+  hermes-agent-patched = (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent).overrideAttrs (old: {
+    patches = (old.patches or []) ++ [ hermes-pr-25995 ];
+  });
+
   # piper-tts built against python312 (nixpkgs defaults to python313).
   # Minimal build: no training, no HTTP server, no alignment extras.
   piperTtsPy312 = pkgs.callPackage (pkgs.path + "/pkgs/by-name/pi/piper-tts/package.nix") {
@@ -127,6 +138,7 @@ in
 
   services.hermes-agent = {
     enable = true;
+    package = hermes-agent-patched;
 
     # NOTE: addToSystemPackages is intentionally NOT set. It would add the bare
     # dep-complete CLI to PATH and shadow our hermesWrapped wrapper (collision
