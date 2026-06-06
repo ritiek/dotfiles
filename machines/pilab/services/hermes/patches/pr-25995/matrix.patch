@@ -1,5 +1,5 @@
---- /tmp/matrix.py.orig	2026-06-07 02:56:07.729093728 +0530
-+++ /tmp/matrix.py.new	2026-06-07 02:56:59.745365322 +0530
+--- a/gateway/platforms/matrix.py
++++ b/gateway/platforms/matrix.py
 @@ -64,6 +64,7 @@
          REACTION = "m.reaction"
          ROOM_ENCRYPTED = "m.room.encrypted"

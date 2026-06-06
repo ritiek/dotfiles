@@ -1,5 +1,5 @@
---- /tmp/config.py.orig	2026-06-07 02:56:07.733093424 +0530
-+++ /tmp/config.py.new	2026-06-07 02:56:19.120238417 +0530
+--- a/gateway/config.py
++++ b/gateway/config.py
 @@ -876,7 +876,7 @@
                      bridged["group_allow_admin_from"] = platform_cfg["group_allow_admin_from"]
                  if "group_user_allowed_commands" in platform_cfg:
