@@ -31,12 +31,13 @@ let
   # XXX: Patch hermes-agent with PR #25995 (Matrix channel_prompts, channel_skill_bindings, topic_as_prompt).
   # Remove once merged and available in the pinned flake input.
   # https://github.com/NousResearch/hermes-agent/pull/25995
-  hermes-pr-25995 = builtins.fetchurl {
-    url = "https://github.com/NousResearch/hermes-agent/pull/25995.diff";
-    sha256 = "09xgyqw1rzi68ybjq3jbqr7zp7bdwsw64759x8a65g1cphifk713";
-  };
+  # Patches generated against pinned rev 61268ff7 (0.15.1) since the PR diff
+  # does not apply cleanly to the pinned source.
   hermes-agent-patched = (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default).overrideAttrs (old: {
-    patches = (old.patches or []) ++ [ hermes-pr-25995 ];
+    patches = (old.patches or []) ++ [
+      ./patches/pr-25995/matrix.patch
+      ./patches/pr-25995/config.patch
+    ];
   });
 
   # piper-tts built against python312 (nixpkgs defaults to python313).
