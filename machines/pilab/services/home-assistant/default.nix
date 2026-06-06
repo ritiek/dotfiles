@@ -109,6 +109,21 @@
     ];
 
     config = {
+      input_text = {
+        homelab_otp = {
+          name = "Homelab OTP";
+          mode = "password";
+          max = 255;
+        };
+      };
+
+      shell_command = {
+        # Write OTP to a trigger file in /run/homelab-trigger/.
+        # A root-level systemd path unit (homelab-start-trigger) picks this up
+        # and runs the command outside HA's privilege-restricted sandbox.
+        homelab_start = "${pkgs.bash}/bin/bash -c 'printf \"%s\" \"{{ otp }}\" > /run/homelab-trigger/start'";
+      };
+
       homeassistant = {
         name = "Home";
         latitude = 19.1280123;
@@ -119,19 +134,59 @@
       };
       lovelace = {
         mode = "storage";
-        resources = [
-          {
-            url = "/local/uptime-card/uptime-card.js";
-            type = "module";
-          }
-        ];
       };
+      command_line = [
+        {
+          binary_sensor = {
+            name = "Homelab Mount Status";
+            unique_id = "homelab_mount_status";
+            command = "grep -q ' /media/HOMELAB_MEDIA ' /proc/mounts && echo true || echo false";
+            payload_on = "true";
+            payload_off = "false";
+            scan_interval = 30;
+          };
+        }
+      ];
+
+      # Template switch surfaced as an Android Quick Settings tile.
+      # - State mirrors the mount status sensor (tile enabled = mounted).
+      # - turn_on (tap when disabled) (re)starts the OTP reply-notification script.
+      #   We use script.turn_on (fire-and-forget) instead of calling the script
+      #   directly: the script waits up to 24h for a reply, and calling it inline
+      #   would keep the switch's turn_on sequence "running" that whole time,
+      #   causing every later tap to be dropped with "Already running". The
+      #   script itself is mode: restart, so a fresh tap cancels the stale wait
+      #   and resends the notification.
+      # - turn_off is a no-op so the tile can never accidentally unmount.
+      template = [
+        {
+          switch = [
+            {
+              name = "Homelab";
+              unique_id = "homelab_switch";
+              state = "{{ is_state('binary_sensor.homelab_mount_status', 'on') }}";
+              icon = "mdi:server";
+              turn_on = [
+                {
+                  action = "script.turn_on";
+                  target.entity_id = "script.decrypt_homelab_and_start";
+                }
+              ];
+              turn_off = [];
+            }
+          ];
+        }
+      ];
+
       recorder = {};
       history = {};
       logger = {
         default = "warning";
         logs = {
           "custom_components.philips_airpurifier_coap" = "debug";
+          "homeassistant.components.shell_command" = "debug";
+          "homeassistant.components.script" = "debug";
+          "homeassistant.components.command_line" = "debug";
         };
       };
       http = {
@@ -242,6 +297,11 @@
         "url": "/local/uptime-card/uptime-card.js",
         "type": "module",
         "id": "uptime-card"
+      },
+      {
+        "url": "/local/homelab-otp-card.js?v=5",
+        "type": "module",
+        "id": "homelab-otp-card"
       }
     ]
   }
@@ -250,6 +310,9 @@ EOF
       chown hass:hass /var/lib/hass/.storage/lovelace_resources
     ''}")
   ];
+
+  # Allow HA to write OTP trigger files (ProtectSystem=strict blocks /run by default)
+  systemd.services.home-assistant.serviceConfig.ReadWritePaths = [ "/run/homelab-trigger" ];
 
   networking.firewall.allowedTCPPorts = [ 8123 ];
 }

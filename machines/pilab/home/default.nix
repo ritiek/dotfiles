@@ -48,6 +48,7 @@
     extraSpecialArgs = {
       inherit inputs homelabMediaPath everythingElsePath enableLEDs;
       hostName = config.networking.hostName;
+      yubiluksEnvPath = config.sops.secrets."yubiluks.env".path;
     };
 
     users.ritiek = {
