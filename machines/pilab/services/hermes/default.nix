@@ -35,7 +35,7 @@ let
     url = "https://github.com/NousResearch/hermes-agent/pull/25995.diff";
     sha256 = "09xgyqw1rzi68ybjq3jbqr7zp7bdwsw64759x8a65g1cphifk713";
   };
-  hermes-agent-patched = (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.hermes-agent).overrideAttrs (old: {
+  hermes-agent-patched = (inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default).overrideAttrs (old: {
     patches = (old.patches or []) ++ [ hermes-pr-25995 ];
   });
 
