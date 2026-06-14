@@ -152,6 +152,7 @@
       syncplay
       chiaki-ng
       moonlight-qt
+      scrcpy
       qtscrcpy
 
       # woeusb-ng
