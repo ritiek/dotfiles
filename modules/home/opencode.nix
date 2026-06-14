@@ -180,7 +180,8 @@ in
     pkgs.procps
     pkgs.nodejs_24
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
+    # FIXME: Current source URL giving 403. Uncomment when nixpkgs pin in flake.lock gets updated.
+    # inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
     # Required to play notification sounds with opencode-notifier.
