@@ -1,7 +1,8 @@
 name: machines
 on:
   pull_request:
-  push:
+  schedule:
+    - cron: "30 2 * * *"   # 08:00 IST (UTC+5:30)
   workflow_dispatch:
 
 # NOTE: Attic can authenticate atticd through:
@@ -21,7 +22,36 @@ on:
 #   --configure-cache-retention attic-action
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: decide
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          last_sha=$(gh run list --workflow machines.yml --branch main \
+            --status success --limit 1 --json headSha --jq '.[0].headSha')
+          current_sha=$(git rev-parse HEAD)
+          echo "last success: $last_sha / current: $current_sha"
+          if [ "$last_sha" = "$current_sha" ]; then
+            echo "should_run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+          fi
+
   mishy:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
@@ -67,6 +97,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.mishy.config.system.build.toplevel
 
   pilab:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-24.04-arm
     permissions:
       id-token: "write"
@@ -92,6 +124,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.pilab.config.system.build.toplevel
 
   clawsiecats:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
@@ -142,6 +176,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.clawsiecats-luks.config.system.build.toplevel
 
   keyberry:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-24.04-arm
     permissions:
       id-token: "write"
@@ -167,6 +203,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.keyberry.config.system.build.toplevel
 
   rig:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
@@ -197,6 +235,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.rig.config.system.build.toplevel
 
   zerostash:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-24.04-arm
     permissions:
       id-token: "write"
@@ -222,6 +262,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.zerostash.config.system.build.toplevel
 
   radrubble:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-24.04-arm
     permissions:
       id-token: "write"
@@ -247,6 +289,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.radrubble.config.system.build.toplevel
 
   minimachine:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       id-token: "write"
@@ -277,6 +321,8 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.minimachine-minimal.config.system.build.toplevel
 
   mangoshake:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
     runs-on: ubuntu-24.04-arm
     permissions:
       id-token: "write"
