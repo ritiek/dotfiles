@@ -722,6 +722,9 @@ in
       # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
       theme = "lucent-orng";
       scroll_speed = 5;
+      plugin = [
+        "oc-tps@latest"
+      ];
     };
   };
 
