@@ -6,45 +6,21 @@ let
     else ./../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
-in
-{
-  sops.secrets = {
-    "opencode_api.key" = {};
-    "openai_api.key" = {};
-    "github_copilot.refresh" = {};
-    "github_copilot.access" = {};
-  } // lib.optionalAttrs hasZaiApiKey {
-    "z_ai_api.key" = {};
-  };
 
-  home.packages = [
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
-  ];
+  # Shared auth generator — used by both home.activation (interactive hm switch)
+  # and systemd --user service (boot: runs after sops-nix.service decrypts secrets).
+  pi-auth-generator = pkgs.writeShellScript "pi-auth-generator" ''
+    set -euo pipefail
 
-  home.file.".pi/agent/settings.json".text = builtins.toJSON ({
-    defaultProvider = "anthropic";
-    defaultModel = "claude-sonnet-4-20250514";
-    defaultThinkingLevel = "medium";
-    theme = "dark";
-    enableInstallTelemetry = false;
-    compaction = {
-      enabled = true;
-      reserveTokens = 16384;
-      keepRecentTokens = 20000;
-    };
-    retry = {
-      enabled = true;
-      maxRetries = 3;
-      provider = {
-        timeoutMs = 3600000;
-        maxRetries = 0;
-      };
-    };
-  });
-
-  home.activation.pi-auth = lib.hm.dag.entryAfter ["writeBoundary" "sops-nix"] ''
     AUTH_FILE="${config.home.homeDirectory}/.pi/agent/auth.json"
     NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
+
+    # Guard: sops secrets may not be available at boot (systemd --user not running yet)
+    if [ ! -f "${config.sops.secrets."opencode_api.key".path}" ]; then
+      echo "pi-auth: sops secrets not yet decrypted by sops-nix, skipping"
+      rm -f "$NIXOS_JSON"
+      exit 0
+    fi
 
     OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
     OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
@@ -90,4 +66,55 @@ in
     chmod 600 "$AUTH_FILE"
     rm -f "$NIXOS_JSON"
   '';
+in
+{
+  sops.secrets = {
+    "opencode_api.key" = {};
+    "openai_api.key" = {};
+    "github_copilot.refresh" = {};
+    "github_copilot.access" = {};
+  } // lib.optionalAttrs hasZaiApiKey {
+    "z_ai_api.key" = {};
+  };
+
+  home.packages = [
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
+  ];
+
+  home.file.".pi/agent/settings.json".text = builtins.toJSON ({
+    defaultProvider = "anthropic";
+    defaultModel = "claude-sonnet-4-20250514";
+    defaultThinkingLevel = "medium";
+    theme = "dark";
+    enableInstallTelemetry = false;
+    compaction = {
+      enabled = true;
+      reserveTokens = 16384;
+      keepRecentTokens = 20000;
+    };
+    retry = {
+      enabled = true;
+      maxRetries = 3;
+      provider = {
+        timeoutMs = 3600000;
+        maxRetries = 0;
+      };
+    };
+  });
+
+  home.activation.pi-auth = lib.hm.dag.entryAfter ["writeBoundary" "sops-nix"] ''
+    ${pi-auth-generator}
+  '';
+
+  systemd.user.services.pi-auth = {
+    Unit = {
+      Description = "Pi agent auth setup (after sops-nix decrypts secrets)";
+      After = [ "sops-nix.service" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${pi-auth-generator}";
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
 }
