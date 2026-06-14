@@ -11,6 +11,7 @@
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/usbipd.nix
     ./../../modules/restic-server.nix
+    ./../../modules/3proxy.nix
     ./gpio/dht22.nix
   ];
 
@@ -104,6 +105,7 @@
         "input"
         "render"
         "gpio"
+        "adbusers"
         "i2c"
         "spi"
         "dialout"

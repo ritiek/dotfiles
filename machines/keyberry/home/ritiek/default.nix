@@ -62,6 +62,7 @@
       # diskonaut
       compsize
       lshw
+      usbutils
 
       iptables
       nmap
@@ -69,6 +70,8 @@
       cryptsetup
       openssl
       deploy-rs
+
+      android-tools
 
       miniserve
       bore-cli
