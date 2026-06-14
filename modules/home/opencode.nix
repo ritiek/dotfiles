@@ -147,6 +147,48 @@ let
     export CLOUD_CDP_WSS="wss://euwest.cloud.lightpanda.io/ws?token=$TOKEN&browser=chrome"
     exec ${cloud-cdp-proxy-env}/bin/python3 ${cloud-cdp-proxy-py} "$@"
   '';
+
+  # Shared auth generator — used by both home.activation (interactive hm switch)
+  # and systemd --user service (boot: runs after sops-nix.service decrypts secrets).
+  # The guard at the top prevents failure at boot when systemd --user isn't running
+  # and sops-nix secrets haven't been decrypted yet.
+  opencode-auth-generator = pkgs.writeShellScript "opencode-auth-generator" ''
+    set -euo pipefail
+
+    AUTH_FILE="${config.home.homeDirectory}/.local/share/opencode/auth.json"
+    NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
+
+    # Guard: sops secrets may not be available at boot (systemd --user not running yet)
+    if [ ! -f "${config.sops.secrets."github_copilot.refresh".path}" ]; then
+      echo "opencode-auth: sops secrets not yet decrypted by sops-nix, skipping"
+      rm -f "$NIXOS_JSON"
+      exit 0
+    fi
+
+    ZAI_KEY=${if hasZaiApiKey then "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})" else "\"\""}
+    OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
+    OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
+    XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
+    GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
+    GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
+
+    ${pkgs.jq}/bin/jq -n \
+      --arg gh_refresh "$GH_REFRESH" \
+      --arg gh_access "$GH_ACCESS" \
+      '{
+        "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
+      }' > "$NIXOS_JSON"
+
+    if [ -f "$AUTH_FILE" ]; then
+      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$AUTH_FILE" "$NIXOS_JSON" > "$AUTH_FILE.tmp" \
+        && mv "$AUTH_FILE.tmp" "$AUTH_FILE"
+    else
+      mkdir -p "$(${pkgs.coreutils}/bin/dirname "$AUTH_FILE")"
+      cp "$NIXOS_JSON" "$AUTH_FILE"
+    fi
+    chmod 600 "$AUTH_FILE"
+    rm -f "$NIXOS_JSON"
+  '';
 in
 {
   sops.secrets = {
@@ -770,46 +812,18 @@ in
   '';
 
   home.activation.opencode-auth = lib.hm.dag.entryAfter ["writeBoundary" "sops-nix"] ''
-    AUTH_FILE="${config.home.homeDirectory}/.local/share/opencode/auth.json"
-    NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
-
-    ZAI_KEY=${if hasZaiApiKey then "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})" else "\"\""}
-    OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
-    OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
-    XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
-    GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
-    GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
-
-    # ${pkgs.jq}/bin/jq -n \
-    #   --arg zai_key "$ZAI_KEY" \
-    #   --arg opencode_key "$OPENCODE_KEY" \
-    #   --arg openai_key "$OPENAI_KEY" \
-    #   --arg xiaomi_key "$XIAOMI_KEY" \
-    #   --arg gh_refresh "$GH_REFRESH" \
-    #   --arg gh_access "$GH_ACCESS" \
-    #   '{
-    #     "zai-coding-plan": { type: "api", key: $zai_key },
-    #     "opencode": { type: "api", key: $opencode_key },
-    #     "openai": { type: "api", key: $openai_key },
-    #     "xiaomi": { type: "api", key: $xiaomi_key },
-    #     "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
-    #   }' > "$NIXOS_JSON"
-
-    ${pkgs.jq}/bin/jq -n \
-      --arg gh_refresh "$GH_REFRESH" \
-      --arg gh_access "$GH_ACCESS" \
-      '{
-        "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
-      }' > "$NIXOS_JSON"
-
-    if [ -f "$AUTH_FILE" ]; then
-      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$AUTH_FILE" "$NIXOS_JSON" > "$AUTH_FILE.tmp" \
-        && mv "$AUTH_FILE.tmp" "$AUTH_FILE"
-    else
-      mkdir -p "$(${pkgs.coreutils}/bin/dirname "$AUTH_FILE")"
-      cp "$NIXOS_JSON" "$AUTH_FILE"
-    fi
-    chmod 600 "$AUTH_FILE"
-    rm -f "$NIXOS_JSON"
+    ${opencode-auth-generator}
   '';
+
+  systemd.user.services.opencode-auth = {
+    Unit = {
+      Description = "OpenCode auth setup (after sops-nix decrypts secrets)";
+      After = [ "sops-nix.service" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${opencode-auth-generator}";
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
 }

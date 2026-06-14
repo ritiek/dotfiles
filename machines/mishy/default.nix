@@ -559,7 +559,7 @@
   powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
-    memoryPercent = 200;
+    memoryPercent = 150;
   };
 
   # boot.binfmt.emulatedSystems = [ "aarch64-linux" "armv6l-linux" ];
