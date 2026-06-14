@@ -54,22 +54,22 @@
       #     "kvm"
       #   ];
       # }
-      {
-        hostName = "mishy.lion-zebra.ts.net";
-        systems = [ pkgs.stdenv.hostPlatform.system ];
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUl3R0phWjZFTkdoUk9EKzZQdGxOM29Md1NRVkJBSU9PNmFLTjdqYUJWenYK";
-        maxJobs = 8;
-        speedFactor = 1;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
+      # {
+      #   hostName = "mishy.lion-zebra.ts.net";
+      #   systems = [ pkgs.stdenv.hostPlatform.system ];
+      #   protocol = "ssh-ng";
+      #   sshUser = "rnixbld";
+      #   sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+      #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUl3R0phWjZFTkdoUk9EKzZQdGxOM29Md1NRVkJBSU9PNmFLTjdqYUJWenYK";
+      #   maxJobs = 8;
+      #   speedFactor = 1;
+      #   supportedFeatures = [
+      #     "nixos-test"
+      #     "benchmark"
+      #     "big-parallel"
+      #     "kvm"
+      #   ];
+      # }
     ];
   };
 
@@ -372,6 +372,11 @@
     #     OLLAMA_API_BASE_URL = "http://127.0.0.1:11434";
     #   };
     # };
+
+    llama-cpp = {
+      enable = true;
+      # host = "0.0.0.0";
+    };
   };
 
   programs = {
@@ -437,7 +442,10 @@
 
   security = {
     sudo.enable = false;
-    sudo-rs.enable = true;
+    sudo-rs = {
+      enable = true;
+      wheelNeedsPassword = lib.mkDefault false;
+    };
 
     rtkit.enable = true;
     # polkit.enable = true;
