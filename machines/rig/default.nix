@@ -375,7 +375,17 @@
 
     llama-cpp = {
       enable = true;
-      # host = "0.0.0.0";
+      package = pkgs.llama-cpp.override { cudaSupport = true; };
+      model = "/srv/models/gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf";
+      host = "0.0.0.0";
+      port = 8080;
+      extraFlags = [
+        "-ngl" "999"
+        "-c" "131072"
+        "--flash-attn" "on"
+        "--cache-type-k" "q4_0"
+        "--cache-type-v" "q4_0"
+      ];
     };
   };
 
