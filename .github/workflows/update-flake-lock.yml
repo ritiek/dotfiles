@@ -11,6 +11,8 @@ jobs:
     permissions:
       id-token: "write"
       contents: "read"
+    outputs:
+      pull-request-number: ${{ steps.update.outputs.pull-request-number }}
     steps:
       - name: Clone Repository
         uses: actions/checkout@v4
@@ -19,6 +21,7 @@ jobs:
       - name: Setup Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Update flake.lock
+        id: update
         uses: DeterminateSystems/update-flake-lock@main
         with:
           pr-title: "Update flake.lock"
@@ -26,3 +29,20 @@ jobs:
             dependencies
             automated
           token: ${{ secrets.GH_TOKEN_FOR_DOTS }}
+
+  notify-failure:
+    needs: [lockfile]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Matrix
+        run: |
+          PR_URL=""
+          if [ -n "${{ needs.lockfile.outputs.pull-request-number }}" ]; then
+            PR_URL="\nPR: https://github.com/${{ github.repository }}/pull/${{ needs.lockfile.outputs.pull-request-number }}"
+          fi
+          curl -sf \
+            "https://webhook.clawsiecats.lol/matrix/github-actions/new/${{ github.run_id }}" \
+            -H "Authorization: Bearer ${{ secrets.WEBHOOK_MATRIX_AUTH }}" \
+            -H "Content-Type: application/json" \
+            -d "{\"msgtype\":\"m.text\",\"body\":\"flake.lock update failed\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}${PR_URL}\"}"
