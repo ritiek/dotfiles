@@ -52,6 +52,12 @@
         directories = [
           ".local/share/nvim"
           ".local/share/atuin"
+          ".claude"
+
+          ".opencode"
+          ".config/opencode"
+          ".local/share/opencode"
+          ".cache/opencode"
         ];
         # allowOther = false;
       };

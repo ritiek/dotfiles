@@ -132,8 +132,23 @@ let
         '';
       };
     };
+    "webhook.${domain}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."~ ^/matrix/github-actions/new/([0-9]+)$" = {
+        extraConfig = ''
+          if ($webhook_auth_valid = 0) { return 403; }
+          proxy_method PUT;
+          include ${config.sops.templates."nginx-matrix-auth-header".path};
+          proxy_set_header Content-Type "application/json";
+          set $txnid $1;
+          set $upstream "pilab.lion-zebra.ts.net:6168";
+          proxy_pass http://$upstream/_matrix/client/v3/rooms/!hbc1delAaoyVn6To30BJ8gWvbkVUkR-P3r4ZJTlJT04/send/m.room.message/$txnid;
+        '';
+      };
+    };
   };
-in
+  in
 {
   imports = [
     inputs.simple-nixos-mailserver.nixosModule
@@ -149,6 +164,27 @@ in
     "mail.me" = {};
     "searx.htpasswd" = {
       owner = "nginx";
+    };
+    "webhook_matrix.auth" = {};
+    "github_action_matrix_user.access" = {};
+  };
+
+  sops.templates = {
+    "nginx-webhook-auth-map" = {
+      content = ''
+        map $http_authorization $webhook_auth_valid {
+          "Bearer ${config.sops.placeholder."webhook_matrix.auth"}" 1;
+          default 0;
+        }
+      '';
+      owner = config.services.nginx.user;
+    };
+
+    "nginx-matrix-auth-header" = {
+      content = ''
+        proxy_set_header Authorization "Bearer ${config.sops.placeholder."github_action_matrix_user.access"}";
+      '';
+      owner = config.services.nginx.user;
     };
   };
 
@@ -369,13 +405,17 @@ in
       # proxy_pass below, this prevents nginx from failing to start on boot
       # before Tailscale is connected. 127.0.0.53 is always available since
       # systemd-resolved starts independently of Tailscale.
+      # gixy cannot access sops runtime secrets during nix build phase
+      validateConfigFile = false;
       resolver.addresses = [ "127.0.0.53" ];
       eventsConfig = ''
         worker_connections 10240;
       '';
+      mapHashBucketSize = 128;
       commonHttpConfig = ''
         # Connection pooling for parallel uploads (global HTTP context)
         keepalive_timeout 600s;
+        include ${config.sops.templates."nginx-webhook-auth-map".path};
       '';
       virtualHosts = lib.mkMerge (map mkVhosts domains) // {
         # "miniserve.${primaryDomain}" = {
