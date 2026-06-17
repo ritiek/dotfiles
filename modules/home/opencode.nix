@@ -340,6 +340,23 @@ in
             baseURL = "http://rig.lion-zebra.ts.net:11434";
           };
         };
+
+        llama-server = {
+          npm = "@ai-sdk/openai-compatible";
+          models = {
+            "gemma:e4b" = {
+              name = "gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf";
+              tools = true;
+            };
+            "gemma4:12b" = {
+              name = "gemma-4-12B-it-qat-UD-Q4_K_XL.gguf";
+              tools = true;
+            };
+          };
+          options = {
+            baseURL = "http://rig.lion-zebra.ts.net:8080";
+          };
+        };
       };
 
       permission = {
