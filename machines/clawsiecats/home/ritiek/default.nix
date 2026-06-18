@@ -14,6 +14,8 @@
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
+
+    ./services/claude-hello-email.nix
   ];
 
   nixpkgs.overlays = [
