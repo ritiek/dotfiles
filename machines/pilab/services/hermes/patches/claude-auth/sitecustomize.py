@@ -91,6 +91,40 @@ except Exception as _exc:
     sys.stderr.write(f"[hermes-claude-auth] hook install failed: {_exc}\n")
 
 
+# Gateway overlay: inject patched gateway modules from the overlay directory
+# into sys.modules after the real gateway package is imported.  A simple
+# sys.path prepend does not work because the venv's gateway/ has __init__.py
+# (regular package) which wins over the overlay's namespace package regardless
+# of PYTHONPATH ordering.  Instead we use a MetaPathFinder that rewrites the
+# module spec's origin for the two patched modules.
+try:
+    _OVERLAY_DIR = os.environ.get("HERMES_GATEWAY_OVERLAY_DIR", "")
+
+    if _OVERLAY_DIR and os.path.isdir(_OVERLAY_DIR):
+        from importlib.util import spec_from_file_location
+
+        _OVERLAY_MODULES = {
+            "gateway.config": os.path.join(_OVERLAY_DIR, "gateway", "config.py"),
+            "gateway.platforms.matrix": os.path.join(
+                _OVERLAY_DIR, "gateway", "platforms", "matrix.py"
+            ),
+        }
+
+        class _GatewayOverlayFinder:
+            def find_spec(self, fullname, path=None, target=None):
+                overlay_path = _OVERLAY_MODULES.get(fullname)
+                if overlay_path and os.path.isfile(overlay_path):
+                    return spec_from_file_location(fullname, overlay_path)
+                return None
+
+            def find_module(self, fullname, path=None):
+                return None
+
+        sys.meta_path.insert(0, _GatewayOverlayFinder())
+except Exception as _exc:
+    sys.stderr.write(f"[hermes-gateway-overlay] hook install failed: {_exc}\n")
+
+
 # Pre-load libopus for discord.py voice channel support.
 # ctypes.util.find_library("opus") returns None on NixOS, so we load explicitly.
 try:
