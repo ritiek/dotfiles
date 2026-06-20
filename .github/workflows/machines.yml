@@ -102,29 +102,25 @@ jobs:
           WEBHOOK_MATRIX_AUTH: ${{ secrets.WEBHOOK_MATRIX_AUTH }}
         run: |
           set -euo pipefail
+          # GitHub Actions only sends raw facts; clawsiecats builds the prompt,
+          # @hermes mention, HTML formatting and the threaded log reply.
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           PR_URL=""
           if [ -n "${{ github.event.pull_request.number }}" ]; then
             PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
           fi
-          PLAIN="hermes: machines/${{ github.job }} build failed. Please analyze the build log in the thread below, explain why it failed, and suggest possible solutions. Do NOT attempt to fix anything.\nRun: ${RUN_URL}${PR_URL:+\nPR: ${PR_URL}}"
-          HTML="<a href=\"https://matrix.to/#/@hermes:pilab.lion-zebra.ts.net\">hermes</a>: machines/${{ github.job }} build failed. Please analyze the build log in the thread below, explain why it failed, and suggest possible solutions. Do NOT attempt to fix anything.<br>Run: <a href=\"${RUN_URL}\">${RUN_URL}</a>${PR_URL:+<br>PR: <a href=\"${PR_URL}\">${PR_URL}</a>}"
-          BODY=$(jq -n --arg p "$PLAIN" --arg h "$HTML" \
-            '{"msgtype":"m.text","format":"org.matrix.custom.html","body":$p,"formatted_body":$h,"m.mentions":{"user_ids":["@hermes:pilab.lion-zebra.ts.net"]}}')
-          TXN1=$(date +%s%N)
-          RESP=$(curl -sf "https://webhook.clawsiecats.lol/matrix/github-actions/new/${TXN1}" \
+          LOG=$(tail -200 /tmp/build.log 2>/dev/null || echo "(no build log available)")
+          BODY=$(jq -n \
+            --arg job "machines/${{ github.job }}" \
+            --arg run "$RUN_URL" \
+            --arg pr "$PR_URL" \
+            --arg log "$LOG" \
+            '{"job":$job,"run_url":$run,"pr_url":$pr,"log":$log}')
+          TXN=$(date +%s%N)
+          curl -sf "https://webhook.clawsiecats.lol/matrix/github-actions/new/${TXN}" \
             -H "Authorization: Bearer $WEBHOOK_MATRIX_AUTH" \
             -H "Content-Type: application/json" \
-            -d "$BODY")
-          EVENT_ID=$(echo "$RESP" | jq -r '.event_id')
-          LAST_LINES=$(tail -200 /tmp/build.log 2>/dev/null || echo "(no build log available)")
-          LOG_BODY=$(jq -n --arg log "$LAST_LINES" --arg eid "$EVENT_ID" \
-            '{"msgtype":"m.text","body":$log,"m.relates_to":{"rel_type":"m.thread","event_id":$eid,"is_falling_back":true,"m.in_reply_to":{"event_id":$eid}}}')
-          TXN2=$((TXN1 + 1))
-          curl -sf "https://webhook.clawsiecats.lol/matrix/github-actions/new/${TXN2}" \
-            -H "Authorization: Bearer $WEBHOOK_MATRIX_AUTH" \
-            -H "Content-Type: application/json" \
-            -d "$LOG_BODY"
+            -d "$BODY"
 
   pilab:
     needs: check
