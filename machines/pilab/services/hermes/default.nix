@@ -37,6 +37,10 @@ let
   # `kitten-tts-server` (OpenAI-compatible /v1/audio/speech). autoPatchelf'd.
   kittenTtsRs = pkgs.callPackage ./pkgs/kitten-tts-rs { };
 
+  # Local Moonshine TINY STT server (OpenAI-compatible /v1/audio/transcriptions).
+  # Loads the model once on startup and keeps it hot. Bound on 127.0.0.1:7258.
+  moonshineSttServer = pkgs.callPackage ./pkgs/moonshine-stt-server { };
+
   # The nano-int8 KittenTTS model dir (25MB). The package output IS the model
   # directory (config.json, *.onnx, voices.npz at its root).
   kittenTtsModel = pkgs.callPackage ./pkgs/kitten-tts-nano-int8 { };
@@ -75,7 +79,7 @@ let
 in
 
 {
-  sops.secrets."bt_speaker.mac_address" = {};
+  sops.secrets."bt_speaker.mac_address" = { owner = "ritiek"; };
 
   # The wrapper is the sole `hermes` on PATH (we do NOT use the module's
   # addToSystemPackages CLI, which would shadow this wrapper and skip the
@@ -122,8 +126,8 @@ in
   # -- reachable over Tailscale/LAN.
   # hermes-agent wants kitten-tts-server so it starts alongside hermes
   # (lazy: not at boot, only when hermes-agent starts).
-  systemd.services.hermes-agent.wants = [ "kitten-tts-server.service" ];
-  systemd.services.hermes-agent.after = [ "kitten-tts-server.service" ];
+  systemd.services.hermes-agent.wants = [ "kitten-tts-server.service" "moonshine-stt-server.service" ];
+  systemd.services.hermes-agent.after = [ "kitten-tts-server.service" "moonshine-stt-server.service" ];
 
   systemd.services.kitten-tts-server = {
     description = "KittenTTS server (OpenAI-compatible TTS for hermes)";
@@ -144,6 +148,30 @@ in
       ProtectSystem = "strict";
       ProtectHome = true;
       PrivateTmp = true;
+      NoNewPrivileges = true;
+    };
+  };
+
+  systemd.services.moonshine-stt-server = {
+    description = "Moonshine TINY STT server (OpenAI-compatible, for hermes)";
+    after = [ "network.target" ];
+    environment = {
+      MOONSHINE_MODEL    = "TINY";
+      MOONSHINE_STT_PORT = "7258";
+      MOONSHINE_STT_HOST = "127.0.0.1";
+      # Silence ONNX Runtime info-level log spam (3 = WARNING).
+      ORT_LOGGING_LEVEL  = "3";
+      HOME               = "/home/ritiek";
+    };
+    serviceConfig = {
+      ExecStart      = "${moonshineSttServer}/bin/moonshine-stt-server";
+      User           = "ritiek";
+      Group          = "users";
+      Restart        = "on-failure";
+      RestartSec     = 3;
+      ProtectSystem  = "strict";
+      ProtectHome    = "read-only";
+      PrivateTmp     = true;
       NoNewPrivileges = true;
     };
   };
@@ -314,8 +342,18 @@ in
         tirith_enabled = false;
         redact_secrets = false;
       };
+      # Previous STT provider (Groq Whisper API). Superseded by the local
+      # Moonshine TINY server; kept commented for easy rollback.
+      # stt = {
+      #   provider = "groq";
+      # };
       stt = {
-        provider = "groq";
+        provider = "openai";
+        openai = {
+          base_url = "http://127.0.0.1:7258/v1";
+          api_key  = "local";
+          model    = "moonshine-tiny";
+        };
       };
       voice = {
         tts_enabled = true;
