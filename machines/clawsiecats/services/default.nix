@@ -4,24 +4,71 @@ let
   primaryDomain = "clawsiecats.lol";
   domains = [ primaryDomain "clawsiecats.omg.lol" ];
 
+  # Hardcoded prompt sent to hermes on a CI build failure. Edit here (not in
+  # .github/workflows) to change what hermes is asked to do.
+  matrixNotifyPrompt = "build failed. Please analyze the build log in the thread below, explain why it failed, and suggest possible solutions. Do NOT attempt to fix anything.";
+  hermesUserId = "@hermes:pilab.lion-zebra.ts.net";
+
+  # Receives a typed JSON payload from GitHub Actions (NOT a raw Matrix
+  # message). Expected fields:
+  #   { "job": "mishy", "run_url": "https://...", "pr_url": "https://..."|"", "log": "..." }
+  # clawsiecats builds the full Matrix message (hardcoded prompt + @hermes
+  # mention + HTML formatting) and sends the build log as a threaded reply.
   matrixNotifyScript = pkgs.writeShellScript "matrix-notify-script" ''
     set -euo pipefail
     HOMESERVER="http://pilab.lion-zebra.ts.net:6168"
     USERNAME="github-actions"
     PASSWORD="$(cat /run/secrets/github_actions_matrix_user.password)"
     ROOM_ID="!hbc1delAaoyVn6To30BJ8gWvbkVUkR-P3r4ZJTlJT04"
-    TXN_ID="$(${pkgs.coreutils}/bin/date +%s%N)"
-    MSG_JSON="$1"
-    TOKEN="$(${pkgs.curl}/bin/curl -sf -X POST "$HOMESERVER/_matrix/client/v3/login" \
+    PROMPT="${matrixNotifyPrompt}"
+    HERMES="${hermesUserId}"
+    PAYLOAD="$1"
+
+    JQ="${pkgs.jq}/bin/jq"
+    CURL="${pkgs.curl}/bin/curl"
+    DATE="${pkgs.coreutils}/bin/date"
+
+    JOB="$(printf '%s' "$PAYLOAD" | "$JQ" -r '.job // "unknown"')"
+    RUN_URL="$(printf '%s' "$PAYLOAD" | "$JQ" -r '.run_url // ""')"
+    PR_URL="$(printf '%s' "$PAYLOAD" | "$JQ" -r '.pr_url // ""')"
+    LOG="$(printf '%s' "$PAYLOAD" | "$JQ" -r '.log // "(no build log available)"')"
+
+    # Plain-text and HTML bodies for the prompt message.
+    PLAIN="$JOB $PROMPT"$'\n'"Run: $RUN_URL"
+    HTML="<a href=\"https://matrix.to/#/$HERMES\">hermes</a>: $JOB $PROMPT<br>Run: <a href=\"$RUN_URL\">$RUN_URL</a>"
+    if [ -n "$PR_URL" ]; then
+      PLAIN="$PLAIN"$'\n'"PR: $PR_URL"
+      HTML="$HTML<br>PR: <a href=\"$PR_URL\">$PR_URL</a>"
+    fi
+
+    MSG_JSON="$("$JQ" -n --arg p "$PLAIN" --arg h "$HTML" --arg u "$HERMES" \
+      '{"msgtype":"m.text","format":"org.matrix.custom.html","body":$p,"formatted_body":$h,"m.mentions":{"user_ids":[$u]}}')"
+
+    TOKEN="$("$CURL" -sf -X POST "$HOMESERVER/_matrix/client/v3/login" \
       -H "Content-Type: application/json" \
       -d "{\"type\":\"m.login.password\",\"identifier\":{\"type\":\"m.id.user\",\"user\":\"$USERNAME\"},\"password\":\"$PASSWORD\"}" \
-      | ${pkgs.jq}/bin/jq -r '.access_token')"
-    ${pkgs.curl}/bin/curl -sf -X PUT \
-      "$HOMESERVER/_matrix/client/v3/rooms/$ROOM_ID/send/m.room.message/$TXN_ID" \
+      | "$JQ" -r '.access_token')"
+
+    # First message: the prompt + mention. Capture its event_id for threading.
+    TXN1="$("$DATE" +%s%N)"
+    RESP="$("$CURL" -sf -X PUT \
+      "$HOMESERVER/_matrix/client/v3/rooms/$ROOM_ID/send/m.room.message/$TXN1" \
       -H "Authorization: Bearer $TOKEN" \
       -H "Content-Type: application/json" \
-      --data-binary "$MSG_JSON"
-    ${pkgs.curl}/bin/curl -sf -X POST "$HOMESERVER/_matrix/client/v3/logout" \
+      --data-binary "$MSG_JSON")"
+    EVENT_ID="$(printf '%s' "$RESP" | "$JQ" -r '.event_id')"
+
+    # Second message: the build log, as a threaded reply to the prompt.
+    LOG_JSON="$("$JQ" -n --arg log "$LOG" --arg eid "$EVENT_ID" \
+      '{"msgtype":"m.text","body":$log,"m.relates_to":{"rel_type":"m.thread","event_id":$eid,"is_falling_back":true,"m.in_reply_to":{"event_id":$eid}}}')"
+    TXN2="$((TXN1 + 1))"
+    "$CURL" -sf -X PUT \
+      "$HOMESERVER/_matrix/client/v3/rooms/$ROOM_ID/send/m.room.message/$TXN2" \
+      -H "Authorization: Bearer $TOKEN" \
+      -H "Content-Type: application/json" \
+      --data-binary "$LOG_JSON"
+
+    "$CURL" -sf -X POST "$HOMESERVER/_matrix/client/v3/logout" \
       -H "Authorization: Bearer $TOKEN" \
       -H "Content-Type: application/json" \
       -d "{}" >/dev/null 2>&1 || true
