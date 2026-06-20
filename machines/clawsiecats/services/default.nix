@@ -4,6 +4,29 @@ let
   primaryDomain = "clawsiecats.lol";
   domains = [ primaryDomain "clawsiecats.omg.lol" ];
 
+  matrixNotifyScript = pkgs.writeShellScript "matrix-notify-script" ''
+    set -euo pipefail
+    HOMESERVER="http://pilab.lion-zebra.ts.net:6168"
+    USERNAME="github-actions"
+    PASSWORD="$(cat /run/secrets/github_actions_matrix_user.password)"
+    ROOM_ID="!hbc1delAaoyVn6To30BJ8gWvbkVUkR-P3r4ZJTlJT04"
+    TXN_ID="$(${pkgs.coreutils}/bin/date +%s%N)"
+    MSG_JSON="$1"
+    TOKEN="$(${pkgs.curl}/bin/curl -sf -X POST "$HOMESERVER/_matrix/client/v3/login" \
+      -H "Content-Type: application/json" \
+      -d "{\"type\":\"m.login.password\",\"identifier\":{\"type\":\"m.id.user\",\"user\":\"$USERNAME\"},\"password\":\"$PASSWORD\"}" \
+      | ${pkgs.jq}/bin/jq -r '.access_token')"
+    ${pkgs.curl}/bin/curl -sf -X PUT \
+      "$HOMESERVER/_matrix/client/v3/rooms/$ROOM_ID/send/m.room.message/$TXN_ID" \
+      -H "Authorization: Bearer $TOKEN" \
+      -H "Content-Type: application/json" \
+      --data-binary "$MSG_JSON"
+    ${pkgs.curl}/bin/curl -sf -X POST "$HOMESERVER/_matrix/client/v3/logout" \
+      -H "Authorization: Bearer $TOKEN" \
+      -H "Content-Type: application/json" \
+      -d "{}" >/dev/null 2>&1 || true
+  '';
+
   mkVhosts = domain: {
     "jitsi.${domain}" = {
       basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
@@ -135,15 +158,13 @@ let
     "webhook.${domain}" = {
       forceSSL = true;
       enableACME = true;
-      locations."~ ^/matrix/github-actions/new/([0-9]+)$" = {
+      locations."~ ^/matrix/github-actions/new/" = {
         extraConfig = ''
-          if ($webhook_auth_valid = 0) { return 403; }
-          proxy_method PUT;
-          include ${config.sops.templates."nginx-matrix-auth-header".path};
-          proxy_set_header Content-Type "application/json";
-          set $txnid $1;
-          set $upstream "pilab.lion-zebra.ts.net:6168";
-          proxy_pass http://$upstream/_matrix/client/v3/rooms/!hbc1delAaoyVn6To30BJ8gWvbkVUkR-P3r4ZJTlJT04/send/m.room.message/$txnid;
+          rewrite ^(.*)$ /hooks/matrix-notify break;
+          proxy_pass http://127.0.0.1:9001;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         '';
       };
     };
@@ -166,26 +187,32 @@ let
       owner = "nginx";
     };
     "webhook_matrix.auth" = {};
-    "github_action_matrix_user.access" = {};
+    "github_actions_matrix_user.password" = {};
   };
 
-  sops.templates = {
-    "nginx-webhook-auth-map" = {
-      content = ''
-        map $http_authorization $webhook_auth_valid {
-          "Bearer ${config.sops.placeholder."webhook_matrix.auth"}" 1;
-          default 0;
+  sops.templates."matrix-notify-hooks" = {
+    content = ''
+      [
+        {
+          "id": "matrix-notify",
+          "execute-command": "${matrixNotifyScript}",
+          "command-working-directory": "/tmp",
+          "http-methods": ["POST"],
+          "pass-arguments-to-command": [{"source": "entire-payload", "name": "payload"}],
+          "include-command-output-in-response": true,
+          "trigger-rule": {
+            "match": {
+              "type": "value",
+              "value": "Bearer ${config.sops.placeholder."webhook_matrix.auth"}",
+              "parameter": {
+                "source": "header",
+                "name": "Authorization"
+              }
+            }
+          }
         }
-      '';
-      owner = config.services.nginx.user;
-    };
-
-    "nginx-matrix-auth-header" = {
-      content = ''
-        proxy_set_header Authorization "Bearer ${config.sops.placeholder."github_action_matrix_user.access"}";
-      '';
-      owner = config.services.nginx.user;
-    };
+      ]
+    '';
   };
 
   environment.persistence."/nix/persist/system" = {
@@ -411,11 +438,9 @@ let
       eventsConfig = ''
         worker_connections 10240;
       '';
-      mapHashBucketSize = 128;
       commonHttpConfig = ''
         # Connection pooling for parallel uploads (global HTTP context)
         keepalive_timeout 600s;
-        include ${config.sops.templates."nginx-webhook-auth-map".path};
       '';
       virtualHosts = lib.mkMerge (map mkVhosts domains) // {
         # "miniserve.${primaryDomain}" = {
@@ -686,6 +711,27 @@ let
           proxy_pass $upstream;
         }
       '';
+    };
+  };
+
+  systemd.services.matrix-notify-webhook = {
+    description = "Matrix notification webhook";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" "sops-nix.service" ];
+    # The hooks file path is a stable sops-template path, so the unit definition
+    # never changes across rebuilds even when the script content does. webhook
+    # only reads its hooks (and the baked execute-command path) at startup, so we
+    # must force a restart whenever the script or hooks template content changes.
+    restartTriggers = [
+      matrixNotifyScript
+      config.sops.templates."matrix-notify-hooks".content
+    ];
+    serviceConfig = {
+      ExecStart =
+        let hooksFile = config.sops.templates."matrix-notify-hooks".path;
+        in "${pkgs.webhook}/bin/webhook -hooks ${hooksFile} -ip 127.0.0.1 -port 9001";
+      Restart = "on-failure";
+      RestartSec = "5s";
     };
   };
 
