@@ -123,8 +123,7 @@ in
     "paperless_public.url" = { owner = "ritiek"; };
     "home_assistant.long_lived_token" = { owner = "ritiek"; };
     "searx.url" = { owner = "ritiek"; };
-    "discord.bot_token" = { owner = "ritiek"; };
-    "discord.allowed_users" = { owner = "ritiek"; };
+    "opencode_api.key" = { owner = "ritiek"; };
   };
 
   nixpkgs.config.allowUnfree = false;
@@ -255,6 +254,9 @@ in
 
     users.ritiek = {
       isNormalUser = true;
+      # Keep user systemd services (e.g. pipewire/wireplumber) running without
+      # an interactive login. Required for headless Bluetooth audio at boot.
+      linger = true;
       extraGroups = [
         "wheel"
         "i2c"
@@ -301,6 +303,8 @@ in
   # ];
 
   services = {
+    udisks2.enable = true;
+
     udev.extraRules = ''
       KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
       SUBSYSTEM=="gpio", KERNEL=="gpiochip*", GROUP="gpio", MODE="0660"
@@ -318,6 +322,37 @@ in
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
       };
+    };
+
+    pipewire = {
+      enable = true;
+      # Headless box: socket activation never triggers without an interactive
+      # login, leaving pipewire dead and bluez without an A2DP backend.
+      # Start pipewire/wireplumber at boot instead. See wantedBy + linger below.
+      # https://wiki.nixos.org/wiki/PipeWire (Headless operation)
+      socketActivation = false;
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+      wireplumber = {
+        enable = true;
+        configPackages = [
+          (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluetooth-seat-fix.conf" ''
+            wireplumber.profiles = {
+              main = {
+                monitor.bluez.seat-monitoring = disabled
+                support.logind = disabled
+              }
+            }
+          '')
+        ];
+      };
+      pulse.enable = true;
+      jack.enable = true;
+
+      # use the example session manager (no others are packaged yet so this is enabled by default,
+      # no need to redefine it in your config for now)
     };
 
     # NOTE: This doesn't seem to work as is since Jitsi requires HTTPS.
@@ -350,11 +385,13 @@ in
     # (compiled locally) uses the correct page size.
     matrix-continuwuity = {
       enable = true;
+      admin.enable = true;
       settings.global = {
         server_name = "pilab.lion-zebra.ts.net";
         port = [ 6168 ];
         address = [ "0.0.0.0" "::" ];
         allow_registration = false;
+        yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = false;
         allow_federation = false;
         allow_encryption = true;
         trusted_servers = [ ];
@@ -364,6 +401,11 @@ in
   };
 
   networking.firewall.allowedTCPPorts = [ 6168 ];
+
+  # With socket activation disabled, start wireplumber at boot so the bluez
+  # A2DP backend is registered before any device tries to connect (headless).
+  # https://wiki.nixos.org/wiki/PipeWire (Headless operation)
+  systemd.user.services.wireplumber.wantedBy = [ "default.target" ];
 
   programs = {
     nix-index-database.comma.enable = true;
@@ -433,7 +475,7 @@ in
 
   zramSwap = {
     enable = true;
-    memoryPercent = 275;
+    memoryPercent = 250;
   };
 
   networking.localCommands = ''
