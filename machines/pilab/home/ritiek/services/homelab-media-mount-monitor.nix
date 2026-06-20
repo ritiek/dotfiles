@@ -19,6 +19,7 @@ in
     Unit = {
       Description = "Blue LED blink indicator for HOMELAB_MEDIA not mounted";
       After = [ "local-fs.target" ];
+      ConditionPathIsMountPoint = "!/media/HOMELAB_MEDIA";
     };
     Service = {
       Type = "simple";

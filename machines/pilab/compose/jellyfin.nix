@@ -80,13 +80,15 @@ in lib.mkMerge [
       "--network-alias=jellyfin"
       "--network=jellyfin_default"
     ];
-    labels = {
-      "homepage.description" = "Media server";
-      "homepage.group" = "*arr Stack";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8096";
-      "homepage.icon" = "jellyfin";
-      "homepage.name" = "Jellyfin";
-    };
+    # Disabling these due to on-demand startup and defining these labels in homepage's
+    # services.yaml.
+    # labels = {
+    #   "homepage.description" = "Media server";
+    #   "homepage.group" = "*arr Stack";
+    #   "homepage.href" = "http://pilab.lion-zebra.ts.net:8096";
+    #   "homepage.icon" = "jellyfin";
+    #   "homepage.name" = "Jellyfin";
+    # };
   };
   systemd.services."docker-jellyfin" = {
     serviceConfig = {
