@@ -97,18 +97,18 @@ jobs:
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.mishy.config.system.build.toplevel 2>&1 | tee /tmp/build.log; exit ${PIPESTATUS[0]}
 
       - name: Notify Matrix on failure
-        if: |
-          failure() &&
-          github.event_name == 'pull_request' &&
-          contains(github.event.pull_request.labels.*.name, 'automated') &&
-          contains(github.event.pull_request.labels.*.name, 'dependencies')
+        if: failure()
         env:
           WEBHOOK_MATRIX_AUTH: ${{ secrets.WEBHOOK_MATRIX_AUTH }}
         run: |
+          set -euo pipefail
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
-          PLAIN="hermes: machines/${{ github.job }} build failed on flake.lock update PR. Please analyze the build log in the thread below and explain why it failed, suggest possible solutions. Do NOT attempt to fix anything.\nRun: ${RUN_URL}\nPR: ${PR_URL}"
-          HTML="<a href=\"https://matrix.to/#/@hermes:pilab.lion-zebra.ts.net\">hermes</a>: machines/${{ github.job }} build failed on flake.lock update PR. Please analyze the build log in the thread below and explain why it failed, suggest possible solutions. Do NOT attempt to fix anything.<br>Run: <a href=\"${RUN_URL}\">${RUN_URL}</a><br>PR: <a href=\"${PR_URL}\">${PR_URL}</a>"
+          PR_URL=""
+          if [ -n "${{ github.event.pull_request.number }}" ]; then
+            PR_URL="https://github.com/${{ github.repository }}/pull/${{ github.event.pull_request.number }}"
+          fi
+          PLAIN="hermes: machines/${{ github.job }} build failed. Please analyze the build log in the thread below, explain why it failed, and suggest possible solutions. Do NOT attempt to fix anything.\nRun: ${RUN_URL}${PR_URL:+\nPR: ${PR_URL}}"
+          HTML="<a href=\"https://matrix.to/#/@hermes:pilab.lion-zebra.ts.net\">hermes</a>: machines/${{ github.job }} build failed. Please analyze the build log in the thread below, explain why it failed, and suggest possible solutions. Do NOT attempt to fix anything.<br>Run: <a href=\"${RUN_URL}\">${RUN_URL}</a>${PR_URL:+<br>PR: <a href=\"${PR_URL}\">${PR_URL}</a>}"
           BODY=$(jq -n --arg p "$PLAIN" --arg h "$HTML" \
             '{"msgtype":"m.text","format":"org.matrix.custom.html","body":$p,"formatted_body":$h,"m.mentions":{"user_ids":["@hermes:pilab.lion-zebra.ts.net"]}}')
           TXN1=$(date +%s%N)
