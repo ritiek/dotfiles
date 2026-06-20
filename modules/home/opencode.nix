@@ -266,15 +266,9 @@ in
         to run any tools not currently available on the system.
       - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
         to rebuild NixOS configuration and do NOT use `home-manager switch`.
+      - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
+        through code and files.
     '';
-      # - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
-      #   through code and files.
-      # - Terse like caveman. Technical substance exact. Only fluff die.
-      #   Drop: articles, filler (just/really/basically), pleasantries, hedging.
-      #   Fragments OK. Short synonyms. Code unchanged.
-      #   Pattern: [thing] [action] [reason]. [next step].
-      #   ACTIVE EVERY RESPONSE. No revert after many turns. No filler drift.
-      #   Code/commits/PRs: normal. Off: "stop caveman" / "normal mode".
     commands = {
       rebuild-switch = ''
         Rebuild and switch to NixOS flake configuration you're currently working on.
