@@ -85,6 +85,7 @@
       # local.piano-rs
       psmisc
       moreutils
+      file
       unixtools.route
       unixtools.xxd
       zip

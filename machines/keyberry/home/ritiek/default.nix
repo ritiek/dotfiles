@@ -57,6 +57,7 @@
       any-nix-shell
       psmisc
       moreutils
+      file
 
       unzip
       unrar-wrapper
