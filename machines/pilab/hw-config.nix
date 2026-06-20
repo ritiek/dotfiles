@@ -29,7 +29,7 @@ in
   # boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_51.linuxPackages_rpi5;
   boot.kernelPackages = pkgs.linuxAndFirmware.latest.linuxPackages_rpi5;
 
-  boot.kernelModules = [ "i2c-dev" ];
+  boot.kernelModules = [ "i2c-dev" "vhci-hcd" ];
 
   boot.supportedFilesystems = [ "ntfs" ];
   

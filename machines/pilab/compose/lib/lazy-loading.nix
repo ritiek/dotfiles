@@ -208,8 +208,8 @@
         exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${connectionHandler}
       '';
       unitConfig.RequiresMountsFor = requiredMounts;
-      # Don't bind to root target - autostart should persist independently
-      wantedBy = [ rootTarget ];
+      # Bind to multi-user.target so the proxy starts at boot independently of the root target
+      wantedBy = [ "multi-user.target" ];
       after = [ "docker.service" ];
     };
 
