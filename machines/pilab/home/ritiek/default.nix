@@ -99,7 +99,7 @@ let
       systemctl start autostart-homebox.service
       # continuwuity runs as a native NixOS service (continuwuity.service), auto-started by systemd
       systemctl start autostart-grocy.service
-      systemctl start docker-changedetection.service
+      # systemctl start docker-changedetection.service
       # systemctl start docker-frigate.service
       systemctl start autostart-habitica-server.service
       # systemctl start docker-ollama.service
@@ -137,7 +137,7 @@ let
       systemctl start autostart-linkding.service
       systemctl start docker-open-archiver.service
       systemctl start autostart-meridian-proxy.service
-      systemctl start docker-audiomuse-ai-flask-app.service docker-audiomuse-ai-worker-instance.service
+      # systemctl start docker-audiomuse-ai-flask-app.service docker-audiomuse-ai-worker-instance.service
       systemctl start autostart-grampsweb.service
       systemctl start autostart-readeck.service
       # systemctl start docker-kopia.service
@@ -238,6 +238,7 @@ in
       mosquitto
       iperf
       chafa
+      wiremix
 
       libgpiod
       i2c-tools
@@ -246,6 +247,7 @@ in
       homelab-mount
       homelab-start
       verify-otp
+      inputs.sops-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       (writeShellScriptBin "homelab-unmount" ''
         set -x
@@ -303,7 +305,7 @@ in
         systemctl stop autostart-homebox.service docker-compose-homebox-root.target
         systemctl stop continuwuity.service
         systemctl stop autostart-grocy.service docker-compose-grocy-root.target
-        systemctl stop docker-compose-changedetection-root.target
+        # systemctl stop docker-compose-changedetection-root.target
         # systemctl stop docker-compose-frigate-root.target
         systemctl stop autostart-habitica-server.service docker-compose-habitica-root.target
         systemctl stop autostart-open-webui.service docker-compose-ollama-webui-root.target
@@ -336,12 +338,11 @@ in
         systemctl stop autostart-invidious.service docker-compose-invidious-root.target
         systemctl stop autostart-redlib.service docker-compose-redlib-root.target
         systemctl stop docker-compose-meshmonitor-root.target
-        systemctl stop docker-compose-manyfold-root.target
+        systemctl stop autostart-manyfold.service docker-compose-manyfold-root.target
         systemctl stop autostart-linkding.service docker-compose-linkding-root.target
         systemctl stop docker-compose-open-archiver-root.target
         systemctl stop autostart-meridian-proxy.service autostart-docker-compose-meridian-root.target
-        systemctl stop docker-compose-open-archiver-root.target
-        systemctl stop docker-compose-audiomuse-root.target
+        # systemctl stop docker-compose-audiomuse-root.target
         systemctl stop autostart-grampsweb.service docker-compose-grampsweb-root.target
         systemctl stop autostart-readeck.service docker-compose-readeck-root.target
         # systemctl stop docker-compose-kopia-root.target
