@@ -197,6 +197,7 @@ in
     packages = with pkgs; [
       any-nix-shell
       psmisc
+      file
       moreutils
       lshw
       pciutils
