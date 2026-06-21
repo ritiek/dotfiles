@@ -219,7 +219,7 @@ let
   in
 {
   imports = [
-    inputs.simple-nixos-mailserver.nixosModule
+    inputs.simple-nixos-mailserver.nixosModules.default
     ./headscale
   ];
 
