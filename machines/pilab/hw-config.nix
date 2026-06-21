@@ -184,5 +184,16 @@ in
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp1s0.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
+  # nixpkgs 26.11 removed `stdenv.hostPlatform.linux-kernel`, but the pinned
+  # nixos-raspberrypi loader module still reads `linux-kernel.target` to set
+  # `boot.loader.kernelFile` (modules/system/boot/loader/raspberrypi/default.nix).
+  # Re-add it onto the host platform (`lib.systems.elaborate` preserves passed-in
+  # attrs) so that broken definition evaluates to the correct value ("Image").
+  # `mkForce` is required because nixos-raspberrypi's default config sets
+  # `nixpkgs.hostPlatform = "aarch64-linux"` at normal priority. Drop this once
+  # nixos-raspberrypi is bumped to a release that no longer references linux-kernel.
+  nixpkgs.hostPlatform = lib.mkForce {
+    system = "aarch64-linux";
+    linux-kernel = { target = "Image"; };
+  };
 }
