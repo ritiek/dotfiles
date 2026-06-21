@@ -57,8 +57,6 @@
   };
 
   nixpkgs.overlays = [
-    inputs.headplane.overlays.default
-
     # Bun baseline overlay for CPUs without AVX2
     (final: prev: {
       bun = prev.bun.overrideAttrs (oldAttrs: {

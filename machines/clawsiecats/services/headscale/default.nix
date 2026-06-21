@@ -5,10 +5,6 @@ let
   domain = "clawsiecats.lol";
 in
 {
-  imports = [
-    inputs.headplane.nixosModules.headplane
-  ];
-
   sops.secrets = {
     "tailscale.authkey" = {};
     "headscale.noise_private.key" = {
