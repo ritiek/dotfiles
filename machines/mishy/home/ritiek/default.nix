@@ -100,7 +100,7 @@
       playerctl
       nwg-look
       libsForQt5.qt5ct
-      libsForQt5.xp-pen-deco-01-v2-driver
+      xp-pen-deco-01-v2-driver
 
       # # Can't join voice channels on dorion discord client and it
       # # seems to freeze randomly (wayland/gpu issues maybe)
