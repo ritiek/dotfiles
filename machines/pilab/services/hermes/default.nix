@@ -491,11 +491,14 @@ in
             pkgs.git
             pkgs.coreutils
             pkgs.python3
-            pkgs.chromium
+            # pilab (aarch64): stable pkgs.chromium has no binary cache and would
+            # build from source (~100GB scratch). unstable nixpkgs has a cached
+            # aarch64 build, so use it.
+            pkgs.unstable.chromium
           ];
           GITHUB_TOKEN                          = "\${HERMES_MCP_GITHUB_TOKEN}";
           SEARXNG_BASE_URL                      = "\${HERMES_MCP_SEARX_URL}";
-          KINDLY_BROWSER_EXECUTABLE_PATH        = "${pkgs.chromium}/bin/chromium";
+          KINDLY_BROWSER_EXECUTABLE_PATH        = "${pkgs.unstable.chromium}/bin/chromium";
           KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS     = "300";
           KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
           KINDLY_WEB_SEARCH_MAX_CONCURRENCY     = "3";
@@ -506,7 +509,7 @@ in
         enabled = true;
         command = "${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp";
         args = [
-          "--executable-path" "${pkgs.chromium}/bin/chromium"
+          "--executable-path" "${pkgs.unstable.chromium}/bin/chromium"
           "--headless"
           "--caps" "vision"
           "--ignore-https-errors"

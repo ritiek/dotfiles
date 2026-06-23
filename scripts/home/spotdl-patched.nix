@@ -61,6 +61,14 @@ let
   '';
 
   pythonOverrides = pyFinal: pyPrev: {
+    # tenacity 9.1.4: tests/test_asyncio.py::TestContextManager::test_sleeps
+    # asserts an async sleep took <1.1s, but under load on the slow Pi 5 it
+    # takes ~12s (timing-sensitive, passes upstream). Disable just that test so
+    # the spotdl dependency chain (sse-starlette -> ... -> tenacity) builds.
+    tenacity = pyPrev.tenacity.overridePythonAttrs (old: {
+      disabledTests = (old.disabledTests or [ ]) ++ [ "test_sleeps" ];
+    });
+
     validators = pyPrev.buildPythonPackage rec {
       pname = "validators";
       version = "0.35.0";

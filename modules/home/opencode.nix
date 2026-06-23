@@ -30,6 +30,12 @@ let
 
   searxDomain = "clawsiecats.lol";
 
+  # On pilab (aarch64), pkgs.chromium has no binary cache for the pinned nixpkgs
+  # and would build from source (~100GB scratch), exhausting the disk. The unstable
+  # nixpkgs DOES have a cached aarch64 build, so use it there. Other hosts keep
+  # pkgs.chromium unchanged.
+  chromiumPackage = if hostName == "pilab" then pkgs.unstable.chromium else pkgs.chromium;
+
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
 
@@ -102,7 +108,7 @@ let
 
     # Build command arguments
     ARGS=(
-      --executable-path "${pkgs.chromium}/bin/chromium"
+      --executable-path "${chromiumPackage}/bin/chromium"
       --user-data-dir "$TEMP_PROFILE"
       --ignore-https-errors
       --caps vision
@@ -231,7 +237,7 @@ in
   ];
   programs.chromium = {
     enable = true;
-    package = pkgs.chromium;
+    package = chromiumPackage;
   };
   programs.opencode = {
     enable = true;
