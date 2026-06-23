@@ -14,6 +14,12 @@ in
   imports = with nixos-raspberrypi.nixosModules; [
     raspberry-pi-5.base
     sd-image
+    usb-gadget-ethernet
+    # Optional memory optimization: use 16k pages instead of default 64k for
+    # jemalloc, saves memory, reduces fragmentation. May fix any issues caused
+    # by the memory page size discrepancy. May cause lots of rebuilds.
+    # (only for systems running default rpi5 (bcm2712) kernel with 16k memory page)
+    # raspberry-pi-5.page-size-16k
   ];
 
   # Needed for building SD images.
