@@ -42,10 +42,11 @@
               config.allowUnfree = true;
             };
           })
-          # python-lsp-server 1.14.0 has a flaky autoimport test that times out
-          # on the Pi 5 (passes upstream). Disable just that one test.
+          # Some Python packages have timing-sensitive tests that pass upstream
+          # but flake on the slow Pi 5 hardware. Disable just those tests.
           (_final: prev: {
             python312Packages = prev.python312Packages.overrideScope (_pyfinal: pyprev: {
+              # python-lsp-server 1.14.0: flaky autoimport test that times out.
               python-lsp-server = pyprev.python-lsp-server.overridePythonAttrs (old: {
                 disabledTests = (old.disabledTests or [ ]) ++ [
                   "test_autoimport_code_actions_and_completions_for_notebook_document"
