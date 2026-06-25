@@ -29,6 +29,7 @@ in
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/attic.nix
+    ./../../modules/attic-watch-store.nix
     ./../../modules/usbipd.nix
     ./../../modules/3proxy.nix
     # Generated using:
