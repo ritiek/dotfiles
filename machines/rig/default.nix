@@ -13,6 +13,7 @@
     ./graphics.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
+    ./../../modules/attic-watch-store.nix
     ./../../modules/ssh.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
