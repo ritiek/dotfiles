@@ -13,6 +13,7 @@
     ./graphics.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
+    ./../../modules/attic-watch-store.nix
     ./../../modules/ssh.nix
     ./../../modules/yubico-pam.nix
     ./../../modules/usbip.nix
