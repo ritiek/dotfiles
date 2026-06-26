@@ -14,7 +14,7 @@ in
   imports = [
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
-    ./hw-config.nix
+    ./minimal.nix
     ./home
     ./services-paths.nix
     ./services/restic.nix

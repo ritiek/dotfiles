@@ -260,6 +260,54 @@
   outputs = { self, ... }@inputs:
   let
     cache = import ./substituters.nix;
+
+    # Shared builder for the pilab Raspberry Pi 5 host. Produces three related
+    # nixosConfigurations from one base:
+    #   - pilab             : btrfs install target, deployed via nixos-anywhere/disko
+    #   - pilab-sd          : full SD-card image with a btrfs root
+    #   - pilab-minimal-sd  : minimal ssh-only bootstrap image (ext4) used to boot
+    #                         the Pi and then run nixos-anywhere to install `pilab`
+    #
+    # The nixpkgs-patched workaround re-implements nixpkgs PR #398456 (adds a
+    # `key` attribute to mkRemovedOptionModule / doRename) in pure Nix via
+    # lib.extend, so nixos-raspberrypi works against vanilla nixpkgs (26.05)
+    # instead of nvmd/nixpkgs. Once PR #398456 is merged, drop the let block and
+    # set `nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs"` in inputs.
+    mkPilab = { extraModules ? [ ], hostName ? null }:
+      let
+        patchedLib = inputs.nixpkgs.lib.extend (final: prev: {
+          mkRemovedOptionModule = optionName: replacementInstructions:
+            { options, ... }:
+            {
+              key = "removedOptionModule#" + final.concatStringsSep "_" optionName;
+            } // (prev.mkRemovedOptionModule optionName replacementInstructions { inherit options; });
+
+          doRename = args@{ from, to, ... }:
+            { config, options, ... }@moduleArgs:
+            {
+              key = "renamedOptionModule#" + final.concatStringsSep "_" from
+                  + "->" + final.concatStringsSep "_" to;
+            } // (prev.doRename args (builtins.removeAttrs moduleArgs ["key"]));
+        });
+        nixpkgs-patched = inputs.nixpkgs // {
+          lib = patchedLib // {
+            nixosSystem = args: patchedLib.nixosSystem args;
+          };
+        };
+      in
+      inputs.nixos-raspberrypi.lib.nixosSystem {
+        nixpkgs = nixpkgs-patched;
+        specialArgs = inputs // { inherit inputs; nixos-raspberrypi = inputs.nixos-raspberrypi; };
+        modules = [
+          inputs.hermes-agent.nixosModules.default
+          ./machines/pilab
+          ./machines/pilab/minimal.nix
+        ]
+        ++ extraModules
+        ++ inputs.nixpkgs.lib.optional (hostName != null) {
+          networking.hostName = inputs.nixpkgs.lib.mkForce hostName;
+        };
+      };
   in {
     nixConfig = {
       extra-substituters = cache.substituters;
@@ -350,45 +398,31 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.pilab =
-      let
-        # nixos-raspberrypi's bootloader module uses `disabledModules = [{ key = "..."; }]`
-        # to disable the conflicting boot.loader.raspberryPi option from nixpkgs rename.nix.
-        # This requires nixpkgs PR #398456 (not yet merged as of 2026-03-11) which adds a
-        # `key` attribute to mkRemovedOptionModule and mkRenamedOptionModule (via doRename).
-        # We re-implement the two-line patch here in pure Nix using lib.extend so that
-        # nixos-raspberrypi can use our vanilla nixpkgs (26.05) instead of nvmd/nixpkgs.
-        # Once PR #398456 is merged, remove this let block and set
-        # `nixos-raspberrypi.inputs.nixpkgs.follows = "nixpkgs"` in inputs instead.
-        patchedLib = inputs.nixpkgs.lib.extend (final: prev: {
-          mkRemovedOptionModule = optionName: replacementInstructions:
-            { options, ... }:
-            {
-              key = "removedOptionModule#" + final.concatStringsSep "_" optionName;
-            } // (prev.mkRemovedOptionModule optionName replacementInstructions { inherit options; });
+    # btrfs install target, deployed via nixos-anywhere (disko partitions a
+    # separate NVMe/SSD; you cannot disko the disk you are booted from).
+    nixosConfigurations.pilab = mkPilab {
+      extraModules = [
+        inputs.disko.nixosModules.disko
+        ./machines/pilab/hw-config/disko.nix
+      ];
+    };
 
-          doRename = args@{ from, to, ... }:
-            { config, options, ... }@moduleArgs:
-            {
-              key = "renamedOptionModule#" + final.concatStringsSep "_" from
-                  + "->" + final.concatStringsSep "_" to;
-            } // (prev.doRename args (builtins.removeAttrs moduleArgs ["key"]));
-        });
-        nixpkgs-patched = inputs.nixpkgs // {
-          lib = patchedLib // {
-            nixosSystem = args: patchedLib.nixosSystem args;
-          };
-        };
-      in
-      inputs.nixos-raspberrypi.lib.nixosSystem {
-        nixpkgs = nixpkgs-patched;
-        specialArgs = inputs // { inherit inputs; nixos-raspberrypi = inputs.nixos-raspberrypi; };
-        modules = [
-          inputs.hermes-agent.nixosModules.default
-          ./machines/pilab
-          ./machines/pilab/hw-config.nix
-        ];
-      };
+    # Full SD-card image with a btrfs root (flat, no subvolumes).
+    nixosConfigurations.pilab-sd = mkPilab {
+      hostName = "pilab-sd";
+      extraModules = [
+        ./machines/pilab/hw-config/sd-image-btrfs.nix
+      ];
+    };
+
+    # Minimal ssh-only bootstrap image (ext4); boot this, then run
+    # nixos-anywhere to install the full `pilab` config onto NVMe/SSD.
+    nixosConfigurations.pilab-minimal-sd = mkPilab {
+      hostName = "pilab-minimal-sd";
+      extraModules = [
+        ./machines/pilab/hw-config/sd-image-minimal.nix
+      ];
+    };
 
     homeConfigurations."ritiek@pilab" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
@@ -694,7 +728,9 @@
       format = "raw-efi";
     };
 
-    pilab-sd = self.nixosConfigurations.pilab.config.system.build.sdImage;
+    pilab-sd = self.nixosConfigurations.pilab-sd.config.system.build.sdImage;
+
+    pilab-minimal-sd = self.nixosConfigurations.pilab-minimal-sd.config.system.build.sdImage;
 
     keyberry-sd = inputs.nixos-generators.nixosGenerate {
       system = "aarch64-linux";

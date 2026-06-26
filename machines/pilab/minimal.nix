@@ -13,7 +13,6 @@ in
 
   imports = with nixos-raspberrypi.nixosModules; [
     raspberry-pi-5.base
-    sd-image
     usb-gadget-ethernet
     # Optional memory optimization: use 16k pages instead of default 64k for
     # jemalloc, saves memory, reduces fragmentation. May fix any issues caused
@@ -37,7 +36,7 @@ in
 
   boot.kernelModules = [ "i2c-dev" "vhci-hcd" ];
 
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = [ "ntfs" "btrfs" ];
   
   # Increase font size in TTY console logs. This applies after NixOS enters stage 2 boot.
   console = {
@@ -146,14 +145,13 @@ in
     };
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/NIXOS_SD";
-      fsType = "ext4";
-      autoResize = true;
-      options = [ "noatime" ];
-    };
-  };
+  # NOTE: The root filesystem (`fileSystems."/"`) is intentionally NOT defined
+  # here. This module is the shared hardware base for all pilab build targets
+  # (disko install target, full btrfs SD image, minimal bootstrap SD image),
+  # each of which provides its own root definition:
+  #   - hw-config/disko.nix          (btrfs subvolumes, nixos-anywhere target)
+  #   - hw-config/sd-image-btrfs.nix (flat btrfs root SD image)
+  #   - hw-config/sd-image-minimal.nix (ext4 throwaway bootstrap SD image)
 
   # Ref:
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
@@ -177,8 +175,9 @@ in
   };
 
   services.btrfs.autoScrub = {
-    enable = true;
+    enable = false;
     fileSystems = [
+      "/"
       homelabMediaPath
     ];
   };

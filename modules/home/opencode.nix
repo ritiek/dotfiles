@@ -3,10 +3,13 @@ let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
   isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
 
-  secretsFile =
-    if hostName == "mishy-usb"
-    then ./../../machines/mishy/home/${config.home.username}/secrets.yaml
-    else ./../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
+  # Image/installer variants (different hostName, same secrets) reuse their
+  # base host's secrets file rather than a nonexistent per-variant directory.
+  baseHost =
+    if hostName == "mishy-usb" then "mishy"
+    else if hostName == "pilab-sd" || hostName == "pilab-minimal-sd" then "pilab"
+    else hostName;
+  secretsFile = ./../../machines/${baseHost}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
 
