@@ -38,11 +38,7 @@ in
     wantedBy = [ "multi-user.target" ];
     environment.XDG_CONFIG_HOME = "/etc";
     serviceConfig = {
-      # -j 1: serialize uploads from this background pusher. The atticd backend
-      # is PostgreSQL and handles concurrent writers fine, but this service is a
-      # low-priority store watcher where upload throughput is not critical, so we
-      # keep it to a single connection to stay gentle on the cache server.
-      ExecStart = "${pkgs.attic-client}/bin/attic watch-store --jobs 1 ${server}:${cache}";
+      ExecStart = "${pkgs.attic-client}/bin/attic watch-store ${server}:${cache}";
       Restart = "on-failure";
       RestartSec = 10;
       User = "attic-watch-store";
