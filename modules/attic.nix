@@ -16,8 +16,17 @@
         level = 9;
       };
       database = {
-        url = "sqlite://${config.fileSystems.nix-binary-cache.mountPoint}/server.db?mode=rwc";
+        # PostgreSQL (not SQLite): SQLite serializes all writers, so concurrent
+        # uploads fail instantly with SQLITE_BUSY ("database is locked").
+        # Postgres (MVCC) handles real concurrent writers. Peer auth over the
+        # local socket — atticd runs as system user "atticd", which maps to the
+        # postgres role of the same name; no password/secret needed.
+        url = "postgres:///atticd?host=/run/postgresql";
       };
+      # Disable in-process garbage collection. atticd runs a GC pass on every
+      # startup (and atticd restarts on udev events / rebuilds). Run GC manually
+      # instead via `atticd --mode garbage-collector-once`.
+      garbage-collection.interval = "0s";
       storage = {
         type = "local";
         path = config.fileSystems.nix-binary-cache.mountPoint;
@@ -28,6 +37,27 @@
   # Disable PrivateUsers to allow access to root-owned mount point
   # while maintaining other security hardening features.
   systemd.services.atticd.serviceConfig.PrivateUsers = lib.mkForce false;
+
+  # PostgreSQL backend for atticd (replaces SQLite). Peer auth: the "atticd"
+  # role is owned by the same-named system user atticd runs as.
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [ "atticd" ];
+    ensureUsers = [
+      {
+        name = "atticd";
+        ensureDBOwnership = true;
+      }
+    ];
+  };
+
+  # atticd must not start before its database is up AND the atticd role/db have
+  # been created by postgresql-setup (otherwise migrations fail with
+  # 'role "atticd" does not exist').
+  systemd.services.atticd = {
+    after = [ "postgresql.service" "postgresql-setup.service" ];
+    requires = [ "postgresql.service" "postgresql-setup.service" ];
+  };
 
   fileSystems.nix-binary-cache = {
     mountPoint = "/media/${config.fileSystems.nix-binary-cache.label}";

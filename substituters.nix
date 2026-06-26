@@ -28,6 +28,6 @@
     "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
     "microvm.cachix.org-1:oXnBc6hRE3eX5rSYdRyMYXnfzcCxC7yKPTbZXALsqys="
 
-    "attic-action:KzjQMFuIL/gl+NzXja3S80zOF14w4yv2qocKn9EVtKI="
+    "attic-action:VjlUFhBGSo4cuIqlkt6rlQybrpjj5g3jxtrde2j/fQk="
   ];
 }
