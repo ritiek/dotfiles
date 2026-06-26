@@ -383,10 +383,20 @@
         enable = true;
         configPackages = [
           (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-bluez-config.conf" ''
+            # Force the laptop to act ONLY as an A2DP source (audio output to
+            # BT speakers/headphones). Combo devices (e.g. Tribit XSound Go)
+            # advertise both A2DP source + HSP/HFP-AG; enabling the sink/HF/HS
+            # roles lets bluez connect them as a "source/audio-gateway" first,
+            # grabbing the single AVDTP transport and forcing the low-quality
+            # HSP profile (8kHz mono) while the a2dp-sink connect fails with
+            # "Device or resource busy". Restricting to a2dp_source avoids the
+            # collision and yields high-fidelity stereo A2DP playback.
+            # Tradeoff: no BT headset mic/calls (HSP/HFP), and this laptop
+            # cannot act as a BT speaker for a phone.
             monitor.bluez.properties = {
-              bluez5.roles = [ a2dp_sink a2dp_source bap_sink bap_source hsp_hs hsp_ag hfp_hf hfp_ag ]
+              bluez5.roles = [ a2dp_source ]
               bluez5.codecs = [ sbc sbc_xq aac ]
-              bluez5.auto-connect = [ a2dp_sink a2dp_source ]
+              bluez5.auto-connect = [ a2dp_source ]
             }
           '')
         ];
