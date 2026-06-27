@@ -13,6 +13,8 @@ in
     group = "attic-watch-store";
   };
 
+  nix.settings.trusted-users = [ "attic-watch-store" ];
+
   # Read+push token for the attic-action cache (same token used by GitHub Actions).
   sops.secrets."attic.token" = {
     owner = "attic-watch-store";
@@ -43,6 +45,9 @@ in
       RestartSec = 10;
       User = "attic-watch-store";
       Group = "attic-watch-store";
+      Nice = 19;
+      IOSchedulingClass = "idle";
+      CPUSchedulingPolicy = "idle";
     };
   };
 }
