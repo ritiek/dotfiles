@@ -38,7 +38,7 @@ in
     wantedBy = [ "multi-user.target" ];
     environment.XDG_CONFIG_HOME = "/etc";
     serviceConfig = {
-      ExecStart = "${pkgs.attic-client}/bin/attic watch-store ${server}:${cache}";
+      ExecStart = "${pkgs.attic-client}/bin/attic watch-store ${server}:${cache} -j 1";
       Restart = "on-failure";
       RestartSec = 10;
       User = "attic-watch-store";
