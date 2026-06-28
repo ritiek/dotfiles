@@ -16,6 +16,9 @@ let
       servicePaths.jellyfin.configSource
       "${everythingElsePath}/arr/movies"
       "${everythingElsePath}/arr/tv"
+      "${homelabMediaPath}/services/spotdl"
+      "${homelabMediaPath}/services/immich/photos/library"
+      "${homelabMediaPath}/services/calibre/library"
     ];
     # Check every 4 hours; stop Jellyfin when no active connections are found.
     idleCheckInterval = "*-*-* 00/4:00:00";
@@ -102,6 +105,14 @@ in lib.mkMerge [
     ];
     requires = [
       "docker-network-jellyfin_default.service"
+    ];
+    unitConfig.RequiresMountsFor = [
+      servicePaths.jellyfin.configSource
+      "${everythingElsePath}/arr/movies"
+      "${everythingElsePath}/arr/tv"
+      "${homelabMediaPath}/services/spotdl"
+      "${homelabMediaPath}/services/immich/photos/library"
+      "${homelabMediaPath}/services/calibre/library"
     ];
 
     preStart = ''
