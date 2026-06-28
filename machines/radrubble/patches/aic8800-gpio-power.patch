@@ -1,0 +1,29 @@
+--- a/src/SDIO/driver_fw/driver/aic8800/aic8800_bsp/aicsdio.c
++++ b/src/SDIO/driver_fw/driver/aic8800/aic8800_bsp/aicsdio.c
+@@ -28,6 +28,14 @@
+ #include "aic_bsp_driver.h"
+ #include "aicsdio_txrxif.h"
+
++#ifdef CONFIG_PLATFORM_UBUNTU
++#include <linux/gpio.h>
++#include <linux/mmc/host.h>
++static bool skip_power_wait = true;
++module_param(skip_power_wait, bool, 0644);
++MODULE_PARM_DESC(skip_power_wait, "Skip power sequence wait (card already enumerated by DT)");
++#endif
++
+ #ifdef CONFIG_PLATFORM_ALLWINNER
+ extern int sunxi_wlan_get_bus_index(void);
+ extern void sunxi_wlan_set_power(int on);
+@@ -515,6 +523,11 @@ static int aicbsp_platform_power_on(void)
+             rockchip_wifi_set_carddetect(1);
+ #endif /*CONFIG_PLATFORM_ROCKCHIP2*/
+
++#ifdef CONFIG_PLATFORM_UBUNTU
++	if (skip_power_wait)
++		return 0;
++#endif
++
+ 	sema_init(&aic_chipup_sem, 0);
+ 	ret = aicbsp_reg_sdio_notify(&aic_chipup_sem);
+ 	if (ret) {

@@ -13,6 +13,7 @@ in
   imports = [
     inputs.rockchip.nixosModules.sdImageRockchip
     inputs.rockchip.nixosModules.noZFS
+    ./aic8800.nix
   ];
 
   # pkgs.armbian-firmware is non-free.
