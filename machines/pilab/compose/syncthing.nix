@@ -56,6 +56,8 @@
       RestartSteps = lib.mkOverride 500 9;
     };
     unitConfig.RequiresMountsFor = [
+      homelabMediaPath
+      everythingElsePath
       "${homelabMediaPath}/services/syncthing"
     ];
     partOf = [ "docker-compose-syncthing-root.target" ];
