@@ -125,6 +125,18 @@ except Exception as _exc:
     sys.stderr.write(f"[hermes-gateway-overlay] hook install failed: {_exc}\n")
 
 
+# Anchor 'cron' package before plugin adapters shadow it.
+# Multiple plugin adapters (discord, raft, slack, telegram, whatsapp) each do
+# sys.path.insert(0, <pkg>/plugins/) at module load time inside gateway.run.
+# 'cron' is lazily imported, so by the time it first resolves, plugins/cron
+# (which lacks scheduler_provider) wins over the real cron package in the venv.
+# Pre-importing here anchors cron in sys.modules with the correct venv path.
+try:
+    import cron as _cron_anchor  # noqa: F401
+    del _cron_anchor
+except Exception:
+    pass
+
 # Pre-load libopus for discord.py voice channel support.
 # ctypes.util.find_library("opus") returns None on NixOS, so we load explicitly.
 try:
