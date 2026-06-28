@@ -13,7 +13,7 @@
       listen = "[::]:7080";
       compression = {
         type = "zstd";
-        level = 9;
+        level = 3;
       };
       database = {
         # PostgreSQL (not SQLite): SQLite serializes all writers, so concurrent
