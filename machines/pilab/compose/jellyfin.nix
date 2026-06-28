@@ -67,7 +67,7 @@ in lib.mkMerge [
       "${homelabMediaPath}/services/calibre/library:/var/data/jellyfin/books:rw"
     ];
     ports = [
-      "127.0.0.1:${toString internalWebUIPort}:8096/tcp"
+      "${toString internalWebUIPort}:8096/tcp"
       "8920:8920/tcp"
       "7359:7359/udp"
       "1900:1900/udp"
