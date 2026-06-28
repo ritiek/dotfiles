@@ -37,6 +37,10 @@ in
 
   boot.kernelModules = [ "i2c-dev" "vhci-hcd" ];
 
+  # Disable UAS for RTL9210B USB NVMe enclosures — UAS causes device reset
+  # failures and drives going offline on Pi 5 (especially Micron NVMe).
+  boot.kernelParams = [ "usb-storage.quirks=0bda:9210:u" ];
+
   boot.supportedFilesystems = [ "ntfs" ];
   
   # Increase font size in TTY console logs. This applies after NixOS enters stage 2 boot.
