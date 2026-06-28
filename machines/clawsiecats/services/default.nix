@@ -160,8 +160,8 @@ let
           proxy_send_timeout 600s;
           proxy_connect_timeout 600s;
 
-          # Increase body size limit for large NAR files
-          client_max_body_size 2g;
+          # Increase body size limit for large NAR files (0 = unlimited)
+          client_max_body_size 0;
 
           # Use HTTP/1.1 for better connection handling
           proxy_http_version 1.1;
@@ -464,7 +464,7 @@ let
 
     nginx = {
       enable = true;
-      clientMaxBodySize = "2g";
+      clientMaxBodySize = "0";
       # Use systemd-resolved's stub as the nginx resolver so that .ts.net
       # upstream hostnames (resolved via Tailscale MagicDNS) are looked up at
       # request time rather than at nginx startup. Combined with variable-based
