@@ -86,6 +86,17 @@ let
         extraConfig = ''
           set $upstream "pilab.lion-zebra.ts.net:2283";
           proxy_pass http://$upstream;
+
+          # Immich recommended upload settings
+          proxy_read_timeout 43200s;
+          proxy_send_timeout 43200s;
+          send_timeout 43200s;
+          proxy_request_buffering off;
+          client_body_buffer_size 1024k;
+
+          # WebSocket support
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
         '';
       };
     };
@@ -478,8 +489,6 @@ let
         worker_connections 10240;
       '';
       commonHttpConfig = ''
-        # Connection pooling for parallel uploads (global HTTP context)
-        keepalive_timeout 600s;
       '';
       virtualHosts = lib.mkMerge (map mkVhosts domains) // {
         # "miniserve.${primaryDomain}" = {
