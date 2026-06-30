@@ -42,6 +42,7 @@ let
           [ -f "$p" ] && patch -p1 < "$p" || true
         done
         patch -p1 < ${./patches/aic8800-gpio-power.patch} || true
+
         runHook postPatch
       '';
 

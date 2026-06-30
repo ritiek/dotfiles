@@ -84,6 +84,14 @@
 
   boot.supportedFilesystems = [ "ntfs" ];
 
+  # USB gadget ethernet - allows SSH over USB-C on first boot
+  # Connect to 10.0.0.2 from host (configure host side as 10.0.0.1/24)
+  boot.kernelModules = [ "g_ether" ];
+  networking.interfaces.usb0.ipv4.addresses = [{
+    address = "10.0.0.2";
+    prefixLength = 24;
+  }];
+
   users = {
     defaultUserShell = pkgs.zsh;
     mutableUsers = false;
