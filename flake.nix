@@ -530,6 +530,28 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.chocomelt = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/chocomelt
+        ./machines/chocomelt/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@chocomelt" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/chocomelt/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "chocomelt"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -633,6 +655,15 @@
       sshUser = "ritiek";
     };
 
+    deploy.nodes.chocomelt = {
+      hostname = "chocomelt.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.chocomelt;
+      };
+      sshUser = "ritiek";
+    };
+
     deploy.nodes.mangoshake = {
       hostname = "mangoshake.lion-zebra.ts.net";
       profiles.system = {
@@ -717,6 +748,8 @@
     };
 
     radrubble-sd = self.nixosConfigurations.radrubble.config.system.build.sdImage;
+
+    chocomelt = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of
