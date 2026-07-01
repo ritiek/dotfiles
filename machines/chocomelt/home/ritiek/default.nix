@@ -10,11 +10,7 @@
     ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
-    # opencode.nix declares sops.secrets."lightpanda_cdp.token", which isn't
-    # present in any per-host secrets.yaml yet (pre-existing repo issue -
-    # radrubble's own home-manager build currently fails the same way).
-    # Re-enable once that secret is added to machines/chocomelt/home/ritiek/secrets.yaml.
-    # ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
   ];
   
