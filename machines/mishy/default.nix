@@ -64,22 +64,22 @@
       #     "kvm"
       #   ];
       # }
-      {
-        hostName = "rig.lion-zebra.ts.net";
-        systems = [ pkgs.stdenv.hostPlatform.system ];
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUl4Z2I5UlA1dkF3QXN4Rmk1LzV1QUQ3UnNkd2RYaC9GcERJeSt1Nm50Z0UK";
-        maxJobs = 4;
-        speedFactor = 1;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
+      # {
+      #   hostName = "rig.lion-zebra.ts.net";
+      #   systems = [ pkgs.stdenv.hostPlatform.system ];
+      #   protocol = "ssh-ng";
+      #   sshUser = "rnixbld";
+      #   sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+      #   publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSUl4Z2I5UlA1dkF3QXN4Rmk1LzV1QUQ3UnNkd2RYaC9GcERJeSt1Nm50Z0UK";
+      #   maxJobs = 4;
+      #   speedFactor = 1;
+      #   supportedFeatures = [
+      #     "nixos-test"
+      #     "benchmark"
+      #     "big-parallel"
+      #     "kvm"
+      #   ];
+      # }
       # {
       #   hostName = "pilab.lion-zebra.ts.net";
       #   systems = [ "aarch64-linux" "armv6l-linux" ];
