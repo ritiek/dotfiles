@@ -499,6 +499,27 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.deskette = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./machines/deskette
+        ./machines/deskette/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@deskette" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "x86_64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/deskette/home/ritiek
+        { _module.args.hostName = "deskette"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.zerostash = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -633,6 +654,15 @@
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.rig;
+      };
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.deskette = {
+      hostname = "deskette.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.deskette;
       };
       sshUser = "ritiek";
     };
