@@ -334,6 +334,32 @@
   #     };
   #   };
 
+    nfs.server = {
+      enable = true;
+      exports = ''
+        /export/frigate     *(rw,insecure,no_subtree_check,no_root_squash)
+      '';
+    };
+  };
+
+  systemd.services.frigate-nfs-export = {
+    description = "Bind mount frigate data for NFS export";
+    wantedBy = [ "multi-user.target" ];
+    before = [ "nfs-server.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      ${pkgs.coreutils}/bin/mkdir -p /export/frigate
+
+      if ! ${pkgs.util-linux}/bin/mountpoint -q /export/frigate; then
+        ${pkgs.util-linux}/bin/mount --bind /media/RESTIC_BACKUP/frigate /export/frigate
+      fi
+    '';
+    postStop = ''
+      ${pkgs.util-linux}/bin/umount /export/frigate 2>/dev/null || true
+    '';
   };
 
   # systemd.services.frigate.serviceConfig = {
@@ -355,7 +381,21 @@
     memoryPercent = 200;
   };
 
-  networking.firewall.allowedTCPPorts = [ 8096 ];
+  networking.firewall.allowedTCPPorts = [
+    8096  # jellyfin-proxy
+    2049  # NFS nfsd
+    20048 # NFS mountd
+    32803 # NFS lockd
+  ];
+  networking.firewall.allowedUDPPorts = [
+    20048 # NFS mountd
+    32769 # NFS lockd
+  ];
+
+  boot.kernel.sysctl = {
+    "fs.nfs.nlm_tcpport" = 32803;
+    "fs.nfs.nlm_udpport" = 32769;
+  };
 
   boot.tmp = {
     # Not using tmpfs as it causes nixos-generators to eat
