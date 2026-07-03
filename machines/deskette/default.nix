@@ -167,6 +167,7 @@
         "plugdev"
         "kvm"
         "adbusers"
+        "uinput"
       ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
@@ -233,7 +234,7 @@
       # docker-compose
 
       xdg-utils
-      xdg-desktop-portal
+      xdg-desktop-portal-hyprland
     ];
 
     # variables.EDITOR = "nvim";
@@ -246,10 +247,6 @@
 
   systemd = {
     services = {
-      # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-      "getty@tty1".enable = false;
-      "autovt@tty1".enable = false;
-
       swayosd-libinput-backend = {
         description = "swayosd-libinput-backend";
         enable = true;
@@ -288,24 +285,8 @@
   };
 
   services = {
-    # Enable the X11 windowing system.
-    xserver = {
-      enable = true;
-      xkb = {
-        layout = "us";
-        variant = "";
-      };
-    };
-
-    # Enable the GNOME Desktop Environment.
-    desktopManager.gnome.enable = true;
-    displayManager = {
-      autoLogin = {
-        enable = true;
-        user = "ritiek";
-      };
-      gdm.enable = true;
-    };
+    # Enable TTY autologin (no display manager, same as mishy)
+    getty.autologinUser = "ritiek";
 
     openssh = {
       enable = true;
@@ -390,11 +371,23 @@
     # };
   };
 
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    wlr.enable = true;
+    config = {
+      common.default = [ "hyprland" ];
+      niri.default = [ "gtk" "hyprland" ];
+    };
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+    ];
+  };
+
   programs = {
     nix-index-database.comma.enable = true;
-    # XXX: Had to disable this otherwise it conflicts with gnome display manager
-    #      and breaks config rebuild.
-    # ssh.startAgent = true;
+    ssh.startAgent = true;
     gnupg.agent = {
       enable = true;
       # pinentryPackage = lib.mkForce pkgs.pinentry-qt;
@@ -435,6 +428,8 @@
     # };
   };
 
+  gtk.iconCache.enable = true;
+
   # Disable blueman autostart for all users
   # environment.etc."xdg/autostart/blueman.desktop" = lib.mkIf config.services.blueman.enable {
   #   text = ''
@@ -459,7 +454,7 @@
     };
 
     rtkit.enable = true;
-    # polkit.enable = true;
+    polkit.enable = true;
   };
 
   fonts = {
@@ -512,6 +507,6 @@
   # Force Wayland on all apps.
   environment.sessionVariables = {
     NIXOS_OZONE_WL = "1";
-    WAYLAND_DISPLAY = "wayland-0";
+    WAYLAND_DISPLAY = "wayland-1";
   };
 }
