@@ -1,4 +1,4 @@
-{ lib, pkgs, inputs, config, osConfig, ... }:
+{ lib, pkgs, inputs, config, osConfig, hostName, ... }:
 
 let
   cactus = pkgs.fetchurl {
@@ -111,6 +111,7 @@ input {
     // workspace-auto-back-and-forth
 }
 
+${if hostName == "mishy" then ''
 output "eDP-1" {
     mode "1920x1080@60"
     position x=0 y=0
@@ -147,6 +148,30 @@ output "HDMI-A-2" {
     scale 2.666667
     transform "270"
 }
+'' else if hostName == "deskette" then ''
+// VM — Proxmox's virtual display (bochs-drm/QEMU std VGA) only offers a
+// fixed EDID mode list, no exact 1366x768. 1360x768 is the closest 16:9
+// match available.
+output "Virtual-1" {
+    mode "1920x1080@60"
+}
+
+// Force rendering on the passed-through Intel GPU (hardware acceleration)
+// instead of the bochs-drm virtual display adapter (card0), which has no
+// render node and would otherwise force slow software rendering.
+debug {
+    render-drm-device "/dev/dri/renderD128"
+}
+'' else ''
+output "eDP-1" {
+    mode "1920x1080@60"
+    position x=0 y=0
+    scale 1.0
+    transform "normal"
+    variable-refresh-rate on-demand=true
+    focus-at-startup
+}
+''}
 
 layout {
     default-column-display "normal"
@@ -209,12 +234,13 @@ layout {
         inactive-gradient from="#202020" to="#606060" angle=45 relative-to="workspace-view"
 
         urgent-gradient from="#800" to="#a33" angle=45
+
+        // color "#ffc87f80"
+        // gradient from="#ffbb6680" to="#ffc88080" angle=45 relative-to="workspace-view"
     }
 
     insert-hint {
         off
-        // color "#ffc87f80"
-        // gradient from="#ffbb6680" to="#ffc88080" angle=45 relative-to="workspace-view"
     }
 
     struts {
@@ -226,6 +252,7 @@ layout {
 }
 
 // Workspace definitions (niri doesn't support monitor assignments like Hyprland)
+${if hostName == "mishy" then ''
 workspace "1" {
     open-on-output "eDP-1"
 }
@@ -237,6 +264,9 @@ workspace "2" {
 workspace "10" {
     open-on-output "HDMI-A-2"
 }
+'' else ''
+// No workspace-to-output pinning needed for single-monitor setups
+''}
 
 prefer-no-csd
 
@@ -408,6 +438,9 @@ spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "swayosd-server"
 spawn-at-startup "tailscale" "systray"
+${if hostName == "deskette" then ''
+spawn-at-startup "/run/wrappers/bin/sunshine"
+'' else ""}
 
 environment {
     ELECTRON_OZONE_PLATFORM_HINT "auto"
@@ -839,23 +872,32 @@ animations {
           (builtins.toString sakura)
           (builtins.toString cactus)
         ];
-        wallpaper = [
-          {
-            monitor = "eDP-1";
-            path = builtins.toString sunrise;
-            fit_mode = "cover";
-          }
-          {
-            monitor = "HDMI-A-1";
-            path = builtins.toString sakura;
-            fit_mode = "cover";
-          }
-          {
-            monitor = "HDMI-A-2";
-            path = builtins.toString cactus;
-            fit_mode = "cover";
-          }
-        ];
+        wallpaper =
+          if hostName == "mishy" then [
+            {
+              monitor = "eDP-1";
+              path = builtins.toString sunrise;
+              fit_mode = "cover";
+            }
+            {
+              monitor = "HDMI-A-1";
+              path = builtins.toString sakura;
+              fit_mode = "cover";
+            }
+            {
+              monitor = "HDMI-A-2";
+              path = builtins.toString cactus;
+              fit_mode = "cover";
+            }
+          ] else [
+            {
+              # Empty monitor string applies to any monitor without explicit
+              # config — needed since deskette (VM) has no fixed output name.
+              monitor = "";
+              path = builtins.toString sunrise;
+              fit_mode = "cover";
+            }
+          ];
       };
     };
     hypridle = {
