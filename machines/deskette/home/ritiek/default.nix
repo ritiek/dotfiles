@@ -5,6 +5,8 @@
 
     ./../../../../modules/home/sops.nix
     ./../../../../modules/home/nix.nix
+    ./../../../../modules/home/niri
+    ./../../../../modules/home/theme.nix
     ./../../../../modules/home/ghostty.nix
     ./../../../../modules/home/zsh
     ./../../../../modules/home/git
@@ -12,7 +14,11 @@
     ./../../../../modules/home/shpool.nix
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
+    ./../../../../modules/home/rofi.nix
+    ./../../../../modules/home/waybar
+    ./../../../../modules/home/swaync
     ./../../../../modules/home/zen-browser.nix
+    ./../../../../modules/home/glava
     ./../../../../modules/home/opencode.nix
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
@@ -113,7 +119,12 @@
       iperf
       nix-tree
       deploy-rs
+      lxqt.lxqt-policykit
+      nemo
+      ffmpeg
+      feishin
       # nur.repos.nltch.spotify-adblock
+      inputs.sops-shell.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
   };
 
@@ -147,4 +158,12 @@
   };
 
   xdg.mimeApps.enable = true;
+
+  # Auto-start niri on TTY1 login (no display manager, like mishy)
+  programs.zsh.profileExtra = ''
+    if [ "$(tty)" = "/dev/tty1" ] && [ -z "$(pidof niri)" ]; then
+      export XDG_SESSION_TYPE=wayland
+      exec niri --session
+    fi
+  '';
 }
