@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: NIXOS_PORTS <local@nixos-ports>
+Date: Thu, 2 Jul 2026 00:00:00 +0000
+Subject: [PATCH] drm/sunxi: skip commit_init_connecting() when no display
+ is connected at boot
+
+sunxi_drm_bind() unconditionally calls commit_init_connecting() after
+setup_bootloader_connecting_state() returns >= 0. But that function
+(via init_connecting()) returns 0 even when no bootloader connecting
+info exists AND no connector currently reports a connected mode -- in
+that case it just starts a hot-plug poll timer
+(sunxi_drm_create_mode_monitor) and leaves pri->priv->connecting_head
+EMPTY.
+
+commit_init_connecting() then calls sunxi_drm_offline_mode_pre_init()
+and sunxi_fbdev_init(), both of which correctly bail out on the empty
+list with "init connecting not found" errors -- but execution then
+falls through into drm_atomic_commit() with an untouched/empty atomic
+state, which hangs the boot indefinitely on this BSP when no display
+(no HDMI, no eDP/DP-altmode) is attached, as on this headless Cubie
+A7S server build.
+
+Skip commit_init_connecting() entirely when connecting_head is empty,
+matching the same early-exit already used for the ret < 0 case just
+above. Has no effect when a display IS connected/detected at boot
+(connecting_head will be non-empty and commit_init_connecting() still
+runs as before).
+---
+ bsp/drivers/drm/sunxi_drm_drv.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/bsp/drivers/drm/sunxi_drm_drv.c b/bsp/drivers/drm/sunxi_drm_drv.c
+@@ -1274,6 +1274,10 @@
+ 		DRM_ERROR("setup bootloader connecting failed.Skip commit_init_connecting.\n");
+ 		goto dev_register;
+ 	}
++	if (list_empty(&private->priv->connecting_head)) {
++		DRM_INFO("sunxi-drm: no display connected at boot, skip commit_init_connecting\n");
++		goto dev_register;
++	}
+ 	commit_init_connecting(drm);
+
+ dev_register:
+--
+2.43.0

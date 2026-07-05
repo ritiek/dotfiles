@@ -1,0 +1,138 @@
+From: OpenCode Agent <agent@localhost>
+Date: Sat, 4 Jul 2026 08:00:00 +0530
+Subject: [PATCH] dwmac-sunxi: deassert AXI/bus-master reset (stmmaceth) not just ahb
+
+The gmac0 DTS node on the Cubie A7S (sun60iw2p1.dtsi) declares TWO
+resets:
+
+    resets = <&ccu RST_BUS_GMAC0_AXI>, <&ccu RST_BUS_GMAC0>;
+    reset-names = "stmmaceth", "ahb";
+
+This driver's sunxi_dwmac_resource_get()/sunxi_dwmac_clk_init() only
+ever fetched and deasserted the "ahb" reset (RST_BUS_GMAC0). The
+"stmmaceth" reset (RST_BUS_GMAC0_AXI) - the AXI/bus-master side of the
+GMAC, as opposed to the APB/register-access side gated by "ahb" - was
+never fetched or deasserted anywhere in this file at all (confirmed via
+exhaustive grep for the literal string "stmmaceth": zero matches in
+either dwmac-sunxi.c or dwmac-sunxi.h before this patch).
+
+Symptom on real hardware: PHY negotiation, MDIO reads/writes, and all
+register-level MAC configuration succeed fine (all APB/"ahb"-side
+operations), matching a healthy "ahb" reset. But the boot process hangs
+completely and silently (zero further console output on any CPU, for
+5+ minutes, fully deterministic across many reboots) at
+stmmac_enable_all_dma_irq() time inside __stmmac_open() - the first
+genuinely DMA-engine-facing MMIO register write for this device. With
+the AXI-side reset (RST_BUS_GMAC0_AXI) still asserted, the DMA engine's
+own bus-master interface remains held in reset; an MMIO write routed
+through a block whose bus-interface reset is still asserted can leave
+the AXI/NSI interconnect transaction permanently outstanding on this
+SoC, producing a genuine hardware bus stall rather than a software
+deadlock - fully consistent with the observed "total silent freeze"
+symptom (a real bus stall hangs the whole system since the CPU is stuck
+on a synchronous Device-memory store, not just the network driver's own
+thread).
+
+A separate attempt to fix this by additionally enabling the
+CLK_GMAC0_MBUS clock (wired to the generic "pclk" clock-names slot,
+also never enabled by this driver) via clk_prepare_enable() was tried
+and made things WORSE: the hang moved earlier, to inside
+clk_prepare_enable() itself during probe (~0.6s into boot, instead of
+~17s at ndo_open() time), with neither of that patch's own error paths
+ever printing - meaning clk_prepare_enable() itself never returned. This
+is consistent with the CCU gate write for that specific clock also
+depending on the AXI-side reset being released first, i.e. the correct
+fix order is: deassert the AXI reset FIRST, before any related
+clock-gate enable is attempted.
+
+This patch adds the missing "stmmaceth" reset fetch (optional/shared,
+in case other board variants using this driver do not declare it) and
+deasserts it FIRST - before the "hsi"/"ahb" resets and before any clock
+enable - in sunxi_dwmac_clk_init(), with matching reset_control_assert()
+calls added to both the error-unwind path and sunxi_dwmac_clk_exit().
+
+This patch deliberately does NOT re-add the CLK_GMAC0_MBUS/"pclk" clock
+enable from the previous (reverted) attempt - testing the reset fix in
+isolation first to determine whether it alone resolves the ndo_open()
+hang, before considering whether the clock enable is also needed (and
+if so, only after this reset is confirmed deasserted first).
+---
+ bsp/drivers/stmmac/dwmac-sunxi.c | 15 +++++++++++++++
+ bsp/drivers/stmmac/dwmac-sunxi.h | 11 +++++++++++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/bsp/drivers/stmmac/dwmac-sunxi.c b/bsp/drivers/stmmac/dwmac-sunxi.c
+--- a/bsp/drivers/stmmac/dwmac-sunxi.c	2026-07-04 08:04:47.993740958 +0530
++++ b/bsp/drivers/stmmac/dwmac-sunxi.c	2026-07-04 08:04:48.001740988 +0530
+@@ -246,6 +246,12 @@
+ {
+ 	int ret;
+
++	/* Deassert the AXI/bus-master reset FIRST, before touching any
++	 * clock gate or the ahb/hsi resets - releasing this reset before
++	 * any clock-gate enable is required to avoid a hardware MMIO/bus
++	 * stall on this SoC (see struct field comment for why).
++	 */
++	reset_control_deassert(chip->axi_rst);
+ 	if (chip->variant->flags & SUNXI_DWMAC_HSI_CLK_GATE)
+ 		reset_control_deassert(chip->hsi_rst);
+ 	reset_control_deassert(chip->ahb_rst);
+@@ -294,6 +300,7 @@
+ 	reset_control_assert(chip->ahb_rst);
+ 	if (chip->variant->flags & SUNXI_DWMAC_HSI_CLK_GATE)
+ 		reset_control_assert(chip->hsi_rst);
++	reset_control_assert(chip->axi_rst);
+ 	return ret;
+ }
+
+@@ -310,6 +317,7 @@
+ 	reset_control_assert(chip->ahb_rst);
+ 	if (chip->variant->flags & SUNXI_DWMAC_HSI_CLK_GATE)
+ 		reset_control_assert(chip->hsi_rst);
++	reset_control_assert(chip->axi_rst);
+ }
+
+ static int sunxi_dwmac_hw_init(struct sunxi_dwmac *chip)
+@@ -543,6 +551,17 @@
+ 		}
+ 	}
+
++	/* AXI-side bus-master reset (RST_BUS_GMAC0_AXI). Never fetched
++	 * by this driver before - see struct field comment in the .h
++	 * file for the full root-cause writeup. Optional/shared since
++	 * not every board variant using this driver declares it.
++	 */
++	chip->axi_rst = devm_reset_control_get_optional_shared(chip->dev, "stmmaceth");
++	if (IS_ERR(chip->axi_rst)) {
++		sunxi_err(dev, "Get axi reset failed\n");
++		return -EINVAL;
++	}
++
+ 	chip->ahb_rst = devm_reset_control_get_optional_shared(chip->dev, "ahb");
+ 	if (IS_ERR(chip->ahb_rst)) {
+ 		sunxi_err(dev, "Get mac reset failed\n");
+
+diff --git a/bsp/drivers/stmmac/dwmac-sunxi.h b/bsp/drivers/stmmac/dwmac-sunxi.h
+--- a/bsp/drivers/stmmac/dwmac-sunxi.h	2026-07-04 08:04:47.997740973 +0530
++++ b/bsp/drivers/stmmac/dwmac-sunxi.h	2026-07-04 08:04:48.005741002 +0530
+@@ -153,6 +153,17 @@
+ 	struct clk *nsi_clk;
+ 	struct clk *hsi_ahb;
+ 	struct clk *hsi_axi;
++	/* AXI-side bus-master reset (DT reset-name "stmmaceth", CCU
++	 * RST_BUS_GMAC0_AXI). This driver previously never fetched or
++	 * deasserted this reset at all - only the "ahb" (register/APB
++	 * side) reset was handled. Leaving the AXI-side reset asserted
++	 * is consistent with the boot hang seen at stmmac_enable_all_dma_irq()
++	 * time: the DMA engine's own bus-master interface stays held in
++	 * reset, and an MMIO write targeting a block whose bus-interface
++	 * reset is still asserted can leave the AXI/NSI transaction
++	 * permanently outstanding on this SoC, hanging the whole system.
++	 */
++	struct reset_control *axi_rst;
+ 	struct reset_control *ahb_rst;
+ 	struct reset_control *hsi_rst;
+ 	struct device *dev;
+
+--
+2.43.0
