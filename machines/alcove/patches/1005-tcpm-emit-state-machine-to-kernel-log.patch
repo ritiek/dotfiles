@@ -1,0 +1,26 @@
+Emit TCPM (USB Power Delivery) state machine transitions to the kernel ring
+buffer so they appear on the serial console during boot.
+
+Without this patch, all TCPM debug output goes only into a debugfs circular
+buffer (/sys/kernel/debug/tcpm/*/log), which is inaccessible without an
+interactive shell. On the Cubie A7S the display isn't working yet (DP Alt Mode
+negotiation is the active debugging target), so there is no display and no
+getty on the serial port — the boot log IS the only diagnostic channel.
+
+Adding dev_info() after the vsnprintf makes every PD state transition (CC
+detection, Source_Capabilities, VDM Discover_Identity/SVIDs/Modes, Enter_Mode,
+orientation/mode switch) visible in the serial output at loglevel >= 6.
+
+This is a temporary debug patch. Remove once DP Alt Mode is confirmed working.
+
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -619,6 +619,8 @@
+
+ 	vsnprintf(tmpbuffer, sizeof(tmpbuffer), fmt, args);
+
++	dev_info(port->dev, "TCPM: %s\n", tmpbuffer);
++
+ 	if (tcpm_log_full(port)) {
+ 		port->logbuffer_head = max(port->logbuffer_head - 1, 0);
+ 		strcpy(tmpbuffer, "overflow");

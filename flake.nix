@@ -551,6 +551,28 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.alcove = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/alcove
+        ./machines/alcove/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@alcove" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/alcove/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "alcove"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.chocomelt = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -685,6 +707,15 @@
       sshUser = "ritiek";
     };
 
+    deploy.nodes.alcove = {
+      hostname = "alcove.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.alcove;
+      };
+      sshUser = "ritiek";
+    };
+
     deploy.nodes.chocomelt = {
       hostname = "chocomelt.lion-zebra.ts.net";
       profiles.system = {
@@ -778,6 +809,8 @@
     };
 
     radrubble-sd = self.nixosConfigurations.radrubble.config.system.build.sdImage;
+
+    alcove-sd = self.nixosConfigurations.alcove.config.system.build.sdImage;
 
     chocomelt = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
 
