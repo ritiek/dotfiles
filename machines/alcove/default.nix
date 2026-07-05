@@ -165,8 +165,13 @@
   # linux-defconfig-fragment.config (DWC3 in dual-role mode already
   # provides the UDC, see hw-config.nix's USB_DWC3_DUAL_ROLE comments).
   boot.kernelModules = [ "g_ether" ];
+  # NOTE: 10.0.0.3, not 10.0.0.2 - pilab (a common first-boot USB-gadget
+  # access host) has its own onboard USB-gadget usb0 interface statically
+  # pinned to 10.0.0.2/24, which collided with this address and made plain
+  # IPv4 ping/SSH to the board unreliable (resolved via the host's local
+  # route table instead of the real gadget link).
   networking.interfaces.usb0.ipv4.addresses = [{
-    address = "10.0.0.2";
+    address = "10.0.0.3";
     prefixLength = 24;
   }];
 
