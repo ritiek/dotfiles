@@ -1,0 +1,130 @@
+From: OpenCode <opencode@localhost>
+Date: Sat, 4 Jul 2026 06:50:00 +0000
+Subject: [PATCH] dwmac-sunxi: enable optional "pclk" (GMAC DMA-bus-master
+ clock) to fix silent hang on Radxa Cubie A7S / sun60iw2
+
+On the Radxa Cubie A7S (Allwinner A733 / sun60iw2 SoC), the kernel
+hangs completely silently (zero further console output, unrecoverable,
+confirmed deterministic across 3+ reboots) immediately after:
+
+  dwmac-sunxi 4500000.ethernet end0: configuring for phy/rgmii link mode
+
+Diagnostic instrumentation inside mainline phylink_start() proved that
+phylink_start()/phy_start() complete and return successfully. The hang
+occurs later in __stmmac_open(), in the call chain leading to
+stmmac_enable_all_dma_irq(), which performs the first genuinely
+DMA-engine-facing MMIO register write for this device.
+
+Root cause: the sun60iw2p1.dtsi gmac0 node wires CLK_GMAC0_MBUS (the
+GMAC DMA engine's AXI/MBUS bus-master clock, distinct from CLK_GMAC0
+which only gates the MAC's APB/register-access side and is already
+alive) into the generic "pclk" clock-names slot:
+
+    clocks = <&ccu CLK_GMAC0>, <&ccu CLK_GMAC0_MBUS>,
+             <&ccu CLK_GMAC0_PHY>, <&ccu CLK_GMAC_PTP>;
+    clock-names = "stmmaceth", "pclk", "phy", "ptp_ref";
+
+Mainline's generic stmmac_pltfr_probe() wrapper (stmmac_platform.c)
+normally auto-fetches and clk_prepare_enable()s both "stmmaceth" and
+"pclk" before calling stmmac_dvr_probe(). However, this vendor glue
+driver (dwmac-sunxi.c) bypasses that wrapper entirely -- it calls
+stmmac_probe_config_dt() and stmmac_dvr_probe() directly -- and its
+own manual clock-management code only knows about "phy"/"phy25m",
+"hsi_ahb", "hsi_axi", and "nsi" (gated behind SUNXI_DWMAC_HSI_CLK_GATE/
+SUNXI_DWMAC_NSI_CLK_GATE variant flags). The "pclk" string does not
+appear anywhere in dwmac-sunxi.c or dwmac-sunxi.h.
+
+The gmac0_mbus_clk CCU gate itself (drivers/clk/sunxi-ng/ccu-sun60iw2.c,
+register 0x05E4 bit 11) is an ordinary SUNXI_CCU_GATE_WITH_KEY with no
+CLK_IS_CRITICAL/CLK_IGNORE_UNUSED flags, so it is never turned on by
+anyone. The GMAC's DMA engine therefore never receives its bus clock,
+and stmmac_enable_all_dma_irq()'s subsequent register write into that
+unclocked block stalls the AHB/AXI bus indefinitely -- a genuine
+hardware bus hang, not a software deadlock, which is why the freeze
+is total and silent (no oops, no RCU-stall/softlockup warning, no
+further output on any CPU).
+
+Fix: add an explicit, optional "pclk" clock to struct sunxi_dwmac and
+fetch/enable/disable it in sunxi_dwmac_resource_get()/
+sunxi_dwmac_clk_init()/sunxi_dwmac_clk_exit(), mirroring the existing
+pattern already used for nsi_clk/hsi_ahb/hsi_axi. devm_clk_get_optional()
+is used so boards/variants whose DT does not declare a "pclk"
+clock-names entry are completely unaffected (returns NULL, not an
+error).
+
+---
+ bsp/drivers/stmmac/dwmac-sunxi.c | 15 +++++++++++++++
+ bsp/drivers/stmmac/dwmac-sunxi.h |  8 ++++++++
+ 2 files changed, 23 insertions(+)
+
+diff --git a/bsp/drivers/stmmac/dwmac-sunxi.c b/bsp/drivers/stmmac/dwmac-sunxi.c
+--- a/bsp/drivers/stmmac/dwmac-sunxi.c
++++ b/bsp/drivers/stmmac/dwmac-sunxi.c
+@@ -279,8 +279,19 @@
+ 		}
+ 	}
+
++	if (chip->pclk) {
++		ret = clk_prepare_enable(chip->pclk);
++		if (ret) {
++			sunxi_err(chip->dev, "Enable pclk failed\n");
++			goto err_pclk;
++		}
++	}
++
+ 	return 0;
+
++err_pclk:
++	if (chip->soc_phy_clk_en)
++		clk_disable_unprepare(chip->phy_clk);
+ err_phy:
+ 	if (chip->variant->flags & SUNXI_DWMAC_NSI_CLK_GATE)
+ 		clk_disable_unprepare(chip->nsi_clk);
+@@ -299,6 +310,8 @@
+
+ static void sunxi_dwmac_clk_exit(struct sunxi_dwmac *chip)
+ {
++	if (chip->pclk)
++		clk_disable_unprepare(chip->pclk);
+ 	if (chip->soc_phy_clk_en)
+ 		clk_disable_unprepare(chip->phy_clk);
+ 	if (chip->variant->flags & SUNXI_DWMAC_NSI_CLK_GATE)
+@@ -524,6 +537,17 @@
+ 		}
+ 	}
+
++	/* GMAC DMA-engine bus-master clock (CLK_GMAC0_MBUS on sun60iw2).
++	 * Optional: devm_clk_get_optional() returns NULL (not an error) on
++	 * boards/variants whose DT doesn't declare a "pclk" clock-names slot,
++	 * so existing dwmac-sunxi.c consumers without this clock are unaffected.
++	 */
++	chip->pclk = devm_clk_get_optional(dev, "pclk");
++	if (IS_ERR(chip->pclk)) {
++		sunxi_err(dev, "Get pclk clk failed\n");
++		return -EINVAL;
++	}
++
+ #if (LINUX_VERSION_CODE >= KERNEL_VERSION(5, 15, 0))
+ 	if (chip->variant->flags & SUNXI_DWMAC_MEM_ECC) {
+ 		sunxi_info(dev, "Support mem ecc\n");
+
+diff --git a/bsp/drivers/stmmac/dwmac-sunxi.h b/bsp/drivers/stmmac/dwmac-sunxi.h
+--- a/bsp/drivers/stmmac/dwmac-sunxi.h
++++ b/bsp/drivers/stmmac/dwmac-sunxi.h
+@@ -153,6 +153,14 @@
+ 	struct clk *nsi_clk;
+ 	struct clk *hsi_ahb;
+ 	struct clk *hsi_axi;
++	struct clk *pclk; /* GMAC DMA-engine bus-master clock (CLK_GMAC0_MBUS on sun60iw2);
++			    * mainline stmmac_pltfr_probe() normally auto-enables the DT
++			    * "pclk" clock-names slot, but this driver bypasses that
++			    * wrapper (calls stmmac_probe_config_dt()+stmmac_dvr_probe()
++			    * directly), so it must be fetched/enabled explicitly here
++			    * or the DMA engine's bus clock stays gated and the very
++			    * first DMA-facing MMIO access (stmmac_enable_all_dma_irq(),
++			    * from ndo_open()) hangs the AHB/AXI bus indefinitely. */
+ 	struct reset_control *ahb_rst;
+ 	struct reset_control *hsi_rst;
+ 	struct device *dev;
+--
+2.43.0
