@@ -125,6 +125,17 @@
     };
   };
 
+  environment = {
+    systemPackages = with pkgs; [
+      coreutils
+      systemd
+      dconf
+      wget
+      curl
+      usbutils
+    ];
+  };
+
   services = {
     openssh = {
       enable = true;
