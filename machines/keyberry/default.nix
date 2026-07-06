@@ -358,8 +358,6 @@
   networking.firewall.allowedTCPPorts = [ 8096 ];
 
   boot.tmp = {
-    # Not using tmpfs as it causes nixos-generators to eat
-    # RAM like a furious pete.
     useTmpfs = false;
     cleanOnBoot = true;
   };

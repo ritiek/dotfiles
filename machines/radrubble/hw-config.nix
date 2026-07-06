@@ -16,15 +16,21 @@ in
     ./aic8800.nix
   ];
 
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.kernelModules = [ "g_ether" ];
+
+  # USB gadget ethernet - allows SSH over USB-C on first boot
+  # Connect to 10.0.0.2 from host (configure host side as 10.0.0.1/24)
+  networking.interfaces.usb0.ipv4.addresses = [{
+    address = "10.0.0.2";
+    prefixLength = 24;
+  }];
+
   # pkgs.armbian-firmware is non-free.
   # nixpkgs.config.allowUnfree = true;
   # hardware.firmware = with pkgs; [ armbian-firmware linux-firmware ];
 
-  rockchip.uBoot = pkgs.ubootRadxaZero3W;
   # boot.kernelPackages = inputs.rockchip.legacyPackages."aarch64-linux".kernel_linux_latest_rockchip_unstable;
-
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
-
   # The aic8800 driver registers its own permissive custom regulatory rules
   # ("USING PERMISSIVE CUSTOM REGULATORY RULES" in dmesg) and ignores the kernel
   # regdom, so 5GHz is never gated by cfg80211 regdom. Shipping the regulatory DB
@@ -69,4 +75,12 @@ in
       exit 0
     '';
   };
+
+  rockchip.uBoot = pkgs.ubootRadxaZero3W;
+
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }
