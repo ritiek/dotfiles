@@ -27,69 +27,59 @@
   # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
 
-  nix = {
-    distributedBuilds = true;
-    buildMachines = [
-      {
-        hostName = "pilab.lion-zebra.ts.net";
-        systems = [ pkgs.stdenv.hostPlatform.system ];
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBCT1IvaGthQzM4YlhZcGZ5RURXaUJMSUF6TnJ2WldUS2ZDb3lDOHNVMFEK";
-        maxJobs = 4;
-        speedFactor = 3;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
-      {
-        hostName = "keyberry.lion-zebra.ts.net";
-        systems = [ pkgs.stdenv.hostPlatform.system ];
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU93TTJ6N0JENWhrbGJSZURkT056OStOQUh5TVdtMmY1dHhKMlhDZTA2dXUK";
-        maxJobs = 4;
-        speedFactor = 1;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
-      {
-        hostName = "zerostash.lion-zebra.ts.net";
-        systems = [ pkgs.stdenv.hostPlatform.system ];
-        protocol = "ssh-ng";
-        sshUser = "rnixbld";
-        sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
-        publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU0rdjFsZVJwVGR5SGxNSlFsWStLZ1NnUHVSZlUwRzNWdG1hQ0pOeGpBbWwK";
-        maxJobs = 4;
-        speedFactor = 1;
-        supportedFeatures = [
-          "nixos-test"
-          "benchmark"
-          "big-parallel"
-          "kvm"
-        ];
-      }
-    ];
-  };
-
-  boot.supportedFilesystems = [ "ntfs" ];
-
-  # USB gadget ethernet - allows SSH over USB-C on first boot
-  # Connect to 10.0.0.2 from host (configure host side as 10.0.0.1/24)
-  boot.kernelModules = [ "g_ether" ];
-  networking.interfaces.usb0.ipv4.addresses = [{
-    address = "10.0.0.2";
-    prefixLength = 24;
-  }];
+  # nix = {
+  #   distributedBuilds = true;
+  #   buildMachines = [
+  #     {
+  #       hostName = "pilab.lion-zebra.ts.net";
+  #       systems = [ pkgs.stdenv.hostPlatform.system ];
+  #       protocol = "ssh-ng";
+  #       sshUser = "rnixbld";
+  #       sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+  #       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBCT1IvaGthQzM4YlhZcGZ5RURXaUJMSUF6TnJ2WldUS2ZDb3lDOHNVMFEK";
+  #       maxJobs = 4;
+  #       speedFactor = 3;
+  #       supportedFeatures = [
+  #         "nixos-test"
+  #         "benchmark"
+  #         "big-parallel"
+  #         "kvm"
+  #       ];
+  #     }
+  #     {
+  #       hostName = "keyberry.lion-zebra.ts.net";
+  #       systems = [ pkgs.stdenv.hostPlatform.system ];
+  #       protocol = "ssh-ng";
+  #       sshUser = "rnixbld";
+  #       sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+  #       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU93TTJ6N0JENWhrbGJSZURkT056OStOQUh5TVdtMmY1dHhKMlhDZTA2dXUK";
+  #       maxJobs = 4;
+  #       speedFactor = 1;
+  #       supportedFeatures = [
+  #         "nixos-test"
+  #         "benchmark"
+  #         "big-parallel"
+  #         "kvm"
+  #       ];
+  #     }
+  #     {
+  #       hostName = "zerostash.lion-zebra.ts.net";
+  #       systems = [ pkgs.stdenv.hostPlatform.system ];
+  #       protocol = "ssh-ng";
+  #       sshUser = "rnixbld";
+  #       sshKey = config.sops.secrets."rnixbld.id_ed25519".path;
+  #       publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU0rdjFsZVJwVGR5SGxNSlFsWStLZ1NnUHVSZlUwRzNWdG1hQ0pOeGpBbWwK";
+  #       maxJobs = 4;
+  #       speedFactor = 1;
+  #       supportedFeatures = [
+  #         "nixos-test"
+  #         "benchmark"
+  #         "big-parallel"
+  #         "kvm"
+  #       ];
+  #     }
+  #   ];
+  # };
 
   users = {
     defaultUserShell = pkgs.zsh;
@@ -170,8 +160,6 @@
   };
 
   boot.tmp = {
-    # Not using tmpfs as it causes nixos-generators to eat
-    # RAM like a furious pete.
     useTmpfs = false;
     cleanOnBoot = true;
   };

@@ -90,15 +90,15 @@ local plugins = {
     },
   },
 
-  {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    opts = {
-      suggestion = {
-        auto_trigger = true,
-      },
-    }
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   event = "InsertEnter",
+  --   opts = {
+  --     suggestion = {
+  --       auto_trigger = true,
+  --     },
+  --   }
+  -- },
 
   {
     "nyngwang/NeoZoom.lua",
@@ -220,25 +220,25 @@ local plugins = {
     },
   },
 
-  {
-    "nvim-neorg/neorg",
-    lazy = false,
-    config = function()
-      require("neorg").setup({
-        load = {
-          ["core.defaults"] = {},
-          ["core.concealer"] = {},
-          ["core.dirman"] = {
-            config = {
-              workspaces = {
-                notes = "~/notes",
-              },
-            },
-          },
-        },
-      })
-    end,
-  },
+  -- {
+  --   "nvim-neorg/neorg",
+  --   lazy = false,
+  --   config = function()
+  --     require("neorg").setup({
+  --       load = {
+  --         ["core.defaults"] = {},
+  --         ["core.concealer"] = {},
+  --         ["core.dirman"] = {
+  --           config = {
+  --             workspaces = {
+  --               notes = "~/notes",
+  --             },
+  --           },
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
 
   -- {
   --   "ojroques/nvim-osc52",
