@@ -299,6 +299,17 @@ in
     };
   };
 
+  environment = {
+    systemPackages = with pkgs; [
+      coreutils
+      systemd
+      dconf
+      wget
+      curl
+      usbutils
+    ];
+  };
+
   # nixpkgs.config.permittedInsecurePackages = [
   #   "jitsi-meet-1.0.8043"
   # ];

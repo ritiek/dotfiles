@@ -176,6 +176,13 @@
   }];
 
   environment.systemPackages = with pkgs; [
+    coreutils
+    systemd
+    dconf
+    wget
+    curl
+    usbutils
+
     git
     vim
     htop
