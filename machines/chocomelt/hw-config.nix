@@ -28,6 +28,14 @@ in
     inputs.rockchip.nixosModules.noZFS
   ];
 
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.kernelModules = [ "g_ether" ];
+
+  networking.interfaces.usb0.ipv4.addresses = [{
+    address = "10.0.0.3";
+    prefixLength = 24;
+  }];
+
   rockchip.uBoot = ubootRadxaZero3E;
 
   # Zero 3E has no WiFi (it has Gigabit Ethernet instead of the 3W's aic8800
@@ -36,6 +44,7 @@ in
   # no reason to stay pinned and can track the latest nixpkgs kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # No WiFi hardware - use DHCP over the onboard Gigabit Ethernet.
   networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

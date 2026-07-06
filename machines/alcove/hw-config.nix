@@ -16,19 +16,20 @@ in
   imports = [
     ./cubie-a7s.nix
     ./aic8800-usb.nix
-    # Gives us `config.system.build.sdImage`, matching what
-    # nixos-generators' "sd-aarch64" format does under the hood (it is
-    # literally just this one import - see
-    # nixos-generators/formats/sd-aarch64.nix). Wiring it in directly here
-    # (rather than depending on the nixos-generators flake input like the
-    # standalone RADXA_CUBIE_A7S_NIXOS/flake.nix did) lets `alcove-sd` in
-    # the top-level flake.nix be defined the same way as `pilab-sd`/
-    # `radrubble-sd` - i.e. `self.nixosConfigurations.alcove.config.system.build.sdImage`.
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  # Needed for the unfree vendor boot0/boot_package U-Boot blobs below.
-  nixpkgs.config.allowUnfree = true;
+  boot.consoleLogLevel = 8;
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.kernelModules = [ "g_ether" ];
+
+  # Allow shell access through UART.
+  systemd.services."serial-getty@ttyAS0".wantedBy = [ "getty.target" ];
+
+  networking.interfaces.usb0.ipv4.addresses = [{
+    address = "10.0.0.3";
+    prefixLength = 24;
+  }];
 
   # nixos/modules/system/activation/top-level.nix defaults this option to
   # `config.boot.kernelPackages.kernel.target`, which real nixpkgs kernel
@@ -84,19 +85,31 @@ in
   # found". Disable it - there's no TPM to support here anyway.
   boot.initrd.systemd.tpm2.enable = false;
 
-  # Flashable SD card image. boot0/boot_package are raw Allwinner
-  # BROM-read blobs written before the partition table gap, NOT part of
-  # any partition - dd'd on at fixed byte offsets exposed via
-  # uboot-cubie-a7s.nix's passthru. firmwarePartitionOffset is bumped from
-  # the 8MiB default to 20MiB so boot_package (ends at ~13.4MiB) can never
-  # collide with the (unused on this board) FIRMWARE partition nixpkgs'
-  # sd-image module always creates.
-  sdImage.compressImage = false;
-  sdImage.firmwarePartitionOffset = 20; # MiB
-  sdImage.postBuildCommands = ''
-    dd if=${ubootCubieA7S}/boot0_sdcard.fex of=$img \
-      bs=1024 seek=${toString (ubootCubieA7S.boot0Offset / 1024)} conv=notrunc
-    dd if=${ubootCubieA7S}/boot_package.fex of=$img \
-      bs=1M seek=${toString (ubootCubieA7S.bootPackageOffset / 1024 / 1024)} conv=notrunc
-  '';
+  sdImage = {
+    compressImage = false;
+    # Flashable SD card image. boot0/boot_package are raw Allwinner
+    # BROM-read blobs written before the partition table gap, NOT part of
+    # any partition - dd'd on at fixed byte offsets exposed via
+    # uboot-cubie-a7s.nix's passthru. firmwarePartitionOffset is bumped from
+    # the 8MiB default to 20MiB so boot_package (ends at ~13.4MiB) can never
+    # collide with the (unused on this board) FIRMWARE partition nixpkgs'
+    # sd-image module always creates.
+    firmwarePartitionOffset = 20; # MiB
+
+    postBuildCommands = ''
+      dd if=${ubootCubieA7S}/boot0_sdcard.fex of=$img \
+        bs=1024 seek=${toString (ubootCubieA7S.boot0Offset / 1024)} conv=notrunc
+      dd if=${ubootCubieA7S}/boot_package.fex of=$img \
+        bs=1M seek=${toString (ubootCubieA7S.bootPackageOffset / 1024 / 1024)} conv=notrunc
+    '';
+  };
+
+  fileSystems."/" = lib.mkDefault {
+    device = "/dev/disk/by-label/NIXOS_SD";
+    fsType = "ext4";
+  };
+
+  networking.useDHCP = lib.mkDefault true;
+
+  nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
 }

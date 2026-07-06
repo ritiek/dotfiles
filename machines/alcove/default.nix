@@ -69,6 +69,29 @@
     };
   };
 
+  environment = {
+    systemPackages = with pkgs; [
+      coreutils
+      systemd
+      dconf
+      wget
+      curl
+      usbutils
+
+      git
+      vim
+      htop
+      iproute2
+      curl
+      ethtool
+      # Added during bring-up to debug the onboard Ethernet PHY over MDIO
+      # (now resolved - it was a bad cable, see plan doc). Harmless/cheap to
+      # keep for any future diagnostics; remove if a leaner image is wanted.
+      mdio-tools
+      phytool
+    ];
+  };
+
   services = {
     openssh = {
       enable = true;
@@ -98,50 +121,12 @@
     };
   };
 
-  # Ethernet (gmac0/end0, RGMII) is plain DHCP - confirmed reliable with a
-  # known-good cable (see plan doc's "Onboard Ethernet reliability -
-  # RESOLVED" section; an earlier "unreliable" report was a bad cable, not
-  # a driver bug). WiFi (AIC8800D80 over USB, driver wired up in
-  # hw-config.nix) is handled by wifi.nix's imperative wpa_supplicant
-  # config (matching radrubble/chocomelt's fleet convention) instead of
-  # NetworkManager/nmtui now. The actual SSID/PSK live in the sops secret
-  # "wpa_supplicant" (-> /etc/wpa_supplicant/imperative.conf), reused
-  # as-is from radrubble's secrets.yaml for now - update that secret with
-  # this machine's real network once provisioned.
-  networking.useDHCP = lib.mkDefault true;
-  networking.firewall = {
+  # FIXME: Need kernel config to enable this?
+  # powerManagement.cpuFreqGovernor = "performance";
+  zramSwap = {
     enable = true;
-    allowedTCPPorts = [ 22 ];
+    memoryPercent = 200;
   };
-
-  # NixOS' "ntfs" filesystem support (nixos/modules/tasks/filesystems/ntfs.nix)
-  # is purely a userspace thing - it just installs pkgs.ntfs3g (a FUSE-based
-  # mount helper), no in-kernel NTFS driver involved. The real kernel-side
-  # requirement is CONFIG_FUSE_FS, added to linux-defconfig.config.
-  boot.supportedFilesystems = [ "ntfs" ];
-
-  # Serial console login shell (USB-TTL adapter on UART0, 115200 baud,
-  # kernel device /dev/ttyAS0 - Allwinner's own serial driver naming, NOT
-  # the generic ttyS0). Forced explicitly rather than relying purely on
-  # systemd-getty-generator's automatic console= cmdline detection, so a
-  # login shell is guaranteed on every boot with zero network/SSH
-  # dependency - see plan doc's "HANG #7" section for why this mattered a
-  # lot during bring-up (the serial console never had a real login shell
-  # for a long time, purely due to a wrong kernel UART driver, which was a
-  # nasty surprise given how similar "just kernel log output" looks to
-  # "console works").
-  systemd.services."serial-getty@ttyAS0".wantedBy = [ "getty.target" ];
-
-  # Kept at maximum verbosity per explicit user preference from the
-  # bring-up phase (see plan doc's "Key NixOS-level settings" section for
-  # why a manual loglevel=N kernel param would NOT work here - nixpkgs'
-  # kernel.nix module unconditionally appends its own loglevel= derived
-  # from this option to the END of boot.kernelParams, and the kernel takes
-  # the LAST duplicate cmdline param). Lower this (e.g. to 4) for quieter
-  # boot logs if wanted - confirm with whoever's driving this machine
-  # first, it was an explicit choice made while debugging several real
-  # kernel hangs, not an oversight.
-  boot.consoleLogLevel = 8;
 
   boot.tmp = {
     useTmpfs = false;
@@ -150,51 +135,6 @@
 
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
-  # Overridden by nixos-generators/the sd-image builder for actual images.
-  fileSystems."/" = lib.mkDefault {
-    device = "/dev/disk/by-label/NIXOS_SD";
-    fsType = "ext4";
-  };
-
   hardware.enableRedistributableFirmware = true;
-
-  # USB gadget Ethernet over the USB-C port, for first-boot SSH access
-  # before real networking/WiFi credentials are provisioned - mirrors
-  # radrubble/Zero3's g_ether setup. Requires CONFIG_USB_ETH (g_ether) +
-  # CONFIG_USB_GADGET + a UDC driver, all added to
-  # linux-defconfig-fragment.config (DWC3 in dual-role mode already
-  # provides the UDC, see hw-config.nix's USB_DWC3_DUAL_ROLE comments).
-  boot.kernelModules = [ "g_ether" ];
-  # NOTE: 10.0.0.3, not 10.0.0.2 - pilab (a common first-boot USB-gadget
-  # access host) has its own onboard USB-gadget usb0 interface statically
-  # pinned to 10.0.0.2/24, which collided with this address and made plain
-  # IPv4 ping/SSH to the board unreliable (resolved via the host's local
-  # route table instead of the real gadget link).
-  networking.interfaces.usb0.ipv4.addresses = [{
-    address = "10.0.0.3";
-    prefixLength = 24;
-  }];
-
-  environment.systemPackages = with pkgs; [
-    coreutils
-    systemd
-    dconf
-    wget
-    curl
-    usbutils
-
-    git
-    vim
-    htop
-    iproute2
-    curl
-    ethtool
-    # Added during bring-up to debug the onboard Ethernet PHY over MDIO
-    # (now resolved - it was a bad cable, see plan doc). Harmless/cheap to
-    # keep for any future diagnostics; remove if a leaner image is wanted.
-    mdio-tools
-    phytool
-  ];
-
   system.stateVersion = "25.11";
 }
