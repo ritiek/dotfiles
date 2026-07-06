@@ -121,8 +121,7 @@
     };
   };
 
-  # FIXME: Need kernel config to enable this?
-  # powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = "performance";
   zramSwap = {
     enable = true;
     memoryPercent = 200;
