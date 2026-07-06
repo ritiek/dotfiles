@@ -44,6 +44,17 @@ in
     "console=ttyAS0,115200"
     "console=tty1"
     "usbcore.autosuspend=-1"
+    # Workaround for a known power-management bug in the vendor sunxi PCIe
+    # RC driver (bsp/drivers/pcie/pcie-sunxi-rc.c): without this, NVMe
+    # drives behind the M.2 PCIe slot have been reported (same A733/sun60iw2
+    # BSP driver, Armbian forum thread on Cubie A7A/A7Z) to run extremely
+    # hot and fail mid-init due to ASPM link-power-state transitions the
+    # driver doesn't handle correctly. Disabling ASPM and capping NVMe's
+    # power-state max latency to 0 avoids the driver ever attempting those
+    # transitions. Added proactively alongside CONFIG_AW_PCIE_RC=y in
+    # linux-defconfig-fragment.config rather than waiting to hit the bug.
+    "pcie_aspm=off"
+    "nvme_core.default_ps_max_latency_us=0"
     # Prints "calling %pS @ %i" / "initcall %pS returned ..." at KERN_DEBUG
     # level for every driver init/probe call. Was added to trace a
     # suspected boot hang (see configuration.nix's boot.consoleLogLevel
