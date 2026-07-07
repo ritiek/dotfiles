@@ -388,6 +388,11 @@ stdenv.mkDerivation (finalAttrs: {
     # (unrelated to bspSrc) satisfies cpupower's `inherit` without affecting
     # our own build in any way.
     src = kernelSrc;
+    # cpupower inherits patches from the kernel, but our bsp/ patches
+    # (1001, 1004) only apply after the multi-repo merge — cpupower only
+    # sees the plain kernel tree. Pass empty list since cpupower is a
+    # userspace tool and needs none of the kernel driver patches.
+    patches = [ ];
     # Standard nixpkgs kernel-package passthru interface (see
     # pkgs/os-specific/linux/kernel/build.nix's own `passthru` block) -
     # `linuxPackagesFor` and various nixpkgs modules (module-building
