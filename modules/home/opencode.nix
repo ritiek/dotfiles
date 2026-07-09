@@ -175,15 +175,15 @@ let
     OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
     OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
     XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
-    GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
-    GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
+    # GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
+    # GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
 
-    ${pkgs.jq}/bin/jq -n \
-      --arg gh_refresh "$GH_REFRESH" \
-      --arg gh_access "$GH_ACCESS" \
-      '{
-        "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
-      }' > "$NIXOS_JSON"
+    # ${pkgs.jq}/bin/jq -n \
+    #   --arg gh_refresh "$GH_REFRESH" \
+    #   --arg gh_access "$GH_ACCESS" \
+    #   '{
+    #     "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
+    #   }' > "$NIXOS_JSON"
 
     if [ -f "$AUTH_FILE" ]; then
       ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$AUTH_FILE" "$NIXOS_JSON" > "$AUTH_FILE.tmp" \
