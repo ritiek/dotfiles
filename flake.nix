@@ -595,6 +595,28 @@
       extraSpecialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.switchboard = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/switchboard
+        ./machines/switchboard/hw-config
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
+    homeConfigurations."ritiek@switchboard" = inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = import inputs.nixpkgs {
+        system = "aarch64-linux";
+        # config.allowUnfree = true;
+      };
+      modules = [
+        ./machines/switchboard/home/ritiek
+        inputs.sops-nix.homeManagerModule
+        { _module.args.hostName = "switchboard"; }
+      ];
+      extraSpecialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.mangoshake = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -725,6 +747,15 @@
       sshUser = "ritiek";
     };
 
+    deploy.nodes.switchboard = {
+      hostname = "switchboard.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.switchboard;
+      };
+      sshUser = "ritiek";
+    };
+
     deploy.nodes.mangoshake = {
       hostname = "mangoshake.lion-zebra.ts.net";
       profiles.system = {
@@ -813,6 +844,8 @@
     alcove-sd = self.nixosConfigurations.alcove.config.system.build.sdImage;
 
     chocomelt = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
+
+    switchboard-image = self.nixosConfigurations.switchboard.config.system.build.diskoImagesScript;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of
