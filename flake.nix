@@ -843,9 +843,9 @@
 
     alcove-sd = self.nixosConfigurations.alcove.config.system.build.sdImage;
 
-    chocomelt = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
+    chocomelt-sd = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
 
-    switchboard-image = self.nixosConfigurations.switchboard.config.system.build.diskoImagesScript;
+    switchboard-sd = self.nixosConfigurations.switchboard.config.system.build.sdImage;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of

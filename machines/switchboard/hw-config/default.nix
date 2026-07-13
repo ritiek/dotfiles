@@ -2,11 +2,10 @@
 
 {
   # Hardware support for the Radxa Cubie A5E (aic8800 wifi/bt driver, board
-  # workarounds, disko disk layout) is vendored locally in this directory
+  # workarounds, disk/boot layout) is vendored locally in this directory
   # rather than pulled in as a flake input.
   # Source: https://github.com/patryk4815/nixos-cubie-a5e
   imports = [
-    inputs.disko.nixosModules.default
     ./aic8800-sdio.nix
     ./cubie-a5e.nix
     ./disko.nix
@@ -63,16 +62,4 @@
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
-
-  # disko.imageBuilder.kernelPackages defaults to config.boot.kernelPackages
-  # - our aic8800-patched, cross-compiled kernel. Booting the ephemeral
-  # image-builder VM with that custom kernel fails with:
-  #   "vmTools: the `kernel` argument (kernel-modules) has no `target`
-  #   attribute" (pkgs.aggregateModules can't determine a bootable image
-  #   filename from it). This is exactly the scenario disko's own option
-  #   docs call out ("useful when the config's kernel won't boot in the
-  #   image-builder"): use a plain, unmodified kernel from the same shared
-  #   nixpkgs just for the image-builder VM. The actual installed target
-  #   kernel (linuxPackages_7_0 above) is unaffected.
-  disko.imageBuilder.kernelPackages = pkgs.linuxPackages_latest;
 }
