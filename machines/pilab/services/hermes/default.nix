@@ -416,18 +416,6 @@ in
     # .hermes/.env which is seeded at activation time via environmentFiles.
     # HASS_TOKEN is already in /run/secrets/hermes.env (via environmentFiles below).
     mcpServers = {
-      # -- Remote HTTP servers --
-      github = {
-        enabled = true;
-        url = "https://api.githubcopilot.com/mcp/";
-        headers.Authorization = "Bearer \${HERMES_MCP_GITHUB_TOKEN}";
-      };
-      # -- Remote HTTP servers (continued) --
-      indmoney = {
-        enabled = true;
-        url = "https://mcp.indmoney.com/mcp";
-        auth = "oauth";
-      };
       # -- Stdio servers --
       nixos = {
         enabled = true;
@@ -516,6 +504,32 @@ in
           "--viewport-size" "1271x936"
         ];
         timeout = 30;
+      };
+      # -- Remote HTTP servers --
+      github = {
+        enabled = true;
+        url = "https://api.githubcopilot.com/mcp/";
+        headers.Authorization = "Bearer \${HERMES_MCP_GITHUB_TOKEN}";
+      };
+      indmoney = {
+        enabled = true;
+        url = "https://mcp.indmoney.com/mcp";
+        auth = "oauth";
+      };
+      swiggy-food = {
+        enabled = true;
+        url = "https://mcp.swiggy.com/food";
+        auth = "oauth";
+      };
+      swiggy-instamart = {
+        enabled = true;
+        url = "https://mcp.swiggy.com/im";
+        auth = "oauth";
+      };
+      swiggy-dineout = {
+        enabled = true;
+        url = "https://mcp.swiggy.com/dineout";
+        auth = "oauth";
       };
     };
 
