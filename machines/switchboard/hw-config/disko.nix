@@ -1,10 +1,25 @@
 
-# Vendored from https://github.com/patryk4815/nixos-cubie-a5e
-# (modules/disko.nix)
+# Originally vendored from https://github.com/patryk4815/nixos-cubie-a5e
+# (modules/disko.nix), but rewritten to build the SD image via nixpkgs'
+# own installer/sd-card/sd-image-aarch64.nix instead of disko.
+#
+# disko's pinned rev (nix-community/disko) wraps
+# `disko.imageBuilder.kernelPackages.kernel` in `pkgs.aggregateModules`
+# before handing it to `pkgs.vmTools` as the `kernel` argument. A recent
+# nixpkgs change requires `kernel` to be a real kernel derivation with a
+# `.target` attribute (extra modules now go through a separate
+# `kernelModules` argument instead), so this fails unconditionally
+# regardless of which kernelPackages we pick - a disko/nixpkgs version
+# mismatch, not something fixable from here. alcove (Cubie A7S, the sibling
+# Allwinner board in this repo) already builds its SD image the plain
+# nixpkgs way with no VM/vmTools involved at all, so we do the same here:
+# keep the same U-Boot/ATF derivations and byte-offset dd writes, just
+# swap disko's partitioning/image-building for sd-image-aarch64.nix.
 {
   lib,
   config,
   pkgs,
+  modulesPath,
   ...
 }:
 let
@@ -44,18 +59,12 @@ let
   };
 in
 {
-  options.hardware.cubie-a5e = {
-    uboot = lib.mkOption {
-      type = lib.types.enum [ "vendor" "mainline" ];
-      default = "vendor";
-      description = "U-Boot variant: 'vendor' (Radxa/Allwinner) or 'mainline' (requires WIP TF-A)";
-    };
-  };
+  imports = [ "${modulesPath}/installer/sd-card/sd-image-aarch64.nix" ];
 
-  options.nixCommunity.disko.device = lib.mkOption {
-    type = lib.types.str;
-    default = "/dev/mmcblk0";
-    description = "Disk device for disko partitioning";
+  options.hardware.cubie-a5e.uboot = lib.mkOption {
+    type = lib.types.enum [ "vendor" "mainline" ];
+    default = "vendor";
+    description = "U-Boot variant: 'vendor' (Radxa/Allwinner) or 'mainline' (requires WIP TF-A)";
   };
 
   config = {
@@ -64,87 +73,31 @@ in
     boot.loader.generic-extlinux-compatible.enable = true;
     boot.loader.generic-extlinux-compatible.configurationLimit = 4;
 
-    # Write U-Boot to raw disk after image build
-    disko.imageBuilder.extraPostVM = lib.mkMerge [
-      (lib.mkIf (config.hardware.cubie-a5e.uboot == "vendor") ''
-        dd if=${ubootFirmware}/boot0_sdcard.bin of="$out"/main.raw bs=512 seek=256 conv=notrunc
-        dd if=${ubootFirmware}/boot_package.fex of="$out"/main.raw bs=512 seek=24576 conv=notrunc
-      '')
-      (lib.mkIf (config.hardware.cubie-a5e.uboot == "mainline") ''
-        dd if=${ubootCubieA5E}/u-boot-sunxi-with-spl.bin of="$out"/main.raw bs=1k seek=128 conv=notrunc
-      '')
-    ];
+    sdImage = {
+      compressImage = false;
 
-    disko.devices = {
-      disk.main = {
-        device = config.nixCommunity.disko.device;
-        type = "disk";
-        imageSize = "6G";
-        content = {
-          type = "gpt";
-          partitions = {
-            # First partition starts at sector 32768 (16MB) to not overlap with U-Boot
-            boot = {
-              size = "2G";
-              type = "8300";
-              start = "32768";
-              content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/boot";
-              };
-            };
-            root = {
-              name = "root";
-              size = "100%";
-              content = {
-                type = "lvm_pv";
-                vg = "root_vg";
-              };
-            };
-          };
-        };
-      };
-      lvm_vg = {
-        root_vg = {
-          type = "lvm_vg";
-          lvs = {
-            root = {
-              size = "100%FREE";
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
+      # boot0/boot_package (vendor) or u-boot-sunxi-with-spl.bin (mainline)
+      # are raw Allwinner BROM-read blobs written at fixed byte offsets,
+      # NOT part of any partition. Bump firmwarePartitionOffset from the
+      # 8MiB default to 16MiB so it can never collide with them (matches
+      # the original disko-based layout's boot partition start of sector
+      # 32768 = 16MiB).
+      firmwarePartitionOffset = 16; # MiB
 
-                subvolumes = {
-                  "/root" = {
-                    mountpoint = "/";
-                  };
+      postBuildCommands = lib.mkMerge [
+        (lib.mkIf (config.hardware.cubie-a5e.uboot == "vendor") ''
+          dd if=${ubootFirmware}/boot0_sdcard.bin of=$img bs=512 seek=256 conv=notrunc
+          dd if=${ubootFirmware}/boot_package.fex of=$img bs=512 seek=24576 conv=notrunc
+        '')
+        (lib.mkIf (config.hardware.cubie-a5e.uboot == "mainline") ''
+          dd if=${ubootCubieA5E}/u-boot-sunxi-with-spl.bin of=$img bs=1k seek=128 conv=notrunc
+        '')
+      ];
+    };
 
-                  "/nix" = {
-                    mountOptions = [
-                      "subvol=nix"
-                      "noatime"
-                    ];
-                    mountpoint = "/nix";
-                  };
-                };
-
-# files for sops-nix:
-#                postMountHook = builtins.toString (
-#                  pkgs.writeScript "postMountHook.sh" ''
-#                    mkdir -p /mnt/etc/ssh/
-#
-#                    cp /tmp/ssh_host_ed25519_key /mnt/etc/ssh/ssh_host_ed25519_key
-#                    cp /tmp/ssh_host_ed25519_key.pub /mnt/etc/ssh/ssh_host_ed25519_key.pub
-#                    cp /tmp/ssh_host_rsa_key /mnt/etc/ssh/ssh_host_rsa_key
-#                    cp /tmp/ssh_host_rsa_key.pub /mnt/etc/ssh/ssh_host_rsa_key.pub
-#                  ''
-#                );
-              };
-            };
-          };
-        };
-      };
+    fileSystems."/" = lib.mkDefault {
+      device = "/dev/disk/by-label/NIXOS_SD";
+      fsType = "ext4";
     };
   };
 }

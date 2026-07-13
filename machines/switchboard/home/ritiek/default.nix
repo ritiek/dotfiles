@@ -54,7 +54,7 @@
       iperf
     ];
   };
-  
+
   programs = {
     command-not-found.enable = true;
     home-manager.enable = true;
