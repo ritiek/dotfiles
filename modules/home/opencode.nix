@@ -751,6 +751,14 @@ in
       ".config/rtk/config.toml".source = (pkgs.formats.toml {}).generate "rtk-config" {
         telemetry.enabled = false;
       };
+
+      ".config/opencode/dcp.jsonc".text = builtins.toJSON {
+        "$schema" = "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json";
+        compress = {
+          minContextLimit = 75000;
+          maxContextLimit = 150000;
+        };
+      };
     }
     (lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") {
       ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
