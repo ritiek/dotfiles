@@ -13,10 +13,10 @@ let
 
   ocx-pkg = pkgs.stdenv.mkDerivation {
     pname = "ocx";
-    version = "2.0.4";
+    version = "2.0.11";
     src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/ocx/-/ocx-2.0.4.tgz";
-      hash = "sha256-3Jq+QJju8Iy2tEztc0JaChWFaj3TWmwQlsVdFvzOJWw=";
+      url = "https://registry.npmjs.org/ocx/-/ocx-2.0.11.tgz";
+      hash = "sha256-Pw9ka7wX7WMaSzKRrXClbiHwebxZRiy0Z2wmLF+Jfj8=";
     };
     dontBuild = true;
     installPhase = ''
@@ -322,7 +322,7 @@ in
         #   };
         # };
         ollama = {
-          npm = "ai-sdk-ollama";
+          npm = "ai-sdk-ollama@3.8.2";
           models = {
             "qwen3:8b" = {
               name = "qwen3:8b";
@@ -343,7 +343,7 @@ in
         };
 
         llama-server = {
-          npm = "@ai-sdk/openai-compatible";
+          npm = "@ai-sdk/openai-compatible@2.0.55";
           models = {
             "gemma:e4b" = {
               name = "gemma-4-E4B-it-qat-UD-Q4_K_XL.gguf";
@@ -396,7 +396,7 @@ in
             "${pkgs.nodejs_24}/bin/node"
             "${pkgs.nodejs_24}/bin/npx"
             "-y"
-            "@z_ai/mcp-server"
+            "@z_ai/mcp-server@0.1.4"
           ];
           environment = {
             # PATH = "${pkgs.bash}/bin:${pkgs.nodejs_24}/bin";
@@ -501,7 +501,7 @@ in
             "${pkgs.nodejs_24}/bin/node"
             "${pkgs.nodejs_24}/bin/npx"
             "-y"
-            "@karakeep/mcp"
+            "@karakeep/mcp@0.32.1"
           ];
           environment = {
             # PATH = "${pkgs.bash}/bin:${pkgs.nodejs_24}/bin";
@@ -520,7 +520,7 @@ in
             "${pkgs.nodejs_24}/bin/node"
             "${pkgs.nodejs_24}/bin/npx"
             "-y"
-            "@baruchiro/paperless-mcp@latest"
+            "@baruchiro/paperless-mcp@2.0.0"
           ];
           environment = {
             PATH = pkgs.lib.makeBinPath [
@@ -547,7 +547,7 @@ in
             "${pkgs.nodejs_24}/bin/node"
             "${pkgs.nodejs_24}/bin/npx"
             "-y"
-            "@colbymchenry/codegraph"
+            "@colbymchenry/codegraph@1.4.1"
             "serve"
             "--mcp"
           ];
@@ -727,9 +727,9 @@ in
       };
 
       plugin = [
-        "opencode-claude-auth@latest"
-        "@mohak34/opencode-notifier"
-        "@tarquinen/opencode-dcp"
+        "opencode-claude-auth@2.0.0"
+        "@mohak34/opencode-notifier@0.2.8"
+        "@tarquinen/opencode-dcp@3.1.14"
       ];
 
       autoupdate = false;
@@ -741,7 +741,7 @@ in
       theme = "lucent-orng";
       scroll_speed = 5;
       plugin = [
-        "oc-tps@latest"
+        "oc-tps@0.0.8"
       ];
     };
   };
