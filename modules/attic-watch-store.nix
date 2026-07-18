@@ -1,8 +1,8 @@
 { config, pkgs, lib, ... }:
 let
-  server = "pilab";
+  server = "alcove";
   cache = "attic-action";
-  endpoint = "http://pilab.lion-zebra.ts.net:7080/";
+  endpoint = "http://alcove.lion-zebra.ts.net:7080/";
 
   # Derive the attic-push exclude list from the trusted cache signing keys so
   # adding a cache in ../substituters.nix automatically stops re-pushing its
