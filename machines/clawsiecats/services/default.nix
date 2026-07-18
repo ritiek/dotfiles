@@ -161,7 +161,7 @@ let
       enableACME = true;
       locations."/" = {
         extraConfig = ''
-          set $upstream "pilab.lion-zebra.ts.net:7080";
+          set $upstream "alcove.lion-zebra.ts.net:7080";
           proxy_pass http://$upstream;
           proxy_request_buffering off;
           proxy_max_temp_file_size 0;
