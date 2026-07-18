@@ -27,6 +27,15 @@
       gpg.ssh.allowedSignersFile = "~/.ssh/allowed_signers";
       gpg.ssh.defaultKeyCommand = "sh -c 'echo key::$(ssh-add -L)'";
     };
+
+    includes = [
+      {
+        condition = "gitdir:/etc/nixos/";
+        contents = {
+          pull.rebase = true;
+        };
+      }
+    ];
   };
 
   programs.delta = {
