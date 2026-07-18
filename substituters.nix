@@ -11,7 +11,7 @@
     "https://hyprland.cachix.org"
     "https://microvm.cachix.org"
 
-    "http://pilab.lion-zebra.ts.net:7080/attic-action"
+    "http://alcove.lion-zebra.ts.net:7080/attic-action"
     # In case my server is not reachable over Tailscale.
     "https://attic.clawsiecats.lol/attic-action"
   ];

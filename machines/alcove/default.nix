@@ -12,6 +12,7 @@
     ./home
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
+    ./services/attic.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/attic-watch-store.nix
