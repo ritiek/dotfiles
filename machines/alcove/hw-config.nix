@@ -109,6 +109,17 @@ in
     fsType = "ext4";
   };
 
+  # Dedicated /boot on the microSD card's FIRMWARE partition (mmcblk0p1).
+  # The microSD only performs initial boot (BROM + boot0/boot_package are
+  # SD-card-specific); root lives on the USB SSD (/dev/sda2, see above).
+  # Keeping /boot on the SD card means every nixos-rebuild switch writes the
+  # new kernel/initrd/dtb/extlinux.conf directly onto the physical medium
+  # U-Boot reads from, with no manual sync step required.
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/FIRMWARE";
+    fsType = "vfat";
+  };
+
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
