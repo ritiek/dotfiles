@@ -22,7 +22,7 @@ in
     ./services/hermes
     ./services/home-assistant
     ./services/homelab-trigger.nix
-    ./services/attic.nix
+    # ./services/attic.nix
     # ./services/paperless-ngx.nix
     ./../../modules/nix.nix
     ./../../modules/sops.nix
