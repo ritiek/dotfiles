@@ -298,8 +298,9 @@ in
       # Provider name and model name schema in opencode can be found here:
       # $ curl -s https://opencode.ai/zen/v1/models | jq
 
-      model = "anthropic/claude-sonnet-4-6";
-      small_model = "anthropic/claude-haiku-4-5";
+      model = "anthropic/claude-sonnet-5";
+      small_model = "opencode/deepseek-v4-flash-free";
+      default_agent = "plan";
       provider = {
         "opencode".options.timeout = false;
         "anthropic" = {
