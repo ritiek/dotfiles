@@ -2,8 +2,10 @@
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ./home
     ./minimal.nix
+    ./../../modules/sops.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
