@@ -691,9 +691,31 @@
       hostname = "mishy.lion-zebra.ts.net";
       profiles.system = {
         user = "root";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.mishy;
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.mishy;
       };
       sshUser = "ritiek";
+    };
+
+    deploy.nodes.minimachine-x86_64 = {
+      hostname = "minimachine.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minimachine-x86_64;
+      };
+      sshUser = "ritiek";
+      magicRollback = false;
+      activationTimeout = 600;
+    };
+
+    deploy.nodes.minimachine-aarch64 = {
+      hostname = "minimachine.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.minimachine-aarch64;
+      };
+      sshUser = "ritiek";
+      magicRollback = false;
+      activationTimeout = 600;
     };
 
     deploy.nodes.pilab = {
