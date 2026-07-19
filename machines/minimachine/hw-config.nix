@@ -3,8 +3,7 @@
 {
   imports = [
     inputs.disko.nixosModules.disko
-    inputs.matthew-hardware.nixosModules.rpi-zero-w
-    inputs.matthew-hardware.nixosModules.rpi-zero-w-disko
+    inputs.matthew-hardware.nixosModules.bcm2835-rpi-zero-w
   ];
 
   nixpkgs.overlays = [
@@ -34,7 +33,7 @@
     grub.enable = lib.mkForce false;
   };
 
-  hardware.rpi-zero-w = {
+  hardware.bcm2835-rpi-zero-w = {
     enable = true;
     zealous = true;
     image = {
@@ -50,10 +49,9 @@
         enable_uart=1
         avoid_warnings=1
       '';
-      repart = {
-        enable = true;
-        format = "btrfs";
-      };
+      repart.enable = true;
     };
   };
+
+  matthew-hardware.image.repart.format = "btrfs";
 }
