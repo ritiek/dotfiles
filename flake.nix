@@ -626,7 +626,7 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.minimachine-minimal = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.minimachine-minimal-x86_64 = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
@@ -641,8 +641,38 @@
       ];
     };
 
-    nixosConfigurations.minimachine = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.minimachine-minimal-aarch64 = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        {
+          nixpkgs.crossSystem = {
+            system = "armv6l-linux";
+          };
+        }
+        "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+        ./machines/minimachine/minimal.nix
+        ./machines/minimachine/hw-config.nix
+      ];
+    };
+
+    nixosConfigurations.minimachine-x86_64 = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        {
+          nixpkgs.crossSystem = {
+            system = "armv6l-linux";
+          };
+        }
+        "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+        ./machines/minimachine
+        ./machines/minimachine/hw-config.nix
+      ];
+    };
+
+    nixosConfigurations.minimachine-aarch64 = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
       specialArgs = { inherit inputs; };
       modules = [
         {
@@ -868,7 +898,10 @@
       format = "sd-aarch64";
     };
 
-    minimachine-minimal-sd =
-      self.nixosConfigurations.minimachine-minimal.config.system.build.image-with-pmbr;
+    minimachine-minimal-x86_64-sd =
+      self.nixosConfigurations.minimachine-minimal-x86_64.config.system.build.image-with-pmbr;
+
+    minimachine-minimal-aarch64-sd =
+      self.nixosConfigurations.minimachine-minimal-aarch64.config.system.build.image-with-pmbr;
   };
 }
