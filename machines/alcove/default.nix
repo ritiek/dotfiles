@@ -133,6 +133,8 @@
     cleanOnBoot = true;
   };
 
+  boot.binfmt.emulatedSystems = [ "armv6l-linux" ];
+
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
   hardware.enableRedistributableFirmware = true;
