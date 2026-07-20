@@ -920,6 +920,12 @@
       format = "sd-aarch64";
     };
 
+    minimachine-x86_64-sd =
+      self.nixosConfigurations.minimachine-x86_64.config.system.build.image-with-pmbr;
+
+    minimachine-aarch64-sd =
+      self.nixosConfigurations.minimachine-aarch64.config.system.build.image-with-pmbr;
+
     minimachine-minimal-x86_64-sd =
       self.nixosConfigurations.minimachine-minimal-x86_64.config.system.build.image-with-pmbr;
 
