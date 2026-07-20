@@ -109,15 +109,18 @@ in
     fsType = "ext4";
   };
 
-  # Dedicated /boot on the microSD card's FIRMWARE partition (mmcblk0p1).
-  # The microSD only performs initial boot (BROM + boot0/boot_package are
-  # SD-card-specific); root lives on the USB SSD (/dev/sda2, see above).
-  # Keeping /boot on the SD card means every nixos-rebuild switch writes the
-  # new kernel/initrd/dtb/extlinux.conf directly onto the physical medium
-  # U-Boot reads from, with no manual sync step required.
+  # /boot lives in the boot/ subdirectory of the microSD card's SECOND
+  # partition (mmcblk0p2, ext4, label NIXOS_UNUSED_SD - the old SD rootfs).
+  # The vendor Allwinner U-Boot (boot0/boot_package raw on the SD) reads
+  # extlinux.conf ONLY from mmcblk0p2:/boot/extlinux/ - NOT from the FAT
+  # FIRMWARE partition (mmcblk0p1), which it ignores entirely.
+  # X-mount.subdir mounts just that subdirectory at /boot so nixos-rebuild
+  # writes kernel/initrd/dtb/extlinux.conf exactly where U-Boot reads them.
+  # See /etc/nixos/ALCOVE-BOOT-INCIDENT-2026-07-20.md for the full story.
   fileSystems."/boot" = {
-    device = "/dev/disk/by-label/FIRMWARE";
-    fsType = "vfat";
+    device = "/dev/disk/by-label/NIXOS_UNUSED_SD";
+    fsType = "ext4";
+    options = [ "X-mount.subdir=boot" "nofail" ];
   };
 
   networking.useDHCP = lib.mkDefault true;
