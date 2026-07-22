@@ -135,6 +135,17 @@
 
   boot.binfmt.emulatedSystems = [ "armv6l-linux" ];
 
+  # nixpkgs' stdenv bootstrap gates building the armv6l-linux bootstrap-tools
+  # (and the rest of the armv6l stdenv bootstrap chain) behind this custom
+  # system-feature flag - "armv6kz" refers to the ARMv6KZ ISA variant of the
+  # Raspberry Pi Zero W's ARM1176JZF-S core (minimachine's target hardware).
+  # Without this, even with QEMU emulation registered above
+  # (boot.binfmt.emulatedSystems), Nix refuses to build these derivations
+  # locally with "Reason: missing system features, Required features:
+  # {gccarch-armv6kz}" - it's an explicit opt-in gate, not automatically
+  # implied by binfmt emulation alone.
+  nix.settings.system-features = [ "gccarch-armv6kz" ];
+
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
   hardware.enableRedistributableFirmware = true;
