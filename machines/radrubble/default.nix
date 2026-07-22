@@ -3,6 +3,7 @@
 {
   imports = [
     ./home
+    ./services/nixarr.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
