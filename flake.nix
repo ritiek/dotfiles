@@ -169,6 +169,12 @@
       inputs.utils.follows = "flake-utils";
     };
 
+    nixarr = {
+      url = "github:nix-media-server/nixarr";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.treefmt-nix.follows = "treefmt-nix";
+    };
+
     flake-utils = {
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
@@ -534,6 +540,7 @@
       modules = [
         ./machines/radrubble
         ./machines/radrubble/hw-config.nix
+        inputs.nixarr.nixosModules.default
       ];
       specialArgs = { inherit inputs; };
     };
@@ -548,7 +555,7 @@
         inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "radrubble"; }
       ];
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = { inherit inputs; everythingElsePath = "/media/EVERYTHING_ELSE"; };
     };
 
     nixosConfigurations.alcove = inputs.nixpkgs.lib.nixosSystem {
