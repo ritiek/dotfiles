@@ -105,6 +105,17 @@ in
     "Z ${everythingElsePath}/arr/movies 2775 root media - -"
     "Z ${everythingElsePath}/arr/tv 2775 root media - -"
     "Z ${everythingElsePath}/qbittorrent/downloads 2775 root media - -"
+
+    # Jellyfin's on-disk library-folder markers ("*.mblink" files, plain
+    # text files containing an absolute path) still reference pilab's old
+    # docker-internal library paths. If left pointing at a path that
+    # doesn't exist, Jellyfin's startup validation silently prunes the
+    # whole library (CollectionFolder row + all its AncestorIds hierarchy
+    # links, via ON DELETE CASCADE) on every boot. Force-write the correct,
+    # real paths every time EVERYTHING_ELSE is mounted so this self-heals
+    # instead of breaking again on the next reboot.
+    "F ${arrConfigs}/jellyfin/data/root/default/Movies/movies.mblink - - - - ${everythingElsePath}/arr/movies"
+    "F ${arrConfigs}/jellyfin/data/root/default/Shows/tvshows.mblink - - - - ${everythingElsePath}/arr/tv"
   ];
 
   # Nothing should autostart at boot -- everything is started explicitly via
