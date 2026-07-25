@@ -18,7 +18,14 @@
 
   boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "virtio_scsi" "xhci_pci" "usbhid" "sd_mod" "sr_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  # vkms: pure software/virtual DRM output, used so niri/Sunshine has a display to
+  # capture without needing the passthrough iGPU to do real scanout (which has been
+  # the trigger for every host crash this session). Rendering stays pinned to the
+  # passthrough iGPU's renderD128 via niri's render-drm-device option.
+  boot.kernelModules = [ "vkms" ];
+  boot.extraModprobeConfig = ''
+    options vkms enable_cursor=1
+  '';
   boot.extraModulePackages = [ ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
