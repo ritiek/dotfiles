@@ -636,17 +636,7 @@ binds {
     
     // Group management keybindings (niri doesn't support groups, but keeping window navigation)
     Mod+G { focus-window-down-or-column-right; }
-    Ctrl+1 { focus-workspace 1; }
-    Ctrl+2 { focus-workspace 2; }
-    Ctrl+3 { focus-workspace 3; }
-    Ctrl+4 { focus-workspace 4; }
-    Ctrl+5 { focus-workspace 5; }
-    Ctrl+6 { focus-workspace 6; }
-    Ctrl+7 { focus-workspace 7; }
-    Ctrl+8 { focus-workspace 8; }
-    Ctrl+9 { focus-workspace 9; }
-    Ctrl+0 { focus-workspace 10; }
-    
+
     // Additional window management (niri equivalents)
     Mod+P { center-column; }
     Mod+BracketLeft { consume-or-expel-window-left; }
