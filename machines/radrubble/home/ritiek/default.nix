@@ -6,7 +6,7 @@ let
   units = "radarr.service sonarr.service bazarr.service prowlarr.service qbittorrent.service qui.service jellyfin.service seerr.service";
 
   mediaserver-mount = pkgs.writeShellScriptBin "mediaserver-mount" ''
-    set -x
+    set -ex
 
     # Mount EVERYTHING_ELSE partition only if not already mounted. No OTP
     # support here (unlike pilab's homelab-mount) -- always prompts
@@ -26,7 +26,19 @@ let
     # EVERYTHING_ELSE is mounted, so the ownership fixups declared in
     # services/nixarr.nix's systemd.tmpfiles.rules never ran against the
     # migrated data. Re-trigger them now that the drive is mounted.
-    ${pkgs.systemd}/bin/systemd-tmpfiles --create
+    #
+    # nixarr's upstream radarr/sonarr/jellyfin modules each independently
+    # declare tmpfiles rules for the same library/* paths (with differing,
+    # harmless mode bits), and nixarr's qbittorrent module + nixpkgs'
+    # services.qbittorrent module do the same for the qBittorrent config
+    # dirs. systemd-tmpfiles already keeps the first-seen rule and ignores
+    # the rest -- filter out just that specific notice (via process
+    # substitution, so $? below still reflects systemd-tmpfiles's own exit
+    # status, unlike piping through grep).
+    set +x
+    ${pkgs.systemd}/bin/systemd-tmpfiles --create \
+      2> >(grep -v ': Duplicate line for path ' >&2)
+    set -x
   '';
 
   mediaserver-start = pkgs.writeShellScriptBin "mediaserver-start" ''
