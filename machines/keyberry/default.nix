@@ -263,7 +263,7 @@
       virtualHosts."jellyfin-proxy" = {
         listen = [ { addr = "0.0.0.0"; port = 8096; } ];
         locations."/" = {
-          proxyPass = "http://pilab.lion-zebra.ts.net:8096";
+          proxyPass = "http://radrubble.lion-zebra.ts.net:8096";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };
