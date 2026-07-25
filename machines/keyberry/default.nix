@@ -107,6 +107,7 @@
         "input"
         "render"
         "gpio"
+        "adbusers"
         "i2c"
         "spi"
         "dialout"
@@ -251,7 +252,11 @@
       };
     };
 
-    pi400kb.enable = true;
+    pi400kb = {
+      enable = true;
+      keyboard.device = "/dev/input/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.4:1.0-event-kbd";
+      mouse.device = "/dev/input/by-path/platform-fd500000.pcie-pci-0000:01:00.0-usb-0:1.3:1.0-event-mouse";
+    };
 
     nginx = {
       enable = true;
