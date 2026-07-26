@@ -21,6 +21,12 @@ let
   # chromium-cdp-forward systemd service). Wrapped in a restart loop since this
   # is spawned via niri's spawn-at-startup (no systemd process supervision).
   chromium-cdp-launcher = pkgs.writeShellScriptBin "chromium-cdp-launcher" ''
+    # niri's spawn-sh-at-startup launches this via the systemd --user manager,
+    # whose environment block is separate from niri's own process env (which
+    # does get NixOS's environment.variables via the tty1 login shell). So
+    # system-wide LIBVA_DRIVER_NAME (set in machines/deskette/graphics.nix)
+    # never reaches this process unless exported here explicitly.
+    export LIBVA_DRIVER_NAME=i965
     while true; do
       ${pkgs.chromium}/bin/chromium \
         --ozone-platform=wayland \
