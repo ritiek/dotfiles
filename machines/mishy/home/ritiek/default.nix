@@ -34,6 +34,7 @@
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
     ./../../../../scripts/home/spotdl-patched.nix
+    ./../../../../scripts/home/sync-chromium-to-deskette.nix
   ];
 
   # TODO: Make adjustments and set this to false.
