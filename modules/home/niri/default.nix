@@ -458,7 +458,9 @@ spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "swayosd-server"
 spawn-at-startup "tailscale" "systray"
 ${if hostName == "deskette" then ''
-spawn-at-startup "/run/wrappers/bin/sunshine"
+// Sunshine disabled (2026-07-26) — its live capture pipeline was the sole
+// cause of every host hard-lockup found during GPU passthrough debugging.
+// Chromium via CDP never crashed and keeps the iGPU for rendering only.
 spawn-sh-at-startup "${chromium-cdp-launcher}/bin/chromium-cdp-launcher"
 '' else ""}
 

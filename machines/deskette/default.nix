@@ -19,7 +19,26 @@
     ./../../modules/netbird.nix
     # ./../../modules/yubico-pam.nix
     # ./../../modules/usbip.nix
-    ./../../modules/sunshine.nix
+    # Sunshine's live Wayland screencopy capture pipeline was the root cause of
+    # every host hard-lockup during the GPU passthrough investigation
+    # (2026-07-25/26, see further-findings/ in the gpu-passthru notes repo).
+    # Chromium/CDP rendering via the passed-through iGPU never crashed in any
+    # of those sessions, so Sunshine is disabled here and Chromium keeps the
+    # iGPU for rendering only.
+    #
+    # NOTE (Proxmox host 192.168.1.149, not managed by this repo): the
+    # abandoned GVT-g experiment from session 2026-07-26_02-28-15 likely left
+    # these still set on the host even though VM 117 no longer uses mdev=:
+    #   - GRUB cmdline: i915.enable_gvt=1 present
+    #   - "i915" removed from modprobe.blacklist=... (it was blacklisted before)
+    #   - /etc/modules: kvmgt added
+    # Left alone for now (2026-07-26, per user request). Proposed cleanup if
+    # ever revisited:
+    #   - remove "i915.enable_gvt=1" from GRUB_CMDLINE_LINUX_DEFAULT
+    #   - re-add "i915" to modprobe.blacklist=... in the same GRUB line
+    #   - remove the "kvmgt" line from /etc/modules
+    #   - run update-grub && reboot the Proxmox host to apply
+    # ./../../modules/sunshine.nix
   ];
 
   sops.secrets = {
