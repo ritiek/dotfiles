@@ -13,6 +13,25 @@ let
     url = "https://immich.clawsiecats.lol/api/assets/07d2afcd-335c-4a0e-a0cf-ee53a0118bc1/original?slug=sakura";
     sha256 = "sha256-get3dCQed94LTx8sByjU5fj45iotaPrHmfvV8AMzRgo=";
   };
+
+  # Persistent headed Chromium exposing CDP on 127.0.0.1:9222, launched against
+  # the real (not throwaway-copied) profile dir. deskette-only: this is the one
+  # shared browser that every machine's OpenCode playwright MCP attaches to over
+  # Tailscale (see modules/home/opencode.nix + machines/deskette/default.nix
+  # chromium-cdp-forward systemd service). Wrapped in a restart loop since this
+  # is spawned via niri's spawn-at-startup (no systemd process supervision).
+  chromium-cdp-launcher = pkgs.writeShellScriptBin "chromium-cdp-launcher" ''
+    while true; do
+      ${pkgs.chromium}/bin/chromium \
+        --ozone-platform=wayland \
+        --remote-debugging-port=9222 \
+        --remote-allow-origins=* \
+        --user-data-dir="${config.home.homeDirectory}/.config/chromium" \
+        --no-first-run \
+        --password-store=basic
+      sleep 2
+    done
+  '';
 in
 {
   imports = [
@@ -440,6 +459,7 @@ spawn-sh-at-startup "swayosd-server"
 spawn-at-startup "tailscale" "systray"
 ${if hostName == "deskette" then ''
 spawn-at-startup "/run/wrappers/bin/sunshine"
+spawn-sh-at-startup "${chromium-cdp-launcher}/bin/chromium-cdp-launcher"
 '' else ""}
 
 environment {
