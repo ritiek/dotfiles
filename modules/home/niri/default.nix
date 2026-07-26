@@ -14,30 +14,10 @@ let
     sha256 = "sha256-get3dCQed94LTx8sByjU5fj45iotaPrHmfvV8AMzRgo=";
   };
 
-  # Persistent headed Chromium exposing CDP on 127.0.0.1:9222, launched against
-  # the real (not throwaway-copied) profile dir. deskette-only: this is the one
-  # shared browser that every machine's OpenCode playwright MCP attaches to over
-  # Tailscale (see modules/home/opencode.nix + machines/deskette/default.nix
-  # chromium-cdp-forward systemd service). Wrapped in a restart loop since this
-  # is spawned via niri's spawn-at-startup (no systemd process supervision).
-  chromium-cdp-launcher = pkgs.writeShellScriptBin "chromium-cdp-launcher" ''
-    # niri's spawn-sh-at-startup launches this via the systemd --user manager,
-    # whose environment block is separate from niri's own process env (which
-    # does get NixOS's environment.variables via the tty1 login shell). So
-    # system-wide LIBVA_DRIVER_NAME (set in machines/deskette/graphics.nix)
-    # never reaches this process unless exported here explicitly.
-    export LIBVA_DRIVER_NAME=i965
-    while true; do
-      ${pkgs.chromium}/bin/chromium \
-        --ozone-platform=wayland \
-        --remote-debugging-port=9222 \
-        --remote-allow-origins=* \
-        --user-data-dir="${config.home.homeDirectory}/.config/chromium" \
-        --no-first-run \
-        --password-store=basic
-      sleep 2
-    done
-  '';
+   # Each OpenCode agent invocation copies the chromium profile to a
+   # temp directory and launches its own isolated Chrome instance
+   # (see playwright-mcp-wrapper in modules/home/opencode.nix).
+   # No persistent shared Chromium launcher needed.
 in
 {
   imports = [
@@ -463,11 +443,11 @@ spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "swayosd-server"
 spawn-at-startup "tailscale" "systray"
-${if hostName == "deskette" then ''
+ ${if hostName == "deskette" then ''
 // Sunshine disabled (2026-07-26) — its live capture pipeline was the sole
 // cause of every host hard-lockup found during GPU passthrough debugging.
-// Chromium via CDP never crashed and keeps the iGPU for rendering only.
-spawn-sh-at-startup "${chromium-cdp-launcher}/bin/chromium-cdp-launcher"
+// Chromium is now launched per-agent by playwright-mcp-wrapper
+// (each agent gets its own isolated Chrome instance).
 '' else ""}
 
 environment {

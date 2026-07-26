@@ -39,49 +39,99 @@ let
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
 
-  # Playwright MCP CDP wrappers: instead of each machine launching its own local
-  # Chromium, every machine attaches over CDP to the single persistent headed
-  # Chromium running on deskette (see modules/home/niri chromium-cdp-launcher
-  # and machines/deskette/default.nix chromium-cdp-forward). All machines share
-  # one browser/profile/tabs/login-state; no --isolated.
-  #
-  # deskette itself: connects straight to its own loopback CDP port. Host in
-  # the discovery response matches exactly (127.0.0.1), so no path-rewriting
-  # is needed.
-  playwright-mcp-local-cdp-wrapper = pkgs.writeShellScript "playwright-mcp-local-cdp-wrapper" ''
-    exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
-      --cdp-endpoint http://127.0.0.1:9222 \
-      --caps vision \
-      "$@"
+  # Anti-detection init script for headless mode
+  playwright-init-script = pkgs.writeText "playwright-init.js" ''
+    // Override navigator.webdriver
+    Object.defineProperty(navigator, 'webdriver', {
+      get: () => false,
+    });
+
+    // Override chrome detection
+    window.chrome = {
+      runtime: {},
+    };
+
+    // Override permissions
+    const originalQuery = window.navigator.permissions.query;
+    window.navigator.permissions.query = (parameters) => (
+      parameters.name === 'notifications' ?
+        Promise.resolve({ state: Notification.permission }) :
+        originalQuery(parameters)
+    );
   '';
 
-   # Every other machine: connects to deskette over Tailscale. Chrome's DevTools
-   # server rejects any HTTP Host header that isn't a literal IP address or
-   # "localhost" (anti DNS-rebinding protection) - this applies through our
-   # socat forward too, so deskette.lion-zebra.ts.net (a hostname) gets rejected
-   # with "Host header is specified and is not an IP address or localhost".
-   # Resolving to the raw Tailscale IP first and using that as the endpoint host
-   # satisfies the check - and Chrome then correctly echoes that same IP back in
-   # webSocketDebuggerUrl, so Playwright's own discovery-then-connect just works
-   # with no extra path-rewriting needed.
-   #
-   # NO_PROXY is set to bypass the HTTP proxy for Tailscale CDP connections.
-   # The proxy (pilab.lion-zebra.ts.net:8090) intercepts connections to Tailscale
-   # IPs and returns 407 (Proxy Authentication Required), breaking CDP discovery.
-   playwright-mcp-remote-cdp-wrapper = pkgs.writeShellScript "playwright-mcp-remote-cdp-wrapper" ''
-     set -euo pipefail
-     CDP_HOST=$(${pkgs.getent}/bin/getent hosts deskette.lion-zebra.ts.net | ${pkgs.gawk}/bin/awk '{print $1; exit}')
-     # Unset proxy env vars — CDP connections to Tailscale IPs must never
-     # go through a proxy. The proxy (pilab.lion-zebra.ts.net:8090) returns
-     # 407 (Proxy Authentication Required) for Tailscale addresses, breaking
-     # CDP discovery. NO_PROXY alone is insufficient because the Playwright
-     # MCP (Node.js) does not respect it for CDP HTTP requests.
-     unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
-     exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
-       --cdp-endpoint "http://''${CDP_HOST}:9222" \
-       --caps vision \
-       "$@"
-   '';
+  # Wrapper script that copies user-data-dir before launching Playwright MCP server.
+  # This allows multiple OpenCode instances to run parallel browser agents with
+  # same logged-in session state, avoiding user-data-dir locking conflicts.
+  playwright-mcp-wrapper = pkgs.writeShellScript "playwright-mcp-wrapper" ''
+    # Cleanup any orphan chromium-playwright-* temp profiles that are not in use
+    for dir in /tmp/chromium-playwright-*; do
+      if [ -d "$dir" ]; then
+        dir_name=$(basename "$dir")
+        echo "=== DEBUG: Checking directory: $dir_name ===" >&2
+
+        # Check if any playwright process is using this specific user-data-dir
+        if ${pkgs.procps}/bin/pgrep -f "user-data-dir.*$dir_name" >/dev/null 2>&1; then
+          continue
+        fi
+
+        # Check if any process has the lock file open (if it exists)
+        if [ -f "$dir/.lock" ] && ${pkgs.psmisc}/bin/fuser "$dir/.lock" >/dev/null 2>&1; then
+          continue
+        fi
+
+        # If we get here, the profile is not in use - remove it
+        rm -rf "$dir"
+      fi
+    done
+
+    # Create unique temp directory using mktemp for better uniqueness
+    TEMP_PROFILE=$(mktemp -d -t chromium-playwright-XXXXXX)
+
+    # Copy original chromium profile to temp directory
+    ${pkgs.rsync}/bin/rsync -a --quiet \
+      "${config.home.homeDirectory}/.config/chromium/" \
+      "$TEMP_PROFILE/"
+
+    # Create lock file and keep file descriptor open for entire process lifetime
+    # This ensures SIGKILL-safe cleanup detection
+    exec 3>"$TEMP_PROFILE/.lock"
+
+    # Cleanup function to remove temp profile on graceful exit
+    cleanup() {
+      # Close file descriptor before removing directory
+      exec 3>&-
+      rm -rf "$TEMP_PROFILE"
+    }
+    # Ensure cleanup happens on normal exit, interrupt, or termination
+    trap cleanup EXIT INT TERM SIGINT SIGTERM
+
+    # Build command arguments
+    ARGS=(
+      --executable-path "${chromiumPackage}/bin/chromium"
+      --user-data-dir "$TEMP_PROFILE"
+      --ignore-https-errors
+      --caps vision
+      # Below don't work
+      # --isolated
+    )
+
+    # Add headless and anti-detection options only when DISPLAY is not set
+    if [ -z "$DISPLAY" ]; then
+      ARGS+=(
+        --headless
+        --viewport-size "1271x936"
+        --init-script "${playwright-init-script}"
+      )
+    fi
+    # --user-agent "Mozilla/5.0 AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
+    # --no-sandbox
+
+    # sleep 30 && cleanup &
+
+    # Launch playwright MCP server with copied profile
+    exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp "''${ARGS[@]}" "$@"
+  '';
 
   # lightpanda-cdp-proxy-py = pkgs.writeText "lightpanda-cdp-proxy.py" (builtins.readFile ./lightpanda-cdp-proxy.py);
   # lightpanda-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
@@ -410,20 +460,17 @@ in
           type = "local";
           command = ["${mcp-servers-nix.context7-mcp}/bin/context7-mcp"];
         };
-        playwright = {
-          enabled = true;
-          type = "local";
-          timeout = 30000;
-          # All machines attach over CDP to the one persistent shared Chromium
-          # running on deskette (see chromium-cdp-launcher / chromium-cdp-forward).
-          command = [
-            (if hostName == "deskette"
-             then "${playwright-mcp-local-cdp-wrapper}"
-             else "${playwright-mcp-remote-cdp-wrapper}")
-            # TODO: See if it's possible to declartively install extension.
-            # https://github.com/microsoft/playwright-mcp/blob/main/extension/README.md
-            # "--extension"
-          ];
+         playwright = {
+           enabled = true;
+           type = "local";
+           timeout = 30000;
+           # Each agent invocation copies the chromium profile to a temp
+           # directory and launches its own isolated Chrome instance.
+           # This allows multiple parallel agents to work with browsers
+           # independently without interfering with each other.
+           command = [
+             "${playwright-mcp-wrapper}"
+           ];
           # environment = {
           #   PLAYWRIGHT_MCP_EXTENSION_TOKEN = "PLAYWRIGHT_MCP_EXTENSION_TOKEN_HERE";
           # };
@@ -805,30 +852,8 @@ in
       Install.WantedBy = [ "default.target" ];
     };
   } // lib.optionalAttrs (hostName == "deskette") {
-    # Forwards deskette's Tailscale IP:9222 to the persistent Chromium CDP
-    # listener on 127.0.0.1:9222 (Chrome only ever binds loopback, it no
-    # longer honors --remote-debugging-address). Binds specifically to the
-    # tailscale interface address, not 0.0.0.0, since networking.firewall
-    # is disabled on this machine and there is no other layer restricting
-    # exposure. Lets every other machine's OpenCode playwright MCP attach
-    # to this one shared browser over Tailscale (see chromium-cdp-launcher
-    # in modules/home/niri and playwright-mcp-remote-cdp-wrapper above).
-    # Runs as a user service (not system-level) since it needs no special
-    # privileges: binding a non-privileged port, and `tailscale ip` works
-    # unprivileged thanks to `--operator=ritiek` in the tailscale config.
-    chromium-cdp-forward = {
-      Unit = {
-        Description = "Forward deskette Tailscale IP:9222 to local Chromium CDP port";
-        After = [ "tailscaled.service" "network-online.target" ];
-        Wants = [ "tailscaled.service" "network-online.target" ];
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.bash}/bin/bash -c 'exec ${pkgs.socat}/bin/socat TCP-LISTEN:9222,bind=$(${pkgs.tailscale}/bin/tailscale ip -4),fork,reuseaddr TCP:127.0.0.1:9222'";
-        Restart = "on-failure";
-        RestartSec = 5;
-      };
-      Install.WantedBy = [ "default.target" ];
-    };
+    # Chromium is launched per-agent via playwright-mcp-wrapper
+    # (each agent gets its own isolated Chrome instance with a
+    # copied user-data-dir). No shared CDP forwarder needed.
   };
 }
