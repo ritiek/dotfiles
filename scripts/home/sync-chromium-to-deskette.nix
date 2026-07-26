@@ -32,6 +32,11 @@ in
       SRC="$HOME/${profileRel}/"
       DEST="$USER@$HOST:${profileRel}/"
 
+      # Resolve to a literal IP: Chrome's DevTools HTTP server rejects any
+      # Host header that isn't a literal IP or "localhost" (anti DNS-rebinding
+      # protection), and the socat forward on deskette (chromium-cdp-forward)
+      # doesn't rewrite Host headers. See playwright-mcp-remote-cdp-wrapper in
+      # modules/home/opencode.nix for the same issue/fix.
       CDP_IP=$(${pkgs.getent}/bin/getent hosts "$HOST" | ${pkgs.gawk}/bin/awk '{print $1; exit}')
 
       if ${pkgs.procps}/bin/pgrep -f "user-data-dir=$HOME/.config/chromium" >/dev/null 2>&1; then
