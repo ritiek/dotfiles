@@ -55,23 +55,33 @@ let
       "$@"
   '';
 
-  # Every other machine: connects to deskette over Tailscale. Chrome's DevTools
-  # server rejects any HTTP Host header that isn't a literal IP address or
-  # "localhost" (anti DNS-rebinding protection) - this applies through our
-  # socat forward too, so deskette.lion-zebra.ts.net (a hostname) gets rejected
-  # with "Host header is specified and is not an IP address or localhost".
-  # Resolving to the raw Tailscale IP first and using that as the endpoint host
-  # satisfies the check - and Chrome then correctly echoes that same IP back in
-  # webSocketDebuggerUrl, so Playwright's own discovery-then-connect just works
-  # with no extra path-rewriting needed.
-  playwright-mcp-remote-cdp-wrapper = pkgs.writeShellScript "playwright-mcp-remote-cdp-wrapper" ''
-    set -euo pipefail
-    CDP_HOST=$(${pkgs.getent}/bin/getent hosts deskette.lion-zebra.ts.net | ${pkgs.gawk}/bin/awk '{print $1; exit}')
-    exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
-      --cdp-endpoint "http://''${CDP_HOST}:9222" \
-      --caps vision \
-      "$@"
-  '';
+   # Every other machine: connects to deskette over Tailscale. Chrome's DevTools
+   # server rejects any HTTP Host header that isn't a literal IP address or
+   # "localhost" (anti DNS-rebinding protection) - this applies through our
+   # socat forward too, so deskette.lion-zebra.ts.net (a hostname) gets rejected
+   # with "Host header is specified and is not an IP address or localhost".
+   # Resolving to the raw Tailscale IP first and using that as the endpoint host
+   # satisfies the check - and Chrome then correctly echoes that same IP back in
+   # webSocketDebuggerUrl, so Playwright's own discovery-then-connect just works
+   # with no extra path-rewriting needed.
+   #
+   # NO_PROXY is set to bypass the HTTP proxy for Tailscale CDP connections.
+   # The proxy (pilab.lion-zebra.ts.net:8090) intercepts connections to Tailscale
+   # IPs and returns 407 (Proxy Authentication Required), breaking CDP discovery.
+   playwright-mcp-remote-cdp-wrapper = pkgs.writeShellScript "playwright-mcp-remote-cdp-wrapper" ''
+     set -euo pipefail
+     CDP_HOST=$(${pkgs.getent}/bin/getent hosts deskette.lion-zebra.ts.net | ${pkgs.gawk}/bin/awk '{print $1; exit}')
+     # Unset proxy env vars — CDP connections to Tailscale IPs must never
+     # go through a proxy. The proxy (pilab.lion-zebra.ts.net:8090) returns
+     # 407 (Proxy Authentication Required) for Tailscale addresses, breaking
+     # CDP discovery. NO_PROXY alone is insufficient because the Playwright
+     # MCP (Node.js) does not respect it for CDP HTTP requests.
+     unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+     exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
+       --cdp-endpoint "http://''${CDP_HOST}:9222" \
+       --caps vision \
+       "$@"
+   '';
 
   # lightpanda-cdp-proxy-py = pkgs.writeText "lightpanda-cdp-proxy.py" (builtins.readFile ./lightpanda-cdp-proxy.py);
   # lightpanda-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
