@@ -25,6 +25,16 @@
       openFirewall = true;
       openInternalFirewall = true;
       port = 51840;
+      # Use NetBird's upstream default interface name ("wt0") instead of the
+      # derived "nb-birdnet". Tailscale hardcodes an exclusion for interfaces
+      # literally named "wt0" (see tailscale.com/net/netmon/state.go,
+      # isProblematicInterface) to avoid offering NetBird's overlay address as
+      # a magicsock endpoint candidate. With the derived name, Tailscale would
+      # sometimes pick the NetBird tunnel as a "direct" path, causing
+      # WireGuard-over-WireGuard double encapsulation and severe throughput
+      # collapse under load (fine at low-rate ping, but iperf3 would show
+      # near-zero throughput bursts and heavy retransmits).
+      interface = "wt0";
     };
   };
 }
