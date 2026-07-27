@@ -186,6 +186,8 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
+    kvmd-nix.url = "github:aostanin/kvmd.nix";
+
     matthew-hardware = {
       url = "git+https://codeberg.org/matthewcroughan/matthew-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -535,6 +537,15 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.kvmzero = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/kvmzero
+        ./machines/kvmzero/hw-config.nix
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.radrubble = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -779,6 +790,15 @@
       sshUser = "ritiek";
     };
 
+    deploy.nodes.kvmzero = {
+      hostname = "kvmzero.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.kvmzero;
+      };
+      sshUser = "ritiek";
+    };
+
     deploy.nodes.radrubble = {
       hostname = "radrubble.lion-zebra.ts.net";
       profiles.system = {
@@ -905,6 +925,8 @@
     chocomelt-sd = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
 
     switchboard-sd = self.nixosConfigurations.switchboard.config.system.build.sdImage;
+
+    kvmzero-sd = self.nixosConfigurations.kvmzero.config.system.build.sdImage;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of
