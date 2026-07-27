@@ -74,9 +74,9 @@ in
         "title"
         "dnd"
         "notifications"
-      ] ++ lib.optionals (osConfig.services.pulseaudio.enable or osConfig.services.pipewire.enable) [
+      ] ++ lib.optionals ((osConfig.services.pulseaudio.enable or false) || (osConfig.services.pipewire.enable or false)) [
         "volume"
-      ] ++ lib.optionals (osConfig.services.pulseaudio.enable or osConfig.services.pipewire.enable) [
+      ] ++ lib.optionals ((osConfig.services.pulseaudio.enable or false) || (osConfig.services.pipewire.enable or false)) [
         "mpris"
       ] ++ lib.optionals (builtins.elem hostName ["mishy"]) [
         "backlight"
