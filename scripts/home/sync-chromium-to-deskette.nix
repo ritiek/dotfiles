@@ -7,10 +7,10 @@ in
 {
   # Manually-triggered one-way sync of this machine's (mishy's) interactive
   # Chromium profile onto deskette's persistent shared Chromium (see
-  # modules/home/niri chromium-cdp-launcher + machines/deskette chromium-cdp-forward).
-  # deskette's browser is the single instance every machine's OpenCode playwright
-  # MCP attaches to over CDP, so this is how deskette picks up mishy's
-  # cookies/logins/session state for both manual browsing and automation there.
+  # modules/home/niri chromium-cdp-launcher + modules/home/opencode.nix
+  # chromium-cdp-forward). deskette's browser is the single instance that
+  # mishy's OpenCode Playwright MCP attaches to over CDP, so this is how
+  # deskette picks up mishy's cookies/logins/session state.
   #
   # One-way, mishy -> deskette: deskette's copy of Default/ is always overwritten.
   # Excludes cache-only directories (Service Worker, GPUCache, etc.) which are
@@ -35,8 +35,7 @@ in
       # Resolve to a literal IP: Chrome's DevTools HTTP server rejects any
       # Host header that isn't a literal IP or "localhost" (anti DNS-rebinding
       # protection), and the socat forward on deskette (chromium-cdp-forward)
-      # doesn't rewrite Host headers. See playwright-mcp-remote-cdp-wrapper in
-      # modules/home/opencode.nix for the same issue/fix.
+      # doesn't rewrite Host headers.
       CDP_IP=$(${pkgs.getent}/bin/getent hosts "$HOST" | ${pkgs.gawk}/bin/awk '{print $1; exit}')
 
       if ${pkgs.procps}/bin/pgrep -f "user-data-dir=$HOME/.config/chromium" >/dev/null 2>&1; then
