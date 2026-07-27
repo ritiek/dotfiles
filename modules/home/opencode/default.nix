@@ -3,10 +3,12 @@ let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
   isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
 
+  playwright = import ./playwright.nix { inherit pkgs inputs lib hostName; };
+
   secretsFile =
     if hostName == "mishy-usb"
-    then ./../../machines/mishy/home/${config.home.username}/secrets.yaml
-    else ./../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
+    then ./../../../machines/mishy/home/${config.home.username}/secrets.yaml
+    else ./../../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
 
@@ -30,122 +32,13 @@ let
 
   searxDomain = "clawsiecats.lol";
 
-  # On pilab (aarch64), pkgs.chromium has no binary cache for the pinned nixpkgs
-  # and would build from source (~100GB scratch), exhausting the disk. The unstable
-  # nixpkgs DOES have a cached aarch64 build, so use it there. Other hosts keep
-  # pkgs.chromium unchanged.
-  chromiumPackage = if hostName == "pilab" then pkgs.unstable.chromium else pkgs.chromium;
-
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
-
-  # Anti-detection init script for headless mode
-  playwright-init-script = pkgs.writeText "playwright-init.js" ''
-    // Override navigator.webdriver
-    Object.defineProperty(navigator, 'webdriver', {
-      get: () => false,
-    });
-
-    // Override chrome detection
-    window.chrome = {
-      runtime: {},
-    };
-
-    // Override permissions
-    const originalQuery = window.navigator.permissions.query;
-    window.navigator.permissions.query = (parameters) => (
-      parameters.name === 'notifications' ?
-        Promise.resolve({ state: Notification.permission }) :
-        originalQuery(parameters)
-    );
-  '';
-
-  # Wrapper script that copies user-data-dir before launching Playwright MCP server.
-  # This allows multiple OpenCode instances to run parallel browser agents with
-  # same logged-in session state, avoiding user-data-dir locking conflicts.
-  playwright-mcp-wrapper = pkgs.writeShellScript "playwright-mcp-wrapper" ''
-    # Cleanup any orphan chromium-playwright-* temp profiles that are not in use
-    for dir in /tmp/chromium-playwright-*; do
-      if [ -d "$dir" ]; then
-        dir_name=$(basename "$dir")
-        echo "=== DEBUG: Checking directory: $dir_name ===" >&2
-
-        # Check if any playwright process is using this specific user-data-dir
-        if ${pkgs.procps}/bin/pgrep -f "user-data-dir.*$dir_name" >/dev/null 2>&1; then
-          continue
-        fi
-
-        # Check if any process has the lock file open (if it exists)
-        if [ -f "$dir/.lock" ] && ${pkgs.psmisc}/bin/fuser "$dir/.lock" >/dev/null 2>&1; then
-          continue
-        fi
-
-        # If we get here, the profile is not in use - remove it
-        rm -rf "$dir"
-      fi
-    done
-
-    # Create unique temp directory using mktemp for better uniqueness
-    TEMP_PROFILE=$(mktemp -d -t chromium-playwright-XXXXXX)
-
-    # Copy original chromium profile to temp directory
-    ${pkgs.rsync}/bin/rsync -a --quiet \
-      "${config.home.homeDirectory}/.config/chromium/" \
-      "$TEMP_PROFILE/"
-
-    # Create lock file and keep file descriptor open for entire process lifetime
-    # This ensures SIGKILL-safe cleanup detection
-    exec 3>"$TEMP_PROFILE/.lock"
-
-    # Cleanup function to remove temp profile on graceful exit
-    cleanup() {
-      # Close file descriptor before removing directory
-      exec 3>&-
-      rm -rf "$TEMP_PROFILE"
-    }
-    # Ensure cleanup happens on normal exit, interrupt, or termination
-    trap cleanup EXIT INT TERM SIGINT SIGTERM
-
-    # Build command arguments
-    ARGS=(
-      --executable-path "${chromiumPackage}/bin/chromium"
-      --user-data-dir "$TEMP_PROFILE"
-      --ignore-https-errors
-      --caps vision
-      # Below don't work
-      # --isolated
-    )
-
-    # Add headless and anti-detection options only when DISPLAY is not set
-    if [ -z "$DISPLAY" ]; then
-      ARGS+=(
-        --headless
-        --viewport-size "1271x936"
-        --init-script "${playwright-init-script}"
-      )
-    fi
-    # --user-agent "Mozilla/5.0 AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
-    # --no-sandbox
-
-    # sleep 30 && cleanup &
-
-    # Launch playwright MCP server with copied profile
-    exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp "''${ARGS[@]}" "$@"
-  '';
-
-  # lightpanda-cdp-proxy-py = pkgs.writeText "lightpanda-cdp-proxy.py" (builtins.readFile ./lightpanda-cdp-proxy.py);
-  # lightpanda-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
-  # # Named "chromium" so nodriver's find_chrome_executable() finds it in PATH.
-  # # nodriver searches PATH for: google-chrome, chromium, chromium-browser, chrome, google-chrome-stable.
-  # lightpanda-cdp-wrapper = pkgs.writeShellScriptBin "chromium" ''
-  #   export LIGHTPANDA_BIN=${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.lightpanda}/bin/lightpanda
-  #   exec ${lightpanda-proxy-env}/bin/python3 ${lightpanda-cdp-proxy-py} "$@"
-  # '';
 
   # Cloud CDP proxy: tunnels nodriver's local CDP connections to Lightpanda cloud.
   # Real Chrome backend -- no lightpanda CDP quirk workarounds needed.
   # SearXNG is accessed directly by MCP code over HTTP (Tailscale), not through this proxy.
-  cloud-cdp-proxy-py = pkgs.writeText "cloud-cdp-proxy.py" (builtins.readFile ./cloud-cdp-proxy.py);
+  cloud-cdp-proxy-py = pkgs.writeText "cloud-cdp-proxy.py" (builtins.readFile ../cloud-cdp-proxy.py);
   cloud-cdp-proxy-env = pkgs.python3.withPackages (ps: [ ps.websockets ]);
   # Named "chromium" so nodriver's find_chrome_executable() finds it in PATH.
   cloud-cdp-wrapper = pkgs.writeShellScriptBin "chromium" ''
@@ -235,10 +128,7 @@ in
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
   ];
-  programs.chromium = {
-    enable = true;
-    package = chromiumPackage;
-  };
+  programs.chromium = playwright.chromiumProgram;
   programs.opencode = {
     enable = true;
     package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
@@ -460,20 +350,11 @@ in
           type = "local";
           command = ["${mcp-servers-nix.context7-mcp}/bin/context7-mcp"];
         };
-         playwright = {
-           enabled = true;
-           type = "local";
-           timeout = 30000;
-           # Each agent invocation copies the chromium profile to a temp
-           # directory and launches its own isolated Chrome instance.
-           # This allows multiple parallel agents to work with browsers
-           # independently without interfering with each other.
-           command = [
-             "${playwright-mcp-wrapper}"
-           ];
-          # environment = {
-          #   PLAYWRIGHT_MCP_EXTENSION_TOKEN = "PLAYWRIGHT_MCP_EXTENSION_TOKEN_HERE";
-          # };
+        playwright = {
+          enabled = true;
+          type = "local";
+          timeout = 30000;
+          command = playwright.mcpCommand;
         };
         nixos = {
           enabled = true;
@@ -851,9 +732,5 @@ in
       };
       Install.WantedBy = [ "default.target" ];
     };
-  } // lib.optionalAttrs (hostName == "deskette") {
-    # Chromium is launched per-agent via playwright-mcp-wrapper
-    # (each agent gets its own isolated Chrome instance with a
-    # copied user-data-dir). No shared CDP forwarder needed.
-  };
+  } // playwright.systemdServices;
 }
