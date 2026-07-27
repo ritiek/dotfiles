@@ -30,7 +30,7 @@
     # ./../../../../moduleshome/nixconf/syncthing.nix
     # ./../../../../modules/home/glava
     # ./../../../../modules/home/sioyek.nix
-    ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/opencode
     ./../../../../modules/home/direnv.nix
    ];
 

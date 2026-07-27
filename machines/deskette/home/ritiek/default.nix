@@ -19,7 +19,7 @@
     ./../../../../modules/home/swaync
     ./../../../../modules/home/zen-browser.nix
     ./../../../../modules/home/glava
-    ./../../../../modules/home/opencode.nix
+    ./../../../../modules/home/opencode
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
   ];
