@@ -66,7 +66,7 @@ in
       extraConfig = {
         Preferences = {
           "WebUI\\Username" = "ritiek";
-          "WebUI\\Password_PBKDF2" = "cUIyMDI0Rml4ZWRTYWx0IfNIf3wngZAGQ5QQQigjtClmpIEeIui29KBUkllIf0h5fL+9WIf5C6t4rRLqnaKWYZbhkiCbGZjXmMIA2uLdN5Q=";
+          "WebUI\\Password_PBKDF2" = "@ByteArray(cUIyMDI0Rml4ZWRTYWx0IQ==:80h/fCeBkAZDlBBCKCO0KWakgR4i6Lb0oFSSWUh/SHl8v71Yh/kLq3itEuqdopZhluGSIJsZmNeYwgDa4t03lA==)";
         };
       };
     };
