@@ -1,68 +1,23 @@
 { config, lib, pkgs, everythingElsePath, ... }:
 
 let
-  qbNotifyScript = pkgs.writeShellScriptBin "qbittorrent-notify" ''
-    #!/bin/sh
-    set -eu
-
-    GOTIFY_URL="http://pilab.lion-zebra.ts.net:8893"
-    GOTIFY_TOKEN="AieV3s6h-PYmsGy"
-    PRIORITY=3
-
-    TITLE="$1"
-    TORRENT_NAME="''${2:-%N}"
-    CATEGORY="''${3:-%L}"
-    TAGS="''${4:-%G}"
-    CONTENT_PATH="''${5:-%F}"
-    SAVE_PATH="''${6:-%D}"
-    FILE_COUNT="''${7:-%C}"
-    TORRENT_SIZE="''${8:-%Z}"
-    TRACKER="''${9:-%T}"
-    INFO_HASH_V1="''${10:-%I}"
-
-    human_readable_size() {
-        bytes=$1
-        case "$bytes" in
-            -1) echo "Unknown"; return ;;
-            ""|*[!0-9-]*) echo "$bytes"; return ;;
-            -*) echo "Unknown"; return ;;
-        esac
-        index=0
-        size=$bytes
-        while [ $size -ge 1024 ] && [ $index -lt 4 ]; do
-            size=$((size / 1024))
-            index=$((index + 1))
-        done
-        case $index in
-            0) echo "''${size} B" ;;
-            1) echo "''${size} KB" ;;
-            2) echo "''${size} MB" ;;
-            3) echo "''${size} GB" ;;
-            4) echo "''${size} TB" ;;
-        esac
-    }
-
-    format_message() {
-        size_human=$(human_readable_size "$TORRENT_SIZE")
-        msg="Name: $TORRENT_NAME\n"
-        [ "$TORRENT_SIZE" != "-1" ] && msg="''${msg}Size: $size_human\n"
-        [ "$FILE_COUNT" != "-1" ] && msg="''${msg}Files: $FILE_COUNT\n"
-        [ -n "$CATEGORY" ] && [ "$CATEGORY" != "N/A" ] && [ "$CATEGORY" != "%L" ] && msg="''${msg}Category: $CATEGORY\n"
-        [ -n "$TAGS" ] && [ "$TAGS" != "N/A" ] && [ "$TAGS" != "%G" ] && msg="''${msg}Tags: $TAGS\n"
-        msg="''${msg}Save Path: $SAVE_PATH\n"
-        [ -n "$TRACKER" ] && [ "$TRACKER" != "N/A" ] && [ "$TRACKER" != "%T" ] && msg="''${msg}Tracker: $TRACKER\n"
-        hash_short=$(echo "$INFO_HASH_V1" | cut -c1-16)
-        msg="''${msg}Info Hash: ''${hash_short}..."
-        printf "%b" "$msg"
-    }
-
-    MESSAGE=$(format_message)
-    curl -s -X POST "$GOTIFY_URL/message?token=$GOTIFY_TOKEN" \
-        -F "title=$TITLE" \
-        -F "message=$MESSAGE" \
-        -F "priority=$PRIORITY" > /dev/null
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Notification sent for: $TORRENT_NAME" >&2
-'';
+  # qBittorrent's systemd service runs with a minimal PATH (coreutils/findutils/
+  # gnugrep/gnused/systemd only, no curl), so writeShellApplication's PATH
+  # wrapping (via runtimeInputs) is required for the script's `curl` call to
+  # actually be found when qBittorrent invokes it as an AutoRun program.
+  #
+  # The Gotify token is never embedded in the script text: it's substituted
+  # here with the sops-nix runtime secret *path* (not the secret value
+  # itself -- that's only decrypted on-disk on radrubble at activation time,
+  # long after this Nix expression is evaluated/built on alcove).
+  qbNotifyScript = pkgs.writeShellApplication {
+    name = "qbittorrent-notify";
+    runtimeInputs = [ pkgs.curl ];
+    text = builtins.replaceStrings
+      [ "@GOTIFY_TOKEN_FILE@" ]
+      [ config.sops.secrets."gotify.token".path ]
+      (builtins.readFile ./qbittorrent-notify.sh);
+  };
 in
 
 # Migrated from pilab's docker/oci-containers *arr stack. EVERYTHING_ELSE is
@@ -98,6 +53,13 @@ let
   requiredMounts = [ everythingElsePath ];
 in
 {
+  # Decrypted from the default system sops file (machines/radrubble/secrets.yaml).
+  # Owned by qbittorrent since qbittorrent-notify.sh runs as that user (exec'd
+  # directly by qBittorrent's AutoRun, not via a systemd EnvironmentFile).
+  sops.secrets."gotify.token" = {
+    owner = "qbittorrent";
+  };
+
   nixarr = {
     enable = true;
 
@@ -129,15 +91,58 @@ in
       # qBittorrent.conf, wiping any WebUI password changes on restart.
       # Setting WebUI credentials here keeps them stable across reboots.
       extraConfig = {
+        Application = {
+          # Restores pilab's old file-logging behaviour, pointed at the new
+          # nixarr stateDir instead of the old docker /config path.
+          "FileLogger\\Enabled" = true;
+          "FileLogger\\Path" = "${qbtConfig}/qBittorrent/logs";
+          "FileLogger\\Backup" = true;
+          "FileLogger\\DeleteOld" = true;
+          "FileLogger\\MaxSizeBytes" = 66560;
+          "FileLogger\\Age" = 1;
+          "FileLogger\\AgeType" = 1;
+        };
+        LegalNotice.Accepted = true;
+        Network = {
+          "PortForwardingEnabled" = false;
+          "Cookies" = "@Invalid()";
+        };
+        Core.AutoDeleteAddedTorrentFile = "Never";
+        BitTorrent = {
+          # Restores pilab's old behaviour: no ratio/seeding-time limits (the
+          # *arr apps manage removal) and torrents write directly to their
+          # final folder instead of using a `.incomplete` staging path.
+          "Session\\GlobalMaxRatio" = 1;
+          "Session\\GlobalMaxSeedingMinutes" = 1;
+          "Session\\GlobalMaxInactiveSeedingMinutes" = 1;
+          "Session\\UseAlternativeGlobalSpeedLimit" = false;
+          "Session\\TempPathEnabled" = false;
+        };
         Preferences = {
           "WebUI\\Username" = "ritiek";
           "WebUI\\Password_PBKDF2" = "@ByteArray(cUIyMDI0Rml4ZWRTYWx0IQ==:80h/fCeBkAZDlBBCKCO0KWakgR4i6Lb0oFSSWUh/SHl8v71Yh/kLq3itEuqdopZhluGSIJsZmNeYwgDa4t03lA==)";
+          "Connection\\UPnP" = false;
+          "General\\Locale" = "en";
+          "General\\StatusbarExternalIPDisplayed" = true;
         };
         AutoRun = {
+          # qBittorrent re-saves its own preferences (including AutoRun) to
+          # this file shortly after startup, and its serializer does not
+          # round-trip quoted/multi-word Program arguments faithfully (it
+          # drops the quotes and the spaces between placeholders). Keep the
+          # title as a single unquoted token to avoid corrupting the args.
           "OnTorrentAdded\\Enabled" = true;
           "OnTorrentAdded\\Program" = "${qbNotifyScript}/bin/qbittorrent-notify Download_Added %N %L %G %F %D %C %Z %T %I";
           "OnTorrentFinished\\Enabled" = true;
           "OnTorrentFinished\\Program" = "${qbNotifyScript}/bin/qbittorrent-notify Download_Finished %N %L %G %F %D %C %Z %T %I";
+        };
+        RSS.AutoDownloader = {
+          "DownloadRepacks" = true;
+          # Backslashes are doubled: qBittorrent's underlying QSettings INI
+          # reader silently drops `\<letter>` sequences it doesn't recognize
+          # as an escape (e.g. `\d`, `\-`), so a literal single backslash
+          # needs to be written as `\\` to survive the round-trip.
+          "SmartEpisodeFilter" = ''s(\\d+)e(\\d+), (\\d+)x(\\d+), "(\\d{4}[.\\-]\\d{1,2}[.\\-]\\d{1,2})", "(\\d{1,2}[.\\-]\\d{1,2}[.\\-]\\d{4})"'';
         };
       };
     };
@@ -169,18 +174,29 @@ in
   # systemd-tmpfiles-setup.service only runs once at boot, before
   # EVERYTHING_ELSE is mounted, so `mediaserver-mount` re-runs
   # `systemd-tmpfiles --create` after mounting to apply these every time.
-  systemd.tmpfiles.rules = [
-    "Z ${arrConfigs}/radarr - radarr media - -"
-    "Z ${arrConfigs}/sonarr - sonarr media - -"
-    "Z ${arrConfigs}/bazarr - bazarr media - -"
-    "Z ${arrConfigs}/prowlarr - prowlarr prowlarr - -"
-    "Z ${arrConfigs}/jellyseerr - seerr seerr - -"
-    "Z ${arrConfigs}/jellyfin - jellyfin media - -"
-    "Z ${qbtConfig} - qbittorrent media - -"
+  #
+  # Uses the structured `systemd.tmpfiles.settings` form (typed
+  # mode/user/group/argument fields) instead of positional rule strings.
+  systemd.tmpfiles.settings."nixarr-radrubble" = {
+    "${arrConfigs}/radarr".Z = { user = "radarr"; group = "media"; };
+    "${arrConfigs}/sonarr".Z = { user = "sonarr"; group = "media"; };
+    "${arrConfigs}/bazarr".Z = { user = "bazarr"; group = "media"; };
+    "${arrConfigs}/prowlarr".Z = { user = "prowlarr"; group = "prowlarr"; };
+    "${arrConfigs}/jellyseerr".Z = { user = "seerr"; group = "seerr"; };
+    "${arrConfigs}/jellyfin".Z = { user = "jellyfin"; group = "media"; };
+    "${qbtConfig}".Z = { user = "qbittorrent"; group = "media"; };
 
-    "Z ${everythingElsePath}/arr/movies 2775 root media - -"
-    "Z ${everythingElsePath}/arr/tv 2775 root media - -"
-    "Z ${everythingElsePath}/qbittorrent/downloads 2775 root media - -"
+    "${everythingElsePath}/arr/movies".Z = { mode = "2775"; user = "root"; group = "media"; };
+    "${everythingElsePath}/arr/tv".Z = { mode = "2775"; user = "root"; group = "media"; };
+    "${everythingElsePath}/qbittorrent/downloads".Z = { mode = "2775"; user = "root"; group = "media"; };
+
+    # Sonarr/Radarr root folders reference bare /tv and /movies from the
+    # docker era, but those paths don't exist on the host. Create symlinks
+    # so the *arr UIs don't show PermissionError in the root-folder picker.
+    # `L+` removes any stale directory (e.g. an empty /tv created by Sonarr's
+    # health check stub) and replaces it with the symlink.
+    "/tv"."L+".argument = "${everythingElsePath}/arr/tv";
+    "/movies"."L+".argument = "${everythingElsePath}/arr/movies";
 
     # Jellyfin's on-disk library-folder markers ("*.mblink" files, plain
     # text files containing an absolute path) still reference pilab's old
@@ -190,9 +206,9 @@ in
     # links, via ON DELETE CASCADE) on every boot. Force-write the correct,
     # real paths every time EVERYTHING_ELSE is mounted so this self-heals
     # instead of breaking again on the next reboot.
-    "F ${arrConfigs}/jellyfin/data/root/default/Movies/movies.mblink - - - - ${everythingElsePath}/arr/movies"
-    "F ${arrConfigs}/jellyfin/data/root/default/Shows/tvshows.mblink - - - - ${everythingElsePath}/arr/tv"
-  ];
+    "${arrConfigs}/jellyfin/data/root/default/Movies/movies.mblink".F.argument = "${everythingElsePath}/arr/movies";
+    "${arrConfigs}/jellyfin/data/root/default/Shows/tvshows.mblink".F.argument = "${everythingElsePath}/arr/tv";
+  };
 
   # Nothing should autostart at boot -- everything is started explicitly via
   # `sudo mediaserver-start` once EVERYTHING_ELSE is mounted.
