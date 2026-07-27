@@ -174,6 +174,18 @@
 
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
+  # systemd-oomd runs by default but watches nothing unless these slices
+  # are enabled. Root + system slice covers all system services (Jellyfin,
+  # *arr stack, etc). DefaultMemoryPressureDurationSec requires pressure to
+  # stay continuously above the limit (default 60%) for this long before
+  # oomd kills the offending cgroup, so brief legitimate spikes are ignored
+  # and only genuinely sustained thrashing (e.g. a stuck transcode) triggers it.
+  systemd.oomd = {
+    enableRootSlice = true;
+    enableSystemSlice = true;
+    settings.OOM.DefaultMemoryPressureDurationSec = "1h";
+  };
+
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";
 }
