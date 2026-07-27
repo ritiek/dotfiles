@@ -49,7 +49,7 @@ in
     xwayland-satellite
     rose-pine-cursor
     gotify-desktop
-  ] ++ (if osConfig.hardware.nvidia.enabled then [
+  ] ++ (if osConfig.hardware.nvidia.enabled or false then [
     # Wrapper to disable NVIDIA offload (use Intel GPU instead)
     # for screenshare to work.
     (pkgs.writeShellScriptBin "nvidia-unoffload" ''
@@ -461,7 +461,7 @@ environment {
     SAL_FORCEDPI "70"
     MOZ_USE_XINPUT2 "1"
     DISPLAY ":0"
-  ${lib.optionalString osConfig.hardware.nvidia.enabled ''
+  ${lib.optionalString (osConfig.hardware.nvidia.enabled or false) ''
     LIBVA_DRIVER_NAME "nvidia"
     GBM_BACKEND "nvidia-drm"
     __GLX_VENDOR_LIBRARY_NAME "nvidia"
