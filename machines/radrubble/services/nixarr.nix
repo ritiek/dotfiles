@@ -24,7 +24,7 @@ let
         bytes=$1
         case "$bytes" in
             -1) echo "Unknown"; return ;;
-            ''|*[!0-9-]*) echo "$bytes"; return ;;
+            ""|*[!0-9-]*) echo "$bytes"; return ;;
             -*) echo "Unknown"; return ;;
         esac
         index=0
