@@ -50,11 +50,25 @@ let
 
     # Sweep orphaned agent profiles left behind by prior crashed/killed
     # invocations: for each /tmp/chromium-agent-* dir, if no Chromium
-    # process is currently using it (per-directory pgrep check), remove
-    # it. Deliberately uses narrow per-directory pgrep checks rather than
-    # a broad pkill -f across many PIDs at once — the latter was
-    # empirically observed to hang intermittently over SSH with zero
-    # output, even under `timeout`.
+    # process is currently using it (per-directory pgrep check), kill its
+    # matching socat forwarder (if any, via the saved .socat.pid) and
+    # remove the directory. Deliberately uses narrow per-directory pgrep
+    # checks rather than a broad pkill -f across many PIDs at once — the
+    # latter was empirically observed to hang intermittently over SSH
+    # with zero output, even under `timeout`.
+    #
+    # Skips directories younger than 30s (find -mmin -0.5): without this,
+    # two agents launched concurrently can race each other here — agent B
+    # starts while agent A's `cp -a` profile copy is still in flight (or
+    # just finished but chromium hasn't launched yet), so agent A's
+    # directory has no matching `user-data-dir=` process YET and looks
+    # "orphaned" to agent B's sweep, which then deletes it out from under
+    # agent A. A grace period gives a sibling's copy+launch time to
+    # complete before it's ever considered for cleanup. Empirically
+    # confirmed via concurrent testing: without this guard, some
+    # concurrently-launched agents ended up with an empty profile
+    # directory and no running Chromium/socat at all.
+    #
     # setopt +o nomatch: deskette's login shell is zsh, which by default
     # aborts the whole command with "no matches found" if a glob doesn't
     # match anything (unlike bash, which leaves it as a literal string).
@@ -66,7 +80,9 @@ let
       setopt +o nomatch 2>/dev/null || true
       for dir in /tmp/chromium-agent-*; do
         [ -d "$dir" ] || continue
+        if [ -n "$(find "$dir" -maxdepth 0 -mmin -0.5 2>/dev/null)" ]; then continue; fi
         if pgrep -f "user-data-dir=$dir" >/dev/null 2>&1; then continue; fi
+        [ -f "$dir/.socat.pid" ] && kill -9 "$(cat "$dir/.socat.pid")" 2>/dev/null
         rm -rf "$dir"
       done
     ' || true
@@ -80,7 +96,17 @@ let
             '$REMOTE_TEMP_PROFILE/SingletonCookie'
     "
 
-    # Launch Chromium on deskette with unique profile and port
+    # Launch Chromium on deskette with unique profile and port.
+    #
+    # Chromium's DevTools server always binds to 127.0.0.1, ignoring
+    # --remote-debugging-address entirely (a hardened security default in
+    # modern Chromium versions; confirmed by testing — "DevTools listening
+    # on ws://127.0.0.1:..." is printed even when --remote-debugging-address
+    # is passed a different address). So the agent's CDP port is only ever
+    # reachable on deskette's own loopback and needs its own forwarder to
+    # be reachable from mishy (or any other machine) over Tailscale — same
+    # reason chromium-cdp-forward exists for the persistent instance's
+    # fixed port 9222, just per-agent here since the port is random.
     "$SSH_BIN" "$USER@$HOST" "
       export LIBVA_DRIVER_NAME=i965
       nohup ${chromiumPackage}/bin/chromium \
@@ -92,6 +118,9 @@ let
         --password-store=basic \
         </dev/null >/dev/null 2>&1 &
       echo \$! > '$REMOTE_TEMP_PROFILE/.pid'
+      nohup ${pkgs.socat}/bin/socat TCP-LISTEN:$AGENT_PORT,bind='$CDP_IP',fork,reuseaddr TCP:127.0.0.1:$AGENT_PORT \
+        </dev/null >/dev/null 2>&1 &
+      echo \$! > '$REMOTE_TEMP_PROFILE/.socat.pid'
     "
 
     # Wait for CDP to come up
@@ -109,10 +138,24 @@ let
     # by the parent (e.g. OpenCode killing the MCP server) would go straight
     # to playwright-mcp and our cleanup below would never run, orphaning the
     # remote Chrome + temp profile on deskette forever.
+    #
+    # NOTE: the trailing `<&0` is required. Bash automatically redirects an
+    # asynchronous (`&`) command's stdin from /dev/null when job control is
+    # not active (always true for a non-interactive script like this one),
+    # UNLESS the command explicitly redirects its own stdin. playwright-mcp
+    # is an MCP stdio server: OpenCode communicates with it over this
+    # process's stdin/stdout. Without `<&0`, playwright-mcp silently got
+    # /dev/null as stdin, saw immediate EOF, and exited within milliseconds
+    # of launching -- every prior "it connects fine but exits instantly"
+    # observation in this debugging session was actually this bug, not a
+    # CDP/networking problem. Confirmed via isolated repro: backgrounding
+    # playwright-mcp without `<&0` exits almost instantly regardless of
+    # what real stdin is available; adding `<&0` makes it block correctly
+    # on stdin as expected.
     ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
       --cdp-endpoint "http://$CDP_IP:$AGENT_PORT" \
       --caps vision \
-      "$@" &
+      "$@" <&0 &
     PLAYWRIGHT_PID=$!
 
     # Cleanup local playwright-mcp child + remote Chrome + remote temp
@@ -133,6 +176,7 @@ let
     cleanup() {
       kill "$PLAYWRIGHT_PID" 2>/dev/null || true
       "$SSH_BIN" "$USER@$HOST" "
+        [ -f '$REMOTE_TEMP_PROFILE/.socat.pid' ] && kill -9 \$(cat '$REMOTE_TEMP_PROFILE/.socat.pid') 2>/dev/null
         pkill -9 -f 'user-data-dir=$REMOTE_TEMP_PROFILE' 2>/dev/null || true
         for i in \$(seq 1 10); do
           pgrep -f 'user-data-dir=$REMOTE_TEMP_PROFILE' >/dev/null 2>&1 || break
