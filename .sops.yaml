@@ -151,6 +151,13 @@ creation_rules:
     pgp: *ritiek
     age: *zerostash
 
+  - path_regex: machines/kvmzero/secrets\.yaml$
+    pgp: *ritiek
+    age: *zerostash
+  - path_regex: machines/kvmzero/home/.*/secrets\.yaml$
+    pgp: *ritiek
+    age: *zerostash
+
   - path_regex: machines/radrubble/secrets\.yaml$
     pgp: *ritiek
     age: *radrubble
