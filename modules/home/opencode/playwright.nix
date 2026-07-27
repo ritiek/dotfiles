@@ -8,10 +8,21 @@ let
   # pkgs.chromium unchanged.
   chromiumPackage = if hostName == "pilab" then pkgs.unstable.chromium else pkgs.chromium;
 
+  # Bounded connect/liveness timeouts so a dead network or unresponsive deskette
+  # fails within ~15s instead of hanging forever, plus a per-invocation
+  # multiplexed control connection (keyed by this script's own PID, like
+  # REMOTE_TEMP_PROFILE) so the setup and cleanup round trips reuse one SSH
+  # handshake instead of paying for it twice.
+  sshOpts = "-o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 -o ControlMaster=auto -o ControlPersist=30s -o ControlPath=/tmp/.ssh-cdp-ctrl-$$";
+
   # deskette: connects to its own loopback CDP (persistent Chromium via
   # chromium-cdp-launcher in modules/home/niri). Host in the discovery
   # response matches exactly (127.0.0.1), so no path-rewriting is needed.
   playwright-mcp-local-cdp-wrapper = pkgs.writeShellScript "playwright-mcp-local-cdp-wrapper" ''
+    # See playwright-mcp-agent-wrapper for why: an inherited HTTP(S)_PROXY can
+    # intercept/break CDP traffic even to loopback addresses, and playwright-mcp
+    # (Node/undici) does not honor NO_PROXY to work around it.
+    unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
     exec ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
       --cdp-endpoint http://127.0.0.1:9222 \
       --caps vision \
@@ -19,185 +30,169 @@ let
   '';
 
   # Per-agent isolated Chromium on deskette via SSH. Each agent invocation:
-  # 1. Sweeps /tmp/chromium-agent-* on deskette, removing any orphaned temp
-  #    profiles left behind by a prior agent that didn't clean up (crash,
-  #    SIGKILL, etc.) — mirrors the orphan-sweep pattern from the old local
-  #    playwright-mcp-wrapper, adapted for remote/SSH execution.
-  # 2. Copies the main Chromium profile to a unique temp dir on deskette
-  # 3. Launches a headed Chromium instance with that temp profile + unique CDP port
-  # 4. Connects playwright-mcp to that instance over Tailscale
-  # 5. On exit, kills the remote Chrome and cleans up the temp profile
+  # 1. Copies the main Chromium profile to a unique temp dir on deskette and
+  #    launches a headed Chromium there with a unique CDP port + dedicated
+  #    socat forwarder, in one SSH round trip (retried once on failure).
+  # 2. Waits for CDP to come up, failing fast if it never does.
+  # 3. Connects playwright-mcp to that instance over Tailscale.
+  # 4. On exit, kills the remote Chrome and removes the temp profile.
+  #
+  # Orphaned profiles from crashed/killed invocations are not swept here — a
+  # standalone systemd timer on deskette (chromium-agent-sweep) does that
+  # independently every few minutes, so cleanup isn't tied to another agent
+  # happening to launch.
   #
   # This gives each agent its own isolated browser with deskette's GPU
   # acceleration, avoiding conflicts between parallel agents.
-  #
-  # Unsets proxy env vars because the proxy (pilab.lion-zebra.ts.net:8090)
-  # intercepts Tailscale connections and returns 407. NO_PROXY alone is
-  # insufficient — Playwright MCP (Node.js) does not respect it for CDP.
   playwright-mcp-agent-wrapper = pkgs.writeShellScript "playwright-mcp-agent-wrapper" ''
     set -euo pipefail
+
+    # An HTTP(S)_PROXY inherited from OpenCode's own environment (used to proxy
+    # LLM API calls through pilab.lion-zebra.ts.net:8090) must not leak into
+    # this subprocess's remote/CDP traffic, which the proxy intercepts and
+    # rejects with 407. Unsetting here only affects this subprocess and its
+    # children (ssh, curl, playwright-mcp) at every step below, including the
+    # CDP readiness check — OpenCode's own parent process and its LLM requests
+    # are unaffected, since environment changes never propagate to a parent.
+    unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
 
     SSH_BIN="${pkgs.openssh}/bin/ssh"
     HOST="deskette.lion-zebra.ts.net"
     USER="ritiek"
-    AGENT_PORT=$((9222 + RANDOM % 5000))
+    AGENT_PORT=$(( 20000 + RANDOM % 30000 ))
     REMOTE_TEMP_PROFILE="/tmp/chromium-agent-$$"
+    LOG="$HOME/.cache/playwright-agent-wrapper.log"
+    mkdir -p "$HOME/.cache"
+    log() { echo "$(${pkgs.coreutils}/bin/date -Iseconds) [port=$AGENT_PORT] $1" >> "$LOG" 2>/dev/null || true; }
+    remote() { "$SSH_BIN" -n ${sshOpts} "$USER@$HOST" "$@"; }
 
-    # Resolve deskette to literal Tailscale IP (Chrome rejects hostname Host headers)
+    # Resolve deskette to literal Tailscale IP: Chrome's DevTools HTTP server
+    # rejects any Host header that isn't a literal IP or "localhost".
     CDP_IP=$(${pkgs.getent}/bin/getent hosts "$HOST" | ${pkgs.gawk}/bin/awk '{print $1; exit}')
 
     echo "==> Setting up isolated Chromium for agent on deskette (port $AGENT_PORT)..." >&2
 
-    # Sweep orphaned agent profiles left behind by prior crashed/killed
-    # invocations: for each /tmp/chromium-agent-* dir, if no Chromium
-    # process is currently using it (per-directory pgrep check), kill its
-    # matching socat forwarder (if any, via the saved .socat.pid) and
-    # remove the directory. Deliberately uses narrow per-directory pgrep
-    # checks rather than a broad pkill -f across many PIDs at once — the
-    # latter was empirically observed to hang intermittently over SSH
-    # with zero output, even under `timeout`.
-    #
-    # Skips directories younger than 30s (find -mmin -0.5): without this,
-    # two agents launched concurrently can race each other here — agent B
-    # starts while agent A's `cp -a` profile copy is still in flight (or
-    # just finished but chromium hasn't launched yet), so agent A's
-    # directory has no matching `user-data-dir=` process YET and looks
-    # "orphaned" to agent B's sweep, which then deletes it out from under
-    # agent A. A grace period gives a sibling's copy+launch time to
-    # complete before it's ever considered for cleanup. Empirically
-    # confirmed via concurrent testing: without this guard, some
-    # concurrently-launched agents ended up with an empty profile
-    # directory and no running Chromium/socat at all.
-    #
-    # setopt +o nomatch: deskette's login shell is zsh, which by default
-    # aborts the whole command with "no matches found" if a glob doesn't
-    # match anything (unlike bash, which leaves it as a literal string).
-    # Without this, the sweep killed the ENTIRE remote command (and thus
-    # this whole wrapper) whenever no /tmp/chromium-agent-* dirs existed —
-    # the common case. Same class of bug previously hit and fixed for
-    # --remote-allow-origins=*.
-    #
-    # -n (redirect ssh's stdin from /dev/null) is required on every SSH
-    # call in this script except the final playwright-mcp launch. Without
-    # it, ssh attaches to and forwards this wrapper's real stdin (the pipe
-    # OpenCode uses to send MCP JSON-RPC) to these one-shot remote shell
-    # commands, none of which read it. If OpenCode's "initialize" request
-    # arrives while any of these earlier ssh calls is still running, it
-    # gets silently swallowed here and never reaches playwright-mcp, which
-    # then waits forever on an already-drained stdin -- surfacing in
-    # OpenCode as "Operation timed out after 30000ms".
-    "$SSH_BIN" -n "$USER@$HOST" '
-      setopt +o nomatch 2>/dev/null || true
-      for dir in /tmp/chromium-agent-*; do
-        [ -d "$dir" ] || continue
-        if [ -n "$(find "$dir" -maxdepth 0 -mmin -0.5 2>/dev/null)" ]; then continue; fi
-        if pgrep -f "user-data-dir=$dir" >/dev/null 2>&1; then continue; fi
-        [ -f "$dir/.socat.pid" ] && kill -9 "$(cat "$dir/.socat.pid")" 2>/dev/null
-        rm -rf "$dir"
-      done
-    ' || true
+    # Copy profile + launch Chromium/socat in one round trip. Chromium's
+    # DevTools server always binds 127.0.0.1 regardless of
+    # --remote-debugging-address, so a per-agent socat forwarder exposes it on
+    # deskette's Tailscale IP (mirrors chromium-cdp-forward for the persistent
+    # instance's fixed port 9222). Remote `set -e` ensures a failed copy
+    # aborts before ever attempting to launch Chromium.
+    copy_and_launch() {
+      remote "
+        set -e
+        rm -rf '$REMOTE_TEMP_PROFILE'
+        cp -a ~/.config/chromium '$REMOTE_TEMP_PROFILE'
+        rm -f '$REMOTE_TEMP_PROFILE/SingletonLock' \
+              '$REMOTE_TEMP_PROFILE/SingletonSocket' \
+              '$REMOTE_TEMP_PROFILE/SingletonCookie'
+        export LIBVA_DRIVER_NAME=i965
+        nohup ${chromiumPackage}/bin/chromium \
+          --ozone-platform=wayland \
+          --remote-debugging-port=$AGENT_PORT \
+          --remote-allow-origins='*' \
+          --user-data-dir='$REMOTE_TEMP_PROFILE' \
+          --no-first-run \
+          --password-store=basic \
+          </dev/null >/dev/null 2>&1 &
+        echo \$! > '$REMOTE_TEMP_PROFILE/.pid'
+        nohup ${pkgs.socat}/bin/socat TCP-LISTEN:$AGENT_PORT,bind='$CDP_IP',fork,reuseaddr TCP:127.0.0.1:$AGENT_PORT \
+          </dev/null >/dev/null 2>&1 &
+        echo \$! > '$REMOTE_TEMP_PROFILE/.socat.pid'
+      "
+    }
 
-    # Create temp profile on deskette from main profile
-    "$SSH_BIN" -n "$USER@$HOST" "
-      rm -rf '$REMOTE_TEMP_PROFILE'
-      cp -a ~/.config/chromium '$REMOTE_TEMP_PROFILE'
-      rm -f '$REMOTE_TEMP_PROFILE/SingletonLock' \
-            '$REMOTE_TEMP_PROFILE/SingletonSocket' \
-            '$REMOTE_TEMP_PROFILE/SingletonCookie'
-    "
+    ok=false
+    for attempt in 1 2; do
+      if copy_and_launch; then ok=true; break; fi
+      echo "==> Setup attempt $attempt failed, retrying..." >&2
+      sleep 2
+    done
+    if [ "$ok" != true ]; then
+      log "FAILED: profile copy / Chromium launch failed after 2 attempts"
+      echo "ERROR: failed to set up Chromium on deskette after 2 attempts" >&2
+      exit 1
+    fi
 
-    # Launch Chromium on deskette with unique profile and port.
-    #
-    # Chromium's DevTools server always binds to 127.0.0.1, ignoring
-    # --remote-debugging-address entirely (a hardened security default in
-    # modern Chromium versions; confirmed by testing — "DevTools listening
-    # on ws://127.0.0.1:..." is printed even when --remote-debugging-address
-    # is passed a different address). So the agent's CDP port is only ever
-    # reachable on deskette's own loopback and needs its own forwarder to
-    # be reachable from mishy (or any other machine) over Tailscale — same
-    # reason chromium-cdp-forward exists for the persistent instance's
-    # fixed port 9222, just per-agent here since the port is random.
-    "$SSH_BIN" -n "$USER@$HOST" "
-      export LIBVA_DRIVER_NAME=i965
-      nohup ${chromiumPackage}/bin/chromium \
-        --ozone-platform=wayland \
-        --remote-debugging-port=$AGENT_PORT \
-        --remote-allow-origins='*' \
-        --user-data-dir='$REMOTE_TEMP_PROFILE' \
-        --no-first-run \
-        --password-store=basic \
-        </dev/null >/dev/null 2>&1 &
-      echo \$! > '$REMOTE_TEMP_PROFILE/.pid'
-      nohup ${pkgs.socat}/bin/socat TCP-LISTEN:$AGENT_PORT,bind='$CDP_IP',fork,reuseaddr TCP:127.0.0.1:$AGENT_PORT \
-        </dev/null >/dev/null 2>&1 &
-      echo \$! > '$REMOTE_TEMP_PROFILE/.socat.pid'
-    "
-
-    # Wait for CDP to come up
+    # Wait for CDP to actually come up; fail fast rather than launching
+    # playwright-mcp against a dead endpoint, which would otherwise surface as
+    # a confusing downstream connection error instead of a clear setup failure.
+    cdp_up=false
     for i in $(seq 1 20); do
       if ${pkgs.curl}/bin/curl -sf "http://$CDP_IP:$AGENT_PORT/json/version" >/dev/null 2>&1; then
+        cdp_up=true
         break
       fi
       sleep 1
     done
+    if [ "$cdp_up" != true ]; then
+      log "FAILED: CDP did not come up on port $AGENT_PORT within 20s"
+      echo "ERROR: Chromium CDP did not come up on deskette within 20s" >&2
+      exit 1
+    fi
 
-    unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
-
-    # NOTE: deliberately NOT using `exec` here. exec would replace this bash
-    # process (and its trap handlers) with playwright-mcp, so a SIGTERM sent
-    # by the parent (e.g. OpenCode killing the MCP server) would go straight
-    # to playwright-mcp and our cleanup below would never run, orphaning the
-    # remote Chrome + temp profile on deskette forever.
+    # NOTE: deliberately not `exec`'d — exec would replace this process (and
+    # its trap handlers) with playwright-mcp, so a SIGTERM from the parent
+    # (e.g. OpenCode killing the MCP server) would skip cleanup() below and
+    # orphan the remote Chrome + temp profile on deskette forever.
     #
-    # NOTE: the trailing `<&0` is required. Bash automatically redirects an
-    # asynchronous (`&`) command's stdin from /dev/null when job control is
-    # not active (always true for a non-interactive script like this one),
-    # UNLESS the command explicitly redirects its own stdin. playwright-mcp
-    # is an MCP stdio server: OpenCode communicates with it over this
-    # process's stdin/stdout. Without `<&0`, playwright-mcp silently got
-    # /dev/null as stdin, saw immediate EOF, and exited within milliseconds
-    # of launching -- every prior "it connects fine but exits instantly"
-    # observation in this debugging session was actually this bug, not a
-    # CDP/networking problem. Confirmed via isolated repro: backgrounding
-    # playwright-mcp without `<&0` exits almost instantly regardless of
-    # what real stdin is available; adding `<&0` makes it block correctly
-    # on stdin as expected.
+    # The trailing `<&0` is required: bash gives a backgrounded (`&`) command
+    # /dev/null as stdin unless it explicitly redirects its own stdin, and
+    # playwright-mcp is an MCP stdio server reading OpenCode's requests from
+    # this process's stdin — without `<&0` it sees immediate EOF and exits
+    # within milliseconds of launching.
     ${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp \
       --cdp-endpoint "http://$CDP_IP:$AGENT_PORT" \
       --caps vision \
       "$@" <&0 &
     PLAYWRIGHT_PID=$!
 
-    # Cleanup local playwright-mcp child + remote Chrome + remote temp
-    # profile on exit (normal exit, error, or signal).
+    # Cleanup matches on the (unique per-agent) profile path rather than just
+    # the top-level PID from .pid: a plain `kill` doesn't cascade to
+    # Chromium's renderer/GPU/utility children, so they'd orphan and keep the
+    # profile's files open, making rm -rf race or fail.
     #
-    # Uses pkill -f matching on the (unique per-agent) profile path rather
-    # than killing just the top-level PID from .pid: a plain `kill` on the
-    # main Chromium process does NOT cascade to its renderer/GPU/utility
-    # child processes (no SIGKILL propagation to children), so those orphan
-    # and keep the profile dir's files open, making rm -rf race or fail.
-    # Matching on $REMOTE_TEMP_PROFILE (a unique mktemp-style path per agent)
-    # is safe here since it can't collide with other agents' profiles.
-    #
-    # NOTE: this exit-trap path has been observed to be unreliable in some
-    # cases (an unexplained intermittent SSH hang on broad pkill/pgrep-loop
-    # commands). The startup-time sweep above is the safety net that
-    # guarantees eventual cleanup even if this trap doesn't fire.
+    # The remote script assigns the path to a remote-side $DIR first and
+    # references it via escaped \$DIR everywhere after, rather than
+    # re-embedding the expanded local path in every pkill/pgrep pattern. This
+    # avoids a `pkill -f` self-match footgun: if the fully-expanded path were
+    # embedded directly in the pkill pattern text, that same text would also
+    # appear verbatim in this remote shell's OWN argv (it's literally part of
+    # the -c string being run) — and `pkill -f` matches against ALL
+    # processes' cmdlines, including its own parent, killing the cleanup
+    # script itself before it ever reaches rm -rf.
     cleanup() {
       kill "$PLAYWRIGHT_PID" 2>/dev/null || true
-      "$SSH_BIN" -n "$USER@$HOST" "
-        [ -f '$REMOTE_TEMP_PROFILE/.socat.pid' ] && kill -9 \$(cat '$REMOTE_TEMP_PROFILE/.socat.pid') 2>/dev/null
-        pkill -9 -f 'user-data-dir=$REMOTE_TEMP_PROFILE' 2>/dev/null || true
+      remote "
+        DIR='$REMOTE_TEMP_PROFILE'
+        [ -f \"\$DIR/.socat.pid\" ] && kill -9 \$(cat \"\$DIR/.socat.pid\") 2>/dev/null
+        pkill -9 -f \"user-data-dir=\$DIR\" 2>/dev/null || true
         for i in \$(seq 1 10); do
-          pgrep -f 'user-data-dir=$REMOTE_TEMP_PROFILE' >/dev/null 2>&1 || break
+          pgrep -f \"user-data-dir=\$DIR\" >/dev/null 2>&1 || break
           sleep 0.3
         done
-        rm -rf '$REMOTE_TEMP_PROFILE'
-      " || true
+        rm -rf \"\$DIR\"
+      " || log "cleanup ssh call failed for $REMOTE_TEMP_PROFILE"
     }
     trap cleanup EXIT INT TERM SIGINT SIGTERM
 
     wait "$PLAYWRIGHT_PID"
+  '';
+
+  # Standalone sweep of orphaned /tmp/chromium-agent-* dirs on deskette,
+  # independent of any agent invocation — the real safety net if OpenCode
+  # itself is killed before playwright-mcp-agent-wrapper's own EXIT trap can
+  # run. Runs directly on deskette via bash (not over SSH), so no zsh-glob
+  # quoting concerns apply here. Skips dirs younger than 30s (a sibling agent
+  # may still be mid profile-copy) and any dir a live Chromium is still using.
+  chromium-agent-sweep-script = pkgs.writeShellScript "chromium-agent-sweep" ''
+    for dir in /tmp/chromium-agent-*; do
+      [ -d "$dir" ] || continue
+      [ -n "$(find "$dir" -maxdepth 0 -mmin -0.5 2>/dev/null)" ] && continue
+      pgrep -f "user-data-dir=$dir" >/dev/null 2>&1 && continue
+      [ -f "$dir/.socat.pid" ] && kill -9 "$(cat "$dir/.socat.pid")" 2>/dev/null
+      rm -rf "$dir"
+    done
   '';
 in
 {
@@ -222,10 +217,7 @@ in
     # listener on 127.0.0.1:9222 (Chrome only ever binds loopback for CDP).
     # Binds specifically to the tailscale interface address, not 0.0.0.0,
     # since networking.firewall is disabled on this machine and there is
-    # no other layer restricting exposure. Lets deskette itself attach its
-    # own OpenCode playwright MCP to its persistent Chromium (see
-    # chromium-cdp-launcher in modules/home/niri and
-    # playwright-mcp-local-cdp-wrapper / playwright-mcp-agent-wrapper above).
+    # no other layer restricting exposure.
     chromium-cdp-forward = {
       Unit = {
         Description = "Forward deskette Tailscale IP:9222 to local Chromium CDP port";
@@ -239,6 +231,27 @@ in
         RestartSec = 5;
       };
       Install.WantedBy = [ "default.target" ];
+    };
+
+    # Independent periodic cleanup of orphaned per-agent Chromium profiles;
+    # triggered by the chromium-agent-sweep.timer below.
+    chromium-agent-sweep = {
+      Unit.Description = "Sweep orphaned per-agent Chromium profiles on deskette";
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${chromium-agent-sweep-script}";
+      };
+    };
+  };
+
+  systemdTimers = lib.optionalAttrs (hostName == "deskette") {
+    chromium-agent-sweep = {
+      Unit.Description = "Run chromium-agent-sweep periodically";
+      Timer = {
+        OnBootSec = "2m";
+        OnUnitActiveSec = "5m";
+      };
+      Install.WantedBy = [ "timers.target" ];
     };
   };
 }
