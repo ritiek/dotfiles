@@ -733,4 +733,6 @@ in
       Install.WantedBy = [ "default.target" ];
     };
   } // playwright.systemdServices;
+
+  systemd.user.timers = playwright.systemdTimers;
 }
