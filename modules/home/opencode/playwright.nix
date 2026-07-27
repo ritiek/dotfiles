@@ -76,7 +76,17 @@ let
     # this whole wrapper) whenever no /tmp/chromium-agent-* dirs existed —
     # the common case. Same class of bug previously hit and fixed for
     # --remote-allow-origins=*.
-    "$SSH_BIN" "$USER@$HOST" '
+    #
+    # -n (redirect ssh's stdin from /dev/null) is required on every SSH
+    # call in this script except the final playwright-mcp launch. Without
+    # it, ssh attaches to and forwards this wrapper's real stdin (the pipe
+    # OpenCode uses to send MCP JSON-RPC) to these one-shot remote shell
+    # commands, none of which read it. If OpenCode's "initialize" request
+    # arrives while any of these earlier ssh calls is still running, it
+    # gets silently swallowed here and never reaches playwright-mcp, which
+    # then waits forever on an already-drained stdin -- surfacing in
+    # OpenCode as "Operation timed out after 30000ms".
+    "$SSH_BIN" -n "$USER@$HOST" '
       setopt +o nomatch 2>/dev/null || true
       for dir in /tmp/chromium-agent-*; do
         [ -d "$dir" ] || continue
@@ -88,7 +98,7 @@ let
     ' || true
 
     # Create temp profile on deskette from main profile
-    "$SSH_BIN" "$USER@$HOST" "
+    "$SSH_BIN" -n "$USER@$HOST" "
       rm -rf '$REMOTE_TEMP_PROFILE'
       cp -a ~/.config/chromium '$REMOTE_TEMP_PROFILE'
       rm -f '$REMOTE_TEMP_PROFILE/SingletonLock' \
@@ -107,7 +117,7 @@ let
     # be reachable from mishy (or any other machine) over Tailscale — same
     # reason chromium-cdp-forward exists for the persistent instance's
     # fixed port 9222, just per-agent here since the port is random.
-    "$SSH_BIN" "$USER@$HOST" "
+    "$SSH_BIN" -n "$USER@$HOST" "
       export LIBVA_DRIVER_NAME=i965
       nohup ${chromiumPackage}/bin/chromium \
         --ozone-platform=wayland \
@@ -175,7 +185,7 @@ let
     # guarantees eventual cleanup even if this trap doesn't fire.
     cleanup() {
       kill "$PLAYWRIGHT_PID" 2>/dev/null || true
-      "$SSH_BIN" "$USER@$HOST" "
+      "$SSH_BIN" -n "$USER@$HOST" "
         [ -f '$REMOTE_TEMP_PROFILE/.socat.pid' ] && kill -9 \$(cat '$REMOTE_TEMP_PROFILE/.socat.pid') 2>/dev/null
         pkill -9 -f 'user-data-dir=$REMOTE_TEMP_PROFILE' 2>/dev/null || true
         for i in \$(seq 1 10); do
