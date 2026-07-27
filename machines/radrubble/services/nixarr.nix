@@ -59,11 +59,16 @@ in
       enable = true;
       stateDir = qbtConfig;
       openFirewall = true;
-      # Deliberately not setting extraConfig/serverConfig: leaving it empty
-      # means nixpkgs never touches the migrated qBittorrent.conf, so all
-      # pre-existing settings (save paths, categories, RSS feeds, WebUI port)
-      # persist untouched. qui (nixarr's default modern WebUI) is left
-      # enabled at its default port.
+      # nixarr always sets services.qbittorrent.serverConfig non-empty,
+      # which triggers an ExecStartPre that copies a store-generated
+      # qBittorrent.conf, wiping any WebUI password changes on restart.
+      # Setting WebUI credentials here keeps them stable across reboots.
+      extraConfig = {
+        Preferences = {
+          "WebUI\\Username" = "ritiek";
+          "WebUI\\Password_PBKDF2" = "cUIyMDI0Rml4ZWRTYWx0IfNIf3wngZAGQ5QQQigjtClmpIEeIui29KBUkllIf0h5fL+9WIf5C6t4rRLqnaKWYZbhkiCbGZjXmMIA2uLdN5Q=";
+        };
+      };
     };
     jellyfin.enable = true;
     seerr = {
