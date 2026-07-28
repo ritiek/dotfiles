@@ -2,7 +2,7 @@
 
 let
   ping-monitor-loop = pkgs.writeShellScriptBin "ping-monitor-loop" ''
-    CLAWSIECATS="clawsiecats.lol"
+    CLAWSIECATS="clawsiecats.omg.lol"
     KEYBERRY="keyberry.lion-zebra.ts.net"
     RETRIES=4
     RETRY_INTERVAL=30

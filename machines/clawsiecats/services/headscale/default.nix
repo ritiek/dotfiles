@@ -2,7 +2,7 @@
 
 
 let
-  domain = "clawsiecats.lol";
+  domain = "clawsiecats.omg.lol";
 in
 {
   sops.secrets = {

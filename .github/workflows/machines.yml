@@ -87,7 +87,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -117,7 +117,7 @@ jobs:
             --arg log "$LOG" \
             '{"job":$job,"run_url":$run,"pr_url":$pr,"log":$log}')
           TXN=$(date +%s%N)
-          curl -sf "https://webhook.clawsiecats.lol/matrix/github-actions/new/${TXN}" \
+          curl -sf "https://webhook.clawsiecats.omg.lol/matrix/github-actions/new/${TXN}" \
             -H "Authorization: Bearer $WEBHOOK_MATRIX_AUTH" \
             -H "Content-Type: application/json" \
             -d "$BODY"
@@ -140,7 +140,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -186,7 +186,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -219,7 +219,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -251,7 +251,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -278,7 +278,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -305,7 +305,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -337,7 +337,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
@@ -364,7 +364,7 @@ jobs:
       - name: Setup Attic cache
         uses: ritiek/attic-action@main
         with:
-          endpoint: https://attic.clawsiecats.lol/
+          endpoint: https://attic.clawsiecats.omg.lol/
           cache: attic-action
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}

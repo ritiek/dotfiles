@@ -17,7 +17,7 @@ let
     trap '${pkgs.coreutils}/bin/rm -f "$MAIL_FILE"' EXIT
 
     {
-      printf 'From: Claude Invocation <claude@clawsiecats.lol>\n'
+      printf 'From: Claude Invocation <claude@clawsiecats.omg.lol>\n'
       printf 'To: %s\n' "$TO_ADDRESS"
       printf 'Subject: Claude Says Hi\n'
       printf 'Content-Type: text/plain; charset=utf-8\n'
