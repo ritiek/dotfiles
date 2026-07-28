@@ -42,25 +42,33 @@ let
         ${homelabMediaPath}
     fi
 
-    # Mount EVERYTHING_ELSE partition only if not already mounted
-    if ! mountpoint -q ${everythingElsePath}; then
-      if [ ! -e /dev/mapper/EVERYTHING_ELSE ]; then
-        set +x
-        if [ -n "$LUKS_PASSPHRASE" ]; then
-          printf '%s' "$LUKS_PASSPHRASE" | cryptsetup open \
-            /dev/disk/by-label/EVERYTHING_ELSE \
-            EVERYTHING_ELSE \
-            --key-file=-
-        else
-          cryptsetup open \
-            /dev/disk/by-label/EVERYTHING_ELSE \
-            EVERYTHING_ELSE
+    # Mount EVERYTHING_ELSE partition only if present and not already mounted.
+    # The disk is sometimes physically disconnected (e.g. moved to another
+    # machine) -- skip silently instead of noisily failing cryptsetup/mount.
+    if [ -e /dev/mapper/EVERYTHING_ELSE ] || [ -e /dev/disk/by-label/EVERYTHING_ELSE ]; then
+      if ! mountpoint -q ${everythingElsePath}; then
+        if [ ! -e /dev/mapper/EVERYTHING_ELSE ]; then
+          set +x
+          if [ -n "$LUKS_PASSPHRASE" ]; then
+            printf '%s' "$LUKS_PASSPHRASE" | cryptsetup open \
+              /dev/disk/by-label/EVERYTHING_ELSE \
+              EVERYTHING_ELSE \
+              --key-file=-
+          else
+            cryptsetup open \
+              /dev/disk/by-label/EVERYTHING_ELSE \
+              EVERYTHING_ELSE
+          fi
+          set -x
         fi
-        set -x
+        mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
+          /dev/mapper/EVERYTHING_ELSE \
+          ${everythingElsePath}
       fi
-      mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
-        /dev/mapper/EVERYTHING_ELSE \
-        ${everythingElsePath}
+    else
+      set +x
+      echo "homelab-mount: EVERYTHING_ELSE not connected, skipping"
+      set -x
     fi
 
     set +x
@@ -76,6 +84,21 @@ let
     source ${yubiluksEnvPath}
     set -x
     homelab-mount && (
+      # EVERYTHING_ELSE-dependent services (qbittorrent/jellyfin/radarr/sonarr/
+      # bazarr/prowlarr/jellyseerr/syncthing) already declare RequiresMountsFor
+      # on their own systemd units, so `systemctl start` on them would fail
+      # loudly (and leave the units in a failed state) whenever the disk is
+      # disconnected. Check availability once here and skip starting them
+      # instead of letting each one fail individually.
+      if mountpoint -q ${everythingElsePath}; then
+        everything_else_available=1
+      else
+        everything_else_available=0
+        set +x
+        echo "homelab-start: EVERYTHING_ELSE not mounted, skipping qbittorrent/jellyfin/radarr/sonarr/bazarr/prowlarr/jellyseerr/syncthing"
+        set -x
+      fi
+
       systemctl start autostart-vaultwarden.service
       systemctl start docker-backvault.service
       # systemctl start docker-dashy.service
@@ -92,7 +115,7 @@ let
       # systemctl start docker-navidrome.service
       systemctl start autostart-navidrome.service
       systemctl start autostart-memos.service
-      systemctl start docker-syncthing.service
+      [ "$everything_else_available" = 1 ] && systemctl start docker-syncthing.service
       systemctl start docker-miniflux.service
       systemctl start docker-gotify.service
       # systemctl start docker-shiori.service
@@ -114,13 +137,13 @@ let
       # systemctl start docker-karakeep.service
       # systemctl start docker-n8n-worker.service
       # systemctl start docker-transmission.service
-      systemctl start docker-qbittorrent.service
-      systemctl start autostart-jellyfin.service
-      systemctl start docker-radarr.service
-      systemctl start docker-sonarr.service
-      systemctl start docker-bazarr.service
-      systemctl start docker-prowlarr.service
-      systemctl start autostart-jellyseerr.service
+      [ "$everything_else_available" = 1 ] && systemctl start docker-qbittorrent.service
+      [ "$everything_else_available" = 1 ] && systemctl start autostart-jellyfin.service
+      [ "$everything_else_available" = 1 ] && systemctl start docker-radarr.service
+      [ "$everything_else_available" = 1 ] && systemctl start docker-sonarr.service
+      [ "$everything_else_available" = 1 ] && systemctl start docker-bazarr.service
+      [ "$everything_else_available" = 1 ] && systemctl start docker-prowlarr.service
+      [ "$everything_else_available" = 1 ] && systemctl start autostart-jellyseerr.service
       systemctl start docker-glances.service
       systemctl start autostart-calibre-web-automated.service
       systemctl start autostart-calibre-web-automated-book-downloader.service
