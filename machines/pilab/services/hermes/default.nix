@@ -549,7 +549,7 @@ in
       HERMES_MCP_PAPERLESS_URL=${config.sops.placeholder."paperless.url"}
       HERMES_MCP_PAPERLESS_API_KEY=${config.sops.placeholder."paperless_api.key"}
       HERMES_MCP_PAPERLESS_PUB_URL=${config.sops.placeholder."paperless_public.url"}
-      HERMES_MCP_SEARX_URL=${config.sops.placeholder."searx.url"}.clawsiecats.lol/
+      HERMES_MCP_SEARX_URL=${config.sops.placeholder."searx.url"}.clawsiecats.omg.lol/
       GROQ_API_KEY=${config.sops.placeholder."groq_api.key"}
       ELEVENLABS_API_KEY=${config.sops.placeholder."elevenlabs_api.key"}
       OPENCODE_ZEN_API_KEY=${config.sops.placeholder."opencode_api.key"}

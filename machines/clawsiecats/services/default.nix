@@ -1,8 +1,8 @@
 { config, lib, pkgs, inputs, ... }:
 
 let
-  primaryDomain = "clawsiecats.lol";
-  domains = [ primaryDomain "clawsiecats.omg.lol" ];
+  primaryDomain = "clawsiecats.omg.lol";
+  domains = [ primaryDomain "clawsiecats.lol" ];
 
   # Hardcoded prompt sent to hermes on a CI build failure. Edit here (not in
   # .github/workflows) to change what hermes is asked to do.

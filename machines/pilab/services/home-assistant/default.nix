@@ -203,7 +203,7 @@
           "100.64.0.0/10"
         ];
         ip_ban_enabled = false;
-        base_url = "https://ha.clawsiecats.lol/";
+        base_url = "https://ha.clawsiecats.omg.lol/";
       };
     };
 

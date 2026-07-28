@@ -42,7 +42,7 @@ jobs:
             PR_URL="\nPR: https://github.com/${{ github.repository }}/pull/${{ needs.lockfile.outputs.pull-request-number }}"
           fi
           curl -sf \
-            "https://webhook.clawsiecats.lol/matrix/github-actions/new/${{ github.run_id }}" \
+            "https://webhook.clawsiecats.omg.lol/matrix/github-actions/new/${{ github.run_id }}" \
             -H "Authorization: Bearer ${{ secrets.WEBHOOK_MATRIX_AUTH }}" \
             -H "Content-Type: application/json" \
             -d "{\"msgtype\":\"m.text\",\"body\":\"flake.lock update failed\nRun: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}${PR_URL}\"}"

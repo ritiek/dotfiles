@@ -6,9 +6,9 @@ let
 
     # url = "https://i.imgur.com/iFHxPpc.png";
     # sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
-    # url = "https://filebrowser.clawsiecats.lol/api/public/dl?path=/&hash=_fTtyPc1heMt5Ypxi68MZQ&inline=true";
+    # url = "https://filebrowser.clawsiecats.omg.lol/api/public/dl?path=/&hash=_fTtyPc1heMt5Ypxi68MZQ&inline=true";
     # sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
-    url = "https://immich.clawsiecats.lol/api/assets/f7c51f4f-16b5-4e94-951b-bb2286059e7d/original?slug=sunrise";
+    url = "https://immich.clawsiecats.omg.lol/api/assets/f7c51f4f-16b5-4e94-951b-bb2286059e7d/original?slug=sunrise";
     sha256 = "sha256-5MVdhQSPWTAGwa990Edqjyh4HcwfuPlQ67KvrDh6eew=";
   };
 in

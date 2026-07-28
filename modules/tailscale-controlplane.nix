@@ -9,7 +9,7 @@
     useRoutingFeatures = "both";
     extraSetFlags = [ "--operator=ritiek" ];
     extraUpFlags = [
-      "--login-server=https://controlplane.clawsiecats.lol"
+      "--login-server=https://controlplane.clawsiecats.omg.lol"
       "--advertise-exit-node"
       "--reset"
     ];
