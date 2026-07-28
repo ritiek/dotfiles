@@ -353,7 +353,7 @@ in
         playwright = {
           enabled = true;
           type = "local";
-          timeout = 30000;
+          timeout = 120000;
           command = playwright.mcpCommand;
         };
         nixos = {
