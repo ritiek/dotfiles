@@ -25,7 +25,11 @@
       sshUser = "ritiek";
       maxJobs = 8;
       speedFactor = 5;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" "gccarch-armv6kz" ];
+      # NOTE: mishy does not register armv6l-linux under boot.binfmt.emulatedSystems
+      # (see machines/mishy/default.nix), so it can't actually satisfy
+      # gccarch-armv6kz — don't advertise it here or distributed builds
+      # requiring it will get routed to mishy and fail.
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
     }];
   };
 

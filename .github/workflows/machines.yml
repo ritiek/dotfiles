@@ -342,9 +342,9 @@ jobs:
           create: true
           token: ${{ secrets.ATTIC_PUSH_TOKEN }}
 
-      - name: "Build: .#minimachine-minimal"
+      - name: "Build: .#minimachine-minimal-x86_64"
         run: |
-          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.minimachine-minimal.config.system.build.toplevel
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.minimachine-minimal-x86_64.config.system.build.toplevel
 
   mangoshake:
     needs: check
