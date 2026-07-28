@@ -14,7 +14,16 @@ GOTIFY_TOKEN=$(cat "@GOTIFY_TOKEN_FILE@")
 PRIORITY=3
 
 # Torrent parameters from qBittorrent
-TITLE="$1"
+#
+# TITLE arrives as a single underscore-joined token (e.g. Download_Added)
+# rather than a quoted "Download Added" string. This is deliberate: qBittorrent
+# 5.2.2's own AutoRun config serializer has a bug where it drops the spaces
+# between arguments in the Program= line whenever any argument in the list
+# was originally quoted/contained a space, corrupting the whole argument list
+# on the very next start/stop cycle. Passing a single unquoted token per
+# argument round-trips correctly through qBittorrent's own config save, so we
+# translate underscores back to spaces here for the human-readable title.
+TITLE=$(echo "$1" | tr '_' ' ')
 TORRENT_NAME="${2:-%N}"
 CATEGORY="${3:-%L}"
 TAGS="${4:-%G}"
