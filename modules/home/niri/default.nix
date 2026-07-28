@@ -2,15 +2,15 @@
 
 let
   cactus = pkgs.fetchurl {
-    url = "https://immich.clawsiecats.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?slug=cactus";
+    url = "https://immich.clawsiecats.omg.lol/api/assets/75f7fcc0-0465-42d6-8166-d98e5740bc2f/original?slug=cactus";
     sha256 = "sha256-WeZxd4Ic4OdFHTCZO8UdMGXg/2GNTya28JdVa3+gvQQ=";
   };
   sunrise = pkgs.fetchurl {
-    url = "https://immich.clawsiecats.lol/api/assets/f7c51f4f-16b5-4e94-951b-bb2286059e7d/original?slug=sunrise";
+    url = "https://immich.clawsiecats.omg.lol/api/assets/f7c51f4f-16b5-4e94-951b-bb2286059e7d/original?slug=sunrise";
     sha256 = "sha256-5MVdhQSPWTAGwa990Edqjyh4HcwfuPlQ67KvrDh6eew=";
   };
   sakura = pkgs.fetchurl {
-    url = "https://immich.clawsiecats.lol/api/assets/07d2afcd-335c-4a0e-a0cf-ee53a0118bc1/original?slug=sakura";
+    url = "https://immich.clawsiecats.omg.lol/api/assets/07d2afcd-335c-4a0e-a0cf-ee53a0118bc1/original?slug=sakura";
     sha256 = "sha256-get3dCQed94LTx8sByjU5fj45iotaPrHmfvV8AMzRgo=";
   };
 

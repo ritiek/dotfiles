@@ -30,7 +30,7 @@ let
     exec ${pkgs.bun}/bin/bun --no-env-file "${ocx-pkg}/dist/index.js" "$@"
   '';
 
-  searxDomain = "clawsiecats.lol";
+  searxDomain = "clawsiecats.omg.lol";
 
   # Machines that use baseline bun and cannot build context7-mcp due to FOD
   baseline-bun-machines = [ "rig" "clawsiecats" ];
