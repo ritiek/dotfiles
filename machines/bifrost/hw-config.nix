@@ -59,12 +59,14 @@
   # bcm2835-rpi-zero-w.dts already sets dr_mode="otg" on the dwc2 controller
   # (via bcm283x-rpi-usb-otg.dtsi), so no dtoverlay is needed - loading
   # g_ether is sufficient, same pattern as alcove/radrubble/chocomelt/
-  # switchboard. Connect to 10.0.0.5 from host (configure host side as
+  # switchboard. Connect to 10.0.0.6 from host (configure host side as
   # 10.0.0.1/24). Note: the Zero W has two micro-USB ports - use the one
-  # labeled "USB", not "PWR IN".
+  # labeled "USB", not "PWR IN". (bumped last octet from minimachine's
+  # 10.0.0.5 to avoid an address collision if both boards are ever
+  # plugged into the same host at once).
   boot.kernelModules = [ "g_ether" ];
   networking.interfaces.usb0.ipv4.addresses = [{
-    address = "10.0.0.5";
+    address = "10.0.0.6";
     prefixLength = 24;
   }];
 
