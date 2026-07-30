@@ -2,17 +2,59 @@
 
 {
   imports = [
+    inputs.sops-nix.nixosModules.sops
     ./../../modules/nix.nix
+    ./../../modules/sops.nix
+    ./../../modules/netbird.nix
+    ./../../modules/tailscale-controlplane.nix
   ];
 
   networking.hostName = "minimachine";
-  networking.interfaces."wlan0".useDHCP = true;
-  networking.wireless = {
+  networking.usePredictableInterfaceNames = true;
+
+  sops.secrets."networkmanager.profiles" = {};
+
+  networking.networkmanager = {
     enable = true;
-    interfaces = [ "wlan0" ];
-    # FIXME: Add in correct WiFi creds before building the image.
-    networks = {
-      # "SSID".psk = "PASSWORD";
+    ensureProfiles = {
+      environmentFiles = [ config.sops.secrets."networkmanager.profiles".path ];
+      profiles = {
+        "primary" = {
+          connection = {
+            id = "primary";
+            type = "wifi";
+            interface-name = "wlan0";
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "$WIFI_SSID_PRIMARY";
+          };
+          wifi-security = {
+            key-mgmt = "wpa-psk";
+            psk = "$WIFI_PSK_PRIMARY";
+          };
+          ipv4.method = "auto";
+          ipv6.method = "auto";
+        };
+        "secondary" = {
+          connection = {
+            id = "secondary";
+            type = "wifi";
+            # Omitting `interface-name` here so this profile can bind to any
+            # wifi device other than the one pinned to "primary" (wlan0).
+          };
+          wifi = {
+            mode = "infrastructure";
+            ssid = "$WIFI_SSID_SECONDARY";
+          };
+          wifi-security = {
+            key-mgmt = "wpa-psk";
+            psk = "$WIFI_PSK_SECONDARY";
+          };
+          ipv4.method = "auto";
+          ipv6.method = "ignore";
+        };
+      };
     };
   };
   time.timeZone = "Asia/Kolkata";
@@ -24,7 +66,7 @@
     users.ritiek = {
       isNormalUser = true;
       extraGroups = [ "wheel" ];
-      # password = "raspberry";
+      password = "raspberry";
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIHVwHXOotXjPLC/fXIEu/Xnc5ZiIwOKK4Amas/rb9/ZGAAAAEnNzaDpyaXRpZWtAeXViaWtrbw=="

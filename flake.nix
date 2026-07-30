@@ -307,6 +307,81 @@
       }
     );
 
+    apps = inputs.flake-utils.lib.eachDefaultSystemMap (system:
+      let
+        pkgs = import inputs.nixpkgs { inherit system; };
+
+        # nixos-rebuild for minimachine (a Pi Zero W, armv6l) always targets
+        # armv6l-linux via nixpkgs.crossSystem regardless of which
+        # "-x86_64"/"-aarch64" nixosConfiguration variant is used - that
+        # suffix only picks which arch *builds* the cross-compiled system,
+        # not the deployed target. We use `nixos-rebuild switch` so the
+        # config actually persists across reboots (an earlier `test`-based
+        # version here did not persist and got silently reverted on
+        # reboot). `switch` previously failed because bootctl errored with
+        # "Failed to stat EFI binary: Value too large for defined data
+        # type" (EOVERFLOW on armv6l's 32-bit stat syscall, caused by
+        # bogus year-2098 mtimes on files in /boot from image creation) -
+        # touch the ESP's files to a sane mtime on the target if this
+        # recurs. We also can't use deploy-rs here: it has no
+        # armv6l-linux activate binary to run on the target (the
+        # crossSystem only affects the *system* config, not deploy-rs's
+        # own tooling).
+        # targetHost defaults to "<configuration's machine name>.lion-zebra.ts.net"
+        # via the caller; pass it explicitly so this helper can be reused for
+        # other armv6l Pi Zero W boards (e.g. bifrost) besides minimachine.
+        mkMinimachineDeploy = { configuration, buildHost, targetHost }:
+          {
+            type = "app";
+            program = toString (pkgs.writeShellScript "deploy-${configuration}" ''
+              set -euo pipefail
+              exec ${pkgs.nixos-rebuild}/bin/nixos-rebuild switch \
+                --flake /etc/nixos#${configuration} \
+                --target-host ritiek@${targetHost} \
+                --build-host ${buildHost} \
+                --elevate=sudo \
+                "$@"
+            '');
+          };
+      in
+      pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+        deploy-minimachine-minimal-x86_64 = mkMinimachineDeploy {
+          configuration = "minimachine-minimal-x86_64";
+          buildHost = "mishy.lion-zebra.ts.net";
+          targetHost = "minimachine.lion-zebra.ts.net";
+        };
+        deploy-minimachine-minimal-aarch64 = mkMinimachineDeploy {
+          configuration = "minimachine-minimal-aarch64";
+          buildHost = "pilab.lion-zebra.ts.net";
+          targetHost = "minimachine.lion-zebra.ts.net";
+        };
+        deploy-minimachine-x86_64 = mkMinimachineDeploy {
+          configuration = "minimachine-x86_64";
+          buildHost = "mishy.lion-zebra.ts.net";
+          targetHost = "minimachine.lion-zebra.ts.net";
+        };
+        deploy-minimachine-aarch64 = mkMinimachineDeploy {
+          configuration = "minimachine-aarch64";
+          buildHost = "pilab.lion-zebra.ts.net";
+          targetHost = "minimachine.lion-zebra.ts.net";
+        };
+
+        # bifrost: duplicated from minimachine (same Pi Zero W hardware).
+        # Uses "bifrost.lion-zebra.ts.net" as the Tailscale hostname -
+        # update targetHost here if that's wrong.
+        deploy-bifrost-x86_64 = mkMinimachineDeploy {
+          configuration = "bifrost-minimal-x86_64";
+          buildHost = "mishy.lion-zebra.ts.net";
+          targetHost = "bifrost.lion-zebra.ts.net";
+        };
+        deploy-bifrost-aarch64 = mkMinimachineDeploy {
+          configuration = "bifrost-minimal-aarch64";
+          buildHost = "pilab.lion-zebra.ts.net";
+          targetHost = "bifrost.lion-zebra.ts.net";
+        };
+      }
+    );
+
     nixosConfigurations.mishy = inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
@@ -704,6 +779,36 @@
       ];
     };
 
+    nixosConfigurations.bifrost-minimal-x86_64 = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        {
+          nixpkgs.crossSystem = {
+            system = "armv6l-linux";
+          };
+        }
+        "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+        ./machines/bifrost/minimal.nix
+        ./machines/bifrost/hw-config.nix
+      ];
+    };
+
+    nixosConfigurations.bifrost-minimal-aarch64 = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      specialArgs = { inherit inputs; };
+      modules = [
+        {
+          nixpkgs.crossSystem = {
+            system = "armv6l-linux";
+          };
+        }
+        "${inputs.nixpkgs}/nixos/modules/profiles/minimal.nix"
+        ./machines/bifrost/minimal.nix
+        ./machines/bifrost/hw-config.nix
+      ];
+    };
+
 
     deploy.nodes.mishy = {
       hostname = "mishy.lion-zebra.ts.net";
@@ -719,6 +824,17 @@
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minimachine-x86_64;
+      };
+      sshUser = "ritiek";
+      magicRollback = false;
+      activationTimeout = 600;
+    };
+
+    deploy.nodes.minimachine-minimal-x86_64 = {
+      hostname = "minimachine.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.minimachine-minimal-x86_64;
       };
       sshUser = "ritiek";
       magicRollback = false;
