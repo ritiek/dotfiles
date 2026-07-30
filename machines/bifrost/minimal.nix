@@ -9,7 +9,7 @@
     ./../../modules/tailscale-controlplane.nix
   ];
 
-  networking.hostName = "minimachine";
+  networking.hostName = "bifrost";
   networking.usePredictableInterfaceNames = true;
 
   sops.secrets."networkmanager.profiles" = {};
@@ -42,6 +42,11 @@
             type = "wifi";
             # Omitting `interface-name` here so this profile can bind to any
             # wifi device other than the one pinned to "primary" (wlan0).
+            # multi-connect = "3" (NM_CONNECTION_MULTI_CONNECT_MULTIPLE) lets
+            # it be simultaneously active on more than one device at once
+            # (e.g. both wlan1 and wlu1), instead of NM's default of only
+            # ever activating a given profile on a single device at a time.
+            multi-connect = "3";
           };
           wifi = {
             mode = "infrastructure";
