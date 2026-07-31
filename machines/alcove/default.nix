@@ -16,7 +16,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/attic-watch-store.nix
-    ./../../modules/wifi/wpa_supplicant.nix
+    ./../../modules/wifi/network_manager.nix
     ./../../modules/usbipd.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
