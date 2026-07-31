@@ -8,7 +8,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/attic-watch-store.nix
-    ./../../modules/wifi.nix
+    ./../../modules/wifi/network_manager.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
