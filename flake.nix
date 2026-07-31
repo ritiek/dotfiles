@@ -186,7 +186,51 @@
 
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
-    kvmd-nix.url = "github:aostanin/kvmd.nix";
+    # ---------------------------------------------------------------------
+    # BEGIN zerokvm-specific pins
+    #
+    # The three inputs below (nixos-hardware-pikvm, nixpkgs-pikvm, kvmd-nix)
+    # exist ONLY to keep zerokvm's patched RPi kernel hashing to the exact
+    # derivation that is already built and cached (in the attic and in
+    # alcove's store), so deploying zerokvm never triggers a kernel compile.
+    # They are copies of /home/ritiek/nixkvm's flake.lock revisions, i.e. the
+    # kernel the appliance is currently running.
+    #
+    # THESE ARE TEMPORARY AND SAFE TO DELETE once you're willing to build the
+    # kernel fresh against the shared inputs. To retire them:
+    #   1. Drop these three pins (kvmd-nix goes back to unpinned
+    #      "github:aostanin/kvmd.nix").
+    #   2. In machines/zerokvm/hw-config.nix, point pkgsPikvm at the shared
+    #      pkgs and baseKernel at the shared inputs.nixos-hardware, and
+    #      re-enable the commented-out structuredExtraConfig PREEMPT override
+    #      if the new nixos-hardware rev still needs it.
+    #   3. Build the kernel on a real machine (NOT the Pi Zero 2 W — 400MiB
+    #      RAM) and push it to the attic before deploying.
+    # Nothing else in this flake reads these inputs.
+    # ---------------------------------------------------------------------
+
+    # Pinned separately from the shared nixos-hardware above (which keyberry
+    # tracks at HEAD) purely so zerokvm's patched RPi kernel keeps hashing to
+    # the revision already built and cached in the attic — bumping this forces
+    # a multi-hour kernel recompile that the Pi Zero 2 W cannot do itself.
+    # Matches /home/ritiek/nixkvm's flake.lock, i.e. the kernel the appliance
+    # is currently running.
+    nixos-hardware-pikvm.url = "github:NixOS/nixos-hardware/a017f5b72210026af5b3ac5949f08d94380a6fbd";
+
+    # Ditto, and for the same reason: the kernel derivation embeds its whole
+    # build toolchain, so the nixpkgs the kernel is built with is part of its
+    # hash. This is /home/ritiek/nixkvm's nixpkgs rev, and it is used *only*
+    # to build zerokvm's kernel (see machines/zerokvm/hw-config.nix) — the
+    # rest of zerokvm's system still comes from the shared nixpkgs above.
+    nixpkgs-pikvm.url = "github:nixos/nixpkgs/e2587caef70cea85dd97d7daab492899902dbf5d";
+
+    # Pinned for the same reason: kvmd-nix supplies the PiKVM kernel patches,
+    # so its revision feeds directly into the kernel derivation hash. Only
+    # zerokvm consumes this input.
+    kvmd-nix.url = "github:aostanin/kvmd.nix/48fefb26a5db823c68f3d42d558f33328975dde1";
+
+    # END zerokvm-specific pins
+    # ---------------------------------------------------------------------
 
     matthew-hardware = {
       url = "git+https://codeberg.org/matthewcroughan/matthew-hardware";
