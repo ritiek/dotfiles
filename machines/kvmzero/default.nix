@@ -8,7 +8,7 @@
     inputs.kvmd-nix.nixosModules.kvmd
     ./../../modules/nix.nix
     ./../../modules/sops.nix
-    ./../../modules/wifi.nix
+    ./../../modules/wifi/wpa_supplicant.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
