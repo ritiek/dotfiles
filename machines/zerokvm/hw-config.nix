@@ -1,4 +1,4 @@
-# Hardware/boot-chain wiring for kvmzero (Raspberry Pi Zero 2 W running as a
+# Hardware/boot-chain wiring for zerokvm (Raspberry Pi Zero 2 W running as a
 # PiKVM appliance). Ported from /home/ritiek/nixkvm's flake.nix (matthewcroughan's
 # nixkvm fork with real kvmd daemon support), simplified to a single board
 # (rpiVersion = 3, Pi Zero 2 W only) and restructured to directly import
@@ -37,7 +37,7 @@ let
   # structuredExtraConfig passthru for its other legitimate overrides like
   # NR_CPUS/CMA_SIZE_MBYTES/NFS_FS/etc.) to fully saturate the choice and
   # close the ambiguity.
-  kvmzeroKernelPackages = pkgs.linuxPackagesFor (baseKernel.override {
+  zerokvmKernelPackages = pkgs.linuxPackagesFor (baseKernel.override {
     argsOverride = {
       kernelPatches = baseKernel.kernelPatches ++ pikvmKernelPatches;
       structuredExtraConfig = baseKernel.structuredExtraConfig // {
@@ -77,10 +77,10 @@ let
       };
     };
   '';
-  mergedDeviceTree = pkgs.runCommand "kvmzero-device-tree-merged" {
+  mergedDeviceTree = pkgs.runCommand "zerokvm-device-tree-merged" {
     nativeBuildInputs = [ pkgs.dtc ];
   } ''
-    cp -r ${kvmzeroKernelPackages.kernel}/dtbs $out
+    cp -r ${zerokvmKernelPackages.kernel}/dtbs $out
     chmod -R u+w $out
     dtc -@ -I dts -O dtb -o dwc2-peripheral.dtbo ${dwc2PeripheralDts}
     fdtoverlay -i "$out/${boardDtbRelPath}" -o merged.dtb \
@@ -94,7 +94,7 @@ in
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
-  boot.kernelPackages = kvmzeroKernelPackages;
+  boot.kernelPackages = zerokvmKernelPackages;
   hardware.deviceTree.package = lib.mkForce mergedDeviceTree;
 
   services.kvmd = {
