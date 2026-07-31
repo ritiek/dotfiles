@@ -26,7 +26,7 @@ in
     # inputs.impermanence.nixosModules.impermanence
     ./../../modules/nix.nix
     ./../../modules/sops.nix
-    ./../../modules/wifi/wpa_supplicant.nix
+    ./../../modules/wifi/network_manager.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
   ];
