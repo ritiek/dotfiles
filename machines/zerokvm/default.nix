@@ -14,7 +14,7 @@
     ./../../modules/usbipd.nix
   ];
 
-  networking.hostName = lib.mkDefault "kvmzero";
+  networking.hostName = lib.mkDefault "zerokvm";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
 
   boot.supportedFilesystems = [ "ntfs" ];

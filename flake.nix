@@ -612,11 +612,11 @@
       specialArgs = { inherit inputs; };
     };
 
-    nixosConfigurations.kvmzero = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.zerokvm = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
-        ./machines/kvmzero
-        ./machines/kvmzero/hw-config.nix
+        ./machines/zerokvm
+        ./machines/zerokvm/hw-config.nix
       ];
       specialArgs = { inherit inputs; };
     };
@@ -906,11 +906,11 @@
       sshUser = "ritiek";
     };
 
-    deploy.nodes.kvmzero = {
-      hostname = "kvmzero.lion-zebra.ts.net";
+    deploy.nodes.zerokvm = {
+      hostname = "zerokvm.lion-zebra.ts.net";
       profiles.system = {
         user = "root";
-        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.kvmzero;
+        path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.zerokvm;
       };
       sshUser = "ritiek";
     };
@@ -1042,7 +1042,7 @@
 
     switchboard-sd = self.nixosConfigurations.switchboard.config.system.build.sdImage;
 
-    kvmzero-sd = self.nixosConfigurations.kvmzero.config.system.build.sdImage;
+    zerokvm-sd = self.nixosConfigurations.zerokvm.config.system.build.sdImage;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of
