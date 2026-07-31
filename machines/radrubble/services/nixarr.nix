@@ -133,8 +133,18 @@ in
           # title as a single unquoted token to avoid corrupting the args.
           "OnTorrentAdded\\Enabled" = true;
           "OnTorrentAdded\\Program" = "${qbNotifyScript}/bin/qbittorrent-notify Download_Added %N %L %G %F %D %C %Z %T %I";
-          "OnTorrentFinished\\Enabled" = true;
-          "OnTorrentFinished\\Program" = "${qbNotifyScript}/bin/qbittorrent-notify Download_Finished %N %L %G %F %D %C %Z %T %I";
+          # qBittorrent's "run program on torrent finished" feature is a
+          # legacy holdover with misleading naming: despite the symmetrical
+          # OnTorrentAdded/* naming, it actually reads/writes the flat keys
+          # AutoRun/enabled + AutoRun/program (lowercase, no "OnTorrentFinished"
+          # segment at all) -- confirmed in qBittorrent's own source
+          # (src/base/preferences.cpp: isAutoRunOnTorrentFinishedEnabled()
+          # reads "AutoRun/enabled", getAutoRunOnTorrentFinishedProgram()
+          # reads "AutoRun/program"). Setting "OnTorrentFinished\Enabled"/
+          # "OnTorrentFinished\Program" here was a no-op: qBittorrent never
+          # reads those keys, so the finished-notification silently never fired.
+          "enabled" = true;
+          "program" = "${qbNotifyScript}/bin/qbittorrent-notify Download_Finished %N %L %G %F %D %C %Z %T %I";
         };
         RSS.AutoDownloader = {
           "DownloadRepacks" = true;
