@@ -14,6 +14,7 @@ keys:
   - &mangoshake_ssh age17r6ljsa6sg0706cq7j3gfevnk3k8knlvz5vppelaj996q5gnf4jqzyxk28
   - &bifrost_ssh age16sdz4k8ljddf6tggtvjfeltus9vpqg8yncfr6k5m5f70agfz6qnq6zyfe4
   - &minimachine_ssh age1azu44d4kmgh7ad0wwlrfqd4hmwvjx93cx6ewqsswvjw8w725qpfsxgwt6x
+  - &zerokvm_ssh age1e48jw5mtgxs020w33sqzjrpwvmcaw60zw3dnkyhpprs6x2rz4qrq4f96us
 
   - &yubika
   - &yubikko age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2
@@ -156,10 +157,10 @@ creation_rules:
     pgp: *ritiek
     age: *zerostash
 
-  - path_regex: machines/kvmzero/secrets\.yaml$
+  - path_regex: machines/zerokvm/secrets\.yaml$
     pgp: *ritiek
     age: *zerostash
-  - path_regex: machines/kvmzero/home/.*/secrets\.yaml$
+  - path_regex: machines/zerokvm/home/.*/secrets\.yaml$
     pgp: *ritiek
     age: *zerostash
 
