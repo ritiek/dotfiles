@@ -96,6 +96,28 @@
 
   networking.firewall.allowedTCPPorts = [ 7681 ];
 
+  # kvmd's web UI auth. Without this, htpasswdFile defaults to the example file
+  # shipped in the kvmd package, which is the well-known admin/admin credential.
+  # Only the kvmd daemon itself reads this (kvmd-vnc/kvmd-ipmi would need the
+  # kvmd-selfauth group, but both are disabled here).
+  #
+  # restartUnits is load-bearing. kvmd reads the *path* out of its config once at
+  # startup (the auth plugin then re-reads the file's contents on every login),
+  # and nothing else here makes systemd restart it: switching htpasswdFile only
+  # rewrites /etc/kvmd/override.d/00-nixos-paths.yaml, and NixOS restarts units
+  # on unit-definition changes, not /etc changes. Without this, activation
+  # succeeds and the old credentials keep working until the next reboot.
+  #
+  # Note that kvmd strips bcrypt from its accepted hash schemes (kvmd/crypto.py),
+  # so an `htpasswd -B` hash silently fails to verify. Generate the secret's
+  # contents with a scheme it does accept, e.g.:
+  #   echo 'yourpassword' | mkpasswd -m sha-512 -s | sed 's/^/user:/'
+  sops.secrets."pikvm.htpasswd" = {
+    owner = "kvmd";
+    restartUnits = [ "kvmd.service" ];
+  };
+  services.kvmd.htpasswdFile = config.sops.secrets."pikvm.htpasswd".path;
+
   # ttyd from the current nixpkgs (448d6256) is broken on aarch64: it dies at
   # startup with
   #   E: lws_create_context: failed to load evlib_uv
