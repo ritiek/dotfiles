@@ -100,14 +100,22 @@ in
     # "jitsi.htpasswd" = {
     #   owner = "nginx";
     # };
-    "syncplay.password" = {};
+    # syncplay passes this through LoadCredential, which snapshots the file at
+    # unit start.
+    "syncplay.password" = {
+      restartUnits = [ "syncplay.service" ];
+    };
     "rnixbld.id_ed25519" = {
       mode = "600";
       owner = "root";
       group = "nixbld";
     };
     "yubiluks.env" = {};
-    "hermes.env" = {};
+    # Seeded into the agent's environment at unit start (see
+    # services/hermes/default.nix `environmentFiles`).
+    "hermes.env" = {
+      restartUnits = [ "hermes-agent.service" ];
+    };
 
     # Hermes-only secrets (system-level; read by hermes-agent ExecStartPre as root).
     "groq_api.key" = { owner = "ritiek"; };

@@ -1,8 +1,12 @@
 { pkgs, config, ... }:
 {
+  # The login unit is a Type=oneshot with RemainAfterExit=true that snapshots
+  # the key via LoadCredential at start, so it never re-reads a rotated key on
+  # its own.
   sops.secrets."netbird.setupkey" = {
     owner = config.services.netbird.clients.birdnet.user.name;
     group = config.services.netbird.clients.birdnet.user.group;
+    restartUnits = [ "${config.services.netbird.clients.birdnet.service.name}-login.service" ];
   };
 
   # systemd.tmpfiles.rules = [

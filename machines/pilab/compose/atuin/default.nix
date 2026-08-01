@@ -6,6 +6,10 @@
   sops.secrets."compose/atuin.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-atuin.service"
+      "docker-atuin-db.service"
+    ];
   };
 
   # Runtime

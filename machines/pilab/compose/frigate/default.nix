@@ -5,6 +5,7 @@
   sops.secrets."compose/frigate.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-frigate.service" ];
   };
 
   # Runtime

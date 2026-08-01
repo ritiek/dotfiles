@@ -5,6 +5,10 @@
   sops.secrets."compose/forgejo.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-forgejo.service"
+      "docker-forgejo-db.service"
+    ];
   };
 
   # Runtime

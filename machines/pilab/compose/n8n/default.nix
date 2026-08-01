@@ -6,6 +6,12 @@
     "compose/n8n.env" = {
       sopsFile = ./stack.env;
       format = "dotenv";
+      restartUnits = [
+        "docker-n8n.service"
+        "docker-n8n-worker.service"
+        "docker-n8n-postgres.service"
+        "docker-n8n-redis.service"
+      ];
     };
   };
 

@@ -6,6 +6,7 @@
     "compose/backvault.env" = {
       sopsFile = ./stack.env;
       format = "dotenv";
+      restartUnits = [ "docker-backvault.service" ];
     };
   };
 

@@ -33,6 +33,10 @@ in lib.mkMerge [
   sops.secrets."compose/manyfold.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-manyfold.service"
+      "docker-manyfold-postgres.service"
+    ];
   };
 
   # Runtime

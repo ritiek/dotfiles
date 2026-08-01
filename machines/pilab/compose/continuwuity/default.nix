@@ -6,6 +6,7 @@
   sops.secrets."compose/continuwuity.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-continuwuity.service" ];
   };
 
   # Runtime

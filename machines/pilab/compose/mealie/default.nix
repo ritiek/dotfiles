@@ -33,6 +33,11 @@ in lib.mkMerge [
   sops.secrets."compose/mealie.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-mealie.service"
+      "docker-mealie_dev_mailpit.service"
+      "docker-mealie_dev_postgres.service"
+    ];
   };
 
   # Runtime

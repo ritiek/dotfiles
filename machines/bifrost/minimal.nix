@@ -12,7 +12,12 @@
   networking.hostName = "bifrost";
   networking.usePredictableInterfaceNames = true;
 
-  sops.secrets."networkmanager.profiles" = {};
+  # Consumed as the EnvironmentFile of NetworkManager-ensure-profiles, a oneshot
+  # that substitutes these values into the keyfiles when it runs. Rotating the
+  # WiFi credentials is a no-op until that unit runs again.
+  sops.secrets."networkmanager.profiles" = {
+    restartUnits = [ "NetworkManager-ensure-profiles.service" ];
+  };
 
   networking.networkmanager = {
     enable = true;

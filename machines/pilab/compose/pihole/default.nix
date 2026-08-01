@@ -6,6 +6,7 @@
     "compose/pihole.env" = {
       sopsFile = ./stack.env;
       format = "dotenv";
+      restartUnits = [ "docker-pihole.service" ];
     };
     # "compose/pihole-api-key.txt" = {
     #   sopsFile = ./stack.env;

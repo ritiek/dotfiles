@@ -50,10 +50,13 @@ in
   ];
 
   # Read+push token for the attic-action cache (same token used by GitHub Actions).
+  # `attic watch-store` is long-running and reads token-file once at startup,
+  # so a rotated token only takes effect after a restart.
   sops.secrets."attic.token" = {
     owner = "attic-watch-store";
     group = "attic-watch-store";
     mode = "0400";
+    restartUnits = [ "attic-watch-store.service" ];
   };
 
   # Attic reads its config from $XDG_CONFIG_HOME/attic/config.toml.

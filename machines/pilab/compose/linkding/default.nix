@@ -24,6 +24,7 @@ in lib.mkMerge [
   sops.secrets."compose/linkding.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-linkding.service" ];
   };
 
   # Runtime

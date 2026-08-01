@@ -32,6 +32,10 @@ in lib.mkMerge [
   sops.secrets."compose/invidious.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-invidious-companion.service"
+      "docker-invidious-db.service"
+    ];
   };
 
   # Runtime

@@ -6,6 +6,12 @@
   sops.secrets."compose/audiomuse.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-audiomuse-ai-flask-app.service"
+      "docker-audiomuse-ai-worker-instance.service"
+      "docker-audiomuse-postgres.service"
+      "docker-audiomuse-redis.service"
+    ];
   };
 
   # Runtime

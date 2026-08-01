@@ -1,6 +1,10 @@
 { config, pkgs, lib, ... }:
 {
-  sops.secrets."atticd.env" = {};
+  # Pulled in as the unit's EnvironmentFile, which systemd only reads when the
+  # service starts.
+  sops.secrets."atticd.env" = {
+    restartUnits = [ "atticd.service" ];
+  };
 
   environment.systemPackages = with pkgs; [
     attic-client
