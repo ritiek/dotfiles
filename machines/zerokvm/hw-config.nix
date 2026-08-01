@@ -49,6 +49,12 @@ let
   #   { name = "pikvm-msd-dvd-support"; patch = ./patches/2001-pikvm-msd-dvd-support.patch; }
   #   { name = "pikvm-msd-inquiry-flash-cdrom"; patch = ./patches/2002-pikvm-msd-inquiry-for-flash-and-cdrom.patch; }
   # ];
+  #
+  # DEAD WEIGHT: the four .patch files under ./patches are therefore no longer
+  # referenced by anything — nothing in this repo reads them. They are kept
+  # only so the block above can be re-enabled without re-fetching them, and as
+  # a record of the exact patches this appliance's kernel carries. Safe to
+  # delete along with the commented-out list whenever this is cleaned up.
 
   # nixos-hardware's raspberry-pi/common/kernel.nix ignores plain
   # boot.kernelPatches; patches must go through argsOverride
