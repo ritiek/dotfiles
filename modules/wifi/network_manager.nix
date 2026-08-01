@@ -7,7 +7,12 @@
   boot.kernelParams = [ "cfg80211.ieee80211_regdom=IN" ];
 
   networking.networkmanager.enable = true;
-  sops.secrets.wpa_supplicant = { }; # default path, no chroot bind-mount needed
+  # Default path, no chroot bind-mount needed. nm-wifi-profiles is a oneshot
+  # that reads this file once and pushes the networks into NetworkManager, so
+  # edits to the secret only land after it runs again.
+  sops.secrets.wpa_supplicant = {
+    restartUnits = [ "nm-wifi-profiles.service" ];
+  };
 
   systemd.services.nm-wifi-profiles = {
     description = "Sync NetworkManager wifi profiles from secret";

@@ -33,6 +33,11 @@ in lib.mkMerge [
   sops.secrets."compose/pwpush.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-pwpush-db.service"
+      "docker-pwpush.service"
+      "docker-pwpush-worker.service"
+    ];
   };
 
   # Runtime

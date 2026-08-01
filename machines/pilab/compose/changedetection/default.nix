@@ -6,6 +6,10 @@
     "compose/changedetection.env" = {
       sopsFile = ./stack.env;
       format = "dotenv";
+      restartUnits = [
+        "docker-changedetection.service"
+        "docker-changedetection-sockpuppetbrowser.service"
+      ];
     };
     # "compose/changedetection-api-key.txt" = {
     #   sopsFile = ./stack.env;

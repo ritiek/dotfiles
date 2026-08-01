@@ -5,6 +5,10 @@
   sops.secrets."compose/miniflux.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-miniflux-db.service"
+      "docker-miniflux.service"
+    ];
   };
 
   # Runtime

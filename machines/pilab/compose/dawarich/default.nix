@@ -5,6 +5,11 @@
   sops.secrets."compose/dawarich.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-dawarich.service"
+      "docker-dawarich_db.service"
+      "docker-dawarich_sidekiq.service"
+    ];
   };
 
   # Runtime

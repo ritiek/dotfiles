@@ -542,6 +542,9 @@ in
   # MCP server secrets rendered from sops at activation time.
   # Seeded into $HERMES_HOME/.env via environmentFiles above.
   sops.templates."hermes-mcp-env" = {
+    # Seeded into the agent's environment at unit start, so a rotated API key
+    # is only picked up on restart.
+    restartUnits = [ "hermes-agent.service" ];
     content = ''
       HERMES_MCP_GITHUB_TOKEN=${config.sops.placeholder."github.token"}
       HERMES_MCP_KARAKEEP_ADDR=${config.sops.placeholder."karakeep_api.address"}

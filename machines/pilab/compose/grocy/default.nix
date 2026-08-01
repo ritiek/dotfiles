@@ -24,6 +24,7 @@ in lib.mkMerge [
   sops.secrets."compose/grocy.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-grocy.service" ];
   };
 
   # Runtime

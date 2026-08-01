@@ -5,6 +5,11 @@
   sops.secrets."compose/karakeep.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-karakeep-chrome.service"
+      "docker-karakeep-meilisearch.service"
+      "docker-karakeep.service"
+    ];
   };
 
   # Runtime

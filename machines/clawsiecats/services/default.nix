@@ -240,7 +240,11 @@ let
     "github_actions_matrix_user.password" = {};
   };
 
+  # restartTriggers on the unit below only cover changes to the template *text*
+  # (placeholders render to fixed markers at eval time), so rotating the bearer
+  # token itself needs restartUnits here.
   sops.templates."matrix-notify-hooks" = {
+    restartUnits = [ "matrix-notify-webhook.service" ];
     content = ''
       [
         {

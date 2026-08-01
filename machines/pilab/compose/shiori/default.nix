@@ -5,6 +5,10 @@
   sops.secrets."compose/shiori.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-shiori.service"
+      "docker-shiori-postgres.service"
+    ];
   };
 
   # Runtime

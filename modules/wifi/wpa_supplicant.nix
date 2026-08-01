@@ -1,7 +1,12 @@
 { config, ... }:
 {
   # Ref: https://github.com/NixOS/nixpkgs/pull/180872
-  sops.secrets."wpa_supplicant".path = "/etc/wpa_supplicant/imperative.conf";
+  # This secret *is* wpa_supplicant's imperative config file, and wpa_supplicant
+  # only parses it at startup, so a rotated PSK needs the daemon restarted.
+  sops.secrets."wpa_supplicant" = {
+    path = "/etc/wpa_supplicant/imperative.conf";
+    restartUnits = [ "wpa_supplicant.service" ];
+  };
   networking.wireless = {
     enable = true;
     allowAuxiliaryImperativeNetworks = true;

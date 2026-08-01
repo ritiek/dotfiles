@@ -28,6 +28,7 @@ in lib.mkMerge [
     "compose/calibre-web-automated.env" = {
       sopsFile = ./stack.env;
       format = "dotenv";
+      restartUnits = [ "docker-calibre-web-automated.service" ];
     };
   };
 

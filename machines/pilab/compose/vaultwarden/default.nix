@@ -25,6 +25,7 @@ in lib.mkMerge [
   sops.secrets."compose/vaultwarden.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-vaultwarden.service" ];
   };
 
   # Runtime

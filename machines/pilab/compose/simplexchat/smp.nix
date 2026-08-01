@@ -5,6 +5,7 @@
   sops.secrets."compose/simplexchat/smp.env" = {
     sopsFile = ./smp.env;
     format = "dotenv";
+    restartUnits = [ "docker-simplexchat-smp-server.service" ];
   };
 
   # Runtime

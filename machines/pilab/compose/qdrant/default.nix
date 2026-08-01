@@ -28,6 +28,7 @@ in lib.mkMerge [
   sops.secrets."compose/qdrant.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-qdrant.service" ];
   };
 
   # Runtime

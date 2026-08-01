@@ -28,6 +28,7 @@ in lib.mkMerge [
   sops.secrets."compose/ollama-webui.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-open-webui.service" ];
   };
 
   virtualisation.docker = {
