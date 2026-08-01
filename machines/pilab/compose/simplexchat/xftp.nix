@@ -5,6 +5,7 @@
   sops.secrets."compose/simplexchat/xftp.env" = {
     sopsFile = ./xftp.env;
     format = "dotenv";
+    restartUnits = [ "docker-simplexchat-xftp-server.service" ];
   };
 
   # Runtime

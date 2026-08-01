@@ -5,6 +5,13 @@
   sops.secrets."compose/paperless-ngx.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-paperless-ngx-broker.service"
+      "docker-paperless-ngx-db.service"
+      "docker-paperless-ngx-gotenberg.service"
+      "docker-paperless-ngx-tika.service"
+      "docker-paperless-ngx-webserver.service"
+    ];
   };
 
   # Runtime

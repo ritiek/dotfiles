@@ -5,6 +5,7 @@
   sops.secrets."compose/kopia.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-kopia.service" ];
   };
 
   # Runtime

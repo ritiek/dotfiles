@@ -5,6 +5,7 @@
   sops.secrets."compose/conduwuit.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-conduwuit.service" ];
   };
 
   # Runtime

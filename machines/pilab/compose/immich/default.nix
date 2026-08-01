@@ -5,6 +5,12 @@
   sops.secrets."compose/immich.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-immich_machine_learning.service"
+      "docker-immich_postgres.service"
+      "docker-immich_redis.service"
+      "docker-immich.service"
+    ];
   };
 
   # Runtime

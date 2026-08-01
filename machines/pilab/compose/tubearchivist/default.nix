@@ -36,6 +36,11 @@ in lib.mkMerge [
   sops.secrets."compose/tubearchivist.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-archivist-es.service"
+      "docker-archivist-redis.service"
+      "docker-tubearchivist.service"
+    ];
   };
 
   # Runtime

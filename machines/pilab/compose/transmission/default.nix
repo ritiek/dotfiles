@@ -5,6 +5,7 @@
   sops.secrets."compose/transmission.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-transmission.service" ];
   };
 
   # Runtime

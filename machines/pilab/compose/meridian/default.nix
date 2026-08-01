@@ -32,6 +32,7 @@ in lib.mkMerge [
   sops.secrets."compose/meridian.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [ "docker-meridian-proxy.service" ];
   };
 
   # Runtime

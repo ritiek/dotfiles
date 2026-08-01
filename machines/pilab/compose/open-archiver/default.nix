@@ -6,6 +6,13 @@
   sops.secrets."compose/open-archiver.env" = {
     sopsFile = ./stack.env;
     format = "dotenv";
+    restartUnits = [
+      "docker-open-archiver.service"
+      "docker-meilisearch.service"
+      "docker-postgres.service"
+      "docker-tika.service"
+      "docker-valkey.service"
+    ];
   };
 
   # Runtime
