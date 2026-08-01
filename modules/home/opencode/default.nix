@@ -518,21 +518,12 @@ in
             - Take a step back and think the broader picture if you feel yourself stuck in a loop.
           '';
           tools = {
+            "*" = false;
             read = true;
-            edit = false;
-            zai-vision = true;
-
-            write = false;
-            bash = false;
-            # gmail = false;
-            webfetch = false;
-            zai-web-search = false;
-            zai-web-reader = false;
-            zai-zread = false;
+            "playwright*" = true;
             # Avoid installing browsers during confusion since browsers can't be installed
             # in NixOS through the approach taken by this tool.
             playwright_browser_install = false;
-            task = false;
           };
           temperature = 0.2;
         };
