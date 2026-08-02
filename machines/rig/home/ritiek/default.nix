@@ -73,6 +73,8 @@
       psmisc
       moreutils
       file
+      nix-output-monitor
+
       unixtools.route
       unixtools.xxd
       zip
