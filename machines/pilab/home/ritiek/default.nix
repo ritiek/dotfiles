@@ -227,6 +227,7 @@ in
       wget
       pv
       tio
+      nix-output-monitor
 
       unzip
       unrar-wrapper

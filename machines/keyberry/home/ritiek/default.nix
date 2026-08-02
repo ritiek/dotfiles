@@ -58,6 +58,7 @@
       psmisc
       moreutils
       file
+      nix-output-monitor
 
       unzip
       unrar-wrapper
