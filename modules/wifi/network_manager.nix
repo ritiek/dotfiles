@@ -29,10 +29,10 @@
         priority=$(grep -oP 'priority=\K[0-9]+' <<< "$block")
         [ -z "$ssid" ] && continue
         if nmcli -t -f NAME connection show | grep -qFx "$ssid"; then
-          nmcli connection modify "$ssid" wifi-sec.psk "$psk" connection.autoconnect-priority "$priority"
+          nmcli connection modify "$ssid" wifi-sec.psk "$psk" connection.autoconnect-priority "$priority" connection.autoconnect-retries 0
         else
           nmcli connection add type wifi con-name "$ssid" ifname "*" ssid "$ssid" \
-            wifi-sec.key-mgmt wpa-psk wifi-sec.psk "$psk" connection.autoconnect-priority "$priority"
+            wifi-sec.key-mgmt wpa-psk wifi-sec.psk "$psk" connection.autoconnect-priority "$priority" connection.autoconnect-retries 0
         fi
       done
     '';
