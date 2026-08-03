@@ -118,33 +118,40 @@
   };
   services.kvmd.htpasswdFile = config.sops.secrets."pikvm.htpasswd".path;
 
-  # ttyd from the current nixpkgs (448d6256) is broken on aarch64: it dies at
+  # ttyd is unusable with nixpkgs' libwebsockets as packaged — it dies at
   # startup with
   #   E: lws_create_context: failed to load evlib_uv
   #   E: libwebsockets context creation failed
-  # libwebsockets dlopens its event-loop backend as a plugin, and that lookup
-  # fails in that revision. The plugin .so is present and its libuv dep
-  # resolves, so this is a plugin-search-path bug in the packaging rather than
-  # a missing dependency. The same ttyd version (1.7.7) built from the pinned
-  # nixpkgs-pikvm revision starts fine — verified by running both binaries
-  # directly on the device.
+  # libwebsockets dlopens its event-loop backend (evlib_uv) as a plugin, and the
+  # directory it searches is built by libwebsockets' CMake as
+  # ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}. nixpkgs' cmake hook passes
+  # an *absolute* CMAKE_INSTALL_LIBDIR, so the two concatenate into a doubled
+  # nonsense path:
+  #   /nix/store/<hash>-libwebsockets-4.4.5//nix/store/<hash>-libwebsockets-4.4.5/lib
+  # (visible with `strings libwebsockets.so.20`). The plugin .so itself is
+  # present in $out/lib and its libuv dep resolves fine — only the lookup path
+  # is wrong. Forcing a relative LIBDIR makes it resolve, verified by running
+  # the resulting binary: it reaches "elops_init_pt_uv: Using foreign event
+  # loop" and listens.
   #
   # This is an overlay rather than `services.ttyd.package` because kvmd-nix's
   # webterm module hardcodes `${pkgs.ttyd}/bin/ttyd` (modules/kvmd/webterm.nix)
   # with no package option, so both ttyd.service and kvmd-webterm.service need
-  # to resolve to the working build. Keeping ttyd alive matters more than the
-  # web UI's Terminal tab: this box is WiFi-only with no ethernet, and ttyd is
-  # the out-of-band way in (hence the hardcoded console password above) if
+  # to resolve to the fixed build. Keeping ttyd alive matters more than the web
+  # UI's Terminal tab: this box is WiFi-only with no ethernet, and ttyd is the
+  # out-of-band way in (hence the hardcoded console password above) if
   # NetworkManager or sshd ever fails to come up.
   #
-  # Drop this once ttyd/libwebsockets works in the shared nixpkgs again. It is
-  # independent of the kernel pins — pkgsPikvm in hw-config.nix imports its
-  # nixpkgs without overlays, so the kernel derivation hash is unaffected.
+  # Overriding libwebsockets rather than ttyd because the bug is in
+  # libwebsockets; anything else linking it gets the fix too. Drop this once
+  # nixpkgs fixes libwebsockets upstream. It does not affect the kernel: the
+  # kernel comes from nixos-hardware's kernel.nix, which doesn't touch
+  # libwebsockets.
   nixpkgs.overlays = [
     (final: prev: {
-      ttyd = (import inputs.nixpkgs-pikvm {
-        inherit (prev.stdenv.hostPlatform) system;
-      }).ttyd;
+      libwebsockets = prev.libwebsockets.overrideAttrs (old: {
+        cmakeFlags = (old.cmakeFlags or [ ]) ++ [ "-DCMAKE_INSTALL_LIBDIR=lib" ];
+      });
     })
   ];
 
