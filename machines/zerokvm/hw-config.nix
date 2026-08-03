@@ -7,25 +7,25 @@
 { config, lib, pkgs, modulesPath, inputs, ... }:
 
 let
-  # This whole kernel expression is a deliberate byte-for-byte replica of
-  # /home/ritiek/nixkvm's mkPiKvmKernel, pinned via inputs.nixos-hardware-pikvm
-  # and inputs.kvmd-nix (both pinned in flake.nix to nixkvm's flake.lock revs),
-  # so it hashes to linux-rpi-6.18.34-stable_20260609 — the kernel already
-  # built, cached in the attic, and currently booted by the appliance.
+  # The kernel expression below is modelled on /home/ritiek/nixkvm's
+  # mkPiKvmKernel: nixos-hardware's RPi kernel plus PiKVM's four out-of-tree
+  # patches (HID remote wakeup, HID set_report_buf cleanup, mass-storage DVD
+  # support, mass-storage INQUIRY fixes), which are what make USB HID emulation
+  # and virtual media work on this board.
   #
-  # Do not "clean this up": the patch `name` strings, the patch source
-  # (kvmd-nix's pikvm-packages output rather than a local ./patches copy) and
-  # the absence of any structuredExtraConfig override are all load-bearing
-  # inputs to the derivation hash. Any drift forces a full kernel recompile,
-  # which the Pi Zero 2 W (4 cores, ~400MiB RAM) cannot perform itself.
-  # The kernel is built with its own pinned nixpkgs rather than the repo-wide
-  # one: a kernel derivation embeds its whole build toolchain (gcc, binutils,
-  # bash, perl, ...), so the nixpkgs revision is itself part of the kernel's
-  # output hash. Only the kernel and its modules come from here; every other
-  # package in zerokvm's closure still comes from the shared nixpkgs.
-  pkgsPikvm = import inputs.nixpkgs-pikvm {
-    inherit (pkgs.stdenv.hostPlatform) system;
-  };
+  # Every input here feeds the kernel derivation hash: the nixpkgs revision
+  # (a kernel embeds its whole build toolchain — gcc, binutils, bash, perl),
+  # the nixos-hardware revision, the kvmd-nix revision that supplies the
+  # patches, the patch `name` strings, and any structuredExtraConfig override.
+  # So any bump to the flake inputs means a full kernel recompile. That must be
+  # built somewhere real and pushed to the attic BEFORE deploying — the Pi Zero
+  # 2 W (4 cores, ~400MiB RAM) cannot build this itself.
+  #
+  # This used to be pinned to a set of zerokvm-specific flake inputs
+  # (nixpkgs-pikvm / nixos-hardware-pikvm / a fixed kvmd-nix rev, copied from
+  # nixkvm's flake.lock) purely so the kernel kept hashing to the already-cached
+  # linux-rpi-6.18.34-stable_20260609. Those pins have been retired in favour of
+  # the shared inputs; the cost is that input bumps now cost a kernel build.
 
   patchDir = "${inputs.kvmd-nix.packages.${pkgs.stdenv.hostPlatform.system}.pikvm-packages}/packages/linux-rpi-pikvm";
   pikvmKernelPatches = [
@@ -40,9 +40,9 @@ let
   # 5e87241398d3ca9bd01d20a740218229ac4f485d, packages/linux-rpi-pikvm/),
   # matching the machines/alcove and machines/radrubble convention of
   # vendoring board-specific kernel patches instead of pulling them from a
-  # flake input's package output at eval time. Abandoned because the store
-  # path of the patch files feeds the kernel derivation hash, so vendored
-  # copies produce a kernel that is not in any binary cache.
+  # flake input's package output at eval time. Abandoned so the patches track
+  # kvmd-nix rather than needing a manual refresh, and to keep the patch set
+  # and the kvmd daemon that depends on it moving in lockstep.
   # pikvmKernelPatches = [
   #   { name = "pikvm-hid-remote-wakeup"; patch = ./patches/1001-pikvm-hid-remote-wakeup-support.patch; }
   #   { name = "pikvm-hid-clean-set-report-buf"; patch = ./patches/1002-pikvm-hid-clean-set_report_buf-on-hidg-disabling.patch; }
@@ -59,37 +59,31 @@ let
   # nixos-hardware's raspberry-pi/common/kernel.nix ignores plain
   # boot.kernelPatches; patches must go through argsOverride
   # (nixos-hardware#1745), matching kvmd-nix's own modules/variants/rpi4.nix.
-  baseKernel = pkgsPikvm.callPackage "${inputs.nixos-hardware-pikvm}/raspberry-pi/common/kernel.nix" {
+  baseKernel = pkgs.callPackage "${inputs.nixos-hardware}/raspberry-pi/common/kernel.nix" {
     rpiVersion = 3;
   };
-  zerokvmKernelPackages = pkgsPikvm.linuxPackagesFor (baseKernel.override {
-    argsOverride.kernelPatches = baseKernel.kernelPatches ++ pikvmKernelPatches;
-  });
 
-  # Previous approach, kept for reference. nixos-hardware's kernel.nix forces
-  # PREEMPT=yes/PREEMPT_LAZY=no/PREEMPT_VOLUNTARY=no for rpiVersion>=3 (see
-  # kernel.nix's own comment citing nixos-hardware#1920/nixpkgs#531605), but
-  # never addresses the 4th member of the kernel's exclusive "Preemption
-  # Model" Kconfig choice group, PREEMPT_NONE. On the newer nixos-hardware
-  # the kernel's own config-generation script (generate-config.pl) hit a
-  # "conflicting answers!" fatal error on that choice group even with
-  # nixos-hardware's fix applied, so all 4 choice members were forced
-  # explicitly (reusing baseKernel's structuredExtraConfig passthru for its
-  # other legitimate overrides like NR_CPUS/CMA_SIZE_MBYTES/NFS_FS/etc.) to
-  # saturate the choice and close the ambiguity. Unnecessary on the pinned
-  # nixos-hardware-pikvm rev, and harmful: any structuredExtraConfig override
-  # changes the kernel derivation hash and so misses the binary cache.
-  # zerokvmKernelPackages = pkgs.linuxPackagesFor (baseKernel.override {
-  #   argsOverride = {
-  #     kernelPatches = baseKernel.kernelPatches ++ pikvmKernelPatches;
-  #     structuredExtraConfig = baseKernel.structuredExtraConfig // {
-  #       PREEMPT = lib.mkForce (pkgs.lib.kernel.yes);
-  #       PREEMPT_LAZY = lib.mkForce (pkgs.lib.kernel.no);
-  #       PREEMPT_VOLUNTARY = lib.mkForce (pkgs.lib.kernel.no);
-  #       PREEMPT_NONE = lib.mkForce (pkgs.lib.kernel.no);
-  #     };
-  #   };
-  # });
+  # nixos-hardware's kernel.nix forces PREEMPT=yes / PREEMPT_LAZY=no /
+  # PREEMPT_VOLUNTARY=no for rpiVersion>=3 (see kernel.nix's own comment citing
+  # nixos-hardware#1920 and nixpkgs#531605), but never addresses the 4th member
+  # of the kernel's exclusive "Preemption Model" Kconfig choice group,
+  # PREEMPT_NONE. On this nixos-hardware rev the kernel's own config-generation
+  # script (generate-config.pl) dies with "conflicting answers!" on that choice
+  # group even with nixos-hardware's fix applied, so all 4 members are forced
+  # explicitly to saturate the choice and close the ambiguity. baseKernel's
+  # structuredExtraConfig is reused as the base so its other legitimate
+  # overrides (NR_CPUS, CMA_SIZE_MBYTES, NFS_FS, ...) survive.
+  zerokvmKernelPackages = pkgs.linuxPackagesFor (baseKernel.override {
+    argsOverride = {
+      kernelPatches = baseKernel.kernelPatches ++ pikvmKernelPatches;
+      structuredExtraConfig = baseKernel.structuredExtraConfig // {
+        PREEMPT = lib.mkForce (pkgs.lib.kernel.yes);
+        PREEMPT_LAZY = lib.mkForce (pkgs.lib.kernel.no);
+        PREEMPT_VOLUNTARY = lib.mkForce (pkgs.lib.kernel.no);
+        PREEMPT_NONE = lib.mkForce (pkgs.lib.kernel.no);
+      };
+    };
+  });
 
   boardDtbRelPath = "broadcom/bcm2837-rpi-zero-2-w.dtb";
 
