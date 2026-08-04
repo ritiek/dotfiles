@@ -11,7 +11,6 @@ let
     else ./../../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
-  hasOpencodeGoApiKey = hostName == "mishy";
 
 
   ocx-pkg = pkgs.stdenv.mkDerivation {
@@ -67,19 +66,16 @@ let
 
     ZAI_KEY=${if hasZaiApiKey then "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})" else "\"\""}
     OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
-    OPENCODE_GO_KEY=${lib.optionalString hasOpencodeGoApiKey "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_go_api.key".path})"}
     OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
     XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
     # GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
     # GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
 
-    ${lib.optionalString hasOpencodeGoApiKey ''
-      ${pkgs.jq}/bin/jq -n \
-        --arg go_key "$OPENCODE_GO_KEY" \
-        '{
-          "opencode-go": { type: "api", key: $go_key }
-        }' > "$NIXOS_JSON"
-    ''}
+    ${pkgs.jq}/bin/jq -n \
+      --arg opencode_key "$OPENCODE_KEY" \
+      '{
+        "opencode-go": { type: "api", key: $opencode_key }
+      }' > "$NIXOS_JSON"
 
     # ${pkgs.jq}/bin/jq -n \
     #   --arg gh_refresh "$GH_REFRESH" \
@@ -110,7 +106,6 @@ in
     "paperless_public.url" = {};
     "home_assistant.long_lived_token" = {};
     "opencode_api.key" = {};
-    "opencode_go_api.key" = lib.mkIf hasOpencodeGoApiKey {};
     "openai_api.key" = {};
     "xiaomi_api.key" = {};
     "github_copilot.refresh" = {};

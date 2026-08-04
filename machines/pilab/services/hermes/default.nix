@@ -565,7 +565,7 @@ in
   sops.templates."hermes-opencode-go-env" = {
     restartUnits = [ "hermes-agent.service" ];
     content = ''
-      OPENCODE_GO_API_KEY=${config.sops.placeholder."opencode_go_api.key"}
+      OPENCODE_GO_API_KEY=${config.sops.placeholder."opencode_api.key"}
     '';
   };
 }
