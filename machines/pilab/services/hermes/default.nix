@@ -296,7 +296,8 @@ in
       model = {
         # default = "nemotron-3-ultra-free";
         # default = "opencode/deepseek-v4-flash-free";
-        default = "opencode-go/gpt-5.6-luna";
+        # default = "opencode-go/gpt-5.6-luna";
+        default = "opencode-go/qwen3.7-plus";
         # default = "mimo-v2.5-free";
         # default = "big-pickle";
         provider = "opencode-go";
@@ -335,9 +336,23 @@ in
       };
       auxiliary = {
         vision = {
-          provider = "opencode-zen";
-          model = "opencode/mimo-v2.5-free";
-          base_url = "https://opencode.ai/zen/v1";
+          provider = "opencode-go";
+          model = "mimo-v2.5";
+          # model = "qwen3.7-plus";
+          base_url = "https://opencode.ai/zen/go/v1";
+          api_key = "\${OPENCODE_GO_API_KEY}";
+        };
+        title_generation = {
+          provider = "opencode-go";
+          model = "deepseek-v4-flash";
+          base_url = "https://opencode.ai/zen/go/v1";
+          api_key = "\${OPENCODE_GO_API_KEY}";
+        };
+        compression = {
+          provider = "opencode-go";
+          model = "deepseek-v4-flash";
+          base_url = "https://opencode.ai/zen/go/v1";
+          api_key = "\${OPENCODE_GO_API_KEY}";
         };
       };
 
