@@ -295,11 +295,13 @@ in
 
       model = {
         # default = "nemotron-3-ultra-free";
-        default = "opencode/deepseek-v4-flash-free";
+        # default = "opencode/deepseek-v4-flash-free";
+        default = "opencode-go/gpt-5.6-luna";
         # default = "mimo-v2.5-free";
         # default = "big-pickle";
-        provider = "opencode-zen";
+        provider = "opencode-go";
         base_url = "https://opencode.ai/zen/v1";
+        api_key = "\${OPENCODE_GO_API_KEY}";
 
         # default = "claude-sonnet-4-6";
         # provider = "anthropic";
@@ -535,6 +537,7 @@ in
 
     environmentFiles = [
       config.sops.secrets."hermes.env".path
+      config.sops.templates."hermes-opencode-go-env".path
       config.sops.templates."hermes-mcp-env".path
     ];
   };
@@ -558,5 +561,11 @@ in
       OPENCODE_ZEN_API_KEY=${config.sops.placeholder."opencode_api.key"}
     '';
   };
-}
 
+  sops.templates."hermes-opencode-go-env" = {
+    restartUnits = [ "hermes-agent.service" ];
+    content = ''
+      OPENCODE_GO_API_KEY=${config.sops.placeholder."opencode_go_api.key"}
+    '';
+  };
+}
