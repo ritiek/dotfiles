@@ -100,8 +100,6 @@ in
     # "jitsi.htpasswd" = {
     #   owner = "nginx";
     # };
-    # syncplay passes this through LoadCredential, which snapshots the file at
-    # unit start.
     "syncplay.password" = {
       restartUnits = [ "syncplay.service" ];
     };
@@ -111,8 +109,6 @@ in
       group = "nixbld";
     };
     "yubiluks.env" = {};
-    # Seeded into the agent's environment at unit start (see
-    # services/hermes/default.nix `environmentFiles`).
     "hermes.env" = {
       restartUnits = [ "hermes-agent.service" ];
     };
