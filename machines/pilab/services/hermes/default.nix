@@ -300,7 +300,9 @@ in
         # default = "mimo-v2.5-free";
         # default = "big-pickle";
         provider = "opencode-go";
-        base_url = "https://opencode.ai/zen/v1";
+        # OpenCode Go subscription endpoint. The plain /zen/v1 endpoint bills
+        # the pay-as-you-go Zen balance and 401s with "Insufficient balance".
+        base_url = "https://opencode.ai/zen/go/v1";
         api_key = "\${OPENCODE_GO_API_KEY}";
 
         # default = "claude-sonnet-4-6";
