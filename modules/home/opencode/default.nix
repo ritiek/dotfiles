@@ -206,6 +206,22 @@ in
       default_agent = "plan";
       provider = {
         "opencode".options.timeout = false;
+        "opencode-go" = {
+          npm = "@ai-sdk/openai-compatible";
+          name = "OpenCode Go";
+          options = {
+            baseURL = "https://opencode.ai/zen/v1";
+            timeout = false;
+          };
+          models = {
+            "gpt-5.6-luna" = {
+              name = "GPT-5.6 Luna";
+            };
+            "deepseek-v4-flash" = {
+              name = "DeepSeek V4 Flash";
+            };
+          };
+        };
         "anthropic" = {
           options = {
             timeout = false;
