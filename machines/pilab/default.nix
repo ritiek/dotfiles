@@ -129,7 +129,6 @@ in
     "home_assistant.long_lived_token" = { owner = "ritiek"; };
     "searx.url" = { owner = "ritiek"; };
     "opencode_api.key" = { owner = "ritiek"; };
-    "opencode_go_api.key" = { owner = "ritiek"; };
   };
 
   nixpkgs.config.allowUnfree = false;
