@@ -10,6 +10,11 @@ let
   # https://github.com/NousResearch/hermes-agent/pull/25995
   hermesGatewayOverlay = pkgs.callPackage ./patches/pr-25995 { };
 
+  # Patch for detail: "auto" on image_url blocks — reduces token bloat from
+  # full-resolution image tokenization (25-60x reduction).
+  # https://github.com/NousResearch/hermes-agent/issues/13065
+  hermesDetailAutoOverlay = pkgs.callPackage ./patches/detail-auto { };
+
   # The dependency-complete hermes CLI (sealed venv WITH the matrix+anthropic
   # groups) is the package used by the gateway service's ExecStart. The bare
   # `config.services.hermes-agent.package` lacks those deps, so we derive the
@@ -95,6 +100,7 @@ in
   # into every Python program on the system).
   systemd.services.hermes-agent.environment = {
     HERMES_GATEWAY_OVERLAY_DIR = "${hermesGatewayOverlay}";
+    HERMES_DETAIL_AUTO_OVERLAY_DIR = "${hermesDetailAutoOverlay}";
     PYTHONPATH = "${hermesClaudeAuth}:${pkgs.python312.withPackages (ps: [ ps.edge-tts ])}/lib/python3.12/site-packages:/var/lib/hermes/.hermes/local-packages";
     HERMES_PATCHES_DIR = "${hermesClaudeAuth}";
     # ffmpeg required for TTS (Edge TTS audio conversion)
@@ -216,6 +222,25 @@ in
 
     extraDependencyGroups = [ "matrix" ];
 
+    # Make config.yaml fully Nix-managed (declarative, no imperative drift).
+    #
+    # By default the module MERGES `settings` into the existing config.yaml via
+    # nix/configMergeScript.nix, which does deep_merge(existing, nix): Nix keys
+    # win, but keys absent from Nix are NEVER deleted. So commenting a block out
+    # here left it live in config.yaml forever -- that is how a superseded
+    # `auxiliary.vision` block silently forced image routing to "text" mode, and
+    # how the superseded tts.openai / tts.providers.hannah-groq blocks below
+    # lingered after being commented out.
+    #
+    # Setting `configFile` makes activation `install` this file over config.yaml
+    # instead of merging, so removing a key here actually removes it. The result
+    # is still a real writable file (mode 0640, not a store symlink), so hermes
+    # can write to it at runtime -- but any such write is reset on next rebuild.
+    # Consequence: settings changed via the TUI must be recorded here to persist.
+    configFile = pkgs.writeText "hermes-config.yaml" (
+      builtins.toJSON config.services.hermes-agent.settings
+    );
+
     settings = {
       platforms.webhook = {
         enabled = true;
@@ -297,7 +322,8 @@ in
         # default = "nemotron-3-ultra-free";
         # default = "opencode/deepseek-v4-flash-free";
         # default = "opencode-go/gpt-5.6-luna";
-        default = "opencode-go/qwen3.7-plus";
+        # default = "opencode-go/qwen3.7-plus";
+        default = "opencode-go/mimo-v2.5";
         # default = "mimo-v2.5-free";
         # default = "big-pickle";
         provider = "opencode-go";
@@ -305,6 +331,7 @@ in
         # the pay-as-you-go Zen balance and 401s with "Insufficient balance".
         base_url = "https://opencode.ai/zen/go/v1";
         api_key = "\${OPENCODE_GO_API_KEY}";
+        supports_vision = true;
 
         # default = "claude-sonnet-4-6";
         # provider = "anthropic";
@@ -335,13 +362,13 @@ in
         user_profile_enabled = true;
       };
       auxiliary = {
-        vision = {
-          provider = "opencode-go";
-          model = "mimo-v2.5";
-          # model = "qwen3.7-plus";
-          base_url = "https://opencode.ai/zen/go/v1";
-          api_key = "\${OPENCODE_GO_API_KEY}";
-        };
+        # vision = {
+        #   provider = "opencode-go";
+        #   # model = "mimo-v2.5";
+        #   model = "qwen3.7-plus";
+        #   base_url = "https://opencode.ai/zen/go/v1";
+        #   api_key = "\${OPENCODE_GO_API_KEY}";
+        # };
         title_generation = {
           provider = "opencode-go";
           model = "deepseek-v4-flash";
@@ -377,6 +404,9 @@ in
       voice = {
         tts_enabled = true;
       };
+      # Runtime-set onboarding flag, declared here so the now-authoritative
+      # config.yaml overwrite doesn't re-trigger the one-off prompt each rebuild.
+      onboarding.seen.busy_input_prompt = true;
       # TTS via a command-wrapper around the warm local kitten-tts-server.
       # The wrapper (kittenLocalTts) curls 127.0.0.1:7257 for the audio AND
       # plays it on the Bluetooth speaker (backgrounded). hermes still uploads
