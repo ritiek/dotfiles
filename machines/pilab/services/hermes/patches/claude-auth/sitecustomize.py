@@ -110,6 +110,28 @@ try:
             ),
         }
 
+        # Detail-auto patch: add detail: "auto" to image_url blocks so providers
+        # tokenize images at low detail instead of full resolution (25-60x fewer
+        # image tokens).  https://github.com/NousResearch/hermes-agent/issues/13065
+        _DETAIL_AUTO_DIR = os.environ.get("HERMES_DETAIL_AUTO_OVERLAY_DIR", "")
+        if _DETAIL_AUTO_DIR and os.path.isdir(_DETAIL_AUTO_DIR):
+            _OVERLAY_MODULES.update({
+                "agent.image_routing": os.path.join(
+                    _DETAIL_AUTO_DIR, "agent", "image_routing.py"
+                ),
+                "tools.computer_use.tool": os.path.join(
+                    _DETAIL_AUTO_DIR, "tools", "computer_use", "tool.py"
+                ),
+                # Moves images out of role:tool messages into a follow-up
+                # role:user message for providers that reject the former.
+                "agent.tool_executor": os.path.join(
+                    _DETAIL_AUTO_DIR, "agent", "tool_executor.py"
+                ),
+                "tools.vision_tools": os.path.join(
+                    _DETAIL_AUTO_DIR, "tools", "vision_tools.py"
+                ),
+            })
+
         class _GatewayOverlayFinder:
             def find_spec(self, fullname, path=None, target=None):
                 overlay_path = _OVERLAY_MODULES.get(fullname)
