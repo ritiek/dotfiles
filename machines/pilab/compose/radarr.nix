@@ -53,11 +53,14 @@
     requires = [
       "docker-network-radarr_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      servicePaths.radarr.configSource
-      "${everythingElsePath}/arr/movies"
-      "${everythingElsePath}/qbittorrent/downloads/complete"
-    ];
+    unitConfig = {
+      RequiresMountsFor = [
+        servicePaths.radarr.configSource
+        "${everythingElsePath}/arr/movies"
+        "${everythingElsePath}/qbittorrent/downloads/complete"
+      ];
+      ConditionPathIsMountPoint = everythingElsePath;
+    };
   };
 
   # Networks

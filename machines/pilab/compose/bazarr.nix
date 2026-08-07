@@ -53,11 +53,14 @@
     requires = [
       "docker-network-bazarr_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      servicePaths.bazarr.configSource
-      "${everythingElsePath}/arr/movies"
-      "${everythingElsePath}/arr/tv"
-    ];
+    unitConfig = {
+      RequiresMountsFor = [
+        servicePaths.bazarr.configSource
+        "${everythingElsePath}/arr/movies"
+        "${everythingElsePath}/arr/tv"
+      ];
+      ConditionPathIsMountPoint = everythingElsePath;
+    };
   };
 
   # Networks

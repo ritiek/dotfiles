@@ -82,6 +82,10 @@
     internalPort,
     refreshInterval ? 3,
     requiredMounts ? [],
+    # Optional: path that must already be a mountpoint before the socat proxy
+    # itself is allowed to start (e.g. a manually-mounted LUKS volume that
+    # isn't tracked by systemd/fstab, so RequiresMountsFor can't gate it).
+    requiredMountPoint ? null,
     rootTarget ? "docker-compose-${dockerServiceName}-root.target",
     idleCheckInterval ? "*:0/10",  # Every 10 minutes
     # Optional: custom startup command (defaults to starting the docker service)
@@ -207,7 +211,11 @@
         echo "Starting ${serviceName} auto-start proxy on port ${toString webUIPort}..."
         exec ${pkgs.socat}/bin/socat TCP4-LISTEN:${toString webUIPort},reuseaddr,fork EXEC:${connectionHandler}
       '';
-      unitConfig.RequiresMountsFor = requiredMounts;
+      unitConfig = {
+        RequiresMountsFor = requiredMounts;
+      } // lib.optionalAttrs (requiredMountPoint != null) {
+        ConditionPathIsMountPoint = requiredMountPoint;
+      };
       # Bind to multi-user.target so the proxy starts at boot independently of the root target
       wantedBy = [ "multi-user.target" ];
       after = [ "docker.service" ];
