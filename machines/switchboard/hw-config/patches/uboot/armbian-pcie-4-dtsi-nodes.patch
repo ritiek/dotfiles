@@ -1,0 +1,57 @@
+Add PCIe and ComboPHY DTS nodes to sun55i-a523
+
+Based on Armbian patch by Marvin Wewer, adapted for U-Boot v2026.04.
+
+--- a/dts/upstream/src/arm64/allwinner/sun55i-a523.dtsi
++++ b/dts/upstream/src/arm64/allwinner/sun55i-a523.dtsi
+@@ -2,6 +2,7 @@
+ // Copyright (C) 2023-2024 Arm Ltd.
+ 
+ #include <dt-bindings/interrupt-controller/arm-gic.h>
++#include <dt-bindings/phy/phy.h>
+ #include <dt-bindings/clock/sun6i-rtc.h>
+ #include <dt-bindings/clock/sun55i-a523-ccu.h>
+ #include <dt-bindings/clock/sun55i-a523-mcu-ccu.h>
+@@ -603,6 +604,42 @@
+ 			};
+ 		};
+ 
++		pcie: pcie@4800000 {
++			compatible = "allwinner,sun55i-pcie-v210-rc";
++			#address-cells = <3>;
++			#size-cells = <2>;
++			bus-range = <0x0 0xff>;
++			reg = <0x04800000 0x480000>;
++			reg-names = "dbi";
++			device_type = "pci";
++			ranges = <0x00000800 0 0x20000000 0x20000000 0 0x01000000
++				  0x81000000 0 0x21000000 0x21000000 0 0x01000000
++				  0x82000000 0 0x22000000 0x22000000 0 0x0e000000>;
++			phys = <&combophy PHY_TYPE_PCIE>;
++			phy-names = "pcie-phy";
++			#interrupt-cells = <1>;
++			num-edma = <4>;
++			max-link-speed = <2>;
++			num-ib-windows = <8>;
++			num-ob-windows = <8>;
++			linux,pci-domain = <0>;
++			clocks = <&osc24M>, <&ccu CLK_PCIE_AUX>;
++			clock-names = "hosc", "pclk_aux";
++			power-domains = <&pck600 PD_PCIE>;
++		};
++
++		combophy: phy@4f00000 {
++			compatible = "allwinner,inno-combphy";
++			reg = <0x04f00000 0x80000>,
++			      <0x04f80000 0x80000>;
++			reg-names = "phy-ctl", "phy-clk";
++			#phy-cells = <1>;
++			clocks = <&ccu CLK_USB3_REF>, <&ccu CLK_PLL_PERIPH0_200M>;
++			clock-names = "phyclk_ref", "refclk_par";
++			resets = <&ccu RST_BUS_PCIE_USB3>;
++			reset-names = "phy_rst";
++		};
++
+ 		ppu: power-controller@7001400 {
+ 			compatible = "allwinner,sun55i-a523-ppu";
+ 			reg = <0x07001400 0x400>;

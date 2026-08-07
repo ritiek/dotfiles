@@ -1,0 +1,45 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "radxa,cubie-a5e", "allwinner,sun55i-a527";
+
+	/*
+	 * SPI0 pin groups. The base dtsi marks these /omit-if-no-ref/, so they
+	 * are dropped from the DTB when no board enables spi0 - define them here.
+	 */
+	fragment@0 {
+		target = <&pio>;
+		__overlay__ {
+			spi0_pc_pins: spi0-pc-pins {
+				pins = "PC2", "PC4", "PC12";
+				function = "spi0";
+				allwinner,pinmux = <4>;
+			};
+
+			spi0_cs0_pc_pin: spi0-cs0-pc-pin {
+				pins = "PC3";
+				function = "spi0";
+				allwinner,pinmux = <4>;
+			};
+		};
+	};
+
+	/* Enable SPI0 and expose the SPI NOR chip as an MTD device */
+	fragment@1 {
+		target = <&spi0>;
+		__overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&spi0_pc_pins>, <&spi0_cs0_pc_pin>;
+			status = "okay";
+
+			flash@0 {
+				#address-cells = <1>;
+				#size-cells = <1>;
+				compatible = "jedec,spi-nor";
+				reg = <0>;
+				spi-max-frequency = <20000000>;
+			};
+		};
+	};
+};

@@ -1,0 +1,13 @@
+--- a/drivers/spi/spi-sunxi.c
++++ b/drivers/spi/spi-sunxi.c
+@@ -588,6 +588,10 @@
+ 	  .compatible = "allwinner,sun50i-r329-spi",
+ 	  .data = (ulong)&sun50i_r329_spi_variant,
+ 	},
++	{
++	  .compatible = "allwinner,sun55i-a523-spi",
++	  .data = (ulong)&sun50i_r329_spi_variant,
++	},
+ 	{ /* sentinel */ }
+ };
+

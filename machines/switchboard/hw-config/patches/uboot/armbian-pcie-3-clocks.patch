@@ -1,0 +1,32 @@
+Add PCIe/USB3 clock gates and reset to A523 CCU driver
+
+Based on Armbian patch by Marvin Wewer, adapted for U-Boot v2026.04.
+
+--- a/drivers/clk/sunxi/clk_a523.c	2026-08-05 01:21:04
++++ b/drivers/clk/sunxi/clk_a523.c	2026-08-05 01:21:21
+@@ -46,6 +46,8 @@
+ 	[CLK_BUS_EHCI0]		= GATE(0xa8c, BIT(4)),
+ 	[CLK_BUS_EHCI1]		= GATE(0xa8c, BIT(5)),
+ 	[CLK_BUS_OTG]		= GATE(0xa8c, BIT(8)),
++	[CLK_USB3_REF]		= GATE(0xa84, BIT(31)),
++	[CLK_PCIE_AUX]		= GATE(0xaa0, BIT(31)),
+ };
+ 
+ static struct ccu_reset a523_resets[] = {
+@@ -75,6 +77,7 @@
+ 	[RST_BUS_EHCI0]		= RESET(0xa8c, BIT(20)),
+ 	[RST_BUS_EHCI1]		= RESET(0xa8c, BIT(21)),
+ 	[RST_BUS_OTG]		= RESET(0xa8c, BIT(24)),
++	[RST_BUS_PCIE_USB3]	= RESET(0xaac, BIT(24)),
+ };
+ 
+ const struct ccu_desc a523_ccu_desc = {
+--- a/dts/upstream/include/dt-bindings/clock/sun55i-a523-ccu.h
++++ b/dts/upstream/include/dt-bindings/clock/sun55i-a523-ccu.h
+@@ -186,5 +186,6 @@
+ #define CLK_FANOUT1		177
+ #define CLK_FANOUT2		178
+ #define CLK_NPU			179
++#define CLK_USB3_REF		180
+ 
+ #endif /* _DT_BINDINGS_CLK_SUN55I_A523_CCU_H_ */
