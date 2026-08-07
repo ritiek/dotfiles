@@ -56,10 +56,13 @@
     requires = [
       "docker-network-qbittorrent_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      "${everythingElsePath}/qbittorrent/config"
-      "${everythingElsePath}/qbittorrent/downloads"
-    ];
+    unitConfig = {
+      RequiresMountsFor = [
+        "${everythingElsePath}/qbittorrent/config"
+        "${everythingElsePath}/qbittorrent/downloads"
+      ];
+      ConditionPathIsMountPoint = everythingElsePath;
+    };
   };
 
   # Networks

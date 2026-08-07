@@ -53,11 +53,14 @@
     requires = [
       "docker-network-sonarr_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      servicePaths.sonarr.configSource
-      "${everythingElsePath}/arr/tv"
-      "${everythingElsePath}/qbittorrent/downloads/complete"
-    ];
+    unitConfig = {
+      RequiresMountsFor = [
+        servicePaths.sonarr.configSource
+        "${everythingElsePath}/arr/tv"
+        "${everythingElsePath}/qbittorrent/downloads/complete"
+      ];
+      ConditionPathIsMountPoint = everythingElsePath;
+    };
   };
 
   # Networks
