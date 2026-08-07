@@ -17,37 +17,12 @@
   # SDIO wifi/bt driver requires kernel >= 7.0 - see ./aic8800-sdio.nix).
   boot.kernelPackages = pkgs.linuxPackages_7_0;
 
-  # A523/A527 CPU/GPU/DRAM thermal sensor support (THS0/THS1 controllers).
-  # Mainline as shipped in this kernel has no compatible-string match for
-  # this SoC's thermal hardware (only the older sun8i/sun50i variants), so
-  # /sys/class/thermal reports a static/uninitialized value that never
-  # updates. Backported from an upstream series not yet merged as of
-  # 2026-07-11: https://patchew.org/linux/20260704171411.1413349-1-iuncuim@gmail.com/
-  # "[PATCH v5 0/5] Allwinner: A523: add support for A523 THS0/1 controllers"
-  # Once this lands in mainline and nixpkgs bumps the kernel, this
-  # kernelPatches list can be dropped.
-  boot.kernelPatches = [
-    {
-      name = "sun55i-a523-thermal-1-dt-bindings";
-      patch = ./patches/0001-dt-bindings-thermal-sun8i-add-a523-ths.patch;
-    }
-    {
-      name = "sun55i-a523-thermal-2-reset-control-shared";
-      patch = ./patches/0002-thermal-sun8i-reset-control-shared-deasserted.patch;
-    }
-    {
-      name = "sun55i-a523-thermal-3-two-nvmem-cells";
-      patch = ./patches/0003-thermal-sun8i-calibration-two-nvmem-cells.patch;
-    }
-    {
-      name = "sun55i-a523-thermal-4-ths0-ths1-driver";
-      patch = ./patches/0004-thermal-sun8i-add-a523-ths0-ths1-support.patch;
-    }
-    {
-      name = "sun55i-a523-thermal-5-dts-sensors-zones";
-      patch = ./patches/0005-arm64-dts-allwinner-sun55i-add-thermal-sensors.patch;
-    }
-  ];
+  # A523/A527 thermal sensor support (THS0/THS1) is provided via
+  # boot.kernelPatches in ./cubie-a5e.nix (gated on hardware.cubie-a5e.enable
+  # above), not here - do not duplicate that list in this file, since
+  # boot.kernelPatches is list-typed and duplicate entries get concatenated,
+  # causing patches to be applied twice (the second application then fails
+  # with "Reversed (or previously applied) patch detected").
 
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelModules = [ "g_ether" ];

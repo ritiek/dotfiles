@@ -23,48 +23,22 @@
   ...
 }:
 let
-  armTrustedFirmwareSun55i = pkgs.buildPackages.buildArmTrustedFirmware rec {
-    platform = "sun55i_a523";
-    extraMeta.platforms = [ "aarch64-linux" ];
-    filesToInstall = [ "build/${platform}/release/bl31.bin" ];
-    src = pkgs.fetchFromGitHub {
-      owner = "jernejsk";
-      repo = "arm-trusted-firmware";
-      rev = "b5de74a685fb73b784e45bbbd18dd9a0c528d8b2";
-      hash = "sha256-6vD3p/mvKpTusGkehowgrKgdTrp8hzesVsoobTUMS40=";
-    };
-  };
-
-  ubootCubieA5E = pkgs.buildPackages.buildUBoot {
-    defconfig = "radxa-cubie-a5e_defconfig";
-    extraMeta.platforms = [ "aarch64-linux" ];
-    env.BL31 = "${armTrustedFirmwareSun55i}/bl31.bin";
-    filesToInstall = [ "u-boot-sunxi-with-spl.bin" ];
-  };
-
-  ubootFirmware = pkgs.buildPackages.stdenv.mkDerivation {
-    pname = "u-boot-radxa-cubie-a5e";
-    version = "2018.07-17";
-    src = pkgs.fetchurl {
-      url = "https://github.com/radxa-pkg/u-boot-aw2501/releases/download/2018.07-17/u-boot-aw2501_2018.07-17_all.deb";
-      hash = "sha256-hM2IV20KDh8TR8v0cyUe4f1RFk5E8sOh+OV/v0pyuok=";
-    };
-    nativeBuildInputs = [ pkgs.buildPackages.dpkg ];
-    unpackPhase = "dpkg-deb -x $src .";
-    installPhase = ''
-      mkdir -p $out
-      cp usr/lib/u-boot/radxa-cubie-a5e/boot0_sdcard.bin $out/
-      cp usr/lib/u-boot/radxa-cubie-a5e/boot_package.fex $out/
-    '';
-  };
+  uboot = import ./uboot.nix { inherit pkgs; };
 in
 {
   imports = [ "${modulesPath}/installer/sd-card/sd-image-aarch64.nix" ];
 
   options.hardware.cubie-a5e.uboot = lib.mkOption {
-    type = lib.types.enum [ "vendor" "mainline" ];
+    type = lib.types.enum [ "none" "vendor" "mainline-1gb" ];
     default = "vendor";
-    description = "U-Boot variant: 'vendor' (Radxa/Allwinner) or 'mainline' (requires WIP TF-A)";
+    description = ''
+      U-Boot variant to embed on this disk image:
+      'none' for SPI NOR boot (no U-Boot on the SD/NVMe/USB disk itself -
+      used once mainline U-Boot has been flashed to /dev/mtd0),
+      'vendor' (Radxa/Allwinner, SD-card boot only), or
+      'mainline-1gb' (mainline, WIP TF-A, adds SPI NOR + PCIe/NVMe boot
+      support; this board is the 1GB LPDDR4 variant).
+    '';
   };
 
   config = {
@@ -77,22 +51,22 @@ in
       compressImage = false;
 
       # boot0/boot_package (vendor) or u-boot-sunxi-with-spl.bin (mainline)
-      # are raw Allwinner BROM-read blobs written at fixed byte offsets,
+      # are raw Allwinner BROM-read blobs written at a fixed byte offset,
       # NOT part of any partition. Bump firmwarePartitionOffset from the
       # 8MiB default to 16MiB so it can never collide with them (matches
       # the original disko-based layout's boot partition start of sector
-      # 32768 = 16MiB).
-      firmwarePartitionOffset = 16; # MiB
+      # 32768 = 16MiB) - except for uboot="none" (SPI NOR boot), where
+      # there's no on-disk U-Boot gap to protect, so keep nixpkgs' default.
+      firmwarePartitionOffset = if config.hardware.cubie-a5e.uboot == "none" then 8 else 16; # MiB
 
-      postBuildCommands = lib.mkMerge [
-        (lib.mkIf (config.hardware.cubie-a5e.uboot == "vendor") ''
-          dd if=${ubootFirmware}/boot0_sdcard.bin of=$img bs=512 seek=256 conv=notrunc
-          dd if=${ubootFirmware}/boot_package.fex of=$img bs=512 seek=24576 conv=notrunc
-        '')
-        (lib.mkIf (config.hardware.cubie-a5e.uboot == "mainline") ''
-          dd if=${ubootCubieA5E}/u-boot-sunxi-with-spl.bin of=$img bs=1k seek=128 conv=notrunc
-        '')
-      ];
+      # vendor and mainline-1gb both expose a single pre-combined
+      # u-boot-sunxi-with-spl.bin blob (see uboot.nix), so both cases write
+      # it at the same fixed offset; uboot="none" writes nothing.
+      postBuildCommands = lib.mkIf (config.hardware.cubie-a5e.uboot != "none") ''
+        dd if=${
+          if config.hardware.cubie-a5e.uboot == "vendor" then uboot.vendor else uboot.mainline-1gb
+        }/u-boot-sunxi-with-spl.bin of=$img bs=1k seek=128 conv=notrunc
+      '';
     };
 
     fileSystems."/" = lib.mkDefault {
