@@ -1,0 +1,68 @@
+--- a/dts/upstream/src/arm64/allwinner/sun55i-a523.dtsi	2026-08-04 23:24:01
++++ b/dts/upstream/src/arm64/allwinner/sun55i-a523.dtsi	2026-08-05 00:04:03
+@@ -182,6 +182,20 @@
+ 				bias-disable;
+ 			};
+ 
++			/omit-if-no-ref/
++			spi0_pc_pins: spi0-pc-pins {
++				pins = "PC2", "PC4", "PC12";
++				function = "spi0";
++				allwinner,pinmux = <4>;
++			};
++
++			/omit-if-no-ref/
++			spi0_cs0_pc_pin: spi0-cs0-pc-pin {
++				pins = "PC3";
++				function = "spi0";
++				allwinner,pinmux = <4>;
++			};
++
+ 			uart0_pb_pins: uart0-pb-pins {
+ 				pins = "PB9", "PB10";
+ 				allwinner,pinmux = <2>;
+@@ -490,6 +504,19 @@
+ 			#size-cells = <0>;
+ 		};
+ 
++
++		spi0: spi@4025000 {
++			compatible = "allwinner,sun55i-a523-spi";
++			reg = <0x04025000 0x1000>;
++			interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&ccu CLK_BUS_SPI0>, <&ccu CLK_SPI0>;
++			clock-names = "ahb", "mod";
++			resets = <&ccu RST_BUS_SPI0>;
++			status = "disabled";
++			#address-cells = <1>;
++			#size-cells = <0>;
++		};
++
+ 		usb_otg: usb@4100000 {
+ 			compatible = "allwinner,sun55i-a523-musb",
+ 				     "allwinner,sun8i-a33-musb";
+
+--- a/dts/upstream/src/arm64/allwinner/sun55i-a527-cubie-a5e.dts	2026-08-04 23:24:01
++++ b/dts/upstream/src/arm64/allwinner/sun55i-a527-cubie-a5e.dts	2026-08-05 00:04:11
+@@ -320,6 +320,21 @@
+ 	vcc-pm-supply = <&reg_aldo3>;
+ };
+ 
++
++&spi0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pc_pins>, <&spi0_cs0_pc_pin>;
++	status = "okay";
++
++	flash@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <20000000>;
++	};
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pb_pins>;

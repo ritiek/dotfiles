@@ -309,7 +309,19 @@
             install -Dm755 $src $out/bin/lightpanda
           '';
         };
-      }
+      } // pkgs.lib.optionalAttrs (system == "aarch64-linux") (
+        let
+          uboot = import ./machines/switchboard/hw-config/uboot.nix { inherit pkgs; };
+        in {
+          # Mainline U-Boot (SPI NOR + PCIe/NVMe boot support) and the SPI
+          # NOR flash image for switchboard (Radxa Cubie A5E, 1GB variant).
+          # Build natively on switchboard itself (or another aarch64-linux
+          # host) and `flashcp -v result /dev/mtd0` once
+          # hardware.cubie-a5e.spi-nor has exposed the SPI NOR chip.
+          switchboard-uboot-1gb = uboot.mainline-1gb;
+          switchboard-spinor-1gb = uboot.spinor-1gb;
+        }
+      )
     );
 
     apps = inputs.flake-utils.lib.eachDefaultSystemMap (system:
@@ -702,6 +714,20 @@
       specialArgs = { inherit inputs; };
     };
 
+    # Same config as switchboard, but built with no U-Boot on disk (for
+    # booting from SPI NOR instead of the SD card's embedded U-Boot). Flash
+    # the resulting switchboard-spi-sd image onto the NVMe/USB drive after
+    # mainline U-Boot has been flashed to /dev/mtd0 (see switchboard-spinor-1gb).
+    nixosConfigurations.switchboard-spi = inputs.nixpkgs.lib.nixosSystem {
+      system = "aarch64-linux";
+      modules = [
+        ./machines/switchboard
+        ./machines/switchboard/hw-config
+        { hardware.cubie-a5e.uboot = "none"; }
+      ];
+      specialArgs = { inherit inputs; };
+    };
+
     homeConfigurations."ritiek@switchboard" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         system = "aarch64-linux";
@@ -1046,6 +1072,8 @@
     chocomelt-sd = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
 
     switchboard-sd = self.nixosConfigurations.switchboard.config.system.build.sdImage;
+
+    switchboard-spi-sd = self.nixosConfigurations.switchboard-spi.config.system.build.sdImage;
 
     zerokvm-sd = self.nixosConfigurations.zerokvm.config.system.build.sdImage;
 

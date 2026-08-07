@@ -1,0 +1,22 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "radxa,cubie-a5e", "allwinner,sun55i-a527";
+
+	/* Switch combo PHY from PCIe to USB 3.0 */
+	fragment@0 {
+		target = <&combophy>;
+		__overlay__ {
+			phy_use_sel = <1>; /* 0:PCIE; 1:USB3 */
+		};
+	};
+
+	/* Disable PCIe since combo PHY is in USB3 mode */
+	fragment@1 {
+		target = <&pcie>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+};
