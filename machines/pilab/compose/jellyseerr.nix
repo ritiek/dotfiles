@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, ... }:
+{ pkgs, lib, servicePaths, everythingElsePath, ... }:
 
 let
   webUIPort = 5055;
@@ -15,6 +15,7 @@ let
     requiredMounts = [
       servicePaths.jellyseerr.configSource
     ];
+    requiredMountPoint = everythingElsePath;
     idleCheckInterval = "*:0/20";
   };
 
@@ -63,9 +64,12 @@ in lib.mkMerge [
     requires = [
       "docker-network-jellyseerr_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      servicePaths.jellyseerr.configSource
-    ];
+    unitConfig = {
+      RequiresMountsFor = [
+        servicePaths.jellyseerr.configSource
+      ];
+      ConditionPathIsMountPoint = everythingElsePath;
+    };
   };
 
   # Networks

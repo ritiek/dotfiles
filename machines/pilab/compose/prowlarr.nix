@@ -52,9 +52,12 @@
     requires = [
       "docker-network-prowlarr_default.service"
     ];
-    unitConfig.RequiresMountsFor = [
-      "${everythingElsePath}/arr/configs/prowlarr"
-    ];
+    unitConfig = {
+      RequiresMountsFor = [
+        "${everythingElsePath}/arr/configs/prowlarr"
+      ];
+      ConditionPathIsMountPoint = everythingElsePath;
+    };
   };
 
   # Networks
