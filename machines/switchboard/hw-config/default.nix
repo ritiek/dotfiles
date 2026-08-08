@@ -41,9 +41,10 @@
   # implicit/inherited rather than something this config documents or pins,
   # and it has no earlycon (so very-early boot messages, before the real
   # 8250 driver probes, are lost). Set it explicitly here so it survives
-  # regardless of image format (SD vs SPI-NOR+NVMe/USB) and so the
-  # still-unvalidated switchboard-spi U-Boot boot chain has full console
-  # visibility for debugging.
+  # regardless of which medium the image is written to (SD, where the BROM
+  # reads the embedded U-Boot, vs USB/NVMe, where it comes from SPI NOR),
+  # and so the mainline U-Boot boot chain has full console visibility for
+  # debugging.
   boot.kernelParams = [
     "earlycon=uart8250,mmio32,0x02500000"
     "keep_bootcon"

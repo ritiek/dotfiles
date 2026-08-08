@@ -309,6 +309,32 @@
             install -Dm755 $src $out/bin/lightpanda
           '';
         };
+
+        # Allwinner FEL-mode tool, for recovering switchboard (Radxa Cubie
+        # A5E) when its SPI NOR U-Boot is corrupt and no U-Boot-bearing SD
+        # card is at hand. FEL is the BROM's last resort after MMC and SPI,
+        # so power the board over USB-C with no SD inserted to enter it:
+        #
+        #   nix run .#sunxi-fel -- ver    # expect soc=00001890(A523)
+        #   nix run .#sunxi-fel -- spl uboot-1gb.bin \
+        #     write 0x50000000 spinor-1gb.img exe 0x4a000000
+        #
+        # then from U-Boot's own console over UART (115200):
+        #
+        #   sf probe && sf update 0x50000000 0 0x1000000 && reset
+        #
+        # where uboot-1gb.bin and spinor-1gb.img are the
+        # switchboard-uboot-1gb and switchboard-spinor-1gb outputs below.
+        # `sunxi-fel spiflash-write` cannot be used directly as it has no
+        # A523 support yet, hence the detour via U-Boot's `sf` commands.
+        # Same meta override upstream uses, so `nix run` picks the right
+        # binary out of the multi-tool package.
+        sunxi-fel = pkgs.sunxi-tools.overrideAttrs (old: {
+          meta = old.meta // {
+            mainProgram = "sunxi-fel";
+            platforms = old.meta.platforms ++ [ system ];
+          };
+        });
       } // pkgs.lib.optionalAttrs (system == "aarch64-linux") (
         let
           uboot = import ./machines/switchboard/hw-config/uboot.nix { inherit pkgs; };
@@ -714,20 +740,6 @@
       specialArgs = { inherit inputs; };
     };
 
-    # Same config as switchboard, but built with no U-Boot on disk (for
-    # booting from SPI NOR instead of the SD card's embedded U-Boot). Flash
-    # the resulting switchboard-spi-sd image onto the NVMe/USB drive after
-    # mainline U-Boot has been flashed to /dev/mtd0 (see switchboard-spinor-1gb).
-    nixosConfigurations.switchboard-spi = inputs.nixpkgs.lib.nixosSystem {
-      system = "aarch64-linux";
-      modules = [
-        ./machines/switchboard
-        ./machines/switchboard/hw-config
-        { hardware.cubie-a5e.uboot = "none"; }
-      ];
-      specialArgs = { inherit inputs; };
-    };
-
     homeConfigurations."ritiek@switchboard" = inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = import inputs.nixpkgs {
         system = "aarch64-linux";
@@ -1071,9 +1083,12 @@
 
     chocomelt-sd = self.nixosConfigurations.chocomelt.config.system.build.sdImage;
 
+    # Universal image: embeds mainline U-Boot at the offsets the BROM reads
+    # off MMC, so it is self-bootable written to an SD card, and boots via
+    # SPI NOR (same U-Boot build) written to USB/NVMe, which the BROM cannot
+    # read at all. See hardware.cubie-a5e.uboot in
+    # ./machines/switchboard/hw-config/disko.nix.
     switchboard-sd = self.nixosConfigurations.switchboard.config.system.build.sdImage;
-
-    switchboard-spi-sd = self.nixosConfigurations.switchboard-spi.config.system.build.sdImage;
 
     zerokvm-sd = self.nixosConfigurations.zerokvm.config.system.build.sdImage;
 
