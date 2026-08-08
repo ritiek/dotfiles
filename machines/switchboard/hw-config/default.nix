@@ -27,6 +27,44 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelModules = [ "g_ether" ];
 
+  # Serial console boot logging - mirrors alcove's setup (Cubie A7S,
+  # ./../../alcove/hw-config.nix) but with this board's actual UART driver
+  # name/address, confirmed live via `cat /proc/device-tree/chosen/stdout-path`
+  # (serial0:115200n8) and `/proc/device-tree/aliases/serial0` (->
+  # /soc/serial@2500000): A523/A527's UART0 is a standard 8250-compatible
+  # (DesignWare) UART at 0x02500000, so unlike alcove's A733 (non-standard
+  # "ttyAS0" sunxi-uart driver naming), this board uses the generic "ttyS0".
+  #
+  # nixpkgs' sd-image-aarch64.nix (imported via ./disko.nix) already sets a
+  # mkDefault console=ttyS0,115200n8 console=ttyAMA0,115200n8 console=tty0,
+  # which is why boot logging over UART already works today - but that's
+  # implicit/inherited rather than something this config documents or pins,
+  # and it has no earlycon (so very-early boot messages, before the real
+  # 8250 driver probes, are lost). Set it explicitly here so it survives
+  # regardless of image format (SD vs SPI-NOR+NVMe/USB) and so the
+  # still-unvalidated switchboard-spi U-Boot boot chain has full console
+  # visibility for debugging.
+  boot.kernelParams = [
+    "earlycon=uart8250,mmio32,0x02500000"
+    "keep_bootcon"
+    "console=ttyS0,115200n8"
+    "console=tty0"
+  ];
+
+  # See alcove/cubie-a7s.nix's comment for the full writeup on why this
+  # needs to be set explicitly rather than left at nixpkgs' mkDefault:
+  # nixos/modules/system/boot/kernel.nix unconditionally appends
+  # "loglevel=${toString config.boot.consoleLogLevel}" to the end of
+  # boot.kernelParams, and the kernel takes the LAST duplicate cmdline
+  # param - so this is the only way to actually control verbosity.
+  boot.consoleLogLevel = 8;
+
+  # Guarantee a login shell over UART even if console= auto-detection ever
+  # changes (systemd-getty-generator already starts this automatically
+  # today since ttyS0 is a recognized console= name, but make it explicit
+  # like alcove does for a hard guarantee).
+  systemd.services."serial-getty@ttyS0".wantedBy = [ "getty.target" ];
+
   # USB gadget ethernet - allows SSH over USB-C on first boot
   # Connect to 10.0.0.4 from host (configure host side as 10.0.0.1/24)
   networking.interfaces.usb0.ipv4.addresses = [{
