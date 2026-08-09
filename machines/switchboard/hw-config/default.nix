@@ -35,21 +35,26 @@
   # (DesignWare) UART at 0x02500000, so unlike alcove's A733 (non-standard
   # "ttyAS0" sunxi-uart driver naming), this board uses the generic "ttyS0".
   #
-  # nixpkgs' sd-image-aarch64.nix (imported via ./disko.nix) already sets a
-  # mkDefault console=ttyS0,115200n8 console=ttyAMA0,115200n8 console=tty0,
-  # which is why boot logging over UART already works today - but that's
-  # implicit/inherited rather than something this config documents or pins,
-  # and it has no earlycon (so very-early boot messages, before the real
-  # 8250 driver probes, are lost). Set it explicitly here so it survives
-  # regardless of which medium the image is written to (SD, where the BROM
-  # reads the embedded U-Boot, vs USB/NVMe, where it comes from SPI NOR),
-  # and so the mainline U-Boot boot chain has full console visibility for
-  # debugging.
+  # Only earlycon is added here. nixpkgs' sd-image-aarch64.nix (imported via
+  # ./disko.nix) already sets console=ttyS0,115200n8 console=ttyAMA0,115200n8
+  # console=tty0 at NORMAL priority (nixos/modules/installer/sd-card/
+  # sd-image-aarch64.nix:24-28 - not mkDefault, despite what an earlier
+  # revision of this comment claimed), and boot.kernelParams is list-typed,
+  # so anything repeated here is concatenated rather than deduplicated. That
+  # registers the same console twice and makes the kernel print every single
+  # message twice over UART - which at 115200 baud with loglevel=8 measurably
+  # slows boot. So do NOT re-declare console= entries here.
+  #
+  # What the sd-image module does not provide is earlycon, so very early boot
+  # messages - before the real 8250 driver probes - were being lost. This
+  # board's UART0 is a standard 8250-compatible (DesignWare) controller at
+  # 0x02500000, confirmed live via `cat /proc/device-tree/chosen/stdout-path`
+  # (serial0:115200n8) and `/proc/device-tree/aliases/serial0` (->
+  # /soc/serial@2500000). Note this differs from alcove's A733, which needs
+  # the non-standard "ttyAS0" sunxi-uart naming (see ../../alcove/cubie-a7s.nix).
   boot.kernelParams = [
     "earlycon=uart8250,mmio32,0x02500000"
     "keep_bootcon"
-    "console=ttyS0,115200n8"
-    "console=tty0"
   ];
 
   # See alcove/cubie-a7s.nix's comment for the full writeup on why this
