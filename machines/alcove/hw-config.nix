@@ -123,6 +123,38 @@ in
     options = [ "X-mount.subdir=boot" "nofail" ];
   };
 
+  # Why this board cannot get switchboard's treatment (one universal image,
+  # U-Boot in SPI NOR, everything else on USB/NVMe - see
+  # ../switchboard/hw-config/disko.nix). Researched 2026-08-08; two
+  # independent blockers, either one fatal:
+  #
+  # 1. There is no SPI NOR chip on the Cubie A7S. Radxa's spec sheet lists
+  #    microSD + optional eMMC only, while the A5E lists "Boot Storage:
+  #    On-board SPI Flash" and the A7A (same A733 SoC) lists "Boot: 8MB SPI
+  #    NOR Flash". Schematic v1.10 contains no NOR part number at all (no
+  #    W25Q/XM25/MX25/GD25/EN25); its only "NOR" hits are rows of the generic
+  #    boot-strap resistor table, i.e. SoC capabilities, not populated parts.
+  #    The SPI0-capable PC-bank pins are consumed by eMMC here (PC5->EMMC-CLK,
+  #    PC6->EMMC-CMD, PC0/PC1->DS/RST, PC8..PC13->data), and PC2/PC3/PC4/PC12
+  #    carry no net. The A5E can use those pins for SPI NOR precisely because
+  #    it has no eMMC. Confirmed live: /proc/mtd is empty, there are no
+  #    /dev/mtd* nodes, and /sys/class/spi_master is empty - the DT exposes the
+  #    controllers, nothing is attached to them.
+  #
+  # 2. There is no mainline U-Boot or TF-A port for A733/sun60i - no
+  #    MACH_SUN60I, no defconfig, no BL31 platform upstream nor in
+  #    jernejsk/arm-trusted-firmware (whose a523-v4 branch is what the A5E
+  #    uses), and LPDDR5 init ships only as a closed Allwinner dramlib blob.
+  #    So even with a flash chip there would be no mainline SPL to put in it.
+  #
+  # Moving /boot to the USB SSD is separately impossible: the vendor 2018.07
+  # U-Boot reads extlinux.conf only from mmcblk0p2 (see above) and has no
+  # USB-storage boot path, and there is no mainline U-Boot to replace it with.
+  # The split above - vendor U-Boot + /boot on microSD, rootfs on USB SSD - is
+  # therefore already the most this hardware allows. Revisit only if a sun60i
+  # platform appears in jernejsk/arm-trusted-firmware, which is the leading
+  # indicator that mainline U-Boot support is coming.
+
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";
