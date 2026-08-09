@@ -13,10 +13,18 @@
 
   hardware.cubie-a5e.enable = true;
 
-  # One ComboPHY, shared: PCIe/NVMe or USB 3.0, never both. We boot from a USB
-  # drive and have no NVMe attached, so take the SuperSpeed side - "pcie" (the
-  # default) leaves the USB ports at 480 Mbps. Flip back if an NVMe is fitted.
-  hardware.cubie-a5e.combophy = "usb3";
+  # One ComboPHY, shared: PCIe/NVMe or USB 3.0, never both. Keep it on PCIe.
+  #
+  # "usb3" was tried (fd9c88c) and reverted: it does flip the PHY (verified
+  # live, /proc/device-tree/soc/phy@4f00000 status=okay phy_use_sel=1) but
+  # nothing drives it. Our patch set has the INNO combo PHY driver
+  # (patches/drv-phy-allwinner-add-pcie-usb3-driver.patch) yet the dtsi patch
+  # adds no xHCI/DWC3 controller node - only the vendor-style usbc1@11, which
+  # mainline's xhci-platform cannot bind. So the USB ports stayed at 480 Mbps
+  # and PCIe was lost for nothing. PCIe works because
+  # patches/drv-pci-sunxi-enable-pcie-support.patch supplies a real controller
+  # driver; there is no USB3 equivalent. Revisit only if an xHCI node lands.
+  hardware.cubie-a5e.combophy = "pcie";
 
   # Pinned to match the nixos-cubie-a5e repo's own kernel version (the aic8800
   # SDIO wifi/bt driver requires kernel >= 7.0 - see ./aic8800-sdio.nix).
