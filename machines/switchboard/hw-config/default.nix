@@ -27,34 +27,35 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelModules = [ "g_ether" ];
 
-  # Serial console boot logging - mirrors alcove's setup (Cubie A7S,
-  # ./../../alcove/hw-config.nix) but with this board's actual UART driver
-  # name/address, confirmed live via `cat /proc/device-tree/chosen/stdout-path`
-  # (serial0:115200n8) and `/proc/device-tree/aliases/serial0` (->
-  # /soc/serial@2500000): A523/A527's UART0 is a standard 8250-compatible
-  # (DesignWare) UART at 0x02500000, so unlike alcove's A733 (non-standard
-  # "ttyAS0" sunxi-uart driver naming), this board uses the generic "ttyS0".
+  # Serial console boot logging. Only earlycon is added here, deliberately.
   #
-  # Only earlycon is added here. nixpkgs' sd-image-aarch64.nix (imported via
-  # ./disko.nix) already sets console=ttyS0,115200n8 console=ttyAMA0,115200n8
-  # console=tty0 at NORMAL priority (nixos/modules/installer/sd-card/
-  # sd-image-aarch64.nix:24-28 - not mkDefault, despite what an earlier
-  # revision of this comment claimed), and boot.kernelParams is list-typed,
-  # so anything repeated here is concatenated rather than deduplicated. That
-  # registers the same console twice and makes the kernel print every single
-  # message twice over UART - which at 115200 baud with loglevel=8 measurably
-  # slows boot. So do NOT re-declare console= entries here.
-  #
-  # What the sd-image module does not provide is earlycon, so very early boot
-  # messages - before the real 8250 driver probes - were being lost. This
-  # board's UART0 is a standard 8250-compatible (DesignWare) controller at
+  # This board's UART0 is a standard 8250-compatible (DesignWare) controller at
   # 0x02500000, confirmed live via `cat /proc/device-tree/chosen/stdout-path`
   # (serial0:115200n8) and `/proc/device-tree/aliases/serial0` (->
-  # /soc/serial@2500000). Note this differs from alcove's A733, which needs
-  # the non-standard "ttyAS0" sunxi-uart naming (see ../../alcove/cubie-a7s.nix).
+  # /soc/serial@2500000). That differs from alcove's A733, which needs the
+  # non-standard "ttyAS0" sunxi-uart naming (see ../../alcove/cubie-a7s.nix).
+  #
+  # Do NOT re-declare console= entries here. nixpkgs' sd-image-aarch64.nix
+  # (imported via ./disko.nix) already sets console=ttyS0,115200n8
+  # console=ttyAMA0,115200n8 console=tty0 at NORMAL priority
+  # (nixos/modules/installer/sd-card/sd-image-aarch64.nix:24-28 - not
+  # mkDefault), and boot.kernelParams is list-typed, so repeats are
+  # concatenated rather than deduplicated. What the module does not provide is
+  # earlycon, so very early messages - before the real 8250 driver probes -
+  # were being lost. That is the only gap filled here.
+  #
+  # Do NOT add "keep_bootcon" either. It was tried, and it makes the kernel
+  # print every message twice over UART: earlycon and the real ttyS0 driver
+  # are two separate consoles pointing at the SAME controller, and the kernel
+  # would normally unregister the boot console at handover. keep_bootcon
+  # suppresses exactly that, leaving both registered - confirmed live in
+  # /proc/consoles, which listed "ttyS0 ... (E   p a)" alongside
+  # "uart8250 ... (E B p  )" (B = boot console) with both enabled. At 115200
+  # baud with loglevel=8 the duplication measurably slows boot. It buys
+  # nothing here: earlycon still covers the pre-probe window and hands over
+  # cleanly, and ttyS0 registers reliably on this board.
   boot.kernelParams = [
     "earlycon=uart8250,mmio32,0x02500000"
-    "keep_bootcon"
   ];
 
   # See alcove/cubie-a7s.nix's comment for the full writeup on why this
