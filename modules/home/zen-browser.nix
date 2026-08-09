@@ -317,6 +317,8 @@
         "font.name.monospace.x-western" = "FantasqueSansM Nerd Font Mono";
         "font.size.monospace.x-western" = 13;
         "font.minimum-size.x-western" = 14;
+
+        "zen.view.experimental-no-window-controls" = true;
       };
 
       search = {
