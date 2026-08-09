@@ -344,7 +344,16 @@ in
         lifetime_seconds = 300;
       };
       agent = {
-        max_turns = 60;
+        # Effectively unlimited. There is no "unlimited" sentinel upstream:
+        # agent/conversation_loop.py gates on `api_call_count < max_iterations`
+        # and IterationBudget.consume() stops at `_used >= max_total`, so 0 or
+        # -1 would mean *zero* API calls, not infinite. A large int is the
+        # upstream idiom for this (agent/curator.py uses max_iterations=9999).
+        #
+        # Raised from 60 on 2026-08-08: the Hinge review workflow hit 60/60
+        # mid-task twice, once leaving a decided LIKE unexecuted and AGENTS.md
+        # unpatched. A single profile costs ~20-30 turns.
+        max_turns = 9999;
       };
       compression = {
         enabled = true;
