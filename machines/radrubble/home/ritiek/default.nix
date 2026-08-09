@@ -124,6 +124,7 @@ in
       iptables
       nmap
       dig
+      picocom
       cryptsetup
       openssl
       deploy-rs
