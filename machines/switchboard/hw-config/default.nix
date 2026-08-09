@@ -13,6 +13,11 @@
 
   hardware.cubie-a5e.enable = true;
 
+  # One ComboPHY, shared: PCIe/NVMe or USB 3.0, never both. We boot from a USB
+  # drive and have no NVMe attached, so take the SuperSpeed side - "pcie" (the
+  # default) leaves the USB ports at 480 Mbps. Flip back if an NVMe is fitted.
+  hardware.cubie-a5e.combophy = "usb3";
+
   # Pinned to match the nixos-cubie-a5e repo's own kernel version (the aic8800
   # SDIO wifi/bt driver requires kernel >= 7.0 - see ./aic8800-sdio.nix).
   boot.kernelPackages = pkgs.linuxPackages_7_0;
