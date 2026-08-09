@@ -62,6 +62,7 @@ in
 
   nixarr = {
     enable = true;
+    stateDir = "${everythingElsePath}/.state/nixarr";
 
     radarr = {
       enable = true;
@@ -117,6 +118,10 @@ in
           "Session\\GlobalMaxInactiveSeedingMinutes" = 1;
           "Session\\UseAlternativeGlobalSpeedLimit" = false;
           "Session\\TempPathEnabled" = false;
+          # Override nixarr's default (${nixarr.mediaDir}/qbittorrent) to point
+          # at the EVERYTHING_ELSE drive where the migrated data lives.
+          "Session\\DefaultSavePath" = "${everythingElsePath}/qbittorrent/downloads";
+          "Session\\TempPath" = "${everythingElsePath}/qbittorrent/downloads/.incomplete";
         };
         Preferences = {
           "WebUI\\Username" = "ritiek";
@@ -124,6 +129,12 @@ in
           "Connection\\UPnP" = false;
           "General\\Locale" = "en";
           "General\\StatusbarExternalIPDisplayed" = true;
+          # Override nixarr's default download paths to use EVERYTHING_ELSE.
+          "Downloads\\SavePath" = "${everythingElsePath}/qbittorrent/downloads";
+          "Downloads\\TempPath" = "${everythingElsePath}/qbittorrent/downloads/.incomplete";
+          "Downloads\\ScanDirsV2" = builtins.toJSON {
+            "${everythingElsePath}/qbittorrent/downloads/.watch" = 0;
+          };
         };
         AutoRun = {
           # qBittorrent re-saves its own preferences (including AutoRun) to
