@@ -33,7 +33,10 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."memos" = {
-    image = "neosmemo/memos:latest";
+    image = "neosmemo/memos:0.30.0";
+    environment = {
+      "MEMOS_INSTANCE_URL" = "http://pilab.lion-zebra.ts.net:5230/";
+    };
     volumes = [
       "${homelabMediaPath}/services/memos:/var/opt/memos:rw"
     ];

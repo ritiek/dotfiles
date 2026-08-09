@@ -52,7 +52,7 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."archivist-es" = {
-    image = "docker.elastic.co/elasticsearch/elasticsearch:8.9.0";
+    image = "docker.elastic.co/elasticsearch/elasticsearch:8.19.0";
     environmentFiles = [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
@@ -124,7 +124,7 @@ in lib.mkMerge [
   };
 
   virtualisation.oci-containers.containers."tubearchivist" = {
-    image = "bbilly1/tubearchivist";
+    image = "bbilly1/tubearchivist:v0.5.10";
     environmentFiles = [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
