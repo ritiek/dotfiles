@@ -33,7 +33,7 @@ in lib.mkMerge [
   virtualisation.oci-containers.backend = "docker";
 
   virtualisation.oci-containers.containers."navidrome" = {
-    image = "deluan/navidrome:latest";
+    image = "deluan/navidrome:0.63.2";
     environment = {
       "ND_BASEURL" = "";
       "ND_LOGLEVEL" = "info";
