@@ -201,13 +201,6 @@ in
       default_agent = "plan";
       provider = {
         "opencode".options.timeout = false;
-        # Do NOT override npm/baseURL/models here: opencode-go is a built-in
-        # provider and its models use three different endpoints under
-        # https://opencode.ai/zen/go/v1 (/responses for gpt-5.6-luna,
-        # /chat/completions, /messages). Overriding baseURL with the
-        # pay-as-you-go Zen endpoint (https://opencode.ai/zen/v1) bills the Zen
-        # credit balance instead of the Go subscription and 401s with
-        # "Insufficient balance".
         "opencode-go".options.timeout = false;
         "anthropic" = {
           options = {
