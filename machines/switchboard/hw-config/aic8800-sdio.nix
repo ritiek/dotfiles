@@ -121,10 +121,21 @@ in
     #   LOGDATA  0x010  LOGSTEER  0x020  LOGSDPWRC  0x040  LOGWAKELOCK 0x080
     #   LOGRXPOLL 0x100 LOGIRQ    0x200  LOGFW      0x400
     #
-    # 3 = LOGERROR|LOGINFO keeps real failures and association/state
-    # messages while dropping the per-command and per-packet chatter. The
-    # param is writable at runtime (mode 0660), so debugging does not need a
-    # rebuild:
+    # 1 = LOGERROR only. 3 (LOGERROR|LOGINFO) was tried first and does kill
+    # the continuous chatter, but LOGINFO still dumps ~350 lines in one burst
+    # at driver init - the whole per-channel TX power calibration table and
+    # the xtal cap settings, e.g.
+    #   get_userconfig_txpwr_lvl_adj_in_fdrv:lvl_adj_5g_chan_155:0
+    #   get_userconfig_xtal_cap:xtal_cap_fine:0
+    # Measured on this board: 350 LOGINFO lines between 28.5s and 43.0s of
+    # uptime and none afterwards, so it is one-shot rather than ongoing, but
+    # at 115200 baud that burst is still ~30 KB, i.e. roughly 2.6 seconds
+    # added to every boot. None of it is actionable - it is a static dump of
+    # values already fixed by the firmware blob. Real failures still print,
+    # since LOGERROR stays on.
+    #
+    # The param is writable at runtime (mode 0660), so debugging does not need
+    # a rebuild - though note the init dump only replays on module reload:
     #   echo 1039 | sudo tee /sys/module/aic8800_fdrv/parameters/aicwf_dbg_level
     #
     # Note the modprobe name is the .ko name (aic8800_fdrv_sdio) while
@@ -137,7 +148,7 @@ in
     # messages cannot be tuned without patching the driver.
     boot.extraModprobeConfig = ''
       options aic8800_bsp_sdio aic_fw_path=/run/booted-system/firmware/aic8800/aic8800D80
-      options aic8800_fdrv_sdio aicwf_dbg_level=3
+      options aic8800_fdrv_sdio aicwf_dbg_level=1
     '';
 
     # Bluetooth HCI over UART1
