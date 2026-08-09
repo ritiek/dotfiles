@@ -139,7 +139,7 @@
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-webserver" = {
-    image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
+    image = "ghcr.io/paperless-ngx/paperless-ngx:3.0.5";
     environmentFiles = [
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
