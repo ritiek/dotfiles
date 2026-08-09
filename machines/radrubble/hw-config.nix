@@ -84,6 +84,26 @@ in
 
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
+  # sdImageRockchip's populateRootCommands (nabam/nixos-rockchip) calls
+  # generic-extlinux-compatible.populateCmd with no -g flag, so it falls
+  # back to nixpkgs' own configurationLimit default. -g N (any N > 0) makes
+  # extlinux-conf-builder.sh scrape the *build host's* /nix/var/nix/profiles
+  # for extra system-*-link generations and copy each one's kernel+initrd
+  # into the image, same as switchboard's disko.nix hit: since these
+  # aarch64 images are built natively on alcove, that bakes alcove's own
+  # generations into radrubble's image - dead menu entries whose init=
+  # store paths don't exist on this rootfs, a kernel for a different SoC,
+  # plus dead weight under /boot/nixos. Pass -g 0 so only the default entry
+  # is emitted - getopts honours the last occurrence, overriding the -g
+  # already baked into populateCmd. This only affects the image; on the
+  # running system the bootloader installer runs on the target against its
+  # own profile, so deploys still get proper rollback entries.
+  sdImage.populateRootCommands = lib.mkForce ''
+    mkdir -p ./files/boot
+    ${config.boot.loader.generic-extlinux-compatible.populateCmd} \
+      -c ${config.system.build.toplevel} -d ./files/boot -g 0
+  '';
+
   # Ref:
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
   systemd.tmpfiles.settings = {
