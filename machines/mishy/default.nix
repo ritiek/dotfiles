@@ -520,6 +520,8 @@
       enable = true;
       libnotify = true;
     };
+
+    xppen.enable = true;
   };
 
   # Needed for GTK apps (swaync) to resolve icon names from hicolor theme.
