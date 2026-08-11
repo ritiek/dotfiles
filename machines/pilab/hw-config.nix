@@ -72,13 +72,34 @@ in
       #   value = "serial0,115200 console=tty1";
       # };
     };
-    # Settings currently on my Pi5.
-    # [all]
-    # BOOT_UART=1
-    # BOOT_ORDER=0xf461
-    # NET_INSTALL_AT_POWER_ON=1
-    # POWER_OFF_ON_HALT=1
-    # WAKE_ON_GPIO=0
+    # EEPROM bootloader settings. NOT managed by Nix -- these live in the Pi 5's
+    # on-board SPI flash (Winbond W25Q16.V, 2MB, /dev/spidev10.0). Read with
+    # `vcgencmd bootloader_config`; edit with:
+    #   nix-shell -p raspberrypi-eeprom flashrom \
+    #     --run 'sudo env PATH="$PATH" rpi-eeprom-config --edit'
+    # Current contents:
+    #   [all]
+    #   BOOT_UART=1
+    #   BOOT_ORDER=0xf416          # read right-to-left: NVMe -> SD -> USB -> restart
+    #   NET_INSTALL_AT_POWER_ON=1
+    #
+    # This machine boots with NO microSD card present. The second-stage
+    # bootloader lives in the SPI flash above, and BOOT_ORDER=0xf416 makes it
+    # load config.txt + kernel.img directly from nvme0n1p1 (see fileSystems
+    # below). PCIE_PROBE=1 is NOT required: boot mode 6 alone is enough for the
+    # bootloader to enumerate the Samsung 980 behind the ASM2806 PCIe switch.
+    # Verified 2026-08-11 on bootloader release 2026-05-26. (Upstream support:
+    # NVMe-behind-switch 2024-05-13, PCIe BAR fix 2024-10-21, >=32MB read fix
+    # 2025-06-09 -- see raspberrypi/firmware#1833.)
+    #
+    # Check what it actually booted from:
+    #   xxd -p /proc/device-tree/chosen/bootloader/boot-mode   # 06 = NVMe, 01 = SD
+    #
+    # Do NOT downgrade the bootloader below 2025-06-09: kernel.img is ~32.3 MiB
+    # and older releases fail contiguous NVMe reads >= 32 MiB.
+    #
+    # A full backup of the SPI flash is at /root/pieeprom-backup-20260811-2248.bin
+    # (restore: `flashrom -p linux_spi:dev=/dev/spidev10.0,spispeed=16000 -w <file>`).
     base-dt-params = {
       BOOT_UART = {
         value = 1;
@@ -150,6 +171,31 @@ in
     };
   };
 
+  # Disk layout. Everything is on the Samsung 980 (nvme0n1) behind the ASM2806
+  # PCIe switch on the Seeed dual-M.2 HAT. There is NO microSD card.
+  #
+  #   nvme0n1p1  1.1G  vfat  FIRMWARE          -> /boot/firmware
+  #   nvme0n1p2  618G  ext4  NIXOS_SD          -> /
+  #   nvme0n1p3  313G  ext4  NIX_BINARY_CACHE
+  #   nvme1n1    1.8T  LUKS  HOMELAB_MEDIA     -> unlocked post-boot, see home/ritiek
+  #
+  # The label names are historical and misleading: NIXOS_SD and FIRMWARE are on
+  # NVMe, not on an SD card. They are kept because the imported `sd-image`
+  # module hardcodes them -- `/boot/firmware` resolves from
+  # `by-label/${config.sdImage.firmwarePartitionName}` (= FIRMWARE) in nixpkgs
+  # sd-image.nix, and `/` from NIXOS_SD here. Renaming them means overriding
+  # both, so we relabel the disks instead of the config.
+  #
+  # The retired microSD is labelled FIRMWARE_SD / NIXOS_UNUSED_SD specifically
+  # so that reinserting it does NOT collide with these labels. It still holds a
+  # bootable clone of an old generation, but its cmdline.txt hardcodes an
+  # init=/nix/store/... path that will eventually be garbage-collected.
+  #
+  # NOTE: do not create a FAT partition containing config.txt on nvme1n1. The
+  # bootloader has no way to pin which NVMe device it boots from ("scan PCIe for
+  # an NVMe device", singular), so a second bootable drive makes boot
+  # non-deterministic. It is unambiguous today only because nvme1n1 is
+  # whole-disk LUKS with no partition table.
   fileSystems = {
     "/" = {
       device = "/dev/disk/by-label/NIXOS_SD";
