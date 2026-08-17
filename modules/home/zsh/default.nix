@@ -40,6 +40,22 @@
           bgnotify "$title in $3s" "$2";
         }
 
+        # Mirror a remote-adb-connected device's screen locally via scrcpy, by
+        # tunneling the remote adb server (5037) and scrcpy's own data port
+        # (27183) over SSH. Usage: scrcpy-opengl-from <hostname>
+        function scrcpy-opengl-from {
+          local host="$1"
+          if [[ -z "$host" ]]; then
+            echo "Usage: scrcpy-opengl-from <hostname>" >&2
+            return 1
+          fi
+
+          local tunnel_spec="5038:127.0.0.1:5037 -L 27183:127.0.0.1:27183 $host"
+          ssh -f -N -L 5038:127.0.0.1:5037 -L 27183:127.0.0.1:27183 "$host"
+          ADB_SERVER_SOCKET=tcp:127.0.0.1:5038 scrcpy --render-driver=opengl --mouse=sdk --keyboard=sdk --max-size=960 --force-adb-forward
+          pkill -f "$tunnel_spec"
+        }
+
         # Allow symlinks
         ZSH_DISABLE_COMPFIX=true
 
