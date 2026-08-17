@@ -331,6 +331,14 @@ window-rule {
   default-window-height { fixed 49; }
 }
 
+// Let scrcpy open floating so niri respects its own requested window
+// size (device aspect ratio, capped at --max-size) instead of forcing
+// it into the tiled column width/height.
+window-rule {
+  match app-id="scrcpy"
+  open-floating true
+}
+
 // window-rule {
 //     match app-id="^org\.gnome\.Nautilus$"
 //     default-column-width { fixed 800; }
