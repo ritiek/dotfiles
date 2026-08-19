@@ -63,12 +63,61 @@
           # device path, so it is stable across reboots but will change if
           # either of those does. Re-check here if a pinned host ever silently
           # lands back in the dynamic range.
+          #
+          # The addresses below keep the last octet each device had on the
+          # ONT's 192.168.2.0/24, so services/pihole.nix reads as a
+          # straight s/2\./3./ and nothing has to be re-learned.
           reservations = [
             {
               hw-address = "a6:1b:64:13:ce:60";
               ip-address = "192.168.3.2";
               hostname = "alcove";
             }
+            # pilab. It answered on both .8 and .16 of the ONT's segment from
+            # this single MAC, so it can only hold one reservation -- the
+            # pilab-wlan name is dropped in services/pihole.nix accordingly.
+            {
+              hw-address = "d8:3a:dd:bb:d3:6e";
+              ip-address = "192.168.3.8";
+              hostname = "pilab";
+            }
+            {
+              hw-address = "42:c5:88:d0:96:68";
+              ip-address = "192.168.3.9";
+              hostname = "ritiek-edra-m2";
+            }
+            # alcove's wlan0. Only meaningful while alcove still associates
+            # with the ONT's radios; harmless once it is wired-only.
+            {
+              hw-address = "9c:04:b6:9d:41:bd";
+              ip-address = "192.168.3.12";
+              hostname = "alcove-wlan";
+            }
+            {
+              hw-address = "c8:93:46:8c:ff:f7";
+              ip-address = "192.168.3.13";
+              hostname = "phillips-air-purifier";
+            }
+            {
+              hw-address = "6c:94:66:1e:6f:81";
+              ip-address = "192.168.3.14";
+              hostname = "robotic-arm-esp32";
+            }
+            {
+              hw-address = "c4:82:e1:c7:75:0e";
+              ip-address = "192.168.3.4";
+              hostname = "mumbai-zebronics-switch";
+            }
+            {
+              hw-address = "a0:24:42:0b:21:e2";
+              ip-address = "192.168.3.5";
+              hostname = "mumbai-halox-switch";
+            }
+            # Five more hosts were live on the ONT's segment but are
+            # unidentified and unreferenced by any config, so they are left
+            # dynamic: ac:27:6e:a8:4d:20 (had .2, serves HTTP),
+            # bc:35:1e:77:b2:59 (.3), 98:03:cf:d2:39:10 (.6),
+            # 68:ca:c4:a0:93:09 (.7), 18:d7:17:1f:b2:71 (.10).
           ];
         }
       ];
