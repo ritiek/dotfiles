@@ -12,6 +12,9 @@
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
+    ./services/pihole.nix
+    ./services/homepage.nix
+    ./services/gatus.nix
   ];
 
   sops.secrets = {

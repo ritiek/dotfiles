@@ -1,0 +1,137 @@
+# Native Pi-hole (pihole-ftl + pihole-web), replacing pilab's dockerized
+# pihole/pihole container with nixpkgs' native NixOS modules.
+#
+# This is an INDEPENDENT/secondary Pi-hole instance -- it does not replace
+# pilab as the network's primary DNS resolver. It owns port 53 directly
+# (no host dnsmasq layer, unlike pilab which forwards port 53 -> 5335).
+#
+# Admin password hash, static DNS hosts/CNAMEs, DNS upstreams and adlists
+# are reused verbatim from pilab's live pihole.toml/gravity.db per user
+# request, to keep behavior consistent between the two instances.
+{ config, ... }:
+{
+  services.pihole-ftl = {
+    enable = true;
+
+    openFirewallDNS = true;
+    openFirewallWebserver = true;
+    # DHCP stays disabled (matches pilab's dhcp.active = false).
+    openFirewallDHCP = false;
+
+    lists = [
+      {
+        url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
+        type = "block";
+        enabled = true;
+        description = "Migrated from /etc/pihole/adlists.list";
+      }
+      {
+        url = "https://github.com/Pyenb/Pi-hole-blocklist/raw/refs/heads/main/blocklist.txt";
+        type = "block";
+        enabled = true;
+        description = "All in one";
+      }
+    ];
+
+    settings = {
+      dns = {
+        upstreams = [
+          "1.0.0.1"
+          "2606:4700:4700::1111"
+          "1.1.1.1"
+          "2606:4700:4700::1001"
+        ];
+        piholePTR = "HOSTNAMEFQDN";
+        bogusPriv = false;
+        listeningMode = "ALL";
+        # port left at default (53) -- this is an independent instance that
+        # owns port 53 directly, unlike pilab's 5335 host-dnsmasq workaround.
+
+        reply.host.force4 = true;
+
+        hosts = [
+          "192.168.2.8 pilab-ethernet.pihole"
+          "192.168.1.150 proxmox-minipc-ntfy.pihole"
+          "192.168.1.200 proxmox-minipc-tailscale.pihole"
+          "192.168.1.149 proxmox-minipc.pihole"
+          "192.168.1.199 proxmox-minipc-cloudflare.pihole"
+          "192.168.1.191 proxmox-minipc-crypto.pihole"
+          "192.168.1.196 proxmox-minipc-central-db.pihole"
+          "192.168.1.198 proxmox-minipc-nginx.pihole"
+          "192.168.1.18 proxmox-miner-hiveos.pihole"
+          "192.168.1.151 proxmox-minipc-homeassistant.pihole"
+          "192.168.2.14 robotic-arm-esp32.pihole"
+          "192.168.2.15 redmi-note-11.pihole"
+          "192.168.1.29 keyberry.pihole"
+          "192.168.1.6 deco-m5-pratiek-room.pihole"
+          "192.168.1.37 tablet-android-pa.pihole"
+          "192.168.1.12 main-phase.pihole"
+          "192.168.1.11 unknown-device-1.pihole"
+          "192.168.1.5 miner-smart-switch.pihole"
+          "192.168.1.35 alexa.pihole"
+          "192.168.1.34 unknown-device-4.pihole"
+          "192.168.1.45 deco-m5-fridge.pihole"
+          "192.168.1.9 esp8266-pratiek-room.pihole"
+          "192.168.1.17 imou-2.pihole"
+          "192.168.1.31 unknown-device-3.pihole"
+          "192.168.1.13 esp8266-fan-1.pihole"
+          "192.168.1.40 esp8266-fan-2.pihole"
+          "192.168.1.50 proxmox-miner-windows.pihole"
+          "192.168.1.43 proxmox-miner.pihole"
+          "192.168.2.11 pilab-wlan.pihole"
+          "192.168.1.54 esp8266-outside-area.pihole"
+          "192.168.1.60 google-nest-mini.pihole"
+          "192.168.1.25 proxmox-miner-nixos.pihole"
+          "192.168.2.5 mumbai-halox-switch.pihole"
+          "192.168.2.4 mumbai-zebronics-switch.pihole"
+          "192.168.1.36 itek-camera-front-door.pihole"
+          "192.168.1.64 amazon-fire-stick-tv.pihole"
+          "192.168.1.68 imou-3.pihole"
+          "192.168.1.69 raspberry-pi.pihole"
+          "192.168.1.74 imou-1.pihole"
+          "192.168.2.13 phillips-air-purifier.pihole"
+          "192.168.2.14 mishy.pihole"
+          "192.168.1.80 imou-4.pihole"
+          "192.168.1.82 miner-switch.pihole"
+          "192.168.2.9 ritiek-edra-m2.pihole"
+        ];
+
+        cnameRecords = [
+          "mishy,mishy.lion-zebra.ts.net,600"
+          "keyberry,keyberry.lion-zebra.ts.net,600"
+          "clawsiecats,clawsiecats.lion-zebra.ts.net,600"
+          "radrubble,radrubble.lion-zebra.ts.net,600"
+        ];
+      };
+
+      webserver = {
+        headers = [
+          "X-DNS-Prefetch-Control: off"
+          "Content-Security-Policy: default-src 'self' 'unsafe-inline';"
+          "X-Frame-Options: DENY"
+          "X-XSS-Protection: 0"
+          "X-Content-Type-Options: nosniff"
+          "Referrer-Policy: strict-origin-when-cross-origin"
+        ];
+        session.timeout = 60;
+        interface.theme = "default-dark";
+        api = {
+          max_sessions = 128;
+          app_sudo = true;
+          # Required for declarative `lists` (adlists) to auto-load on startup.
+          cli_pw = true;
+          # Reused verbatim from pilab's live pihole.toml (same admin +
+          # app password as pilab's instance, per user request).
+          pwhash = "$BALLOON-SHA256$v=1$s=1024,t=32$0CXmDtL0AJ2fina5PbN6Dw==$tVAj7+on6sfYMDRyt8UdNAeodrGSj4EO0uYS//lMOD8=";
+          app_pwhash = "$BALLOON-SHA256$v=1$s=1024,t=32$0UL4DHRsNhZUFVgbCFwFtA==$AqqGF+GBt/3h38pUFxWnLdjUNurkYryDGN66134aVy4=";
+        };
+      };
+    };
+  };
+
+  services.pihole-web = {
+    enable = true;
+    hostName = "switchboard.lion-zebra.ts.net";
+    ports = [ 80 ];
+  };
+}
