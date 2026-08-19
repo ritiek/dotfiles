@@ -11,6 +11,12 @@ let
   wanPpp = "ppp-wan";
 in
 {
+  # See modules/router/options.nix. Swapping this module for wan-dhcp.nix is
+  # the entire A -> B (and back) migration; lan.nix and nat-firewall.nix read
+  # these and need no edits.
+  router.wanInterface = wanPpp;
+  router.ipv6PrefixDelegation = true;
+
   # Whole-file secret, matching this repo's convention (sops.templates is used
   # nowhere here). Contents are pppd option lines:
   #   user "..."
