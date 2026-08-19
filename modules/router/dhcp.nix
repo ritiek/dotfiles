@@ -29,44 +29,33 @@
         {
           # Mandatory and must be unique per subnet.
           id = 1;
-          subnet = "192.168.2.0/24";
+          subnet = "192.168.3.0/24";
           interface = "br-lan";
 
-          # Everything in pihole.nix's static hosts list for this subnet sits
-          # at .4-.15, the ONT keeps .1 as a management address, and switchboard
-          # itself is at .254, so the pool is clear of all of them.
-          pools = [ { pool = "192.168.2.100 - 192.168.2.240"; } ];
+          # switchboard itself is .1; the rest of the subnet is free, since
+          # nothing has ever been addressed on it before. Leaving .2-.99 out of
+          # the pool for future static assignments.
+          pools = [ { pool = "192.168.3.100 - 192.168.3.240"; } ];
 
           option-data = [
-            # switchboard's br-lan address, see modules/router/lan.nix. Not .1,
-            # which the ONT holds on to even in bridge mode.
-            { name = "routers"; data = "192.168.2.254"; }
+            # switchboard's br-lan address, see modules/router/lan.nix. These
+            # two must be changed together with lanAddress there.
+            { name = "routers"; data = "192.168.3.1"; }
             # Pi-hole runs on this box and owns port 53 directly.
-            { name = "domain-name-servers"; data = "192.168.2.254"; }
+            { name = "domain-name-servers"; data = "192.168.3.1"; }
             { name = "domain-name"; data = "pihole"; }
           ];
 
-          # Intentionally empty.
+          # Intentionally empty for now.
           #
-          # Devices at 192.168.2.4/.5/.8/.9/.11/.13/.14/.15 have *.pihole names
-          # pinned to those addresses in services/pihole.nix. If any of them
-          # were getting those addresses from the modem's DHCP reservations
-          # rather than static config on the device itself, they will land in
-          # the pool above after cutover and their names will resolve to the
-          # wrong host.
-          #
-          # These are not pre-populated because the live ARP snapshot is not
-          # trustworthy enough to derive them from: .8 and .11 report the same
-          # MAC (pilab answering ARP on both its wired and wireless
-          # interfaces), and several of the listed hosts were not in the table
-          # at all. Guessing here risks handing the wrong address to the wrong
-          # device.
-          #
-          # After cutover, read /var/lib/kea/dhcp4.leases, match each device,
-          # and add entries of the form:
+          # Nothing that has a *.pihole name in services/pihole.nix lives on
+          # this subnet -- those are all still on the ONT's 192.168.2.0/24 --
+          # so there is nothing to pin yet. As devices migrate here, read
+          # /var/lib/kea/dhcp4.leases and add entries of the form:
           #   { hw-address = "aa:bb:cc:dd:ee:ff";
-          #     ip-address = "192.168.2.8";
-          #     hostname   = "pilab-ethernet"; }
+          #     ip-address = "192.168.3.8";
+          #     hostname   = "some-host"; }
+          # remembering to update the matching pihole.nix entry.
           reservations = [ ];
         }
       ];

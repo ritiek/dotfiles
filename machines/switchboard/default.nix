@@ -13,7 +13,13 @@
     # time, and NetworkManager would fight systemd-networkd over the LAN
     # bridge. hostapd_ap.nix carries over the regulatory-database and
     # ieee80211_regdom settings that module used to provide.
-    ./../../modules/router/wan-pppoe.nix
+    ./../../modules/router/options.nix
+    # WAN variant. Exactly one of these:
+    #   wan-dhcp.nix  -- ONT still routes; switchboard is a DHCP client on its
+    #                    LAN and double-NATs 192.168.3.0/24 behind it.
+    #   wan-pppoe.nix -- ONT in bridge mode; switchboard dials PPPoE itself and
+    #                    is the real edge router (single NAT, IPv6 PD).
+    ./../../modules/router/wan-dhcp.nix
     ./../../modules/router/lan.nix
     ./../../modules/router/nat-firewall.nix
     ./../../modules/router/dhcp.nix
