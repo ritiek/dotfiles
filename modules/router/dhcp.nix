@@ -32,10 +32,17 @@
           subnet = "192.168.3.0/24";
           interface = "br-lan";
 
-          # switchboard itself is .1; the rest of the subnet is free, since
-          # nothing has ever been addressed on it before. Leaving .2-.99 out of
-          # the pool for future static assignments.
-          pools = [ { pool = "192.168.3.100 - 192.168.3.240"; } ];
+          # switchboard itself is .1; everything above it is fair game. There is
+          # no reason to hold back a .2-.99 "static block" here: kea honours
+          # reservations that fall inside a pool (reservations-out-of-pool
+          # defaults to false, so every allocation is checked against them), so
+          # a pinned host gets its address whether or not the pool covers it.
+          #
+          # The only thing a reserved-and-excluded block would buy is somewhere
+          # safe to put devices whose IP is hardcoded in firmware rather than
+          # handed out by DHCP. There are none on this subnet; if that changes,
+          # raise the pool floor rather than scattering statics through it.
+          pools = [ { pool = "192.168.3.2 - 192.168.3.240"; } ];
 
           option-data = [
             # switchboard's br-lan address, see modules/router/lan.nix. These
@@ -46,17 +53,23 @@
             { name = "domain-name"; data = "pihole"; }
           ];
 
-          # Intentionally empty for now.
+          # Everything else on this subnet is still dynamic. As devices migrate
+          # off the ONT's 192.168.2.0/24, read /var/lib/kea/dhcp4.leases and add
+          # entries in the same shape, remembering to add the matching
+          # services/pihole.nix host line so the name resolves.
           #
-          # Nothing that has a *.pihole name in services/pihole.nix lives on
-          # this subnet -- those are all still on the ONT's 192.168.2.0/24 --
-          # so there is nothing to pin yet. As devices migrate here, read
-          # /var/lib/kea/dhcp4.leases and add entries of the form:
-          #   { hw-address = "aa:bb:cc:dd:ee:ff";
-          #     ip-address = "192.168.3.8";
-          #     hostname   = "some-host"; }
-          # remembering to update the matching pihole.nix entry.
-          reservations = [ ];
+          # NOTE: these NICs have no burned-in MAC. udev's default
+          # MACAddressPolicy=persistent derives one from the machine-id and the
+          # device path, so it is stable across reboots but will change if
+          # either of those does. Re-check here if a pinned host ever silently
+          # lands back in the dynamic range.
+          reservations = [
+            {
+              hw-address = "a6:1b:64:13:ce:60";
+              ip-address = "192.168.3.2";
+              hostname = "alcove";
+            }
+          ];
         }
       ];
 
