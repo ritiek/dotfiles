@@ -94,6 +94,12 @@
           "192.168.1.80 imou-4.pihole"
           "192.168.1.82 miner-switch.pihole"
           "192.168.2.9 ritiek-edra-m2.pihole"
+
+          # switchboard's own LAN (192.168.3.0/24). Everything above is still on
+          # the ONT's segment; these are the hosts that have moved behind the
+          # router. Pinned in modules/router/dhcp.nix -- keep the two in sync.
+          "192.168.3.1 switchboard.pihole"
+          "192.168.3.2 alcove.pihole"
         ];
 
         cnameRecords = [
