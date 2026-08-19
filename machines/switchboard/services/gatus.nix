@@ -152,17 +152,15 @@
         }
 
         # LAN hosts
-        {
-          name = "redmi-note-11";
-          group = "lan";
-          url = "icmp://192.168.2.15";
-          interval = "60s";
-          conditions = [ "[CONNECTED] == true" ];
-        }
+        # redmi-note-11 removed: it had no kea reservation to point at (see
+        # services/pihole.nix), and 192.168.2.15 was switchboard's own end1
+        # address under the DHCP-WAN variant, so this check was really
+        # monitoring the router's WAN interface. Re-add once the phone appears
+        # in /var/lib/kea/dhcp4.leases.
         {
           name = "m2";
           group = "lan";
-          url = "icmp://192.168.2.9";
+          url = "icmp://192.168.3.9";
           interval = "60s";
           conditions = [ "[CONNECTED] == true" ];
         }
