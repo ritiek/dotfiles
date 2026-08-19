@@ -60,7 +60,7 @@
         reply.host.force4 = true;
 
         hosts = [
-          "192.168.2.8 pilab-ethernet.pihole"
+          "192.168.3.8 pilab-ethernet.pihole"
           "192.168.1.150 proxmox-minipc-ntfy.pihole"
           "192.168.1.200 proxmox-minipc-tailscale.pihole"
           "192.168.1.149 proxmox-minipc.pihole"
@@ -70,8 +70,14 @@
           "192.168.1.198 proxmox-minipc-nginx.pihole"
           "192.168.1.18 proxmox-miner-hiveos.pihole"
           "192.168.1.151 proxmox-minipc-homeassistant.pihole"
-          "192.168.2.14 robotic-arm-esp32.pihole"
-          "192.168.2.15 redmi-note-11.pihole"
+          "192.168.3.14 robotic-arm-esp32.pihole"
+          # The phone was not associated during the MAC sweep of the ONT's
+          # segment, so there is no reservation to point this at. .15 was also
+          # switchboard's own end1 address under the DHCP-WAN variant, i.e.
+          # this entry has been resolving to the router for a while. Re-add it
+          # with the real address once the phone shows up in
+          # /var/lib/kea/dhcp4.leases.
+          # "192.168.3.15 redmi-note-11.pihole"
           "192.168.1.29 keyberry.pihole"
           "192.168.1.6 deco-m5-pratiek-room.pihole"
           "192.168.1.37 tablet-android-pa.pihole"
@@ -88,22 +94,25 @@
           "192.168.1.40 esp8266-fan-2.pihole"
           "192.168.1.50 proxmox-miner-windows.pihole"
           "192.168.1.43 proxmox-miner.pihole"
-          "192.168.2.11 pilab-wlan.pihole"
+          # pilab answers on one MAC (d8:3a:dd:bb:d3:6e) for both its wired and
+          # wireless addresses, so kea can only pin it once. pilab-ethernet
+          # above is that reservation; there is no second address to name.
+          # "192.168.3.11 pilab-wlan.pihole"
           "192.168.1.54 esp8266-outside-area.pihole"
           "192.168.1.60 google-nest-mini.pihole"
           "192.168.1.25 proxmox-miner-nixos.pihole"
-          "192.168.2.5 mumbai-halox-switch.pihole"
-          "192.168.2.4 mumbai-zebronics-switch.pihole"
+          "192.168.3.5 mumbai-halox-switch.pihole"
+          "192.168.3.4 mumbai-zebronics-switch.pihole"
           "192.168.1.36 itek-camera-front-door.pihole"
           "192.168.1.64 amazon-fire-stick-tv.pihole"
           "192.168.1.68 imou-3.pihole"
           "192.168.1.69 raspberry-pi.pihole"
           "192.168.1.74 imou-1.pihole"
-          "192.168.2.13 phillips-air-purifier.pihole"
-          "192.168.2.14 mishy.pihole"
+          "192.168.3.13 phillips-air-purifier.pihole"
+          "192.168.3.14 mishy.pihole"
           "192.168.1.80 imou-4.pihole"
           "192.168.1.82 miner-switch.pihole"
-          "192.168.2.9 ritiek-edra-m2.pihole"
+          "192.168.3.9 ritiek-edra-m2.pihole"
 
           # switchboard's own LAN (192.168.3.0/24). Everything above is still on
           # the ONT's segment; these are the hosts that have moved behind the

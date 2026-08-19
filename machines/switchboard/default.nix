@@ -19,7 +19,7 @@
     #                    LAN and double-NATs 192.168.3.0/24 behind it.
     #   wan-pppoe.nix -- ONT in bridge mode; switchboard dials PPPoE itself and
     #                    is the real edge router (single NAT, IPv6 PD).
-    ./../../modules/router/wan-dhcp.nix
+    ./../../modules/router/wan-pppoe.nix
     ./../../modules/router/lan.nix
     ./../../modules/router/nat-firewall.nix
     ./../../modules/router/dhcp.nix
