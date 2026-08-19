@@ -8,7 +8,7 @@
 # Admin password hash, static DNS hosts/CNAMEs, DNS upstreams and adlists
 # are reused verbatim from pilab's live pihole.toml/gravity.db per user
 # request, to keep behavior consistent between the two instances.
-{ config, ... }:
+{ config, lib, ... }:
 {
   services.pihole-ftl = {
     enable = true;
@@ -18,20 +18,30 @@
     # DHCP stays disabled (matches pilab's dhcp.active = false).
     openFirewallDHCP = false;
 
-    lists = [
-      {
-        url = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts";
-        type = "block";
-        enabled = true;
-        description = "Migrated from /etc/pihole/adlists.list";
-      }
-      {
-        url = "https://github.com/Pyenb/Pi-hole-blocklist/raw/refs/heads/main/blocklist.txt";
-        type = "block";
-        enabled = true;
-        description = "All in one";
-      }
-    ];
+    # Deliberately EMPTY -- see the pihole-gravity service at the bottom of this
+    # file. The blocklists themselves are unchanged and still live in
+    # gravity.db; they are simply no longer managed through this option.
+    #
+    # Currently seeded (verified in gravity.db, both enabled):
+    #   https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    #   https://github.com/Pyenb/Pi-hole-blocklist/raw/refs/heads/main/blocklist.txt
+    #
+    # Why: `lists` is a one-way first-boot seeder, not a declarative option.
+    # It POSTs each URL to the FTL API on every boot, and nixpkgs'
+    # pihole-ftl-setup-script.nix treats the resulting
+    #   "UNIQUE constraint failed: adlist.address, adlist.type"
+    # as a failure, so `pihole-ftl-setup.service` exits 1 on every boot after
+    # the first and sits in `systemctl --failed` forever. Gravity itself
+    # succeeds; only the exit code is wrong. Removing entries from this list
+    # also does not remove them from gravity.db (nixpkgs#505714), so it never
+    # actually reconciled state either way.
+    #
+    # `enable = builtins.length cfg.lists > 0` in the upstream module means
+    # emptying this makes the broken unit disappear entirely.
+    #
+    # To add or remove a blocklist now: use the Pi-hole web UI, and update the
+    # comment above so the repo still records what is configured.
+    lists = [ ];
 
     settings = {
       dns = {
@@ -124,7 +134,8 @@
         api = {
           max_sessions = 128;
           app_sudo = true;
-          # Required for declarative `lists` (adlists) to auto-load on startup.
+          # Required for the `pihole` CLI to authenticate against the local
+          # API -- `pihole -g` in the pihole-gravity service below needs it.
           cli_pw = true;
           # Reused verbatim from pilab's live pihole.toml (same admin +
           # app password as pilab's instance, per user request).
@@ -139,5 +150,73 @@
     enable = true;
     hostName = "switchboard.lion-zebra.ts.net";
     ports = [ 80 ];
+  };
+
+  # Periodic blocklist refresh.
+  #
+  # nixpkgs' pihole-ftl module ships NO gravity timer at all -- the only thing
+  # that ever runs `pihole -g` is pihole-ftl-setup.service, which we disabled
+  # above (and which only ran at boot anyway). Without this, blocklists would
+  # go stale until the next reboot.
+  #
+  # Hardening below mirrors upstream's pihole-ftl-setup unit.
+  systemd.services.pihole-gravity = {
+    description = "Pi-hole gravity (blocklist) refresh";
+    after = [
+      "network-online.target"
+      "pihole-ftl.service"
+    ];
+    wants = [
+      "network-online.target"
+      "pihole-ftl.service"
+    ];
+
+    serviceConfig = {
+      Type = "oneshot";
+      User = config.services.pihole-ftl.user;
+      Group = config.services.pihole-ftl.group;
+
+      # Runs as the pihole user, so the CLI's internal sudo wrapper is a no-op.
+      ExecStart = "${lib.getExe config.services.pihole-ftl.piholePackage} -g";
+
+      # Gravity pulls several million domains; be a good citizen on a board
+      # with no cpufreq driver and therefore no ability to throttle itself.
+      Nice = 10;
+      IOSchedulingClass = "idle";
+
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      DevicePolicy = "closed";
+      ProtectSystem = "strict";
+      ProtectHome = "read-only";
+      ProtectControlGroups = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ReadWritePaths = [
+        config.services.pihole-ftl.configDirectory
+        config.services.pihole-ftl.stateDirectory
+        config.services.pihole-ftl.logDirectory
+      ];
+      RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6 AF_NETLINK";
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      MemoryDenyWriteExecute = true;
+      LockPersonality = true;
+    };
+  };
+
+  systemd.timers.pihole-gravity = {
+    description = "Weekly Pi-hole gravity refresh";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "weekly";
+      # Deliberately NOT tied to boot: a full gravity rebuild costs ~1.5 min
+      # CPU and ~330M RSS, which is not what this board should be doing while
+      # the household is waiting for the router to come up.
+      Persistent = true;
+      RandomizedDelaySec = "1h";
+    };
   };
 }
