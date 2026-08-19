@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ config, lib, ... }:
 let
   # end0 is the dwmac-sun8i MAC (the weaker of the two: no DMA capability
   # register, chain-mode descriptors). It carries the LAN, where the packet
@@ -9,18 +9,26 @@ let
   lanWlan = "wlan0";
   lanBridge = "br-lan";
 
-  # The LAN keeps 192.168.2.0/24 so that every 192.168.2.x entry in the static
-  # hosts list in machines/switchboard/services/pihole.nix stays valid.
+  # The LAN is its own subnet, distinct from the ONT's 192.168.2.0/24.
   #
-  # switchboard sits at .254 rather than the conventional .1 because the ONT
-  # keeps 192.168.2.1 as a management address even in bridge mode. Both boxes
-  # answering .1 was confirmed live (arp showed the ONT's 3c:52:a1:27:4d:a8
-  # winning), so .1 is left to the ONT and stays reachable for its web UI.
+  # The first cut reused 192.168.2.0/24 here, which was a mistake: switchboard's
+  # bridge and the ONT's LAN are two different L2 segments, so the same prefix
+  # existed twice with different gateways. That broke routing on any host with a
+  # foot in both (alcove needed hand-written /25 routes to beat pilab's
+  # Tailscale-advertised 192.168.2.0/24, and still could not reach the ONT's web
+  # UI). Separate prefixes make all of that go away.
+  #
+  # Everything in services/pihole.nix's static hosts list stays valid because
+  # those devices are all still on the ONT's segment.
   #
   # dhcp.nix hands this address out as both the router and the DNS server, so
   # the two must be changed together.
-  lanAddress = "192.168.2.254";
+  lanAddress = "192.168.3.1";
   lanPrefix = 24;
+
+  # Only meaningful once the WAN actually delegates a prefix; see
+  # modules/router/options.nix.
+  pd = config.router.ipv6PrefixDelegation;
 in
 {
   # NetworkManager and hostapd cannot share a radio, and NM's catch-all DHCP
@@ -81,21 +89,26 @@ in
         networkConfig = {
           ConfigureWithoutCarrier = true;
           IPv6AcceptRA = false;
+
+          # Explicit per-link, for the same reason as on the WAN: networkd
+          # manages the per-interface forwarding sysctls itself.
+          IPv4Forwarding = true;
+          IPv6Forwarding = true;
+        }
+        // lib.optionalAttrs pd {
           # Carve a /64 out of the prefix delegated on the WAN and advertise
           # it. networkd is used rather than radvd/corerad specifically
           # because it re-announces automatically when the ISP rotates the
           # delegated prefix.
           DHCPPrefixDelegation = true;
           IPv6SendRA = true;
-
-          # Explicit per-link, for the same reason as on ppp-wan: networkd
-          # manages the per-interface forwarding sysctls itself.
-          IPv4Forwarding = true;
-          IPv6Forwarding = true;
         };
 
+        linkConfig.RequiredForOnline = "no";
+      }
+      // lib.optionalAttrs pd {
         dhcpPrefixDelegationConfig = {
-          UplinkInterface = "ppp-wan";
+          UplinkInterface = config.router.wanInterface;
           SubnetId = 1;
           Token = "static:::1";
           Announce = true;
@@ -107,8 +120,6 @@ in
           Managed = false;
           OtherInformation = false;
         };
-
-        linkConfig.RequiredForOnline = "no";
       };
     };
   };
