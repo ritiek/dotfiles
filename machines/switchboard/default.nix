@@ -8,7 +8,17 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/attic-watch-store.nix
-    ./../../modules/wifi/network_manager.nix
+    # NOTE: modules/wifi/network_manager.nix is deliberately NOT imported.
+    # The AIC8800 cannot run a station supplicant and hostapd at the same
+    # time, and NetworkManager would fight systemd-networkd over the LAN
+    # bridge. hostapd_ap.nix carries over the regulatory-database and
+    # ieee80211_regdom settings that module used to provide.
+    ./../../modules/router/wan-pppoe.nix
+    ./../../modules/router/lan.nix
+    ./../../modules/router/nat-firewall.nix
+    ./../../modules/router/dhcp.nix
+    ./../../modules/router/tuning.nix
+    ./../../modules/wifi/hostapd_ap.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
