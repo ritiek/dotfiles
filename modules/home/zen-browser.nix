@@ -459,7 +459,7 @@
           };
           "PaperlessNGX" = {
             urls = [{
-              template = "http://pilab.lion-zebra.ts.net:8010/documents?title_content=aadhar%20card&sort=created&reverse=1&page=1";
+              template = "http://pilab.lion-zebra.ts.net:8010/documents";
               params = [
                 { name = "title_content"; value = "{searchTerms}"; }
                 { name = "sort"; value = "created"; }
@@ -473,6 +473,19 @@
               "@paperless"
             ];
           };
+          "YouTube" = {
+            urls = [{
+              template = "https://www.youtube.com/results";
+              params = [
+                { name = "search_query"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "https://www.youtube.com/s/desktop/ee47b5e0/img/logos/favicon_144x144.png";
+            definedAliases = [
+              "@yt"
+              "@youtube"
+            ];
+          };
           "Invidious" = {
             urls = [{
               template = "http://pilab.lion-zebra.ts.net:6030/search";
@@ -484,8 +497,6 @@
             definedAliases = [
               "@inv"
               "@invidious"
-              "@yt"
-              "@youtube"
             ];
           };
         };
