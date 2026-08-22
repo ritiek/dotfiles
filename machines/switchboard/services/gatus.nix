@@ -150,6 +150,16 @@
           conditions = [ "[STATUS] == 200" ];
           alerts = [ { type = "email"; } ];
         }
+        {
+          # Native SearXNG running on this very box (see
+          # services/searxng.nix); migrated from pilab's dockerized instance.
+          name = "searxng";
+          group = "tailnet";
+          url = "http://switchboard.lion-zebra.ts.net:6040/";
+          interval = "60s";
+          conditions = [ "[STATUS] == 200" ];
+          alerts = [ { type = "gotify"; } ];
+        }
 
         # LAN hosts
         # redmi-note-11 removed: it had no kea reservation to point at (see
