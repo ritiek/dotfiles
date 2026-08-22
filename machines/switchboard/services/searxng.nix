@@ -1,0 +1,2825 @@
+# Native SearXNG, replacing pilab's dockerized searxng + valkey containers.
+#
+# The `settings` attrset below is a full transcription of pilab's live
+# /media/HOMELAB_MEDIA/services/searxng/config/settings.yml (converted from
+# YAML to Nix), with only these switchboard-specific deltas:
+#
+#   - server.port/bind_address: listen on 0.0.0.0:6040 directly. Pilab ran
+#     the container on an internal port behind a socat lazy-loading proxy;
+#     this instance runs 24/7, so no lazy loading.
+#   - server.base_url: switchboard's tailnet hostname.
+#   - server.secret_key and outgoing.proxies credentials: moved out of the
+#     file into "$SEARXNG_SECRET" / "$PROXY_PASSWORD" placeholders. This repo
+#     is public, so credentials must not live in it: the module runs
+#     envsubst(1) over the generated settings.yml at start (searx-init
+#     service), substituting values from the sops-decrypted searxng.env
+#     environment file.
+#   - outgoing.proxies: dropped the host.docker.internal entry (docker-only
+#     hostname; there are no containers on switchboard).
+#   - top-level valkey section removed: redisCreateLocally provides a local
+#     redis instance over a unix socket and the module injects its URL into
+#     settings.valkey.url itself.
+#
+# Everything else (full engines list, plugins, categories_as_tabs,
+# checker tests, doi_resolvers) is preserved verbatim from pilab.
+{ config, ... }:
+{
+  # Contains:
+  #   SEARXNG_SECRET=<pilab's server.secret_key>
+  #   PROXY_PASSWORD=<password of the :8090 search proxies>
+  sops.secrets."searxng.env" = {
+    restartUnits = [ "searx-init.service" "searx.service" ];
+  };
+
+  networking.firewall.allowedTCPPorts = [ 6040 ];
+
+  services.searx = {
+    enable = true;
+    domain = "switchboard.lion-zebra.ts.net";
+    redisCreateLocally = true;
+    environmentFile = config.sops.secrets."searxng.env".path;
+
+    settings = {
+      "general" = {
+        "debug" = false;
+        "instance_name" = "SearXNG";
+        "privacypolicy_url" = false;
+        "donation_url" = false;
+        "contact_url" = false;
+        "enable_metrics" = true;
+        "open_metrics" = "";
+      };
+      "brand" = {
+        "new_issue_url" = "https://github.com/searxng/searxng/issues/new";
+        "docs_url" = "https://docs.searxng.org/";
+        "public_instances" = "https://searx.space";
+        "wiki_url" = "https://github.com/searxng/searxng/wiki";
+        "issue_url" = "https://github.com/searxng/searxng/issues";
+      };
+      "search" = {
+        "safe_search" = 0;
+        "autocomplete" = "";
+        "autocomplete_min" = 4;
+        "favicon_resolver" = "";
+        "default_lang" = "auto";
+        "ban_time_on_fail" = 5;
+        "max_ban_time_on_fail" = 120;
+        "suspended_times" = {
+          "SearxEngineAccessDenied" = 86400;
+          "SearxEngineCaptcha" = 86400;
+          "SearxEngineTooManyRequests" = 3600;
+          "cf_SearxEngineCaptcha" = 1296000;
+          "cf_SearxEngineAccessDenied" = 86400;
+          "recaptcha_SearxEngineCaptcha" = 604800;
+        };
+        "formats" = [
+          "html"
+          "csv"
+          "json"
+          "rss"
+        ];
+      };
+      "server" = {
+        "port" = 6040;
+        "bind_address" = "0.0.0.0";
+        "base_url" = "http://switchboard.lion-zebra.ts.net:6040/";
+        "limiter" = false;
+        "public_instance" = false;
+        "secret_key" = "$SEARXNG_SECRET";
+        "image_proxy" = false;
+        "http_protocol_version" = "1.0";
+        "method" = "GET";
+        "default_http_headers" = {
+          "X-Content-Type-Options" = "nosniff";
+          "X-Download-Options" = "noopen";
+          "X-Robots-Tag" = "noindex, nofollow";
+          "Referrer-Policy" = "no-referrer";
+        };
+      };
+      "ui" = {
+        "static_path" = "";
+        "templates_path" = "";
+        "query_in_title" = true;
+        "default_theme" = "simple";
+        "center_alignment" = false;
+        "default_locale" = "";
+        "theme_args" = {
+          "simple_style" = "auto";
+        };
+        "search_on_category_select" = true;
+        "hotkeys" = "default";
+        "url_formatting" = "pretty";
+      };
+      "outgoing" = {
+        "request_timeout" = 10.0;
+        "max_request_timeout" = 15.0;
+        "useragent_suffix" = "";
+        "pool_connections" = 100;
+        "pool_maxsize" = 20;
+        "enable_http2" = true;
+        "proxies" = {
+          "all://" = [
+            "http://root:$PROXY_PASSWORD@clawsiecats.lion-zebra.ts.net:8090"
+            "http://root:$PROXY_PASSWORD@mishy.lion-zebra.ts.net:8090"
+            "http://root:$PROXY_PASSWORD@keyberry.lion-zebra.ts.net:8090"
+          ];
+        };
+        "extra_proxy_timeout" = 10;
+      };
+      "plugins" = {
+        "searx.plugins.calculator.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.infinite_scroll.SXNGPlugin" = {
+          "active" = false;
+        };
+        "searx.plugins.hash_plugin.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.self_info.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.unit_converter.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.ahmia_filter.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.hostnames.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.time_zone.SXNGPlugin" = {
+          "active" = true;
+        };
+        "searx.plugins.oa_doi_rewrite.SXNGPlugin" = {
+          "active" = false;
+        };
+        "searx.plugins.tor_check.SXNGPlugin" = {
+          "active" = false;
+        };
+        "searx.plugins.tracker_url_remover.SXNGPlugin" = {
+          "active" = true;
+        };
+      };
+      "checker" = {
+        "off_when_debug" = true;
+        "additional_tests" = {
+          "rosebud" = {
+            "matrix" = {
+              "query" = "rosebud";
+              "lang" = "en";
+            };
+            "result_container" = [
+              "not_empty"
+              [
+                "one_title_contains"
+                "citizen kane"
+              ]
+            ];
+            "test" = [
+              "unique_results"
+            ];
+          };
+          "android" = {
+            "matrix" = {
+              "query" = [
+                "android"
+              ];
+              "lang" = [
+                "en"
+                "de"
+                "fr"
+                "zh-CN"
+              ];
+            };
+            "result_container" = [
+              "not_empty"
+              [
+                "one_title_contains"
+                "google"
+              ]
+            ];
+            "test" = [
+              "unique_results"
+            ];
+          };
+        };
+        "tests" = {
+          "infobox" = {
+            "infobox" = {
+              "matrix" = {
+                "query" = [
+                  "linux"
+                  "new york"
+                  "bbc"
+                ];
+              };
+              "result_container" = [
+                "has_infobox"
+              ];
+            };
+          };
+        };
+      };
+      "categories_as_tabs" = {
+        "general" = { };
+        "images" = { };
+        "videos" = { };
+        "news" = { };
+        "map" = { };
+        "music" = { };
+        "it" = { };
+        "science" = { };
+        "files" = { };
+        "social media" = { };
+      };
+      "engines" = [
+        {
+          "name" = "360search";
+          "engine" = "360search";
+          "shortcut" = "360so";
+          "timeout" = 10.0;
+        }
+        {
+          "name" = "360search videos";
+          "engine" = "360search_videos";
+          "shortcut" = "360sov";
+          "disabled" = true;
+        }
+        {
+          "name" = "9gag";
+          "engine" = "9gag";
+          "shortcut" = "9g";
+          "disabled" = true;
+        }
+        {
+          "name" = "acfun";
+          "engine" = "acfun";
+          "shortcut" = "acf";
+          "disabled" = true;
+        }
+        {
+          "name" = "adobe stock";
+          "engine" = "adobe_stock";
+          "shortcut" = "asi";
+          "categories" = [
+            "images"
+          ];
+          "adobe_order" = "relevance";
+          "adobe_content_types" = [
+            "photo"
+            "illustration"
+            "zip_vector"
+            "template"
+            "3d"
+            "image"
+          ];
+          "timeout" = 6;
+          "disabled" = true;
+        }
+        {
+          "name" = "adobe stock video";
+          "engine" = "adobe_stock";
+          "shortcut" = "asv";
+          "network" = "adobe stock";
+          "categories" = [
+            "videos"
+          ];
+          "adobe_order" = "relevance";
+          "adobe_content_types" = [
+            "video"
+          ];
+          "timeout" = 6;
+          "disabled" = true;
+        }
+        {
+          "name" = "adobe stock audio";
+          "engine" = "adobe_stock";
+          "shortcut" = "asa";
+          "network" = "adobe stock";
+          "categories" = [
+            "music"
+          ];
+          "adobe_order" = "relevance";
+          "adobe_content_types" = [
+            "audio"
+          ];
+          "timeout" = 6;
+          "disabled" = true;
+        }
+        {
+          "name" = "astrophysics data system";
+          "engine" = "astrophysics_data_system";
+          "shortcut" = "ads";
+          "api_key" = "";
+          "inactive" = true;
+        }
+        {
+          "name" = "alpine linux packages";
+          "engine" = "alpinelinux";
+          "disabled" = true;
+          "shortcut" = "alp";
+        }
+        {
+          "name" = "annas archive";
+          "engine" = "annas_archive";
+          "disabled" = true;
+          "shortcut" = "aa";
+          "timeout" = 5;
+        }
+        {
+          "name" = "ansa";
+          "engine" = "ansa";
+          "shortcut" = "ans";
+          "disabled" = true;
+        }
+        {
+          "name" = "apk mirror";
+          "engine" = "apkmirror";
+          "timeout" = 4.0;
+          "shortcut" = "apkm";
+          "disabled" = true;
+        }
+        {
+          "name" = "apple app store";
+          "engine" = "apple_app_store";
+          "shortcut" = "aps";
+          "disabled" = true;
+        }
+        {
+          "name" = "ahmia";
+          "engine" = "ahmia";
+          "timeout" = 20.0;
+          "categories" = "onions";
+          "enable_http" = true;
+          "shortcut" = "ah";
+        }
+        {
+          "name" = "anaconda";
+          "engine" = "xpath";
+          "paging" = true;
+          "first_page_num" = 0;
+          "search_url" = "https://anaconda.org/search?q={query}&page={pageno}";
+          "results_xpath" = "//tbody/tr";
+          "url_xpath" = "./td/h5/a[last()]/@href";
+          "title_xpath" = "./td/h5";
+          "content_xpath" = "./td[h5]/text()";
+          "categories" = "it";
+          "timeout" = 6.0;
+          "shortcut" = "conda";
+          "disabled" = true;
+        }
+        {
+          "name" = "arch linux wiki";
+          "engine" = "archlinux";
+          "shortcut" = "al";
+        }
+        {
+          "name" = "nixos wiki";
+          "engine" = "mediawiki";
+          "shortcut" = "nixw";
+          "base_url" = "https://wiki.nixos.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "categories" = [
+            "it"
+            "software wikis"
+          ];
+        }
+        {
+          "name" = "artic";
+          "engine" = "artic";
+          "shortcut" = "arc";
+          "timeout" = 4.0;
+        }
+        {
+          "name" = "arxiv";
+          "engine" = "arxiv";
+          "shortcut" = "arx";
+        }
+        {
+          "name" = "ask";
+          "engine" = "ask";
+          "shortcut" = "ask";
+          "disabled" = true;
+        }
+        {
+          "name" = "azure";
+          "engine" = "azure";
+          "shortcut" = "az";
+          "categories" = [
+            "it"
+            "cloud"
+          ];
+          "inactive" = true;
+        }
+        {
+          "name" = "bandcamp";
+          "engine" = "bandcamp";
+          "shortcut" = "bc";
+          "categories" = "music";
+        }
+        {
+          "name" = "baidu";
+          "baidu_category" = "general";
+          "categories" = [
+            "general"
+          ];
+          "engine" = "baidu";
+          "shortcut" = "bd";
+          "disabled" = true;
+        }
+        {
+          "name" = "baidu images";
+          "baidu_category" = "images";
+          "categories" = [
+            "images"
+          ];
+          "engine" = "baidu";
+          "shortcut" = "bdi";
+          "disabled" = true;
+        }
+        {
+          "name" = "baidu kaifa";
+          "baidu_category" = "it";
+          "categories" = [
+            "it"
+          ];
+          "engine" = "baidu";
+          "shortcut" = "bdk";
+          "disabled" = true;
+        }
+        {
+          "name" = "wikipedia";
+          "engine" = "wikipedia";
+          "shortcut" = "wp";
+          "timeout" = 5.0;
+          "display_type" = [
+            "infobox"
+          ];
+          "categories" = [
+            "general"
+          ];
+        }
+        {
+          "name" = "bilibili";
+          "engine" = "bilibili";
+          "shortcut" = "bil";
+          "disabled" = true;
+        }
+        {
+          "name" = "bing";
+          "engine" = "bing";
+          "shortcut" = "bi";
+        }
+        {
+          "name" = "bing images";
+          "engine" = "bing_images";
+          "shortcut" = "bii";
+        }
+        {
+          "name" = "bing news";
+          "engine" = "bing_news";
+          "shortcut" = "bin";
+        }
+        {
+          "name" = "bing videos";
+          "engine" = "bing_videos";
+          "shortcut" = "biv";
+        }
+        {
+          "name" = "bitchute";
+          "engine" = "bitchute";
+          "shortcut" = "bit";
+          "disabled" = true;
+        }
+        {
+          "name" = "bitbucket";
+          "engine" = "xpath";
+          "paging" = true;
+          "search_url" = "https://bitbucket.org/repo/all/{pageno}?name={query}";
+          "url_xpath" = "//article[@class=\"repo-summary\"]//a[@class=\"repo-link\"]/@href";
+          "title_xpath" = "//article[@class=\"repo-summary\"]//a[@class=\"repo-link\"]";
+          "content_xpath" = "//article[@class=\"repo-summary\"]/p";
+          "categories" = [
+            "it"
+            "repos"
+          ];
+          "timeout" = 4.0;
+          "disabled" = true;
+          "shortcut" = "bb";
+          "about" = {
+            "website" = "https://bitbucket.org/";
+            "wikidata_id" = "Q2493781";
+            "official_api_documentation" = "https://developer.atlassian.com/bitbucket";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "bpb";
+          "engine" = "bpb";
+          "shortcut" = "bpb";
+          "disabled" = true;
+        }
+        {
+          "name" = "btdigg";
+          "engine" = "btdigg";
+          "shortcut" = "bt";
+          "disabled" = true;
+        }
+        {
+          "name" = "openverse";
+          "engine" = "openverse";
+          "categories" = "images";
+          "shortcut" = "opv";
+        }
+        {
+          "name" = "media.ccc.de";
+          "engine" = "ccc_media";
+          "shortcut" = "c3tv";
+          "disabled" = true;
+        }
+        {
+          "name" = "chefkoch";
+          "engine" = "chefkoch";
+          "shortcut" = "chef";
+        }
+        {
+          "name" = "chinaso news";
+          "engine" = "chinaso";
+          "shortcut" = "chinaso";
+          "categories" = [
+            "news"
+          ];
+          "chinaso_category" = "news";
+          "chinaso_news_source" = "all";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "chinaso images";
+          "engine" = "chinaso";
+          "network" = "chinaso news";
+          "shortcut" = "chinasoi";
+          "categories" = [
+            "images"
+          ];
+          "chinaso_category" = "images";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "chinaso videos";
+          "engine" = "chinaso";
+          "network" = "chinaso news";
+          "shortcut" = "chinasov";
+          "categories" = [
+            "videos"
+          ];
+          "chinaso_category" = "videos";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "cloudflareai";
+          "engine" = "cloudflareai";
+          "shortcut" = "cfai";
+          "cf_account_id" = "your_cf_accout_id";
+          "cf_ai_api" = "your_cf_api";
+          "cf_ai_gateway" = "your_cf_ai_gateway_name";
+          "cf_ai_model" = "ai_model_name";
+          "timeout" = 30;
+          "inactive" = true;
+        }
+        {
+          "name" = "core.ac.uk";
+          "engine" = "core";
+          "shortcut" = "cor";
+          "api_key" = "";
+          "inactive" = true;
+        }
+        {
+          "name" = "crossref";
+          "engine" = "crossref";
+          "shortcut" = "cr";
+          "timeout" = 30;
+          "disabled" = true;
+        }
+        {
+          "name" = "crowdview";
+          "engine" = "json_engine";
+          "shortcut" = "cv";
+          "categories" = "general";
+          "paging" = false;
+          "search_url" = "https://crowdview-next-js.onrender.com/api/search-v3?query={query}";
+          "results_query" = "results";
+          "url_query" = "link";
+          "title_query" = "title";
+          "content_query" = "snippet";
+          "title_html_to_text" = true;
+          "content_html_to_text" = true;
+          "disabled" = true;
+          "about" = {
+            "website" = "https://crowdview.ai/";
+          };
+        }
+        {
+          "name" = "yep";
+          "engine" = "yep";
+          "shortcut" = "yep";
+          "categories" = "general";
+          "search_type" = "web";
+          "timeout" = 5;
+          "disabled" = true;
+        }
+        {
+          "name" = "yep images";
+          "engine" = "yep";
+          "shortcut" = "yepi";
+          "categories" = "images";
+          "search_type" = "images";
+          "disabled" = true;
+        }
+        {
+          "name" = "yep news";
+          "engine" = "yep";
+          "shortcut" = "yepn";
+          "categories" = "news";
+          "search_type" = "news";
+          "disabled" = true;
+        }
+        {
+          "name" = "currency";
+          "engine" = "currency_convert";
+          "shortcut" = "cc";
+        }
+        {
+          "name" = "deezer";
+          "engine" = "deezer";
+          "shortcut" = "dz";
+          "disabled" = true;
+        }
+        {
+          "name" = "destatis";
+          "engine" = "destatis";
+          "shortcut" = "destat";
+          "disabled" = true;
+        }
+        {
+          "name" = "deviantart";
+          "engine" = "deviantart";
+          "shortcut" = "da";
+          "timeout" = 3.0;
+        }
+        {
+          "name" = "devicons";
+          "engine" = "devicons";
+          "shortcut" = "di";
+          "timeout" = 3.0;
+        }
+        {
+          "name" = "ddg definitions";
+          "engine" = "duckduckgo_definitions";
+          "shortcut" = "ddd";
+          "weight" = 2;
+          "disabled" = true;
+          "tests" = {
+            "infobox" = {
+              "matrix" = {
+                "query" = [
+                  "linux"
+                  "new york"
+                  "bbc"
+                ];
+              };
+              "result_container" = [
+                "has_infobox"
+              ];
+            };
+          };
+        }
+        {
+          "name" = "docker hub";
+          "engine" = "docker_hub";
+          "shortcut" = "dh";
+          "categories" = [
+            "it"
+            "packages"
+          ];
+        }
+        {
+          "name" = "encyclosearch";
+          "engine" = "json_engine";
+          "shortcut" = "es";
+          "categories" = "general";
+          "paging" = true;
+          "search_url" = "https://encyclosearch.org/encyclosphere/search?q={query}&page={pageno}&resultsPerPage=15";
+          "results_query" = "Results";
+          "url_query" = "SourceURL";
+          "title_query" = "Title";
+          "content_query" = "Description";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://encyclosearch.org";
+            "official_api_documentation" = "https://encyclosearch.org/docs/#/rest-api";
+            "use_official_api" = true;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "erowid";
+          "engine" = "xpath";
+          "paging" = true;
+          "first_page_num" = 0;
+          "page_size" = 30;
+          "search_url" = "https://www.erowid.org/search.php?q={query}&s={pageno}";
+          "url_xpath" = "//dl[@class=\"results-list\"]/dt[@class=\"result-title\"]/a/@href";
+          "title_xpath" = "//dl[@class=\"results-list\"]/dt[@class=\"result-title\"]/a/text()";
+          "content_xpath" = "//dl[@class=\"results-list\"]/dd[@class=\"result-details\"]";
+          "categories" = [ ];
+          "shortcut" = "ew";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://www.erowid.org/";
+            "wikidata_id" = "Q1430691";
+            "official_api_documentation" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "elasticsearch";
+          "shortcut" = "els";
+          "engine" = "elasticsearch";
+          "query_type" = "match";
+          "inactive" = true;
+        }
+        {
+          "name" = "wikidata";
+          "engine" = "wikidata";
+          "shortcut" = "wd";
+          "weight" = 2;
+          "display_type" = [
+            "infobox"
+          ];
+          "tests" = {
+            "infobox" = {
+              "matrix" = {
+                "query" = [
+                  "linux"
+                  "new york"
+                  "bbc"
+                ];
+              };
+              "result_container" = [
+                "has_infobox"
+              ];
+            };
+          };
+          "categories" = [
+            "general"
+          ];
+        }
+        {
+          "name" = "duckduckgo";
+          "engine" = "duckduckgo";
+          "shortcut" = "ddg";
+        }
+        {
+          "name" = "duckduckgo images";
+          "engine" = "duckduckgo_extra";
+          "categories" = [
+            "images"
+            "web"
+          ];
+          "ddg_category" = "images";
+          "shortcut" = "ddi";
+          "disabled" = true;
+        }
+        {
+          "name" = "duckduckgo videos";
+          "engine" = "duckduckgo_extra";
+          "categories" = [
+            "videos"
+            "web"
+          ];
+          "ddg_category" = "videos";
+          "shortcut" = "ddv";
+          "disabled" = true;
+        }
+        {
+          "name" = "duckduckgo news";
+          "engine" = "duckduckgo_extra";
+          "categories" = [
+            "news"
+            "web"
+          ];
+          "ddg_category" = "news";
+          "shortcut" = "ddn";
+          "disabled" = true;
+        }
+        {
+          "name" = "duckduckgo weather";
+          "engine" = "duckduckgo_weather";
+          "shortcut" = "ddw";
+          "disabled" = true;
+        }
+        {
+          "name" = "apple maps";
+          "engine" = "apple_maps";
+          "shortcut" = "apm";
+          "disabled" = true;
+        }
+        {
+          "name" = "emojipedia";
+          "engine" = "emojipedia";
+          "timeout" = 4.0;
+          "shortcut" = "em";
+          "disabled" = true;
+        }
+        {
+          "name" = "tineye";
+          "engine" = "tineye";
+          "shortcut" = "tin";
+          "timeout" = 9.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "etymonline";
+          "engine" = "xpath";
+          "paging" = true;
+          "search_url" = "https://etymonline.com/search?page={pageno}&q={query}";
+          "url_xpath" = "//a[contains(@class, \"word__name--\")]/@href";
+          "title_xpath" = "//a[contains(@class, \"word__name--\")]";
+          "content_xpath" = "//section[contains(@class, \"word__defination\")]";
+          "first_page_num" = 1;
+          "shortcut" = "et";
+          "categories" = [
+            "dictionaries"
+          ];
+          "about" = {
+            "website" = "https://www.etymonline.com/";
+            "wikidata_id" = "Q1188617";
+            "official_api_documentation" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "ebay";
+          "engine" = "ebay";
+          "shortcut" = "eb";
+          "base_url" = "https://www.ebay.com";
+          "inactive" = true;
+          "timeout" = 5;
+        }
+        {
+          "name" = "1x";
+          "engine" = "www1x";
+          "shortcut" = "1x";
+          "timeout" = 3.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "fdroid";
+          "engine" = "fdroid";
+          "shortcut" = "fd";
+          "disabled" = true;
+        }
+        {
+          "name" = "findthatmeme";
+          "engine" = "findthatmeme";
+          "shortcut" = "ftm";
+          "disabled" = true;
+        }
+        {
+          "name" = "flickr";
+          "categories" = "images";
+          "shortcut" = "fl";
+          "engine" = "flickr_noapi";
+        }
+        {
+          "name" = "flickr_api";
+          "engine" = "flickr";
+          "categories" = "images";
+          "shortcut" = "fla";
+          "inactive" = true;
+        }
+        {
+          "name" = "free software directory";
+          "engine" = "mediawiki";
+          "shortcut" = "fsd";
+          "categories" = [
+            "it"
+            "software wikis"
+          ];
+          "base_url" = "https://directory.fsf.org/";
+          "search_type" = "title";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://directory.fsf.org/";
+            "wikidata_id" = "Q2470288";
+          };
+        }
+        {
+          "name" = "freesound";
+          "engine" = "freesound";
+          "shortcut" = "fnd";
+          "inactive" = true;
+        }
+        {
+          "name" = "frinkiac";
+          "engine" = "frinkiac";
+          "shortcut" = "frk";
+          "disabled" = true;
+        }
+        {
+          "name" = "fyyd";
+          "engine" = "fyyd";
+          "shortcut" = "fy";
+          "timeout" = 8.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "geizhals";
+          "engine" = "geizhals";
+          "shortcut" = "geiz";
+          "disabled" = true;
+        }
+        {
+          "name" = "genius";
+          "engine" = "genius";
+          "shortcut" = "gen";
+        }
+        {
+          "name" = "gentoo";
+          "engine" = "mediawiki";
+          "shortcut" = "ge";
+          "categories" = [
+            "it"
+            "software wikis"
+          ];
+          "base_url" = "https://wiki.gentoo.org/";
+          "api_path" = "api.php";
+          "search_type" = "text";
+          "timeout" = 10;
+        }
+        {
+          "name" = "gitlab";
+          "engine" = "gitlab";
+          "base_url" = "https://gitlab.com";
+          "shortcut" = "gl";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://gitlab.com/";
+            "wikidata_id" = "Q16639197";
+          };
+        }
+        {
+          "name" = "github";
+          "engine" = "github";
+          "shortcut" = "gh";
+        }
+        {
+          "name" = "github code";
+          "engine" = "github_code";
+          "shortcut" = "ghc";
+          "inactive" = true;
+          "ghc_auth" = {
+            "type" = "none";
+            "token" = "token";
+          };
+          "ghc_highlight_matching_lines" = true;
+          "ghc_strip_new_lines" = true;
+          "ghc_strip_whitespace" = false;
+          "timeout" = 10.0;
+        }
+        {
+          "name" = "codeberg";
+          "engine" = "gitea";
+          "base_url" = "https://codeberg.org";
+          "shortcut" = "cb";
+          "disabled" = true;
+        }
+        {
+          "name" = "gitea.com";
+          "engine" = "gitea";
+          "base_url" = "https://gitea.com";
+          "shortcut" = "gitea";
+          "disabled" = true;
+        }
+        {
+          "name" = "goodreads";
+          "engine" = "goodreads";
+          "shortcut" = "good";
+          "disabled" = true;
+        }
+        {
+          "name" = "google";
+          "engine" = "google";
+          "shortcut" = "go";
+        }
+        {
+          "name" = "google images";
+          "engine" = "google_images";
+          "shortcut" = "goi";
+        }
+        {
+          "name" = "google news";
+          "engine" = "google_news";
+          "shortcut" = "gon";
+        }
+        {
+          "name" = "google videos";
+          "engine" = "google_videos";
+          "shortcut" = "gov";
+        }
+        {
+          "name" = "google scholar";
+          "engine" = "google_scholar";
+          "shortcut" = "gos";
+        }
+        {
+          "name" = "google play apps";
+          "engine" = "google_play";
+          "categories" = [
+            "files"
+            "apps"
+          ];
+          "shortcut" = "gpa";
+          "play_categ" = "apps";
+          "disabled" = true;
+        }
+        {
+          "name" = "google play movies";
+          "engine" = "google_play";
+          "categories" = "videos";
+          "shortcut" = "gpm";
+          "play_categ" = "movies";
+          "disabled" = true;
+        }
+        {
+          "name" = "grokipedia";
+          "engine" = "grokipedia";
+          "shortcut" = "gp";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "material icons";
+          "engine" = "material_icons";
+          "shortcut" = "mi";
+          "disabled" = true;
+        }
+        {
+          "name" = "habrahabr";
+          "engine" = "xpath";
+          "paging" = true;
+          "search_url" = "https://habr.com/en/search/page{pageno}/?q={query}";
+          "results_xpath" = "//article[contains(@class, \"tm-articles-list__item\")]";
+          "url_xpath" = ".//a[@class=\"tm-title__link\"]/@href";
+          "title_xpath" = ".//a[@class=\"tm-title__link\"]";
+          "content_xpath" = ".//div[contains(@class, \"article-formatted-body\")]";
+          "categories" = "it";
+          "timeout" = 4.0;
+          "disabled" = true;
+          "shortcut" = "habr";
+          "about" = {
+            "website" = "https://habr.com/";
+            "wikidata_id" = "Q4494434";
+            "official_api_documentation" = "https://habr.com/en/docs/help/api/";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "hackernews";
+          "engine" = "hackernews";
+          "shortcut" = "hn";
+          "disabled" = true;
+        }
+        {
+          "name" = "hex";
+          "engine" = "hex";
+          "shortcut" = "hex";
+          "disabled" = true;
+          "sort_criteria" = "recent_downloads";
+          "page_size" = 10;
+        }
+        {
+          "name" = "crates.io";
+          "engine" = "crates";
+          "shortcut" = "crates";
+          "disabled" = true;
+          "timeout" = 6.0;
+        }
+        {
+          "name" = "hoogle";
+          "engine" = "xpath";
+          "search_url" = "https://hoogle.haskell.org/?hoogle={query}";
+          "results_xpath" = "//div[@class=\"result\"]";
+          "title_xpath" = ".//div[@class=\"ans\"]//a";
+          "url_xpath" = ".//div[@class=\"ans\"]//a/@href";
+          "content_xpath" = ".//div[@class=\"from\"]";
+          "page_size" = 20;
+          "categories" = [
+            "it"
+            "packages"
+          ];
+          "shortcut" = "ho";
+          "about" = {
+            "website" = "https://hoogle.haskell.org/";
+            "wikidata_id" = "Q34010";
+            "official_api_documentation" = "https://hackage.haskell.org/api";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "il post";
+          "engine" = "il_post";
+          "shortcut" = "pst";
+          "disabled" = true;
+        }
+        {
+          "name" = "huggingface";
+          "engine" = "huggingface";
+          "shortcut" = "hf";
+          "disabled" = true;
+        }
+        {
+          "name" = "huggingface datasets";
+          "huggingface_endpoint" = "datasets";
+          "engine" = "huggingface";
+          "shortcut" = "hfd";
+          "disabled" = true;
+        }
+        {
+          "name" = "huggingface spaces";
+          "huggingface_endpoint" = "spaces";
+          "engine" = "huggingface";
+          "shortcut" = "hfs";
+          "disabled" = true;
+        }
+        {
+          "name" = "imdb";
+          "engine" = "imdb";
+          "shortcut" = "imdb";
+          "timeout" = 6.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "imgur";
+          "engine" = "imgur";
+          "shortcut" = "img";
+          "disabled" = true;
+        }
+        {
+          "name" = "ina";
+          "engine" = "ina";
+          "shortcut" = "in";
+          "timeout" = 6.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "ipernity";
+          "engine" = "ipernity";
+          "shortcut" = "ip";
+          "disabled" = true;
+        }
+        {
+          "name" = "iqiyi";
+          "engine" = "iqiyi";
+          "shortcut" = "iq";
+          "disabled" = true;
+        }
+        {
+          "name" = "jisho";
+          "engine" = "jisho";
+          "shortcut" = "js";
+          "timeout" = 3.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "kickass";
+          "engine" = "kickass";
+          "base_url" = [
+            "https://kickasstorrents.to"
+            "https://kickasstorrents.cr"
+            "https://kickasstorrent.cr"
+            "https://kickass.sx"
+            "https://kat.am"
+          ];
+          "shortcut" = "kc";
+          "timeout" = 4.0;
+        }
+        {
+          "name" = "lemmy communities";
+          "engine" = "lemmy";
+          "lemmy_type" = "Communities";
+          "shortcut" = "leco";
+        }
+        {
+          "name" = "lemmy users";
+          "engine" = "lemmy";
+          "network" = "lemmy communities";
+          "lemmy_type" = "Users";
+          "shortcut" = "leus";
+        }
+        {
+          "name" = "lemmy posts";
+          "engine" = "lemmy";
+          "network" = "lemmy communities";
+          "lemmy_type" = "Posts";
+          "shortcut" = "lepo";
+        }
+        {
+          "name" = "lemmy comments";
+          "engine" = "lemmy";
+          "network" = "lemmy communities";
+          "lemmy_type" = "Comments";
+          "shortcut" = "lecom";
+        }
+        {
+          "name" = "library genesis";
+          "engine" = "xpath";
+          "search_url" = "https://libgen.rs/search.php?req={query}";
+          "url_xpath" = "//a[contains(@href,\"book/index.php?md5\")]/@href";
+          "title_xpath" = "//a[contains(@href,\"book/\")]/text()[1]";
+          "content_xpath" = "//td/a[1][contains(@href,\"=author\")]/text()";
+          "categories" = "files";
+          "timeout" = 7.0;
+          "disabled" = true;
+          "shortcut" = "lg";
+          "about" = {
+            "website" = "https://libgen.fun/";
+            "wikidata_id" = "Q22017206";
+            "official_api_documentation" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "z-library";
+          "engine" = "zlibrary";
+          "shortcut" = "zlib";
+          "timeout" = 7.0;
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "library of congress";
+          "engine" = "loc";
+          "shortcut" = "loc";
+          "categories" = "images";
+          "disabled" = true;
+        }
+        {
+          "name" = "libretranslate";
+          "engine" = "libretranslate";
+          "base_url" = [
+            "https://libretranslate.com/translate"
+          ];
+          "shortcut" = "lt";
+          "inactive" = true;
+        }
+        {
+          "name" = "lingva";
+          "engine" = "lingva";
+          "shortcut" = "lv";
+        }
+        {
+          "name" = "lobste.rs";
+          "engine" = "xpath";
+          "search_url" = "https://lobste.rs/search?q={query}&what=stories&order=relevance";
+          "results_xpath" = "//li[contains(@class, \"story\")]";
+          "url_xpath" = ".//a[@class=\"u-url\"]/@href";
+          "title_xpath" = ".//a[@class=\"u-url\"]";
+          "content_xpath" = ".//a[@class=\"domain\"]";
+          "categories" = "it";
+          "shortcut" = "lo";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://lobste.rs/";
+            "wikidata_id" = "Q60762874";
+            "official_api_documentation" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "lucide";
+          "engine" = "lucide";
+          "shortcut" = "luc";
+          "timeout" = 3.0;
+        }
+        {
+          "name" = "marginalia";
+          "engine" = "marginalia";
+          "shortcut" = "mar";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "mastodon users";
+          "engine" = "mastodon";
+          "mastodon_type" = "accounts";
+          "base_url" = "https://mastodon.social";
+          "shortcut" = "mau";
+        }
+        {
+          "name" = "mastodon hashtags";
+          "engine" = "mastodon";
+          "mastodon_type" = "hashtags";
+          "base_url" = "https://mastodon.social";
+          "shortcut" = "mah";
+        }
+        {
+          "name" = "mdn";
+          "shortcut" = "mdn";
+          "engine" = "json_engine";
+          "categories" = [
+            "it"
+          ];
+          "paging" = true;
+          "search_url" = "https://developer.mozilla.org/api/v1/search?q={query}&page={pageno}";
+          "results_query" = "documents";
+          "url_query" = "mdn_url";
+          "url_prefix" = "https://developer.mozilla.org";
+          "title_query" = "title";
+          "content_query" = "summary";
+          "about" = {
+            "website" = "https://developer.mozilla.org";
+            "wikidata_id" = "Q3273508";
+            "official_api_documentation" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "metacpan";
+          "engine" = "metacpan";
+          "shortcut" = "cpan";
+          "disabled" = true;
+          "number_of_results" = 20;
+        }
+        {
+          "name" = "microsoft learn";
+          "engine" = "microsoft_learn";
+          "shortcut" = "msl";
+          "disabled" = true;
+        }
+        {
+          "name" = "mixcloud";
+          "engine" = "mixcloud";
+          "shortcut" = "mc";
+        }
+        {
+          "name" = "mozhi";
+          "engine" = "mozhi";
+          "base_url" = [
+            "https://mozhi.aryak.me"
+            "https://translate.bus-hit.me"
+            "https://nyc1.mz.ggtyler.dev"
+          ];
+          "timeout" = 4.0;
+          "shortcut" = "mz";
+          "disabled" = true;
+        }
+        {
+          "name" = "mwmbl";
+          "engine" = "mwmbl";
+          "shortcut" = "mwm";
+          "disabled" = true;
+        }
+        {
+          "name" = "niconico";
+          "engine" = "niconico";
+          "shortcut" = "nico";
+          "disabled" = true;
+        }
+        {
+          "name" = "npm";
+          "engine" = "npm";
+          "shortcut" = "npm";
+          "disabled" = true;
+        }
+        {
+          "name" = "nyaa";
+          "engine" = "nyaa";
+          "shortcut" = "nt";
+          "disabled" = true;
+        }
+        {
+          "name" = "mankier";
+          "engine" = "json_engine";
+          "search_url" = "https://www.mankier.com/api/v2/mans/?q={query}";
+          "results_query" = "results";
+          "url_query" = "url";
+          "title_query" = "name";
+          "content_query" = "description";
+          "categories" = "it";
+          "shortcut" = "man";
+          "about" = {
+            "website" = "https://www.mankier.com/";
+            "official_api_documentation" = "https://www.mankier.com/api";
+            "use_official_api" = true;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "odysee";
+          "engine" = "odysee";
+          "shortcut" = "od";
+          "disabled" = true;
+        }
+        {
+          "name" = "ollama";
+          "engine" = "ollama";
+          "shortcut" = "ollama";
+          "disabled" = true;
+        }
+        {
+          "name" = "openairedatasets";
+          "engine" = "json_engine";
+          "paging" = true;
+          "search_url" = "https://api.openaire.eu/search/datasets?format=json&page={pageno}&size=10&title={query}";
+          "results_query" = "response/results/result";
+          "url_query" = "metadata/oaf:entity/oaf:result/children/instance/webresource/url/$";
+          "title_query" = "metadata/oaf:entity/oaf:result/title/$";
+          "content_query" = "metadata/oaf:entity/oaf:result/description/$";
+          "content_html_to_text" = true;
+          "categories" = "science";
+          "shortcut" = "oad";
+          "about" = {
+            "website" = "https://www.openaire.eu/";
+            "wikidata_id" = "Q25106053";
+            "official_api_documentation" = "https://api.openaire.eu/";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "openairepublications";
+          "engine" = "json_engine";
+          "paging" = true;
+          "search_url" = "https://api.openaire.eu/search/publications?format=json&page={pageno}&size=10&title={query}";
+          "results_query" = "response/results/result";
+          "url_query" = "metadata/oaf:entity/oaf:result/children/instance/webresource/url/$";
+          "title_query" = "metadata/oaf:entity/oaf:result/title/$";
+          "content_query" = "metadata/oaf:entity/oaf:result/description/$";
+          "content_html_to_text" = true;
+          "categories" = "science";
+          "shortcut" = "oap";
+          "about" = {
+            "website" = "https://www.openaire.eu/";
+            "wikidata_id" = "Q25106053";
+            "official_api_documentation" = "https://api.openaire.eu/";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "openalex";
+          "engine" = "openalex";
+          "shortcut" = "oa";
+          "disabled" = true;
+        }
+        {
+          "name" = "openclipart";
+          "engine" = "openclipart";
+          "shortcut" = "ocl";
+          "inactive" = true;
+          "disabled" = true;
+          "timeout" = 30;
+        }
+        {
+          "name" = "openlibrary";
+          "engine" = "openlibrary";
+          "shortcut" = "ol";
+          "timeout" = 10;
+          "disabled" = true;
+        }
+        {
+          "name" = "openmeteo";
+          "engine" = "open_meteo";
+          "shortcut" = "om";
+          "disabled" = true;
+        }
+        {
+          "name" = "openstreetmap";
+          "engine" = "openstreetmap";
+          "shortcut" = "osm";
+        }
+        {
+          "name" = "openrepos";
+          "engine" = "xpath";
+          "paging" = true;
+          "search_url" = "https://openrepos.net/search/node/{query}?page={pageno}";
+          "url_xpath" = "//li[@class=\"search-result\"]//h3[@class=\"title\"]/a/@href";
+          "title_xpath" = "//li[@class=\"search-result\"]//h3[@class=\"title\"]/a";
+          "content_xpath" = "//li[@class=\"search-result\"]//div[@class=\"search-snippet-info\"]//p[@class=\"search-snippet\"]";
+          "categories" = "files";
+          "timeout" = 4.0;
+          "disabled" = true;
+          "shortcut" = "or";
+          "about" = {
+            "website" = "https://openrepos.net/";
+            "wikidata_id" = { };
+            "official_api_documentation" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "packagist";
+          "engine" = "json_engine";
+          "paging" = true;
+          "search_url" = "https://packagist.org/search.json?q={query}&page={pageno}";
+          "results_query" = "results";
+          "url_query" = "url";
+          "title_query" = "name";
+          "content_query" = "description";
+          "categories" = [
+            "it"
+            "packages"
+          ];
+          "disabled" = true;
+          "shortcut" = "pack";
+          "about" = {
+            "website" = "https://packagist.org";
+            "wikidata_id" = "Q108311377";
+            "official_api_documentation" = "https://packagist.org/apidoc";
+            "use_official_api" = true;
+            "require_api_key" = false;
+            "results" = "JSON";
+          };
+        }
+        {
+          "name" = "pdbe";
+          "engine" = "pdbe";
+          "shortcut" = "pdb";
+        }
+        {
+          "name" = "photon";
+          "engine" = "photon";
+          "shortcut" = "ph";
+        }
+        {
+          "name" = "pinterest";
+          "engine" = "pinterest";
+          "shortcut" = "pin";
+        }
+        {
+          "name" = "piped";
+          "engine" = "piped";
+          "shortcut" = "ppd";
+          "categories" = "videos";
+          "piped_filter" = "videos";
+          "timeout" = 3.0;
+          "inactive" = true;
+          "frontend_url" = "https://srv.piped.video";
+          "backend_url" = [
+            "https://pipedapi.ducks.party"
+            "https://api.piped.private.coffee"
+          ];
+        }
+        {
+          "name" = "piped.music";
+          "engine" = "piped";
+          "network" = "piped";
+          "shortcut" = "ppdm";
+          "categories" = "music";
+          "piped_filter" = "music_songs";
+          "timeout" = 3.0;
+          "inactive" = true;
+        }
+        {
+          "name" = "piratebay";
+          "engine" = "piratebay";
+          "shortcut" = "tpb";
+          "url" = "https://thepiratebay.org/";
+          "timeout" = 3.0;
+        }
+        {
+          "name" = "pixabay images";
+          "engine" = "pixabay";
+          "pixabay_type" = "images";
+          "categories" = "images";
+          "shortcut" = "pixi";
+          "disabled" = true;
+        }
+        {
+          "name" = "pixabay videos";
+          "engine" = "pixabay";
+          "pixabay_type" = "videos";
+          "categories" = "videos";
+          "shortcut" = "pixv";
+          "disabled" = true;
+        }
+        {
+          "name" = "pixiv";
+          "shortcut" = "pv";
+          "engine" = "pixiv";
+          "disabled" = true;
+          "inactive" = true;
+          "remove_ai_images" = false;
+          "pixiv_image_proxies" = [
+            "https://pximg.example.org"
+          ];
+        }
+        {
+          "name" = "podcastindex";
+          "engine" = "podcastindex";
+          "shortcut" = "podcast";
+        }
+        {
+          "name" = "presearch";
+          "engine" = "presearch";
+          "search_type" = "search";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "shortcut" = "ps";
+          "timeout" = 4.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "presearch images";
+          "engine" = "presearch";
+          "network" = "presearch";
+          "search_type" = "images";
+          "categories" = [
+            "images"
+            "web"
+          ];
+          "timeout" = 4.0;
+          "shortcut" = "psimg";
+          "disabled" = true;
+        }
+        {
+          "name" = "presearch videos";
+          "engine" = "presearch";
+          "network" = "presearch";
+          "search_type" = "videos";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "timeout" = 4.0;
+          "shortcut" = "psvid";
+          "disabled" = true;
+        }
+        {
+          "name" = "presearch news";
+          "engine" = "presearch";
+          "network" = "presearch";
+          "search_type" = "news";
+          "categories" = [
+            "news"
+            "web"
+          ];
+          "timeout" = 4.0;
+          "shortcut" = "psnews";
+          "disabled" = true;
+        }
+        {
+          "name" = "pub.dev";
+          "engine" = "xpath";
+          "shortcut" = "pd";
+          "search_url" = "https://pub.dev/packages?q={query}&page={pageno}";
+          "paging" = true;
+          "results_xpath" = "//div[contains(@class,\"packages-item\")]";
+          "url_xpath" = "./div/h3/a/@href";
+          "title_xpath" = "./div/h3/a";
+          "content_xpath" = "./div/div/div[contains(@class,\"packages-description\")]/span";
+          "categories" = [
+            "packages"
+            "it"
+          ];
+          "timeout" = 3.0;
+          "disabled" = true;
+          "first_page_num" = 1;
+          "about" = {
+            "website" = "https://pub.dev/";
+            "official_api_documentation" = "https://pub.dev/help/api";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "public domain image archive";
+          "engine" = "public_domain_image_archive";
+          "shortcut" = "pdia";
+          "disabled" = true;
+        }
+        {
+          "name" = "pubmed";
+          "engine" = "pubmed";
+          "shortcut" = "pub";
+        }
+        {
+          "name" = "pypi";
+          "shortcut" = "pypi";
+          "engine" = "pypi";
+        }
+        {
+          "name" = "quark";
+          "quark_category" = "general";
+          "categories" = [
+            "general"
+          ];
+          "engine" = "quark";
+          "shortcut" = "qk";
+          "disabled" = true;
+        }
+        {
+          "name" = "quark images";
+          "quark_category" = "images";
+          "categories" = [
+            "images"
+          ];
+          "engine" = "quark";
+          "shortcut" = "qki";
+          "disabled" = true;
+        }
+        {
+          "name" = "qwant";
+          "qwant_categ" = "web";
+          "engine" = "qwant";
+          "shortcut" = "qw";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "disabled" = true;
+          "additional_tests" = {
+            "rosebud" = {
+              "matrix" = {
+                "query" = "rosebud";
+                "lang" = "en";
+              };
+              "result_container" = [
+                "not_empty"
+                [
+                  "one_title_contains"
+                  "citizen kane"
+                ]
+              ];
+              "test" = [
+                "unique_results"
+              ];
+            };
+          };
+        }
+        {
+          "name" = "qwant news";
+          "qwant_categ" = "news";
+          "engine" = "qwant";
+          "shortcut" = "qwn";
+          "categories" = "news";
+          "network" = "qwant";
+        }
+        {
+          "name" = "qwant images";
+          "qwant_categ" = "images";
+          "engine" = "qwant";
+          "shortcut" = "qwi";
+          "categories" = [
+            "images"
+            "web"
+          ];
+          "network" = "qwant";
+        }
+        {
+          "name" = "qwant videos";
+          "qwant_categ" = "videos";
+          "engine" = "qwant";
+          "shortcut" = "qwv";
+          "categories" = [
+            "videos"
+            "web"
+          ];
+          "network" = "qwant";
+        }
+        {
+          "name" = "radio browser";
+          "engine" = "radio_browser";
+          "shortcut" = "rb";
+        }
+        {
+          "name" = "reddit";
+          "engine" = "reddit";
+          "shortcut" = "re";
+          "page_size" = 25;
+          "disabled" = true;
+        }
+        {
+          "name" = "reuters";
+          "engine" = "reuters";
+          "shortcut" = "reu";
+        }
+        {
+          "name" = "right dao";
+          "engine" = "xpath";
+          "paging" = true;
+          "page_size" = 12;
+          "search_url" = "https://rightdao.com/search?q={query}&start={pageno}";
+          "results_xpath" = "//div[contains(@class, \"description\")]";
+          "url_xpath" = "../div[contains(@class, \"title\")]/a/@href";
+          "title_xpath" = "../div[contains(@class, \"title\")]";
+          "content_xpath" = ".";
+          "categories" = "general";
+          "shortcut" = "rd";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://rightdao.com/";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "rottentomatoes";
+          "engine" = "rottentomatoes";
+          "shortcut" = "rt";
+          "disabled" = true;
+        }
+        {
+          "name" = "searchmysite";
+          "engine" = "xpath";
+          "shortcut" = "sms";
+          "categories" = "general";
+          "paging" = true;
+          "search_url" = "https://searchmysite.net/search/?q={query}&page={pageno}";
+          "results_xpath" = "//div[contains(@class,'search-result')]";
+          "url_xpath" = ".//a[contains(@class,'result-link')]/@href";
+          "title_xpath" = ".//span[contains(@class,'result-title-txt')]/text()";
+          "content_xpath" = "./p[@id='result-hightlight']";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://searchmysite.net";
+          };
+        }
+        {
+          "name" = "selfhst icons";
+          "engine" = "selfhst";
+          "shortcut" = "si";
+          "disabled" = true;
+        }
+        {
+          "name" = "sepiasearch";
+          "engine" = "sepiasearch";
+          "shortcut" = "sep";
+        }
+        {
+          "name" = "sogou";
+          "engine" = "sogou";
+          "shortcut" = "sogou";
+          "disabled" = true;
+        }
+        {
+          "name" = "sogou images";
+          "engine" = "sogou_images";
+          "shortcut" = "sogoui";
+          "disabled" = true;
+        }
+        {
+          "name" = "sogou videos";
+          "engine" = "sogou_videos";
+          "shortcut" = "sogouv";
+          "disabled" = true;
+        }
+        {
+          "name" = "sogou wechat";
+          "engine" = "sogou_wechat";
+          "shortcut" = "sogouw";
+          "disabled" = true;
+        }
+        {
+          "name" = "soundcloud";
+          "engine" = "soundcloud";
+          "shortcut" = "sc";
+        }
+        {
+          "name" = "stackoverflow";
+          "engine" = "stackexchange";
+          "shortcut" = "st";
+          "api_site" = "stackoverflow";
+          "categories" = [
+            "it"
+            "q&a"
+          ];
+        }
+        {
+          "name" = "askubuntu";
+          "engine" = "stackexchange";
+          "shortcut" = "ubuntu";
+          "api_site" = "askubuntu";
+          "categories" = [
+            "it"
+            "q&a"
+          ];
+        }
+        {
+          "name" = "superuser";
+          "engine" = "stackexchange";
+          "shortcut" = "su";
+          "api_site" = "superuser";
+          "categories" = [
+            "it"
+            "q&a"
+          ];
+        }
+        {
+          "name" = "discuss.python";
+          "engine" = "discourse";
+          "shortcut" = "dpy";
+          "base_url" = "https://discuss.python.org";
+          "categories" = [
+            "it"
+            "q&a"
+          ];
+          "disabled" = true;
+        }
+        {
+          "name" = "caddy.community";
+          "engine" = "discourse";
+          "shortcut" = "caddy";
+          "base_url" = "https://caddy.community";
+          "categories" = [
+            "it"
+            "q&a"
+          ];
+          "disabled" = true;
+        }
+        {
+          "name" = "pi-hole.community";
+          "engine" = "discourse";
+          "shortcut" = "pi";
+          "categories" = [
+            "it"
+            "q&a"
+          ];
+          "base_url" = "https://discourse.pi-hole.net";
+          "disabled" = true;
+        }
+        {
+          "name" = "searchcode code";
+          "engine" = "searchcode_code";
+          "shortcut" = "scc";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "semantic scholar";
+          "engine" = "semantic_scholar";
+          "shortcut" = "se";
+        }
+        {
+          "name" = "springer nature";
+          "engine" = "springer";
+          "shortcut" = "springer";
+          "timeout" = 5;
+          "api_key" = "";
+          "inactive" = true;
+        }
+        {
+          "name" = "startpage";
+          "engine" = "startpage";
+          "shortcut" = "sp";
+          "startpage_categ" = "web";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "additional_tests" = {
+            "rosebud" = {
+              "matrix" = {
+                "query" = "rosebud";
+                "lang" = "en";
+              };
+              "result_container" = [
+                "not_empty"
+                [
+                  "one_title_contains"
+                  "citizen kane"
+                ]
+              ];
+              "test" = [
+                "unique_results"
+              ];
+            };
+          };
+        }
+        {
+          "name" = "startpage news";
+          "engine" = "startpage";
+          "startpage_categ" = "news";
+          "categories" = [
+            "news"
+            "web"
+          ];
+          "shortcut" = "spn";
+        }
+        {
+          "name" = "startpage images";
+          "engine" = "startpage";
+          "startpage_categ" = "images";
+          "categories" = [
+            "images"
+            "web"
+          ];
+          "shortcut" = "spi";
+        }
+        {
+          "name" = "steam";
+          "engine" = "steam";
+          "shortcut" = "stm";
+          "disabled" = true;
+        }
+        {
+          "name" = "tokyotoshokan";
+          "engine" = "tokyotoshokan";
+          "shortcut" = "tt";
+          "timeout" = 6.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "solidtorrents";
+          "engine" = "solidtorrents";
+          "shortcut" = "solid";
+          "timeout" = 4.0;
+          "base_url" = [
+            "https://solidtorrents.to"
+            "https://bitsearch.to"
+          ];
+        }
+        {
+          "name" = "tagesschau";
+          "engine" = "tagesschau";
+          "use_source_url" = true;
+          "shortcut" = "ts";
+          "disabled" = true;
+        }
+        {
+          "name" = "tmdb";
+          "engine" = "xpath";
+          "paging" = true;
+          "categories" = "movies";
+          "search_url" = "https://www.themoviedb.org/search?page={pageno}&query={query}";
+          "results_xpath" = "//div[contains(@class,\"movie\") or contains(@class,\"tv\")]//div[contains(@class,\"card\")]";
+          "url_xpath" = ".//div[contains(@class,\"poster\")]/a/@href";
+          "thumbnail_xpath" = ".//img/@src";
+          "title_xpath" = ".//div[contains(@class,\"title\")]//h2";
+          "content_xpath" = ".//div[contains(@class,\"overview\")]";
+          "shortcut" = "tm";
+          "disabled" = true;
+        }
+        {
+          "name" = "torch";
+          "engine" = "xpath";
+          "paging" = true;
+          "search_url" = "http://xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion/cgi-bin/omega/omega?P={query}&DEFAULTOP=and";
+          "results_xpath" = "//table//tr";
+          "url_xpath" = "./td[2]/a";
+          "title_xpath" = "./td[2]/b";
+          "content_xpath" = "./td[2]/small";
+          "categories" = "onions";
+          "enable_http" = true;
+          "shortcut" = "tch";
+        }
+        {
+          "name" = "Torznab EZTV";
+          "engine" = "torznab";
+          "shortcut" = "eztv";
+          "show_magnet_links" = true;
+          "show_torrent_files" = false;
+          "torznab_categories" = [
+            2000
+            5000
+          ];
+          "inactive" = true;
+        }
+        {
+          "name" = "unsplash";
+          "engine" = "unsplash";
+          "shortcut" = "us";
+        }
+        {
+          "name" = "yandex";
+          "engine" = "yandex";
+          "categories" = "general";
+          "search_type" = "web";
+          "shortcut" = "yd";
+        }
+        {
+          "name" = "yandex images";
+          "engine" = "yandex";
+          "network" = "yandex";
+          "categories" = "images";
+          "search_type" = "images";
+          "shortcut" = "ydi";
+          "disabled" = true;
+        }
+        {
+          "name" = "yandex music";
+          "engine" = "yandex_music";
+          "network" = "yandex";
+          "shortcut" = "ydm";
+          "disabled" = true;
+        }
+        {
+          "name" = "yahoo";
+          "engine" = "yahoo";
+          "shortcut" = "yh";
+          "disabled" = true;
+        }
+        {
+          "name" = "yahoo news";
+          "engine" = "yahoo_news";
+          "shortcut" = "yhn";
+        }
+        {
+          "name" = "youtube";
+          "shortcut" = "yt";
+          "engine" = "youtube_noapi";
+        }
+        {
+          "name" = "youtube_api";
+          "engine" = "youtube_api";
+          "shortcut" = "yta";
+          "inactive" = true;
+        }
+        {
+          "name" = "dailymotion";
+          "engine" = "dailymotion";
+          "shortcut" = "dm";
+        }
+        {
+          "name" = "vimeo";
+          "engine" = "vimeo";
+          "shortcut" = "vm";
+        }
+        {
+          "name" = "wiby";
+          "engine" = "json_engine";
+          "paging" = true;
+          "search_url" = "https://wiby.me/json/?q={query}&p={pageno}";
+          "url_query" = "URL";
+          "title_query" = "Title";
+          "content_query" = "Snippet";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "shortcut" = "wib";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://wiby.me/";
+          };
+        }
+        {
+          "name" = "wikibooks";
+          "engine" = "mediawiki";
+          "weight" = 0.5;
+          "shortcut" = "wb";
+          "categories" = [
+            "general"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wikibooks.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://www.wikibooks.org/";
+            "wikidata_id" = "Q367";
+          };
+        }
+        {
+          "name" = "wikinews";
+          "engine" = "mediawiki";
+          "shortcut" = "wn";
+          "categories" = [
+            "news"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wikinews.org/";
+          "search_type" = "text";
+          "srsort" = "create_timestamp_desc";
+          "about" = {
+            "website" = "https://www.wikinews.org/";
+            "wikidata_id" = "Q964";
+          };
+        }
+        {
+          "name" = "wikiquote";
+          "engine" = "mediawiki";
+          "weight" = 0.5;
+          "shortcut" = "wq";
+          "categories" = [
+            "general"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wikiquote.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "additional_tests" = {
+            "rosebud" = {
+              "matrix" = {
+                "query" = "rosebud";
+                "lang" = "en";
+              };
+              "result_container" = [
+                "not_empty"
+                [
+                  "one_title_contains"
+                  "citizen kane"
+                ]
+              ];
+              "test" = [
+                "unique_results"
+              ];
+            };
+          };
+          "about" = {
+            "website" = "https://www.wikiquote.org/";
+            "wikidata_id" = "Q369";
+          };
+        }
+        {
+          "name" = "wikisource";
+          "engine" = "mediawiki";
+          "weight" = 0.5;
+          "shortcut" = "ws";
+          "categories" = [
+            "general"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wikisource.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://www.wikisource.org/";
+            "wikidata_id" = "Q263";
+          };
+        }
+        {
+          "name" = "wikispecies";
+          "engine" = "mediawiki";
+          "shortcut" = "wsp";
+          "categories" = [
+            "general"
+            "science"
+            "wikimedia"
+          ];
+          "base_url" = "https://species.wikimedia.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://species.wikimedia.org/";
+            "wikidata_id" = "Q13679";
+          };
+          "tests" = {
+            "wikispecies" = {
+              "matrix" = {
+                "query" = "Campbell, L.I. et al. 2011: MicroRNAs";
+                "lang" = "en";
+              };
+              "result_container" = [
+                "not_empty"
+                [
+                  "one_title_contains"
+                  "Tardigrada"
+                ]
+              ];
+              "test" = [
+                "unique_results"
+              ];
+            };
+          };
+        }
+        {
+          "name" = "wiktionary";
+          "engine" = "mediawiki";
+          "shortcut" = "wt";
+          "categories" = [
+            "dictionaries"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wiktionary.org/";
+          "search_type" = "text";
+          "about" = {
+            "website" = "https://www.wiktionary.org/";
+            "wikidata_id" = "Q151";
+          };
+        }
+        {
+          "name" = "wikiversity";
+          "engine" = "mediawiki";
+          "weight" = 0.5;
+          "shortcut" = "wv";
+          "categories" = [
+            "general"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wikiversity.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://www.wikiversity.org/";
+            "wikidata_id" = "Q370";
+          };
+        }
+        {
+          "name" = "wikivoyage";
+          "engine" = "mediawiki";
+          "weight" = 0.5;
+          "shortcut" = "wy";
+          "categories" = [
+            "general"
+            "wikimedia"
+          ];
+          "base_url" = "https://{language}.wikivoyage.org/";
+          "search_type" = "text";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://www.wikivoyage.org/";
+            "wikidata_id" = "Q373";
+          };
+        }
+        {
+          "name" = "wikicommons.images";
+          "engine" = "wikicommons";
+          "shortcut" = "wci";
+          "categories" = "images";
+          "wc_search_type" = "image";
+        }
+        {
+          "name" = "wikicommons.videos";
+          "engine" = "wikicommons";
+          "shortcut" = "wcv";
+          "categories" = "videos";
+          "wc_search_type" = "video";
+        }
+        {
+          "name" = "wikicommons.audio";
+          "engine" = "wikicommons";
+          "shortcut" = "wca";
+          "categories" = "music";
+          "wc_search_type" = "audio";
+        }
+        {
+          "name" = "wikicommons.files";
+          "engine" = "wikicommons";
+          "shortcut" = "wcf";
+          "categories" = "files";
+          "wc_search_type" = "file";
+        }
+        {
+          "name" = "wolframalpha";
+          "shortcut" = "wa";
+          "engine" = "wolframalpha_noapi";
+          "timeout" = 6.0;
+          "categories" = "general";
+          "disabled" = true;
+        }
+        {
+          "name" = "wolframalpha_api";
+          "engine" = "wolframalpha_api";
+          "shortcut" = "waa";
+          "timeout" = 6.0;
+          "categories" = "general";
+          "inactive" = true;
+        }
+        {
+          "name" = "dictzone";
+          "engine" = "dictzone";
+          "shortcut" = "dc";
+        }
+        {
+          "name" = "mymemory translated";
+          "engine" = "translated";
+          "shortcut" = "tl";
+        }
+        {
+          "name" = "1337x";
+          "engine" = "1337x";
+          "shortcut" = "1337x";
+          "disabled" = true;
+        }
+        {
+          "name" = "duden";
+          "engine" = "duden";
+          "shortcut" = "du";
+          "disabled" = true;
+        }
+        {
+          "name" = "seznam";
+          "shortcut" = "szn";
+          "engine" = "seznam";
+          "disabled" = true;
+        }
+        {
+          "name" = "deepl";
+          "engine" = "deepl";
+          "shortcut" = "dpl";
+          "inactive" = true;
+        }
+        {
+          "name" = "mojeek";
+          "shortcut" = "mjk";
+          "engine" = "mojeek";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "disabled" = true;
+        }
+        {
+          "name" = "mojeek images";
+          "shortcut" = "mjkimg";
+          "engine" = "mojeek";
+          "categories" = [
+            "images"
+            "web"
+          ];
+          "search_type" = "images";
+          "paging" = false;
+          "disabled" = true;
+        }
+        {
+          "name" = "mojeek news";
+          "shortcut" = "mjknews";
+          "engine" = "mojeek";
+          "categories" = [
+            "news"
+            "web"
+          ];
+          "search_type" = "news";
+          "paging" = false;
+          "disabled" = true;
+        }
+        {
+          "name" = "moviepilot";
+          "engine" = "moviepilot";
+          "shortcut" = "mp";
+          "disabled" = true;
+        }
+        {
+          "name" = "naver";
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "engine" = "naver";
+          "shortcut" = "nvr";
+          "disabled" = true;
+        }
+        {
+          "name" = "naver images";
+          "naver_category" = "images";
+          "categories" = [
+            "images"
+          ];
+          "engine" = "naver";
+          "shortcut" = "nvri";
+          "disabled" = true;
+        }
+        {
+          "name" = "naver news";
+          "naver_category" = "news";
+          "categories" = [
+            "news"
+          ];
+          "engine" = "naver";
+          "shortcut" = "nvrn";
+          "disabled" = true;
+        }
+        {
+          "name" = "naver videos";
+          "naver_category" = "videos";
+          "categories" = [
+            "videos"
+          ];
+          "engine" = "naver";
+          "shortcut" = "nvrv";
+          "disabled" = true;
+        }
+        {
+          "name" = "rubygems";
+          "shortcut" = "rbg";
+          "engine" = "xpath";
+          "paging" = true;
+          "search_url" = "https://rubygems.org/search?page={pageno}&query={query}";
+          "results_xpath" = "/html/body/main/div/a[@class=\"gems__gem\"]";
+          "url_xpath" = "./@href";
+          "title_xpath" = "./span/h2";
+          "content_xpath" = "./span/p";
+          "suggestion_xpath" = "/html/body/main/div/div[@class=\"search__suggestions\"]/p/a";
+          "first_page_num" = 1;
+          "categories" = [
+            "it"
+            "packages"
+          ];
+          "disabled" = true;
+          "about" = {
+            "website" = "https://rubygems.org/";
+            "wikidata_id" = "Q1853420";
+            "official_api_documentation" = "https://guides.rubygems.org/rubygems-org-api/";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+          };
+        }
+        {
+          "name" = "peertube";
+          "engine" = "peertube";
+          "shortcut" = "ptb";
+          "paging" = true;
+          "categories" = "videos";
+          "disabled" = true;
+          "timeout" = 6.0;
+        }
+        {
+          "name" = "mediathekviewweb";
+          "engine" = "mediathekviewweb";
+          "shortcut" = "mvw";
+          "disabled" = true;
+        }
+        {
+          "name" = "yacy";
+          "engine" = "yacy";
+          "categories" = "general";
+          "search_type" = "text";
+          "base_url" = [
+            "https://yacy.searchlab.eu"
+          ];
+          "shortcut" = "ya";
+          "disabled" = true;
+          "search_mode" = "global";
+        }
+        {
+          "name" = "yacy images";
+          "engine" = "yacy";
+          "network" = "yacy";
+          "categories" = "images";
+          "search_type" = "image";
+          "shortcut" = "yai";
+          "disabled" = true;
+        }
+        {
+          "name" = "rumble";
+          "engine" = "rumble";
+          "shortcut" = "ru";
+          "base_url" = "https://rumble.com/";
+          "paging" = true;
+          "categories" = "videos";
+          "disabled" = true;
+        }
+        {
+          "name" = "repology";
+          "engine" = "repology";
+          "shortcut" = "rep";
+          "disabled" = true;
+          "inactive" = true;
+        }
+        {
+          "name" = "livespace";
+          "engine" = "livespace";
+          "shortcut" = "ls";
+          "categories" = "videos";
+          "disabled" = true;
+        }
+        {
+          "name" = "wordnik";
+          "engine" = "wordnik";
+          "shortcut" = "wnik";
+        }
+        {
+          "name" = "woxikon.de synonyme";
+          "engine" = "xpath";
+          "shortcut" = "woxi";
+          "categories" = [
+            "dictionaries"
+          ];
+          "disabled" = true;
+          "search_url" = "https://synonyme.woxikon.de/synonyme/{query}.php";
+          "url_xpath" = "//div[@class=\"upper-synonyms\"]/a/@href";
+          "content_xpath" = "//div[@class=\"synonyms-list-group\"]";
+          "title_xpath" = "//div[@class=\"upper-synonyms\"]/a";
+          "no_result_for_http_status" = [
+            404
+          ];
+          "about" = {
+            "website" = "https://www.woxikon.de/";
+            "wikidata_id" = { };
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+            "language" = "de";
+          };
+        }
+        {
+          "name" = "seekr news";
+          "engine" = "seekr";
+          "shortcut" = "senews";
+          "categories" = "news";
+          "seekr_category" = "news";
+          "disabled" = true;
+        }
+        {
+          "name" = "seekr images";
+          "engine" = "seekr";
+          "network" = "seekr news";
+          "shortcut" = "seimg";
+          "categories" = "images";
+          "seekr_category" = "images";
+          "disabled" = true;
+        }
+        {
+          "name" = "seekr videos";
+          "engine" = "seekr";
+          "network" = "seekr news";
+          "shortcut" = "sevid";
+          "categories" = "videos";
+          "seekr_category" = "videos";
+          "disabled" = true;
+        }
+        {
+          "name" = "stract";
+          "engine" = "stract";
+          "shortcut" = "str";
+          "disabled" = true;
+        }
+        {
+          "name" = "svgrepo";
+          "engine" = "svgrepo";
+          "shortcut" = "svg";
+          "timeout" = 10.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "tootfinder";
+          "engine" = "tootfinder";
+          "shortcut" = "toot";
+        }
+        {
+          "name" = "uxwing";
+          "engine" = "uxwing";
+          "shortcut" = "ux";
+          "disabled" = true;
+        }
+        {
+          "name" = "voidlinux";
+          "engine" = "voidlinux";
+          "shortcut" = "void";
+          "disabled" = true;
+        }
+        {
+          "name" = "wallhaven";
+          "engine" = "wallhaven";
+          "shortcut" = "wh";
+          "inactive" = true;
+        }
+        {
+          "name" = "wikimini";
+          "engine" = "xpath";
+          "shortcut" = "wkmn";
+          "search_url" = "https://fr.wikimini.org/w/index.php?search={query}&title=Sp%C3%A9cial%3ASearch&fulltext=Search";
+          "url_xpath" = "//li/div[@class=\"mw-search-result-heading\"]/a/@href";
+          "title_xpath" = "//li//div[@class=\"mw-search-result-heading\"]/a";
+          "content_xpath" = "//li/div[@class=\"searchresult\"]";
+          "categories" = "general";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://wikimini.org/";
+            "wikidata_id" = "Q3568032";
+            "use_official_api" = false;
+            "require_api_key" = false;
+            "results" = "HTML";
+            "language" = "fr";
+          };
+        }
+        {
+          "name" = "wttr.in";
+          "engine" = "wttr";
+          "shortcut" = "wttr";
+          "timeout" = 9.0;
+        }
+        {
+          "name" = "brave";
+          "engine" = "brave";
+          "shortcut" = "br";
+          "time_range_support" = true;
+          "paging" = true;
+          "categories" = [
+            "general"
+            "web"
+          ];
+          "brave_category" = "search";
+        }
+        {
+          "name" = "brave.images";
+          "engine" = "brave";
+          "network" = "brave";
+          "shortcut" = "brimg";
+          "categories" = [
+            "images"
+            "web"
+          ];
+          "brave_category" = "images";
+        }
+        {
+          "name" = "brave.videos";
+          "engine" = "brave";
+          "network" = "brave";
+          "shortcut" = "brvid";
+          "categories" = [
+            "videos"
+            "web"
+          ];
+          "brave_category" = "videos";
+        }
+        {
+          "name" = "brave.news";
+          "engine" = "brave";
+          "network" = "brave";
+          "shortcut" = "brnews";
+          "categories" = "news";
+          "brave_category" = "news";
+        }
+        {
+          "name" = "lib.rs";
+          "shortcut" = "lrs";
+          "engine" = "lib_rs";
+          "disabled" = true;
+        }
+        {
+          "name" = "sourcehut";
+          "shortcut" = "srht";
+          "engine" = "sourcehut";
+          "disabled" = true;
+        }
+        {
+          "name" = "bt4g";
+          "engine" = "bt4g";
+          "shortcut" = "bt4g";
+        }
+        {
+          "name" = "pkg.go.dev";
+          "engine" = "pkg_go_dev";
+          "shortcut" = "pgo";
+          "disabled" = true;
+        }
+        {
+          "name" = "senscritique";
+          "engine" = "senscritique";
+          "shortcut" = "scr";
+          "timeout" = 4.0;
+          "disabled" = true;
+        }
+        {
+          "name" = "minecraft wiki";
+          "engine" = "mediawiki";
+          "shortcut" = "mcw";
+          "categories" = [
+            "software wikis"
+          ];
+          "base_url" = "https://minecraft.wiki/";
+          "api_path" = "api.php";
+          "search_type" = "text";
+          "disabled" = true;
+          "about" = {
+            "website" = "https://minecraft.wiki/";
+            "wikidata_id" = "Q105533483";
+          };
+        }
+      ];
+      "doi_resolvers" = {
+        "oadoi.org" = "https://oadoi.org/";
+        "doi.org" = "https://doi.org/";
+        "sci-hub.se" = "https://sci-hub.se/";
+        "sci-hub.st" = "https://sci-hub.st/";
+        "sci-hub.ru" = "https://sci-hub.ru/";
+      };
+      "default_doi_resolver" = "oadoi.org";
+    };
+  };
+}

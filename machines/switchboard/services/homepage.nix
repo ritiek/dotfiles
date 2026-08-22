@@ -59,6 +59,13 @@
               description = "Monitor machines and services for health";
             };
           }
+          {
+            "SearXNG" = {
+              icon = "searx";
+              href = "http://switchboard.lion-zebra.ts.net:6040";
+              description = "Search Engine";
+            };
+          }
         ];
       }
       {
@@ -286,6 +293,13 @@
               icon = "invidious";
               href = "http://pilab.lion-zebra.ts.net:6030";
               description = "YouTube";
+            };
+          }
+          {
+            "Redlib" = {
+              icon = "redlib.png";
+              href = "http://pilab.lion-zebra.ts.net:6020";
+              description = "Reddit";
             };
           }
           {
