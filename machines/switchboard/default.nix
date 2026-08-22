@@ -31,6 +31,7 @@
     ./services/pihole.nix
     ./services/homepage.nix
     ./services/gatus.nix
+    ./services/searxng.nix
   ];
 
   sops.secrets = {
