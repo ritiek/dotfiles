@@ -86,6 +86,12 @@ in
     partOf = [ "systemd-networkd.service" ];
   };
 
+  # MAC-clone experiment (matching the ONT WAN entry's distinct MAC ...D:AA,
+  # separate from the chassis/LAN/Wireless MAC ...D:A8) was tried and reverted:
+  # cloning it changed nothing (PADO still never arrived) and it turned out to
+  # duplicate a MAC still live on the ONT's own WAN entry, which is itself a
+  # confound. See CUTOVER.md for the fuller PADO-timeout investigation; this
+  # box reverts to udev's default naming/MAC for end1.
   systemd.network.networks."20-${wanPhys}" = {
     # pppd needs the physical NIC up but with no L3 configuration of its own.
     matchConfig.Name = wanPhys;
