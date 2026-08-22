@@ -120,7 +120,7 @@
         "proxies" = {
           "all://" = [
             "http://root:$PROXY_PASSWORD@clawsiecats.lion-zebra.ts.net:8090"
-            "http://root:$PROXY_PASSWORD@mishy.lion-zebra.ts.net:8090"
+            "http://root:$PROXY_PASSWORD@127.0.0.1:8090"
             "http://root:$PROXY_PASSWORD@keyberry.lion-zebra.ts.net:8090"
           ];
         };
