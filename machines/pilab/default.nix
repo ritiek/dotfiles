@@ -415,6 +415,7 @@ in
         address = [ "0.0.0.0" "::" ];
         allow_registration = false;
         yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = false;
+        unix_socket_perms = 660;
         allow_federation = false;
         allow_encryption = true;
         trusted_servers = [ ];

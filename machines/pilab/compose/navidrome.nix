@@ -38,6 +38,7 @@ in lib.mkMerge [
       "ND_BASEURL" = "";
       "ND_LOGLEVEL" = "info";
       "ND_SCANSCHEDULE" = "1h";
+      "ND_PLAYLISTS_PATH" = "_playlists";
       "ND_SESSIONTIMEOUT" = "24h";
       "ND_PLUGINS_ENABLED" = "true";
       "ND_PLUGINS_AUTORELOAD" = "true";

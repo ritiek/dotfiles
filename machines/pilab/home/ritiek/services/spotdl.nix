@@ -42,13 +42,22 @@ let
       exit $curl_exit_code
     fi
   '');
+
+  # Generate one Navidrome playlist (.m3u) per top-level folder in the music
+  # library, ordered by Spotify playlist position (from *.spotdl metadata),
+  # falling back to download date for unmatched tracks, then trigger a scan.
+  navidrome-folder-playlists = pkgs.writers.writePython3Bin "navidrome-folder-playlists" {
+    flakeIgnore = [ "E265" "E501" ];
+  } ./navidrome-folder-playlists.py;
 in
 {
   sops.secrets."uptime-kuma.env" = {};
+  sops.secrets."navidrome.env" = {};
 
   home.packages = with pkgs; [
     spotdl
     spotdl-sync
+    navidrome-folder-playlists
     curl
     jq
   ];
@@ -70,7 +79,10 @@ in
       ExecStart = "${spotdl-sync}/bin/spotdl-sync";
       # ExecStop = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
       # ExecReload = "${pkgs.coreutils}/bin/kill -s HUP $MAINPID";
-      ExecStopPost = "${ping-uptime-kuma}/bin/ping-uptime-kuma@spotdl-sync";
+      ExecStopPost = [
+        "${ping-uptime-kuma}/bin/ping-uptime-kuma@spotdl-sync"
+        "${navidrome-folder-playlists}/bin/navidrome-folder-playlists"
+      ];
 
       # Restart = lib.mkOverride 500 "always";
       # RestartMaxDelaySec = lib.mkOverride 500 "1m";
