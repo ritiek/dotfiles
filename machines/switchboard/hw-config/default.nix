@@ -8,6 +8,7 @@
   imports = [
     ./aic8800-sdio.nix
     ./cubie-a5e.nix
+    ./cpu-clock.nix
     ./disko.nix
   ];
 
