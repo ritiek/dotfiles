@@ -1,0 +1,85 @@
+regulator: axp20x: force poly-phase setup for AXP323 DCDC1+DCDC2
+
+On the AXP323 the DCDC1 and DCDC2 converters can be ganged into a
+two-phase supply for one high-current rail.  Upstream only ever reads
+the poly-phase bit in AXP323_DCDC_MODE_CTRL2 (in
+axp20x_is_polyphase_slave(), to decide whether DCDC2 should be skipped
+during registration); nothing in the kernel ever writes it.  Whether the
+phases are ganged is therefore inherited from the boot firmware.
+
+That breaks boards wired for poly-phase operation.  On the Radxa Cubie
+A5E the mainline DT explicitly notes "DCDC2 is polyphased with DCDC1"
+and uses the combined rail as vdd-cpub, supplying the four "big"
+Cortex-A55 cores.  With the bit clear, DCDC1 alone must source the whole
+cluster.  Voltage scaling still appears to succeed, but the rail cannot
+deliver the current the cluster needs at higher operating points and the
+SoC hangs hard, with no oops and nothing on the console.
+
+Measured on a Cubie A5E (A527, 1 GB) with the big cluster driven through
+its OPP table one step at a time under the userspace governor:
+
+  408 MHz / 900 mV   ok
+  672 MHz / 900 mV   ok
+  840 MHz / 900 mV   ok
+  1008 MHz / 900 mV  ok
+  1200 MHz / 920 mV  ok
+  1344 MHz / 960 mV  hard hang, watchdog reset
+
+A busy-loop timing taken at each step scaled inversely with frequency,
+confirming the cores really were running at the requested rate, so the
+clock side was working correctly.  regulator_summary on the failing
+kernel listed dcdc2 as an independent regulator with no consumers -
+i.e. the poly-phase bit was clear - whereas on a boot where the same
+board reached 1800 MHz it did not appear at all, as expected for a
+poly-phase slave.
+
+Set the bit explicitly during probe, before the registration loop that
+consults axp20x_is_polyphase_slave(), so behaviour no longer depends on
+what the bootloader left behind.
+
+--- a/drivers/regulator/axp20x-regulator.c
++++ b/drivers/regulator/axp20x-regulator.c
+@@ -1622,6 +1622,43 @@
+ 	/* This only sets the dcdc freq. Ignore any errors */
+ 	axp20x_regulator_parse_dt(pdev);
+ 
++	/*
++	 * On the AXP323, DCDC1 and DCDC2 can be ganged together as a
++	 * two-phase supply for a single high-current rail.  Upstream only
++	 * ever *reads* the poly-phase bit (see axp20x_is_polyphase_slave()
++	 * above); nothing in the kernel ever sets it, so whether the two
++	 * phases are ganged is inherited from whatever the boot firmware
++	 * happened to leave in AXP323_DCDC_MODE_CTRL2.
++	 *
++	 * That is a problem on boards that are physically wired for
++	 * poly-phase operation, such as the Radxa Cubie A5E, whose DT
++	 * explicitly documents "DCDC2 is polyphased with DCDC1" and uses
++	 * the combined rail as vdd-cpub (the four Cortex-A55 "big" cores).
++	 * If the bit is clear, DCDC1 alone has to source the whole cluster.
++	 * Voltage scaling still appears to work, but the rail browns out
++	 * once the cluster draws more current than a single phase can
++	 * deliver, which hangs the SoC hard.  Measured on a Cubie A5E: the
++	 * big cluster is stable up to 1200 MHz/920 mV and dies instantly at
++	 * 1344 MHz/960 mV, with no oops and no console output.
++	 *
++	 * Force the two phases together so the behaviour no longer depends
++	 * on the bootloader.  This has to happen before the registration
++	 * loop below, because axp20x_is_polyphase_slave() reads the bit to
++	 * decide whether to skip registering DCDC2 as an independent
++	 * regulator.
++	 */
++	if (axp20x->variant == AXP323_ID) {
++		ret = regmap_update_bits(axp20x->regmap,
++					 AXP323_DCDC_MODE_CTRL2,
++					 BIT(1), BIT(1));
++		if (ret) {
++			dev_err(&pdev->dev,
++				"failed to set AXP323 poly-phase mode: %d\n",
++				ret);
++			return ret;
++		}
++	}
++
+ 	for (i = 0; i < nregulators; i++) {
+ 		const struct regulator_desc *desc = &regulators[i];
+ 		struct regulator_desc *new_desc;
