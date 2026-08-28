@@ -1,0 +1,84 @@
+clk: sunxi-ng: a523-cpu: reparent to osc24M across CPU PLL rate changes
+
+The A523/A527 CPU CCU driver reprograms PLL_CPUL/PLL_CPUB in place while the
+corresponding cluster is still executing from that very PLL.  Nothing parks the
+cluster mux on a stable parent for the duration of the relock, so the cores run
+off an unlocked, ringing PLL for however long the relock takes.
+
+That is survivable for a small change of the N multiplier but not for a large
+one.  Observed on a Radxa Cubie A5E: U-Boot leaves both clusters at 768 MHz
+(N=32).  When cpufreq comes up, the core's CPUFREQ_NEED_INITIAL_FREQ_CHECK path
+first snaps each cluster to the nearest listed OPP - 792 MHz (N=33) on the
+little cluster and 840 MHz (N=35) on the big one - and both of those succeed.
+The governor then immediately asks for the maximum OPP, 1416 MHz (N=59) and
+1800 MHz (N=75), and the machine hangs solid with no further console output.
+
+Fix it the way every other sunxi-ng CPU clock driver does, by registering a
+ccu_mux_nb that temporarily reparents the cluster onto the 24 MHz oscillator
+for the duration of the rate change.  Compare ccu-sun50i-h6.c, ccu-sun50i-a64.c
+and ccu-sun8i-h3.c.
+
+The mux notifiers are registered *after* the existing PLL notifiers so that on
+POST_RATE_CHANGE the PLL has finished settling (SSC disabled, update bit
+clear) before the mux is switched back onto it.
+
+--- a/drivers/clk/sunxi-ng/ccu-sun55i-a523-cpu.c
++++ b/drivers/clk/sunxi-ng/ccu-sun55i-a523-cpu.c
+@@ -17,6 +17,7 @@
+  #include "ccu_gate.h"
+  #include "ccu_mp.h"
+  #include "ccu_mult.h"
++ #include "ccu_mux.h"
+  #include "ccu_nk.h"
+  #include "ccu_nkm.h"
+  #include "ccu_nkmp.h"
+@@ -137,6 +138,31 @@
+ 	},
+ };
+ 
++/*
++ * Park the cluster on the 24 MHz oscillator while its PLL is being
++ * reprogrammed.  Without this the core keeps executing from the PLL across
++ * the relock, which is survivable for a small change of the N multiplier but
++ * hangs the cluster outright on a large one (e.g. the jump from the
++ * bootloader's 768 MHz / N=32 straight to 1800 MHz / N=75 that the governor
++ * makes as soon as cpufreq comes up).
++ *
++ * This is the standard sunxi-ng idiom; compare ccu-sun50i-h6.c, ccu-sun50i-a64.c
++ * and ccu-sun8i-h3.c, all of which register a ccu_mux_nb for their CPU clock.
++ */
++static struct ccu_mux_nb sun55i_a523_cpul_mux_nb = {
++	.common		= &cpul_clk.common,
++	.cm		= &cpul_clk.mux,
++	.delay_us	= 10,
++	.bypass_index	= 0, /* index of 24 MHz oscillator */
++};
++
++static struct ccu_mux_nb sun55i_a523_cpub_mux_nb = {
++	.common		= &cpub_clk.common,
++	.cm		= &cpub_clk.mux,
++	.delay_us	= 10,
++	.bypass_index	= 0, /* index of 24 MHz oscillator */
++};
++
+ static void ccupll_helper_wait_for_lock(void __iomem *addr, u32 lock)
+ {
+ 	u32 reg;
+@@ -196,6 +222,17 @@
+ 	ccu_pll_notifier_register(&sun55i_a523_pll_cpul_nb);
+ 	ccu_pll_notifier_register(&sun55i_a523_pll_cpub_nb);
+ 
++	/* Reparent to osc24M across PLL rate changes; see the comment above. */
++	ret = ccu_mux_notifier_register(pll_cpul_clk.common.hw.clk,
++					&sun55i_a523_cpul_mux_nb);
++	if (ret)
++		return ret;
++
++	ret = ccu_mux_notifier_register(pll_cpub_clk.common.hw.clk,
++					&sun55i_a523_cpub_mux_nb);
++	if (ret)
++		return ret;
++
+ 	return 0;
+ }
+ 
