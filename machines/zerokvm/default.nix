@@ -168,7 +168,7 @@
     };
   };
 
-  powerManagement.cpuFreqGovernor = "performance";
+  powerManagement.cpuFreqGovernor = "schedutil";
   zramSwap = {
     enable = true;
     memoryPercent = 90;
