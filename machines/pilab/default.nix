@@ -495,7 +495,7 @@ in
 
   # NOTE: For modes supported by the CPU, run:
   # $ cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
-  powerManagement.cpuFreqGovernor = "conservative";
+  powerManagement.cpuFreqGovernor = "schedutil";
 
   zramSwap = {
     enable = true;
