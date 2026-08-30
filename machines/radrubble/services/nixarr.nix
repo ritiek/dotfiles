@@ -233,10 +233,33 @@ in
 
   # Nothing should autostart at boot -- everything is started explicitly via
   # `sudo mediaserver-start` once EVERYTHING_ELSE is mounted.
-  systemd.services = lib.genAttrs (map (lib.removeSuffix ".service") units) (_: {
-    wantedBy = lib.mkForce [ ];
-    unitConfig.RequiresMountsFor = requiredMounts;
-  });
+  #
+  # Additionally, qBittorrent gets a preStart hook (see below): its
+  # single-instance guard (its vendored QtLocalPeer) writes a `lockfile`
+  # containing its PID into the config dir. The file persists on the
+  # EVERYTHING_ELSE drive across reboots, and after a reboot the recorded PID
+  # can be reused by any unrelated process. When that happens,
+  # qbittorrent-nox takes the hasAnotherInstance() path in main.cpp and exits
+  # 0 *silently* (the "Another qBittorrent instance is already running"
+  # message only prints when argc == 1, and systemd passes arguments), so the
+  # service dies within seconds of `mediaserver-start` with no failure
+  # anywhere -- only 4 lines in qBittorrent's own file log show the early
+  # shutdown. First hit 2026-08-30: the lockfile held PID 3305 from the last
+  # pre-reboot run, which the next boot assigned to [kworker/R-btrfs-fixup].
+  #
+  # systemd already guarantees only one instance of this unit exists, so
+  # dropping any stale lockfile before start is safe. Implemented as preStart
+  # (not an extra ExecStartPre) because nixpkgs' qbittorrent module defines
+  # ExecStartPre as a bare string, which a second definition would clobber.
+  systemd.services = lib.recursiveUpdate
+    (lib.genAttrs (map (lib.removeSuffix ".service") units) (_: {
+      wantedBy = lib.mkForce [ ];
+      unitConfig.RequiresMountsFor = requiredMounts;
+    }))
+    {
+      qbittorrent.preStart =
+        "${pkgs.coreutils}/bin/rm -f ${qbtConfig}/qBittorrent/config/lockfile";
+    };
 
   # Auto-stop everything if EVERYTHING_ELSE is unplugged without running
   # `sudo mediaserver-stop` first. Deliberately no ACTION=="add" auto-start
