@@ -323,7 +323,8 @@ in
         # default = "opencode/deepseek-v4-flash-free";
         # default = "opencode-go/gpt-5.6-luna";
         # default = "opencode-go/qwen3.7-plus";
-        default = "opencode-go/mimo-v2.5";
+        # default = "opencode-go/mimo-v2.5";
+        default = "opencode-go/glm-5.3-flash";
         # default = "mimo-v2.5-free";
         # default = "big-pickle";
         provider = "opencode-go";
@@ -378,18 +379,18 @@ in
         #   base_url = "https://opencode.ai/zen/go/v1";
         #   api_key = "\${OPENCODE_GO_API_KEY}";
         # };
-        title_generation = {
-          provider = "opencode-go";
-          model = "deepseek-v4-flash";
-          base_url = "https://opencode.ai/zen/go/v1";
-          api_key = "\${OPENCODE_GO_API_KEY}";
-        };
-        compression = {
-          provider = "opencode-go";
-          model = "deepseek-v4-flash";
-          base_url = "https://opencode.ai/zen/go/v1";
-          api_key = "\${OPENCODE_GO_API_KEY}";
-        };
+        # title_generation = {
+        #   provider = "opencode-go";
+        #   model = "deepseek-v4-flash";
+        #   base_url = "https://opencode.ai/zen/go/v1";
+        #   api_key = "\${OPENCODE_GO_API_KEY}";
+        # };
+        # compression = {
+        #   provider = "opencode-go";
+        #   model = "deepseek-v4-flash";
+        #   base_url = "https://opencode.ai/zen/go/v1";
+        #   api_key = "\${OPENCODE_GO_API_KEY}";
+        # };
       };
 
       toolsets = [ "all" ];
