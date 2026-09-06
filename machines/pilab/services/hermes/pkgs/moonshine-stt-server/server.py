@@ -46,9 +46,12 @@ _transcriber = None
 def _model_path(arch_name: str) -> pathlib.Path:
     outer, inner = _MODEL_DIRS[arch_name]
     base = (
-        pathlib.Path.home()
-        / ".cache"
-        / "moonshine_voice"
+        pathlib.Path(
+            os.environ.get(
+                "MOONSHINE_VOICE_CACHE",
+                pathlib.Path.home() / ".cache" / "moonshine_voice",
+            )
+        )
         / "download.moonshine.ai"
         / "model"
     )
@@ -58,14 +61,14 @@ def _model_path(arch_name: str) -> pathlib.Path:
 @app.on_event("startup")
 async def _startup():
     global _transcriber
-    from moonshine_voice import ModelArch, Transcriber, download
+    from moonshine_voice import ModelArch, Transcriber, get_model_for_language
 
     arch  = getattr(ModelArch, MODEL_NAME)
     mpath = _model_path(MODEL_NAME)
 
     if not mpath.exists():
         log.info("Model not found at %s — downloading …", mpath)
-        download("en")
+        get_model_for_language("en", arch)
 
     log.info("Loading %s model from %s …", MODEL_NAME, mpath)
     _transcriber = Transcriber(model_path=str(mpath), model_arch=arch)
