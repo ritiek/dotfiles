@@ -168,11 +168,14 @@ in
       # Silence ONNX Runtime info-level log spam (3 = WARNING).
       ORT_LOGGING_LEVEL  = "3";
       HOME               = "/home/ritiek";
+      # Writable model cache (ProtectHome makes ~/.cache read-only).
+      MOONSHINE_VOICE_CACHE = "/var/cache/moonshine-stt";
     };
     serviceConfig = {
       ExecStart      = "${moonshineSttServer}/bin/moonshine-stt-server";
       User           = "ritiek";
       Group          = "users";
+      CacheDirectory = "moonshine-stt";
       Restart        = "on-failure";
       RestartSec     = 3;
       ProtectSystem  = "strict";
