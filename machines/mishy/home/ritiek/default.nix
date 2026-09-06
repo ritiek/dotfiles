@@ -34,6 +34,7 @@
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
     ./../../../../scripts/home/spotdl-patched.nix
+    ./../../../../scripts/home/spotify-adblock-pinned.nix
     ./../../../../scripts/home/sync-chromium-to-deskette.nix
   ];
 
@@ -241,8 +242,11 @@
       # inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # Repo got removed from NUR: https://github.com/nix-community/NUR/pull/707
-      nur.repos.nltch.spotify-adblock
-      # So installing directly from my source repo instead
+      # Also broken: fetches mutable refs/heads/main with a fixed hash, so it
+      # breaks whenever upstream pushes
+      # (https://github.com/NL-TCH/nur-packages/issues/33).
+      # Using pinned scripts/home/spotify-adblock-pinned.nix (imported above) instead.
+      # nur.repos.nltch.spotify-adblock
       # ritiek.spotify-adblock
 
       # nur.repos.kira-bruneau.habitica

@@ -16,6 +16,7 @@
     ./../../../../modules/home/opencode
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
+    ./../../../../scripts/home/spotify-adblock-pinned.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -115,7 +116,10 @@
       iperf
       nix-tree
       deploy-rs
-      nur.repos.nltch.spotify-adblock
+      # Broken: fetches mutable refs/heads/main with a fixed hash, so it breaks
+      # whenever upstream pushes (https://github.com/NL-TCH/nur-packages/issues/33).
+      # Using pinned scripts/home/spotify-adblock-pinned.nix (imported above) instead.
+      # nur.repos.nltch.spotify-adblock
     ];
   };
 
