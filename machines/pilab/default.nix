@@ -504,6 +504,7 @@ in
 
   networking.localCommands = ''
     # Prioritize default route over Tailscale route for default gateway.
+    ip rule del to 192.168.2.0/24 priority 2500 lookup main 2>/dev/null || true
     ip rule add to 192.168.2.0/24 priority 2500 lookup main
   '';
 
