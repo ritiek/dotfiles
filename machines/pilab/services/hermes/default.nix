@@ -324,10 +324,11 @@ in
         # default = "opencode-go/gpt-5.6-luna";
         # default = "opencode-go/qwen3.7-plus";
         # default = "opencode-go/mimo-v2.5";
-        default = "opencode-go/glm-5.3-flash";
-        # default = "mimo-v2.5-free";
+        # default = "opencode-go/glm-5.3-flash";
+        default = "mimo-v2.5-free";
         # default = "big-pickle";
-        provider = "opencode-go";
+        provider = "opencode";
+        # provider = "opencode-go";
         # OpenCode Go subscription endpoint. The plain /zen/v1 endpoint bills
         # the pay-as-you-go Zen balance and 401s with "Insufficient balance".
         base_url = "https://opencode.ai/zen/go/v1";
