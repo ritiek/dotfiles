@@ -85,17 +85,18 @@ let
     set -x
     homelab-mount && (
       # EVERYTHING_ELSE-dependent services (qbittorrent/jellyfin/radarr/sonarr/
-      # bazarr/prowlarr/jellyseerr/syncthing) already declare RequiresMountsFor
+      # bazarr/prowlarr/jellyseerr) already declare RequiresMountsFor
       # on their own systemd units, so `systemctl start` on them would fail
       # loudly (and leave the units in a failed state) whenever the disk is
       # disconnected. Check availability once here and skip starting them
-      # instead of letting each one fail individually.
+      # instead of letting each one fail individually. syncthing doesn't
+      # require EVERYTHING_ELSE and is always started below.
       if mountpoint -q ${everythingElsePath}; then
         everything_else_available=1
       else
         everything_else_available=0
         set +x
-        echo "homelab-start: EVERYTHING_ELSE not mounted, skipping qbittorrent/jellyfin/radarr/sonarr/bazarr/prowlarr/jellyseerr/syncthing"
+        echo "homelab-start: EVERYTHING_ELSE not mounted, skipping qbittorrent/jellyfin/radarr/sonarr/bazarr/prowlarr/jellyseerr"
         set -x
       fi
 
@@ -115,7 +116,7 @@ let
       # systemctl start docker-navidrome.service
       systemctl start autostart-navidrome.service
       systemctl start autostart-memos.service
-      [ "$everything_else_available" = 1 ] && systemctl start docker-syncthing.service
+      systemctl start docker-syncthing.service
       systemctl start docker-miniflux.service
       systemctl start docker-gotify.service
       # systemctl start docker-shiori.service
