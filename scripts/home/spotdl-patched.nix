@@ -61,6 +61,14 @@ let
   '';
 
   pythonOverrides = pyFinal: pyPrev: {
+    # inline-snapshot 0.34.2: test_docs[categories.md|code_generation.md|testing.md]
+    # fail, but only on Python 3.12 (they're skipped on other versions), so
+    # nixpkgs CI doesn't catch it. inline-snapshot is a test dependency of
+    # fastapi/sse-starlette/curl-cffi which soundcloud-v2 and yt-dlp need.
+    inline-snapshot = pyPrev.inline-snapshot.overridePythonAttrs (old: {
+      disabledTests = (old.disabledTests or [ ]) ++ [ "test_docs" ];
+    });
+
     # tenacity 9.1.4: tests/test_asyncio.py::TestContextManager::test_sleeps
     # asserts an async sleep took <1.1s, but under load on the slow Pi 5 it
     # takes ~12s (timing-sensitive, passes upstream). Disable just that test so
