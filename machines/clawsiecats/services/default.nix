@@ -97,6 +97,12 @@ let
           # WebSocket support
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
+
+          # Require App-Identity-Key header
+          set $immich_app_identity_key "${config.sops.secrets."immich.app_identity_key".path}";
+          if ($http_app_identity_key != $immich_app_identity_key) {
+            return 403;
+          }
         '';
       };
     };
@@ -238,6 +244,7 @@ let
     };
     "webhook_matrix.auth" = {};
     "github_actions_matrix_user.password" = {};
+    "immich.app_identity_key" = {};
   };
 
   # restartTriggers on the unit below only cover changes to the template *text*
@@ -298,7 +305,7 @@ let
   };
 
   nixpkgs.config.permittedInsecurePackages = [
-    "jitsi-meet-1.0.8792"
+    "jitsi-meet-1.0.9365"
   ];
 
   # systemd.tmpfiles.settings."10-syncthing" = {
