@@ -188,6 +188,15 @@
           sha256 = "sha256-p/gfGRVWr3NpsNzaodF0V7CjAQaCh9O6ZAzI9jBxm/k=";
           meta = {};
         })
+
+        (buildFirefoxXpiAddon {
+          pname = "readeck";
+          version = "2.6.3";
+          addonId = "readeck@readeck.com";
+          url = "https://addons.mozilla.org/firefox/downloads/file/4751337/readeck-2.6.3.xpi";
+          sha256 = "sha256-1fmxolhWEzBI/wqW99K1q+C+s86JCmGuGmT4qysPrK8=";
+          meta = {};
+        })
       ];
 
       settings = {
