@@ -110,6 +110,20 @@ let
     "vaultwarden.${domain}" = {
       forceSSL = true;
       enableACME = true;
+      # Keep the admin panel off the internet. ADMIN_TOKEN stays set, so the
+      # panel is still reachable over the tailnet at
+      # http://pilab.lion-zebra.ts.net:9446/admin -- vaultwarden takes the
+      # session cookie's Secure flag from the request rather than from DOMAIN
+      # and redirects to a relative path after login, so a plain-HTTP tailnet
+      # origin works without a redirect loop.
+      #
+      # Everything else (/api, /identity, /notifications) has to stay open: no
+      # Bitwarden client can send a custom header or basic auth, so any gate in
+      # front of them breaks every client. Vaultwarden has no published
+      # pre-auth vulnerability, so that trade is acceptable here.
+      locations."^~ /admin".extraConfig = ''
+        return 404;
+      '';
       locations."/" = {
         recommendedProxySettings = true;
         extraConfig = ''
@@ -121,6 +135,24 @@ let
     "calibre.${domain}" = {
       forceSSL = true;
       enableACME = true;
+      # calibre-web-automated mounts 19 routes with no auth decorator at all.
+      # CVE-2026-7714 only names /cwa-convert-library-start and
+      # /cwa-epub-fixer-start, but the whole cwa_functions.py surface is
+      # unauthenticated: the /cwa-internal POST endpoints, the log archive
+      # (info disclosure -- traversal itself is handled by secure_filename),
+      # and the convert/fix job triggers, which anyone can use to kick off
+      # library-wide work. v4.0.6 is the latest release and is what pilab
+      # runs; upstream #1304 is open and the community fix was closed
+      # unmerged, so block the prefixes at the edge instead of waiting.
+      #
+      # This also catches three routes that *are* login-gated
+      # (cwa-convert-library/schedule, cwa-epub-fixer/schedule,
+      # cwa-epub-fixer/run-book). That is deliberate -- maintenance belongs on
+      # the tailnet at http://pilab.lion-zebra.ts.net:8083, same as
+      # vaultwarden's admin panel.
+      locations."~ ^/(cwa-internal|cwa-logs|cwa-convert-library|convert-library-|cwa-epub-fixer|epub-fixer-)".extraConfig = ''
+        return 404;
+      '';
       locations."/" = {
         recommendedProxySettings = true;
         extraConfig = ''
@@ -129,6 +161,20 @@ let
           proxy_buffer_size   1024k;
           proxy_buffers       4 512k;
           proxy_busy_buffers_size 1024k;
+
+          # CWA reads its proxy-auth identity straight off the request and
+          # ships none of upstream calibre-web's trusted-proxy or
+          # shared-secret checks, so a client must never be able to supply it.
+          # These two names are hardcoded in cps/usermanagement.py:224.
+          #
+          # The *username* header cannot be stripped here: its name comes from
+          # config_reverse_proxy_login_header_name, which an admin sets at
+          # runtime. So the control that actually matters is keeping
+          # config_allow_reverse_proxy_header_login at 0 (it is). If that is
+          # ever turned on, whatever header name gets configured has to be
+          # stripped here too, or anyone can log in as any user.
+          proxy_set_header Remote-Email "";
+          proxy_set_header X-Remote-Email "";
         '';
       };
     };
