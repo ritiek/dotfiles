@@ -1,0 +1,29 @@
+#!/bin/sh
+# Third portable-router uplink option: USB tethering from a phone. Wired
+# into network + the wan firewall zone the same way as
+# files/etc/uci-defaults/97-wwan-uplink; see files/etc/uci-defaults/
+# 98-mwan3-setup for how it's prioritised against eth1/wwan.
+#
+# UNTESTED: no phone was available to verify this against real hardware.
+# device='usb0' is the standard interface name for both RNDIS (Android) and
+# CDC-Ether tethering, but an iPhone's ipheth driver may enumerate
+# differently -- check `ip link` after plugging one in and adjust the
+# device= line below (and re-run this uci-defaults logic, or just uci set
+# it directly) if it doesn't match.
+uci -q get network.usbtether >/dev/null 2>&1 || uci set network.usbtether=interface
+uci set network.usbtether.proto='dhcp'
+uci set network.usbtether.device='usb0'
+uci commit network
+
+# Same idempotent zone-membership pattern as 97-wwan-uplink.
+for z in $(uci -q show firewall | sed -n 's/firewall\.\(.*\)=zone/\1/p'); do
+	if [ "$(uci -q get firewall.$z.name)" = "wan" ]; then
+		case " $(uci -q get firewall.$z.network) " in
+			*" usbtether "*) ;;
+			*) uci add_list firewall.$z.network='usbtether' ;;
+		esac
+	fi
+done
+uci commit firewall
+
+exit 0

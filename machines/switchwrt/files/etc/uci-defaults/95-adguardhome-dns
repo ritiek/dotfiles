@@ -1,0 +1,40 @@
+#!/bin/sh
+# First-boot setup for the AdGuardHome layer.
+#
+# DNS chain (AGH-primary architecture): AdGuardHome is now the actual DNS
+# server LAN and tailnet clients talk to directly (bound on 0.0.0.0:53,
+# WAN blocked by the firewall -- see files/etc/adguardhome/adguardhome.yaml
+# for why not an explicit IP list), so it
+# can see real per-client source IPs for its query log/stats (previously,
+# with dnsmasq as the client-facing server forwarding to AGH over loopback,
+# every single query -- LAN or tailnet -- showed up in AGH's log as
+# "127.0.0.1", since that's who AGH actually saw connecting; confirmed via
+# a live test query from a real LAN client).
+#
+# dnsmasq is demoted to being AGH's own backend for the *.lan domain only
+# (it still owns DHCP and the lease-based hostname database). Move it off
+# the standard port so AGH can bind :53 on the real interfaces instead --
+# `option port` only affects dnsmasq's DNS listener, DHCP (67/68) is a
+# separate protocol/socket and is completely unaffected by this.
+uci set dhcp.@dnsmasq[0].port='5354'
+# dnsmasq no longer needs an upstream of its own: the only queries it'll
+# ever receive now are *.lan lookups forwarded in by AGH, which it already
+# answers authoritatively via `local=/lan/` + the DHCP lease table.
+uci delete dhcp.@dnsmasq[0].noresolv 2>/dev/null
+uci delete dhcp.@dnsmasq[0].server 2>/dev/null
+# The rebind_domain whitelist entries for lion-zebra.ts.net/pihole (used
+# when dnsmasq itself forwarded those domains) are now dead weight -- AGH
+# handles both domains directly via its own upstream_dns, and AGH has no
+# DNS-rebind-protection feature to trip in the first place. Not removing
+# rebind_protection itself, just the now-unused per-domain exceptions.
+uci delete dhcp.@dnsmasq[0].rebind_domain 2>/dev/null
+uci commit dhcp
+
+# The adguardhome service (init.d START=19) runs as user/group
+# adguardhome:adguardhome (853) under a procd jail that bind-mounts its
+# config and work dirs read-write, but the shipped yaml lands root-owned
+# (install -Dm644 via the image build).  AGH rewrites its config on every
+# UI/filter change, so hand ownership of both trees to the service user.
+chown -R adguardhome:adguardhome /etc/adguardhome /var/lib/adguardhome
+
+exit 0

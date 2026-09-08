@@ -1,0 +1,193 @@
+# Seed config for Radxa Cubie A5E (1 GB) SD card image.
+# Feed this to `make defconfig` -- it fills in every unset symbol.
+
+CONFIG_TARGET_sunxi=y
+CONFIG_TARGET_sunxi_cortexa55=y
+CONFIG_TARGET_sunxi_cortexa55_DEVICE_radxa_cubie-a5e=y
+
+# Roomier than the default so there is space to iterate on the board.
+CONFIG_TARGET_ROOTFS_PARTSIZE=640
+CONFIG_SUNXI_SD_BOOT_PARTSIZE=64
+
+# Keep per-package build logs under logs/ for post-mortem.
+CONFIG_DEVEL=y
+CONFIG_BUILD_LOG=y
+
+# WiFi: local out-of-tree AIC8800D80 SDIO driver + firmware.
+CONFIG_PACKAGE_kmod-aic8800-sdio=y
+CONFIG_PACKAGE_aic8800-sdio-firmware=y
+
+# Full wpad (hostapd + wpa_supplicant) rather than the basic variant.
+CONFIG_PACKAGE_wpad-basic-mbedtls=n
+CONFIG_PACKAGE_wpad-mbedtls=y
+
+# Diagnostics -- the board has no working ACS and a flaky vendor driver,
+# so having the full iw and tcpdump on the image saves a rebuild cycle.
+CONFIG_PACKAGE_iw-full=y
+CONFIG_PACKAGE_tcpdump=y
+CONFIG_PACKAGE_ethtool=y
+CONFIG_PACKAGE_kmod-sdhci=y
+
+# Web UI, convenient for an experiment.
+CONFIG_PACKAGE_luci=y
+CONFIG_PACKAGE_luci-ssl=y
+
+# Ad-blocking DNS layer: AdGuardHome (recursive DoH upstream, listens on
+# 127.0.0.1:5353; dnsmasq forwards to it via
+# files/etc/uci-defaults/95-adguardhome-dns) plus its LuCI integration.
+CONFIG_PACKAGE_adguardhome=y
+CONFIG_PACKAGE_luci-app-adguardhome=y
+
+# VPN mesh layer (tailscale + netbird), mirroring the shared
+# modules/tailscale-controlplane.nix and modules/netbird.nix from the
+# NixOS fleet.  Login is driven by the files/etc/init.d/*-login one-shots.
+CONFIG_PACKAGE_tailscale=y
+CONFIG_PACKAGE_kmod-tun=y
+CONFIG_PACKAGE_netbird=y
+CONFIG_PACKAGE_kmod-wireguard=y
+
+# LuCI management UI for tailscale (luci-app-tailscale-community, in the
+# luci feed since openwrt/luci#8018).  Its UCI -> `tailscale set` pipeline
+# is seeded declaratively by files/etc/uci-defaults/96-tailscale-luci-seed;
+# ip-full is pulled in via the app's LUCI_DEPENDS.
+CONFIG_PACKAGE_luci-app-tailscale-community=y
+
+# LuCI management UI for netbird (vendored from looong-cat/luci-app-netbird
+# into the build tree via image.nix; not in any official feed).  Its UCI ->
+# `netbird up` pipeline defaults match the flags in netbird-login (DNS off,
+# wt0, 51820).  conntrack is metadata-only EXTRA_DEPENDS there, so select it
+# explicitly (network tab uses it to flush connections on rule changes).
+CONFIG_PACKAGE_luci-app-netbird=y
+CONFIG_PACKAGE_conntrack=y
+
+# Argon LuCI theme (vendored from jerrykuku/luci-theme-argon into the build
+# tree via image.nix; not in any official feed).  Activated by the theme's
+# own 30_luci-theme-argon uci-defaults on first boot.  Its wget-any
+# dependency is provided by uclient-fetch, part of the base system.
+CONFIG_PACKAGE_luci-theme-argon=y
+
+# WISP uplink: mainline Realtek USB WiFi driver for a TP-Link TL-WN822N v4
+# dongle (RTL8192EU, USB ID 0bda:818b), configured as a STA joining the
+# upstream ONT's own SSID by files/etc/uci-defaults/97-wwan-uplink.
+#
+# The firmware package IS required on top of the kmod: without
+# rtlwifi/rtl8192eu_nic.bin in /lib/firmware the probe fails with
+# 'Direct firmware load ... error -2' -> 'Fatal - failed to load firmware'
+# and no phy ever appears (confirmed live on first flash; the blob was
+# hand-copied from nixpkgs' linux-firmware to unblock, this bakes it in
+# properly).  rtl8192eu-firmware is in the official feed
+# (package/firmware/linux-firmware/realtek.mk) and installs exactly that
+# file.
+CONFIG_PACKAGE_kmod-rtl8xxxu=y
+CONFIG_PACKAGE_rtl8192eu-firmware=y
+
+# mwan3: automatic failover between the wired eth1 uplink and the WiFi
+# dongle uplink above (eth1 preferred), plus per-device MAC-based pinning
+# via LuCI.  See files/etc/uci-defaults/98-mwan3-setup for the baked
+# default policy/rule; luci-app-mwan3 gives Network > Load Balancing in the
+# web UI.  Both packages are in the official feeds, no vendoring needed.
+CONFIG_PACKAGE_mwan3=y
+CONFIG_PACKAGE_luci-app-mwan3=y
+
+# Third portable-router uplink option: USB tethering from a phone (RNDIS
+# for Android, ipheth for iPhone; cdc-ether covers some other devices).
+# Wired into network/mwan3 by files/etc/uci-defaults/97-usbtether-uplink,
+# but genuinely untested -- no phone was on hand to verify against. Interface
+# naming (assumed usb0, standard for RNDIS/CDC-Ether) may need adjusting for
+# ipheth specifically once tried against a real device.
+CONFIG_PACKAGE_kmod-usb-net=y
+CONFIG_PACKAGE_kmod-usb-net-rndis=y
+CONFIG_PACKAGE_kmod-usb-net-cdc-ether=y
+CONFIG_PACKAGE_kmod-usb-net-ipheth=y
+
+# Per-client bandwidth accounting, useful for metered/capped hotel WiFi
+# while travelling. Lighter-weight and more purpose-fit than the
+# collectd/luci-app-statistics stack for just "who's using how much data".
+CONFIG_PACKAGE_nlbwmon=y
+CONFIG_PACKAGE_luci-app-nlbwmon=y
+
+# Smart Queue Management (bufferbloat control) -- valuable specifically for
+# a portable router hopping between variable-quality uplinks (hotel WiFi,
+# LTE tether): keeps one saturated connection from making everything else
+# laggy. Official feed, no vendoring.
+CONFIG_PACKAGE_luci-app-sqm=y
+
+# Basic NAS/file-sharing over the LAN. Official feed, no vendoring.
+CONFIG_PACKAGE_luci-app-samba4=y
+CONFIG_PACKAGE_samba4-server=y
+
+# Portable-router LuCI extras, all vendored via image.nix's patches
+# attribute (none are in any official feed). See the comments there for
+# each package's source repo and any build-time fixups needed.
+#
+# internet-detector (+ its LuCI UI): visual connectivity-status widget,
+# complements mwan3's failover with an at-a-glance "which uplink is
+# actually up right now".
+CONFIG_PACKAGE_internet-detector=y
+CONFIG_PACKAGE_luci-app-internet-detector=y
+# Board temperature + CPU load on the LuCI status page.
+CONFIG_PACKAGE_luci-app-temp-status=y
+CONFIG_PACKAGE_luci-app-cpu-status=y
+# On-demand speed test from LuCI itself.
+CONFIG_PACKAGE_luci-app-netspeedtest=y
+# NOTE: luci-app-change-mac (LuCI-UI wrapper for MAC randomization) was
+# tried and dropped: its LUCI_DEPENDS requires a separate `rgmac` core
+# package (muink/openwrt-rgmac) that was never vendored, which broke the
+# build at the final image-assembly step after a ~7h+ full rebuild. Given
+# it was already redundant with our own files/etc/init.d/randomize-wwan-mac
+# (built first, covers the same goal), removed rather than also vendoring
+# rgmac and risking another surprise dependency.
+# Proper syslog/kernel log browser (search, tail, filter) -- useful for
+# debugging in the field without SSH. Repo dir is "luci-app-log" but the
+# package's own PKG_NAME is luci-app-log-viewer.
+CONFIG_PACKAGE_luci-app-log-viewer=y
+# Per-INTERFACE traffic stats (vs. nlbwmon's per-client view) -- pairs well
+# with mwan3 to see how much data each uplink (eth1/wwan/usbtether) uses.
+CONFIG_PACKAGE_luci-app-interfaces-statistics=y
+# WAN IP geolocation/ASN info via ip.guide -- "which country/ISP am I
+# actually behind right now" at a glance.
+CONFIG_PACKAGE_luci-app-ipinfo=y
+# Web-based file browser -- self-contained, no separate core package
+# needed (unlike the muink/luci-app-tinyfilemanager PHP8+FPM stack we
+# considered and dropped in favour of this lighter official-feed option).
+CONFIG_PACKAGE_luci-app-filebrowser=y
+
+# Roaming WiFi client: multiple known-network profiles, auto-scan/connect,
+# captive-portal-detection helper. Purpose-built for exactly the portable
+# WISP-uplink use case 97-wwan-uplink hand-rolled with one hardcoded SSID --
+# a real potential upgrade path, not yet wired to replace it.
+CONFIG_PACKAGE_travelmate=y
+CONFIG_PACKAGE_luci-app-travelmate=y
+
+# Historical bandwidth graphs (daily/monthly) -- complements nlbwmon's
+# live per-client view with a "how much did I use this month" one.
+CONFIG_PACKAGE_vnstat2=y
+CONFIG_PACKAGE_vnstati2=y
+CONFIG_PACKAGE_luci-app-vnstat2=y
+
+# Web-based terminal (SSH-in-browser).
+CONFIG_PACKAGE_ttyd=y
+CONFIG_PACKAGE_luci-app-ttyd=y
+
+# Full-cone NAT port mapping -- using the OFFICIAL feed's own natmap
+# package instead of the deferred muink/luci-app-natmapt: same upstream
+# (heiher/natmap) and same PKG_SOURCE_URL download requirement, but since
+# it's part of the `packages` feed (blanket-downloaded via `make download`
+# regardless of what's selected here -- confirmed via its Makefile), it
+# doesn't carry the downloadsHash-invalidation risk the standalone
+# muink/openwrt-natmapt vendoring would have (that repo lives entirely
+# outside any installed feed, so its download isn't covered for free).
+CONFIG_PACKAGE_natmap=y
+CONFIG_PACKAGE_luci-app-natmap=y
+
+# Better NTP client -- generally handles large clock jumps better than the
+# default sysntpd, relevant given this board's clock-race issue (see
+# files/etc/init.d/faketime and tailscale-login's wait-loop comment).
+CONFIG_PACKAGE_chrony=y
+CONFIG_PACKAGE_luci-app-chrony=y
+
+# UPnP IGD / PCP/NAT-PMP: automatic port forwarding for LAN devices that
+# request it (games, torrent clients, etc.).
+CONFIG_PACKAGE_miniupnpd=y
+CONFIG_PACKAGE_rpcd-mod-ucode=y
+CONFIG_PACKAGE_luci-app-upnp=y

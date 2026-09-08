@@ -1,0 +1,39 @@
+#!/bin/sh
+# Restore exec bits on files shipped by the vendored LuCI packages
+# (luci-theme-argon, luci-app-netbird).  They reach the build tree through
+# image.nix's patches mechanism, which installs everything mode 644, and the
+# buildroot packages them verbatim -- so the executable ones have to be
+# fixed up at first boot (same reason exec bits get lost on any tree
+# files/ drop -- see the patches attribute comment in image.nix).
+
+[ -f /usr/libexec/rpcd/luci.argon_wallpaper ] &&
+	chmod +x /usr/libexec/rpcd/luci.argon_wallpaper
+
+[ -f /etc/init.d/netbird-settings ] &&
+	chmod +x /etc/init.d/netbird-settings
+[ -f /etc/init.d/luci-netbird-watchdog ] &&
+	chmod +x /etc/init.d/luci-netbird-watchdog
+[ -f /usr/share/netbird/netbird-autoreconnect.sh ] &&
+	chmod +x /usr/share/netbird/netbird-autoreconnect.sh
+
+# Portable-router LuCI extras (internet-detector, netspeedtest).
+# luci-app-temp-status/cpu-status/log-viewer/
+# interfaces-statistics/ipinfo need no fixups here -- they only ship
+# rpcd/ucode (module-loaded, not exec'd directly) and menu.d/acl.d JSON.
+[ -f /usr/bin/internet-detector ] &&
+	chmod +x /usr/bin/internet-detector
+[ -f /etc/init.d/internet-detector ] &&
+	chmod +x /etc/init.d/internet-detector
+[ -f /usr/libexec/rpcd/luci.internet-detector ] &&
+	chmod +x /usr/libexec/rpcd/luci.internet-detector
+for f in up-script down-script regular-script public-ip-script; do
+	[ -f /etc/internet-detector/$f.internet ] &&
+		chmod +x /etc/internet-detector/$f.internet
+done
+
+[ -f /usr/libexec/rpcd/luci.netspeedtest ] &&
+	chmod +x /usr/libexec/rpcd/luci.netspeedtest
+[ -f /etc/init.d/netspeedtest ] &&
+	chmod +x /etc/init.d/netspeedtest
+
+exit 0

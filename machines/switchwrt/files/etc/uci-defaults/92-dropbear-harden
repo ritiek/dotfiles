@@ -1,0 +1,24 @@
+#!/bin/sh
+# Key-only SSH. The image bakes /etc/dropbear/authorized_keys (same key set
+# as the NixOS fleet's users.ritiek), so password auth is disabled outright:
+# the stock image ships root with an EMPTY password (/etc/shadow
+# `root:::0:99999:7:::`) and dropbear's default PasswordAuth=on would accept
+# blank-password root logins -- including from the wan zone, where
+# 98-allow-ssh-wan deliberately exposes port 22 to the upstream network.
+#
+# The root password itself (which gates LuCI's web login and the serial
+# console, both of which authenticate against /etc/shadow via rpcd/login and
+# are entirely independent of dropbear) is deliberately NOT set here: it is a
+# secret, and this image ships none.  It arrives at runtime as a `$6$` hash
+# from secrets.yaml via deploy-secrets.sh -> switchwrt-apply-secrets.  Until
+# that runs, root's password stays empty -- which is why disabling password
+# auth here matters even though key auth is what we actually use.
+#
+# @dropbear[0] rather than a section name: addresses the first section
+# regardless of whether the shipped config names it (it shows up as
+# `dropbear.main` on the running device).
+uci -q set dropbear.@dropbear[0].PasswordAuth='off'
+uci -q set dropbear.@dropbear[0].RootPasswordAuth='off'
+uci commit dropbear
+
+exit 0

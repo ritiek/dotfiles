@@ -1,0 +1,121 @@
+#!/bin/sh
+# Make directly-connected subnets win over Tailscale-advertised subnet routes.
+#
+# THE BUG THIS FIXES
+# Peers on our tailnet act as subnet routers: pilab (100.64.0.2, a Raspberry Pi
+# that physically sits on the home LAN) advertises 192.168.1.0/24 AND
+# 192.168.2.0/24. With `--accept-routes` (which we want -- it is what lets
+# switchwrt's LAN clients reach home-LAN devices while travelling) tailscaled
+# installs those prefixes into its own routing table 52 and adds
+#
+#	5270:	from all lookup 52
+#
+# which sits ABOVE the main table (32766). Whenever switchwrt is parked on a
+# 192.168.2.0/24 network -- i.e. at home, which is the common case, since the
+# ONT/GNXS uplink hands out exactly that subnet on BOTH eth1 (wan) and wlan1
+# (wwan) -- table 52's 192.168.2.0/24 shadowed our own directly-connected
+# route to the very subnet we are plugged into.
+#
+# Observed symptom: LuCI/SSH unreachable on the WAN-side addresses. tcpdump
+# showed the asymmetry perfectly -- request arrives, reply leaves the tunnel:
+#
+#	eth1        In   IP 192.168.2.4 > 192.168.2.16: ICMP echo request
+#	tailscale0  Out  IP 192.168.2.16 > 192.168.2.4: ICMP echo reply
+#
+# i.e. replies to a machine one hop away on the same wire were being pushed
+# into the tunnel to pilab instead of straight back out eth1. Anything that
+# depends on a reply reaching a 192.168.2.0/24 host (LuCI, ssh, ping) broke,
+# while LAN (192.168.3.1) and tailnet (100.64.0.21) access kept working
+# because those subnets are not shadowed.
+#
+# THE FIX
+# A rule ahead of tailscaled's `lookup 52` that consults the main table but
+# SUPPRESSES its default route:
+#
+#	1100:	from all lookup main suppress_prefixlength 0
+#
+# suppress_prefixlength 0 discards any match whose prefix length is <= 0, i.e.
+# the 0.0.0.0/0 default only. Net effect, by route class:
+#
+#   - connected subnets (192.168.2.0/24 dev eth1/wlan1, 192.168.3.0/24
+#     dev br-lan) are in main -> matched here -> routed directly. FIXED.
+#   - tailnet CGNAT (100.64.0.0/10) is not in main -> falls through to
+#     5270 -> table 52 -> tailscale0. Unchanged.
+#   - genuinely-remote advertised prefixes (192.168.1.0/24, and 192.168.2.0/24
+#     when we are NOT on that subnet, e.g. travelling) are not in main
+#     -> fall through to table 52 -> reachable via pilab. Unchanged, so the
+#     whole point of --accept-routes still works away from home.
+#   - internet traffic: main's default is suppressed here, so it falls through
+#     to 5270 (table 52 has no default) and then to main at 32766, picking up
+#     mwan3's metric-ordered defaults as before. Unchanged.
+#
+# ON THE CHOICE OF PRIORITY 1100
+# The obvious placement is "just above tailscaled's rule", but tailscaled's
+# priority base is NOT stable. Both of these have been observed on this box
+# across reboots of the very same image:
+#
+#	5210/5230/5250/5270   (lookup 52 at 5270)
+#	1310/1330/1350/1370   (lookup 52 at 1370)
+#
+# A rule pinned at 5260 therefore silently stopped working the moment
+# tailscaled came back on the 13xx base -- 1370 sits ahead of 5260, so table
+# 52 shadowed us again and the reply leak returned. 1100 is below both known
+# bases, so it wins regardless of which one tailscaled picks, and it needs no
+# re-ordering after a tailscaled restart (a dynamically-computed
+# "tailscale_prio - 1" would race every restart instead).
+#
+# 1100 also slots in safely among mwan3's rules: mwan3's iif rules are
+# 1000+index (1001 eth1, 1005 wlan1 here) so they stay ahead of us, and its
+# fwmark policy rules are 2001+, i.e. behind us. Being ahead of the fwmark
+# rules is harmless and in fact correct -- for internet destinations main's
+# default is suppressed here so we fall through to mwan3 untouched, while for
+# connected/LAN destinations we short-circuit to the direct route, which is
+# what we want anyway (mwan3 has no business steering same-wire traffic).
+#
+# WHY A HOTPLUG SCRIPT
+# The rule is independent of tailscale0 even existing, so it just needs to be
+# asserted once and kept asserted. Doing it on every ifup makes it self-healing
+# across boots, uplink reconnects and `mwan3 restart` (which is known to flush
+# routing state here). Priority 1100 is not one of the priorities tailscaled
+# manages, so its own add/cleanup passes leave it alone.
+#
+# Hotplug scripts are SOURCED by /sbin/hotplug-call (`. $script`), not exec'd,
+# so the mode-644 that image.nix's patches mechanism gives us is fine -- no
+# chmod fixup needed (unlike the real init.d scripts, see
+# 93-portable-router-setup).
+
+[ "$ACTION" = "ifup" ] || exit 0
+
+PRIO=1100
+SIG='lookup main suppress_prefixlength 0'
+
+# $1 is the ip(8) family flag: empty for IPv4, "-6" for IPv6. Left unquoted on
+# purpose so the empty case expands to nothing rather than an empty argument.
+ensure_rule() {
+	_fam="$1"
+
+	# Drop any copy of this rule left at a different priority -- e.g. by an
+	# older revision of this script, which pinned 5260 and was defeated when
+	# tailscaled came back on its 13xx priority base.
+	ip $_fam rule show 2>/dev/null |
+		sed -n "s/^\([0-9][0-9]*\):.*$SIG.*/\1/p" |
+		while read -r _p; do
+			[ "$_p" = "$PRIO" ] && continue
+			ip $_fam rule del priority "$_p" $SIG 2>/dev/null
+		done
+
+	# Idempotent: hotplug fires on every ifup, and a bare `ip rule add` would
+	# otherwise stack duplicates at the same priority.
+	ip $_fam rule show 2>/dev/null | grep -q "^$PRIO:.*suppress_prefixlength 0" ||
+		ip $_fam rule add priority "$PRIO" $SIG
+}
+
+ensure_rule
+
+# IPv6 has no overlapping advertised prefix today (table 52 carries only
+# tailscale's own fd7a:115c:a1e0::/48), but the same shadowing would occur the
+# moment a peer advertised an overlapping ULA/GUA prefix, and the idiom is
+# harmless otherwise -- connected prefixes are already what we want to win.
+ensure_rule -6
+
+exit 0

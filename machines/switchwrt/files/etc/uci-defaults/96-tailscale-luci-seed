@@ -1,0 +1,40 @@
+# Declarative defaults for luci-app-tailscale-community (LuCI ->
+# Services -> Tailscale).  The app's S99tailscale-settings init renders
+# these UCI options into `tailscale set` calls at every boot, so they must
+# agree with the flags files/etc/init.d/tailscale-login uses for the
+# first-boot registration:
+#
+#   advertise_exit_node=1  keep offering this router as an exit node
+#                          (mirrors --advertise-exit-node of the first-boot up)
+#   dns_mode=disabled      --accept-dns=false equivalent; dnsmasq stays
+#                          authoritative and forwards *.ts.net to
+#                          100.100.100.100 itself (see 95-adguardhome-dns)
+#   service_enabled=1      app owns the service lifecycle (its default)
+#   fw_mode=iptables       tailscaled's firewall backend (default: nftables).
+#                          MUST be iptables here: with fw_mode=nftables,
+#                          tailscaled injects native-nft rules into the same
+#                          `ip mangle` PREROUTING/OUTPUT chains that mwan3
+#                          manages via iptables-nft, and a mixed
+#                          native+xt-compat table makes every whole-table
+#                          iptables operation fail ("table mangle is
+#                          incompatible, use nft tool") -- mwan3's shell
+#                          scripts use exactly such whole-table ops, so its
+#                          policy rules silently stop being rendered/updated
+#                          from that point on (mwan3 status shows empty
+#                          policies + iptables errors).  With fw_mode=iptables
+#                          both managers speak xt-compat and coexist fine.
+#
+# Everything set here can be changed imperatively from LuCI afterwards;
+# those edits persist to UCI and are re-applied by S99tailscale-settings at
+# every boot.  uci-defaults scripts run once on first boot of a fresh flash.
+
+[ -n "$(uci -q show tailscale.settings)" ] || uci -q set tailscale.settings=tailscale
+uci -q set tailscale.settings.service_enabled='1'
+uci -q set tailscale.settings.advertise_exit_node='1'
+uci -q set tailscale.settings.dns_mode='disabled'
+uci -q set tailscale.settings.fw_mode='iptables'
+uci commit tailscale
+
+# The app ships /etc/init.d/tailscale-settings (S99, applies the options
+# above); packages do not auto-enable their init scripts on this buildroot.
+[ -x /etc/init.d/tailscale-settings ] && /etc/init.d/tailscale-settings enable

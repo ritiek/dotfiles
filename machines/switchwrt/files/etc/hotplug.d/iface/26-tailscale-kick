@@ -1,0 +1,83 @@
+#!/bin/sh
+# Re-kick tailscaled when an uplink comes up and the tailnet is not healthy.
+#
+# THE BUG THIS FIXES
+# The tailscale package's init script is S80, and tailscaled attempts its
+# control-plane login almost immediately after starting. On this board that is
+# roughly 10s into boot -- well before an uplink has finished DHCP and, more
+# importantly, before AdGuardHome (our port-53 resolver) is listening. The
+# login therefore cannot resolve controlplane.clawsiecats.omg.lol, stalls, and
+# tailscaled does NOT retry aggressively: it just sits in BackendState=NoState
+# indefinitely. Observed on a clean boot:
+#
+#	07:21:18 control: client.Login(0)
+#	07:21:18 control: doLogin(regen=false, hasUrl=false)
+#	  ...then silence; still NoState 4 minutes later, Health[] empty.
+#
+# The prefs on disk are perfectly fine at that point (WantRunning=true,
+# LoggedOut=false, correct ControlURL), and the control plane is reachable --
+# a bare `/etc/init.d/tailscale restart` brings the tailnet straight up. So
+# this is purely a start-order race, not an auth or connectivity fault.
+#
+# Note this is a DIFFERENT failure from the one /etc/init.d/tailscale-login
+# handles. That script is a one-shot whose job is the very first registration
+# (exchanging the authkey, which needs a sane clock for TLS). It deliberately
+# does not run again once the node is registered, so it cannot rescue a
+# already-registered node whose boot-time login merely raced DNS -- which is
+# exactly the state a reflashed-and-rebooted device lands in.
+#
+# WHY A HOTPLUG SCRIPT
+# ifup is precisely the signal we lack: it fires once the uplink actually has
+# an address, by which point DNS is up too. Re-checking health on every uplink
+# ifup also self-heals two other known cases:
+#   - `mwan3 restart`, which flushes tailscale's routing table 52 and leaves
+#     the tunnel addressless (tailscaled never repopulates it on its own).
+#   - uplink failover/reconnect churn on this portable router.
+#
+# Hotplug scripts are SOURCED by /sbin/hotplug-call, so mode 644 is fine.
+
+[ "$ACTION" = "ifup" ] || exit 0
+
+# Only uplinks matter. Reacting to lan/loopback ifup would restart the tunnel
+# during unrelated churn for no benefit.
+case "$INTERFACE" in
+	wan | wwan | usbtether) ;;
+	*) exit 0 ;;
+esac
+
+[ -x /usr/sbin/tailscaled ] || exit 0
+
+# Rate-limit. Several uplinks come up within seconds of each other at boot,
+# and a restart storm would be worse than the problem being fixed.
+STAMP=/tmp/.tailscale-kick.stamp
+NOW="$(date +%s 2>/dev/null)" || exit 0
+if [ -f "$STAMP" ]; then
+	LAST="$(cat "$STAMP" 2>/dev/null)"
+	case "$LAST" in
+		'' | *[!0-9]*) LAST=0 ;;
+	esac
+	[ "$((NOW - LAST))" -lt 90 ] && exit 0
+fi
+
+# Healthy means both "the backend says it is up" AND "the tunnel actually has
+# a CGNAT address". The second half is what catches the mwan3-flushed-table-52
+# case, where the backend still reports Running but the interface is bare.
+STATE="$(tailscale status --json 2>/dev/null |
+	sed -n 's/.*"BackendState": *"\([^"]*\)".*/\1/p' | head -1)"
+ADDR="$(tailscale ip -4 2>/dev/null | head -1)"
+
+if [ "$STATE" = "Running" ]; then
+	case "$ADDR" in
+		100.*) exit 0 ;;
+	esac
+fi
+
+echo "$NOW" > "$STAMP"
+logger -t tailscale-kick \
+	"tailnet unhealthy after ifup of $INTERFACE (state=${STATE:-unknown} addr=${ADDR:-none}); restarting tailscale"
+
+# Backgrounded: hotplug-call runs these serially and a tailscaled restart takes
+# long enough to stall other ifup handlers (mwan3, firewall) behind it.
+/etc/init.d/tailscale restart > /dev/null 2>&1 &
+
+exit 0

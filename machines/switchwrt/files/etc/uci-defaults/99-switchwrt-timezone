@@ -1,0 +1,8 @@
+# Match the fleet-wide standard: every NixOS machine sets
+# time.timeZone = "Asia/Kolkata" (see e.g. machines/alcove/default.nix);
+# this OpenWrt box defaulted to UTC/GMT0 out of the box, so pin it the
+# same way. POSIX TZ string per OpenWrt's own zoneinfo table for
+# Asia/Kolkata (IST, UTC+5:30, no DST).
+uci -q set system.@system[0].timezone='IST-5:30'
+uci -q set system.@system[0].zonename='Asia/Kolkata'
+uci commit system

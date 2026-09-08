@@ -1,0 +1,32 @@
+#!/bin/sh
+# First-boot setup for the VPN layer (tailscale + netbird).
+#
+# ayles/nix-openwrt drops every file from the image.nix `patches` attribute
+# into the source tree with `install -Dm644`, and the OpenWrt buildroot bakes
+# tree files/ verbatim into the rootfs -- so the login one-shot init scripts
+# land without exec bits.  Fix that, then enable the services:
+#
+#   tailscale       S80 (feed init: starts tailscaled)
+#   tailscale-login S85 (ours: `tailscale up` against the control plane)
+#   netbird         S99 (feed init: runs `netbird service run`)
+#   netbird-login   S99 (ours: setup-key login; sorts after S99netbird)
+#
+# No keys are baked into the image (see .sops.yaml and deploy-secrets.sh), so
+# there is nothing to chmod here.  Both state directories must exist before
+# the daemons start, though: /etc/config/tailscale points state_file at
+# /etc/tailscale/tailscaled.state, and switchwrt-apply-secrets writes the
+# transient authkey/setupkey into these directories later.  uci-defaults run
+# from /etc/init.d/boot (START=10), well ahead of S80/S99, so creating them
+# here is early enough.  Mode 700: only root should ever read them.
+
+chmod +x /etc/init.d/tailscale-login /etc/init.d/netbird-login
+
+mkdir -p /etc/tailscale /etc/netbird
+chmod 700 /etc/tailscale /etc/netbird
+
+/etc/init.d/tailscale enable
+/etc/init.d/tailscale-login enable
+/etc/init.d/netbird enable
+/etc/init.d/netbird-login enable
+
+exit 0
