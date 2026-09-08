@@ -98,11 +98,12 @@ let
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection "upgrade";
 
-          # Require App-Identity-Key header
-          set $immich_app_identity_key "${config.sops.secrets."immich.app_identity_key".path}";
-          if ($http_app_identity_key != $immich_app_identity_key) {
-            return 403;
-          }
+          # Require App-Identity-Key header, checked against the secret *content*.
+          # The check itself is rendered at activation time from a sops template
+          # (see sops.templates."nginx-immich-gate" below): comparing against
+          # config.sops.secrets.<name>.path here would compare against the
+          # literal file path string instead of the secret, locking everyone out.
+          include ${config.sops.templates."nginx-immich-gate".path};
         '';
       };
     };
@@ -273,6 +274,20 @@ let
           }
         }
       ]
+    '';
+  };
+
+  # Gate for the public immich vhosts: only requests carrying the
+  # App-Identity-Key header with the secret value get proxied through,
+  # everything else gets a 403. Included from the immich locations above.
+  # restartUnits reloads nginx when the secret is rotated.
+  sops.templates."nginx-immich-gate" = {
+    owner = "nginx";
+    restartUnits = [ "nginx.service" ];
+    content = ''
+      if ($http_app_identity_key != "${config.sops.placeholder."immich.app_identity_key"}") {
+        return 403;
+      }
     '';
   };
 
