@@ -91,47 +91,34 @@ except Exception as _exc:
     sys.stderr.write(f"[hermes-claude-auth] hook install failed: {_exc}\n")
 
 
-# Gateway overlay: inject patched gateway modules from the overlay directory
-# into sys.modules after the real gateway package is imported.  A simple
-# sys.path prepend does not work because the venv's gateway/ has __init__.py
-# (regular package) which wins over the overlay's namespace package regardless
-# of PYTHONPATH ordering.  Instead we use a MetaPathFinder that rewrites the
-# module spec's origin for the two patched modules.
+# Module overlay: inject patched modules from an overlay directory into
+# sys.modules via a MetaPathFinder that rewrites the module spec's origin.  A
+# simple sys.path prepend does not work because the venv packages have
+# __init__.py (regular packages) which win over an overlay namespace package
+# regardless of PYTHONPATH ordering.
 try:
-    _OVERLAY_DIR = os.environ.get("HERMES_GATEWAY_OVERLAY_DIR", "")
+    from importlib.util import spec_from_file_location
 
-    if _OVERLAY_DIR and os.path.isdir(_OVERLAY_DIR):
-        from importlib.util import spec_from_file_location
+    _OVERLAY_MODULES = {}
 
-        _OVERLAY_MODULES = {
-            "gateway.config": os.path.join(_OVERLAY_DIR, "gateway", "config.py"),
-            "gateway.platforms.matrix": os.path.join(
-                _OVERLAY_DIR, "gateway", "platforms", "matrix.py"
+    # Detail-auto patch: add detail: "auto" to image_url blocks so providers
+    # tokenize images at low detail instead of full resolution (25-60x fewer
+    # image tokens).  https://github.com/NousResearch/hermes-agent/issues/13065
+    _DETAIL_AUTO_DIR = os.environ.get("HERMES_DETAIL_AUTO_OVERLAY_DIR", "")
+    if _DETAIL_AUTO_DIR and os.path.isdir(_DETAIL_AUTO_DIR):
+        _OVERLAY_MODULES.update({
+            "agent.image_routing": os.path.join(
+                _DETAIL_AUTO_DIR, "agent", "image_routing.py"
             ),
-        }
+            "tools.computer_use.tool": os.path.join(
+                _DETAIL_AUTO_DIR, "tools", "computer_use", "tool.py"
+            ),
+            "tools.vision_tools": os.path.join(
+                _DETAIL_AUTO_DIR, "tools", "vision_tools.py"
+            ),
+        })
 
-        # Detail-auto patch: add detail: "auto" to image_url blocks so providers
-        # tokenize images at low detail instead of full resolution (25-60x fewer
-        # image tokens).  https://github.com/NousResearch/hermes-agent/issues/13065
-        _DETAIL_AUTO_DIR = os.environ.get("HERMES_DETAIL_AUTO_OVERLAY_DIR", "")
-        if _DETAIL_AUTO_DIR and os.path.isdir(_DETAIL_AUTO_DIR):
-            _OVERLAY_MODULES.update({
-                "agent.image_routing": os.path.join(
-                    _DETAIL_AUTO_DIR, "agent", "image_routing.py"
-                ),
-                "tools.computer_use.tool": os.path.join(
-                    _DETAIL_AUTO_DIR, "tools", "computer_use", "tool.py"
-                ),
-                # Moves images out of role:tool messages into a follow-up
-                # role:user message for providers that reject the former.
-                "agent.tool_executor": os.path.join(
-                    _DETAIL_AUTO_DIR, "agent", "tool_executor.py"
-                ),
-                "tools.vision_tools": os.path.join(
-                    _DETAIL_AUTO_DIR, "tools", "vision_tools.py"
-                ),
-            })
-
+    if _OVERLAY_MODULES:
         class _GatewayOverlayFinder:
             def find_spec(self, fullname, path=None, target=None):
                 overlay_path = _OVERLAY_MODULES.get(fullname)
