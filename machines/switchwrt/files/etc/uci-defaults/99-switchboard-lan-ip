@@ -1,0 +1,12 @@
+#!/bin/sh
+# switchboard's existing NixOS LAN subnet is 192.168.3.0/24 (gateway/DNS at
+# .1), with static DHCP reservations for several house devices already
+# pointing at that gateway. Match it here so those devices keep working
+# without reconfiguration when this board runs OpenWrt instead of NixOS.
+#
+# See /etc/nixos/machines/switchboard/hw-config/ and modules/router/*.nix in
+# the switchboard NixOS config for the original network layout this mirrors.
+uci set network.lan.ipaddr='192.168.3.1/24'
+uci commit network
+
+exit 0

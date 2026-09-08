@@ -1,0 +1,21 @@
+#!/bin/sh
+# Exec bits + service enablement for the portable-router init.d scripts
+# (files/ drops land at mode 644 via image.nix's patches mechanism -- see
+# 98-luci-apps-setup for the fuller explanation of why this is needed).
+chmod +x /etc/init.d/randomize-wwan-mac /etc/init.d/faketime
+
+# Same reason: deploy-secrets.sh invokes this over ssh, so it needs the bit.
+chmod +x /usr/sbin/switchwrt-apply-secrets
+
+/etc/init.d/randomize-wwan-mac enable
+/etc/init.d/faketime enable
+
+# Vendored LuCI extras that ship a real init.d service but don't enable it
+# themselves (checked each package's Makefile: internet-detector's and
+# netspeedtest's postinst hooks do nothing service-related).
+# temp-status/cpu-status/log-viewer/interfaces-statistics/ipinfo ship no
+# daemon, nothing to enable.
+[ -x /etc/init.d/internet-detector ] && /etc/init.d/internet-detector enable
+[ -x /etc/init.d/netspeedtest ] && /etc/init.d/netspeedtest enable
+
+exit 0

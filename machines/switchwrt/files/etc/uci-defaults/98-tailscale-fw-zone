@@ -1,0 +1,55 @@
+#!/bin/sh
+# Trusted firewall zone for tailnet peers (tailscale0).
+#
+# Without it, traffic arriving from tailnet peers is not matched by any
+# zone and effectively shares the WAN treatment, whose input chain only
+# opens 22/80/443 -- leaving the AdGuardHome dashboard (:3000) unreachable
+# over tailscale while the LAN path works.
+# Reachability of tailnet members is governed by headscale ACLs upstream,
+# so blanket input ACCEPT for this zone is safe.
+#
+# A zone's own forward="ACCEPT" only covers traffic already matched INTO
+# this zone -- it does not create forwarding between zones. Without an
+# explicit `config forwarding` pairing, LAN client packets destined to
+# tailnet peer/subnet IPs (100.64.0.0/10, imported via --accept-routes in
+# tailscale-login) hit fw4's implicit forward-chain default-deny, even
+# though the kernel route and ip_forward=1 are both fine. Add both
+# directions: lan->vpn so LAN clients can reach tailnet peers/subnets,
+# vpn->lan so tailnet peers (e.g. other subnet routers) can reach this
+# LAN back.
+
+already_setup=0
+for z in $(uci -q show firewall | sed -n 's/firewall\.\(.*\)=zone/\1/p'); do
+	[ "$(uci -q get firewall.$z.name)" = "vpn" ] && already_setup=1
+done
+
+if [ "$already_setup" = 0 ]; then
+	z=$(uci add firewall zone)
+	uci set firewall.$z.name="vpn"
+	uci add_list firewall.$z.device="tailscale0"
+	uci set firewall.$z.input="ACCEPT"
+	uci set firewall.$z.output="ACCEPT"
+	uci set firewall.$z.forward="ACCEPT"
+	uci set firewall.$z.masq="0"
+fi
+
+have_fwd() {
+	for f in $(uci -q show firewall | sed -n 's/firewall\.\(.*\)=forwarding/\1/p'); do
+		[ "$(uci -q get firewall.$f.src)" = "$1" ] && \
+			[ "$(uci -q get firewall.$f.dest)" = "$2" ] && return 0
+	done
+	return 1
+}
+
+have_fwd lan vpn || {
+	f=$(uci add firewall forwarding)
+	uci set firewall.$f.src="lan"
+	uci set firewall.$f.dest="vpn"
+}
+have_fwd vpn lan || {
+	f=$(uci add firewall forwarding)
+	uci set firewall.$f.src="vpn"
+	uci set firewall.$f.dest="lan"
+}
+
+uci commit firewall

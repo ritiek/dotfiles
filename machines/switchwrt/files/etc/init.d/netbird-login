@@ -1,0 +1,80 @@
+#!/bin/sh /etc/rc.common
+# One-shot netbird login, mirroring modules/netbird.nix from the NixOS fleet
+# (pilab/alcove/switchboard all import that module, client "birdnet"):
+#
+#   --disable-dns   NetBird's Linux DNS manager would rewrite
+#                   /etc/resolv.conf (a netifd-managed symlink on OpenWrt)
+#                   and break the dnsmasq -> AdGuardHome chain.  NixOS gets
+#                   away with managed DNS; here it must stay off.
+#
+#   --interface-name wt0
+#                   NetBird's upstream default, pinned explicitly for the
+#                   same reason modules/netbird.nix sets interface = "wt0":
+#                   tailscale's netmon (tailscale.com/net/netmon/state.go,
+#                   isProblematicInterface) hardcodes a name-based exclusion
+#                   for interfaces literally named "wt0", so tailscaled
+#                   never offers NetBird's overlay as a magicsock endpoint
+#                   candidate.  A different name makes tailscale sometimes
+#                   pick the NetBird tunnel as a "direct" path -> WireGuard-
+#                   over-WireGuard double encapsulation -> throughput
+#                   collapse under load.  luci-app-netbird's UCI default
+#                   (netbird.settings.interface_name) is wt0 too.
+#
+# The feed's /etc/init.d/netbird only runs `netbird service run` (S99);
+# the setup-key exchange is a separate client action, hence this one-shot.
+# The key is read from /etc/netbird/setupkey and passed via
+# --setup-key-file so it never appears in argv.  That file is NOT baked
+# into the image -- the image is secret-free; it is delivered at runtime by
+# deploy-secrets.sh -> /usr/sbin/switchwrt-apply-secrets, which also kicks
+# this script.  On a freshly flashed device it is absent on the first boot,
+# so the interactive branch below is what runs.  State persists
+# in /root/.config/netbird on the overlay, so registration happens exactly
+# once; afterwards `up` only runs when the node has never logged in.
+#
+# The registered-or-not signal is management.connected from
+# `netbird status --json` (jsonfilter ships in the base image): an
+# unregistered daemon cannot reach the management server.  After a short
+# grace period -- so an already-registered node can complete its post-boot
+# management reconnect -- `up` runs only if it never got there.  Re-login
+# imperatively is available from LuCI (Services -> NetBird, Authentication
+# tab) or via SSH.
+#
+# NOTE: ayles/nix-openwrt installs this file mode 644 --
+# /etc/uci-defaults/94-vpn-setup restores the exec bit and enables it.
+# Sorts after S99netbird (alphabetical within the same START=99).
+
+START=99
+STOP=10
+
+start() {
+	# The netbird daemon (S99netbird) starts asynchronously under procd;
+	# wait for its control socket.
+	for _ in $(seq 1 30); do
+		[ -S /var/run/netbird.sock ] && break
+		sleep 1
+	done
+	[ -S /var/run/netbird.sock ] || return 0
+
+	# Registered nodes reconnect to management within a few seconds of
+	# boot; give them that grace period before declaring "unregistered".
+	state=""
+	for _ in $(seq 1 15); do
+		state=$(netbird status --json 2>/dev/null | jsonfilter -e '@.management.connected' 2>/dev/null)
+		[ "$state" = "true" ] && return 0
+		sleep 1
+	done
+
+	# -s not -r: see the matching note in tailscale-login. An absent key is
+	# the normal first-boot state now, and an empty-but-present one would
+	# burn this one-shot's single registration attempt.
+	if [ -s /etc/netbird/setupkey ]; then
+		netbird up \
+			--setup-key-file /etc/netbird/setupkey \
+			--interface-name wt0 \
+			--disable-dns
+	else
+		# Key file absent: fall back to interactive login (auth URL on
+		# the console or via LuCI's Authentication tab).
+		netbird up --interface-name wt0 --disable-dns
+	fi
+}

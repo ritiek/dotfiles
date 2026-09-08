@@ -1,0 +1,40 @@
+#!/bin/sh /etc/rc.common
+# Randomize MAC addresses on every boot for BOTH upstream uplink paths --
+# wlan1 (WISP dongle, network.wwan STA -- see
+# files/etc/uci-defaults/97-wwan-uplink) and eth1 (network.wan, the wired
+# uplink) -- for privacy/anti-fingerprinting when connecting to untrusted
+# public networks (WiFi or a hotel/office ethernet jack) while travelling
+# with this as a portable router.
+#
+# This is a *real* init.d script (not a uci-defaults one-shot), since we
+# want a fresh random MAC every boot, not just on first boot. It forces its
+# own reloads at the end rather than relying on ordering relative to the
+# base system's own network bring-up, so correctness doesn't depend on
+# guessing the right START value relative to /etc/init.d/network.
+START=10
+
+random_locally_administered_mac() {
+	local rnd first rest
+	rnd="$(hexdump -n6 -e '/1 "%02x:"' /dev/urandom | sed 's/:$//')"
+	first="${rnd%%:*}"
+	rest="${rnd#*:}"
+	# Clear bit0 (unicast) and set bit1 (locally administered) on the
+	# first octet -- the standard scheme for a "made up" MAC that won't
+	# collide with any real vendor OUI.
+	first="$(printf '%02x' $(( (0x$first & 0xfe) | 0x02 )))"
+	echo "$first:$rest"
+}
+
+start() {
+	local mac_wwan mac_wan
+	mac_wwan="$(random_locally_administered_mac)"
+	mac_wan="$(random_locally_administered_mac)"
+
+	uci set wireless.default_radio1.macaddr="$mac_wwan"
+	uci commit wireless
+	( wifi reload >/dev/null 2>&1 & )
+
+	uci set network.wan.macaddr="$mac_wan"
+	uci commit network
+	( ifup wan >/dev/null 2>&1 & )
+}

@@ -1,0 +1,87 @@
+#!/bin/sh
+# WISP uplink: USB WiFi dongle (0bda:818b, TP-Link TL-WN822N v4, RTL8192EU,
+# kmod-rtl8xxxu) joins an upstream WiFi network in STA mode, giving switchwrt
+# a second, wireless path to the internet alongside the wired eth1 uplink.
+# See files/etc/uci-defaults/98-mwan3-setup for how the two uplinks are
+# prioritised (automatic failover, eth1 preferred) and how to pin a specific
+# device to one uplink or the other.
+#
+# NO SSID OR PASSPHRASE HERE.  This is a portable router, so the upstream
+# network changes per location -- there is no sensible declarative default,
+# and baking one in would put a third-party credential (plus a
+# WiGLE-geolocatable BSSID) into the repo.  What this script builds is the
+# scaffolding: the radio pinned to the right chip, an STA iface pointed at
+# the 'wwan' network, the DHCP interface, and the firewall zone membership.
+# The iface starts disabled='1'; join a network per-location via LuCI
+# (Network -> Wireless -> Scan -> Join), which fills in ssid/key/disabled and
+# persists them on the overlay.  Equivalently by hand:
+#   uci set wireless.default_radio1.ssid='<upstream ssid>'
+#   uci set wireless.default_radio1.key='<upstream psk>'
+#   uci set wireless.default_radio1.disabled='0'
+#   uci commit wireless && wifi reload
+#
+# mwan3 already treats wwan as an optional member and tracks it as offline
+# until it actually carries traffic, so leaving this unconfigured is a
+# supported steady state -- eth1 carries everything.
+#
+# macaddr='00:e0:4c:04:86:6a' match (NOT phy=): phyN indexes are assigned
+# in probe order, and SDIO (onboard AIC) vs USB (this dongle) probe order
+# varies across boots -- matching by phy name made radio0/radio1 swap
+# roles between the two chips on some boots.  The dongle's burned-in
+# permanent MAC is stable and unique, and /lib/wifi/mac80211.uc's
+# radio_exists() prefers a macaddr match over the phy fallback.  CAVEAT:
+# this pins the config to THIS specific TL-WN822N unit -- if the dongle is
+# ever replaced, update this MAC (visible in `dmesg | grep 'RTL8192EU
+# MAC'` or `iw dev`).  Note this wiphy *match* key is independent of the
+# per-boot randomized iface MAC that files/etc/init.d/randomize-wwan-mac
+# writes into default_radio1.macaddr (wifi-iface option, applied to the
+# netdev; the wifi-device option below only selects which chip is radio1).
+#
+# ifname='wlan1' pinned for the same reason 97-wifi-ap pins wlan0: keeps
+# netifd from renaming the interface across boots.
+#
+# encryption='psk2' (not 'psk2+ccmp'): upstream APs are third-party devices
+# of unknown cipher configuration, unlike the switchboard-owrt AP in
+# 97-wifi-ap which we fully control -- plain psk2 lets wpa_supplicant
+# negotiate whichever of CCMP/TKIP the upstream actually offers.  LuCI's
+# Join flow overwrites this to match the network you pick anyway.
+uci -q get wireless.radio1 >/dev/null 2>&1 || uci set wireless.radio1=wifi-device
+uci -q delete wireless.radio1.path
+uci -q delete wireless.radio1.phy
+uci set wireless.radio1.type='mac80211'
+uci set wireless.radio1.macaddr='00:e0:4c:04:86:6a'
+uci set wireless.radio1.band='2g'
+uci set wireless.radio1.disabled='0'
+
+uci -q get wireless.default_radio1 >/dev/null 2>&1 || uci set wireless.default_radio1=wifi-iface
+uci set wireless.default_radio1.device='radio1'
+uci set wireless.default_radio1.network='wwan'
+uci set wireless.default_radio1.mode='sta'
+uci set wireless.default_radio1.ifname='wlan1'
+uci set wireless.default_radio1.encryption='psk2'
+uci set wireless.default_radio1.disabled='1'
+
+uci commit wireless
+
+uci -q get network.wwan >/dev/null 2>&1 || uci set network.wwan=interface
+uci set network.wwan.proto='dhcp'
+uci set network.wwan.device='wlan1'
+uci commit network
+
+# The wan zone already opens masquerading/forwarding for eth1; extend it to
+# cover wwan so traffic egressing over the dongle gets the same NAT
+# treatment. Idempotent: skip if 'wwan' is already in the zone's network
+# list (this script is expected to run once per firstboot, but matching the
+# house convention of guarding add_list-style mutations -- see
+# 98-tailscale-fw-zone).
+for z in $(uci -q show firewall | sed -n 's/firewall\.\(.*\)=zone/\1/p'); do
+	if [ "$(uci -q get firewall.$z.name)" = "wan" ]; then
+		case " $(uci -q get firewall.$z.network) " in
+			*" wwan "*) ;;
+			*) uci add_list firewall.$z.network='wwan' ;;
+		esac
+	fi
+done
+uci commit firewall
+
+exit 0

@@ -1,0 +1,130 @@
+#!/bin/sh /etc/rc.common
+# One-shot tailscale registration, mirroring modules/tailscale-controlplane.nix
+# from the NixOS fleet (pilab/alcove/switchboard all import that module):
+#
+#   --login-server  self-hosted control plane (headscale behind
+#                   controlplane.clawsiecats.omg.lol on clawsiecats)
+#   --advertise-exit-node
+#   --accept-routes    import subnet routes advertised by other tailnet
+#                   subnet-router nodes (paired with the lan<->vpn firewall
+#                   forwarding in 98-tailscale-fw-zone; without both, LAN
+#                   clients can't reach tailnet peers/subnets even though
+#                   this node's own tailscale0 traffic works fine)
+#   --accept-dns=false
+#                   dnsmasq stays authoritative on this router (pilab does
+#                   the same; NixOS handles it via resolved, we must not let
+#                   tailscaled touch /etc/resolv.conf -> dnsmasq -> AGH chain)
+#
+# The feed's /etc/init.d/tailscale only starts tailscaled; login (authkey
+# exchange) has to happen afterwards, hence this S85 one-shot.  The authkey
+# is read from /etc/tailscale/authkey (NOT passed on the procd command
+# line).  That file is NOT baked into the image -- the image is secret-free;
+# it is delivered at runtime by deploy-secrets.sh ->
+# /usr/sbin/switchwrt-apply-secrets, which also kicks this script.  On a
+# freshly flashed device the file is therefore absent on the first boot and
+# the interactive branch below is what runs.  Once the node is registered
+# the state file
+# /etc/tailscale/tailscaled.state survives on the overlay, so registration
+# happens exactly once; afterwards tailscale 1.102.2 reconnects keylessly.
+#
+# `up` only runs when the node is not registered yet: `tailscale status`
+# exits 0 both when logged in and when merely waiting for a login, so the
+# BackendState from `status --json` is what actually tells them apart
+# (jsonfilter is part of the base image).  Re-asserting flags here on every
+# boot would clobber changes made imperatively via LuCI (luci-app-
+# tailscale-community); the declarative defaults live in
+# /etc/uci-defaults/96-tailscale-luci-seed and are re-applied at boot by the
+# app's own S99tailscale-settings instead.  A re-login is always available
+# from LuCI (Services -> Tailscale) or via SSH.
+#
+# NOTE: tailscale 1.102.2 has no --authkey-file flag; authkeys are passed as
+# --auth-key with a file: prefix (checked against the 1.102.2 CLI).
+#
+# NOTE: ayles/nix-openwrt installs this file mode 644 --
+# /etc/uci-defaults/94-vpn-setup restores the exec bit and enables it.
+
+START=85
+STOP=10
+
+start() {
+	# tailscaled (S80) starts asynchronously under procd; wait for its
+	# control socket before talking to it.
+	for _ in $(seq 1 30); do
+		tailscale status >/dev/null 2>&1 && break
+		sleep 1
+	done
+	tailscale status >/dev/null 2>&1 || return 0
+
+	# Skip when already registered (NeedsLogin = unregistered).
+	state=$(tailscale status --json 2>/dev/null | jsonfilter -e '@.BackendState' 2>/dev/null)
+	[ "$state" = "Running" ] && return 0
+
+	# This board has no RTC: at boot the clock sits at epoch-1970 until NTP
+	# syncs, and `up` exchanges the authkey over TLS, which fails certificate
+	# validation against a 1970 clock (seen on the first flash: the one-shot
+	# ran ~45s after boot, NTP came up ~3.5min in).  Wait for a sane clock
+	# before attempting; give up waiting after 3 minutes and try anyway --
+	# if NTP never arrives the interactive/fallback path is the recovery.
+	for _ in $(seq 1 180); do
+		[ "$(date +%s)" -gt 1700000000 ] && break
+		sleep 1
+	done
+
+	# DNS bootstrap (defense-in-depth): `up` below needs to resolve
+	# controlplane.clawsiecats.omg.lol via the system resolver before it
+	# can reach the control plane at all.  If AdGuardHome (our port-53
+	# resolver) is down for any reason at this point, login would fail
+	# and -- this being a one-shot -- never retry.  This actually
+	# happened on first boot when AGH's bind_hosts still listed the
+	# tailnet IP explicitly: AGH couldn't start until tailscale0 had an
+	# IP, tailscale couldn't log in without DNS, deadlock.  AGH now
+	# binds 0.0.0.0 (see adguardhome.yaml) so the deadlock is gone
+	# structurally, but the bootstrap is kept as a cheap safety net:
+	# resolve the login-server host ourselves against dnsmasq's
+	# always-up backend listener (127.0.0.1:5354, independent of AGH)
+	# and drop a scratch /etc/hosts entry for the duration of this
+	# attempt only -- glibc/musl both consult /etc/hosts before any
+	# nameserver, so this satisfies both the CLI's own lookup and
+	# tailscaled's internal one. Removed again after the attempt so a
+	# future IP change on the control-plane side can't leave a stale
+	# entry behind (this whole block only runs pre-registration anyway;
+	# the state check above skips it on every later, already-logged-in
+	# boot).
+	login_host="controlplane.clawsiecats.omg.lol"
+	hosts_marker="# tailscale-login bootstrap (auto-added, safe to delete)"
+	if ! nslookup "$login_host" >/dev/null 2>&1; then
+		login_ip=$(nslookup "$login_host" 127.0.0.1:5354 2>/dev/null \
+			| awk '/^Address: /{a=$2} END{print a}')
+		if [ -n "$login_ip" ]; then
+			echo "$login_ip $login_host $hosts_marker" >> /etc/hosts
+		fi
+	fi
+
+	# -s not -r: an absent key file is now the NORMAL first-boot state (the
+	# image ships no secrets; deploy-secrets.sh delivers them later), so the
+	# interactive fallback below is a real code path rather than a
+	# theoretical one. -r would also accept an empty-but-present file and
+	# hand `--auth-key=file:` an empty token, silently burning this
+	# one-shot's single registration attempt.
+	if [ -s /etc/tailscale/authkey ]; then
+		tailscale up \
+			--login-server=https://controlplane.clawsiecats.omg.lol \
+			--auth-key=file:/etc/tailscale/authkey \
+			--advertise-exit-node \
+			--accept-routes \
+			--accept-dns=false \
+			--timeout=30s
+	else
+		# Key file absent: fall back to interactive login (auth URL on
+		# the console or via LuCI's login form).
+		tailscale up \
+			--login-server=https://controlplane.clawsiecats.omg.lol \
+			--advertise-exit-node \
+			--accept-routes \
+			--accept-dns=false \
+			--timeout=30s
+	fi
+
+	# Clean up the scratch entry regardless of outcome (see comment above).
+	sed -i "/$hosts_marker/d" /etc/hosts
+}

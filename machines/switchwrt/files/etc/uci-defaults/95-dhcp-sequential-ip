@@ -1,0 +1,9 @@
+#!/bin/sh
+# Allocate DHCP leases sequentially from the lowest available address,
+# instead of dnsmasq's default hash-based placement across the pool.
+# LuCI: Network > DHCP and DNS > General Settings > "Allocate IPs
+# sequentially". Maps to dnsmasq's --dhcp-sequential-ip.
+uci set dhcp.@dnsmasq[0].sequential_ip='1'
+uci commit dhcp
+
+exit 0
