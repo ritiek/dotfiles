@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>switchboard</title>
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    max-width: 24rem;
+    margin: 4rem auto;
+    padding: 0 1rem;
+    color: #222;
+  }
+  h1 { font-size: 1.4rem; }
+  ul { list-style: none; padding: 0; }
+  li { margin: 0.5rem 0; }
+  a {
+    display: block;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: #0366d6;
+  }
+  a:hover { border-color: #0366d6; }
+  span { display: block; font-size: 0.8rem; color: #666; margin-top: 0.25rem; }
+</style>
+</head>
+<body>
+<h1>switchboard</h1>
+<ul>
+  <li>
+    <a href="/cgi-bin/luci/">LuCI <span>router administration</span></a>
+  </li>
+  <li>
+    <a data-port="3000" href="#">AdGuard Home <span>DNS filtering dashboard</span></a>
+  </li>
+</ul>
+<script>
+  // Page is served from the router itself, so point the service links at
+  // whatever hostname/IP the user typed to get here.
+  for (const a of document.querySelectorAll("a[data-port]")) {
+    a.href = "http://" + location.hostname + ":" + a.dataset.port + "/";
+  }
+</script>
+</body>
+</html>

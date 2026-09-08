@@ -1,0 +1,6 @@
+--- /dev/null
++++ b/NIX-OPENWRT-900-EINVAL-NEUTRALIZED
+@@ -0,0 +1,3 @@
++The libfakeroot EINVAL-in-userns fix already ships in this tree as
++tools/fakeroot/patches/400-userns-chown-einval.patch, so nix-openwrt's
++own 900-einval.patch is neutralized by machines/switchwrt/image.nix.

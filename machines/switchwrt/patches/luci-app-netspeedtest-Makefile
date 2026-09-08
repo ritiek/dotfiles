@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+#
+# Copyright (C) 2023-2025 muink <https://github.com/muink>
+#
+# Locally patched: PKG_UNPACK invokes .prepare.sh directly by path, but
+# image.nix's patches mechanism installs everything at mode 644 (no exec
+# bit), which makes the buildroot's own unpack step fail ("Error 126",
+# permission denied) -- confirmed the hard way, this exact bug broke a
+# multi-hour rebuild after being missed during the original vendoring pass
+# (only luci-app-tinyfilemanager's identical pattern was caught at the
+# time). Unlike files only consumed at device-boot time, this one is
+# invoked mid-*compile*, so the usual boot-time chmod-fixup uci-defaults
+# pattern can't help here. Fixed by invoking it via `sh` instead;
+# .prepare.sh has no shebang line anyway, so this is how it's meant to be
+# run. Everything else is verbatim from muink/luci-app-netspeedtest.
+
+include $(TOPDIR)/rules.mk
+
+LUCI_NAME:=luci-app-netspeedtest
+
+LUCI_TITLE:=LuCI Net Speedtest
+LUCI_DEPENDS:=+iperf3 +librespeed-go +ca-certificates +curl
+
+LUCI_DESCRIPTION:=Test Net speed
+
+PKG_MAINTAINER:=Anya Lin <hukk1996@gmail.com>
+PKG_LICENSE:=MIT
+
+PKG_UNPACK=sh $(CURDIR)/.prepare.sh $(PKG_NAME) $(CURDIR) $(PKG_BUILD_DIR)
+
+define Package/$(LUCI_NAME)/conffiles
+/etc/config/netspeedtest
+endef
+
+define Package/$(LUCI_NAME)/postinst
+endef
+
+define Package/$(LUCI_NAME)/prerm
+endef
+
+include $(TOPDIR)/feeds/luci/luci.mk
+
+# call BuildPackage - OpenWrt buildroot signature

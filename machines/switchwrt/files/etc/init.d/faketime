@@ -1,0 +1,54 @@
+#!/bin/sh /etc/rc.common
+# Software substitute for a hardware RTC. The Radxa Cubie A5E has no onboard
+# RTC (confirmed against Radxa's own spec sheet); the real fix is a DS3231
+# module on the board's I2C header (40-pin GPIO), but until that hardware is
+# added, approximate it in software: persist the current time to a file in
+# the writable overlay every 5 minutes (and on a clean stop), and on the
+# NEXT boot -- before anything that does TLS/cert validation (AdGuardHome's
+# DoH bootstrap, tailscale-login, netbird-login, LuCI's own HTTPS) -- jump
+# the clock forward to at least that saved value.
+#
+# This does NOT give an accurate clock, just a "not literally 1970" one.
+# Real accuracy still comes from NTP once it syncs, which on this board
+# takes ~3.5 minutes after boot (see the clock-race bug fixed in
+# tailscale-login) -- this only shrinks the damage window before that.
+#
+# Note OpenWrt already ships /etc/init.d/sysfixtime (START=00) for exactly
+# this class of problem, but its mechanism (scan installed files' mtimes
+# for the newest one, as a floor) doesn't help here: this image is built by
+# Nix, which normalizes file mtimes for reproducibility, so every file in
+# the squashfs has the same (very old) timestamp regardless of when the
+# image was actually built. Hence a separate, file-persistence-based
+# mechanism instead of trying to patch sysfixtime's approach.
+START=01
+STOP=89
+USE_PROCD=1
+
+EPOCH_FILE=/etc/faketime.epoch
+SAVE_INTERVAL=300
+
+start_service() {
+	if [ -f "$EPOCH_FILE" ]; then
+		local saved current
+		saved="$(cat "$EPOCH_FILE" 2>/dev/null)"
+		current="$(date +%s)"
+		if [ -n "$saved" ] && [ "$saved" -gt "$current" ] 2>/dev/null; then
+			date -s "@$saved"
+		fi
+	fi
+
+	procd_open_instance
+	procd_set_param command /bin/sh -c \
+		"while true; do date +%s > $EPOCH_FILE; sleep $SAVE_INTERVAL; done"
+	procd_set_param respawn
+	procd_close_instance
+
+	# Also save immediately, rather than waiting up to $SAVE_INTERVAL for
+	# the loop's first write -- otherwise a crash/power-loss shortly after
+	# boot leaves nothing to restore from on the next boot.
+	date +%s > "$EPOCH_FILE" 2>/dev/null
+}
+
+stop_service() {
+	date +%s > "$EPOCH_FILE" 2>/dev/null
+}

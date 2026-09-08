@@ -1,0 +1,43 @@
+#!/bin/sh
+# This board's "WAN" (eth1) sits on the upstream home network behind the ONT
+# (192.168.2.0/24), not the public internet. It is NOT a trusted segment
+# though: every other client of that ONT shares it, and eth1 + wlan1 both
+# land on it (they resolve the same gateway MAC), so anything exposed here is
+# exposed to every neighbouring device on that wire.
+#
+# SSH only. Key-only dropbear (see 92-dropbear-harden -- PasswordAuth and
+# RootPasswordAuth are both off, and files/etc/dropbear/authorized_keys is
+# baked in) over an encrypted, host-key-authenticated transport is the one
+# admin protocol safe to expose there. Kept as the emergency path for when
+# the tailnet is unavailable.
+#
+# LuCI (80/443) is deliberately NOT exposed, though it used to be:
+#   - LuCI's login is a plain form POST (luci_username / luci_password in
+#     cleartext) and uhttpd ships redirect_https='0', so browsing to the bare
+#     IP sends the root password across that shared segment in the clear. The
+#     sysauth_http session cookie is equally sniffable and equally sufficient
+#     to hijack the session.
+#   - HTTPS on 443 is no help: px5g generated /etc/uhttpd.crt at first boot
+#     with the clock at epoch 1000000000 (this board has no RTC), so the
+#     self-signed cert is stamped notAfter=2002 and permanently expired.
+#     Clicking through that interstitial as a habit destroys the only MITM
+#     protection a self-signed cert offers.
+# Reach LuCI over the LAN (http://192.168.3.1) or the tailnet
+# (http://100.64.0.21) instead -- WireGuard gives it real transport security
+# and real key authentication. The WAN-side address churns every boot anyway
+# (randomize-wwan-mac re-randomizes eth1's MAC, drawing a fresh DHCP lease),
+# which made WAN LuCI impractical to rely on regardless.
+#
+# Everything else (AdGuardHome, DNS, etc.) is likewise off the wan zone --
+# reachable only from switchwrt's own LAN (192.168.3.0/24, input=ACCEPT via
+# the lan zone) or over the tailnet (input=ACCEPT via the vpn zone).
+uci add firewall rule
+uci set firewall.@rule[-1].name='Allow-SSH-WAN'
+uci set firewall.@rule[-1].src='wan'
+uci set firewall.@rule[-1].proto='tcp'
+uci set firewall.@rule[-1].dest_port='22'
+uci set firewall.@rule[-1].target='ACCEPT'
+
+uci commit firewall
+
+exit 0

@@ -87,6 +87,17 @@ combination_keys:
       age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq
 
 creation_rules:
+  # switchwrt is an OpenWrt image, not a nixosConfiguration, so sops-nix
+  # cannot deploy these: the OpenWrt buildroot has no sops/age binary and
+  # the image itself lives in the world-readable /nix/store.  Instead this
+  # file is the sole home of switchwrt's secrets, and machines/switchwrt/
+  # deploy-secrets.sh decrypts them here on the operator's machine and
+  # pipes them over ssh into /usr/sbin/switchwrt-apply-secrets on the
+  # device.  Nothing secret enters the image derivation.
+  - path_regex: machines/switchwrt/secrets\.yaml$
+    pgp: *ritiek
+    age: *alcove
+
   - path_regex: machines/secrets\.yaml$
     pgp: *ritiek
     age: *security_keys

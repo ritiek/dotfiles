@@ -1,0 +1,7 @@
+# Machine identity: match the fleet naming (pilab, alcove and switchboard
+# are NixOS hosts; this OpenWrt box is switchwrt).  This is also the name
+# tailscale picks up for node registration on the first boot, and what
+# shows up in LuCI / the shell prompt / /etc/hosts (base-files boot script
+# keeps the latter in sync with this setting).
+uci -q set system.@system[0].hostname='switchwrt'
+uci commit system
