@@ -21,7 +21,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."atuin" = {
-    image = "ghcr.io/atuinsh/atuin:18.10.0";
+    image = "ghcr.io/atuinsh/atuin:18.21.0";
     environmentFiles = [
       config.sops.secrets."compose/atuin.env".path
     ];
@@ -31,7 +31,7 @@
     ports = [
       "7235:8888/tcp"
     ];
-    cmd = [ "server" "start" ];
+    cmd = [ "start" ];
     dependsOn = [
       "atuin-db"
     ];
@@ -67,12 +67,12 @@
     ];
   };
   virtualisation.oci-containers.containers."atuin-db" = {
-    image = "postgres:14";
+    image = "postgres:18";
     environmentFiles = [
       config.sops.secrets."compose/atuin.env".path
     ];
     volumes = [
-      "${homelabMediaPath}/services/atuin/postgres-data:/var/lib/postgresql/data:rw"
+      "${homelabMediaPath}/services/atuin/postgres-data-18:/var/lib/postgresql:rw"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -95,7 +95,7 @@
       "docker-network-atuin_default.service"
     ];
     unitConfig.RequiresMountsFor = [
-      "${homelabMediaPath}/services/atuin/postgres-data"
+      "${homelabMediaPath}/services/atuin/postgres-data-18"
     ];
   };
 
