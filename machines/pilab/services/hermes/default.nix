@@ -5,11 +5,6 @@ let
   # Store dir holds sitecustomize.py + anthropic_billing_bypass.py.
   hermesClaudeAuth = pkgs.callPackage ./patches/claude-auth { };
 
-  # Declarative overlay for PR #25995 (Matrix channel_prompts, channel_skill_bindings,
-  # topic_as_prompt). Remove once merged into the pinned flake input.
-  # https://github.com/NousResearch/hermes-agent/pull/25995
-  hermesGatewayOverlay = pkgs.callPackage ./patches/pr-25995 { };
-
   # Patch for detail: "auto" on image_url blocks — reduces token bloat from
   # full-resolution image tokenization (25-60x reduction).
   # https://github.com/NousResearch/hermes-agent/issues/13065
@@ -99,7 +94,6 @@ in
   # Scoped to the gateway service only (a global PYTHONPATH would inject this
   # into every Python program on the system).
   systemd.services.hermes-agent.environment = {
-    HERMES_GATEWAY_OVERLAY_DIR = "${hermesGatewayOverlay}";
     HERMES_DETAIL_AUTO_OVERLAY_DIR = "${hermesDetailAutoOverlay}";
     PYTHONPATH = "${hermesClaudeAuth}:${pkgs.python312.withPackages (ps: [ ps.edge-tts ])}/lib/python3.12/site-packages:/var/lib/hermes/.hermes/local-packages";
     HERMES_PATCHES_DIR = "${hermesClaudeAuth}";
@@ -332,11 +326,27 @@ in
         # default = "big-pickle";
         provider = "opencode";
         # provider = "opencode-go";
-        # OpenCode Go subscription endpoint. The plain /zen/v1 endpoint bills
-        # the pay-as-you-go Zen balance and 401s with "Insufficient balance".
-        base_url = "https://opencode.ai/zen/go/v1";
-        api_key = "\${OPENCODE_GO_API_KEY}";
+        # Keyless free-tier endpoint. The relay serves *-free slugs anonymously
+        # (no api_key) as long as an X-Session-ID header is present; without it
+        # the relay 400s "MissingSessionID / OpenCode's free tier can only be
+        # used in OpenCode". The Go endpoint (/zen/go/v1) 401s -free slugs with
+        # ModelError, and the plain /zen/v1 WITHOUT a session id 429s per-IP.
+        base_url = "https://opencode.ai/zen/v1";
+        # No api_key: default_headers.Authorization="" overrides the SDK's Bearer
+        # placeholder so the request goes out truly anonymous.
         supports_vision = true;
+
+        # model.default_headers is merged over provider/SDK defaults by
+        # agent/auxiliary_client.py:_apply_user_default_headers (user values win).
+        # A FIXED session id is deliberate: reusing it gets prompt caching
+        # (relay reports cached_tokens on reuse) and still avoids the 429.
+        default_headers = {
+          "Authorization" = "";
+          "HTTP-Referer" = "https://opencode.ai/";
+          "X-Title" = "opencode";
+          "User-Agent" = "opencode/0.20.5";
+          "X-Session-ID" = "hermes-c5c231f4-db63-4992-a75d-001e0e40bb4b";
+        };
 
         # default = "claude-sonnet-4-6";
         # provider = "anthropic";
