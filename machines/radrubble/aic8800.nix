@@ -42,6 +42,8 @@ let
           [ -f "$p" ] && patch -p1 < "$p" || true
         done
         patch -p1 < ${./patches/aic8800-gpio-power.patch} || true
+        # 6.12.108+ added struct net_device *dev to set_monitor_channel
+        patch -p1 -l < ${./patches/aic8800-linux-6.12.108-set-monitor-channel.patch} || true
 
         runHook postPatch
       '';
