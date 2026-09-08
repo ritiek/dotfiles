@@ -179,6 +179,15 @@
           sha256 = "sha256-iCZ48z4odTV4/nBlAK6dh8qX5CGVRYaqsTU1z3VKRgw=";
           meta = {};
         })
+
+        (buildFirefoxXpiAddon {
+          pname = "header-editor";
+          version = "5.3.1";
+          addonId = "headereditor-v3-amo@addon.firefoxcn.net";
+          url = "https://addons.mozilla.org/firefox/downloads/file/5011861/header_editor_lite-5.3.1.xpi";
+          sha256 = "sha256-p/gfGRVWr3NpsNzaodF0V7CjAQaCh9O6ZAzI9jBxm/k=";
+          meta = {};
+        })
       ];
 
       settings = {
