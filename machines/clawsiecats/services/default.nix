@@ -2,7 +2,8 @@
 
 let
   primaryDomain = "clawsiecats.omg.lol";
-  domains = [ primaryDomain "clawsiecats.lol" ];
+  domains = [ primaryDomain ];
+  # domains = [ primaryDomain "clawsiecats.lol" ];
 
   # Hardcoded prompt sent to hermes on a CI build failure. Edit here (not in
   # .github/workflows) to change what hermes is asked to do.
@@ -291,7 +292,7 @@ let
     };
     "webhook_matrix.auth" = {};
     "github_actions_matrix_user.password" = {};
-    "immich.app_identity_key" = {};
+    "app_identity_header" = {};
   };
 
   # restartTriggers on the unit below only cover changes to the template *text*
@@ -331,7 +332,7 @@ let
     owner = "nginx";
     restartUnits = [ "nginx.service" ];
     content = ''
-      if ($http_app_identity_key != "${config.sops.placeholder."immich.app_identity_key"}") {
+      if ($http_app_identity_key != "${config.sops.placeholder."app_identity_header"}") {
         return 403;
       }
     '';
