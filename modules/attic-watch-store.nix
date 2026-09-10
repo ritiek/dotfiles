@@ -77,6 +77,16 @@ in
     wantedBy = [ "multi-user.target" ];
     environment.XDG_CONFIG_HOME = "/etc";
     serviceConfig = {
+      # During nixos-rebuild switch/deploy the tailscaled restart briefly breaks
+      # MagicDNS; an immediate resolve failure here marks the unit failed, which
+      # makes switch-to-configuration exit non-zero and deploy-rs roll back the
+      # whole deploy. Wait for the server name to resolve before starting.
+      ExecStartPre = pkgs.writeShellScript "wait-for-attic-dns" ''
+        until ${pkgs.getent}/bin/getent hosts alcove.lion-zebra.ts.net > /dev/null; do
+          sleep 2
+        done
+      '';
+      TimeoutStartSec = 300;
       ExecStart = "${pkgs.attic-client}/bin/attic watch-store ${server}:${cache} -j 1";
       Restart = "on-failure";
       RestartSec = 10;
