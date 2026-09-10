@@ -25,12 +25,19 @@
         # Postgres (MVCC) handles real concurrent writers. Peer auth over the
         # local socket — atticd runs as system user "atticd", which maps to the
         # postgres role of the same name; no password/secret needed.
-        url = "postgres:///atticd?host=/run/postgresql";
+        # Username must be explicit in the URL: the unit runs with
+        # PrivateUsers=true, where getpwuid() fails, and attic (sqlx) then
+        # falls back to username "anonymous" instead of the process user.
+        url = "postgres://atticd@localhost/atticd?host=/run/postgresql";
       };
-      # Disable in-process garbage collection. atticd runs a GC pass on every
-      # startup (and atticd restarts on udev events / rebuilds). Run GC manually
-      # instead via `atticd --mode garbage-collector-once`.
-      garbage-collection.interval = "0s";
+      # Time-based GC: delete objects whose created_at AND last_accessed_at
+      # are both older than 30 days. Also runs this same pass once
+      # immediately whenever atticd (re)starts, since attic ties the
+      # periodic loop's first run to service start.
+      garbage-collection = {
+        interval = "1d";
+        default-retention-period = "30 days";
+      };
       # storage.path deliberately kept OUTSIDE /var/lib/atticd (the default
       # StateDirectory): with ProtectSystem=strict, systemd presents
       # StateDirectory content through an idmapped bind-mount regardless of
