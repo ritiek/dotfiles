@@ -134,6 +134,73 @@ except Exception as _exc:
     sys.stderr.write(f"[hermes-gateway-overlay] hook install failed: {_exc}\n")
 
 
+# systemd user-scope probe fix for NixOS.
+# hermes 0.21.0 dispatches restart-safe cron/background workers into a transient
+# `systemd-run --user --scope`.  Before doing so it probes availability by running
+# a hardcoded `/bin/true` inside such a scope (tools.process_registry
+# `_systemd_run_user_scope_available`).  NixOS has no /bin/true (only /bin/sh), so
+# the probe always fails, `_systemd_run_user_scope_available()` returns False, and
+# every cron dispatch fails closed with
+#   "systemd-run --user --scope is unavailable"
+# (crons silently stop firing).  The real worker spawns wrap the actual command,
+# not /bin/true, so ONLY the probe's sentinel path is wrong.  Patch
+# `_systemd_scope_argv` to rewrite a trailing `/bin/true` to a resolvable `true`.
+try:
+    import shutil as _shutil
+
+    def _install_systemd_true_fix() -> None:
+        from importlib.util import find_spec as _find_spec
+
+        _TARGET = "tools.process_registry"
+
+        class _SystemdTrueFixFinder:
+            _patched = False
+
+            def find_spec(self, fullname, path=None, target=None):
+                if fullname != _TARGET or self._patched:
+                    return None
+                if self in sys.meta_path:
+                    sys.meta_path.remove(self)
+                try:
+                    spec = _find_spec(fullname)
+                finally:
+                    if self not in sys.meta_path:
+                        sys.meta_path.insert(0, self)
+                if spec is None or spec.loader is None:
+                    return None
+                original_exec = getattr(spec.loader, "exec_module", None)
+                if not callable(original_exec):
+                    return None
+                finder = self
+
+                def patched_exec(module):
+                    original_exec(module)
+                    finder._patched = True
+                    try:
+                        _true = _shutil.which("true") or "/run/current-system/sw/bin/true"
+                        _orig_argv = module._systemd_scope_argv
+
+                        def _fixed_argv(binary, unit_name, *argv):
+                            argv = tuple(_true if a == "/bin/true" else a for a in argv)
+                            return _orig_argv(binary, unit_name, *argv)
+
+                        module._systemd_scope_argv = _fixed_argv
+                    except Exception as exc:
+                        sys.stderr.write(
+                            f"[hermes-systemd-true-fix] patch failed: "
+                            f"{type(exc).__name__}: {exc}\n"
+                        )
+
+                spec.loader.exec_module = patched_exec
+                return spec
+
+        sys.meta_path.insert(0, _SystemdTrueFixFinder())
+
+    _install_systemd_true_fix()
+except Exception as _exc:
+    sys.stderr.write(f"[hermes-systemd-true-fix] hook install failed: {_exc}\n")
+
+
 # Anchor 'cron' package before plugin adapters shadow it.
 # Multiple plugin adapters (discord, raft, slack, telegram, whatsapp) each do
 # sys.path.insert(0, <pkg>/plugins/) at module load time inside gateway.run.
