@@ -107,6 +107,17 @@ in
     OPENAI_API_KEY = "sk-local-kitten-dummy";
     MATRIX_DM_AUTO_THREAD = "true";
     MATRIX_HOME_ROOM = "!H1PCpqBZygxcuIbrB3qiA0hEeKTa7FBmsQt2NjWhw9k";
+    # Hermes 0.21.0 dispatches cron workers into a transient systemd *user*
+    # scope (`systemd-run --user --scope`) so they survive a gateway restart
+    # (runs the worker outside the gateway cgroup to avoid OOM-killing the whole
+    # gateway). That call fail-CLOSES when it can't reach the user bus: without
+    # these, cron execution dies with "systemd-run --user --scope is unavailable"
+    # and crons silently stop firing. The systemd hermes-agent unit doesn't
+    # inherit a login session's XDG_RUNTIME_DIR/DBUS address, so point them at
+    # ritiek's (uid 1000) lingering user manager (`loginctl enable-linger` keeps
+    # /run/user/1000 alive without an interactive login).
+    XDG_RUNTIME_DIR = "/run/user/1000";
+    DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/1000/bus";
     # Kill the MESSAGING_CWD deprecation warning. The hermes-agent nix module
     # injects this system-wide via cfg.workingDirectory, even for users who
     # configure terminal.cwd properly. Override to empty so hermes doesn't
