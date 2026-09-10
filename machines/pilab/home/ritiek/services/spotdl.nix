@@ -97,7 +97,7 @@ in
       Description = "Run sync Spotify playlists service periodically.";
     };
     Timer = {
-      OnBootSec = "18h";
+      OnBootSec = "36h";
       OnUnitActiveSec = "36h";
       Unit = "spotdl-sync.service";
     };
