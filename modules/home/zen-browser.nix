@@ -141,7 +141,8 @@
         ff2mpv
 
         tubearchivist-companion
-        karakeep
+        # Commeting this out as I moved to Readeck now.
+        # karakeep
 
         # (buildFirefoxXpiAddon {
         #   pname = "adnauseam";
