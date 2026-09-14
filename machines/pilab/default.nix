@@ -228,18 +228,6 @@ in
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
 
-  # Let the kernel pick a random source port instead of tailscaled's fixed
-  # default of 41641. This LAN sits behind ISP CGNAT (the router's own WAN
-  # address is 172.16.74.145, a private one), and packets sent from port
-  # 41641 were being dropped before they ever reached the far end: tcpdump
-  # showed pilab emitting disco probes to clawsiecats:41641 with zero replies,
-  # while STUN to :3479 from the same socket was answered normally, and
-  # clawsiecats' inbound counter for 41641 barely moved. Peers behind this
-  # same NAT that happen to use random ports (alcove, mishy, radrubble) hole
-  # punch fine. With a random port pilab now gets a direct path too, which
-  # took clawsiecats<->pilab from ~18 kB/s (public DERP) to ~7.5 MB/s.
-  services.tailscale.port = 0;
-
   services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-routes"
     "--accept-dns=false"

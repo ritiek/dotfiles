@@ -124,15 +124,18 @@ in
           #
           # This was briefly set to [] to force clawsiecats<->pilab off the
           # shared public "blr" relay, which was capping Immich transfers at
-          # ~18 kB/s. That worked (~3.3 MB/s) but treated the symptom: the real
-          # fault was pilab's fixed tailscaled source port 41641 being dropped
-          # by ISP CGNAT, so it could never hole punch and always relayed. With
-          # `services.tailscale.port = 0` on pilab that link is now direct at
-          # ~7.5 MB/s and uses no relay at all, so there is no longer any reason
-          # to strip the public regions -- doing so only made this box a single
-          # point of failure and would force e.g. two India-based peers to
-          # relay through the US (~220ms) instead of blr (~33ms) whenever they
-          # could not connect directly.
+          # ~18 kB/s. That worked (~3.3 MB/s) but treated the symptom: pilab had
+          # simply stopped hole punching and fell back to a relay permanently.
+          # Restarting tailscaled on pilab fixed it -- the link is now direct at
+          # ~7.5 MB/s with no relay at all. (A port change was tried at the same
+          # time and initially credited, but forcing pilab back onto the default
+          # 41641 afterwards still connected directly, so the port was never the
+          # cause; same-LAN peers alcove and radrubble use 41641 happily.)
+          #
+          # So there is no reason to strip the public regions -- doing so only
+          # made this box a single point of failure and would force e.g. two
+          # India-based peers to relay through the US (~220ms) instead of blr
+          # (~33ms) whenever they could not connect directly.
           urls = [ "https://controlplane.tailscale.com/derpmap/default" ];
           paths = [];
           auto_update_enabled = false;
