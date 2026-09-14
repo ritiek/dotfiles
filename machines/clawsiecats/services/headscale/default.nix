@@ -119,16 +119,21 @@ in
             # this DERP relay.
             verify_clients = true;
           };
-          # Serve ONLY the embedded DERP above. Left at its default, headscale
-          # also hands out Tailscale's public derpmap, and peers then pick a
-          # public region as their home relay -- pilab was homing on "blr"
-          # (Bengaluru), so clawsiecats<->pilab traffic took a long-haul detour
-          # through a shared, rate-limited relay (`tailscale ping pilab`: 8/8
-          # via DERP(blr), 245ms, "direct connection not established"). That
-          # shared relay is what caps Immich transfers at ~18 kB/s. Pinning
-          # this to the self-hosted region removes the bandwidth cap; latency
-          # stays ~200ms since the hosts really are a continent apart.
-          urls = [ ];
+          # Hand out Tailscale's public derpmap *in addition to* the embedded
+          # region above, so every node has a nearby relay to fall back on.
+          #
+          # This was briefly set to [] to force clawsiecats<->pilab off the
+          # shared public "blr" relay, which was capping Immich transfers at
+          # ~18 kB/s. That worked (~3.3 MB/s) but treated the symptom: the real
+          # fault was pilab's fixed tailscaled source port 41641 being dropped
+          # by ISP CGNAT, so it could never hole punch and always relayed. With
+          # `services.tailscale.port = 0` on pilab that link is now direct at
+          # ~7.5 MB/s and uses no relay at all, so there is no longer any reason
+          # to strip the public regions -- doing so only made this box a single
+          # point of failure and would force e.g. two India-based peers to
+          # relay through the US (~220ms) instead of blr (~33ms) whenever they
+          # could not connect directly.
+          urls = [ "https://controlplane.tailscale.com/derpmap/default" ];
           paths = [];
           auto_update_enabled = false;
           update_frequency = "24h";
