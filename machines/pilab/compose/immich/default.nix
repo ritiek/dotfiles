@@ -1,6 +1,20 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  # Single source of truth for the immich_default bridge.
+  #
+  # Left to itself, Docker allocates this network's subnet dynamically out of
+  # the daemon pool declared in machines/pilab/default.nix
+  # (`default-address-pools`, base 10.240.0.0/12, size 24), so the third octet
+  # depends on the order networks happen to be created in. Pinning it means the
+  # gateway address is stable and can be named exactly in
+  # IMMICH_TRUSTED_PROXIES below instead of trusting the whole /12.
+  immichNetwork = {
+    subnet = "10.240.11.0/24";
+    gateway = "10.240.11.1";
+  };
+in
 {
   sops.secrets."compose/immich.env" = {
     sopsFile = ./stack.env;
@@ -128,6 +142,21 @@
     image = "ghcr.io/immich-app/immich-server:release";
     environment = {
       "TZ" = "Asia/Kolkata";
+      # Without this, Immich's Express layer ignores the X-Forwarded-* headers
+      # that the clawsiecats nginx vhost sets, and attributes every request to
+      # the proxy instead of the real client.
+      #
+      # The value is the Docker bridge gateway, NOT clawsiecats' tailnet IP:
+      # port 2283 is published via docker-proxy, so connections are SNATed and
+      # the container observes every external peer as the gateway (verified by
+      # reading /proc/net/tcp6 inside the container during a live request --
+      # remote was 10.240.11.1, the immich_default gateway).
+      #
+      # The exact gateway, not a wide range: the subnet is pinned in the
+      # `immichNetwork` binding at the top of this file and enforced by the
+      # docker-network-immich_default unit below, so this stays correct across
+      # network recreation without trusting every container on the host.
+      "IMMICH_TRUSTED_PROXIES" = immichNetwork.gateway;
     };
     environmentFiles = [
       config.sops.secrets."compose/immich.env".path
@@ -179,7 +208,18 @@
       ExecStop = "docker network rm -f immich_default";
     };
     script = ''
-      docker network inspect immich_default || docker network create immich_default
+      # Recreate the network if its subnet drifts from the pinned value above,
+      # otherwise `inspect` short-circuits and a previously auto-allocated
+      # subnet would survive forever.
+      want="${immichNetwork.subnet}"
+      have="$(docker network inspect -f '{{range .IPAM.Config}}{{.Subnet}}{{end}}' immich_default 2>/dev/null || true)"
+      if [ "$have" != "$want" ]; then
+        [ -n "$have" ] && docker network rm -f immich_default
+        docker network create \
+          --subnet="${immichNetwork.subnet}" \
+          --gateway="${immichNetwork.gateway}" \
+          immich_default
+      fi
     '';
     partOf = [ "docker-compose-immich-root.target" ];
     wantedBy = [ "docker-compose-immich-root.target" ];

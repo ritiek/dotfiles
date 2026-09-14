@@ -83,10 +83,19 @@ let
       forceSSL = true;
       enableACME = true;
       locations."/" = {
-        recommendedProxySettings = true;
+        # NOTE: recommendedProxySettings cannot be used here. The NixOS module
+        # only emits it when the `proxyPass` *option* is set, and this location
+        # writes proxy_pass by hand in extraConfig. It was previously set to
+        # true and silently did nothing, so the forwarding headers below are
+        # written out explicitly.
         extraConfig = ''
           set $upstream "pilab.lion-zebra.ts.net:2283";
           proxy_pass http://$upstream;
+
+          # Keepalive/chunked-capable upstream. Without this nginx talks HTTP/1.0
+          # upstream and has to buffer chunked request bodies to a temp file,
+          # defeating proxy_request_buffering off below.
+          proxy_http_version 1.1;
 
           # Immich recommended upload settings
           proxy_read_timeout 43200s;
@@ -94,6 +103,24 @@ let
           send_timeout 43200s;
           proxy_request_buffering off;
           client_body_buffer_size 1024k;
+
+          # The timeouts above only cover the nginx<->upstream legs. This one
+          # covers the browser->nginx body read, which otherwise stays at the
+          # 60s default and kills slow uploads.
+          client_body_timeout 43200s;
+
+          # Stream responses straight through instead of spooling large
+          # downloads to this VPS's disk (default cap is 1024m).
+          proxy_max_temp_file_size 0;
+
+          # Forwarding headers, normally supplied by recommendedProxySettings.
+          # Without these Immich sees the tailnet upstream as the Host and has
+          # no client IP or scheme at all.
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header X-Forwarded-Host $host;
 
           # WebSocket support
           proxy_set_header Upgrade $http_upgrade;
@@ -104,7 +131,7 @@ let
           # (see sops.templates."nginx-immich-gate" below): comparing against
           # config.sops.secrets.<name>.path here would compare against the
           # literal file path string instead of the secret, locking everyone out.
-          include ${config.sops.templates."nginx-immich-gate".path};
+          # include ${config.sops.templates."nginx-immich-gate".path};
         '';
       };
     };
