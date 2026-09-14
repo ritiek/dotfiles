@@ -105,9 +105,12 @@ in
         derp = {
           server = {
             enabled = true;
-            # TODO: Figure out how to set this to the public IP of clawsiecats
-            #       without hardcoding it.
-            # ipv4 = "46.8.224.87";
+            # NOTE: `ipv4` is deliberately left unset. The embedded DERP is
+            # already reachable without it (peers show `relay "headscale"`,
+            # https://controlplane.${domain}/derp returns 426 Upgrade Required
+            # and UDP/3479 STUN answers from outside), so hardcoding the public
+            # IP buys nothing and rots -- the value previously parked here
+            # (46.8.224.87) was already stale; it is now 31.56.178.40.
             stun_listen_addr = "0.0.0.0:3479";
             region_code = "headscale";
             region_name = "Headscale Embedded DERP";
@@ -116,7 +119,16 @@ in
             # this DERP relay.
             verify_clients = true;
           };
-          # urls = [];
+          # Serve ONLY the embedded DERP above. Left at its default, headscale
+          # also hands out Tailscale's public derpmap, and peers then pick a
+          # public region as their home relay -- pilab was homing on "blr"
+          # (Bengaluru), so clawsiecats<->pilab traffic took a long-haul detour
+          # through a shared, rate-limited relay (`tailscale ping pilab`: 8/8
+          # via DERP(blr), 245ms, "direct connection not established"). That
+          # shared relay is what caps Immich transfers at ~18 kB/s. Pinning
+          # this to the self-hosted region removes the bandwidth cap; latency
+          # stays ~200ms since the hosts really are a continent apart.
+          urls = [ ];
           paths = [];
           auto_update_enabled = false;
           update_frequency = "24h";
