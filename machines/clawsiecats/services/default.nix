@@ -591,6 +591,13 @@ let
     nginx = {
       enable = true;
       clientMaxBodySize = "0";
+      # Route QUIC packets to the right worker by Connection ID instead of by
+      # 4-tuple hash. Without this, a client that changes address (wifi ->
+      # cellular) migrates its QUIC connection but its packets then hash to a
+      # worker holding no state for it, so migration silently fails on any
+      # multi-worker nginx. The immich vhost already sets quic/http3, so this
+      # is what makes that actually usable. Linux 5.7+ only.
+      enableQuicBPF = true;
       # Use systemd-resolved's stub as the nginx resolver so that .ts.net
       # upstream hostnames (resolved via Tailscale MagicDNS) are looked up at
       # request time rather than at nginx startup. Combined with variable-based
