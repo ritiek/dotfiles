@@ -82,6 +82,17 @@ let
     "immich.${domain}" = {
       forceSSL = true;
       enableACME = true;
+
+      # HTTP/3. Immich's web UI fires a long tail of small thumbnail requests,
+      # and every client here is ~220ms away, so TCP head-of-line blocking on a
+      # single h2 connection is felt directly. QUIC drops that and saves a
+      # round trip on connection setup. The deployed nginx is built
+      # --with-http_v3_module, so this is available without a package change.
+      # Requires UDP 443 in the firewall (added below) and the Alt-Svc header
+      # in the location block, which is how browsers discover h3 at all.
+      quic = true;
+      http3 = true;
+
       locations."/" = {
         # NOTE: recommendedProxySettings cannot be used here. The NixOS module
         # only emits it when the `proxyPass` *option* is set, and this location
@@ -96,6 +107,10 @@ let
           # upstream and has to buffer chunked request bodies to a temp file,
           # defeating proxy_request_buffering off below.
           proxy_http_version 1.1;
+
+          # Browsers only try h3 after seeing this on an h1/h2 response.
+          # "always" so it is also sent on error responses.
+          add_header Alt-Svc 'h3=":443"; ma=86400' always;
 
           # Immich recommended upload settings
           proxy_read_timeout 43200s;
@@ -934,6 +949,9 @@ let
       5350
     ];
     allowedUDPPorts = [
+      # HTTP/3 (QUIC) for the immich vhost
+      443
+
       # Bombsquad
       43210
 

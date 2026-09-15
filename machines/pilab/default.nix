@@ -228,6 +228,20 @@ in
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
 
+  # BBR is built as a module but not autoloaded; without this the sysctl below
+  # silently falls back to cubic.
+  boot.kernelModules = [ "tcp_bbr" ];
+
+  boot.kernel.sysctl = {
+    # Immich traffic reaches this box from clawsiecats over a ~212ms
+    # intercontinental hop. cubic is loss-based and performs badly there:
+    # 3 alternating 20s iperf3 runs gave cubic 12.5 Mbit/s mean (5.4-18.5
+    # spread) vs bbr 18.0 Mbit/s (17.6-18.7). bbr won every pair, and its
+    # worst run beat cubic's best. fq is bbr's companion qdisc for pacing.
+    "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.core.default_qdisc" = "fq";
+  };
+
   services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-routes"
     "--accept-dns=false"
