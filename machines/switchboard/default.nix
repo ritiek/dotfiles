@@ -26,6 +26,7 @@
     ./../../modules/router/tuning.nix
     ./../../modules/wifi/hostapd_ap.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
     ./services/pihole.nix

@@ -19,6 +19,7 @@
     ./../../modules/usbip.nix
     ./../../modules/sunshine.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/3proxy.nix
     # ./../../modules/mullvad.nix

@@ -28,6 +28,7 @@ in
     ./../../modules/sops.nix
     ./../../modules/wifi/network_manager.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
   ];
 

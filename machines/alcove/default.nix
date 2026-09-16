@@ -19,6 +19,7 @@
     ./../../modules/wifi/network_manager.nix
     ./../../modules/usbipd.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
   ];
 
