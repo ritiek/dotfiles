@@ -124,13 +124,19 @@ in
           #
           # This was briefly set to [] to force clawsiecats<->pilab off the
           # shared public "blr" relay, which was capping Immich transfers at
-          # ~18 kB/s. That worked (~3.3 MB/s) but treated the symptom: pilab had
-          # simply stopped hole punching and fell back to a relay permanently.
-          # Restarting tailscaled on pilab fixed it -- the link is now direct at
-          # ~7.5 MB/s with no relay at all. (A port change was tried at the same
-          # time and initially credited, but forcing pilab back onto the default
-          # 41641 afterwards still connected directly, so the port was never the
-          # cause; same-LAN peers alcove and radrubble use 41641 happily.)
+          # ~18 kB/s. That worked (~3.3 MB/s) but treated the symptom: pilab
+          # could not hole punch to this box at all and fell back to a relay
+          # permanently.
+          #
+          # The real cause was a wedged NAT mapping for pilab's UDP source
+          # port 41641 upstream (kept alive indefinitely by disco's own
+          # retries -- see the comment at services.tailscale.port in
+          # machines/pilab/default.nix for the full story); pilab now runs
+          # port = 0 and peers directly. An earlier note here claimed the port
+          # was never the cause because forcing pilab back to 41641 still
+          # connected directly -- that test was invalid: it flipped the port
+          # while a direct path was already up and being held open by
+          # keepalives, so it never exercised a cold path.
           #
           # So there is no reason to strip the public regions -- doing so only
           # made this box a single point of failure and would force e.g. two
