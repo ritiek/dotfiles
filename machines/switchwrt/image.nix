@@ -267,6 +267,10 @@ let
       # flags (exit node advertisement, DNS off).
       "files/etc/sysctl.d/90-tailscale.conf" =
         ./files/etc/sysctl.d/90-tailscale.conf;
+      # bbr + fq, mirroring modules/net-tuning.nix on the NixOS machines.
+      # Needs kmod-tcp-bbr and kmod-sched from config.seed to have any effect.
+      "files/etc/sysctl.d/91-net-tuning.conf" =
+        ./files/etc/sysctl.d/91-net-tuning.conf;
       # Keeps directly-connected subnets winning over the subnet routes
       # tailnet peers advertise (pilab advertises 192.168.2.0/24, which is
       # also our own uplink subnet at home) -- without this, replies to
