@@ -229,6 +229,38 @@ in
   networking.hostName = "pilab";
   time.timeZone = "Asia/Kolkata";
 
+  # Let tailscaled pick a random UDP source port instead of the default 41641.
+  #
+  # pilab shares one CGNAT egress (and one home router) with alcove, mishy and
+  # radrubble, and all of them default to source port 41641. During the
+  # incident this works around, the single tuple
+  #   192.168.2.8:41641 -> 31.56.178.40:41641 (clawsiecats)
+  # was dead for 36+ hours in BOTH directions (0/18 disco probes arrived;
+  # crafted UDP 41641->41641 measured 0/5) while every other tuple from the
+  # same host passed: 55555->41641 5/5 with the port preserved, and
+  # 41641->3479 5/5 but rewritten to source 50278 -- i.e. something else had
+  # claimed external 41641 and pilab's advertised endpoint
+  # 43.243.83.220:41641 was invalid for this peer, so hole punching could
+  # never converge and the pair sat on DERP (HTTPS/TCP relay; TCP-in-TCP
+  # head-of-line blocking capped iperf3 at ~12 Mbit/s with stalls).
+  #
+  # The wedge is NOT a deterministic CGNAT port filter: 2.5h after the 41641
+  # socket went quiet, the identical tuple passed 5/5 with the port preserved,
+  # and a cold tailscaled start on 41641 then peered directly on the first
+  # ping. Best-supported mechanism (tailscale/tailscale#18328, RFC 4787
+  # REQ-6): a poisoned/stale upstream NAT mapping that disco's own
+  # every-few-seconds retries kept refreshing forever -- it can only heal
+  # while the source port is idle, which a fixed port never is. Note the
+  # rewritten source port alone is harmless: alcove/mishy/radrubble all get
+  # rewritten and still peer directly (disco pong reports the real endpoint).
+  #
+  # port = 0 sidesteps the whole class: a fresh random port per daemon start
+  # avoids contending with three sibling devices for preferred external port
+  # 41641, and any future wedge is escaped by a restart re-rolling the port.
+  # With this, the direct path forms within seconds (~210ms RTT, ~47 Mbit/s
+  # -- pilab's uplink ceiling). Same-LAN peers are unaffected.
+  services.tailscale.port = 0;
+
   services.tailscale.extraUpFlags = lib.mkAfter [
     "--accept-routes"
     "--accept-dns=false"
