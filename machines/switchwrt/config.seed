@@ -191,3 +191,19 @@ CONFIG_PACKAGE_luci-app-chrony=y
 CONFIG_PACKAGE_miniupnpd=y
 CONFIG_PACKAGE_rpcd-mod-ucode=y
 CONFIG_PACKAGE_luci-app-upnp=y
+
+# bbr congestion control + its required fq pacing qdisc, matching
+# modules/net-tuning.nix on the NixOS machines. See
+# files/etc/sysctl.d/91-net-tuning.conf for the sysctls and the AQM caveat.
+#
+# kmod-tcp-bbr selects CONFIG_TCP_CONG_BBR, AutoProbes tcp_bbr, and installs
+# its own /etc/sysctl.d/12-tcp-bbr.conf with the congestion_control line, so
+# no manual modprobe is needed. It does not touch default_qdisc.
+#
+# sch_fq has no package of its own -- it is one of the SCHED_MODULES_EXTRA in
+# kmod-sched ("Extra traffic schedulers", AutoLoad priority 73), so selecting
+# that also pulls in sch_codel/sch_gred/sch_sfq/sch_teql/sch_ets and assorted
+# act_*/em_* modules. Slightly more than we need, but there is no finer-grained
+# package for it.
+CONFIG_PACKAGE_kmod-tcp-bbr=y
+CONFIG_PACKAGE_kmod-sched=y
