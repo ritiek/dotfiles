@@ -7,6 +7,7 @@
     ./../../modules/sops.nix
     ./../../modules/netbird.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
   ];
 
   networking.hostName = "minimachine";

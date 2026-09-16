@@ -11,6 +11,7 @@
     ./../../modules/sops.nix
     ./../../modules/attic-watch-store.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/3proxy.nix
   ];
@@ -155,22 +156,10 @@
     };
   };
 
-  # BBR is built as a module but not autoloaded, so without this the sysctl
-  # below silently falls back to cubic (tcp_available_congestion_control
-  # only lists "reno cubic" until tcp_bbr is loaded).
-  boot.kernelModules = [ "tcp_bbr" ];
-
+  # bbr/fq now come from modules/net-tuning.nix.
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.ipv6.conf.all.forwarding" = 1;
-
-    # This box talks to pilab over a ~212ms intercontinental path. cubic is
-    # loss-based and collapses on it: measured over 3 alternating 20s iperf3
-    # runs, cubic averaged 12.5 Mbit/s with a 5.4-18.5 spread, while bbr
-    # averaged 18.0 Mbit/s within 17.6-18.7. bbr's worst run beat cubic's
-    # best. fq is bbr's companion qdisc for its pacing.
-    "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.core.default_qdisc" = "fq";
   };
 
   networking.firewall.enable = true;

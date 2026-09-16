@@ -7,6 +7,7 @@
     ./minimal.nix
     ./../../modules/sops.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
   ];

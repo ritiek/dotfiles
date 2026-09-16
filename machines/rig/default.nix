@@ -16,6 +16,7 @@
     ./../../modules/attic-watch-store.nix
     ./../../modules/ssh.nix
     ./../../modules/tailscale-controlplane.nix
+    ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     # ./../../modules/yubico-pam.nix
     # ./../../modules/usbip.nix
