@@ -75,23 +75,45 @@ let
       -d "{}" >/dev/null 2>&1 || true
   '';
 
+  # HTTP/3 for a TLS vhost. Every client here is ~220ms away, so the saved
+  # round trip on connection setup and the absence of TCP head-of-line
+  # blocking are both felt directly -- most visibly on Immich's web UI, which
+  # fires a long tail of small thumbnail requests. The deployed nginx
+  # (1.30.4) is built --with-http_v3_module, so no package change is needed.
+  #
+  # Requires UDP 443 in the firewall (opened below) and quic_bpf in the main
+  # context (services.nginx.enableQuicBPF, set below) so that a client which
+  # changes address still lands on the worker holding its connection state.
+  #
+  # Alt-Svc is what makes browsers try h3 at all; they only look for it on an
+  # h1/h2 response. "always" so it is sent on error responses too.
+  #
+  # NOTE: this sits at server level, so it is inherited by every location --
+  # but only for as long as no location declares an add_header of its own.
+  # nginx drops *all* inherited add_headers the moment a level defines one.
+  # If you add an add_header to a location here, repeat Alt-Svc there.
+  #
+  # Harmless on non-browser vhosts (attic, webhook, controlplane): Alt-Svc is
+  # advisory and Go/Rust/CI clients ignore it. WebSockets have no h3
+  # equivalent, but browsers fall back to h1/h2 for the Upgrade handshake, so
+  # controlplane's proxyWebsockets keeps working.
+  http3Vhost = {
+    quic = true;
+    http3 = true;
+    extraConfig = ''
+      add_header Alt-Svc 'h3=":443"; ma=86400' always;
+    '';
+  };
+
   mkVhosts = domain: {
+    # No forceSSL/enableACME and no locations, so there is no TLS listener to
+    # attach QUIC to. Left as-is deliberately.
     "jitsi.${domain}" = {
       basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
     };
-    "immich.${domain}" = {
+    "immich.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
-
-      # HTTP/3. Immich's web UI fires a long tail of small thumbnail requests,
-      # and every client here is ~220ms away, so TCP head-of-line blocking on a
-      # single h2 connection is felt directly. QUIC drops that and saves a
-      # round trip on connection setup. The deployed nginx is built
-      # --with-http_v3_module, so this is available without a package change.
-      # Requires UDP 443 in the firewall (added below) and the Alt-Svc header
-      # in the location block, which is how browsers discover h3 at all.
-      quic = true;
-      http3 = true;
 
       locations."/" = {
         # NOTE: recommendedProxySettings cannot be used here. The NixOS module
@@ -107,10 +129,6 @@ let
           # upstream and has to buffer chunked request bodies to a temp file,
           # defeating proxy_request_buffering off below.
           proxy_http_version 1.1;
-
-          # Browsers only try h3 after seeing this on an h1/h2 response.
-          # "always" so it is also sent on error responses.
-          add_header Alt-Svc 'h3=":443"; ma=86400' always;
 
           # Immich recommended upload settings
           proxy_read_timeout 43200s;
@@ -150,7 +168,7 @@ let
         '';
       };
     };
-    "vaultwarden.${domain}" = {
+    "vaultwarden.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       # Keep the admin panel off the internet. ADMIN_TOKEN stays set, so the
@@ -175,7 +193,7 @@ let
         '';
       };
     };
-    "calibre.${domain}" = {
+    "calibre.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       # calibre-web-automated mounts 19 routes with no auth decorator at all.
@@ -221,7 +239,7 @@ let
         '';
       };
     };
-    "controlplane.${domain}" = {
+    "controlplane.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -230,7 +248,7 @@ let
         recommendedProxySettings = true;
       };
     };
-    "headplane.${domain}" = {
+    "headplane.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -238,7 +256,7 @@ let
         recommendedProxySettings = true;
       };
     };
-    "search.${domain}" = {
+    "search.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       basicAuthFile = config.sops.secrets."searx.htpasswd".path;
@@ -252,7 +270,7 @@ let
         '';
       };
     };
-    "attic.${domain}" = {
+    "attic.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -285,7 +303,7 @@ let
         '';
       };
     };
-    "readeck.${domain}" = {
+    "readeck.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       locations."/" = {
@@ -301,7 +319,7 @@ let
         '';
       };
     };
-    "webhook.${domain}" = {
+    "webhook.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
       locations."~ ^/matrix/github-actions/new/" = {
