@@ -147,8 +147,58 @@ in
           auto_update_enabled = false;
           update_frequency = "24h";
         };
+        # Introducing a policy replaces headscale's implicit allow-all, so the
+        # first ACL below must stay: it reproduces the previous "no policy"
+        # behaviour exactly. The policy only exists to carry the peer-relay
+        # grant.
+        #
+        # Peer relay (UDP WireGuard forwarding, headscale >= 0.29 / tailscale
+        # >= 1.86): when two peers cannot hole punch a direct path, they relay
+        # via this box's UDP relay port at near line rate instead of falling
+        # back to DERP (TCP-in-TCP, ~11-14 Mbit/s measured). DERP stays as the
+        # mandatory disco signaling channel and data path of last resort --
+        # CallMeMaybe/CallMeMaybeVia/Allocate* messages are only ever sent over
+        # DERP, so it must not be removed. Path priority per pair, re-evaluated
+        # continuously: direct > peer-relay > DERP.
+        #
+        # src is "*" against upstream's advice (they suggest scoping to nodes
+        # behind strict NATs): with a single relay and a small fleet the worst
+        # case of a wide src is a peer pair relaying here instead of DERP,
+        # which is the point.
+        #
+        # NOTE: the policy file lives in the nix store, so headplane's ACL
+        # editor can view but not modify it. Manage it here.
+        policy = {
+          mode = "file";
+          path = pkgs.writeText "headscale-policy.json" (builtins.toJSON {
+            hosts = {
+              clawsiecats = "100.64.0.1/32";
+            };
+            acls = [
+              {
+                action = "accept";
+                src = [ "*" ];
+                dst = [ "*:*" ];
+              }
+            ];
+            grants = [
+              {
+                src = [ "*" ];
+                dst = [ "clawsiecats" ];
+                app = {
+                  "tailscale.com/cap/relay" = [ ];
+                };
+              }
+            ];
+          });
+        };
       };
     };
+
+    # Act as a peer relay server (see the policy.grants comment above). Fixed
+    # port because the firewall rule below must match it; must be reachable
+    # over UDP from every node that may use the relay.
+    tailscale.extraSetFlags = [ "--relay-server-port=41642" ];
 
     headplane = {
       enable = true;
@@ -196,6 +246,8 @@ in
       # DERP STUN
       3479
       41641
+      # Tailscale peer relay (--relay-server-port above)
+      41642
     ];
   };
 }
