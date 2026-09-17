@@ -11,19 +11,15 @@
 # admin protocol safe to expose there. Kept as the emergency path for when
 # the tailnet is unavailable.
 #
-# LuCI (80/443) is deliberately NOT exposed, though it used to be:
-#   - LuCI's login is a plain form POST (luci_username / luci_password in
-#     cleartext) and uhttpd ships redirect_https='0', so browsing to the bare
-#     IP sends the root password across that shared segment in the clear. The
-#     sysauth_http session cookie is equally sniffable and equally sufficient
-#     to hijack the session.
-#   - HTTPS on 443 is no help: px5g generated /etc/uhttpd.crt at first boot
-#     with the clock at epoch 1000000000 (this board has no RTC), so the
-#     self-signed cert is stamped notAfter=2002 and permanently expired.
-#     Clicking through that interstitial as a habit destroys the only MITM
-#     protection a self-signed cert offers.
-# Reach LuCI over the LAN (http://192.168.3.1) or the tailnet
-# (http://100.64.0.21) instead -- WireGuard gives it real transport security
+# LuCI is deliberately NOT exposed here. Port 80 is closed device-wide and
+# LuCI serves HTTPS-only (see 94-uhttpd-https-only + the cert-refresh
+# hotplug, which fixed the old permanently-expired-2002 px5g cert by
+# regenerating after the clock syncs, CN=switchwrt.lan) -- but even valid
+# HTTPS is the wrong call on this segment: a self-signed cert on a shared
+# wire still invites click-through, and the sysauth session cookie is equally
+# sniffable and equally sufficient to hijack the session if anyone does.
+# Reach LuCI over the LAN (https://192.168.3.1) or the tailnet
+# (https://100.64.0.21) instead -- WireGuard gives it real transport security
 # and real key authentication. The WAN-side address churns every boot anyway
 # (randomize-wwan-mac re-randomizes eth1's MAC, drawing a fresh DHCP lease),
 # which made WAN LuCI impractical to rely on regardless.

@@ -1,0 +1,31 @@
+#!/bin/sh
+# HTTPS-only LuCI with a usable self-signed identity.
+#
+# WHAT THIS DOES
+# - Identity: uhttpd.defaults.commonname='switchwrt.lan', so the self-signed
+#   cert's CN/SAN names the router instead of the generic 'OpenWrt'. (Still
+#   self-signed -- browsers will show the trust interstitial once -- but the
+#   name matches, so there is exactly one warning instead of two, and the
+#   interstitial trains the right fingerprint habit instead of click-through.)
+# - Transport: deletes uhttpd.main.listen_http, so port 80 is closed and LuCI
+#   is reachable only via https:// on 443 (LAN + tailnet addresses). No
+#   redirect_https games: with no HTTP listener there is nothing to redirect
+#   from, and a refused connection is a clearer signal than a redirect.
+#
+# WHAT THIS DELIBERATELY DOES NOT DO
+# It does NOT (re)generate the certificate. uci-defaults scripts run once, on
+# the first boot of a fresh flash, when this board's clock is still at
+# faketime/epoch (no RTC) -- any cert minted at that moment is born expired
+# (exactly how the previous cert ended up valid 2001-2002 with mtime Jan 1970).
+# Generation waits for a trustworthy clock in
+# files/etc/hotplug.d/iface/27-uhttpd-cert-refresh, which also rotates the
+# cert before its 397-day lifetime runs out. uhttpd still (re)starts here so
+# the listener change takes effect immediately; on a very first boot it serves
+# with the px5g-generated epoch cert until the first uplink ifup triggers the
+# refresh.
+uci -q set uhttpd.defaults.commonname='switchwrt.lan'
+uci -q delete uhttpd.main.listen_http
+uci commit uhttpd
+/etc/init.d/uhttpd restart
+
+exit 0
