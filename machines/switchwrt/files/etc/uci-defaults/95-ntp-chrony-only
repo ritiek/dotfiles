@@ -1,0 +1,39 @@
+#!/bin/sh
+# NTP client AND server = chrony; the base system's sysntpd is retired.
+#
+# WHY
+# This image ships chrony + luci-app-chrony (see config.seed) because chrony
+# handles large clock jumps better than busybox ntpd -- relevant on this
+# board, whose clock starts at faketime/epoch on every boot (no RTC, see
+# files/etc/init.d/faketime) and then has to slew years forward. Running
+# sysntpd's ntpd alongside chronyd meant TWO daemons stepping the same clock
+# (chronyd owns port 123; ntpd ran client-only beside it), which is pure
+# jitter for no benefit: chrony already covers everything sysntpd did,
+# including DHCP-provided NTP servers (chrony.dhcp_ntp_server) and
+# uplink-change handling (hotplug.d/iface/20-chrony, shipped by the package).
+#
+# THE SERVER HALF
+# chrony.allow.interface='lan' is what makes chronyd ANSWER NTP queries from
+# LAN clients (the init script resolves the interface to its subnets and
+# renders `allow 192.168.3.0/24` + the LAN IPv6 prefix into
+# /var/etc/chrony.d at service start). That UCI has been correct for a while,
+# but chronyd was never restarted after it was set, so the generated fragment
+# contained no allow line at all and chrony served nobody (serverstats showed
+# 0 NTP packets received; verified Sep 2026, fixed by a bare restart). The
+# explicit restart at the bottom of this script exists so a stale fragment
+# can never linger like that again on a fresh flash.
+uci -q set system.ntp.enabled='0'
+uci commit system
+/etc/init.d/sysntpd stop 2>/dev/null
+/etc/init.d/sysntpd disable 2>/dev/null
+
+if [ -n "$(uci -q show chrony.allow)" ]; then
+	uci -q set chrony.allow.interface='lan'
+else
+	uci -q add chrony allow >/dev/null
+	uci -q set chrony.@allow[-1].interface='lan'
+fi
+uci commit chrony
+/etc/init.d/chronyd restart
+
+exit 0

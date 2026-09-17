@@ -28,6 +28,16 @@ CONFIG_PACKAGE_tcpdump=y
 CONFIG_PACKAGE_ethtool=y
 CONFIG_PACKAGE_kmod-sdhci=y
 
+# Interactive resource monitor. Also manually installed on the live device
+# as a statically-linked binary (nix-built via
+# pkgsCross.aarch64-multiplatform-musl.pkgsStatic.btop, copied to
+# /usr/bin/btop) since this image's apk feeds 404 against
+# downloads.openwrt.org (radxa_cubie-a5e isn't part of the official
+# published snapshot targets, so there is no live package-manager install
+# path on this board). This CONFIG_PACKAGE_btop=y line makes the same
+# package part of the image proper on the next full rebuild.
+CONFIG_PACKAGE_btop=y
+
 # Web UI, convenient for an experiment.
 CONFIG_PACKAGE_luci=y
 CONFIG_PACKAGE_luci-ssl=y

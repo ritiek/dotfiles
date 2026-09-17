@@ -1,0 +1,55 @@
+#!/bin/sh
+# (Re)generate the uhttpd self-signed cert once the clock is trustworthy.
+#
+# THE BUG THIS FIXES
+# This board has no RTC: on first boot the clock reads faketime/epoch, and
+# uhttpd's init script mints its px5g self-signed cert at that moment -- a
+# cert stamped notAfter=2002 that is permanently expired (observed live: start
+# 2001-09-09, expire 2002-10-11, file mtime Jan 1970). An always-expired cert
+# trains click-through and destroys the only MITM protection a self-signed
+# cert offers (see the old discussion in 98-allow-ssh-wan). Regenerating from
+# a uci-defaults one-shot cannot fix it either, because those also run while
+# the clock is still wrong.
+#
+# WHY A HOTPLUG SCRIPT
+# ifup on an uplink is the earliest signal that (a) chrony has a path to real
+# NTP servers and (b) the clock is therefore about to be (or already is) sane.
+# The year guard below makes the ordering safe regardless: if the clock is
+# still bad we simply skip and retry on the next ifup. After a successful
+# refresh the cert's mtime is fresh, so later ifups (roaming churn, mwan3
+# restarts) are cheap no-ops -- until the cert nears its 397-day expiry, at
+# which point the age guard rotates it the same way.
+#
+# Hotplug scripts are SOURCED by /sbin/hotplug-call, so mode 644 is fine.
+[ "$ACTION" = "ifup" ] || exit 0
+
+# Only uplinks matter: lan/loopback ifups fire before NTP has any path.
+case "$INTERFACE" in
+	wan | wwan | usbtether) ;;
+	*) exit 0 ;;
+esac
+
+# Clock must look real. 2026 is "now" for this fleet; anything earlier means
+# chrony has not stepped us yet.
+[ "$(date +%Y 2>/dev/null)" -ge 2026 ] 2>/dev/null || exit 0
+
+CRT=/etc/uhttpd.crt
+KEY=/etc/uhttpd.key
+# Rotate when the cert is missing/empty or older than ~300 days (lifetime is
+# 397 per uhttpd.defaults.days, so this refreshes with ~3 months to spare).
+if [ -s "$CRT" ] && [ -s "$KEY" ]; then
+	MTIME="$(stat -c %Y "$CRT" 2>/dev/null)" || exit 0
+	NOW="$(date +%s 2>/dev/null)" || exit 0
+	case "$MTIME" in '' | *[!0-9]*) exit 0 ;; esac
+	[ "$((NOW - MTIME))" -gt 25920000 ] || exit 0
+fi
+
+logger -t uhttpd-cert-refresh \
+	"clock sane on ifup of $INTERFACE, (re)generating self-signed cert"
+# Delete so uhttpd's own start path regenerates via px5g with the identity
+# from uhttpd.defaults (CN=switchwrt.lan, set by 94-uhttpd-https-only),
+# reusing the tested init-script code path instead of duplicating it here.
+rm -f "$CRT" "$KEY"
+/etc/init.d/uhttpd restart >/dev/null 2>&1
+
+exit 0

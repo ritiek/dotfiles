@@ -282,6 +282,10 @@ let
       # the node sits in NoState. Re-kick it once an uplink is really up.
       "files/etc/hotplug.d/iface/26-tailscale-kick" =
         ./files/etc/hotplug.d/iface/26-tailscale-kick;
+      # Regenerate the uhttpd self-signed cert once the clock is sane (no
+      # RTC: first-boot certs are born expired) + rotate before expiry.
+      "files/etc/hotplug.d/iface/27-uhttpd-cert-refresh" =
+        ./files/etc/hotplug.d/iface/27-uhttpd-cert-refresh;
       "files/etc/init.d/tailscale-login" =
         ./files/etc/init.d/tailscale-login;
       "files/etc/init.d/netbird-login" =
@@ -308,6 +312,15 @@ let
       # time.timeZone = "Asia/Kolkata"); pin this OpenWrt box the same way.
       "files/etc/uci-defaults/99-switchwrt-timezone" =
         ./files/etc/uci-defaults/99-switchwrt-timezone;
+
+      # HTTPS-only LuCI (CN=switchwrt.lan, port 80 closed; cert minted after
+      # the clock is sane via the hotplug refresh above, not at first boot).
+      "files/etc/uci-defaults/94-uhttpd-https-only" =
+        ./files/etc/uci-defaults/94-uhttpd-https-only;
+
+      # NTP client AND server = chrony (serves LAN); retires base sysntpd.
+      "files/etc/uci-defaults/95-ntp-chrony-only" =
+        ./files/etc/uci-defaults/95-ntp-chrony-only;
 
       # Move the tailscale LuCI app from the VPN tab next to NetBird under
       # Services (tree files/ overrides the feed package's menu.d entry).
