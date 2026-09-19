@@ -30,7 +30,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--health-cmd=[\"pg_isready\",\"-U\",\"miniflux\"]"
+      "--health-cmd=pg_isready -U miniflux"
       "--health-interval=10s"
       "--health-start-period=30s"
       "--network-alias=db"
@@ -69,7 +69,7 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
-      "--health-cmd=[\"/usr/bin/miniflux\",\"-healthcheck\",\"auto\"]"
+      "--health-cmd=/usr/bin/miniflux -healthcheck auto"
       "--network-alias=miniflux"
       "--network=miniflux_default"
     ];

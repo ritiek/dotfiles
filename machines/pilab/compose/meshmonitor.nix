@@ -118,7 +118,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--health-cmd=[\"CMD-SHELL\",\"test -f /tmp/healthy && find /tmp/healthy -mmin -1 | grep -q healthy\"]"
+      "--health-cmd=test -f /tmp/healthy && find /tmp/healthy -mmin -1 | grep -q healthy"
       "--health-interval=30s"
       "--health-retries=3"
       "--health-start-period=60s"

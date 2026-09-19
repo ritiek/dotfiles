@@ -37,7 +37,7 @@ in lib.mkMerge [
     autoStart = false;
     extraOptions = [
       "--cap-drop=ALL"
-      "--health-cmd=[\"wget\", \"--spider\", \"-q\", \"--tries=1\", \"http://localhost:8080/settings\"]"
+      "--health-cmd=wget --spider -q --tries=1 http://localhost:8080/settings"
       "--health-interval=5m0s"
       "--health-timeout=3s"
       "--network-alias=redlib"

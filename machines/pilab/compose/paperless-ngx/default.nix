@@ -161,7 +161,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--health-cmd=[\"curl\",\"-fs\",\"-S\",\"--max-time\",\"2\",\"http://localhost:8000\"]"
+      "--health-cmd=curl -fs -S --max-time 2 http://localhost:8000"
       "--health-interval=30s"
       "--health-retries=5"
       "--health-timeout=10s"
