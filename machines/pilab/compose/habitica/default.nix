@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "${homelabMediaPath}/services/habitica/db" "${homelabMediaPath}/services/habitica/dbconf" ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-habitica-root.target";
     startCommand = "systemctl start docker-habitica-mongo.service docker-habitica-server.service";
     stopCommand = "systemctl stop docker-compose-habitica-root.target";

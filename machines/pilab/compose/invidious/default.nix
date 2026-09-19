@@ -20,6 +20,7 @@ let
       "${homelabMediaPath}/services/invidious/docker/init-invidious-db.sh"
       "${homelabMediaPath}/services/invidious/postgres-data"
     ];
+    requiredMountPoint = homelabMediaPath;
     startCommand = "systemctl start docker-invidious-db.service docker-invidious-companion.service docker-invidious.service";
     stopCommand = "systemctl stop docker-compose-invidious-root.target";
     healthEndpoint = "/api/v1/stats";

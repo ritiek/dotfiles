@@ -16,6 +16,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/linkding/data"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

@@ -21,6 +21,7 @@ let
       "${homelabMediaPath}/services/tubearchivist/videos"
       "${homelabMediaPath}/services/tubearchivist/es"
     ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-tubearchivist-root.target";
     idleCheckInterval = "*:0/45";  # Every 45 minutes (TubeArchivist is heavier)
     # Custom commands for multi-service stack

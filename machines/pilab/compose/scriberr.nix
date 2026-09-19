@@ -17,6 +17,7 @@ let
       "${homelabMediaPath}/services/scriberr/data"
       "${homelabMediaPath}/services/scriberr/env"
     ];
+    requiredMountPoint = homelabMediaPath;
     idleCheckInterval = "*-*-* 0/6:00:00";
   };
 

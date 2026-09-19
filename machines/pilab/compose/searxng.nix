@@ -17,6 +17,7 @@ let
       "${homelabMediaPath}/services/searxng/cache"
       "${homelabMediaPath}/services/searxng/config"
     ];
+    requiredMountPoint = homelabMediaPath;
     silent = true;
     waitTimeout = 60;
     startCommand = "systemctl start docker-redis.service docker-searxng.service";

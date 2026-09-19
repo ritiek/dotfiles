@@ -17,6 +17,7 @@ let
       "${homelabMediaPath}/services/qdrant/config"
       "${homelabMediaPath}/services/qdrant/storage"
     ];
+    requiredMountPoint = homelabMediaPath;
     silent = true;
     idleCheckInterval = "*-*-* 0/2:00:00";
     healthEndpoint = "/dashboard";

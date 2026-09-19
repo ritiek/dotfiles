@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "${homelabMediaPath}/services/vaultwarden" ];
+    requiredMountPoint = homelabMediaPath;
     silent = true;  # Enable silent mode for vaultwarden
   };
 

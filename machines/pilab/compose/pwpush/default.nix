@@ -19,6 +19,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/pwpush"
     ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-pwpush-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (Password Pusher has multiple services)
     # Custom commands for multi-service stack

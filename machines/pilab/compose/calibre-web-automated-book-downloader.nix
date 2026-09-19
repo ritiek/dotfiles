@@ -15,6 +15,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/calibre/ingest"
     ];
+    requiredMountPoint = homelabMediaPath;
     idleCheckInterval = "*-*-* *:00:00";
   };
 

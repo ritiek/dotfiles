@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "${homelabMediaPath}/services/ollama-webui/ollama" "${homelabMediaPath}/services/ollama-webui/open-webui" ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-ollama-webui-root.target";
     startCommand = "systemctl start docker-ollama.service docker-open-webui.service";
     stopCommand = "systemctl stop docker-compose-ollama-webui-root.target";

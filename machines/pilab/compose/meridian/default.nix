@@ -21,6 +21,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/meridian/claude-auth"
     ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-meridian-root.target";
     startCommand = "systemctl start docker-compose-meridian-root.target";
     stopCommand = "systemctl stop docker-compose-meridian-root.target";
