@@ -167,11 +167,6 @@ CONFIG_PACKAGE_luci-app-interfaces-statistics=y
 # WAN IP geolocation/ASN info via ip.guide -- "which country/ISP am I
 # actually behind right now" at a glance.
 CONFIG_PACKAGE_luci-app-ipinfo=y
-# Web-based file browser -- self-contained, no separate core package
-# needed (unlike the muink/luci-app-tinyfilemanager PHP8+FPM stack we
-# considered and dropped in favour of this lighter official-feed option).
-CONFIG_PACKAGE_luci-app-filebrowser=y
-
 # Roaming WiFi client: multiple known-network profiles, auto-scan/connect,
 # captive-portal-detection helper. Purpose-built for exactly the portable
 # WISP-uplink use case 97-wwan-uplink hand-rolled with one hardcoded SSID --
