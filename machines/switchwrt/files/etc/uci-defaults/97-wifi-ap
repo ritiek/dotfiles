@@ -19,41 +19,51 @@
 #     *match* key -- unrelated to the per-boot randomized iface MAC that
 #     randomize-wwan-mac writes into default_radio1.macaddr.)
 #
-#   band='5g', channel='36' (never 'auto')
+#   band='2g', channel='6' (never 'auto')
 #     This is a fullMAC driver that does not answer NL80211_CMD_GET_SURVEY,
 #     so ACS has no data and hostapd hangs.  Pin the channel explicitly.
-#     The chip is dual-band -- `iw phy phy1 info` reports a full Band 2 (5180
-#     MHz .. 5700+ MHz) alongside Band 1 -- and ch36 is the lowest non-DFS
-#     5 GHz channel, so it needs no radar detection and comes up instantly.
-#     5 GHz is chosen over 2.4 GHz because the upstream ONT already occupies
-#     the 2.4 GHz band here, and because HT40 is only usable on 5 GHz (below).
+#     2.4 GHz is the deliberate default: the ESP8266/ESP32 sensor fleet is
+#     2.4 GHz-only, and this driver reports "Supports VAPs: no" -- exactly one
+#     BSS on one band, so the radio cannot serve both bands at once.  5 GHz
+#     would be faster (see below) but would make the AP invisible to those
+#     sensors, so it is opt-in rather than the default.
 #
 #   no `option country`
 #     Setting it makes netifd emit ieee80211d=1, which stalls hostapd for 90+
 #     seconds in COUNTRY_UPDATE on this chip (radxa-pkg/aic8800#98).  phy0 is
 #     a self-managed wiphy anyway, so `iw reg set` is ignored by the driver.
 #
-#   htmode='HT40'
-#     HT40 was previously broken on this driver (it advertised the capability
-#     as "[HT40]" where hostapd's parser expects "[HT40+]"/"[HT40-]"), which
-#     is why this used to be pinned to HT20.  Retested 2026-09-19 on kernel
-#     6.18.44 with the current aic8800 driver: on 5 GHz ch36 hostapd goes
-#     UNINITIALIZED->HT_SCAN->ENABLED and `iw dev` reports "width: 40 MHz,
-#     center1: 5190 MHz".  A client saw the advertised rate go 65 -> 135
-#     Mbit/s, i.e. the bug no longer applies on this band.  Re-verify after a
-#     driver/kernel bump before assuming it still holds.
+#   htmode='HT20'
+#     HT40 is broken on this driver *on 2.4 GHz* -- it advertises the
+#     capability as "[HT40]" where hostapd's parser expects "[HT40+]"/
+#     "[HT40-]".  HT20 is therefore the only safe width for the 2.4 GHz
+#     default above.
 #
-#     NOT VHT80/HE80 (yet).  The chip does advertise VHT and HE capability
-#     blocks, so 802.11ac/ax ought to be reachable, but it could not be
-#     tested on the currently-flashed image: that image predates this repo
-#     and carries the *basic* wpad, whose hostapd has no CONFIG_IEEE80211AC/
-#     AX and rejects vht_oper_chwidth with "unknown configuration item",
-#     after which hostapd.add_iface fails and the radio does not come up at
-#     all.  config.seed now forces the full wpad-mbedtls; once an image built
-#     from it is flashed AND verified (`strings /usr/sbin/wpad | grep -x
-#     ieee80211ac` must be non-empty), try VHT80 here.  Do not switch this to
-#     VHT80 speculatively -- if the built wpad turns out to still be basic,
-#     the failure mode is no AP at all rather than a slower AP.
+# ---------------------------------------------------------------------------
+# Optional: 5 GHz.  Measured on this hardware 2026-09-19 (kernel 6.18.44),
+# swap the three radio0 lines below to:
+#     band='5g'  channel='36'  htmode='HT40'
+# ch36 is the lowest non-DFS channel, so there is no radar-detection wait.
+# The HT40 parser bug above does NOT reproduce on 5 GHz: hostapd goes
+# UNINITIALIZED->HT_SCAN->ENABLED and `iw dev` reports "width: 40 MHz,
+# center1: 5190 MHz".  Measured 111 Mbit/s down / 110 Mbit/s up (iperf3 TCP)
+# and 0.95 ms RTT, versus 65 Mbit/s advertised and 37 ms on 2.4 GHz HT20.
+#
+# The trade-off, and why this is not the default: the 2.4 GHz-only ESP8266/
+# ESP32 sensor fleet cannot see a 5 GHz BSS, and this radio cannot run both
+# bands simultaneously ("Supports VAPs: no").
+#
+# NOT VHT80/HE80 (yet).  The chip advertises VHT and HE capability blocks, so
+# 802.11ac/ax ought to be reachable, but it could not be tested on the
+# currently-flashed image: that image predates this repo and carries the
+# *basic* wpad, whose hostapd has no CONFIG_IEEE80211AC/AX and rejects
+# vht_oper_chwidth with "unknown configuration item", after which
+# hostapd.add_iface fails and the radio does not come up at all.  config.seed
+# now forces the full wpad-mbedtls; once an image built from it is flashed AND
+# verified (`strings /usr/sbin/wpad | grep -x ieee80211ac` must be non-empty),
+# VHT80 is worth trying.  Do not switch speculatively -- if the built wpad is
+# still basic, the failure mode is no AP at all rather than a slower AP.
+# ---------------------------------------------------------------------------
 #
 #   encryption='psk2+ccmp', ieee80211w='0'
 #     WPA2-CCMP only.  No WPA3/SAE and no 802.11w: the driver does not
@@ -109,9 +119,9 @@ uci -q delete wireless.radio0.country
 uci set wireless.radio0=wifi-device
 uci set wireless.radio0.type='mac80211'
 uci set wireless.radio0.macaddr='94:ba:06:49:af:40'
-uci set wireless.radio0.band='5g'
-uci set wireless.radio0.channel='36'
-uci set wireless.radio0.htmode='HT40'
+uci set wireless.radio0.band='2g'
+uci set wireless.radio0.channel='6'
+uci set wireless.radio0.htmode='HT20'
 uci set wireless.radio0.disabled='0'
 
 uci set wireless.default_radio0=wifi-iface
