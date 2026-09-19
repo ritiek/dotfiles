@@ -30,8 +30,25 @@ if [ "$already_setup" = 0 ]; then
 	uci set firewall.$z.input="ACCEPT"
 	uci set firewall.$z.output="ACCEPT"
 	uci set firewall.$z.forward="ACCEPT"
-	uci set firewall.$z.masq="0"
 fi
+
+# masq=1 is required, not optional.
+#
+# Routing to a tailnet subnet route (e.g. pilab advertising 192.168.1.0/24)
+# works for the router itself because local source selection picks
+# 100.64.0.21, which peers can route back to. A *forwarded* LAN packet keeps
+# its 192.168.3.x source, and no tailnet peer has a route back to this LAN,
+# so replies are dropped at the far end -- the request arrives, the answer
+# never returns. Symptom is a silent 100% loss to remote subnets while the
+# peer's own 100.64.x address works fine.
+# Masquerading LAN clients behind 100.64.0.21 makes them indistinguishable
+# from the router, which every peer can already reach.
+#
+# Set unconditionally (outside the block above) so existing installs that
+# already have a vpn zone from an earlier image get corrected too.
+for z in $(uci -q show firewall | sed -n 's/firewall\.\(.*\)=zone/\1/p'); do
+	[ "$(uci -q get firewall.$z.name)" = "vpn" ] && uci set firewall.$z.masq="1"
+done
 
 have_fwd() {
 	for f in $(uci -q show firewall | sed -n 's/firewall\.\(.*\)=forwarding/\1/p'); do
