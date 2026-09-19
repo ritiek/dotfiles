@@ -1,0 +1,110 @@
+#!/bin/sh
+# Bring a re-plugged USB WiFi adapter back up.
+#
+# THE BUG THIS FIXES
+# The RTL8192EU dongle that backs radio1 (our wwan failover uplink) does not
+# survive a USB re-enumeration. Unplug/replug it -- or let it reset itself,
+# which this one does spontaneously -- and its interface never comes back:
+#
+#	# ip -br addr show wlan1
+#	Device "wlan1" does not exist.
+#	# ls /sys/class/ieee80211/
+#	phy1
+#	phy3          <-- phy2 is gone; it came back with a NEW index
+#
+# The radio stays dead until someone logs in and runs `wifi up radio1` by hand,
+# so the failover uplink is silently absent exactly when it might be needed.
+#
+# WHY THE STOCK HANDLER DOES NOT CATCH IT
+# OpenWrt already ships /etc/hotplug.d/ieee80211/10-wifi-detect, which runs
+#	/sbin/wifi config
+#	ubus call network.wireless retry
+# on every phy add. Neither half helps here:
+#
+#   - `wifi config` only APPENDS wifi-device sections for radios it considers
+#     unconfigured. radio1 is matched by macaddr (00:e0:4c:04:86:6a), which is
+#     stable across the re-enumeration, so it is correctly seen as already
+#     configured and nothing is written. (This is desirable -- a path-keyed
+#     re-detect is what produced the duplicate radio2 section we removed in
+#     a19fffa. Do not "fix" this by giving radio1 a path.)
+#
+#   - `retry` is a no-op because netifd's own state is stale, not failed.
+#     Verified live immediately after a replug:
+#
+#	# ubus call network.wireless status
+#	"radio1": { "up": true, "pending": false, "disabled": false, ... }
+#
+#     netifd still believes radio1 is up and bound to the old phy2, so there is
+#     nothing for it to retry. The teardown never happened because the phy
+#     disappeared out from under it rather than being brought down cleanly.
+#
+# THE FIX
+# Force the teardown that netifd missed, then start over: `wifi down <radio>`
+# resyncs netifd's state to reality, and `wifi up <radio>` re-binds to whatever
+# phy index the adapter came back as. Verified live -- wlan1 returns, associates
+# to GNXS-2.4G-179C64 at -44 dBm, DHCPs 192.168.2.12, and mwan3 flips wwan back
+# to "online and tracking is active" within ~25s.
+#
+# A plain `wifi up radio1` alone is NOT enough; without the down first, netifd
+# skips it as already-up.
+#
+# Hotplug scripts are SOURCED by /sbin/hotplug-call, so mode 644 is fine.
+# This runs after 10-wifi-detect/11-ath12k-trigger by filename order, so the
+# stock detect logic still gets first crack at a genuinely new radio.
+
+[ "$ACTION" = "add" ] || exit 0
+
+# Rate-limit. A re-enumeration can emit several phy events back to back, and
+# each `wifi down`/`wifi up` pair itself churns interfaces; without this the
+# handler would re-trigger itself into a loop.
+STAMP=/tmp/.usb-wifi-recover.stamp
+NOW="$(date +%s 2>/dev/null)" || exit 0
+if [ -f "$STAMP" ]; then
+	LAST="$(cat "$STAMP" 2>/dev/null)"
+	case "$LAST" in
+		'' | *[!0-9]*) LAST=0 ;;
+	esac
+	[ "$((NOW - LAST))" -lt 60 ] && exit 0
+fi
+
+# Find enabled radios whose configured interface is missing from the kernel.
+# Driving this off the config rather than hardcoding radio1/wlan1 means it also
+# covers the built-in radio0 if it ever vanishes the same way, and it stays
+# correct if radio numbering shifts.
+BROKEN=
+for s in $(uci -q show wireless | sed -n 's/^wireless\.\([^.=]*\)=wifi-iface$/\1/p'); do
+	dev="$(uci -q get wireless.$s.device)"
+	ifname="$(uci -q get wireless.$s.ifname)"
+
+	[ -n "$dev" ] && [ -n "$ifname" ] || continue
+	# A radio the operator deliberately turned off must stay off.
+	[ "$(uci -q get wireless.$dev.disabled)" = "1" ] && continue
+	[ "$(uci -q get wireless.$s.disabled)" = "1" ] && continue
+	# Present and accounted for -- nothing to do.
+	[ -d "/sys/class/net/$ifname" ] && continue
+
+	case " $BROKEN " in
+		*" $dev "*) ;;
+		*) BROKEN="$BROKEN $dev" ;;
+	esac
+done
+
+[ -n "$BROKEN" ] || exit 0
+
+echo "$NOW" > "$STAMP"
+
+# Backgrounded with a short settle delay: hotplug-call runs handlers serially,
+# and the phy is often still registering when the event fires -- bouncing the
+# radio too early races the driver and lands us back where we started.
+(
+	sleep 5
+	for dev in $BROKEN; do
+		logger -t usb-wifi-recover \
+			"$dev has no live interface after phy add; bouncing it"
+		wifi down "$dev" > /dev/null 2>&1
+		sleep 2
+		wifi up "$dev" > /dev/null 2>&1
+	done
+) &
+
+exit 0
