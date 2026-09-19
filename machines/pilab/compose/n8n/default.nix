@@ -156,7 +156,7 @@
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
-      "--health-cmd=[\"redis-cli\", \"ping\"]"
+      "--health-cmd=redis-cli ping"
       "--health-interval=5s"
       "--health-retries=10"
       "--health-timeout=5s"

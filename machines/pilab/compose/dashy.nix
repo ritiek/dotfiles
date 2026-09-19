@@ -25,7 +25,7 @@
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
-      "--health-cmd=[\"node\",\"/app/services/healthcheck\"]"
+      "--health-cmd=node /app/services/healthcheck"
       "--health-interval=1m30s"
       "--health-retries=3"
       "--health-start-period=40s"

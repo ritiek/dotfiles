@@ -143,7 +143,7 @@ in lib.mkMerge [
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
-      "--health-cmd=[\"curl\",\"-f\",\"http://localhost:8000/health\"]"
+      "--health-cmd=curl -f http://localhost:8000/health"
       "--health-interval=2m0s"
       "--health-retries=3"
       "--health-start-period=30s"

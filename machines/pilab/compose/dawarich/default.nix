@@ -223,9 +223,15 @@
     autoStart = false;
     extraOptions = [
       "--entrypoint=sidekiq-entrypoint.sh"
-      "--health-cmd=bundle exec sidekiqmon processes | grep \${HOSTNAME}"
-      "--health-interval=10s"
-      "--health-retries=30"
+      # Was: `bundle exec sidekiqmon processes | grep ${HOSTNAME}` every 10s.
+      # That booted a full Ruby/Rails VM (~150MB RSS) six times a minute on an
+      # 8GB host, orphaned `bundle`/`grep` zombies onto sidekiq's PID 1 (which
+      # does not reap), and still reported "Processes (0)" -> permanently
+      # unhealthy, even though sidekiq was demonstrably running jobs.
+      # The bracket keeps pgrep from matching its own `sh -c` wrapper cmdline.
+      "--health-cmd=pgrep -f '[s]idekiq' > /dev/null"
+      "--health-interval=60s"
+      "--health-retries=3"
       "--health-start-period=30s"
       "--health-timeout=10s"
       "--network-alias=dawarich_sidekiq"
