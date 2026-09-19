@@ -118,7 +118,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f habitica_habitica";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f habitica_habitica";
     };
     script = ''
       docker network inspect habitica_habitica || docker network create habitica_habitica --driver=bridge

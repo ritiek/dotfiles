@@ -116,7 +116,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f changedetection_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f changedetection_default";
     };
     script = ''
       docker network inspect changedetection_default || docker network create changedetection_default

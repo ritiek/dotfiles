@@ -78,7 +78,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f jellyseerr_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f jellyseerr_default";
     };
     script = ''
       docker network inspect jellyseerr_default || docker network create jellyseerr_default

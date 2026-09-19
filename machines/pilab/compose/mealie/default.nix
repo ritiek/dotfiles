@@ -158,7 +158,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f mealie_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f mealie_default";
     };
     script = ''
       docker network inspect mealie_default || docker network create mealie_default

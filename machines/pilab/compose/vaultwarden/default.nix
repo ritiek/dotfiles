@@ -82,7 +82,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f vaultwarden_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f vaultwarden_default";
     };
     script = ''
       docker network inspect vaultwarden_default || docker network create vaultwarden_default

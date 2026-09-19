@@ -172,7 +172,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f invidious_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f invidious_default";
     };
     script = ''
       docker network inspect invidious_default || docker network create invidious_default

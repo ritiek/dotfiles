@@ -102,7 +102,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f miniflux_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f miniflux_default";
     };
     script = ''
       docker network inspect miniflux_default || docker network create miniflux_default

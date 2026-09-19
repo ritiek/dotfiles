@@ -110,7 +110,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f forgejo_forgejo";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f forgejo_forgejo";
     };
     script = ''
       docker network inspect forgejo_forgejo || docker network create forgejo_forgejo

@@ -61,7 +61,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f simplexchat-xftp-server_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f simplexchat-xftp-server_default";
     };
     script = ''
       docker network inspect simplexchat-xftp-server_default || docker network create simplexchat-xftp-server_default

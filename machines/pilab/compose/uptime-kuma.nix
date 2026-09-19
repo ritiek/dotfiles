@@ -63,7 +63,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f uptime-kuma_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f uptime-kuma_default";
     };
     script = ''
       docker network inspect uptime-kuma_default || docker network create uptime-kuma_default

@@ -188,7 +188,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f n8n_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f n8n_default";
     };
     script = ''
       docker network inspect n8n_default || docker network create n8n_default

@@ -67,7 +67,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f navidrome_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f navidrome_default";
     };
     script = ''
       docker network inspect navidrome_default || docker network create navidrome_default

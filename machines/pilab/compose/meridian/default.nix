@@ -120,7 +120,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f meridian_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f meridian_default";
     };
     script = ''
       docker network inspect meridian_default || docker network create meridian_default

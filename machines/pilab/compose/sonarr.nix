@@ -69,7 +69,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f sonarr_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f sonarr_default";
     };
     script = ''
       docker network inspect sonarr_default || docker network create sonarr_default

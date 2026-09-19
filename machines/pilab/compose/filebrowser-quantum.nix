@@ -62,7 +62,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f filebrowser_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f filebrowser_default";
     };
     script = ''
       docker network inspect filebrowser_default || docker network create filebrowser_default

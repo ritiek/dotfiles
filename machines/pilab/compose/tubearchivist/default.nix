@@ -179,7 +179,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f tubearchivist_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f tubearchivist_default";
     };
     script = ''
       docker network inspect tubearchivist_default || docker network create tubearchivist_default
@@ -194,7 +194,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker volume rm -f tubearchivist_redis";
+      ExecStop = "${pkgs.docker}/bin/docker volume rm -f tubearchivist_redis";
     };
     script = ''
       docker volume inspect tubearchivist_redis || docker volume create tubearchivist_redis

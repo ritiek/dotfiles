@@ -71,7 +71,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f transmission_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f transmission_default";
     };
     script = ''
       docker network inspect transmission_default || docker network create transmission_default

@@ -122,7 +122,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f ollama-webui_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f ollama-webui_default";
     };
     script = ''
       docker network inspect ollama-webui_default || docker network create ollama-webui_default

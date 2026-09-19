@@ -108,7 +108,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f shiori_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f shiori_default";
     };
     script = ''
       docker network inspect shiori_default || docker network create shiori_default

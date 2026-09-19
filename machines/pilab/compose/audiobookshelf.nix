@@ -85,7 +85,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f audiobookshelf_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f audiobookshelf_default";
     };
     script = ''
       docker network inspect audiobookshelf_default || docker network create audiobookshelf_default

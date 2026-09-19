@@ -68,7 +68,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f simplexchat-smp-server_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f simplexchat-smp-server_default";
     };
     script = ''
       docker network inspect simplexchat-smp-server_default || docker network create simplexchat-smp-server_default

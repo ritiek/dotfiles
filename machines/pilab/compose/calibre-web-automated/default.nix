@@ -97,7 +97,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f calibre-web-automated_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f calibre-web-automated_default";
     };
     script = ''
       docker network inspect calibre-web-automated_default || docker network create calibre-web-automated_default

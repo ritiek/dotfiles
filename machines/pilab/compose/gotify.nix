@@ -63,7 +63,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f gotify_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f gotify_default";
     };
     script = ''
       docker network inspect gotify_default || docker network create gotify_default

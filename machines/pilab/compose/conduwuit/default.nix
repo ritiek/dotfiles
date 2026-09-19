@@ -66,7 +66,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f conduwuit_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f conduwuit_default";
     };
     script = ''
       docker network inspect conduwuit_default || docker network create conduwuit_default

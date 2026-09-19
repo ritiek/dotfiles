@@ -263,7 +263,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f dawarich_dawarich";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f dawarich_dawarich";
     };
     script = ''
       docker network inspect dawarich_dawarich || docker network create dawarich_dawarich
