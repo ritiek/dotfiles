@@ -475,7 +475,6 @@ let
       "luci-app-log-viewer"
       "luci-app-interfaces-statistics"
       "luci-app-ipinfo"
-      "luci-app-filebrowser"
       "travelmate"
       "luci-lib-uqr"
       "luci-app-travelmate"
