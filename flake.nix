@@ -264,6 +264,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Declarative OpenWrt image builder for switchwrt (Radxa Cubie A5E);
+    # see machines/switchwrt/image.nix.
+    nix-openwrt = {
+      url = "github:ayles/nix-openwrt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # dawarich-home-assistant = {
     #   url = "github:AlbinLind/dawarich-home-assistant";
     #   flake = false;
@@ -346,6 +353,11 @@
           # hardware.cubie-a5e.spi-nor has exposed the SPI NOR chip.
           switchboard-uboot-1gb = uboot.mainline-1gb;
           switchboard-spinor-1gb = uboot.spinor-1gb;
+
+          # OpenWrt SD-card image for switchwrt (Radxa Cubie A5E, 1 GB).
+          # Builds OpenWrt from source natively; see
+          # machines/switchwrt/image.nix for details.
+          switchwrt-sd = import ./machines/switchwrt/image.nix { inherit inputs pkgs; };
         }
       )
     );

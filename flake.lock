@@ -1020,6 +1020,26 @@
         "type": "github"
       }
     },
+    "nix-openwrt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774567655,
+        "narHash": "sha256-Wh+gce4S6oxr3O5tp4nADxJB2iJhTmPYNvh6Rq+cr78=",
+        "owner": "ayles",
+        "repo": "nix-openwrt",
+        "rev": "5c04ee32833ff532de191c28e7290a855b0f30c8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ayles",
+        "repo": "nix-openwrt",
+        "type": "github"
+      }
+    },
     "nixarr": {
       "inputs": {
         "nixpkgs": [
@@ -1578,6 +1598,7 @@
         "mcp-servers-nix": "mcp-servers-nix",
         "microvm": "microvm",
         "nix-index-database": "nix-index-database",
+        "nix-openwrt": "nix-openwrt",
         "nixarr": "nixarr",
         "nixos-generators": "nixos-generators",
         "nixos-hardware": "nixos-hardware_2",
