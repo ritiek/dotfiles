@@ -24,10 +24,33 @@
 
   # Containers
   virtualisation.oci-containers.containers."open-archiver" = {
-    image = "logiclabshq/open-archiver:latest";
+    # Pinned rather than :latest so a docker pull can't silently move us
+    # across a schema migration. Bump deliberately.
+    image = "logiclabshq/open-archiver:v0.6.0";
     environmentFiles = [
       config.sops.secrets."compose/open-archiver.env".path
     ];
+    # Non-secret tuning. Kept here rather than in the sops-encrypted
+    # stack.env so it stays readable and diffable; docker -e overrides
+    # --env-file, so these win regardless.
+    environment = {
+      # v0.6.0 made indexing and ingestion concurrent, defaulting to 4 and
+      # 3. v0.5.0 processed one item at a time, so accepting the defaults
+      # would be a real step up in peak memory on an 8GB host that is
+      # already ~1.6x oversubscribed. Start conservative.
+      INDEXING_WORKER_CONCURRENCY = "2";
+      INGESTION_EMAIL_CONCURRENCY = "1";
+      # Node sizes max-old-space at ~25% of host RAM when unset: every one
+      # of the 18 node processes in this container reported a 2096MB heap
+      # limit. Nothing enforced a ceiling, so a single runaway parse could
+      # take the box. Cap the worker that actually handles large documents.
+      INDEXING_WORKER_MAX_OLD_SPACE_MB = "512";
+      # v0.6.0 stops archiving unsent drafts by default. This archive was
+      # built with drafts included, so preserve existing behaviour rather
+      # than silently changing what gets captured. Set to "false" to adopt
+      # the new upstream default.
+      ARCHIVE_DRAFTS = "true";
+    };
     volumes = [
       "${homelabMediaPath}/services/open-archiver:/var/data/open-archiver:rw"
     ];
@@ -71,7 +94,11 @@
     ];
   };
   virtualisation.oci-containers.containers."meilisearch" = {
-    image = "getmeili/meilisearch:v1.15";
+    # Matches the version upstream ships with open-archiver v0.6.0.
+    # Meilisearch refuses to open a DB written by a different version, so
+    # this bump requires the old data.ms to be moved aside first. That is
+    # safe here: the index is a secondary store rebuilt from Postgres.
+    image = "getmeili/meilisearch:v1.38";
     environmentFiles = [
       config.sops.secrets."compose/open-archiver.env".path
     ];
