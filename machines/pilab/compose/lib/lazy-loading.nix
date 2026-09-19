@@ -232,7 +232,10 @@
     systemd.services."autostop-${dockerServiceName}" = {
       serviceConfig = {
         Type = "oneshot";
-        TimeoutStartSec = "60s";  # Give more time for stop command to complete
+        # The stop is blocking, so this must cover full stack teardown. Docker
+        # stops containers sequentially at ~10s each, so a 5-container stack
+        # (e.g. paperless-ngx) can legitimately need well over the old 60s.
+        TimeoutStartSec = "300s";
       };
       script = ''
         # Check for active connections (both proxy port and internal port)
@@ -249,8 +252,18 @@
         fi
       '';
       unitConfig.RequiresMountsFor = requiredMounts;
-      # Also bind to root target for additional safety
-      partOf = [ rootTarget ];
+      # NOTE: deliberately NOT `partOf = [ rootTarget ]`.
+      #
+      # This unit's own script runs `systemctl stop <rootTarget>`. With a
+      # PartOf= binding, systemd propagates that target's stop back onto this
+      # unit and SIGTERMs the script mid-execution, so every successful idle
+      # reap was recorded as `status=15/TERM` -> `failed`. The stop itself
+      # always completed; only the exit status was wrong, which left
+      # `systemctl --failed` permanently dirty and hid real failures.
+      #
+      # The timer lifecycle is already handled by docker-${dockerServiceName}
+      # (postStart starts the timer, preStop stops it), so the PartOf= binding
+      # bought no additional safety.
     };
 
     # Timer management hooks - extend existing docker service with timer controls
