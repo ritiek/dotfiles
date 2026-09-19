@@ -21,6 +21,7 @@ let
       "${homelabMediaPath}/services/navidrome"
       "${homelabMediaPath}/services/spotdl"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

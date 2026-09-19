@@ -19,6 +19,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/memos"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

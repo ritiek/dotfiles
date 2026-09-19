@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "${homelabMediaPath}/services/nitter/nitter.conf" "${homelabMediaPath}/services/nitter/sessions.jsonl" ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-nitter-root.target";
     startCommand = "systemctl start docker-redis-nitter.service docker-nitter.service";
     stopCommand = "systemctl stop docker-compose-nitter-root.target";

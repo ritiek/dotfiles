@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "${homelabMediaPath}/services/homepage" "/var/run/docker.sock" ];
+    requiredMountPoint = homelabMediaPath;
   };
 in lib.mkMerge [
   lazyLoadingServices

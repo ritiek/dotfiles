@@ -20,6 +20,7 @@ let
       homelabMediaPath
       "${homelabMediaPath}/services/copyparty"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

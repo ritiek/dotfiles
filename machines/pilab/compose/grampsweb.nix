@@ -29,6 +29,7 @@ let
       "${homelabMediaPath}/services/gramps-web/gramps_tmp"
       "${homelabMediaPath}/services/gramps-web/gramps_users"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

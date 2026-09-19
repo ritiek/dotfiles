@@ -17,6 +17,7 @@ let
       "${homelabMediaPath}/services/baikal/config"
       "${homelabMediaPath}/services/baikal/data"
     ];
+    requiredMountPoint = homelabMediaPath;
     silent = true;
   };
 

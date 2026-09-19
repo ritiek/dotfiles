@@ -21,6 +21,7 @@ let
       "${homelabMediaPath}/services/manyfold/models"
       "${homelabMediaPath}/services/manyfold/postgresql"
     ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-manyfold-root.target";
     # Custom commands for multi-service stack
     startCommand = "systemctl start docker-manyfold-postgres.service docker-manyfold-redis.service docker-manyfold.service";

@@ -19,6 +19,7 @@ let
       "${homelabMediaPath}/services/audiobookshelf/podcasts"
       "${homelabMediaPath}/services/calibre/library"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

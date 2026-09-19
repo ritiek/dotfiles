@@ -16,6 +16,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [ "${homelabMediaPath}/services/grocy" ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [

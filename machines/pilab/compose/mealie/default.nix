@@ -19,6 +19,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/mealie"
     ];
+    requiredMountPoint = homelabMediaPath;
     rootTarget = "docker-compose-mealie-root.target";
     idleCheckInterval = "*:0/10";  # Every 10 minutes (Mealie is heavier with multiple services)
     # Custom commands for multi-service stack

@@ -18,6 +18,7 @@ let
     requiredMounts = [
       "${homelabMediaPath}/services/readeck"
     ];
+    requiredMountPoint = homelabMediaPath;
   };
 
 in lib.mkMerge [
