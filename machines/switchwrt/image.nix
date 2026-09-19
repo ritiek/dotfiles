@@ -286,6 +286,12 @@ let
       # RTC: first-boot certs are born expired) + rotate before expiry.
       "files/etc/hotplug.d/iface/27-uhttpd-cert-refresh" =
         ./files/etc/hotplug.d/iface/27-uhttpd-cert-refresh;
+      # The RTL8192EU dongle backing radio1 (the wwan failover uplink) comes
+      # back with a new phy index after any USB re-enumeration, which leaves
+      # netifd holding stale "up" state and the interface permanently gone.
+      # The stock 10-wifi-detect cannot recover it; this bounces the radio.
+      "files/etc/hotplug.d/ieee80211/12-usb-wifi-recover" =
+        ./files/etc/hotplug.d/ieee80211/12-usb-wifi-recover;
       "files/etc/init.d/tailscale-login" =
         ./files/etc/init.d/tailscale-login;
       "files/etc/init.d/netbird-login" =
