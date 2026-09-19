@@ -221,147 +221,52 @@ let
     extraConfig = ''
       CONFIG_GOLANG_BUILD_BOOTSTRAP=n
       CONFIG_GOLANG_EXTERNAL_BOOTSTRAP_ROOT=${pkgs.go}/share/go
+
+      # Build the ImageBuilder, which is what makes incremental rebuilds
+      # possible at all.  nix-openwrt has two derivations: the full build
+      # (toolchain + kernel + every package -- hours) and mkImage (unpacks
+      # the ImageBuilder tarball and assembles a rootfs -- minutes).  Every
+      # entry in `patches` below is spliced into the full build's postPatch
+      # as a content-addressed store path, so anything routed through
+      # `patches` rebuilds the world on edit; anything routed through
+      # `files` (see below) only re-runs mkImage.
+      #
+      # target/imagebuilder/Config.in declares `config IB ... default
+      # BUILDBOT`, and BUILDBOT is off here, so the tarball was never
+      # emitted -- which is why mkImage's `tar xf openwrt-imagebuilder-*`
+      # used to fail and had to be patched out.  Turning IB on is the fix.
+      # Its dependency (!EXTERNAL_TOOLCHAIN) already holds: nix-openwrt
+      # builds its own toolchain.  IB_STANDALONE then defaults to y, which
+      # embeds the package repositories into the tarball -- required,
+      # because mkImage runs in a nix sandbox with no network.
+      CONFIG_IB=y
     '';
 
     patches = {
       "tools/fakeroot/patches/900-einval.patch" =
         ./patches/900-einval-neutralized.patch;
       "package/base-files/Makefile" = ./patches/base-files-Makefile;
-      # Baked into the rootfs by the tree build (buildroot overlays the
-      # tree-root files/ directory into every image it assembles).
-      "files/etc/uci-defaults/97-wifi-ap" = ./files/etc/uci-defaults/97-wifi-ap;
-      "files/etc/uci-defaults/98-allow-ssh-wan" =
-        ./files/etc/uci-defaults/98-allow-ssh-wan;
-
-      # Key-only SSH: fleet authorized_keys baked in, password auth off
-      # (root's password is not baked in either -- it arrives at runtime as
-      # a hash via switchwrt-apply-secrets; see 92-dropbear-harden).
-      "files/etc/dropbear/authorized_keys" =
-        ./files/etc/dropbear/authorized_keys;
-      "files/etc/uci-defaults/92-dropbear-harden" =
-        ./files/etc/uci-defaults/92-dropbear-harden;
-      "files/etc/uci-defaults/99-switchboard-lan-ip" =
-        ./files/etc/uci-defaults/99-switchboard-lan-ip;
-
-      # AdGuardHome DNS layer (see the comments in files/etc/adguardhome/
-      # and the 95-adguardhome-dns uci-defaults script for the full wiring).
-      # The uci-defaults script below exists because every file here is
-      # installed with mode 644, so exec bits have to be restored on boot.
-      "files/etc/adguardhome/adguardhome.yaml" =
-        ./files/etc/adguardhome/adguardhome.yaml;
-      "files/etc/uci-defaults/95-adguardhome-dns" =
-        ./files/etc/uci-defaults/95-adguardhome-dns;
-      "files/www/home/index.html" = ./files/www/home/index.html;
-
-      # General dnsmasq/DHCP tweak, unrelated to the AdGuardHome layer above:
-      # allocate leases sequentially from the lowest free address.
-      "files/etc/uci-defaults/95-dhcp-sequential-ip" =
-        ./files/etc/uci-defaults/95-dhcp-sequential-ip;
-
-      # VPN mesh layer: tailscale + netbird (see the *-login init scripts
-      # and 94-vpn-setup for the wiring).  No keys here: the image is
-      # secret-free and the authkey/setupkey arrive at runtime via
-      # deploy-secrets.sh -> switchwrt-apply-secrets.
-      # 96-tailscale-luci-seed declaratively seeds the LuCI app's UCI
-      # defaults so its boot-time `tailscale set` keeps the first-boot
-      # flags (exit node advertisement, DNS off).
-      "files/etc/sysctl.d/90-tailscale.conf" =
-        ./files/etc/sysctl.d/90-tailscale.conf;
-      # bbr + fq, mirroring modules/net-tuning.nix on the NixOS machines.
-      # Needs kmod-tcp-bbr and kmod-sched from config.seed to have any effect.
-      "files/etc/sysctl.d/91-net-tuning.conf" =
-        ./files/etc/sysctl.d/91-net-tuning.conf;
-      # Keeps directly-connected subnets winning over the subnet routes
-      # tailnet peers advertise (pilab advertises 192.168.2.0/24, which is
-      # also our own uplink subnet at home) -- without this, replies to
-      # same-wire hosts leak into the tunnel and WAN-side LuCI/SSH break.
-      "files/etc/hotplug.d/iface/25-connected-subnet-priority" =
-        ./files/etc/hotplug.d/iface/25-connected-subnet-priority;
-      # tailscaled (S80) races DNS at boot: its one login attempt fires
-      # before AdGuardHome is listening, stalls, and is never retried, so
-      # the node sits in NoState. Re-kick it once an uplink is really up.
-      "files/etc/hotplug.d/iface/26-tailscale-kick" =
-        ./files/etc/hotplug.d/iface/26-tailscale-kick;
-      # Regenerate the uhttpd self-signed cert once the clock is sane (no
-      # RTC: first-boot certs are born expired) + rotate before expiry.
-      "files/etc/hotplug.d/iface/27-uhttpd-cert-refresh" =
-        ./files/etc/hotplug.d/iface/27-uhttpd-cert-refresh;
-      # The RTL8192EU dongle backing radio1 (the wwan failover uplink) comes
-      # back with a new phy index after any USB re-enumeration, which leaves
-      # netifd holding stale "up" state and the interface permanently gone.
-      # The stock 10-wifi-detect cannot recover it; this bounces the radio.
-      "files/etc/hotplug.d/ieee80211/12-usb-wifi-recover" =
-        ./files/etc/hotplug.d/ieee80211/12-usb-wifi-recover;
-      "files/etc/init.d/tailscale-login" =
-        ./files/etc/init.d/tailscale-login;
-      "files/etc/init.d/netbird-login" =
-        ./files/etc/init.d/netbird-login;
-      "files/etc/uci-defaults/94-vpn-setup" =
-        ./files/etc/uci-defaults/94-vpn-setup;
-      "files/etc/uci-defaults/96-tailscale-luci-seed" =
-        ./files/etc/uci-defaults/96-tailscale-luci-seed;
-
-      # Runtime secret delivery. The image ships no secrets at all (see
-      # .sops.yaml); machines/switchwrt/deploy-secrets.sh decrypts
-      # secrets.yaml on the operator's machine and pipes the values into
-      # this helper over ssh, which writes the VPN enrolment keys, the AP
-      # passphrase and root's password hash, then enables what they gate.
-      "files/usr/sbin/switchwrt-apply-secrets" =
-        ./files/usr/sbin/switchwrt-apply-secrets;
-
-      # Machine identity (hostname -> switchwrt; also the name tailscale
-      # registers this node under on first boot).
-      "files/etc/uci-defaults/99-switchwrt-hostname" =
-        ./files/etc/uci-defaults/99-switchwrt-hostname;
-
-      # Fleet-wide timezone standard (every NixOS machine sets
-      # time.timeZone = "Asia/Kolkata"); pin this OpenWrt box the same way.
-      "files/etc/uci-defaults/99-switchwrt-timezone" =
-        ./files/etc/uci-defaults/99-switchwrt-timezone;
-
-      # HTTPS-only LuCI (CN=switchwrt.lan, port 80 closed; cert minted after
-      # the clock is sane via the hotplug refresh above, not at first boot).
-      "files/etc/uci-defaults/94-uhttpd-https-only" =
-        ./files/etc/uci-defaults/94-uhttpd-https-only;
-
-      # NTP client AND server = chrony (serves LAN); retires base sysntpd.
-      "files/etc/uci-defaults/95-ntp-chrony-only" =
-        ./files/etc/uci-defaults/95-ntp-chrony-only;
-
-      # Move the tailscale LuCI app from the VPN tab next to NetBird under
-      # Services (tree files/ overrides the feed package's menu.d entry).
-      "files/usr/share/luci/menu.d/luci-app-tailscale-community.json" =
-        ./files/usr/share/luci/menu.d/luci-app-tailscale-community.json;
-
-      # Exec bits for the vendored packages' executable files (see the
-      # comment in the script).
-      "files/etc/uci-defaults/98-luci-apps-setup" =
-        ./files/etc/uci-defaults/98-luci-apps-setup;
-
-      # Trusted firewall zone for tailscale0 (see the comment in the
-      # script; without it the dashboards are unreachable over tailscale).
-      "files/etc/uci-defaults/98-tailscale-fw-zone" =
-        ./files/etc/uci-defaults/98-tailscale-fw-zone;
-
-      # WISP uplink: USB WiFi dongle joins the ONT's own SSID as a second
-      # WAN path, with mwan3 handling automatic failover (eth1 preferred)
-      # and per-device pinning via LuCI. See the comments in both scripts.
-      "files/etc/uci-defaults/97-wwan-uplink" =
-        ./files/etc/uci-defaults/97-wwan-uplink;
-      "files/etc/uci-defaults/97-usbtether-uplink" =
-        ./files/etc/uci-defaults/97-usbtether-uplink;
-      "files/etc/uci-defaults/98-mwan3-setup" =
-        ./files/etc/uci-defaults/98-mwan3-setup;
-
-      # Portable-router extras: MAC randomization for the WISP dongle
-      # (real init.d script, runs every boot, not a uci-defaults one-shot)
-      # and a software RTC substitute (no hardware RTC on this board).
-      "files/etc/init.d/randomize-wwan-mac" =
-        ./files/etc/init.d/randomize-wwan-mac;
-      "files/etc/init.d/faketime" =
-        ./files/etc/init.d/faketime;
-      "files/etc/uci-defaults/93-portable-router-setup" =
-        ./files/etc/uci-defaults/93-portable-router-setup;
+      # NOTE: files/ deliberately does NOT appear in this attribute.
+      # Everything here is spliced into the *full build's* postPatch as a
+      # content-addressed store path (see CONFIG_IB above), so listing a
+      # uci-defaults script here made a one-line edit rebuild the entire
+      # toolchain, kernel and package set.  The rootfs files are handed to
+      # the ImageBuilder instead, via `files = ./files;` below, which only
+      # re-runs the cheap mkImage stage.
+      #
+      # Only genuine source-tree modifications belong here: things the
+      # buildroot has to compile or honour at build time (the fakeroot
+      # patch and base-files Makefile above, and the vendored in-tree
+      # packages below).
+      #
+      # Two consequences of the move, both improvements:
+      #   - nix-openwrt's copyExtraFiles used `install -Dm644`, which
+      #     flattened every file to 0644.  The ImageBuilder's file_copy
+      #     preserves source modes instead, so the few scripts that are
+      #     0755 in git stay executable.
+      #   - init.d scripts are unaffected either way: both paths run
+      #     prepare_rootfs (include/rootfs.mk), which enables them via
+      #     rc.common rather than relying on the mode bit.
     }
     # Vendor the netbird LuCI app into the build tree as an in-tree
     # package; the buildroot then packages it with correct file modes
@@ -503,45 +408,19 @@ let
     ];
     files = ./files;
   };
-
-  # mkImage expects an ImageBuilder tarball under bin/targets/..., but the
-  # full build only runs `make world`, which never produces one -- so
-  # ayles' `tar xf .../openwrt-imagebuilder-*.tar.*` fails outright.  The
-  # full build already assembled the complete image for our profile
-  # (config.seed selects every package, and files/ is baked in via the
-  # patches attribute), so replace the phase with a plain copy of the
-  # artifacts out of the full build output.  If ayles/nix-openwrt ever
-  # grows a real ImageBuilder stage, this override can be dropped.
-  tarLine =
-    pkgs.lib.findFirst
-      (pkgs.lib.strings.hasInfix "tar xf")
-      ""
-      (pkgs.lib.strings.splitString "\n" imageDrv.buildPhase);
-  buildTree = builtins.head (builtins.match "tar xf \"([^\"]+)\".*" tarLine);
-
-  # The tar line is spliced out with builtins.replaceStrings over the
-  # original buildPhase -- NOT swapped for a hand-written phase --
-  # because replaceStrings keeps the input string's context while
-  # writing a fresh phase (or builtins.match) would drop it: without the
-  # context the full-build derivation is not a real dependency, nix
-  # never builds it, and the store path below is absent at build time.
-  copyPhase = ''
-    set -euo pipefail
-    mkdir -p "$out"
-    cp -t "$out" \
-      ${buildTree}/bin/targets/sunxi/cortexa55/*.img.gz \
-      ${buildTree}/bin/targets/sunxi/cortexa55/*.manifest \
-      ${buildTree}/bin/targets/sunxi/cortexa55/sha256sums
-    cd "$out"
-    for f in *-squashfs-sdcard.img.gz; do
-      ln -sf "$f" sdcard.img.gz
-    done
-    # Everything ayles' phase does after the tar line (cd into the
-    # ImageBuilder, `make image`, artifact collection) is ImageBuilder
-    # machinery we are replacing wholesale -- skip it.
-    exit 0
-  '';
 in
+# Two cosmetic tweaks to ayles' mkImage; the build itself is now unmodified.
+#
+# This used to be a much larger override that replaced mkImage's entire
+# buildPhase, because `tar xf .../openwrt-imagebuilder-*.tar.*` failed --
+# the ImageBuilder tarball was never built.  CONFIG_IB=y (see extraConfig
+# above) fixes that at the source, so the real ImageBuilder stage runs and
+# the workaround is gone.  That is what makes files/ edits cheap: they no
+# longer touch the full build at all.
+#
+# Both rewrites go through builtins.replaceStrings on the original strings
+# rather than hand-written replacements, so the string context (and with it
+# the dependency on the full-build derivation) is preserved.
 pkgs.lib.overrideDerivation imageDrv (old: {
   # Name the artifact after the machine, not the distro
   # (openwrt-image-radxa_cubie-a5e-<rev> -> switchwrt-image-...).
@@ -549,5 +428,12 @@ pkgs.lib.overrideDerivation imageDrv (old: {
     [ "openwrt-image-" ]
     [ "switchwrt-image-" ]
     old.name;
-  buildPhase = builtins.replaceStrings [ tarLine ] [ copyPhase ] imageDrv.buildPhase;
+
+  # Also keep the .manifest (the exact package list and versions that went
+  # into the rootfs); ayles' artifact collection does not pick it up, and it
+  # is the only way to verify the `packages` list above after a build.
+  buildPhase = builtins.replaceStrings
+    [ "-o -name 'sha256sums' \\)" ]
+    [ "-o -name 'sha256sums' -o -name '*.manifest' \\)" ]
+    old.buildPhase;
 })
