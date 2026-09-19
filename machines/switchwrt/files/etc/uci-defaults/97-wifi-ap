@@ -136,6 +136,17 @@ uci set wireless.default_radio0.ieee80211w='0'
 # enables the radio.  See the header note.
 uci set wireless.default_radio0.disabled='1'
 
+# Drop the duplicate radio2 section.  Only two PHYs exist on this board:
+# phy1 = the built-in SDIO aic8800 (mac 94:ba:06:49:af:40, claimed by radio0)
+# and phy2 = the USB rtl8xxxu dongle (mac 00:e0:4c:04:86:6a, claimed by
+# radio1).  `wifi detect` can additionally emit a radio2 keyed on the dongle's
+# USB *path* ('platform/soc/4200000.usb/usb2/2-1/2-1:1.0') -- i.e. a second
+# entry for hardware radio1 already owns.  macaddr matching wins, so radio2
+# can never come up, but it ships the stock ssid='OpenWrt' with
+# encryption='none' and clutters LuCI, so remove it if present.
+uci -q delete wireless.default_radio2
+uci -q delete wireless.radio2
+
 uci commit wireless
 
 exit 0
