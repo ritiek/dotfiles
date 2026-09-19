@@ -69,4 +69,25 @@ have_fwd vpn lan || {
 	uci set firewall.$f.dest="lan"
 }
 
+# vpn -> wan is what makes `--advertise-exit-node` actually usable. Exit-node
+# traffic enters on tailscale0 (zone vpn) addressed to the internet (zone wan),
+# which is a zone pair none of the rules above cover, so fw4's default
+# forward REJECT dropped it:
+#
+#	# nft list chain inet fw4 forward_vpn
+#	jump accept_to_lan
+#	jump accept_to_vpn        <- no accept_to_wan
+#
+# The wan zone already carries masq=1, so once forwarding is permitted the
+# NAT side needs no further change.
+#
+# NOTE: fixing this alone is not sufficient -- the return path also has to be
+# kept out of mwan3's per-uplink tables, see PART 2 of
+# /etc/hotplug.d/iface/25-connected-subnet-priority.
+have_fwd vpn wan || {
+	f=$(uci add firewall forwarding)
+	uci set firewall.$f.src="vpn"
+	uci set firewall.$f.dest="wan"
+}
+
 uci commit firewall

@@ -118,4 +118,84 @@ ensure_rule
 # harmless otherwise -- connected prefixes are already what we want to win.
 ensure_rule -6
 
+# ---------------------------------------------------------------------------
+# PART 2: keep exit-node return traffic inside the tunnel.
+#
+# THE BUG THIS FIXES
+# With switchwrt selected as a tailnet exit node, every stage of the path was
+# correct except the very last hop. tcpdump -ni any during a live test:
+#
+#	tailscale0  In   100.64.0.4  > 1.1.1.1      echo request
+#	eth1        Out  192.168.2.5 > 1.1.1.1      echo request   (masq -- correct)
+#	eth1        In   1.1.1.1 > 192.168.2.5      echo reply
+#	eth1        Out  1.1.1.1 > 100.64.0.4       echo reply     (WRONG interface)
+#
+# Conntrack reverses the masquerade correctly, but the resulting packet for
+# 100.64.0.4 is then routed back out to the ISP instead of into tailscale0, so
+# the client never sees a reply. Every exit-node request times out; DNS, ping
+# and HTTPS all fail. This is 100% reproducible, not intermittent (measured
+# 24/24 failures over 70s with traffic flowing the whole time).
+#
+# WHY
+# The reply arrives on eth1, so mwan3's ingress rule matches first:
+#
+#	1001:	from all iif eth1 lookup 1        <- mwan3, matches
+#	1005:	from all iif wlan1 lookup 5       <- mwan3, same bug on the backup
+#	1100:	from all lookup main suppress_prefixlength 0
+#	1370:	from all lookup 52                <- tailscale, never reached
+#
+# mwan3's per-uplink tables hold only that uplink's default, its own connected
+# subnet and the LAN -- no 100.64.0.0/10. The default route satisfies the
+# lookup, evaluation stops, and the packet leaves via the ISP. Part 1's rule at
+# 1100 cannot save this either: it consults `main`, and main carries no
+# 100.64.0.0/10 route at all (tailscale keeps those exclusively in table 52).
+#
+# Proof, before and after:
+#
+#	ip route get 100.64.0.4 from 1.1.1.1 iif eth1
+#	  before: via 192.168.2.1 dev eth1 table 1
+#	  after:  dev tailscale0 table 52
+#
+# THE FIX
+# A destination-matched rule ahead of mwan3's ingress rules:
+#
+#	900:	from all to 100.64.0.0/10 lookup 52
+#
+# Scope is deliberately narrow -- it matches only the tailnet CGNAT range, so
+# mwan3 keeps full control of every other destination and failover is
+# untouched. Verified after the change: 15/15 pings OK from the first second
+# (previously 0/24), HTTPS 200, and mwan3 still reports both uplinks online.
+#
+# ON THE CHOICE OF PRIORITY 900
+# It must sit ahead of mwan3's ingress rules, which are 1000+index. 900 leaves
+# room below 1000 and stays clear of Part 1 at 1100. Unlike Part 1 this rule
+# cannot collide with tailscaled's own priorities -- both observed bases (13xx
+# and 52xx) are far above it.
+#
+# ON HARDCODING TABLE 52
+# 52 is tailscale's compiled-in routing table (tailscaleRouteTable), not a
+# runtime-allocated number, so unlike its rule *priorities* it is stable across
+# restarts. Deriving it at runtime would race tailscaled's own rule teardown on
+# every restart, which is exactly the failure mode Part 1 documents.
+TS_TABLE=52
+TS_PRIO=900
+
+# $1 is the ip(8) family flag (empty for IPv4, "-6" for IPv6); $2 is the tailnet
+# CGNAT prefix for that family. Unquoted $_fam on purpose, as above.
+ensure_ts_rule() {
+	_fam="$1"
+	_net="$2"
+
+	ip $_fam rule show 2>/dev/null |
+		grep -q "^$TS_PRIO:.*$_net.*lookup $TS_TABLE" ||
+		ip $_fam rule add priority "$TS_PRIO" to "$_net" lookup "$TS_TABLE"
+}
+
+ensure_ts_rule '' 100.64.0.0/10
+
+# Same reasoning for IPv6 exit-node traffic: tailscale's own ULA range lives in
+# table 52 and nowhere else, so an mwan3 ingress rule would strand it
+# identically the moment IPv6 is live on an uplink.
+ensure_ts_rule -6 fd7a:115c:a1e0::/48
+
 exit 0
