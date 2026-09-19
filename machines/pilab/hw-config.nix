@@ -39,7 +39,36 @@ in
 
   # Disable UAS for RTL9210B USB NVMe enclosures — UAS causes device reset
   # failures and drives going offline on Pi 5 (especially Micron NVMe).
-  boot.kernelParams = [ "usb-storage.quirks=0bda:9210:u" ];
+  boot.kernelParams = [
+    "usb-storage.quirks=0bda:9210:u"
+
+    # Re-enable the memory cgroup controller. The Raspberry Pi firmware
+    # PREPENDS `cgroup_disable=memory` to the cmdline -- it is not set anywhere
+    # in this repo and cannot be removed from here. Without it, cgroup v2 comes
+    # up with only `cpuset cpu io pids rdma dmem`, so nothing can measure or
+    # cap per-service memory: `systemd-cgtop -m` shows "-", `docker stats`
+    # reports 0B, MemoryMax=/MemoryHigh= are silently inert, and systemd-oomd
+    # cannot function. On a 1.6x-oversubscribed 8GB host that is precisely the
+    # resource we most need to see and bound.
+    #
+    # Later params win, and NixOS appends boot.kernelParams AFTER the firmware
+    # block (confirmed: `usb-storage.quirks` above lands after the firmware's
+    # `cgroup_disable=memory` in /proc/cmdline), so enabling it here sticks.
+    # Order matters -- see nvmd/nixos-raspberrypi#107, where this exact fix was
+    # confirmed on a Pi 5. Do NOT try to set this through
+    # `hardware.raspberry-pi.config.all.options.cmdline`: that replaces the
+    # whole cmdline including `init=` and leaves the machine unbootable with
+    # "failed to find init script at /mnt-root//init".
+    "cgroup_enable=memory"
+    "cgroup_memory=1"
+
+    # Enable pressure stall information. The rpi5 kernel ships CONFIG_PSI=y but
+    # CONFIG_PSI_DEFAULT_DISABLED=y, so /proc/pressure/* does not exist until
+    # asked for. PSI is the only direct measure of time lost stalling on memory
+    # and IO, which on this host matters far more than load average: the box
+    # sits ~50% CPU-idle while refaulting several MB/s out of zram.
+    "psi=1"
+  ];
 
   boot.supportedFilesystems = [ "ntfs" ];
   
