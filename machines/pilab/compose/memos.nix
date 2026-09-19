@@ -79,7 +79,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f memos_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f memos_default";
     };
     script = ''
       docker network inspect memos_default || docker network create memos_default

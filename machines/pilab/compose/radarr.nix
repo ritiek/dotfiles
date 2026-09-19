@@ -69,7 +69,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f radarr_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f radarr_default";
     };
     script = ''
       docker network inspect radarr_default || docker network create radarr_default

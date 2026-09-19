@@ -78,7 +78,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f homebox_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f homebox_default";
     };
     script = ''
       docker network inspect homebox_default || docker network create homebox_default

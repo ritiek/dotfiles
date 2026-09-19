@@ -83,7 +83,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f calibre-web-automated-book-downloader_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f calibre-web-automated-book-downloader_default";
     };
     script = ''
       docker network inspect calibre-web-automated-book-downloader_default || docker network create calibre-web-automated-book-downloader_default

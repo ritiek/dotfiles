@@ -66,7 +66,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f prowlarr_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f prowlarr_default";
     };
     script = ''
       docker network inspect prowlarr_default || docker network create prowlarr_default

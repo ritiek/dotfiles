@@ -151,7 +151,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f manyfold_manyfold";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f manyfold_manyfold";
     };
     script = ''
       docker network inspect manyfold_manyfold || docker network create manyfold_manyfold

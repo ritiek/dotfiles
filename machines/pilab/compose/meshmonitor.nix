@@ -148,7 +148,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f meshmonitor_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f meshmonitor_default";
     };
     script = ''
       docker network inspect meshmonitor_default || docker network create meshmonitor_default

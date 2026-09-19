@@ -84,7 +84,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f copyparty_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f copyparty_default";
     };
     script = ''
       docker network inspect copyparty_default || docker network create copyparty_default

@@ -148,7 +148,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f jellyfin_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f jellyfin_default";
     };
     script = ''
       docker network inspect jellyfin_default || docker network create jellyfin_default

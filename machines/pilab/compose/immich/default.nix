@@ -205,7 +205,7 @@ in
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f immich_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f immich_default";
     };
     script = ''
       # Recreate the network if its subnet drifts from the pinned value above,

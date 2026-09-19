@@ -117,7 +117,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f searxng_searxng";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f searxng_searxng";
     };
     script = ''
       docker network inspect searxng_searxng || docker network create searxng_searxng

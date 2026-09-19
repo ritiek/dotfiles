@@ -105,7 +105,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f atuin_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f atuin_default";
     };
     script = ''
       docker network inspect atuin_default || docker network create atuin_default

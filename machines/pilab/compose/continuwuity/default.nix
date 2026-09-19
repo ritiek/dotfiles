@@ -68,7 +68,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f continuwuity_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f continuwuity_default";
     };
     script = ''
       docker network inspect continuwuity_default || docker network create continuwuity_default

@@ -141,7 +141,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f karakeep_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f karakeep_default";
     };
     script = ''
       docker network inspect karakeep_default || docker network create karakeep_default

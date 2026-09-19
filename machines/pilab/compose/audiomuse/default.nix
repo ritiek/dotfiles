@@ -204,7 +204,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f audiomuse_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f audiomuse_default";
     };
     script = ''
       docker network inspect audiomuse_default || docker network create audiomuse_default
@@ -219,7 +219,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker volume rm -f audiomuse_temp-audio-flask";
+      ExecStop = "${pkgs.docker}/bin/docker volume rm -f audiomuse_temp-audio-flask";
     };
     script = ''
       docker volume inspect audiomuse_temp-audio-flask || docker volume create audiomuse_temp-audio-flask
@@ -232,7 +232,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker volume rm -f audiomuse_temp-audio-worker";
+      ExecStop = "${pkgs.docker}/bin/docker volume rm -f audiomuse_temp-audio-worker";
     };
     script = ''
       docker volume inspect audiomuse_temp-audio-worker || docker volume create audiomuse_temp-audio-worker

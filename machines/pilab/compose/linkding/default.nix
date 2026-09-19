@@ -79,7 +79,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f linkding_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f linkding_default";
     };
     script = ''
       docker network inspect linkding_default || docker network create linkding_default

@@ -81,7 +81,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f frigate_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f frigate_default";
     };
     script = ''
       docker network inspect frigate_default || docker network create frigate_default

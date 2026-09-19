@@ -71,7 +71,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f qbittorrent_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f qbittorrent_default";
     };
     script = ''
       docker network inspect qbittorrent_default || docker network create qbittorrent_default

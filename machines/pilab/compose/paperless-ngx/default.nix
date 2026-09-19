@@ -203,7 +203,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f paperless-ngx_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f paperless-ngx_default";
     };
     script = ''
       docker network inspect paperless-ngx_default || docker network create paperless-ngx_default
@@ -218,7 +218,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker volume rm -f paperless-ngx_redisdata";
+      ExecStop = "${pkgs.docker}/bin/docker volume rm -f paperless-ngx_redisdata";
     };
     script = ''
       docker volume inspect paperless-ngx_redisdata || docker volume create paperless-ngx_redisdata

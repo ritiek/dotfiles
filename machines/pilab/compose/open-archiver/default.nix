@@ -200,7 +200,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f open-archiver_open-archiver-net";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f open-archiver_open-archiver-net";
     };
     script = ''
       docker network inspect open-archiver_open-archiver-net || docker network create open-archiver_open-archiver-net --driver=bridge

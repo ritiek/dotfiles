@@ -81,7 +81,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f scriberr_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f scriberr_default";
     };
     script = ''
       docker network inspect scriberr_default || docker network create scriberr_default

@@ -64,7 +64,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f backvault_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f backvault_default";
     };
     script = ''
       docker network inspect backvault_default || docker network create backvault_default

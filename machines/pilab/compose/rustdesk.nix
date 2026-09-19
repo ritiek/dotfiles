@@ -97,7 +97,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f rustdesk_rustdesk-net";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f rustdesk_rustdesk-net";
     };
     script = ''
       docker network inspect rustdesk_rustdesk-net || docker network create rustdesk_rustdesk-net

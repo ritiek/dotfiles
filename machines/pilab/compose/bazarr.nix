@@ -69,7 +69,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f bazarr_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f bazarr_default";
     };
     script = ''
       docker network inspect bazarr_default || docker network create bazarr_default

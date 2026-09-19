@@ -86,7 +86,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f kopia_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f kopia_default";
     };
     script = ''
       docker network inspect kopia_default || docker network create kopia_default
@@ -101,7 +101,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker volume rm -f kopia_cache";
+      ExecStop = "${pkgs.docker}/bin/docker volume rm -f kopia_cache";
     };
     script = ''
       docker volume inspect kopia_cache || docker volume create kopia_cache
@@ -114,7 +114,7 @@
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker volume rm -f kopia_logs";
+      ExecStop = "${pkgs.docker}/bin/docker volume rm -f kopia_logs";
     };
     script = ''
       docker volume inspect kopia_logs || docker volume create kopia_logs

@@ -79,7 +79,7 @@ in lib.mkMerge [
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
-      ExecStop = "docker network rm -f readeck_default";
+      ExecStop = "${pkgs.docker}/bin/docker network rm -f readeck_default";
     };
     script = ''
       docker network inspect readeck_default || docker network create readeck_default
