@@ -420,10 +420,12 @@ let
       "kmod-usb-net-cdc-ether"
       "kmod-usb-net-ipheth"
     ];
+    # Shipped verbatim; the modes are fixed up in the ImageBuilder instead --
+    # see the `chmod -R u+w files/` injection in the override below.
     files = ./files;
   };
 in
-# Two cosmetic tweaks to ayles' mkImage; the build itself is now unmodified.
+# Three tweaks to ayles' mkImage; the build itself is now unmodified.
 #
 # This used to be a much larger override that replaced mkImage's entire
 # buildPhase, because `tar xf .../openwrt-imagebuilder-*.tar.*` failed --
@@ -446,8 +448,46 @@ pkgs.lib.overrideDerivation imageDrv (old: {
   # Also keep the .manifest (the exact package list and versions that went
   # into the rootfs); ayles' artifact collection does not pick it up, and it
   # is the only way to verify the `packages` list above after a build.
+  #
+  # The second rewrite restores owner-write permission on the staged FILES
+  # tree, and is a correctness fix rather than a convenience.
+  #
+  # The ImageBuilder copies FILES with a mode-preserving `cp` (include/
+  # rootfs.mk -> file_copy -> $(CP) in rules.mk), so whatever modes the staged
+  # tree carries land verbatim in the rootfs.  `files = ./files` is a nix
+  # store path, and nix canonicalises every store output to read-only, so the
+  # tree arrives as 0444 files inside 0555 directories.  (Doing the chmod in a
+  # runCommand wrapper does NOT work -- canonicalisation runs after the
+  # builder and silently undoes it.  It has to happen here, inside the
+  # ImageBuilder's own working tree, which is an ordinary writable directory.)
+  #
+  # Root ignores those bits via CAP_DAC_OVERRIDE, so almost everything
+  # survived: uhttpd still wrote its cert, dropbear still generated host keys.
+  # Services that drop privileges did not.  AdGuardHome runs as the
+  # unprivileged `adguardhome` user and rewrites its own config on every start
+  # using write-temp-then-rename, which needs the *directory* writable.  At
+  # 0555 it died in a procd crash loop:
+  #
+  #   [fatal] writing config file:
+  #     open /etc/adguardhome/.adguardhome.yamlNNNNNNN: permission denied
+  #
+  # and took port 53 down with it -- no DNS for any LAN client.
+  #
+  # This did not bite before commit bd5178a because the files then shipped as
+  # `patches` entries, and nix-openwrt's copyExtraFiles uses `install -Dm644`,
+  # which sets an explicit mode instead of copying one.
+  #
+  # Only the owner-write bit is touched, so the tree's 0755 scripts stay
+  # executable and nothing becomes group- or world-writable (dropbear refuses
+  # to read authorized_keys out of a group-writable directory).
   buildPhase = builtins.replaceStrings
-    [ "-o -name 'sha256sums' \\)" ]
-    [ "-o -name 'sha256sums' -o -name '*.manifest' \\)" ]
+    [
+      "-o -name 'sha256sums' \\)"
+      "\nmake image PROFILE="
+    ]
+    [
+      "-o -name 'sha256sums' -o -name '*.manifest' \\)"
+      "\nchmod -R u+w files/\nmake image PROFILE="
+    ]
     old.buildPhase;
 })
