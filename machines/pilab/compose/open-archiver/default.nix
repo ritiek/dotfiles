@@ -45,6 +45,22 @@
       # limit. Nothing enforced a ceiling, so a single runaway parse could
       # take the box. Cap the worker that actually handles large documents.
       INDEXING_WORKER_MAX_OLD_SPACE_MB = "512";
+      # The reconcile job is what refills the indexing queue, and it only
+      # enqueues INDEX_RECONCILE_PAGE_CAP (default 20) rows per pass. During
+      # the post-upgrade full rebuild that throttled throughput to ~473/hr
+      # (measured over 13 min: steady bursts of ~25, with the queue sitting
+      # at 12 waiting against 26k unindexed rows), which would have taken
+      # ~56h. Meilisearch was not the limit; it was idle between bursts.
+      # Raise the page cap and the backpressure ceiling so the queue stays
+      # fed. Depth is cheap - jobs are small ids in valkey - and actual
+      # memory is still bounded by INDEXING_WORKER_CONCURRENCY above.
+      INDEX_RECONCILE_PAGE_CAP = "200";
+      INDEX_RECONCILE_BACKPRESSURE = "500";
+      # Deliberately NOT lowering INDEX_RECONCILE_CRON from its */30 default.
+      # Tried "*/2 * * * *" and measured it: throughput fell 736 -> 527/hr
+      # and load average went 10.8 -> 26.2 while the queue depth never moved
+      # off 7-10. The extra passes only competed for CPU. The enqueue side
+      # is not the bottleneck - worker/Meilisearch round-trip time is.
       # v0.6.0 stops archiving unsent drafts by default. This archive was
       # built with drafts included, so preserve existing behaviour rather
       # than silently changing what gets captured. Set to "false" to adopt

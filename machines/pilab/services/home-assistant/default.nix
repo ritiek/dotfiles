@@ -31,6 +31,11 @@
   #   restartUnits = [ "home-assistant.service" ];
   # };
 
+  sops.secrets."caldav_password" = {
+    sopsFile = ./secrets.yaml;
+    restartUnits = [ "home-assistant.service" ];
+  };
+
   services.mosquitto = {
     enable = true;
     listeners = [
@@ -77,6 +82,7 @@
       "syncthing"
       "mcp_server"
       "tuya"
+      "caldav"
     ];
 
     extraPackages = ps: with ps; [
@@ -245,6 +251,28 @@
         echo "" >> /var/lib/hass/configuration.yaml
         echo "# Include scripts from separate file" >> /var/lib/hass/configuration.yaml
         echo "script: !include scripts.yaml" >> /var/lib/hass/configuration.yaml
+        chown hass:hass /var/lib/hass/configuration.yaml
+      fi
+    ''}")
+    ("+${pkgs.writeShellScript "add-caldav-include" ''
+      # Wait for config to be copied
+      sleep 2
+      # caldav has no UI config flow, so it must be set up via YAML.
+      # Write it to a separate included file so the password (read from the
+      # sops secret at runtime) never ends up in the Nix store.
+      CALDAV_PASSWORD=$(cat ${config.sops.secrets."caldav_password".path})
+      cat > /var/lib/hass/caldav.yaml <<EOF
+- platform: caldav
+  url: "http://127.0.0.1:5880/dav.php/"
+  username: "ritiek"
+  password: "$CALDAV_PASSWORD"
+EOF
+      chown hass:hass /var/lib/hass/caldav.yaml
+      chmod 0600 /var/lib/hass/caldav.yaml
+      if ! grep -q "^calendar:" /var/lib/hass/configuration.yaml; then
+        echo "" >> /var/lib/hass/configuration.yaml
+        echo "# Include CalDAV calendar (Baikal) from separate file" >> /var/lib/hass/configuration.yaml
+        echo "calendar: !include caldav.yaml" >> /var/lib/hass/configuration.yaml
         chown hass:hass /var/lib/hass/configuration.yaml
       fi
     ''}")
