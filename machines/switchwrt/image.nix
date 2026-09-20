@@ -371,6 +371,20 @@ let
       "luci-theme-argon"
       "kmod-wireguard"
       "kmod-rtl8xxxu"
+      # Firmware blob for the RTL8192EU USB dongle above.  kmod-rtl8xxxu does
+      # NOT pull this in, and without it the adapter enumerates but never
+      # associates, so the wwan backup uplink silently dies.
+      "rtl8192eu-firmware"
+      # BBR congestion control + the full sched module set (act_*/em_*) that
+      # luci-app-sqm drives.  The ImageBuilder only installs what is listed
+      # here, and "kmod-sched-core" alone (pulled in as a dependency) does not
+      # cover them.
+      "kmod-tcp-bbr"
+      "kmod-sched"
+      # Process/resource monitor.  Previously hand-installed on the running
+      # router because radxa_cubie-a5e has no published package feed; listing
+      # it here is what makes it part of the image.
+      "btop"
       "mwan3"
       "luci-app-mwan3"
       "nlbwmon"
