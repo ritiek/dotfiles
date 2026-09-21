@@ -33,7 +33,7 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."baikal" = {
-    image = "ckulka/baikal:nginx";
+    image = "ghcr.io/aalmenar/baikal:0.12.1-nginx";
     volumes = [
       "${homelabMediaPath}/services/baikal/config:/var/www/baikal/config:rw"
       "${homelabMediaPath}/services/baikal/data:/var/www/baikal/Specific:rw"
