@@ -451,6 +451,24 @@ in
           type = "remote";
           url = "https://mcp.indmoney.com/mcp";
         };
+        open-design = {
+          enabled = true;
+          type = "local";
+          # The daemon runs on pilab with OD_DISABLE_API_AUTH=1 (Tailscale
+          # is the trust boundary), so no token needs to be passed here.
+          command = [
+            "${pkgs.docker}/bin/docker"
+            "run"
+            "--rm"
+            "-i"
+            "ghcr.io/nexu-io/od:latest"
+            "node"
+            "apps/daemon/dist/cli.js"
+            "mcp"
+            "--daemon-url"
+            "http://pilab.lion-zebra.ts.net:7456"
+          ];
+        };
         # gmail = {
         #   enabled = true;
         #   type = "local";
