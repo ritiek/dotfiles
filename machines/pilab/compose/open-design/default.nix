@@ -31,15 +31,26 @@
       # upstream's own guidance for deployments behind an already-trusted
       # private network.
       OD_DISABLE_API_AUTH = "1";
+      # "vela" (AMR) drives OpenDesign's own hosted generation runtime
+      # (start_run/Cloud sign-in). It ships as the @powerformer/vela-cli
+      # npm package, not inside the od image, and is installed into the
+      # open-design-vela volume by the oneshot service below. Prepend it
+      # to the image's normal Alpine PATH rather than replacing it.
+      PATH = "/mnt/host-vela/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin";
+      VELA_BIN = "/mnt/host-vela/bin/vela";
     };
     volumes = [
       "open-design-data:/app/.od"
+      "open-design-vela:/mnt/host-vela:ro"
     ];
     ports = [
       "7456:7456/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
+    dependsOn = [
+      "open-design-vela-install"
+    ];
     extraOptions = [
       "--network-alias=open-design"
       "--network=open-design_open-design-net"
@@ -58,6 +69,44 @@
       RestartMaxDelaySec = lib.mkOverride 90 "1m";
       RestartSec = lib.mkOverride 90 "100ms";
       RestartSteps = lib.mkOverride 90 9;
+    };
+    after = [
+      "docker-network-open-design_open-design-net.service"
+      "docker-open-design-vela-install.service"
+    ];
+    requires = [
+      "docker-network-open-design_open-design-net.service"
+      "docker-open-design-vela-install.service"
+    ];
+  };
+
+  # One-shot: install the vela CLI into a named volume so it can be
+  # mounted read-only into the open-design container (see PATH/VELA_BIN
+  # above). Re-running is harmless and cheap (npm no-ops if unchanged);
+  # bump the image tag or rerun manually to pick up a newer vela-cli.
+  virtualisation.oci-containers.containers."open-design-vela-install" = {
+    image = "node:24-alpine";
+    entrypoint = "sh";
+    cmd = [
+      "-c"
+      "npm install --global --prefix /vela @powerformer/vela-cli"
+    ];
+    volumes = [
+      "open-design-vela:/vela"
+    ];
+    log-driver = "journald";
+    autoStart = false;
+    extraOptions = [
+      "--network-alias=open-design-vela-install"
+      "--network=open-design_open-design-net"
+    ];
+  };
+  systemd.services."docker-open-design-vela-install" = {
+    serviceConfig = {
+      Type = lib.mkOverride 90 "oneshot";
+      RemainAfterExit = lib.mkOverride 90 true;
+      # npm registry fetch can take a while on first run.
+      TimeoutStartSec = lib.mkOverride 90 "300s";
     };
     after = [
       "docker-network-open-design_open-design-net.service"
