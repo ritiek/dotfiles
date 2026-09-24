@@ -2,7 +2,7 @@
 # directory, but without a sops-managed stack.env: OpenDesign needs no
 # secret here because OD_DISABLE_API_AUTH=1 is set below (see rationale).
 
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 {
   # Runtime
@@ -43,7 +43,7 @@
       VELA_BIN = "/mnt/host-vela/bin/vela";
     };
     volumes = [
-      "open-design-data:/app/.od"
+      "${homelabMediaPath}/services/open-design/data:/app/.od"
       "open-design-vela:/mnt/host-vela:ro"
     ];
     ports = [
@@ -85,6 +85,9 @@
       "docker-network-open-design_open-design-net.service"
       "docker-open-design-vela-install.service"
       "open-design-image-build.service"
+    ];
+    unitConfig.RequiresMountsFor = [
+      "${homelabMediaPath}/services/open-design/data"
     ];
   };
 
