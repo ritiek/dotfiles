@@ -1,0 +1,32 @@
+{
+	"sendHeader": [
+		{
+			"enable": true,
+			"name": "Immich App-Identity-Key (clawsiecats.omg.lol)",
+			"ruleType": "modifySendHeader",
+			"isFunction": false,
+			"code": "",
+			"group": "immich",
+			"condition": {
+				"urlPrefix": "https://immich.clawsiecats.omg.lol/"
+			},
+			"headers": {
+				"App-Identity-Key": "__IMMICH_APP_IDENTITY_KEY__"
+			}
+		},
+		{
+			"enable": true,
+			"name": "Immich App-Identity-Key (clawsiecats.lol)",
+			"ruleType": "modifySendHeader",
+			"isFunction": false,
+			"code": "",
+			"group": "immich",
+			"condition": {
+				"urlPrefix": "https://immich.clawsiecats.lol/"
+			},
+			"headers": {
+				"App-Identity-Key": "__IMMICH_APP_IDENTITY_KEY__"
+			}
+		}
+	]
+}
