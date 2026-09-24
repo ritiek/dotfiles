@@ -1,0 +1,456 @@
+- generic [ref=e2]:
+  - button "Download Report to File" [ref=e4]
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - heading "Graphics Feature Status" [level=3] [ref=e7]
+      - list [ref=e8]:
+        - listitem [ref=e9]: "Canvas: Hardware accelerated"
+        - listitem [ref=e10]: "Direct Rendering Display Compositor: Disabled"
+        - listitem [ref=e11]: "Compositing: Hardware accelerated"
+        - listitem [ref=e12]: "Multiple Raster Threads: Enabled"
+        - listitem [ref=e13]: "OpenGL: Enabled"
+        - listitem [ref=e14]: "Rasterization: Hardware accelerated"
+        - listitem [ref=e15]: "Raw Draw: Disabled"
+        - listitem [ref=e16]: "Skia Graphite: Disabled"
+        - listitem [ref=e17]: "TreesInViz: Disabled"
+        - listitem [ref=e18]: "Video Decode: Hardware accelerated"
+        - listitem [ref=e19]: "Video Encode: Software only. Hardware acceleration disabled"
+        - listitem [ref=e20]: "Vulkan: Disabled"
+        - listitem [ref=e21]: "WebGL: Hardware accelerated"
+        - listitem [ref=e22]: "WebGPU: Hardware accelerated"
+        - listitem [ref=e23]: "WebGPU interop: Disabled"
+        - listitem [ref=e24]: "WebNN: Disabled"
+    - generic [ref=e25]:
+      - heading "Version Information" [level=3] [ref=e26]
+      - table [ref=e28]:
+        - rowgroup [ref=e29]:
+          - row "Data exported 2026-07-26T13:18:01.191Z" [ref=e30]:
+            - cell "Data exported" [ref=e31]
+            - cell "2026-07-26T13:18:01.191Z" [ref=e32]
+          - row "Chrome version Chrome/149.0.7827.155" [ref=e33]:
+            - cell "Chrome version" [ref=e34]
+            - cell "Chrome/149.0.7827.155" [ref=e35]
+          - row "Operating system Linux 7.1.1" [ref=e36]:
+            - cell "Operating system" [ref=e37]
+            - cell "Linux 7.1.1" [ref=e38]
+          - row "Software rendering list URL https://chromium.googlesource.com/chromium/src/+/07b52360cc15066f987c910ab34dfbcd4a8778d2/gpu/config/software_rendering_list.json" [ref=e39]:
+            - cell "Software rendering list URL" [ref=e40]
+            - cell "https://chromium.googlesource.com/chromium/src/+/07b52360cc15066f987c910ab34dfbcd4a8778d2/gpu/config/software_rendering_list.json" [ref=e41]
+          - row "Driver bug list URL https://chromium.googlesource.com/chromium/src/+/07b52360cc15066f987c910ab34dfbcd4a8778d2/gpu/config/gpu_driver_bug_list.json" [ref=e42]:
+            - cell "Driver bug list URL" [ref=e43]
+            - cell "https://chromium.googlesource.com/chromium/src/+/07b52360cc15066f987c910ab34dfbcd4a8778d2/gpu/config/gpu_driver_bug_list.json" [ref=e44]
+          - row "ANGLE commit id unknown hash" [ref=e45]:
+            - cell "ANGLE commit id" [ref=e46]
+            - cell "unknown hash" [ref=e47]
+          - row "2D graphics backend Skia/149 75c589e1f436688fca8f5b7f7a8affeafaa4f923" [ref=e48]:
+            - cell "2D graphics backend" [ref=e49]
+            - cell "Skia/149 75c589e1f436688fca8f5b7f7a8affeafaa4f923" [ref=e50]
+          - row "Command Line /nix/store/1f3w9w7iry1z0aqj40dlxnwn573bf0y2-chromium-unwrapped-149.0.7827.155/libexec/chromium/chromium --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --ozone-platform=wayland --remote-debugging-port=9222 --remote-allow-origins=* --user-data-dir=/home/ritiek/.config/chromium --no-first-run --password-store=basic --flag-switches-begin --flag-switches-end --origin-trial-disabled-features=CanvasTextNg|WebAssemblyCustomDescriptors --render-node-override=/dev/dri/renderD128" [ref=e51]:
+            - cell "Command Line" [ref=e52]
+            - cell "/nix/store/1f3w9w7iry1z0aqj40dlxnwn573bf0y2-chromium-unwrapped-149.0.7827.155/libexec/chromium/chromium --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --enable-wayland-ime=true --ozone-platform=wayland --remote-debugging-port=9222 --remote-allow-origins=* --user-data-dir=/home/ritiek/.config/chromium --no-first-run --password-store=basic --flag-switches-begin --flag-switches-end --origin-trial-disabled-features=CanvasTextNg|WebAssemblyCustomDescriptors --render-node-override=/dev/dri/renderD128" [ref=e53]
+    - generic [ref=e54]:
+      - heading "Driver Information" [level=3] [ref=e55]
+      - table [ref=e57]:
+        - rowgroup [ref=e58]:
+          - row "Initialization time 1570" [ref=e59]:
+            - cell "Initialization time" [ref=e60]
+            - cell "1570" [ref=e61]
+          - row "In-process GPU false" [ref=e62]:
+            - cell "In-process GPU" [ref=e63]
+            - cell "false" [ref=e64]
+          - row "Skia Backend GaneshGL" [ref=e65]:
+            - cell "Skia Backend" [ref=e66]
+            - cell "GaneshGL" [ref=e67]
+          - row "Passthrough Command Decoder true" [ref=e68]:
+            - cell "Passthrough Command Decoder" [ref=e69]
+            - cell "true" [ref=e70]
+          - row "Sandboxed false" [ref=e71]:
+            - cell "Sandboxed" [ref=e72]
+            - cell "false" [ref=e73]
+          - row "GPU0 VENDOR= 0x8086 [Google Inc. (Intel)], DEVICE=0x1912 [ANGLE (Intel, Mesa Intel(R) HD Graphics 530 (SKL GT2), OpenGL ES 3.2 Mesa 26.1.3)], DRIVER_VENDOR=Mesa, DRIVER_VERSION=26.1.3 *ACTIVE*" [ref=e74]:
+            - cell "GPU0" [ref=e75]
+            - cell "VENDOR= 0x8086 [Google Inc. (Intel)], DEVICE=0x1912 [ANGLE (Intel, Mesa Intel(R) HD Graphics 530 (SKL GT2), OpenGL ES 3.2 Mesa 26.1.3)], DRIVER_VENDOR=Mesa, DRIVER_VERSION=26.1.3 *ACTIVE*" [ref=e76]
+          - row "Optimus false" [ref=e77]:
+            - cell "Optimus" [ref=e78]
+            - cell "false" [ref=e79]
+          - row "AMD switchable false" [ref=e80]:
+            - cell "AMD switchable" [ref=e81]
+            - cell "false" [ref=e82]
+          - row "Pixel shader version 3.00" [ref=e83]:
+            - cell "Pixel shader version" [ref=e84]
+            - cell "3.00" [ref=e85]
+          - row "Vertex shader version 3.00" [ref=e86]:
+            - cell "Vertex shader version" [ref=e87]
+            - cell "3.00" [ref=e88]
+          - row "Max. MSAA samples 16" [ref=e89]:
+            - cell "Max. MSAA samples" [ref=e90]
+            - cell "16" [ref=e91]
+          - row "Machine model name" [ref=e92]:
+            - cell "Machine model name" [ref=e93]
+            - cell [ref=e94]
+          - row "Machine model version" [ref=e95]:
+            - cell "Machine model version" [ref=e96]
+            - cell [ref=e97]
+          - row "GL implementation parts (gl=egl-angle,angle=opengl)" [ref=e98]:
+            - cell "GL implementation parts" [ref=e99]
+            - cell "(gl=egl-angle,angle=opengl)" [ref=e100]
+          - row "Display type ANGLE_OPENGL" [ref=e101]:
+            - cell "Display type" [ref=e102]
+            - cell "ANGLE_OPENGL" [ref=e103]
+          - row "GL_VENDOR Google Inc. (Intel)" [ref=e104]:
+            - cell "GL_VENDOR" [ref=e105]
+            - cell "Google Inc. (Intel)" [ref=e106]
+          - row "GL_RENDERER ANGLE (Intel, Mesa Intel(R) HD Graphics 530 (SKL GT2), OpenGL ES 3.2 Mesa 26.1.3)" [ref=e107]:
+            - cell "GL_RENDERER" [ref=e108]
+            - cell "ANGLE (Intel, Mesa Intel(R) HD Graphics 530 (SKL GT2), OpenGL ES 3.2 Mesa 26.1.3)" [ref=e109]
+          - 'row "GL_VERSION OpenGL ES 3.0 (ANGLE 2.1 git hash: unknown hash)" [ref=e110]':
+            - cell "GL_VERSION" [ref=e111]
+            - 'cell "OpenGL ES 3.0 (ANGLE 2.1 git hash: unknown hash)" [ref=e112]'
+          - row [ref=e113]:
+            - cell "GL_EXTENSIONS" [ref=e114]
+            - cell [ref=e115]
+          - row "Disabled Extensions GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent" [ref=e116]:
+            - cell "Disabled Extensions" [ref=e117]
+            - cell "GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent" [ref=e118]
+          - row "Disabled WebGL Extensions" [ref=e119]:
+            - cell "Disabled WebGL Extensions" [ref=e120]
+            - cell [ref=e121]
+          - row "Window system binding vendor Google Inc. (Intel)" [ref=e122]:
+            - cell "Window system binding vendor" [ref=e123]
+            - cell "Google Inc. (Intel)" [ref=e124]
+          - 'row "Window system binding version 1.5 (ANGLE 2.1 git hash: unknown hash)" [ref=e125]':
+            - cell "Window system binding version" [ref=e126]
+            - 'cell "1.5 (ANGLE 2.1 git hash: unknown hash)" [ref=e127]'
+          - row [ref=e128]:
+            - cell "Window system binding extensions" [ref=e129]
+            - cell [ref=e130]
+          - row "XDG_CURRENT_DESKTOP niri" [ref=e131]:
+            - cell "XDG_CURRENT_DESKTOP" [ref=e132]
+            - cell "niri" [ref=e133]
+          - row "XDG_SESSION_TYPE wayland" [ref=e134]:
+            - cell "XDG_SESSION_TYPE" [ref=e135]
+            - cell "wayland" [ref=e136]
+          - row [ref=e137]:
+            - cell "Interfaces exposed by the Wayland compositor" [ref=e138]
+            - cell [ref=e139]
+          - row "Ozone platform wayland" [ref=e140]:
+            - cell "Ozone platform" [ref=e141]
+            - cell "wayland" [ref=e142]
+          - row "Direct rendering version unknown" [ref=e143]:
+            - cell "Direct rendering version" [ref=e144]
+            - cell "unknown" [ref=e145]
+          - row "Reset notification strategy 0x8252" [ref=e146]:
+            - cell "Reset notification strategy" [ref=e147]
+            - cell "0x8252" [ref=e148]
+          - row "GPU process crash count 0" [ref=e149]:
+            - cell "GPU process crash count" [ref=e150]
+            - cell "0" [ref=e151]
+    - generic [ref=e152]:
+      - heading "Driver Bug Workarounds" [level=3] [ref=e153]
+      - list [ref=e154]:
+        - listitem [ref=e155]: enable_webgl_timer_query_extensions
+        - listitem [ref=e156]: exit_on_context_lost
+        - listitem [ref=e157]: msaa_is_slow
+        - listitem [ref=e158]: msaa_is_slow_2
+        - listitem [ref=e159]: rely_on_implicit_sync_for_swap_buffers
+        - listitem [ref=e160]: disabled_extension_GL_KHR_blend_equation_advanced
+        - listitem [ref=e161]: disabled_extension_GL_KHR_blend_equation_advanced_coherent
+    - generic [ref=e162]:
+      - heading "Problems Detected" [level=3] [ref=e163]
+      - list [ref=e164]:
+        - listitem [ref=e165]:
+          - text: Accelerated video encode has been disabled, either via blocklist, about:flags or the command line.
+          - generic [ref=e166]: "Disabled Features: video_encode"
+        - listitem [ref=e167]:
+          - text: "Disable webgpu on vk via gl interop:"
+          - link "442791440" [ref=e169] [cursor=pointer]:
+            - /url: http://crbug.com/442791440
+          - text: ","
+          - link "475935650" [ref=e171] [cursor=pointer]:
+            - /url: http://crbug.com/475935650
+          - generic [ref=e172]: "Disabled Features: webgpu_on_vk_via_gl_interop"
+        - listitem [ref=e173]:
+          - text: "On Intel GPUs MSAA performance is not acceptable for GPU rasterization:"
+          - link "527565" [ref=e175] [cursor=pointer]:
+            - /url: http://crbug.com/527565
+          - text: ","
+          - link "1298585" [ref=e177] [cursor=pointer]:
+            - /url: http://crbug.com/1298585
+          - generic [ref=e178]: "Applied Workarounds: msaa_is_slow"
+        - listitem [ref=e179]:
+          - text: "Disable KHR_blend_equation_advanced until cc shaders are updated:"
+          - link "661715" [ref=e181] [cursor=pointer]:
+            - /url: http://crbug.com/661715
+          - generic [ref=e182]: "Applied Workarounds: disable(GL_KHR_blend_equation_advanced), disable(GL_KHR_blend_equation_advanced_coherent)"
+        - listitem [ref=e183]:
+          - text: "Expose WebGL's disjoint_timer_query extensions on platforms with site isolation:"
+          - link "808744" [ref=e185] [cursor=pointer]:
+            - /url: http://crbug.com/808744
+          - text: ","
+          - link "870491" [ref=e187] [cursor=pointer]:
+            - /url: http://crbug.com/870491
+          - generic [ref=e188]: "Applied Workarounds: enable_webgl_timer_query_extensions"
+        - listitem [ref=e189]:
+          - text: "Some drivers can't recover after OUT_OF_MEM and context lost:"
+          - link "893177" [ref=e191] [cursor=pointer]:
+            - /url: http://crbug.com/893177
+          - generic [ref=e192]: "Applied Workarounds: exit_on_context_lost"
+        - listitem [ref=e193]:
+          - text: "Avoid waiting on a egl fence before swapping buffers and rely on implicit sync on Intel GPUs:"
+          - link "938286" [ref=e195] [cursor=pointer]:
+            - /url: http://crbug.com/938286
+          - generic [ref=e196]: "Applied Workarounds: rely_on_implicit_sync_for_swap_buffers"
+        - listitem [ref=e197]:
+          - text: "On pre-Ice Lake Intel GPUs MSAA performance is not acceptable for GPU rasterization:"
+          - link "527565" [ref=e199] [cursor=pointer]:
+            - /url: http://crbug.com/527565
+          - text: ","
+          - link "1298585" [ref=e201] [cursor=pointer]:
+            - /url: http://crbug.com/1298585
+          - text: ","
+          - link "1341830" [ref=e203] [cursor=pointer]:
+            - /url: http://crbug.com/1341830
+          - generic [ref=e204]: "Applied Workarounds: msaa_is_slow_2"
+    - generic [ref=e205]:
+      - heading "ANGLE Features" [level=3] [ref=e206]
+      - list [ref=e207]:
+        - listitem [ref=e208]: "allowCompressedFormats (Frontend workarounds): Enabled"
+        - listitem [ref=e209]: "allowExtensionDisableAfterNonPpTokens (Frontend features): Disabled"
+        - listitem [ref=e210]: "alwaysEnableEmulatedMultidrawExtensions (Frontend workarounds): Disabled"
+        - listitem [ref=e211]: "alwaysRunLinkSubJobsThreaded (Frontend features): Disabled"
+        - listitem [ref=e212]: "cacheCompiledShader (Frontend features): Enabled"
+        - listitem [ref=e213]: "clipCullDistanceBrokenWithPassthroughShaders (Frontend features): Disabled"
+        - listitem [ref=e214]: "compileJobIsThreadSafe (Frontend features): Disabled"
+        - listitem [ref=e215]: "disableAnisotropicFiltering (Frontend workarounds): Disabled"
+        - listitem [ref=e216]: "disableProgramBinary (Frontend features): Disabled"
+        - listitem [ref=e217]: "disableProgramCaching (Frontend features): Disabled"
+        - listitem [ref=e218]: "disableProgramCachingForTransformFeedback (Frontend workarounds): Disabled"
+        - listitem [ref=e219]: "dumpShaderSource (Frontend features): Disabled"
+        - listitem [ref=e220]: "dumpTranslatedShaders (Frontend features): Disabled"
+        - listitem [ref=e221]: "emulatePixelLocalStorage (Frontend features): Enabled"
+        - listitem [ref=e222]: "enableCaptureLimits (Frontend features): Disabled"
+        - listitem [ref=e223]: "enableProgramBinaryForCapture (Frontend features): Disabled"
+        - listitem [ref=e224]: "enableShaderSubstitution (Frontend workarounds): Disabled"
+        - listitem [ref=e225]: "enableTranslatedShaderSubstitution (Frontend workarounds): Disabled"
+        - listitem [ref=e226]: "forceDebugContexts (Frontend features): Disabled"
+        - listitem [ref=e227]: "forceDepthAttachmentInitOnClear (Frontend workarounds): Disabled"
+        - listitem [ref=e228]: "forceFlushAfterDrawcallUsingShadowmap (Frontend workarounds): Disabled"
+        - listitem [ref=e229]: "forceGlErrorChecking (Frontend features): Disabled"
+        - listitem [ref=e230]: "forceInitShaderVariables (Frontend features): Disabled"
+        - listitem [ref=e231]: "forceMinimumMaxVertexAttributes (Frontend features): Disabled"
+        - listitem [ref=e232]: "forcePassthroughShaders (Frontend features): Disabled"
+        - listitem [ref=e233]: "forceRobustResourceInit (Frontend features): Disabled"
+        - listitem [ref=e234]: "limitMaxBufferBytesTo1MB (Frontend features): Disabled"
+        - listitem [ref=e235]: "limitMaxTextureBytesTo1MB (Frontend features): Disabled"
+        - listitem [ref=e236]: "linkJobIsThreadSafe (Frontend features): Disabled"
+        - listitem [ref=e237]: "loseContextOnOutOfMemory (Frontend workarounds): Enabled"
+        - listitem [ref=e238]: "noperspectiveInterpolationBrokenWithPassthroughShaders (Frontend features): Disabled"
+        - listitem [ref=e239]: "singleThreadedTextureDecompression (Frontend workarounds): Disabled"
+        - listitem [ref=e240]: "uncurrentEglSurfaceUponSurfaceDestroy (Frontend workarounds): Disabled"
+        - listitem [ref=e241]: "useIr (Frontend features): Disabled"
+        - listitem [ref=e242]: "RGBA4IsNotSupportedForColorRendering (OpenGL workarounds): Disabled"
+        - listitem [ref=e243]: "RGBDXT1TexturesSampleZeroAlpha (OpenGL workarounds): Disabled"
+        - listitem [ref=e244]: "addAndTrueToLoopCondition (OpenGL workarounds): Disabled"
+        - listitem [ref=e245]: "adjustSrcDstRegionForBlitFramebuffer (OpenGL workarounds): Enabled"
+        - listitem [ref=e246]: "allowAstcFormats (OpenGL workarounds): Enabled"
+        - listitem [ref=e247]: "allowClearForRobustResourceInit (OpenGL workarounds): Disabled"
+        - listitem [ref=e248]: "allowETCFormats (OpenGL workarounds): Enabled"
+        - listitem [ref=e249]: "alwaysCallUseProgramAfterLink (OpenGL workarounds): Enabled"
+        - listitem [ref=e250]: "alwaysUnbindFramebufferTexture2D (OpenGL workarounds): Disabled"
+        - listitem [ref=e251]: "avoid1BitAlphaTextureFormats (OpenGL workarounds): Disabled"
+        - listitem [ref=e252]: "avoidBindFragDataLocation (OpenGL workarounds): Disabled"
+        - listitem [ref=e253]: "bgraTexImageFormatsBroken (OpenGL workarounds): Disabled"
+        - listitem [ref=e254]: "bindCompleteFramebufferForTimerQueries (OpenGL workarounds): Disabled"
+        - listitem [ref=e255]: "bindTransformFeedbackBufferBeforeBindBufferRange (OpenGL workarounds): Disabled"
+        - listitem [ref=e256]: "clampArrayAccess (OpenGL workarounds): Disabled"
+        - listitem [ref=e257]: "clampFragDepth (OpenGL workarounds): Disabled"
+        - listitem [ref=e258]: "clampMscRate (OpenGL workarounds): Enabled"
+        - listitem [ref=e259]: "clampPointSize (OpenGL workarounds): Disabled"
+        - listitem [ref=e260]: "clearsWithGapsNeedFlush (OpenGL workarounds): Disabled"
+        - listitem [ref=e261]: "clipSrcRegionForBlitFramebuffer (OpenGL workarounds): Disabled"
+        - listitem [ref=e262]: "corruptProgramBinaryForTesting (OpenGL workarounds): Disabled"
+        - listitem [ref=e263]: "decodeEncodeSRGBForGenerateMipmap (OpenGL workarounds): Disabled"
+        - listitem [ref=e264]: "disableBaseInstanceVertex (OpenGL workarounds): Enabled"
+        - listitem [ref=e265]: "disableBlendEquationAdvanced (OpenGL workarounds): Disabled"
+        - listitem [ref=e266]: "disableClearTexImageForRobustInit (OpenGL workarounds): Disabled"
+        - listitem [ref=e267]: "disableClipControl (OpenGL features): Disabled"
+        - listitem [ref=e268]: "disableDrawBuffersIndexed (OpenGL workarounds): Disabled"
+        - listitem [ref=e269]: "disableGPUSwitchingSupport (OpenGL workarounds): Disabled"
+        - listitem [ref=e270]: "disableMSAASampleCount1 (OpenGL workarounds): Disabled"
+        - listitem [ref=e271]: "disableMultisampledRenderToTexture (OpenGL workarounds): Disabled"
+        - listitem [ref=e272]: "disableNativeParallelCompile (OpenGL workarounds): Disabled"
+        - listitem [ref=e273]: "disablePassthroughShaders (OpenGL workarounds): Disabled"
+        - listitem [ref=e274]: "disableRenderSnorm (OpenGL workarounds): Disabled"
+        - listitem [ref=e275]: "disableSemaphoreFd (OpenGL workarounds): Disabled"
+        - listitem [ref=e276]: "disableSyncControlSupport (OpenGL workarounds): Disabled"
+        - listitem [ref=e277]: "disableTextureClampToBorder (OpenGL workarounds): Disabled"
+        - listitem [ref=e278]: "disableTextureMirrorClampToEdge (OpenGL workarounds): Disabled"
+        - listitem [ref=e279]: "disableTiledRendering (OpenGL workarounds): Disabled"
+        - listitem [ref=e280]: "disableTimestampQueries (OpenGL workarounds): Disabled"
+        - listitem [ref=e281]: "doesSRGBClearsOnLinearFramebufferAttachments (OpenGL workarounds): Enabled"
+        - listitem [ref=e282]: "dontInitializeUninitializedLocals (OpenGL workarounds): Disabled"
+        - listitem [ref=e283]: "dontInvalidateIncompleteFBOs (OpenGL workarounds): Disabled"
+        - listitem [ref=e284]: "dontUseLoopsToInitializeVariables (OpenGL workarounds): Disabled"
+        - listitem [ref=e285]: "emitMaxGlsl400ForTesting (OpenGL workarounds): Disabled"
+        - listitem [ref=e286]: "emulateAbsIntFunction (OpenGL workarounds): Disabled"
+        - listitem [ref=e287]: "emulateAtan2Float (OpenGL workarounds): Disabled"
+        - listitem [ref=e288]: "emulateClipDistanceState (OpenGL workarounds): Disabled"
+        - listitem [ref=e289]: "emulateClipOrigin (OpenGL workarounds): Disabled"
+        - listitem [ref=e290]: "emulateCopyTexImage2D (OpenGL workarounds): Disabled"
+        - listitem [ref=e291]: "emulateCopyTexImage2DFromRenderbuffers (OpenGL workarounds): Disabled"
+        - listitem [ref=e292]: "emulateImmutableCompressedTexture3D (OpenGL workarounds): Disabled"
+        - listitem [ref=e293]: "emulateMaxVertexAttribStride (OpenGL workarounds): Disabled"
+        - listitem [ref=e294]: "emulatePackSkipRowsAndPackSkipPixels (OpenGL workarounds): Disabled"
+        - listitem [ref=e295]: "emulatePrimitiveRestartFixedIndex (OpenGL workarounds): Disabled"
+        - listitem [ref=e296]: "emulateRGB10 (OpenGL workarounds): Disabled"
+        - listitem [ref=e297]: "ensureNonEmptyBufferIsBoundForDraw (OpenGL features): Disabled"
+        - listitem [ref=e298]: "expandFragmentOutputsToVec4 (OpenGL workarounds): Disabled"
+        - listitem [ref=e299]: "explicitFragmentLocations (OpenGL workarounds): Disabled"
+        - listitem [ref=e300]: "finishDoesNotCauseQueriesToBeAvailable (OpenGL workarounds): Disabled"
+        - listitem [ref=e301]: "flushBeforeDeleteTextureIfCopiedTo (OpenGL workarounds): Disabled"
+        - listitem [ref=e302]: "flushOnFramebufferChange (OpenGL workarounds): Disabled"
+        - listitem [ref=e303]: "forceLumaWorkaroundForSameTextureCopyTexImage2D (OpenGL workarounds): Disabled"
+        - listitem [ref=e304]: "forceMaxCombinedShaderOutputResources (OpenGL features): Disabled"
+        - listitem [ref=e305]: "initFragmentOutputVariables (OpenGL workarounds): Disabled"
+        - listitem [ref=e306]: "initializeCurrentVertexAttributes (OpenGL workarounds): Disabled"
+        - listitem [ref=e307]: "keepBufferShadowCopy (OpenGL workarounds): Disabled"
+        - listitem [ref=e308]: "limitMax3dArrayTextureSizeTo1024 (OpenGL workarounds): Disabled"
+        - listitem [ref=e309]: "limitMaxBufferSizeTo1gb (OpenGL workarounds): Disabled"
+        - listitem [ref=e310]: "limitMaxMSAASamplesTo4 (OpenGL workarounds): Disabled"
+        - listitem [ref=e311]: "limitWebglMaxTextureSizeTo4096 (OpenGL workarounds): Disabled"
+        - listitem [ref=e312]: "limitWebglMaxTextureSizeTo8192 (OpenGL workarounds): Disabled"
+        - listitem [ref=e313]: "multiviewViaViewportArray (OpenGL features): Disabled"
+        - listitem [ref=e314]: "packLastRowSeparatelyForPaddingInclusion (OpenGL workarounds): Disabled"
+        - listitem [ref=e315]: "packOverlappingRowsSeparatelyPackBuffer (OpenGL workarounds): Disabled"
+        - listitem [ref=e316]: "passHighpToPackUnormSnormBuiltins (OpenGL workarounds): Disabled"
+        - listitem [ref=e317]: "preAddTexelFetchOffsets (OpenGL workarounds): Disabled"
+        - listitem [ref=e318]: "preTransformTextureCubeGradDerivatives (OpenGL workarounds): Disabled"
+        - listitem [ref=e319]: "promotePackedFormatsTo8BitPerChannel (OpenGL workarounds): Disabled"
+        - listitem [ref=e320]: "queryCounterBitsGeneratesErrors (OpenGL workarounds): Disabled"
+        - listitem [ref=e321]: "readPixelsUsingImplementationColorReadFormatForNorm16 (OpenGL workarounds): Disabled"
+        - listitem [ref=e322]: "reapplyUBOBindingsAfterUsingBinaryProgram (OpenGL workarounds): Disabled"
+        - listitem [ref=e323]: "recreateFboUponFlush (OpenGL workarounds): Disabled"
+        - listitem [ref=e324]: "recreateMipmapLevelsBeforeGenerate (OpenGL workarounds): Enabled"
+        - listitem [ref=e325]: "regenerateStructNames (OpenGL workarounds): Disabled"
+        - listitem [ref=e326]: "removeDynamicIndexingOfSwizzledVector (OpenGL workarounds): Disabled"
+        - listitem [ref=e327]: "removeInvariantAndCentroidForESSL3 (OpenGL workarounds): Disabled"
+        - listitem [ref=e328]: "resetSampleCoverageOnFBOChange (OpenGL workarounds): Disabled"
+        - listitem [ref=e329]: "resetTexImage2DBaseLevel (OpenGL workarounds): Disabled"
+        - listitem [ref=e330]: "resyncDepthRangeOnClipControl (OpenGL workarounds): Disabled"
+        - listitem [ref=e331]: "rewriteRepeatedAssignToSwizzled (OpenGL workarounds): Disabled"
+        - listitem [ref=e332]: "rewriteRowMajorMatrices (OpenGL workarounds): Disabled"
+        - listitem [ref=e333]: "sanitizeAMDGPURendererString (OpenGL workarounds): Disabled"
+        - listitem [ref=e334]: "scalarizeVecAndMatConstructorArgs (OpenGL workarounds): Disabled"
+        - listitem [ref=e335]: "setPrimitiveRestartFixedIndexForDrawArrays (OpenGL workarounds): Disabled"
+        - listitem [ref=e336]: "setZeroLevelBeforeGenerateMipmap (OpenGL workarounds): Disabled"
+        - listitem [ref=e337]: "shiftInstancedArrayDataWithOffset (OpenGL workarounds): Disabled"
+        - listitem [ref=e338]: "srgbBlendingBroken (OpenGL workarounds): Disabled"
+        - listitem [ref=e339]: "supportsFragmentShaderInterlockARB (OpenGL features): Disabled"
+        - listitem [ref=e340]: "supportsFragmentShaderInterlockNV (OpenGL features): Disabled"
+        - listitem [ref=e341]: "supportsFragmentShaderOrderingINTEL (OpenGL features): Disabled"
+        - listitem [ref=e342]: "supportsShaderFramebufferFetchEXT (OpenGL features): Enabled"
+        - listitem [ref=e343]: "supportsShaderFramebufferFetchNonCoherentEXT (OpenGL features): Enabled"
+        - listitem [ref=e344]: "syncAllVertexArraysToDefault (OpenGL workarounds): Disabled"
+        - listitem [ref=e345]: "syncDefaultVertexArraysToDefault (OpenGL workarounds): Enabled"
+        - listitem [ref=e346]: "unbindFBOBeforeSwitchingContext (OpenGL workarounds): Disabled"
+        - listitem [ref=e347]: "unfoldShortCircuits (OpenGL workarounds): Disabled"
+        - listitem [ref=e348]: "unpackLastRowSeparatelyForPaddingInclusion (OpenGL workarounds): Disabled"
+        - listitem [ref=e349]: "unpackOverlappingRowsSeparatelyUnpackBuffer (OpenGL workarounds): Disabled"
+        - listitem [ref=e350]: "unsizedSRGBReadPixelsDoesntTransform (OpenGL workarounds): Disabled"
+        - listitem [ref=e351]: "uploadTextureDataInChunks (OpenGL workarounds): Disabled"
+        - listitem [ref=e352]: "useIntermediateTextureForGenerateMipmap (OpenGL workarounds): Disabled"
+        - listitem [ref=e353]: "useUnusedBlocksWithStandardOrSharedLayout (OpenGL workarounds): Disabled"
+        - listitem [ref=e354]: "validateMaxPerStageUniformBlocksAtCompileTime (OpenGL workarounds): Disabled"
+        - listitem [ref=e355]: "vertexIDDoesNotIncludeBaseVertex (OpenGL workarounds): Disabled"
+    - generic:
+      - list
+    - generic [ref=e356]:
+      - heading "Compositor Information" [level=3] [ref=e357]
+      - table [ref=e359]:
+        - rowgroup [ref=e360]:
+          - row "Tile Update Mode One-copy" [ref=e361]:
+            - cell "Tile Update Mode" [ref=e362]
+            - cell "One-copy" [ref=e363]
+          - row "Partial Raster Enabled" [ref=e364]:
+            - cell "Partial Raster" [ref=e365]
+            - cell "Enabled" [ref=e366]
+    - generic [ref=e367]:
+      - heading "Display(s) Information" [level=3] [ref=e368]
+      - table [ref=e370]:
+        - rowgroup [ref=e371]:
+          - row "Info Display[45] bounds=[0,0 1920x1080], workarea=[0,0 1920x1080], scale=1, rotation=0, panel_rotation=0 external detected" [ref=e372]:
+            - cell "Info" [ref=e373]
+            - cell "Display[45] bounds=[0,0 1920x1080], workarea=[0,0 1920x1080], scale=1, rotation=0, panel_rotation=0 external detected" [ref=e374]
+          - 'row "Color space (all) {primaries:BT709, transfer:SRGB, matrix:RGB, range:FULL}" [ref=e375]':
+            - cell "Color space (all)" [ref=e376]
+            - 'cell "{primaries:BT709, transfer:SRGB, matrix:RGB, range:FULL}" [ref=e377]'
+          - row "Buffer format (all) RGBA_8888" [ref=e378]:
+            - cell "Buffer format (all)" [ref=e379]
+            - cell "RGBA_8888" [ref=e380]
+          - 'row "Color volume {name:''srgb'', r:[0.6400, 0.3300], g:[0.3000, 0.6000], b:[0.1500, 0.0600], w:[0.3127, 0.3290]}" [ref=e381]':
+            - cell "Color volume" [ref=e382]
+            - 'cell "{name:''srgb'', r:[0.6400, 0.3300], g:[0.3000, 0.6000], b:[0.1500, 0.0600], w:[0.3127, 0.3290]}" [ref=e383]'
+          - row "SDR white level in nits 203" [ref=e384]:
+            - cell "SDR white level in nits" [ref=e385]
+            - cell "203" [ref=e386]
+          - row "HDR relative maximum luminance 1" [ref=e387]:
+            - cell "HDR relative maximum luminance" [ref=e388]
+            - cell "1" [ref=e389]
+          - row "Bits per color component 8" [ref=e390]:
+            - cell "Bits per color component" [ref=e391]
+            - cell "8" [ref=e392]
+          - row "Bits per pixel 24" [ref=e393]:
+            - cell "Bits per pixel" [ref=e394]
+            - cell "24" [ref=e395]
+    - generic [ref=e396]:
+      - heading "Video Acceleration Information" [level=3] [ref=e397]
+      - table [ref=e399]:
+        - rowgroup [ref=e400]:
+          - row "Decoding" [ref=e401]:
+            - cell "Decoding" [ref=e402]
+            - cell [ref=e403]
+          - row "Decode h264 baseline 16x16 to 4096x4096 pixels" [ref=e404]:
+            - cell "Decode h264 baseline" [ref=e405]
+            - cell "16x16 to 4096x4096 pixels" [ref=e406]
+          - row "Decode h264 main 16x16 to 4096x4096 pixels" [ref=e407]:
+            - cell "Decode h264 main" [ref=e408]
+            - cell "16x16 to 4096x4096 pixels" [ref=e409]
+          - row "Decode h264 high 16x16 to 4096x4096 pixels" [ref=e410]:
+            - cell "Decode h264 high" [ref=e411]
+            - cell "16x16 to 4096x4096 pixels" [ref=e412]
+          - row "Decode vp8 16x16 to 4096x4096 pixels" [ref=e413]:
+            - cell "Decode vp8" [ref=e414]
+            - cell "16x16 to 4096x4096 pixels" [ref=e415]
+          - row "Decode hevc main 16x16 to 8192x8192 pixels" [ref=e416]:
+            - cell "Decode hevc main" [ref=e417]
+            - cell "16x16 to 8192x8192 pixels" [ref=e418]
+          - row "Decode hevc main still-picture 16x16 to 8192x8192 pixels" [ref=e419]:
+            - cell "Decode hevc main still-picture" [ref=e420]
+            - cell "16x16 to 8192x8192 pixels" [ref=e421]
+          - row "Encoding" [ref=e422]:
+            - cell "Encoding" [ref=e423]
+            - cell [ref=e424]
+    - generic [ref=e425]:
+      - heading "Vulkan Information" [level=3] [ref=e426]
+      - generic:
+        - table:
+          - rowgroup
+    - generic [ref=e427]:
+      - heading "Device Performance Information" [level=3] [ref=e428]
+      - generic:
+        - table:
+          - rowgroup
+    - generic:
+      - generic:
+        - table:
+          - rowgroup
+    - generic:
+      - list
+    - generic:
+      - list
+    - generic:
+      - list
+    - generic [ref=e429]:
+      - heading "Log Messages" [level=3] [ref=e430]
+      - list [ref=e431]:
+        - listitem [ref=e432]: "[2969:2969:0726/184407.328817:WARNING:sandbox/policy/linux/sandbox_linux.cc:404] : InitializeSandbox() called with multiple threads in process gpu-process."

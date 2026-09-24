@@ -1,0 +1,2191 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Google News" [ref=e7] [cursor=pointer]:
+        - /url: ./?hl=en-IN&gl=IN&ceid=IN%3Aen
+        - generic [ref=e9]: News
+      - generic [ref=e10]:
+        - search [ref=e12]:
+          - generic [ref=e17]:
+            - combobox "Search for topics, locations & sources" [ref=e19]: layoffs
+            - status
+          - button "Advanced search" [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]:
+              - generic "Advanced search" [ref=e22]:
+                - img [ref=e23]
+              - tooltip [ref=e25]: Advanced search
+          - button "Clear search" [ref=e1753] [cursor=pointer]:
+            - img [ref=e1754]
+          - button "Search" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+        - generic [ref=e30]:
+          - generic [ref=e35]:
+            - button "Help" [ref=e36] [cursor=pointer]:
+              - img [ref=e38]
+            - tooltip [ref=e40]: Help
+          - generic [ref=e45]:
+            - button "Settings" [ref=e46] [cursor=pointer]:
+              - img [ref=e48]
+            - tooltip [ref=e51]: Settings
+      - generic [ref=e53]:
+        - button "Google apps" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+        - link "Sign in" [ref=e61] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?passive=1209600&continue=https%3A%2F%2Fnews.google.com%2Fsearch%3Fq%3Dlayoffs%26hl%3Den-IN%26gl%3DIN%26ceid%3DIN%253Aen&followup=https%3A%2F%2Fnews.google.com%2Fsearch%3Fq%3Dlayoffs%26hl%3Den-IN%26gl%3DIN%26ceid%3DIN%253Aen&hl=en-IN&ec=GAZAqgM
+    - navigation [ref=e64]:
+      - tablist [ref=e65]:
+        - tab "Home" [ref=e66] [cursor=pointer]:
+          - tab "Home" [ref=e67]
+        - tab "For you" [ref=e68] [cursor=pointer]:
+          - tab "For you" [ref=e69]
+        - tab "Following" [ref=e70] [cursor=pointer]:
+          - tab "Following" [ref=e71]
+        - tab "News Showcase" [ref=e72] [cursor=pointer]:
+          - tab "News Showcase" [ref=e73]
+        - tab "India" [ref=e76] [cursor=pointer]:
+          - tab "India" [ref=e77]
+        - tab "World" [ref=e78] [cursor=pointer]:
+          - tab "World" [ref=e79]
+        - tab "Local" [ref=e80] [cursor=pointer]:
+          - tab "Local" [ref=e81]
+        - tab "Business" [ref=e82] [cursor=pointer]:
+          - tab "Business" [ref=e83]
+        - tab "Technology" [ref=e84] [cursor=pointer]:
+          - tab "Technology" [ref=e85]
+        - tab "Entertainment" [ref=e86] [cursor=pointer]:
+          - tab "Entertainment" [ref=e87]
+        - tab "Sports" [ref=e88] [cursor=pointer]:
+          - tab "Sports" [ref=e89]
+        - tab "Science" [ref=e90] [cursor=pointer]:
+          - tab "Science" [ref=e91]
+        - tab "Health" [ref=e92] [cursor=pointer]:
+          - tab "Health" [ref=e93]
+  - generic [ref=e1757]: Page loaded.
+  - main [ref=e1761]:
+    - generic [ref=e1763]:
+      - generic [ref=e1766]:
+        - generic [ref=e1767]:
+          - link [ref=e1769] [cursor=pointer]:
+            - /url: ./read/CBMiaEFVX3lxTE8ycnBEWlVyN2U4RlVqWU1TN3R6TnJXOF9FdlU3RXVUTEI0TEwtRERwNUlDclBpRFZuaGcybzZEc1AwMGJWMGcyQ19GRV9obGJkVEF3MEpWOUhWeWp3VkVTdVhnaENGU0Ni?hl=en-IN&gl=IN&ceid=IN%3Aen
+          - generic [ref=e1771]:
+            - generic [ref=e1772]:
+              - generic [ref=e1775]: calcalistech.com
+              - generic [ref=e1779]:
+                - generic:
+                  - button "More - Papaya cuts 30 employees as Israeli gaming company restructures" [ref=e1780] [cursor=pointer]:
+                    - img [ref=e1782]
+                  - tooltip [ref=e1784]: More
+            - link "Papaya cuts 30 employees as Israeli gaming company restructures - calcalistech.com - 3 hours ago" [ref=e1785] [cursor=pointer]:
+              - /url: ./read/CBMiaEFVX3lxTE8ycnBEWlVyN2U4RlVqWU1TN3R6TnJXOF9FdlU3RXVUTEI0TEwtRERwNUlDclBpRFZuaGcybzZEc1AwMGJWMGcyQ19GRV9obGJkVEF3MEpWOUhWeWp3VkVTdVhnaENGU0Ni?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: Papaya cuts 30 employees as Israeli gaming company restructures
+          - figure [ref=e1786]
+        - time [ref=e1788]: 3 hours ago
+      - generic [ref=e1789]:
+        - separator [ref=e1791]
+        - generic [ref=e1793]:
+          - generic [ref=e1794]:
+            - link [ref=e1796] [cursor=pointer]:
+              - /url: ./read/CBMi2gJBVV95cUxQSXN3VUdrYXpLdnEwcGtUVF8tQ0JIWDBZVlI4U1YzNENlZy1Zc0FnV0tzbC0ydVJmYlZlM2ZWVGtiZ04tdy1VS3lNNkNWMllFTDNmazBDU2w0T2N4Y2RYUkZ4VVU4eGZHZVpmZkJQLWJGZW91UVRKcWJhYzNFVzlyR2NkRWNEQlprY0dyX19tX1Vfem9NRlV5eTlraEV5dFRCY0lhcEk1bElzU093LUhOZEtDeEZJMHRUT3o2LXlkZEpVWjJQNDhPNUJVRzlxTm56Y0VRMU8wdk85MVNSTmZ0anBrWkllN2dyWjNmeVB5WmFZQkY3eldvOXFMU1JnMV9aY2toVEJhMC1DeUVtU0duZHdLSndmQXV4WXk1V1E5dFJfYjJCMWoyVzBrNlB3Mm9qeWpST3ZIWWpmMXhwT1JVY3JJeldDejlmU0lZcm9LZDR5M1dobU5rWU1n0gHfAkFVX3lxTFBCQzFaS1BRckp4MlZVbHZoUDlaLWJhV29Qa2p2X3R4TzZ6S1ZnYWdfaWpTZ05hZE9zNXM0Y2Y0Z2pSWUkxak1DRkwyOG1nZnRCVWd3cFd0dkxyTk9mREtBQTV2ckNnZlI1aC15ZnhJNlRZM0wyVWQ2eFhoQkNhUTdjR25ZM2JMQWhBdldPTVJubUJ3TVROSEZzOWxwSnpfYWZZdWhIY3QwLUFuaXp3VUllRWhLRFQwS0Ztb191b1ZFM014VXYwVGoxQUUydHZsZGpxN0M0SloycW96cXJKTDJpVFdZWGpkRFdUdC1LSk16bklzLUJlQWotaDg3MXZ6TmxDVmFnVDhUX2JTNkU1a09FQ3NnMGZRUk1vREJ2QjQ0ZkkyLXczV0VMOW43SGFNZTVEb25vUURfVnBQc0x6cGh3QndLc19ZejZQbW81d1c4bE5uUjUxc1NwRllHdlI5SQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1798]:
+              - generic [ref=e1799]:
+                - generic [ref=e1802]: The Times of India
+                - generic [ref=e1806]:
+                  - generic:
+                    - 'button "More - ''All I ever wanted to do is be accepted'': Ryan Clark reveals he self-censored his identity at ESPN for ye" [ref=e1807] [cursor=pointer]':
+                      - img [ref=e1809]
+                    - tooltip [ref=e1811]: More
+              - 'link "''All I ever wanted to do is be accepted'': Ryan Clark reveals he self-censored his identity at ESPN for ye - The Times of India - Yesterday" [ref=e1812] [cursor=pointer]':
+                - /url: ./read/CBMi2gJBVV95cUxQSXN3VUdrYXpLdnEwcGtUVF8tQ0JIWDBZVlI4U1YzNENlZy1Zc0FnV0tzbC0ydVJmYlZlM2ZWVGtiZ04tdy1VS3lNNkNWMllFTDNmazBDU2w0T2N4Y2RYUkZ4VVU4eGZHZVpmZkJQLWJGZW91UVRKcWJhYzNFVzlyR2NkRWNEQlprY0dyX19tX1Vfem9NRlV5eTlraEV5dFRCY0lhcEk1bElzU093LUhOZEtDeEZJMHRUT3o2LXlkZEpVWjJQNDhPNUJVRzlxTm56Y0VRMU8wdk85MVNSTmZ0anBrWkllN2dyWjNmeVB5WmFZQkY3eldvOXFMU1JnMV9aY2toVEJhMC1DeUVtU0duZHdLSndmQXV4WXk1V1E5dFJfYjJCMWoyVzBrNlB3Mm9qeWpST3ZIWWpmMXhwT1JVY3JJeldDejlmU0lZcm9LZDR5M1dobU5rWU1n0gHfAkFVX3lxTFBCQzFaS1BRckp4MlZVbHZoUDlaLWJhV29Qa2p2X3R4TzZ6S1ZnYWdfaWpTZ05hZE9zNXM0Y2Y0Z2pSWUkxak1DRkwyOG1nZnRCVWd3cFd0dkxyTk9mREtBQTV2ckNnZlI1aC15ZnhJNlRZM0wyVWQ2eFhoQkNhUTdjR25ZM2JMQWhBdldPTVJubUJ3TVROSEZzOWxwSnpfYWZZdWhIY3QwLUFuaXp3VUllRWhLRFQwS0Ztb191b1ZFM014VXYwVGoxQUUydHZsZGpxN0M0SloycW96cXJKTDJpVFdZWGpkRFdUdC1LSk16bklzLUJlQWotaDg3MXZ6TmxDVmFnVDhUX2JTNkU1a09FQ3NnMGZRUk1vREJ2QjQ0ZkkyLXczV0VMOW43SGFNZTVEb25vUURfVnBQc0x6cGh3QndLc19ZejZQbW81d1c4bE5uUjUxc1NwRllHdlI5SQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "'All I ever wanted to do is be accepted': Ryan Clark reveals he self-censored his identity at ESPN for ye"
+            - figure [ref=e1813]
+          - time [ref=e1815]: Yesterday
+      - generic [ref=e1816]:
+        - separator [ref=e1818]
+        - generic [ref=e1820]:
+          - generic [ref=e1821]:
+            - link [ref=e1823] [cursor=pointer]:
+              - /url: ./read/CBMixAFBVV95cUxNVVpIcHZFUDY5bUtYMTNzU1duNDVxNFo2M2d3RE94QXZhSTZKMXA5ODQ4RWFIZG44UU9EdklPa2hCWFVPbFVoVTFlcjgxVndBMC10RzVaSHBNNVZQZ2tud1pCQkJpeTF3Z25qME5JbXEwdWZyUGlGOEtwNXoxNi1sLW9XcVhPZDhBNkVzWEVYSktOd19KR01qX0kzTndYNllTQTdBT0JLMDJrM3FHT3NRQjdTM3hYb2hrRklWcVJXM1h6bUwy0gHLAUFVX3lxTE5BMFp6cjhtMDBabWFrR0tlUTVnUmRVUnRDVDVwNzhpaEhhc0FiU245QUhtbDdickYtNkl3ODRTZnlRN3BETi1VZG1jU1RfaDFObDBjck0zcGpOMkRacjk5ekNqTEJ4STVJN0E5UE9mVzVNNW9oS3JIUHc2Z3BXalRrcGVlMnUyYWtVUzZJUERwUWZPVkh1RjJkVUlMei1RcUYzQ0o4aDFVcjBhTFMxZXRRME1EQ0czaFdRTzNoUXpnNUg3dGc4eXVneEM4?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1825]:
+              - generic [ref=e1826]:
+                - generic [ref=e1829]: The Indian Express
+                - generic [ref=e1833]:
+                  - generic:
+                    - button "More - Nothing denies reports of market exits but hints at fresh layoffs as part of restructuring" [ref=e1834] [cursor=pointer]:
+                      - img [ref=e1836]
+                    - tooltip [ref=e1838]: More
+              - link "Nothing denies reports of market exits but hints at fresh layoffs as part of restructuring - The Indian Express - 6 hours ago" [ref=e1839] [cursor=pointer]:
+                - /url: ./read/CBMixAFBVV95cUxNVVpIcHZFUDY5bUtYMTNzU1duNDVxNFo2M2d3RE94QXZhSTZKMXA5ODQ4RWFIZG44UU9EdklPa2hCWFVPbFVoVTFlcjgxVndBMC10RzVaSHBNNVZQZ2tud1pCQkJpeTF3Z25qME5JbXEwdWZyUGlGOEtwNXoxNi1sLW9XcVhPZDhBNkVzWEVYSktOd19KR01qX0kzTndYNllTQTdBT0JLMDJrM3FHT3NRQjdTM3hYb2hrRklWcVJXM1h6bUwy0gHLAUFVX3lxTE5BMFp6cjhtMDBabWFrR0tlUTVnUmRVUnRDVDVwNzhpaEhhc0FiU245QUhtbDdickYtNkl3ODRTZnlRN3BETi1VZG1jU1RfaDFObDBjck0zcGpOMkRacjk5ekNqTEJ4STVJN0E5UE9mVzVNNW9oS3JIUHc2Z3BXalRrcGVlMnUyYWtVUzZJUERwUWZPVkh1RjJkVUlMei1RcUYzQ0o4aDFVcjBhTFMxZXRRME1EQ0czaFdRTzNoUXpnNUg3dGc4eXVneEM4?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Nothing denies reports of market exits but hints at fresh layoffs as part of restructuring
+            - figure [ref=e1840]
+          - time [ref=e1842]: 6 hours ago
+      - generic [ref=e1843]:
+        - separator [ref=e1845]
+        - generic [ref=e1847]:
+          - generic [ref=e1848]:
+            - link [ref=e1850] [cursor=pointer]:
+              - /url: ./read/CBMiywFBVV95cUxOYXNWWmRRSzRyelpRVDJMbjhrbFBYeEJuRkpwTGZtNjhJYmtOM3VQc0hrdTAyUGJQUGdZUVRXU0hTdXRjYUs0aDk4aklJZjRFRVk4cldsYXZSdUtDeHp5Y0JGV1R1QU95RzEtd3RTbTVtUnlpaW0yLXpWU0dYOWcwT1F1MEU3aTlETXZvaExUX0VZR0tWMjZac0E1Z0xmVUJiZlFlWnl0bklfV3RnSVZlYnhLRHhlYnFHOWhTOHB4RmpvNHhKOGhKMlNfa9IB0AFBVV95cUxQMDl3MFNPbkRzNnVKeGZGVk8tNjRPREpsR2dtZ293MHdzM1VNOG94amRjS1NTSkF1eXkyUTBodTF0anlSYWVETGR5X3d6VmtvMG1JQTg1WEpHM3B6cmF5cGkzRW1OVGRYcHZNWVQxNUJHTjlRYmlEUk1udExpOTRYUElkSU1rcmpkYmZuX2Iyb1JNcGM5NFYwQjNDbzFrWjNfSkxyYk5aR2sycHdkWE5mWE1wc1RiNHFPc19oZnAwd04yWThtWE5uQXZHZi1MWFFn?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1852]:
+              - generic [ref=e1853]:
+                - generic [ref=e1856]: livemint.com
+                - generic [ref=e1860]:
+                  - generic:
+                    - 'button "More - AI News Tracker: An Open AI agent goes rogue, while Amazon plans AI unit layoffs" [ref=e1861] [cursor=pointer]':
+                      - img [ref=e1863]
+                    - tooltip [ref=e1865]: More
+              - 'link "AI News Tracker: An Open AI agent goes rogue, while Amazon plans AI unit layoffs - livemint.com - Yesterday" [ref=e1866] [cursor=pointer]':
+                - /url: ./read/CBMiywFBVV95cUxOYXNWWmRRSzRyelpRVDJMbjhrbFBYeEJuRkpwTGZtNjhJYmtOM3VQc0hrdTAyUGJQUGdZUVRXU0hTdXRjYUs0aDk4aklJZjRFRVk4cldsYXZSdUtDeHp5Y0JGV1R1QU95RzEtd3RTbTVtUnlpaW0yLXpWU0dYOWcwT1F1MEU3aTlETXZvaExUX0VZR0tWMjZac0E1Z0xmVUJiZlFlWnl0bklfV3RnSVZlYnhLRHhlYnFHOWhTOHB4RmpvNHhKOGhKMlNfa9IB0AFBVV95cUxQMDl3MFNPbkRzNnVKeGZGVk8tNjRPREpsR2dtZ293MHdzM1VNOG94amRjS1NTSkF1eXkyUTBodTF0anlSYWVETGR5X3d6VmtvMG1JQTg1WEpHM3B6cmF5cGkzRW1OVGRYcHZNWVQxNUJHTjlRYmlEUk1udExpOTRYUElkSU1rcmpkYmZuX2Iyb1JNcGM5NFYwQjNDbzFrWjNfSkxyYk5aR2sycHdkWE5mWE1wc1RiNHFPc19oZnAwd04yWThtWE5uQXZHZi1MWFFn?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "AI News Tracker: An Open AI agent goes rogue, while Amazon plans AI unit layoffs"
+            - figure [ref=e1867]
+          - time [ref=e1869]: Yesterday
+      - generic [ref=e1870]:
+        - separator [ref=e1872]
+        - generic [ref=e1874]:
+          - generic [ref=e1875]:
+            - link [ref=e1877] [cursor=pointer]:
+              - /url: ./read/CBMipgFBVV95cUxOdmdPeHNOejlqSVg1cGZSZHk0RDBnUFE0QWpjVW1Tc1p2ODAxQldRUWNiUmR1OU1IS2hBRHJic0lMQ0tiQjVxZ000RVdodEZUcE1PRU1CSzdHLWNkd181RkpORGtpS3lYSW15MmdLSlBTak9DcUNkZkh4bmdWeGxaRDRQWFVvQm13QVJoRkpnWF9UUnpYcV80RGh3YVhSZFJDdFdWeG1n0gGrAUFVX3lxTE5JQ2wxbURZTVhmd19MbDVsQzVsb0R6bzdIdXNydWJmaDJMVDBSMTZSVmxHalp2Z3hfbThmQ0tiN19WNi1CNDd3V1pEU1Utbm1jR0xzdnJJLUxlQ1dSbG5rY3FLeFc5ZW8xT0xlMjJIWlRIZnduT0JfVTNqcmlGcHZWUWtMY0szRXZ5eGhpeFItVUI2VjJmemhJZGFtOHhEc1BGRzh4V3ZPams3Yw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1879]:
+              - generic [ref=e1880]:
+                - generic [ref=e1883]: Inshorts
+                - generic [ref=e1887]:
+                  - generic:
+                    - button "More - Nothing confirms layoffs amid report of exit from 12 markets | 'Exits include Middle East, Japan' | Inshorts" [ref=e1888] [cursor=pointer]:
+                      - img [ref=e1890]
+                    - tooltip [ref=e1892]: More
+              - link "Nothing confirms layoffs amid report of exit from 12 markets | 'Exits include Middle East, Japan' | Inshorts - Inshorts - 19 hours ago" [ref=e1893] [cursor=pointer]:
+                - /url: ./read/CBMipgFBVV95cUxOdmdPeHNOejlqSVg1cGZSZHk0RDBnUFE0QWpjVW1Tc1p2ODAxQldRUWNiUmR1OU1IS2hBRHJic0lMQ0tiQjVxZ000RVdodEZUcE1PRU1CSzdHLWNkd181RkpORGtpS3lYSW15MmdLSlBTak9DcUNkZkh4bmdWeGxaRDRQWFVvQm13QVJoRkpnWF9UUnpYcV80RGh3YVhSZFJDdFdWeG1n0gGrAUFVX3lxTE5JQ2wxbURZTVhmd19MbDVsQzVsb0R6bzdIdXNydWJmaDJMVDBSMTZSVmxHalp2Z3hfbThmQ0tiN19WNi1CNDd3V1pEU1Utbm1jR0xzdnJJLUxlQ1dSbG5rY3FLeFc5ZW8xT0xlMjJIWlRIZnduT0JfVTNqcmlGcHZWUWtMY0szRXZ5eGhpeFItVUI2VjJmemhJZGFtOHhEc1BGRzh4V3ZPams3Yw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Nothing confirms layoffs amid report of exit from 12 markets | 'Exits include Middle East, Japan' | Inshorts
+            - figure [ref=e1894]
+          - time [ref=e1896]: 19 hours ago
+      - generic [ref=e1897]:
+        - separator [ref=e1899]
+        - generic [ref=e1901]:
+          - generic [ref=e1902]:
+            - link [ref=e1904] [cursor=pointer]:
+              - /url: ./read/CBMiwgFBVV95cUxNNTktMExLdDM5THhEaUFfdXRPY2xLTW1nYnBfdXNsZGp0YzhRd05KN2VJa2NZSXdQQXZEdTJxdXNvZFRPa0tIbFl4dEE0eU4xbERlUzViVVlyOS1RaHhWd0hFcWlPNTRCN0o1elB6TUdnNzdhaTZDd0YwTzdWTXdhQ2syaDZLQWJQbEg1Y1dIbjY4NzZ4eVFMOTJaX2s2a1QxWmh2TmhFbXhlVjF6dmQyTkdrMW1xWTd1bTJUUmdsRE5zQdIBygFBVV95cUxPTVdaMWNySFRrZnBMVmtEek5wUENUeFR2UGFtUHEyaGdpU2lNUDVSVzlMUmFURmZ3aFA5Yzd1eGJscFhudE90dDdaR0FraU5jcXZwSmc5NDZ6SG13Vkg0aG9lNkFXR21hVURqSk83QVR0QnRxRTMzRmhtYXpFUHV2Y3lFZjlHbUQwVGt1eWtsYWNWNHZfeFFYV1FoTVBxOFhoYjlodElPaTV2eW5oNmhKU1NUaXhxUWNGSnh6UHJvRkRjWlVHNU9IR1pB?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1906]:
+              - generic [ref=e1907]:
+                - generic [ref=e1910]: NDTV
+                - generic [ref=e1914]:
+                  - generic:
+                    - button "More - The Hidden Cost Of AI Layoffs That Few Companies Are Talking About" [ref=e1915] [cursor=pointer]:
+                      - img [ref=e1917]
+                    - tooltip [ref=e1919]: More
+              - link "The Hidden Cost Of AI Layoffs That Few Companies Are Talking About - NDTV - 3 days ago - By Amit Chaturvedi" [ref=e1920] [cursor=pointer]:
+                - /url: ./read/CBMiwgFBVV95cUxNNTktMExLdDM5THhEaUFfdXRPY2xLTW1nYnBfdXNsZGp0YzhRd05KN2VJa2NZSXdQQXZEdTJxdXNvZFRPa0tIbFl4dEE0eU4xbERlUzViVVlyOS1RaHhWd0hFcWlPNTRCN0o1elB6TUdnNzdhaTZDd0YwTzdWTXdhQ2syaDZLQWJQbEg1Y1dIbjY4NzZ4eVFMOTJaX2s2a1QxWmh2TmhFbXhlVjF6dmQyTkdrMW1xWTd1bTJUUmdsRE5zQdIBygFBVV95cUxPTVdaMWNySFRrZnBMVmtEek5wUENUeFR2UGFtUHEyaGdpU2lNUDVSVzlMUmFURmZ3aFA5Yzd1eGJscFhudE90dDdaR0FraU5jcXZwSmc5NDZ6SG13Vkg0aG9lNkFXR21hVURqSk83QVR0QnRxRTMzRmhtYXpFUHV2Y3lFZjlHbUQwVGt1eWtsYWNWNHZfeFFYV1FoTVBxOFhoYjlodElPaTV2eW5oNmhKU1NUaXhxUWNGSnh6UHJvRkRjWlVHNU9IR1pB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: The Hidden Cost Of AI Layoffs That Few Companies Are Talking About
+            - figure [ref=e1921]
+          - generic [ref=e1922]:
+            - time [ref=e1923]: 3 days ago
+            - separator [ref=e1924]
+            - generic [ref=e1925]: By Amit Chaturvedi
+      - generic [ref=e1926]:
+        - separator [ref=e1928]
+        - generic [ref=e1930]:
+          - generic [ref=e1931]:
+            - link [ref=e1933] [cursor=pointer]:
+              - /url: ./read/CBMid0FVX3lxTE95ZkF5RmdTR1l1ZTJpeHIxYVQteVVWa3dNX1Q5SFZFVS1saFhIS05jX3RmOWpvcXZQTTRnN21OYXFTZklSX3pnQlFVZmxkMFdoNV83cl9KOUZ2R3Fkc1hOOS1OZlFvUjF2Z3YwQ3oyOWFNbktjY1ZB?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1935]:
+              - generic [ref=e1936]:
+                - generic [ref=e1939]: The Verge
+                - generic [ref=e1943]:
+                  - generic:
+                    - button "More - Nothing confirms layoffs, but calls market exit rumors ‘fake news’" [ref=e1944] [cursor=pointer]:
+                      - img [ref=e1946]
+                    - tooltip [ref=e1948]: More
+              - link "Nothing confirms layoffs, but calls market exit rumors ‘fake news’ - The Verge - 2 days ago - By Stevie Bonifield" [ref=e1949] [cursor=pointer]:
+                - /url: ./read/CBMid0FVX3lxTE95ZkF5RmdTR1l1ZTJpeHIxYVQteVVWa3dNX1Q5SFZFVS1saFhIS05jX3RmOWpvcXZQTTRnN21OYXFTZklSX3pnQlFVZmxkMFdoNV83cl9KOUZ2R3Fkc1hOOS1OZlFvUjF2Z3YwQ3oyOWFNbktjY1ZB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Nothing confirms layoffs, but calls market exit rumors ‘fake news’
+            - figure [ref=e1950]
+          - generic [ref=e1951]:
+            - time [ref=e1952]: 2 days ago
+            - separator [ref=e1953]
+            - generic [ref=e1954]: By Stevie Bonifield
+      - generic [ref=e1955]:
+        - separator [ref=e1957]
+        - generic [ref=e1959]:
+          - generic [ref=e1960]:
+            - link [ref=e1962] [cursor=pointer]:
+              - /url: ./read/CBMi4gFBVV95cUxPTmdoSFJmXzZnWUkzbkEwZnMxb1NGT0pnVEpwODNKRWltQ29LQWFET253cGxhTzZ1MGNNclpCZUk3M0QzcUp1bU5xNWx2bktHNXo1WDRPeFNSZHVXa1FodWlad0RqTUJoak8ySXdRZVZjM2V6bUptSUVtTk1uZWVacjVqQzlybU15YlVTU1ZRVUFSTUpoZjM4LVV4bE1CdUdpMmxLZThZS1BBc2RrS0JfMEpBRGxsMXUzUHVHQ2JTU3U3NTdnMHowQVdHLU9XMExVYW95YW1venItX0hzWUhpT0d30gHnAUFVX3lxTE0xRjI2RlVwQ3F0NGpYZnVFVkdISnZveFc2UlZsVU9yYlluX2V4cVJiYUd6RWxxSmhpeXdkdTdldVFQaThZTjJDQzMxdWJDV0hwdXRiODRXbmY0dWk1UFJDeldndmJ0eXNwTUpsRUhlMGhCU3laeExneWdzeG5wb3k0bGdqdW5yb3RsRDF6eHdOX3lLNWdxOVRfbTR0Q3ZUWlpEOWpKS1NjelJRNDV4ZF9wODlQMUtPU2V4RXI1bGUzOVExclluX0h3UFA1Smg0QVNMOUZ6d3NLT0NldTBySHJwRlEtZDQ5SQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1964]:
+              - generic [ref=e1965]:
+                - generic [ref=e1968]: Hindustan Times
+                - generic [ref=e1972]:
+                  - generic:
+                    - 'button "More - ESPN layoffs: Ryan Clark breaks down in tears over exit, says ''they still fired me'' | Hindustan Times" [ref=e1973] [cursor=pointer]':
+                      - img [ref=e1975]
+                    - tooltip [ref=e1977]: More
+              - 'link "ESPN layoffs: Ryan Clark breaks down in tears over exit, says ''they still fired me'' | Hindustan Times - Hindustan Times - Yesterday - By Ojas Jaiswal" [ref=e1978] [cursor=pointer]':
+                - /url: ./read/CBMi4gFBVV95cUxPTmdoSFJmXzZnWUkzbkEwZnMxb1NGT0pnVEpwODNKRWltQ29LQWFET253cGxhTzZ1MGNNclpCZUk3M0QzcUp1bU5xNWx2bktHNXo1WDRPeFNSZHVXa1FodWlad0RqTUJoak8ySXdRZVZjM2V6bUptSUVtTk1uZWVacjVqQzlybU15YlVTU1ZRVUFSTUpoZjM4LVV4bE1CdUdpMmxLZThZS1BBc2RrS0JfMEpBRGxsMXUzUHVHQ2JTU3U3NTdnMHowQVdHLU9XMExVYW95YW1venItX0hzWUhpT0d30gHnAUFVX3lxTE0xRjI2RlVwQ3F0NGpYZnVFVkdISnZveFc2UlZsVU9yYlluX2V4cVJiYUd6RWxxSmhpeXdkdTdldVFQaThZTjJDQzMxdWJDV0hwdXRiODRXbmY0dWk1UFJDeldndmJ0eXNwTUpsRUhlMGhCU3laeExneWdzeG5wb3k0bGdqdW5yb3RsRDF6eHdOX3lLNWdxOVRfbTR0Q3ZUWlpEOWpKS1NjelJRNDV4ZF9wODlQMUtPU2V4RXI1bGUzOVExclluX0h3UFA1Smg0QVNMOUZ6d3NLT0NldTBySHJwRlEtZDQ5SQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "ESPN layoffs: Ryan Clark breaks down in tears over exit, says 'they still fired me' | Hindustan Times"
+            - figure [ref=e1979]
+          - generic [ref=e1980]:
+            - time [ref=e1981]: Yesterday
+            - separator [ref=e1982]
+            - generic [ref=e1983]: By Ojas Jaiswal
+      - generic [ref=e1984]:
+        - separator [ref=e1986]
+        - generic [ref=e1988]:
+          - generic [ref=e1989]:
+            - link [ref=e1991] [cursor=pointer]:
+              - /url: ./read/CBMiqwFBVV95cUxQTGphNENoZkVsRngyaW1nUVllV1FjLVpwN0hBNnpib0x2LURBS1BMWEhWVWN0cnRFcDUybUlxQmE2cUZpTEhKZG9jVlZSajQzRXZQNlFpaTdteWxndzVZcTdTeW5mVXNFeUdTRXZKdkU1R19rUksySEM1NXlGeFdBT19xcnIxLVdiYTV5TUdlaWZRVGV4YnZQaFNnOGFKcmlQbk9aaGg4SFZxRknSAbgBQVVfeXFMTktOMGtCOFd0QU5vM3lmaF9zZm53M3dGYWdxLVFCMnM0cFpnWUtSVHk2bmNjYV9hT2ZGdFVwN0puWTRDejhfLVhBeld4VThnMnhINV9VMERKem5ocU9EeGZCeS1TenI4eEZ5VnZWcVFhVmdDX1NDR3UxZ0YxVDVITUVGMkJuQ05BOVBYSnM5cGFOUEhYTUthUjdrSkNKZW1HZEE4WjdoTTZnTVhFV1UwTUlWcnNBSEo0Qg?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e1993]:
+              - generic [ref=e1994]:
+                - generic [ref=e1997]: Analytics Insight
+                - generic [ref=e2001]:
+                  - generic:
+                    - 'button "More - Nothing Layoffs: Company Denies Market Exit Reports Amid Restructuring" [ref=e2002] [cursor=pointer]':
+                      - img [ref=e2004]
+                    - tooltip [ref=e2006]: More
+              - 'link "Nothing Layoffs: Company Denies Market Exit Reports Amid Restructuring - Analytics Insight - 1 hour ago - By Ankitha Phulare" [ref=e2007] [cursor=pointer]':
+                - /url: ./read/CBMiqwFBVV95cUxQTGphNENoZkVsRngyaW1nUVllV1FjLVpwN0hBNnpib0x2LURBS1BMWEhWVWN0cnRFcDUybUlxQmE2cUZpTEhKZG9jVlZSajQzRXZQNlFpaTdteWxndzVZcTdTeW5mVXNFeUdTRXZKdkU1R19rUksySEM1NXlGeFdBT19xcnIxLVdiYTV5TUdlaWZRVGV4YnZQaFNnOGFKcmlQbk9aaGg4SFZxRknSAbgBQVVfeXFMTktOMGtCOFd0QU5vM3lmaF9zZm53M3dGYWdxLVFCMnM0cFpnWUtSVHk2bmNjYV9hT2ZGdFVwN0puWTRDejhfLVhBeld4VThnMnhINV9VMERKem5ocU9EeGZCeS1TenI4eEZ5VnZWcVFhVmdDX1NDR3UxZ0YxVDVITUVGMkJuQ05BOVBYSnM5cGFOUEhYTUthUjdrSkNKZW1HZEE4WjdoTTZnTVhFV1UwTUlWcnNBSEo0Qg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Nothing Layoffs: Company Denies Market Exit Reports Amid Restructuring"
+            - figure [ref=e2008]
+          - generic [ref=e2009]:
+            - time [ref=e2010]: 1 hour ago
+            - separator [ref=e2011]
+            - generic [ref=e2012]: By Ankitha Phulare
+      - generic [ref=e2013]:
+        - separator [ref=e2015]
+        - generic [ref=e2017]:
+          - generic [ref=e2018]:
+            - link [ref=e2020] [cursor=pointer]:
+              - /url: ./read/CBMijwJBVV95cUxPcVBwUE9fbXQzWm1mcmRSak5OU0NYdjNucHl1bHpLQVFIZXBUVElmZHo1dVpVUTA5ekZNSUd4RzZaQlV6dHlpTVA3N01EZFp0Q2tkYUcwUEtnWExicDNMNEtLX21jYjFsYmRHS1AyYkFEd0JpcnNvMll4NkNwQ2tlQUExc0pDeml6STJZcEV4U0gxN01hZkdHUWFaQWRQUTJvTERadC1yZnZiVkM1ZEZOX0k3cWs3cWwzS2M5RlB4TmpVbnBHM2tLUFpUY0EtSTk5bXl6blMxbmdHNzVYc212bWZKZkRGQ1dCdmJtNXNjdzNUYXdFQVhlWHZfOUFnU1V3VUFHYWpsanNheXVnQW1F0gGUAkFVX3lxTE9QYS1BaHBFU18tclJNbnc4cm5Hc2J5NDVtREJJQ1Zwb3dyRTdQNE5DVGJEcTB4Rzd2ZTJocUtiRE0wR3g2LXB5UmZVZFVJRDUyV1ZhQlBkaHJuak5GRklrN2ZzeHlES2hCYWUteVFiVzkxcmk0UERUdjhCZnVGZVVVUlQ3eGNoWEtzWjV4NVR5ci1jZlMtdkI0dTdXX0V6M1puWWREXy1NN1A0R2VEb3lEU0VYOWZ6ZWRwTl9EclNXNDRlOFVaeC1OUlpvMmp2Y3VwVmxvZDMtcmYtcEpHQy1XbGhQWjZ3TmdEdmJTVlJNZ1RtamFQYlhidGhSSm91cnd3ZUZ5bnE5YmlzWDNTU1FSUzRRbA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2022]:
+              - generic [ref=e2023]:
+                - generic [ref=e2026]: The Times of India
+                - generic [ref=e2030]:
+                  - generic:
+                    - button "More - Workplace software Monday.com cuts hundreds of jobs; read CEO Eran Zinman's 'layoff email' to employees" [ref=e2031] [cursor=pointer]:
+                      - img [ref=e2033]
+                    - tooltip [ref=e2035]: More
+              - link "Workplace software Monday.com cuts hundreds of jobs; read CEO Eran Zinman's 'layoff email' to employees - The Times of India - 21 hours ago" [ref=e2036] [cursor=pointer]:
+                - /url: ./read/CBMijwJBVV95cUxPcVBwUE9fbXQzWm1mcmRSak5OU0NYdjNucHl1bHpLQVFIZXBUVElmZHo1dVpVUTA5ekZNSUd4RzZaQlV6dHlpTVA3N01EZFp0Q2tkYUcwUEtnWExicDNMNEtLX21jYjFsYmRHS1AyYkFEd0JpcnNvMll4NkNwQ2tlQUExc0pDeml6STJZcEV4U0gxN01hZkdHUWFaQWRQUTJvTERadC1yZnZiVkM1ZEZOX0k3cWs3cWwzS2M5RlB4TmpVbnBHM2tLUFpUY0EtSTk5bXl6blMxbmdHNzVYc212bWZKZkRGQ1dCdmJtNXNjdzNUYXdFQVhlWHZfOUFnU1V3VUFHYWpsanNheXVnQW1F0gGUAkFVX3lxTE9QYS1BaHBFU18tclJNbnc4cm5Hc2J5NDVtREJJQ1Zwb3dyRTdQNE5DVGJEcTB4Rzd2ZTJocUtiRE0wR3g2LXB5UmZVZFVJRDUyV1ZhQlBkaHJuak5GRklrN2ZzeHlES2hCYWUteVFiVzkxcmk0UERUdjhCZnVGZVVVUlQ3eGNoWEtzWjV4NVR5ci1jZlMtdkI0dTdXX0V6M1puWWREXy1NN1A0R2VEb3lEU0VYOWZ6ZWRwTl9EclNXNDRlOFVaeC1OUlpvMmp2Y3VwVmxvZDMtcmYtcEpHQy1XbGhQWjZ3TmdEdmJTVlJNZ1RtamFQYlhidGhSSm91cnd3ZUZ5bnE5YmlzWDNTU1FSUzRRbA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Workplace software Monday.com cuts hundreds of jobs; read CEO Eran Zinman's 'layoff email' to employees
+            - figure [ref=e2037]
+          - time [ref=e2039]: 21 hours ago
+      - generic [ref=e2040]:
+        - separator [ref=e2042]
+        - generic [ref=e2044]:
+          - generic [ref=e2045]:
+            - link [ref=e2047] [cursor=pointer]:
+              - /url: ./read/CBMiW0FVX3lxTFBxaXRubC1mTDZyelE2VG1XZGRlSW9jTzQ0dmxRNGRpZzRXWnI5T0lKdzlSMlFjZ1RhRFNiTU1tSFVrWDdYYnFCRWQxWGh5X25NaWQ3SFNoM0ozWjQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2049]:
+              - generic [ref=e2050]:
+                - generic [ref=e2053]: Mashable
+                - generic [ref=e2057]:
+                  - generic:
+                    - button "More - Survey says 99% of executives are 'prepared' for AI layoffs in next two years" [ref=e2058] [cursor=pointer]:
+                      - img [ref=e2060]
+                    - tooltip [ref=e2062]: More
+              - link "Survey says 99% of executives are 'prepared' for AI layoffs in next two years - Mashable - 15 hours ago - By Chase DiBenedetto" [ref=e2063] [cursor=pointer]:
+                - /url: ./read/CBMiW0FVX3lxTFBxaXRubC1mTDZyelE2VG1XZGRlSW9jTzQ0dmxRNGRpZzRXWnI5T0lKdzlSMlFjZ1RhRFNiTU1tSFVrWDdYYnFCRWQxWGh5X25NaWQ3SFNoM0ozWjQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Survey says 99% of executives are 'prepared' for AI layoffs in next two years
+            - figure [ref=e2064]
+          - generic [ref=e2065]:
+            - time [ref=e2066]: 15 hours ago
+            - separator [ref=e2067]
+            - generic [ref=e2068]: By Chase DiBenedetto
+      - generic [ref=e2069]:
+        - separator [ref=e2071]
+        - generic [ref=e2073]:
+          - generic [ref=e2074]:
+            - link [ref=e2076] [cursor=pointer]:
+              - /url: ./read/CBMi7wJBVV95cUxPVlhYOEs3ZU4tZmJPNjU3NXZSR0NhUUNIRnRySEZkRjRtcHJLNkg5UDU3QlNkWkhlUDhsUWdVTHBlVzNUeG5Zcjg1MWJ6WVc4RWM4Q2ZDNGR1aXVmaHFpdnRfWkVLWDhlOU9sTDY3aTdnWElEbThDcWZXVkktSHVXVEdpSXc1dHMwQWtEQXJtblpaT1AyV203MXlJQi1EYzBtRlBoRU8teTNzaWtnRzJXYVBCRFRTUG15ZnhpY1ZRblpqQnlPUlR0TzBFelEweWF4M25vdmNRb2NjMmdpWmtYR2N3VXcwU09kRXdkclhUMnY2RGR3N0x3NnRDWG1DSzhsZEliQ3hjWTZEYk9Ndjk4QkFSNVpnWDU4X21Ec2d1VHdjTzhvMWVlcTk4NTJ1RGhjMmdBM0cyY1VBUll2Z2FDNUVhSUg2UzNEN2dWN3paWmMwYlotRzVJNzVOQXBpOVYtelE3Nk80ZnVqLXg5OHdr0gH0AkFVX3lxTE5qdTFWbTZuNWxua3JfMXM0SnQyNk9ocmV0OE9oN3d6SGdSbUZxVGtTbEpDV200LVVGRHFEQnMzZktoU25GOWFZdWs1YnFhME9vcWpiTTZEaUdMNDh2d0VxUi1rbTJlZ2pOWEU4TVU1c3VIWlc1aFZDb2pzeGJPRHhST0x3Sk9WcVRpcWlLTy1mRGc4cUdCcmdpeWd3allQOXdrR25nVERpYi16UndPRkNYS21PZndoTmVwbkNhZm0xdnRRX1hkVi1JUmpERW1Fekk0TUxZcVhfYXVNU05aMmlrTzRpWTRuVzBTcUlRX0JHZjJQOTQ4VE02VElpTFlNamkyYlRDN1J6REc4bFU4M0stc2p5dU9zSU5Fa2FWeGdHUUJrVTBWM1RSN2ItVzVfb2hEdnZ3YVZ0NDBhQkRUaUphbUFBNU0tTEN3RFJwdmttdmQxMm5xMVFFbmpjWGRUeFZfNW9VNUJJRnhvSTJmOGVHM2RWZA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2078]:
+              - generic [ref=e2079]:
+                - generic [ref=e2082]: The Times of India
+                - generic [ref=e2086]:
+                  - generic:
+                    - button "More - Amazon layoffs hit employees in the group focusing on Artificial General Intelligence that everyone inclu" [ref=e2087] [cursor=pointer]:
+                      - img [ref=e2089]
+                    - tooltip [ref=e2091]: More
+              - link "Amazon layoffs hit employees in the group focusing on Artificial General Intelligence that everyone inclu - The Times of India - 3 days ago" [ref=e2092] [cursor=pointer]:
+                - /url: ./read/CBMi7wJBVV95cUxPVlhYOEs3ZU4tZmJPNjU3NXZSR0NhUUNIRnRySEZkRjRtcHJLNkg5UDU3QlNkWkhlUDhsUWdVTHBlVzNUeG5Zcjg1MWJ6WVc4RWM4Q2ZDNGR1aXVmaHFpdnRfWkVLWDhlOU9sTDY3aTdnWElEbThDcWZXVkktSHVXVEdpSXc1dHMwQWtEQXJtblpaT1AyV203MXlJQi1EYzBtRlBoRU8teTNzaWtnRzJXYVBCRFRTUG15ZnhpY1ZRblpqQnlPUlR0TzBFelEweWF4M25vdmNRb2NjMmdpWmtYR2N3VXcwU09kRXdkclhUMnY2RGR3N0x3NnRDWG1DSzhsZEliQ3hjWTZEYk9Ndjk4QkFSNVpnWDU4X21Ec2d1VHdjTzhvMWVlcTk4NTJ1RGhjMmdBM0cyY1VBUll2Z2FDNUVhSUg2UzNEN2dWN3paWmMwYlotRzVJNzVOQXBpOVYtelE3Nk80ZnVqLXg5OHdr0gH0AkFVX3lxTE5qdTFWbTZuNWxua3JfMXM0SnQyNk9ocmV0OE9oN3d6SGdSbUZxVGtTbEpDV200LVVGRHFEQnMzZktoU25GOWFZdWs1YnFhME9vcWpiTTZEaUdMNDh2d0VxUi1rbTJlZ2pOWEU4TVU1c3VIWlc1aFZDb2pzeGJPRHhST0x3Sk9WcVRpcWlLTy1mRGc4cUdCcmdpeWd3allQOXdrR25nVERpYi16UndPRkNYS21PZndoTmVwbkNhZm0xdnRRX1hkVi1JUmpERW1Fekk0TUxZcVhfYXVNU05aMmlrTzRpWTRuVzBTcUlRX0JHZjJQOTQ4VE02VElpTFlNamkyYlRDN1J6REc4bFU4M0stc2p5dU9zSU5Fa2FWeGdHUUJrVTBWM1RSN2ItVzVfb2hEdnZ3YVZ0NDBhQkRUaUphbUFBNU0tTEN3RFJwdmttdmQxMm5xMVFFbmpjWGRUeFZfNW9VNUJJRnhvSTJmOGVHM2RWZA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Amazon layoffs hit employees in the group focusing on Artificial General Intelligence that everyone inclu
+            - figure [ref=e2093]
+          - time [ref=e2095]: 3 days ago
+      - generic [ref=e2096]:
+        - separator [ref=e2098]
+        - generic [ref=e2100]:
+          - generic [ref=e2101]:
+            - link [ref=e2103] [cursor=pointer]:
+              - /url: ./read/CBMiqwFBVV95cUxNdEY5UXF5OU1ZMWdQd256Q3lHOW9QQWdqc3dubUpTVWtrSWhSeTlOVmM3ejF2SXRVZUI0eDNQODFoWFRmdG91NFNGRm1HU3N2RjYxS0NHRmViY0FQS05lNklraS1DeXItbzNKY3FqNXUwVTlOUEoxakVEeXFybXdmX0pRdDVIZTQ0WjVYcnlPeHJwbUNhSXAxY3UxT0h6amdZT3ZyMnh0S3hXcm_SAbgBQVVfeXFMTVFfQ1I2TWRPa0ZrLUtuTHF2ckNEb3ZCWWM0OXpjeTVJWlVqNDJXalJMZ1lJZnJJLXBzS1dreEotQ005NUNCMm9fWUZscHF0LXRjQmFtVFJSN0RTWnV4a0k0d1RrUDVJTE00eldMQThlYllQLVB0R284UEtpVEQ0LXprempubThla2J4b0RmQVFwYzI0dndUbzdOSmpab0kxQ2hmZEloeDdUMlY1QUdYOC1YSjR3QjZPVg?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2105]:
+              - generic [ref=e2106]:
+                - generic [ref=e2109]: outlookbusiness.com
+                - generic [ref=e2113]:
+                  - generic:
+                    - button "More - After January's Mass Layoffs, Amazon's Job Cuts Now Hit Its AGI Team" [ref=e2114] [cursor=pointer]:
+                      - img [ref=e2116]
+                    - tooltip [ref=e2118]: More
+              - link "After January's Mass Layoffs, Amazon's Job Cuts Now Hit Its AGI Team - outlookbusiness.com - 3 days ago" [ref=e2119] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxNdEY5UXF5OU1ZMWdQd256Q3lHOW9QQWdqc3dubUpTVWtrSWhSeTlOVmM3ejF2SXRVZUI0eDNQODFoWFRmdG91NFNGRm1HU3N2RjYxS0NHRmViY0FQS05lNklraS1DeXItbzNKY3FqNXUwVTlOUEoxakVEeXFybXdmX0pRdDVIZTQ0WjVYcnlPeHJwbUNhSXAxY3UxT0h6amdZT3ZyMnh0S3hXcm_SAbgBQVVfeXFMTVFfQ1I2TWRPa0ZrLUtuTHF2ckNEb3ZCWWM0OXpjeTVJWlVqNDJXalJMZ1lJZnJJLXBzS1dreEotQ005NUNCMm9fWUZscHF0LXRjQmFtVFJSN0RTWnV4a0k0d1RrUDVJTE00eldMQThlYllQLVB0R284UEtpVEQ0LXprempubThla2J4b0RmQVFwYzI0dndUbzdOSmpab0kxQ2hmZEloeDdUMlY1QUdYOC1YSjR3QjZPVg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: After January's Mass Layoffs, Amazon's Job Cuts Now Hit Its AGI Team
+            - figure [ref=e2120]
+          - time [ref=e2122]: 3 days ago
+      - generic [ref=e2123]:
+        - separator [ref=e2125]
+        - generic [ref=e2127]:
+          - generic [ref=e2128]:
+            - link [ref=e2130] [cursor=pointer]:
+              - /url: ./read/CBMiugFBVV95cUxOMG9RbFQxamVkakZieHF2SEFrdnFjazR5Vk9iRS1nQU0tNVZ5ZDFsRnhmWFQ1YUR2c2lhZGhjSm0tWTczUHFZTzVCMFhtS3NReUpWc2FmR2hkVUo1MG9MR3huVGlVaWJ5ei1FTFNtX3FIZkxwMEhfU3lKR1d4MjVxZ3I1djZ0TVdHZXBKMXQ4UnU1TFVaQlBYandFb2JjYlh3TzVYX3c4SkN4YXFuRGZqVE1zaElxMk5Qc0HSAcIBQVVfeXFMUDJfOG9mRk9jSDREZW1NUlJDa2FxcWRSQS13aVN1NC0zdl8xS2dYWEVRcV9iUnpnaWZZdmVXb1ctd1ZXN1ZoVk5aTUVBNFlLcmJySXI3bndfM3JiQXRuUUxxR0p5cElfbk1lcXpEWFNrWW9URWtUWnYzaHA5SC1UbDFwMFRaQkY1cHh3c3hldmphWEQ4TndJdDZsc2JZcDAzVHBteUZGdUQ5WnlDWXc1aWFtQmYzU2lhMERrSWlGYzdQSHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2132]:
+              - generic [ref=e2133]:
+                - generic [ref=e2136]: NDTV Profit
+                - generic [ref=e2140]:
+                  - generic:
+                    - 'button "More - Uber Layoffs: AI Push Triggers 10% Job Cuts — Check Who Gets Affected" [ref=e2141] [cursor=pointer]':
+                      - img [ref=e2143]
+                    - tooltip [ref=e2145]: More
+              - 'link "Uber Layoffs: AI Push Triggers 10% Job Cuts — Check Who Gets Affected - NDTV Profit - 3 days ago - By Riya Alex" [ref=e2146] [cursor=pointer]':
+                - /url: ./read/CBMiugFBVV95cUxOMG9RbFQxamVkakZieHF2SEFrdnFjazR5Vk9iRS1nQU0tNVZ5ZDFsRnhmWFQ1YUR2c2lhZGhjSm0tWTczUHFZTzVCMFhtS3NReUpWc2FmR2hkVUo1MG9MR3huVGlVaWJ5ei1FTFNtX3FIZkxwMEhfU3lKR1d4MjVxZ3I1djZ0TVdHZXBKMXQ4UnU1TFVaQlBYandFb2JjYlh3TzVYX3c4SkN4YXFuRGZqVE1zaElxMk5Qc0HSAcIBQVVfeXFMUDJfOG9mRk9jSDREZW1NUlJDa2FxcWRSQS13aVN1NC0zdl8xS2dYWEVRcV9iUnpnaWZZdmVXb1ctd1ZXN1ZoVk5aTUVBNFlLcmJySXI3bndfM3JiQXRuUUxxR0p5cElfbk1lcXpEWFNrWW9URWtUWnYzaHA5SC1UbDFwMFRaQkY1cHh3c3hldmphWEQ4TndJdDZsc2JZcDAzVHBteUZGdUQ5WnlDWXc1aWFtQmYzU2lhMERrSWlGYzdQSHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Uber Layoffs: AI Push Triggers 10% Job Cuts — Check Who Gets Affected"
+            - figure [ref=e2147]
+          - generic [ref=e2148]:
+            - time [ref=e2149]: 3 days ago
+            - separator [ref=e2150]
+            - generic [ref=e2151]: By Riya Alex
+      - generic [ref=e2152]:
+        - separator [ref=e2154]
+        - generic [ref=e2156]:
+          - generic [ref=e2157]:
+            - link [ref=e2159] [cursor=pointer]:
+              - /url: ./read/CBMikgFBVV95cUxPal9PUWJ1MndZeEZZNEZyN0FzcmxGOEllTS0tOEJkRnRXVm14RGVyYWFrN1ZfZ2RmVmY5ZWpJUlp6bnVNR0FTazZpLW1ucjllNnJSQUs3aDEzSVRfMVJXakZhS0Y3WVUtZ3d5U19GVV85OEVJNDV2SHFIVUZMcDhhS2Z4M0FhajFqQV94ZFViSTRhUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2161]:
+              - generic [ref=e2162]:
+                - generic [ref=e2165]: crn.com
+                - generic [ref=e2169]:
+                  - generic:
+                    - button "More - Amazon Confirms AGI Layoffs Ahead Of Q2 Earnings Report" [ref=e2170] [cursor=pointer]:
+                      - img [ref=e2172]
+                    - tooltip [ref=e2174]: More
+              - link "Amazon Confirms AGI Layoffs Ahead Of Q2 Earnings Report - crn.com - 3 days ago" [ref=e2175] [cursor=pointer]:
+                - /url: ./read/CBMikgFBVV95cUxPal9PUWJ1MndZeEZZNEZyN0FzcmxGOEllTS0tOEJkRnRXVm14RGVyYWFrN1ZfZ2RmVmY5ZWpJUlp6bnVNR0FTazZpLW1ucjllNnJSQUs3aDEzSVRfMVJXakZhS0Y3WVUtZ3d5U19GVV85OEVJNDV2SHFIVUZMcDhhS2Z4M0FhajFqQV94ZFViSTRhUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Amazon Confirms AGI Layoffs Ahead Of Q2 Earnings Report
+            - figure [ref=e2176]
+          - time [ref=e2178]: 3 days ago
+      - generic [ref=e2179]:
+        - separator [ref=e2181]
+        - generic [ref=e2183]:
+          - generic [ref=e2184]:
+            - link [ref=e2186] [cursor=pointer]:
+              - /url: ./read/CBMi1AFBVV95cUxQeXpmcnJSUWlHN0tlNldnMlZFcVRLeGl0YVphbnc1eWRfenlBaXFKNHdPU1FrcDAyUFdNd0E2NmVZMTdRczBRX2pVTHV4WU9UOHEyY0Rwb050U0RNbDNzNXgxb2NiMnFXdHgwUDBJMHlJQ0dUX2RKRzFWQXFyUjhLUjZTUzVmd2Z0eU51UW9xQ1dBSE1weGU5MS1MelVRVURVeS1ORWlzOS1vZG1jSFZPN2twbWYwdlBtM0RuZTlsRTZPbzYtaU9la2ZvUmZzam9LaW5kONIB2gFBVV95cUxNMHExb083RktTRTlHZWFSZENwaTBnWXQyZzZfajZGenlEamg3Q1dvNFpiYVlRUWdYNVh4MmNieHZFUUxmblJwZ1ZJWWctVjdXWEE1NVJuZ2x5TG1YdWFuMzBHQUotVjZhVmxubF9yRUdPVTNTRlp6dkZjaU5QS2gxMy1EYU9KNUgtcWZTNk1pOVd0YmFXZFlnSUJONXNSTVJteVNMY3FxU0dBSVhETG91NGRETnJKODJLS21sOG5nLTZyOUQwVk1Ha0RaaUJXNlpQZ3BiWm1YRjBtZw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2188]:
+              - generic [ref=e2189]:
+                - generic [ref=e2192]: livemint.com
+                - generic [ref=e2196]:
+                  - generic:
+                    - 'button "More - Intel layoffs: Chipmaker to begin fresh round of job cuts in data centre division" [ref=e2197] [cursor=pointer]':
+                      - img [ref=e2199]
+                    - tooltip [ref=e2201]: More
+              - 'link "Intel layoffs: Chipmaker to begin fresh round of job cuts in data centre division - livemint.com - 4 days ago - By Kanishka Singharia" [ref=e2202] [cursor=pointer]':
+                - /url: ./read/CBMi1AFBVV95cUxQeXpmcnJSUWlHN0tlNldnMlZFcVRLeGl0YVphbnc1eWRfenlBaXFKNHdPU1FrcDAyUFdNd0E2NmVZMTdRczBRX2pVTHV4WU9UOHEyY0Rwb050U0RNbDNzNXgxb2NiMnFXdHgwUDBJMHlJQ0dUX2RKRzFWQXFyUjhLUjZTUzVmd2Z0eU51UW9xQ1dBSE1weGU5MS1MelVRVURVeS1ORWlzOS1vZG1jSFZPN2twbWYwdlBtM0RuZTlsRTZPbzYtaU9la2ZvUmZzam9LaW5kONIB2gFBVV95cUxNMHExb083RktTRTlHZWFSZENwaTBnWXQyZzZfajZGenlEamg3Q1dvNFpiYVlRUWdYNVh4MmNieHZFUUxmblJwZ1ZJWWctVjdXWEE1NVJuZ2x5TG1YdWFuMzBHQUotVjZhVmxubF9yRUdPVTNTRlp6dkZjaU5QS2gxMy1EYU9KNUgtcWZTNk1pOVd0YmFXZFlnSUJONXNSTVJteVNMY3FxU0dBSVhETG91NGRETnJKODJLS21sOG5nLTZyOUQwVk1Ha0RaaUJXNlpQZ3BiWm1YRjBtZw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Intel layoffs: Chipmaker to begin fresh round of job cuts in data centre division"
+            - figure [ref=e2203]
+          - generic [ref=e2204]:
+            - time [ref=e2205]: 4 days ago
+            - separator [ref=e2206]
+            - generic [ref=e2207]: By Kanishka Singharia
+      - generic [ref=e2208]:
+        - separator [ref=e2210]
+        - generic [ref=e2212]:
+          - generic [ref=e2213]:
+            - link [ref=e2215] [cursor=pointer]:
+              - /url: ./read/CBMiwwFBVV95cUxQRDZWbUJYNUJfT3hrSno1SzdzZjNsbC1wMU5xdzNZdmtuNjk3TDlpSFZPWmVnMWViSjVId2RHMFBOcG51cVVpMFFkWHR3Q3ZWcVJjTG5GTmI0MTBySDZCTHF5VnAxcGlFVElCU192alBpMnNvWXdBVXBkSzc2cTBUdnFRZTYtLWF0M3RBTUR4clZObHFLRVJLZmVsQ2hlb25LN3IzWTdsWlhYdmdwbXZveGV6dXExdzNjcndKQjFRWmt1ZjDSAcgBQVVfeXFMTUFubmd5ZFRlQlFLSTJLMkZvd3k3eE5nQVk5RzQ5NURlTkdKck90YkFLX1lPVlBwUV9pRTRCYXhPbFNHYlJTb18xN3hOTktpTU1wcVdORzVpeDdzZW80bWtsbHQySU9WbmF0Y0J2THpnWkVPSlZqcG84VHNsYjBrZ2cybDBuRHJ5ZF9XZGZrXzZjbzQtNTZXVnQtcHRQc19fZ0JjREdPN0UwOVFIUUQ5TWE4TFFVc1ZUMG52ZjhsZ21JUXdFdm1qelM?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2217]:
+              - generic [ref=e2218]:
+                - generic [ref=e2221]: India Today
+                - generic [ref=e2225]:
+                  - generic:
+                    - 'button "More - Uber layoffs: Company cuts 10% of customer service jobs as AI adoption grows" [ref=e2226] [cursor=pointer]':
+                      - img [ref=e2228]
+                    - tooltip [ref=e2230]: More
+              - 'link "Uber layoffs: Company cuts 10% of customer service jobs as AI adoption grows - India Today - 3 days ago - By Sonu Vivek" [ref=e2231] [cursor=pointer]':
+                - /url: ./read/CBMiwwFBVV95cUxQRDZWbUJYNUJfT3hrSno1SzdzZjNsbC1wMU5xdzNZdmtuNjk3TDlpSFZPWmVnMWViSjVId2RHMFBOcG51cVVpMFFkWHR3Q3ZWcVJjTG5GTmI0MTBySDZCTHF5VnAxcGlFVElCU192alBpMnNvWXdBVXBkSzc2cTBUdnFRZTYtLWF0M3RBTUR4clZObHFLRVJLZmVsQ2hlb25LN3IzWTdsWlhYdmdwbXZveGV6dXExdzNjcndKQjFRWmt1ZjDSAcgBQVVfeXFMTUFubmd5ZFRlQlFLSTJLMkZvd3k3eE5nQVk5RzQ5NURlTkdKck90YkFLX1lPVlBwUV9pRTRCYXhPbFNHYlJTb18xN3hOTktpTU1wcVdORzVpeDdzZW80bWtsbHQySU9WbmF0Y0J2THpnWkVPSlZqcG84VHNsYjBrZ2cybDBuRHJ5ZF9XZGZrXzZjbzQtNTZXVnQtcHRQc19fZ0JjREdPN0UwOVFIUUQ5TWE4TFFVc1ZUMG52ZjhsZ21JUXdFdm1qelM?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Uber layoffs: Company cuts 10% of customer service jobs as AI adoption grows"
+            - figure [ref=e2232]
+          - generic [ref=e2233]:
+            - time [ref=e2234]: 3 days ago
+            - separator [ref=e2235]
+            - generic [ref=e2236]: By Sonu Vivek
+      - generic [ref=e2237]:
+        - separator [ref=e2239]
+        - generic [ref=e2241]:
+          - generic [ref=e2242]:
+            - link [ref=e2244] [cursor=pointer]:
+              - /url: ./read/CBMiggFBVV95cUxPVzh0Q3BKSjMtV1EwLUR3SW9tMUwtTGNIbzNKTm5seVJFUXNFcG1IZWVTV0NYRWRyZGdKTjA2QnpDTzNad1hpMEpmTUJzYnhFMi1ZWm5mcU9qc1h5SXQ0cU5xekdtWmJIZWxDcGVlVGQ5MktiWFpYVTlOZUFsblZ1aVZB?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2246]:
+              - generic [ref=e2247]:
+                - generic [ref=e2250]: Business Insider
+                - generic [ref=e2254]:
+                  - generic:
+                    - button "More - Monday.com plans 20% layoffs citing an 'AI-driven growth strategy.' Read the co-CEO's memo to employees." [ref=e2255] [cursor=pointer]:
+                      - img [ref=e2257]
+                    - tooltip [ref=e2259]: More
+              - link "Monday.com plans 20% layoffs citing an 'AI-driven growth strategy.' Read the co-CEO's memo to employees. - Business Insider - 4 days ago - By Henry Chandonnet" [ref=e2260] [cursor=pointer]:
+                - /url: ./read/CBMiggFBVV95cUxPVzh0Q3BKSjMtV1EwLUR3SW9tMUwtTGNIbzNKTm5seVJFUXNFcG1IZWVTV0NYRWRyZGdKTjA2QnpDTzNad1hpMEpmTUJzYnhFMi1ZWm5mcU9qc1h5SXQ0cU5xekdtWmJIZWxDcGVlVGQ5MktiWFpYVTlOZUFsblZ1aVZB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Monday.com plans 20% layoffs citing an 'AI-driven growth strategy.' Read the co-CEO's memo to employees.
+            - figure [ref=e2261]
+          - generic [ref=e2262]:
+            - time [ref=e2263]: 4 days ago
+            - separator [ref=e2264]
+            - generic [ref=e2265]: By Henry Chandonnet
+      - generic [ref=e2266]:
+        - separator [ref=e2268]
+        - generic [ref=e2270]:
+          - generic [ref=e2271]:
+            - link [ref=e2273] [cursor=pointer]:
+              - /url: ./read/CBMibEFVX3lxTFBxeDBuUWxkU3g1eWpoZmhlN1JqZ2dIMXhsQ3BoSkZLX2NZRERnTlljaHMwX1MyZnVONVpZNUd1X25wdkJBOXlER0drQXRBNlZzRjdlN05kUXYtcVhsakxlT3ZMOWVsLW5rYmtIVQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2275]:
+              - generic [ref=e2276]:
+                - generic [ref=e2279]: The Jerusalem Post
+                - generic [ref=e2283]:
+                  - generic:
+                    - button "More - AI layoffs mount across Israeli tech companies amid software sector bloodbath" [ref=e2284] [cursor=pointer]:
+                      - img [ref=e2286]
+                    - tooltip [ref=e2288]: More
+              - link "AI layoffs mount across Israeli tech companies amid software sector bloodbath - The Jerusalem Post - 1 hour ago - By Shirit Avitan Cohen" [ref=e2289] [cursor=pointer]:
+                - /url: ./read/CBMibEFVX3lxTFBxeDBuUWxkU3g1eWpoZmhlN1JqZ2dIMXhsQ3BoSkZLX2NZRERnTlljaHMwX1MyZnVONVpZNUd1X25wdkJBOXlER0drQXRBNlZzRjdlN05kUXYtcVhsakxlT3ZMOWVsLW5rYmtIVQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: AI layoffs mount across Israeli tech companies amid software sector bloodbath
+          - generic [ref=e2290]:
+            - time [ref=e2291]: 1 hour ago
+            - separator [ref=e2292]
+            - generic [ref=e2293]: By Shirit Avitan Cohen
+      - generic [ref=e2294]:
+        - separator [ref=e2296]
+        - generic [ref=e2298]:
+          - generic [ref=e2299]:
+            - link [ref=e2301] [cursor=pointer]:
+              - /url: ./read/CBMimAFBVV95cUxPSlZBdkNVaGYtZnFlS2lDZHR6ajRReEdpcWZNNTRVZ0VCTEhaa0phOGtuXzR3el83WExxODUwaE1rNklaMk9wNVVCY0w0VjA1X1JCYkgtOFZiQm9VQ2dNa1lRUkNNNG1MdlVjTDhQRUZ4R3BRYXlWMTdqVzh4dS15QXRJRzd2NFUza2RDd2NwZWw5QkRxN0VicA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2303]:
+              - generic [ref=e2304]:
+                - generic [ref=e2307]: MPR News
+                - generic [ref=e2311]:
+                  - generic:
+                    - 'button "More - Layoffs and hiring: Understanding today''s job market" [ref=e2312] [cursor=pointer]':
+                      - img [ref=e2314]
+                    - tooltip [ref=e2316]: More
+              - 'link "Layoffs and hiring: Understanding today''s job market - MPR News - 30 minutes ago - By Cari Dwyer, Chris Farrell and Angela Davis" [ref=e2317] [cursor=pointer]':
+                - /url: ./read/CBMimAFBVV95cUxPSlZBdkNVaGYtZnFlS2lDZHR6ajRReEdpcWZNNTRVZ0VCTEhaa0phOGtuXzR3el83WExxODUwaE1rNklaMk9wNVVCY0w0VjA1X1JCYkgtOFZiQm9VQ2dNa1lRUkNNNG1MdlVjTDhQRUZ4R3BRYXlWMTdqVzh4dS15QXRJRzd2NFUza2RDd2NwZWw5QkRxN0VicA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Layoffs and hiring: Understanding today's job market"
+            - figure [ref=e2318]
+          - generic [ref=e2319]:
+            - time [ref=e2320]: 30 minutes ago
+            - separator [ref=e2321]
+            - generic [ref=e2322]: By Cari Dwyer, Chris Farrell and Angela Davis
+      - generic [ref=e2323]:
+        - separator [ref=e2325]
+        - generic [ref=e2327]:
+          - generic [ref=e2328]:
+            - link [ref=e2330] [cursor=pointer]:
+              - /url: ./read/CBMipgFBVV95cUxPQnlLanVXOHA2dzB0SU9KTGhoeVpXYWFfdDZWOXRBMG5WSGh0elZ6akxJdlFjOTlWZ0lqd3hQallrSDRsNkl4WjY1bndhNVluTTNPaVpoMlEzajBwN1IwbzRHZmZUSDZkWjdhTDFQT0VlSm92ZHVnVW9HODRHVngyUE9HQ0RLTmVPRzJBY1BqUFlGUmRIanZTeTlrV1luTlIwSVdNQnV3?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2332]:
+              - generic [ref=e2333]:
+                - generic [ref=e2336]: TechCrunch
+                - generic [ref=e2340]:
+                  - generic:
+                    - button "More - Monday.com is the latest tech company to blame AI for layoffs — here are 20 others" [ref=e2341] [cursor=pointer]:
+                      - img [ref=e2343]
+                    - tooltip [ref=e2345]: More
+              - link "Monday.com is the latest tech company to blame AI for layoffs — here are 20 others - TechCrunch - 11 hours ago - By Rebecca Bellan and Connie Loizos" [ref=e2346] [cursor=pointer]:
+                - /url: ./read/CBMipgFBVV95cUxPQnlLanVXOHA2dzB0SU9KTGhoeVpXYWFfdDZWOXRBMG5WSGh0elZ6akxJdlFjOTlWZ0lqd3hQallrSDRsNkl4WjY1bndhNVluTTNPaVpoMlEzajBwN1IwbzRHZmZUSDZkWjdhTDFQT0VlSm92ZHVnVW9HODRHVngyUE9HQ0RLTmVPRzJBY1BqUFlGUmRIanZTeTlrV1luTlIwSVdNQnV3?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Monday.com is the latest tech company to blame AI for layoffs — here are 20 others
+            - figure [ref=e2347]
+          - generic [ref=e2348]:
+            - time [ref=e2349]: 11 hours ago
+            - separator [ref=e2350]
+            - generic [ref=e2351]: By Rebecca Bellan and Connie Loizos
+      - generic [ref=e2352]:
+        - separator [ref=e2354]
+        - generic [ref=e2356]:
+          - generic [ref=e2357]:
+            - link [ref=e2359] [cursor=pointer]:
+              - /url: ./read/CBMihAFBVV95cUxNaGE0cU5qbFlyQmNjQWduZnR5SFA3RTloWDlxc0NHRG9LdkpEcGpDUDRjM1dPLXZTNzl0cWNERmpoTV85RzJ6cFM0aVFqUlNGenlKYy1jZlFpazhfTUl1aGpXa1pTdmZHVTJNNTMwd1A5d0ZraHRaMm9fN2l6b0psMFBocWE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2361]:
+              - generic [ref=e2362]:
+                - generic [ref=e2365]: Financial Times
+                - generic [ref=e2369]:
+                  - generic:
+                    - button "More - US tech groups cut 140,000 jobs despite AI spending boom" [ref=e2370] [cursor=pointer]:
+                      - img [ref=e2372]
+                    - tooltip [ref=e2374]: More
+              - link "US tech groups cut 140,000 jobs despite AI spending boom - Financial Times - Yesterday - By Clara Murray and Rafe Uddin" [ref=e2375] [cursor=pointer]:
+                - /url: ./read/CBMihAFBVV95cUxNaGE0cU5qbFlyQmNjQWduZnR5SFA3RTloWDlxc0NHRG9LdkpEcGpDUDRjM1dPLXZTNzl0cWNERmpoTV85RzJ6cFM0aVFqUlNGenlKYy1jZlFpazhfTUl1aGpXa1pTdmZHVTJNNTMwd1A5d0ZraHRaMm9fN2l6b0psMFBocWE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: US tech groups cut 140,000 jobs despite AI spending boom
+            - figure [ref=e2376]
+          - generic [ref=e2377]:
+            - time [ref=e2378]: Yesterday
+            - separator [ref=e2379]
+            - generic [ref=e2380]: By Clara Murray and Rafe Uddin
+      - generic [ref=e2381]:
+        - separator [ref=e2383]
+        - generic [ref=e2385]:
+          - generic [ref=e2386]:
+            - link [ref=e2388] [cursor=pointer]:
+              - /url: ./read/CBMioAFBVV95cUxPbi1ob0o4bFVDXzNNVWFBUUpYQzF0VG1LOXRWeGd6cmFJdWhNSmhqSlFONFA3emljc1oyelNFMVVVLXRyMTNGMUZWaEZma3VlSmtkRVY3WjdIdGpWTTBTVkRwUmNKZFNSSk8wUldYaUg1MVpMT21kdWtmSnFtTjgxVnR3b2VyVXBsZ2hmUnNsUHhRdUlIYWQ1dWtwWUlVLXBV?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2390]:
+              - generic [ref=e2391]:
+                - generic [ref=e2394]: BioSpace
+                - generic [ref=e2398]:
+                  - generic:
+                    - button "More - Biopharma layoffs must double in H2 for 2026 to match 2025 cuts" [ref=e2399] [cursor=pointer]:
+                      - img [ref=e2401]
+                    - tooltip [ref=e2403]: More
+              - link "Biopharma layoffs must double in H2 for 2026 to match 2025 cuts - BioSpace - 3 days ago - By Angela Gabriel" [ref=e2404] [cursor=pointer]:
+                - /url: ./read/CBMioAFBVV95cUxPbi1ob0o4bFVDXzNNVWFBUUpYQzF0VG1LOXRWeGd6cmFJdWhNSmhqSlFONFA3emljc1oyelNFMVVVLXRyMTNGMUZWaEZma3VlSmtkRVY3WjdIdGpWTTBTVkRwUmNKZFNSSk8wUldYaUg1MVpMT21kdWtmSnFtTjgxVnR3b2VyVXBsZ2hmUnNsUHhRdUlIYWQ1dWtwWUlVLXBV?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Biopharma layoffs must double in H2 for 2026 to match 2025 cuts
+            - figure [ref=e2405]
+          - generic [ref=e2406]:
+            - time [ref=e2407]: 3 days ago
+            - separator [ref=e2408]
+            - generic [ref=e2409]: By Angela Gabriel
+      - generic [ref=e2410]:
+        - separator [ref=e2412]
+        - generic [ref=e2414]:
+          - generic [ref=e2415]:
+            - link [ref=e2417] [cursor=pointer]:
+              - /url: ./read/CBMi4AFBVV95cUxNcGtMcDllNTRRVDEtVk02TVVzOW9Ibnc3VVdYMzZTanZFdFI2WV9nWUktWHRVbWN3MmpQN3ZkYkVrVklPMTFYR1NkSXdRWnNmRUJfbGZ4RU5Udm04ZGlIV2d5OElrbTVrNm5yWnZTX1hnaHhJWHdiVkY3Y1Nad05IZmVuNTZQUGx2VVhVZG0zWmJXMW5QZGZuVWFON3ZPb1BKRGV3dS1hUUdpeU02WHFvSW9Qd2R1RjJheEpQbWltem1RUW81b01BZFl5WVZJUzMyUzR0MVRDd3BCbnJFVHIyMg?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2419]:
+              - generic [ref=e2420]:
+                - generic [ref=e2423]: Benzinga
+                - generic [ref=e2427]:
+                  - generic:
+                    - 'button "More - Intel Layoffs, Musk''s Micron Moment, $200 Billion Samsung-Broadcom Pact and More: This Week in Tech" [ref=e2428] [cursor=pointer]':
+                      - img [ref=e2430]
+                    - tooltip [ref=e2432]: More
+              - 'link "Intel Layoffs, Musk''s Micron Moment, $200 Billion Samsung-Broadcom Pact and More: This Week in Tech - Benzinga - 10 minutes ago - By Mohd Haider" [ref=e2433] [cursor=pointer]':
+                - /url: ./read/CBMi4AFBVV95cUxNcGtMcDllNTRRVDEtVk02TVVzOW9Ibnc3VVdYMzZTanZFdFI2WV9nWUktWHRVbWN3MmpQN3ZkYkVrVklPMTFYR1NkSXdRWnNmRUJfbGZ4RU5Udm04ZGlIV2d5OElrbTVrNm5yWnZTX1hnaHhJWHdiVkY3Y1Nad05IZmVuNTZQUGx2VVhVZG0zWmJXMW5QZGZuVWFON3ZPb1BKRGV3dS1hUUdpeU02WHFvSW9Qd2R1RjJheEpQbWltem1RUW81b01BZFl5WVZJUzMyUzR0MVRDd3BCbnJFVHIyMg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Intel Layoffs, Musk's Micron Moment, $200 Billion Samsung-Broadcom Pact and More: This Week in Tech"
+            - figure [ref=e2434]
+          - generic [ref=e2435]:
+            - time [ref=e2436]: 10 minutes ago
+            - separator [ref=e2437]
+            - generic [ref=e2438]: By Mohd Haider
+      - generic [ref=e2439]:
+        - separator [ref=e2441]
+        - generic [ref=e2443]:
+          - generic [ref=e2444]:
+            - link [ref=e2446] [cursor=pointer]:
+              - /url: ./read/CBMilwFBVV95cUxPZjBMdjlvYzdMa3pHcGpsWVNjN1MyLXRqT3F3M0FJR1g3aWRoWWpZT0VVbk1STWliUENDT0x1djl3ZloxOWRTV1I3SXg5dW9QaHpMWkgxS3Nsa2hOVkpfY3o4YU9RT2xnNnc0ZUZtejNST2c3eVUyel9kRzgwUjJnMGZfMEN2WmhZZV9jNlN0bURHVDZINGdn?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2448]:
+              - generic [ref=e2449]:
+                - generic [ref=e2452]: Business Insider
+                - generic [ref=e2456]:
+                  - generic:
+                    - button "More - Uber lays off 10% of customer service workers and calls others back to working in the office, citing AI" [ref=e2457] [cursor=pointer]:
+                      - img [ref=e2459]
+                    - tooltip [ref=e2461]: More
+              - link "Uber lays off 10% of customer service workers and calls others back to working in the office, citing AI - Business Insider - 3 days ago - By Alex Bitter" [ref=e2462] [cursor=pointer]:
+                - /url: ./read/CBMilwFBVV95cUxPZjBMdjlvYzdMa3pHcGpsWVNjN1MyLXRqT3F3M0FJR1g3aWRoWWpZT0VVbk1STWliUENDT0x1djl3ZloxOWRTV1I3SXg5dW9QaHpMWkgxS3Nsa2hOVkpfY3o4YU9RT2xnNnc0ZUZtejNST2c3eVUyel9kRzgwUjJnMGZfMEN2WmhZZV9jNlN0bURHVDZINGdn?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Uber lays off 10% of customer service workers and calls others back to working in the office, citing AI
+            - figure [ref=e2463]
+          - generic [ref=e2464]:
+            - time [ref=e2465]: 3 days ago
+            - separator [ref=e2466]
+            - generic [ref=e2467]: By Alex Bitter
+      - generic [ref=e2468]:
+        - separator [ref=e2470]
+        - generic [ref=e2472]:
+          - generic [ref=e2473]:
+            - link [ref=e2475] [cursor=pointer]:
+              - /url: ./read/CBMiaEFVX3lxTE1pZWNIeWk1Q2xWM3dUd0c3VXlETlhxX19uUHlaSGlveGI2RDQ5dFRqNzFNYmxya1o4akdHMkU3SDBJMFdLcUYtYldybEtkS2tYYVNqZDc0ZFVCZkdfUE0zOWtGajBzSmJX?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2477]:
+              - generic [ref=e2478]:
+                - generic [ref=e2481]: calcalistech.com
+                - generic [ref=e2485]:
+                  - generic:
+                    - button "More - Monday.com’s mass layoffs reveal the next phase of the AI shake-up in software" [ref=e2486] [cursor=pointer]:
+                      - img [ref=e2488]
+                    - tooltip [ref=e2490]: More
+              - link "Monday.com’s mass layoffs reveal the next phase of the AI shake-up in software - calcalistech.com - 4 days ago" [ref=e2491] [cursor=pointer]:
+                - /url: ./read/CBMiaEFVX3lxTE1pZWNIeWk1Q2xWM3dUd0c3VXlETlhxX19uUHlaSGlveGI2RDQ5dFRqNzFNYmxya1o4akdHMkU3SDBJMFdLcUYtYldybEtkS2tYYVNqZDc0ZFVCZkdfUE0zOWtGajBzSmJX?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Monday.com’s mass layoffs reveal the next phase of the AI shake-up in software
+            - figure [ref=e2492]
+          - time [ref=e2494]: 4 days ago
+      - generic [ref=e2495]:
+        - separator [ref=e2497]
+        - generic [ref=e2499]:
+          - generic [ref=e2500]:
+            - link [ref=e2502] [cursor=pointer]:
+              - /url: ./read/CBMipAFBVV95cUxOYjZXSU1CazE2eXVXTU9HSllVckp2eVF5WHpXcG5sSjEtcE5STUYwX2x5QnZ4aXdHaDdqbXlVUlNHZUEwRlpaSTM1X1BFbXlzbFdjV2xGbHRmUVlJNEdGQXFFRXZMYVdHRFJPWDdFS3lYeDNaeXNVRV9xeUEyZkx6WUItTXJHVmM3alA0WThJcEY3NWJsWFB3XzNGenRGajFHT1pra9IBqgFBVV95cUxOQ1hUMTdvMmc0di1vS3ZYMlVoM3JBV01SdFFFc3dFWWYtT084OWJqZE42WXBnUklRTDFiR05BUkZJLVlQcGYtSUNaeEtLQXdsOThvOHlaWmN3V0RRQ0lVWE90ektMWVBFY25sZ3pNWVRkVF9POU5mNjZrdnJNVVpXUk83UjlBVEd1YkYxX01LOUF5ejNsV0dJRTA0d0VkRVB2a29xUnlOWW85dw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2504]:
+              - generic [ref=e2505]:
+                - generic [ref=e2508]: CNBC
+                - generic [ref=e2512]:
+                  - generic:
+                    - 'button "More - Burnout, frustration and heartbreak: Amazon layoffs take their toll in saturated job market" [ref=e2513] [cursor=pointer]':
+                      - img [ref=e2515]
+                    - tooltip [ref=e2517]: More
+              - 'link "Burnout, frustration and heartbreak: Amazon layoffs take their toll in saturated job market - CNBC - 15 days ago - By Annie Palmer" [ref=e2518] [cursor=pointer]':
+                - /url: ./read/CBMipAFBVV95cUxOYjZXSU1CazE2eXVXTU9HSllVckp2eVF5WHpXcG5sSjEtcE5STUYwX2x5QnZ4aXdHaDdqbXlVUlNHZUEwRlpaSTM1X1BFbXlzbFdjV2xGbHRmUVlJNEdGQXFFRXZMYVdHRFJPWDdFS3lYeDNaeXNVRV9xeUEyZkx6WUItTXJHVmM3alA0WThJcEY3NWJsWFB3XzNGenRGajFHT1pra9IBqgFBVV95cUxOQ1hUMTdvMmc0di1vS3ZYMlVoM3JBV01SdFFFc3dFWWYtT084OWJqZE42WXBnUklRTDFiR05BUkZJLVlQcGYtSUNaeEtLQXdsOThvOHlaWmN3V0RRQ0lVWE90ektMWVBFY25sZ3pNWVRkVF9POU5mNjZrdnJNVVpXUk83UjlBVEd1YkYxX01LOUF5ejNsV0dJRTA0d0VkRVB2a29xUnlOWW85dw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Burnout, frustration and heartbreak: Amazon layoffs take their toll in saturated job market"
+            - figure [ref=e2519]
+          - generic [ref=e2520]:
+            - time [ref=e2521]: 15 days ago
+            - separator [ref=e2522]
+            - generic [ref=e2523]: By Annie Palmer
+      - generic [ref=e2524]:
+        - separator [ref=e2526]
+        - generic [ref=e2528]:
+          - generic [ref=e2529]:
+            - link [ref=e2531] [cursor=pointer]:
+              - /url: ./read/CBMifkFVX3lxTE80aFBONDdjWERtWkQ4akNPV1ZnX2ZBd21SUmFJdVVjVDFqeVFYbmtWcmo3QzR2OEt2UFpyQmtJdXBGSGI4bFV1UW1Tak9WZElteUNxOHRoTmtLQjNsc1FxdF9OakNqekxscHhxc19KTVJRb05EWTRBREhVZkFCdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2533]:
+              - generic [ref=e2534]:
+                - generic [ref=e2537]: Harvard Magazine
+                - generic [ref=e2541]:
+                  - generic:
+                    - button "More - FAS Restructuring Layoffs Begin" [ref=e2542] [cursor=pointer]:
+                      - img [ref=e2544]
+                    - tooltip [ref=e2546]: More
+              - link "FAS Restructuring Layoffs Begin - Harvard Magazine - 2 days ago - By Lydialyle Gibson" [ref=e2547] [cursor=pointer]:
+                - /url: ./read/CBMifkFVX3lxTE80aFBONDdjWERtWkQ4akNPV1ZnX2ZBd21SUmFJdVVjVDFqeVFYbmtWcmo3QzR2OEt2UFpyQmtJdXBGSGI4bFV1UW1Tak9WZElteUNxOHRoTmtLQjNsc1FxdF9OakNqekxscHhxc19KTVJRb05EWTRBREhVZkFCdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: FAS Restructuring Layoffs Begin
+            - figure [ref=e2548]
+          - generic [ref=e2549]:
+            - time [ref=e2550]: 2 days ago
+            - separator [ref=e2551]
+            - generic [ref=e2552]: By Lydialyle Gibson
+      - generic [ref=e2553]:
+        - separator [ref=e2555]
+        - generic [ref=e2557]:
+          - generic [ref=e2558]:
+            - link [ref=e2560] [cursor=pointer]:
+              - /url: ./read/CBMi0AFBVV95cUxQOTBtR2VRYXVwMzFiRG9FY1BiSXRpTHBQam55YUFfeU15YjNzZlRQcWlIMTJMLXc1dDYwWWRpdEFPREJrSjNWQkdNR2ZaOWpiZFBXbTIzM3FNSEFfeGFqMHc1Y1NkWVlBV1JaQW5KYXlhYVpVaTRjRDc3OV9MdmxFWUdUQjdNZjVUbUc3aF9ENHZJNGx1Zl85TWxseDQ4ZlJrS1JjTWNucWEtcXd4MjdHcHAtblJleHRBREpxNlpHN1ZQNlhZOXRJeHpTNUpVdERC0gHWAUFVX3lxTE5NYnVOVHh5WWtnV2FVazR5QlNSdUR6WWdkZGE2RzJraDY1aXIxaFNRQ2lGS00tQ2hQTUNSb3BlRE1mWlpvMlExdmxJQm9rcXl6eFBWNDAzWlVJNzNkN2NhOGE4U0FiMUoyU0RFRUdqRzlueEU1MHR1OVlwRGVlcGlXVmlkc0dFVkJwSTgyaXNmdk9NRS1GVHVsdzgxWVdmVVZKZERfOVR4RVZxN2pJek5pTmVnTjVkYi1GNktzM1NPVlNlMS1IOFFDcTdBakZ2QnZ1SkdKclE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2562]:
+              - generic [ref=e2563]:
+                - generic [ref=e2566]: India Today
+                - generic [ref=e2570]:
+                  - generic:
+                    - button "More - Intel planning layoffs, says it is a strategy for long term success" [ref=e2571] [cursor=pointer]:
+                      - img [ref=e2573]
+                    - tooltip [ref=e2575]: More
+              - link "Intel planning layoffs, says it is a strategy for long term success - India Today - 3 days ago - By Ankita Garg" [ref=e2576] [cursor=pointer]:
+                - /url: ./read/CBMi0AFBVV95cUxQOTBtR2VRYXVwMzFiRG9FY1BiSXRpTHBQam55YUFfeU15YjNzZlRQcWlIMTJMLXc1dDYwWWRpdEFPREJrSjNWQkdNR2ZaOWpiZFBXbTIzM3FNSEFfeGFqMHc1Y1NkWVlBV1JaQW5KYXlhYVpVaTRjRDc3OV9MdmxFWUdUQjdNZjVUbUc3aF9ENHZJNGx1Zl85TWxseDQ4ZlJrS1JjTWNucWEtcXd4MjdHcHAtblJleHRBREpxNlpHN1ZQNlhZOXRJeHpTNUpVdERC0gHWAUFVX3lxTE5NYnVOVHh5WWtnV2FVazR5QlNSdUR6WWdkZGE2RzJraDY1aXIxaFNRQ2lGS00tQ2hQTUNSb3BlRE1mWlpvMlExdmxJQm9rcXl6eFBWNDAzWlVJNzNkN2NhOGE4U0FiMUoyU0RFRUdqRzlueEU1MHR1OVlwRGVlcGlXVmlkc0dFVkJwSTgyaXNmdk9NRS1GVHVsdzgxWVdmVVZKZERfOVR4RVZxN2pJek5pTmVnTjVkYi1GNktzM1NPVlNlMS1IOFFDcTdBakZ2QnZ1SkdKclE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Intel planning layoffs, says it is a strategy for long term success
+            - figure [ref=e2577]
+          - generic [ref=e2578]:
+            - time [ref=e2579]: 3 days ago
+            - separator [ref=e2580]
+            - generic [ref=e2581]: By Ankita Garg
+      - generic [ref=e2582]:
+        - separator [ref=e2584]
+        - generic [ref=e2586]:
+          - generic [ref=e2587]:
+            - link [ref=e2589] [cursor=pointer]:
+              - /url: ./read/CBMizAFBVV95cUxNYWRSOUlPN0ZpQ2RVVlNRa25WUW1tQWYyYU8tTExmRVB6aEItVEJUaGUwMWFKMXJFVTdzQmY2Zm5CZTdPX1dITHppVmF4OGJ3ejdSaFFTZWtwem8wQ2NIQjNsdi1YZXdNLTZhZVpMNHlMWWk1ZG1RdXV3XzlQTGl3MFpWeFdZZXVCc0o2eXJiemNwWENuc3RhOVpBWFJGSmtoeDhwTnpGSXplQnRrMEFzRnBsbHh1cDAtd1BTbmNnV2FhMVNEUGFRMFBDaU_SAdMBQVVfeXFMTW9tLVB0cnhIa0FFOV9jeDZxODY2MFc3eS1VanVJMGtGUHpPVHNnbmlIWnJONThqNEhoTlcyXzVIeWtEeW9qWmNnOEVmT0VqLUlidjlHZVRDbVVGRFdmSlhpQjJLT2JrZzZqUF9mTDN0bkJvQlpQa3ozNlZmQV9tSlhXdExoaThqRnFsSHRTanFRS0Q5VENFTUlDeGhOclFMOXU0RGJWOWFmOWhNMHdieGNNUEdKVFJLRnBTR0w5aTFaWWRpeGUwSDQ2MUVFQjFqdFp2aw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2591]:
+              - generic [ref=e2592]:
+                - generic [ref=e2595]: The Indian Express
+                - generic [ref=e2599]:
+                  - generic:
+                    - button "More - Patreon announces 20% layoffs, CEO says AI isn’t the reason" [ref=e2600] [cursor=pointer]:
+                      - img [ref=e2602]
+                    - tooltip [ref=e2604]: More
+              - link "Patreon announces 20% layoffs, CEO says AI isn’t the reason - The Indian Express - 2 days ago" [ref=e2605] [cursor=pointer]:
+                - /url: ./read/CBMizAFBVV95cUxNYWRSOUlPN0ZpQ2RVVlNRa25WUW1tQWYyYU8tTExmRVB6aEItVEJUaGUwMWFKMXJFVTdzQmY2Zm5CZTdPX1dITHppVmF4OGJ3ejdSaFFTZWtwem8wQ2NIQjNsdi1YZXdNLTZhZVpMNHlMWWk1ZG1RdXV3XzlQTGl3MFpWeFdZZXVCc0o2eXJiemNwWENuc3RhOVpBWFJGSmtoeDhwTnpGSXplQnRrMEFzRnBsbHh1cDAtd1BTbmNnV2FhMVNEUGFRMFBDaU_SAdMBQVVfeXFMTW9tLVB0cnhIa0FFOV9jeDZxODY2MFc3eS1VanVJMGtGUHpPVHNnbmlIWnJONThqNEhoTlcyXzVIeWtEeW9qWmNnOEVmT0VqLUlidjlHZVRDbVVGRFdmSlhpQjJLT2JrZzZqUF9mTDN0bkJvQlpQa3ozNlZmQV9tSlhXdExoaThqRnFsSHRTanFRS0Q5VENFTUlDeGhOclFMOXU0RGJWOWFmOWhNMHdieGNNUEdKVFJLRnBTR0w5aTFaWWRpeGUwSDQ2MUVFQjFqdFp2aw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Patreon announces 20% layoffs, CEO says AI isn’t the reason
+            - figure [ref=e2606]
+          - time [ref=e2608]: 2 days ago
+      - generic [ref=e2609]:
+        - separator [ref=e2611]
+        - generic [ref=e2613]:
+          - generic [ref=e2614]:
+            - link [ref=e2616] [cursor=pointer]:
+              - /url: ./read/CBMipwFBVV95cUxPWFBSWjFTUnRkSElzcXF4ZVlWczVxelBPdktmODRGdW5WRVpZNFJON1lCcy05V0FTTlNjS1hSQ25ZYm1VMWNJYWlmamFhTU40cjNBdDV0ZG5ZWnl3aGdaSjBqdE9zQTFGZDdzaEJGSG1GQXRHQnd3bW9BZjJPN2NVSGNrajBsc2pGYmw5ZDRUV1czMmNoSUlMQ3ZRTmFpWl9xaWgxMmk4cw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2618]:
+              - generic [ref=e2619]:
+                - generic [ref=e2622]: HR Executive
+                - generic [ref=e2626]:
+                  - generic:
+                    - button "More - Disney’s restructuring claims more layoffs at Pixar, ESPN and National Geographic" [ref=e2627] [cursor=pointer]:
+                      - img [ref=e2629]
+                    - tooltip [ref=e2631]: More
+              - link "Disney’s restructuring claims more layoffs at Pixar, ESPN and National Geographic - HR Executive - 4 days ago - By Jill Barth" [ref=e2632] [cursor=pointer]:
+                - /url: ./read/CBMipwFBVV95cUxPWFBSWjFTUnRkSElzcXF4ZVlWczVxelBPdktmODRGdW5WRVpZNFJON1lCcy05V0FTTlNjS1hSQ25ZYm1VMWNJYWlmamFhTU40cjNBdDV0ZG5ZWnl3aGdaSjBqdE9zQTFGZDdzaEJGSG1GQXRHQnd3bW9BZjJPN2NVSGNrajBsc2pGYmw5ZDRUV1czMmNoSUlMQ3ZRTmFpWl9xaWgxMmk4cw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Disney’s restructuring claims more layoffs at Pixar, ESPN and National Geographic
+            - figure [ref=e2633]
+          - generic [ref=e2634]:
+            - time [ref=e2635]: 4 days ago
+            - separator [ref=e2636]
+            - generic [ref=e2637]: By Jill Barth
+      - generic [ref=e2638]:
+        - separator [ref=e2640]
+        - generic [ref=e2642]:
+          - generic [ref=e2643]:
+            - link [ref=e2645] [cursor=pointer]:
+              - /url: ./read/CBMi4AJBVV95cUxNOS16ZFhTOVBiVGZ5SkNsVlVoY29TRnRWNXNuMzBJOWdPa3JNMWFUNEU3OGR1WDdZc0R5dFo0eTQwR0t4T3Zhd1JmenRaal91ckpLdFc3Ym84bUN2QW1WaWlhZ0tCSkkyUlU0OFNrcTVNcTdTbnVPQ3hJbmhpWTdEVlNBaUlPcmNjenRsTGs1VjluYjRjZGUxa0Z6REU1RXBLb3NxZmhHSWtpUkZvT0Z4Nm5kb2cySFNxNkRPREc3WnNQRWc1VElZaml0bXBzT2c4UVVnWnNxdXlwVmE0ODV3Zk9ESEI0N1RPXzlfcm1tcmVidGNtTGR2LXNTUDFoN0xXSm1BY0ViMThRblFQc0RBcTJwUEttblYyWDhvbFdxdTMwcFNUS3JRQnNFZHhLOHBOeEJUWWNnckRYR2t4eXVtVTlfcGMtZGc4OVdacHdRX2R5VTNEMEprVzdlQ0N5N0F50gHmAkFVX3lxTE5BLWFZd0hWb3FVa2x0UVl5WGZwSy1RMkNfa1JBeHQzSE0zMlR2TkhtWlBLb2l5akoyZFc3RTlxQzJzSUtGZnl5ZEF0a2FMbDJVQzU3QlFCaV9TM3hwNVhvaktjbVQ3LVg4SDNkaFF3SHRIa0VjWXlQNVQ4NXNRbmx4OEk3TmNWUl96am9nYmVEcmx3MTE0RXBoenh5ZlpWY1ZMcFNIWGVWQXExc1ItRUNaSU5FZmxCdTFlZEc1S09vdFY4ZVlTZjRXQ1N5WkhMcHk3LXVScjBhWExmTXUyYkJnUVNQemJmQm5ZQU9UUjJTdmQ3czFKU2xoQVpNR0EzZ2JNODZvZHRqbDRPc3VWejRhS0VXZG1Yc0Q1dkl3ZkJtVUVpcWZ6VDBsVlVlalJJbEQ5S2l1TmZhSDZoZVgtWUZ6WFdMNVZDV1ZiMFI2b0pIMEYzMlJ3MHZlTWxKeVdGOHowM0YtYVE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2647]:
+              - generic [ref=e2648]:
+                - generic [ref=e2651]: The Times of India
+                - generic [ref=e2655]:
+                  - generic:
+                    - button "More - Workers are entering the era of the forever layoff, where companies keep cutting small groups of employee" [ref=e2656] [cursor=pointer]:
+                      - img [ref=e2658]
+                    - tooltip [ref=e2660]: More
+              - link "Workers are entering the era of the forever layoff, where companies keep cutting small groups of employee - The Times of India - 7 days ago" [ref=e2661] [cursor=pointer]:
+                - /url: ./read/CBMi4AJBVV95cUxNOS16ZFhTOVBiVGZ5SkNsVlVoY29TRnRWNXNuMzBJOWdPa3JNMWFUNEU3OGR1WDdZc0R5dFo0eTQwR0t4T3Zhd1JmenRaal91ckpLdFc3Ym84bUN2QW1WaWlhZ0tCSkkyUlU0OFNrcTVNcTdTbnVPQ3hJbmhpWTdEVlNBaUlPcmNjenRsTGs1VjluYjRjZGUxa0Z6REU1RXBLb3NxZmhHSWtpUkZvT0Z4Nm5kb2cySFNxNkRPREc3WnNQRWc1VElZaml0bXBzT2c4UVVnWnNxdXlwVmE0ODV3Zk9ESEI0N1RPXzlfcm1tcmVidGNtTGR2LXNTUDFoN0xXSm1BY0ViMThRblFQc0RBcTJwUEttblYyWDhvbFdxdTMwcFNUS3JRQnNFZHhLOHBOeEJUWWNnckRYR2t4eXVtVTlfcGMtZGc4OVdacHdRX2R5VTNEMEprVzdlQ0N5N0F50gHmAkFVX3lxTE5BLWFZd0hWb3FVa2x0UVl5WGZwSy1RMkNfa1JBeHQzSE0zMlR2TkhtWlBLb2l5akoyZFc3RTlxQzJzSUtGZnl5ZEF0a2FMbDJVQzU3QlFCaV9TM3hwNVhvaktjbVQ3LVg4SDNkaFF3SHRIa0VjWXlQNVQ4NXNRbmx4OEk3TmNWUl96am9nYmVEcmx3MTE0RXBoenh5ZlpWY1ZMcFNIWGVWQXExc1ItRUNaSU5FZmxCdTFlZEc1S09vdFY4ZVlTZjRXQ1N5WkhMcHk3LXVScjBhWExmTXUyYkJnUVNQemJmQm5ZQU9UUjJTdmQ3czFKU2xoQVpNR0EzZ2JNODZvZHRqbDRPc3VWejRhS0VXZG1Yc0Q1dkl3ZkJtVUVpcWZ6VDBsVlVlalJJbEQ5S2l1TmZhSDZoZVgtWUZ6WFdMNVZDV1ZiMFI2b0pIMEYzMlJ3MHZlTWxKeVdGOHowM0YtYVE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Workers are entering the era of the forever layoff, where companies keep cutting small groups of employee
+            - figure [ref=e2662]
+          - time [ref=e2664]: 7 days ago
+      - generic [ref=e2665]:
+        - separator [ref=e2667]
+        - generic [ref=e2669]:
+          - generic [ref=e2670]:
+            - link [ref=e2672] [cursor=pointer]:
+              - /url: ./read/CBMi2wFBVV95cUxPNlBaRWx6TGQ5b0lrQVFoZG9CU3hZbXgtUXByNFZuOGE5Mml2T2JWWFUxTFBTSVdIQUFvV1JoT1NVNlNEbTlyN1RhTEtVQzV3SHZ2WE9iZ29IWkJCTUZlRjl2SXVZSlhHUUZQcUtpbXRXY3dBRHo0VG5hSUh1Q3lYMHdHWXFGbEpMZDBHRExrbUgwN0VPTnFKcTVkTHJkbzFCVXlsQUMyRHgzM0k3ZEZESS1lRHVGeUJHd3p1QzIyeUFXajQ0dUxLbEVtejBsN0k2cDBMakRzTE50T2_SAeABQVVfeXFMTnBVRUlFaWR2QXRGNGFCOVB4eXA5YW5zcS0xenVRZFN2NTFUMWIwX0RCVlMxZzRDMl9WWkx6aDlWQ1Etb0xGbWd1XzZaZ2E4dnZwaU96NXE1RkFkY0JBcGgwVFZBMTdkd3JoVXFBVTByamtEQ2tLWVc0Z2NGWFptV0JHeWlJU2s0ZndJMkVUNEF3UjhzdFNnNGdMZnpkUDBTYUdBVVZpWFcwS3FrMXljdTVYSmVRTjQ4ODJoWHlqc3lUa3I2S0hTVzFSbUQyNGlCYWt0c1BWOEc1ZlVOYTNxWFo?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2674]:
+              - generic [ref=e2675]:
+                - generic [ref=e2678]: Indiatimes
+                - generic [ref=e2682]:
+                  - generic:
+                    - button "More - Indonesia loses 32,389 jobs in H1 as manufacturing slowdown deepens" [ref=e2683] [cursor=pointer]:
+                      - img [ref=e2685]
+                    - tooltip [ref=e2687]: More
+              - link "Indonesia loses 32,389 jobs in H1 as manufacturing slowdown deepens - Indiatimes - 2 days ago" [ref=e2688] [cursor=pointer]:
+                - /url: ./read/CBMi2wFBVV95cUxPNlBaRWx6TGQ5b0lrQVFoZG9CU3hZbXgtUXByNFZuOGE5Mml2T2JWWFUxTFBTSVdIQUFvV1JoT1NVNlNEbTlyN1RhTEtVQzV3SHZ2WE9iZ29IWkJCTUZlRjl2SXVZSlhHUUZQcUtpbXRXY3dBRHo0VG5hSUh1Q3lYMHdHWXFGbEpMZDBHRExrbUgwN0VPTnFKcTVkTHJkbzFCVXlsQUMyRHgzM0k3ZEZESS1lRHVGeUJHd3p1QzIyeUFXajQ0dUxLbEVtejBsN0k2cDBMakRzTE50T2_SAeABQVVfeXFMTnBVRUlFaWR2QXRGNGFCOVB4eXA5YW5zcS0xenVRZFN2NTFUMWIwX0RCVlMxZzRDMl9WWkx6aDlWQ1Etb0xGbWd1XzZaZ2E4dnZwaU96NXE1RkFkY0JBcGgwVFZBMTdkd3JoVXFBVTByamtEQ2tLWVc0Z2NGWFptV0JHeWlJU2s0ZndJMkVUNEF3UjhzdFNnNGdMZnpkUDBTYUdBVVZpWFcwS3FrMXljdTVYSmVRTjQ4ODJoWHlqc3lUa3I2S0hTVzFSbUQyNGlCYWt0c1BWOEc1ZlVOYTNxWFo?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Indonesia loses 32,389 jobs in H1 as manufacturing slowdown deepens
+            - figure [ref=e2689]
+          - time [ref=e2691]: 2 days ago
+      - generic [ref=e2692]:
+        - separator [ref=e2694]
+        - generic [ref=e2696]:
+          - generic [ref=e2697]:
+            - link [ref=e2699] [cursor=pointer]:
+              - /url: ./read/CBMiuwFBVV95cUxOSGVrUHhuNU1oSDVHeUotUVFCVG02UFJUVk5Ra0FfejlVVXZHeTUyUThvVEs2OEVOc3ViVGRENVNzZ2tuVVZ0c2plUG96Y2hOUW1WekdUX3hGRUEyWWR0QVZxWG5CREJ5cGdNcG4xY3BXcFBCNVBwNnNCMDJuUUpzaURUZUR5NDFOR2h3Ti04YklrcjEyRmJIdDdzakxoTnk2MGp3T1NFMEZCWHpwNWJxRy1kNGlrR1VtQ0Jr0gHAAUFVX3lxTE5SMXlKQmJXblUyMTcyZjdGZWlsRmJtLWNTNnhBUjR0RkFQLTlOMWdlTzU0Uk8zOFhuanY5WG5MaldhZlIzQ2R6dFZkaHFvdnhxeHVNSVQxbkZGZS0yMmRYbTNPU0t4d2p2S1F0OVdfVVRyVm5VYjhRdU53WXNxVlF3VUUxTW5QRGhnOGlpUFZDNEEyVnFUOTFwVFN6clR6VmNaMTdveklDdjNXaEVnUWxsU1RCcXFRUjUzb2F4WGE1bQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2701]:
+              - generic [ref=e2702]:
+                - generic [ref=e2705]: Firstpost
+                - generic [ref=e2709]:
+                  - generic:
+                    - 'button "More - Patreon layoffs: CEO says AI isn''t replacing workers as company cuts 20% jobs" [ref=e2710] [cursor=pointer]':
+                      - img [ref=e2712]
+                    - tooltip [ref=e2714]: More
+              - 'link "Patreon layoffs: CEO says AI isn''t replacing workers as company cuts 20% jobs - Firstpost - 2 days ago" [ref=e2715] [cursor=pointer]':
+                - /url: ./read/CBMiuwFBVV95cUxOSGVrUHhuNU1oSDVHeUotUVFCVG02UFJUVk5Ra0FfejlVVXZHeTUyUThvVEs2OEVOc3ViVGRENVNzZ2tuVVZ0c2plUG96Y2hOUW1WekdUX3hGRUEyWWR0QVZxWG5CREJ5cGdNcG4xY3BXcFBCNVBwNnNCMDJuUUpzaURUZUR5NDFOR2h3Ti04YklrcjEyRmJIdDdzakxoTnk2MGp3T1NFMEZCWHpwNWJxRy1kNGlrR1VtQ0Jr0gHAAUFVX3lxTE5SMXlKQmJXblUyMTcyZjdGZWlsRmJtLWNTNnhBUjR0RkFQLTlOMWdlTzU0Uk8zOFhuanY5WG5MaldhZlIzQ2R6dFZkaHFvdnhxeHVNSVQxbkZGZS0yMmRYbTNPU0t4d2p2S1F0OVdfVVRyVm5VYjhRdU53WXNxVlF3VUUxTW5QRGhnOGlpUFZDNEEyVnFUOTFwVFN6clR6VmNaMTdveklDdjNXaEVnUWxsU1RCcXFRUjUzb2F4WGE1bQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Patreon layoffs: CEO says AI isn't replacing workers as company cuts 20% jobs"
+            - figure [ref=e2716]
+          - time [ref=e2718]: 2 days ago
+      - generic [ref=e2719]:
+        - separator [ref=e2721]
+        - generic [ref=e2723]:
+          - generic [ref=e2724]:
+            - link [ref=e2726] [cursor=pointer]:
+              - /url: ./read/CBMivwFBVV95cUxQbmYxVkN0MURlVHZIdFc1eTNvcFQ4bnNCd291TTYwajBmN2JudUE3RU1Jb3hjV2dpYlg4YUdRSjc4TU9SSTFVdkJuQngxM1FEQmhHWV93VTcyeUc4c2lYZUctTVpTdmppWVBfV2xlZjJjYkdTTUVYbXBhc3pDOVQ4SzgwWFJ6Z1RXdHNCVGthRmM3aU5YbGpFQmZHbGkyc3FMUkVGUDFXSTJZVE11UXh4T2xEMXFLQl92OFJTQ19pY9IBzAFBVV95cUxOc0pTZjBmMDZJRUh2U2VBV0NHRU1jRlRZOUJwUVhzNGZkQ1pTNVVubVJCbU5tVzl1N0lSbU5Xdk1JMUVFRXdoTGFTSDlGd0pjZWVxbDZRQXBlVlVzbEdIeU9oT3pJT2RHLWVFUk9qal9SVlRpZFdZNE9sT3J6QTJwX3VQSExjazNqTElLTkJldkFZVFNhbmtaOTBoZnc5UV9yeFJXVTJiN0tmelhtSlVRVHNjdzJKTmdGRUh1WXZJN2NiU0J1Z1FxR0lEYXM?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2728]:
+              - generic [ref=e2729]:
+                - generic [ref=e2732]: outlookbusiness.com
+                - generic [ref=e2736]:
+                  - generic:
+                    - button "More - Porsche May Cut 5,000 More Jobs, Total Layoffs Could Nearly Double To 9,000 By 2035" [ref=e2737] [cursor=pointer]:
+                      - img [ref=e2739]
+                    - tooltip [ref=e2741]: More
+              - link "Porsche May Cut 5,000 More Jobs, Total Layoffs Could Nearly Double To 9,000 By 2035 - outlookbusiness.com - 3 days ago" [ref=e2742] [cursor=pointer]:
+                - /url: ./read/CBMivwFBVV95cUxQbmYxVkN0MURlVHZIdFc1eTNvcFQ4bnNCd291TTYwajBmN2JudUE3RU1Jb3hjV2dpYlg4YUdRSjc4TU9SSTFVdkJuQngxM1FEQmhHWV93VTcyeUc4c2lYZUctTVpTdmppWVBfV2xlZjJjYkdTTUVYbXBhc3pDOVQ4SzgwWFJ6Z1RXdHNCVGthRmM3aU5YbGpFQmZHbGkyc3FMUkVGUDFXSTJZVE11UXh4T2xEMXFLQl92OFJTQ19pY9IBzAFBVV95cUxOc0pTZjBmMDZJRUh2U2VBV0NHRU1jRlRZOUJwUVhzNGZkQ1pTNVVubVJCbU5tVzl1N0lSbU5Xdk1JMUVFRXdoTGFTSDlGd0pjZWVxbDZRQXBlVlVzbEdIeU9oT3pJT2RHLWVFUk9qal9SVlRpZFdZNE9sT3J6QTJwX3VQSExjazNqTElLTkJldkFZVFNhbmtaOTBoZnc5UV9yeFJXVTJiN0tmelhtSlVRVHNjdzJKTmdGRUh1WXZJN2NiU0J1Z1FxR0lEYXM?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Porsche May Cut 5,000 More Jobs, Total Layoffs Could Nearly Double To 9,000 By 2035
+            - figure [ref=e2743]
+          - time [ref=e2745]: 3 days ago
+      - generic [ref=e2746]:
+        - separator [ref=e2748]
+        - generic [ref=e2750]:
+          - generic [ref=e2751]:
+            - link [ref=e2753] [cursor=pointer]:
+              - /url: ./read/CBMimgFBVV95cUxPM2s5czNQai0zaDlqekpBQmYwejNMcWhnelR3OUJBdWJVQ2dUczNEbGpzaVI5YmR3czdtWk50Mm1XcmotZDhmYTRKRUMwbFJ5LVJDSlVpLWU2MFZ2Wkd2cGxFcW41ZlQ3WHhJa1BFa0ZvOUVSdnpwMTlfaURnYmpQNVVvM01ETHY4UzBBUzF5NFM1Umo2dlp1Rk9B?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2755]:
+              - generic [ref=e2756]:
+                - generic [ref=e2759]: Fast Company
+                - generic [ref=e2763]:
+                  - generic:
+                    - 'button "More - Monday.com layoffs: Hundreds of jobs slashed as work platform proclaims its embrace of ''the new AI era''" [ref=e2764] [cursor=pointer]':
+                      - img [ref=e2766]
+                    - tooltip [ref=e2768]: More
+              - 'link "Monday.com layoffs: Hundreds of jobs slashed as work platform proclaims its embrace of ''the new AI era'' - Fast Company - 3 days ago" [ref=e2769] [cursor=pointer]':
+                - /url: ./read/CBMimgFBVV95cUxPM2s5czNQai0zaDlqekpBQmYwejNMcWhnelR3OUJBdWJVQ2dUczNEbGpzaVI5YmR3czdtWk50Mm1XcmotZDhmYTRKRUMwbFJ5LVJDSlVpLWU2MFZ2Wkd2cGxFcW41ZlQ3WHhJa1BFa0ZvOUVSdnpwMTlfaURnYmpQNVVvM01ETHY4UzBBUzF5NFM1Umo2dlp1Rk9B?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Monday.com layoffs: Hundreds of jobs slashed as work platform proclaims its embrace of 'the new AI era'"
+            - figure [ref=e2770]
+          - time [ref=e2772]: 3 days ago
+      - generic [ref=e2773]:
+        - separator [ref=e2775]
+        - generic [ref=e2777]:
+          - generic [ref=e2778]:
+            - link [ref=e2780] [cursor=pointer]:
+              - /url: ./read/CBMiywFBVV95cUxNWEFtdkVzbE9iYW9zem01eTdxa0w1czlpaTBTZTIycHRVYS1iNk9uRGw2YlBUenBHZUZaVFUzdnZzcHlGcWtuNEp2X2dsaUJqcWFYUTlxbUt4emwtOWd0d3JuQVVqTDR5NnJ4TUtFSV93a0NfdUZlNUZWNFZtRmNNZGtvWWoxU01TakJGb0dvSEZ2Nk9aQVRPOHZ3S3NlUHp1US13aWg3MFF4eWJxTHVHWlFYelNBUWxzZFJFaDhySzlRV0RJdlhRb3VRc9IB0AFBVV95cUxNLVJNSVZyMmZNelNOcnFLSDV2UFdPVFFLMVo4MU9pTFN2WWtRTzEyNEo5ay14V000anAtamJ1aVFUWnRaRDlOczNKbDZlQ2ZoZmJYZkpzdzZjeFVnZV83eUgzYWlxZV80SmRnVXctZ1IzSFNucWh0TVkzRjRYUzdNR0ZsR2tkZWttN2VobW1zNkNBV0tKWXNUZ1JhNkdQT3g3QU1kOUxfN0V2VEF3MXprV1NXYmE0MjQ5VmNfamY0Zy1IVFZ5TG5CeDU1U280aEkx?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2782]:
+              - generic [ref=e2783]:
+                - generic [ref=e2786]: Storyboard18
+                - generic [ref=e2790]:
+                  - generic:
+                    - 'button "More - Patreon layoffs: Company cuts 20% workforce, CEO says AI isn''t replacing humans" [ref=e2791] [cursor=pointer]':
+                      - img [ref=e2793]
+                    - tooltip [ref=e2795]: More
+              - 'link "Patreon layoffs: Company cuts 20% workforce, CEO says AI isn''t replacing humans - Storyboard18 - 2 days ago" [ref=e2796] [cursor=pointer]':
+                - /url: ./read/CBMiywFBVV95cUxNWEFtdkVzbE9iYW9zem01eTdxa0w1czlpaTBTZTIycHRVYS1iNk9uRGw2YlBUenBHZUZaVFUzdnZzcHlGcWtuNEp2X2dsaUJqcWFYUTlxbUt4emwtOWd0d3JuQVVqTDR5NnJ4TUtFSV93a0NfdUZlNUZWNFZtRmNNZGtvWWoxU01TakJGb0dvSEZ2Nk9aQVRPOHZ3S3NlUHp1US13aWg3MFF4eWJxTHVHWlFYelNBUWxzZFJFaDhySzlRV0RJdlhRb3VRc9IB0AFBVV95cUxNLVJNSVZyMmZNelNOcnFLSDV2UFdPVFFLMVo4MU9pTFN2WWtRTzEyNEo5ay14V000anAtamJ1aVFUWnRaRDlOczNKbDZlQ2ZoZmJYZkpzdzZjeFVnZV83eUgzYWlxZV80SmRnVXctZ1IzSFNucWh0TVkzRjRYUzdNR0ZsR2tkZWttN2VobW1zNkNBV0tKWXNUZ1JhNkdQT3g3QU1kOUxfN0V2VEF3MXprV1NXYmE0MjQ5VmNfamY0Zy1IVFZ5TG5CeDU1U280aEkx?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Patreon layoffs: Company cuts 20% workforce, CEO says AI isn't replacing humans"
+            - figure [ref=e2797]
+          - time [ref=e2799]: 2 days ago
+      - generic [ref=e2800]:
+        - separator [ref=e2802]
+        - generic [ref=e2804]:
+          - generic [ref=e2805]:
+            - link [ref=e2807] [cursor=pointer]:
+              - /url: ./read/CBMihgFBVV95cUxNenpoTkh5ZFJ1OW13VUdZRWFmQWE5MHlMQVBieFV5TTR5ZG9CWTMzcWwyaW95UjNWNmo2aEhISUxZV2Y3eDNhc2pKc0NFeHJ1TjcySExnQUs4QUlwZGhUUjdQQnZlMm9Yck9aZmhhSkVoZGJPOHBnWDVjNUtSZTBwOGVwR01SUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2809]:
+              - generic [ref=e2810]:
+                - generic [ref=e2813]: The Guardian
+                - generic [ref=e2817]:
+                  - generic:
+                    - button "More - Meta used AI to tag workers who took leave to be laid off, lawsuit claims" [ref=e2818] [cursor=pointer]:
+                      - img [ref=e2820]
+                    - tooltip [ref=e2822]: More
+              - link "Meta used AI to tag workers who took leave to be laid off, lawsuit claims - The Guardian - 12 days ago - By Dara Kerr" [ref=e2823] [cursor=pointer]:
+                - /url: ./read/CBMihgFBVV95cUxNenpoTkh5ZFJ1OW13VUdZRWFmQWE5MHlMQVBieFV5TTR5ZG9CWTMzcWwyaW95UjNWNmo2aEhISUxZV2Y3eDNhc2pKc0NFeHJ1TjcySExnQUs4QUlwZGhUUjdQQnZlMm9Yck9aZmhhSkVoZGJPOHBnWDVjNUtSZTBwOGVwR01SUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Meta used AI to tag workers who took leave to be laid off, lawsuit claims
+            - figure [ref=e2824]
+          - generic [ref=e2825]:
+            - time [ref=e2826]: 12 days ago
+            - separator [ref=e2827]
+            - generic [ref=e2828]: By Dara Kerr
+      - generic [ref=e2829]:
+        - separator [ref=e2831]
+        - generic [ref=e2833]:
+          - generic [ref=e2834]:
+            - link [ref=e2836] [cursor=pointer]:
+              - /url: ./read/CBMirgFBVV95cUxOc2ROSlNIeUl1cFRzVTJGUzk3TjFkU2RDQktwdXQxemhxNDFPRVcxd1Z1S21uY00wN1RvSWdSOFYxZHhSX3FObU13bFMwSXZEWnVMTHFMUzNObnlRNTF5WWRDcWFUOG9XSjNiQjUzMkxDc2R0ZDJNQUI0dzZTcDRvSlY2TnljdE5rTU45LWRkaEwyU1VDbzFaWk42N093Ri1MMl9CRG5feVBRcDBhbHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2838]:
+              - generic [ref=e2839]:
+                - generic [ref=e2842]: Business Insider
+                - generic [ref=e2846]:
+                  - generic:
+                    - button "More - 17 companies, including Uber and GitLab, that have said they're doing AI-related layoffs" [ref=e2847] [cursor=pointer]:
+                      - img [ref=e2849]
+                    - tooltip [ref=e2851]: More
+              - link "17 companies, including Uber and GitLab, that have said they're doing AI-related layoffs - Business Insider - 3 days ago - By Ana Altchek, Shubhangi Goel and Huileng Tan" [ref=e2852] [cursor=pointer]:
+                - /url: ./read/CBMirgFBVV95cUxOc2ROSlNIeUl1cFRzVTJGUzk3TjFkU2RDQktwdXQxemhxNDFPRVcxd1Z1S21uY00wN1RvSWdSOFYxZHhSX3FObU13bFMwSXZEWnVMTHFMUzNObnlRNTF5WWRDcWFUOG9XSjNiQjUzMkxDc2R0ZDJNQUI0dzZTcDRvSlY2TnljdE5rTU45LWRkaEwyU1VDbzFaWk42N093Ri1MMl9CRG5feVBRcDBhbHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: 17 companies, including Uber and GitLab, that have said they're doing AI-related layoffs
+            - figure [ref=e2853]
+          - generic [ref=e2854]:
+            - time [ref=e2855]: 3 days ago
+            - separator [ref=e2856]
+            - generic [ref=e2857]: By Ana Altchek, Shubhangi Goel and Huileng Tan
+      - generic [ref=e2858]:
+        - separator [ref=e2860]
+        - generic [ref=e2862]:
+          - generic [ref=e2863]:
+            - link [ref=e2865] [cursor=pointer]:
+              - /url: ./read/CBMitgFBVV95cUxQNTVkTHJiemZqWDcyODdDQ3V1b2dNY1hkeG5GT2o4eXROdXNScW5HdVhvQzc0Q0dkMHJ4YUNGNmZVUHhxc2puN3FKem1qSzV2TUJvYW5tVjNpS2hYQ21CdmhfWV84dktZbFI2X3FSR1FHakhEVnJtSXZNTGM0WlJVT1BzRk9Rc0JSRVkyOFBocDdhc3EySVg2SmVnWllxb1YyR1BPbGFyWjBSeVVCUkFEMlVMVmRyUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2867]:
+              - generic [ref=e2868]:
+                - generic [ref=e2871]: OregonLive.com
+                - generic [ref=e2875]:
+                  - generic:
+                    - button "More - Intel plans fresh layoffs, this time in its data center group" [ref=e2876] [cursor=pointer]:
+                      - img [ref=e2878]
+                    - tooltip [ref=e2880]: More
+              - link "Intel plans fresh layoffs, this time in its data center group - OregonLive.com - 5 days ago - By Mike Rogoway" [ref=e2881] [cursor=pointer]:
+                - /url: ./read/CBMitgFBVV95cUxQNTVkTHJiemZqWDcyODdDQ3V1b2dNY1hkeG5GT2o4eXROdXNScW5HdVhvQzc0Q0dkMHJ4YUNGNmZVUHhxc2puN3FKem1qSzV2TUJvYW5tVjNpS2hYQ21CdmhfWV84dktZbFI2X3FSR1FHakhEVnJtSXZNTGM0WlJVT1BzRk9Rc0JSRVkyOFBocDdhc3EySVg2SmVnWllxb1YyR1BPbGFyWjBSeVVCUkFEMlVMVmRyUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Intel plans fresh layoffs, this time in its data center group
+            - figure [ref=e2882]
+          - generic [ref=e2883]:
+            - time [ref=e2884]: 5 days ago
+            - separator [ref=e2885]
+            - generic [ref=e2886]: By Mike Rogoway
+      - generic [ref=e2887]:
+        - separator [ref=e2889]
+        - generic [ref=e2891]:
+          - generic [ref=e2892]:
+            - link [ref=e2894] [cursor=pointer]:
+              - /url: ./read/CBMivAFBVV95cUxNRURNZ1E1WU14TlZWekdtZ2dWX2NwWE94N1dTSGZ6RjRPZzNUOVhtaW5ZT05DTXhuLWQ3RlBSSzhfcXlDcXlOeXVBbVBoZjB4OFQ1aWxNNlFTcjA5bjZNS1hZQnZsb3ZmanZ4dzdJUVhQMmZKcDdsZWRPVUZSWklPUFFWUklyb3lmSzUtYzFGaFhCalg3VmhCQ0FwMWVZS0s0VmdkVHhfc25GeGdtd3RpaFRJdXlZYnlSVGQ5Nw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2896]:
+              - generic [ref=e2897]:
+                - generic [ref=e2900]: LinkedIn
+                - generic [ref=e2904]:
+                  - generic:
+                    - 'button "More - Monday.com layoffs: Hundreds of jobs slashed as work platform proclaims its embrace of ''the new AI era''" [ref=e2905] [cursor=pointer]':
+                      - img [ref=e2907]
+                    - tooltip [ref=e2909]: More
+              - 'link "Monday.com layoffs: Hundreds of jobs slashed as work platform proclaims its embrace of ''the new AI era'' - LinkedIn - 3 days ago" [ref=e2910] [cursor=pointer]':
+                - /url: ./read/CBMivAFBVV95cUxNRURNZ1E1WU14TlZWekdtZ2dWX2NwWE94N1dTSGZ6RjRPZzNUOVhtaW5ZT05DTXhuLWQ3RlBSSzhfcXlDcXlOeXVBbVBoZjB4OFQ1aWxNNlFTcjA5bjZNS1hZQnZsb3ZmanZ4dzdJUVhQMmZKcDdsZWRPVUZSWklPUFFWUklyb3lmSzUtYzFGaFhCalg3VmhCQ0FwMWVZS0s0VmdkVHhfc25GeGdtd3RpaFRJdXlZYnlSVGQ5Nw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Monday.com layoffs: Hundreds of jobs slashed as work platform proclaims its embrace of 'the new AI era'"
+            - figure [ref=e2911]
+          - time [ref=e2913]: 3 days ago
+      - generic [ref=e2914]:
+        - separator [ref=e2916]
+        - generic [ref=e2918]:
+          - generic [ref=e2919]:
+            - link [ref=e2921] [cursor=pointer]:
+              - /url: ./read/CBMimwFBVV95cUxOaVgxcXItMC11WXZ0TFZ3SzROYUg2QldMZkFVVUlObkhNNnJWcURMM085bllOZGpNd1ozY25PMWY3cG1FZEx6a2x2N0pQV21fUlROQm85OWVPQ1hSNjdhaDVTdzl4bEZzN3YtRG55eDlZR0JqZ0tfVkVKRzBCTlY4UW53QTZuemsycEpzMWoxLUczSDl4WVhTTUozWQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2923]:
+              - generic [ref=e2924]:
+                - generic [ref=e2927]: HR Executive
+                - generic [ref=e2931]:
+                  - generic:
+                    - button "More - Ford’s rehire wave has HR leaders rethinking how AI layoffs get decided" [ref=e2932] [cursor=pointer]:
+                      - img [ref=e2934]
+                    - tooltip [ref=e2936]: More
+              - link "Ford’s rehire wave has HR leaders rethinking how AI layoffs get decided - HR Executive - 2 days ago - By Jill Barth" [ref=e2937] [cursor=pointer]:
+                - /url: ./read/CBMimwFBVV95cUxOaVgxcXItMC11WXZ0TFZ3SzROYUg2QldMZkFVVUlObkhNNnJWcURMM085bllOZGpNd1ozY25PMWY3cG1FZEx6a2x2N0pQV21fUlROQm85OWVPQ1hSNjdhaDVTdzl4bEZzN3YtRG55eDlZR0JqZ0tfVkVKRzBCTlY4UW53QTZuemsycEpzMWoxLUczSDl4WVhTTUozWQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Ford’s rehire wave has HR leaders rethinking how AI layoffs get decided
+            - figure [ref=e2938]
+          - generic [ref=e2939]:
+            - time [ref=e2940]: 2 days ago
+            - separator [ref=e2941]
+            - generic [ref=e2942]: By Jill Barth
+      - generic [ref=e2943]:
+        - separator [ref=e2945]
+        - generic [ref=e2947]:
+          - generic [ref=e2948]:
+            - link [ref=e2950] [cursor=pointer]:
+              - /url: ./read/CBMiwAFBVV95cUxOZnhORkJBcS0zVUppOERNNFoweVpKbXY0SU4xTk5PSWtTNUxRMnpaemhBTVk2Njh1R2pKMWJnMWtwOTR4VTZIcTVHUG9fMVBaT3dtMVZtdl8tNE9nUmtaNko2cjZOdWhRVmxxQ3NKWC1udTNfM3ZIdW9HbFkyaS1ZaWFTWUVyUmItZ2JhT3QzYUY0c2UwdExiWEdvTGZaY2N4cXBYSHlodDF0SU9OR1A4X3pQSHB6Z2h0NDZIZkIwam8?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2952]:
+              - generic [ref=e2953]:
+                - generic [ref=e2956]: Forbes
+                - generic [ref=e2960]:
+                  - generic:
+                    - 'button "More - Major Layoffs At ESPN: Here’s Who’s Been Impacted" [ref=e2961] [cursor=pointer]':
+                      - img [ref=e2963]
+                    - tooltip [ref=e2965]: More
+              - 'link "Major Layoffs At ESPN: Here’s Who’s Been Impacted - Forbes - 4 days ago - By Mary Whitfill" [ref=e2966] [cursor=pointer]':
+                - /url: ./read/CBMiwAFBVV95cUxOZnhORkJBcS0zVUppOERNNFoweVpKbXY0SU4xTk5PSWtTNUxRMnpaemhBTVk2Njh1R2pKMWJnMWtwOTR4VTZIcTVHUG9fMVBaT3dtMVZtdl8tNE9nUmtaNko2cjZOdWhRVmxxQ3NKWC1udTNfM3ZIdW9HbFkyaS1ZaWFTWUVyUmItZ2JhT3QzYUY0c2UwdExiWEdvTGZaY2N4cXBYSHlodDF0SU9OR1A4X3pQSHB6Z2h0NDZIZkIwam8?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Major Layoffs At ESPN: Here’s Who’s Been Impacted"
+            - figure [ref=e2967]
+          - generic [ref=e2968]:
+            - time [ref=e2969]: 4 days ago
+            - separator [ref=e2970]
+            - generic [ref=e2971]: By Mary Whitfill
+      - generic [ref=e2972]:
+        - separator [ref=e2974]
+        - generic [ref=e2976]:
+          - generic [ref=e2977]:
+            - link [ref=e2979] [cursor=pointer]:
+              - /url: ./read/CBMiowFBVV95cUxPc1hJcFZmc3R4R05LWU1VNldZR24zQ0piMUxlbHd1aHBzRkRnUDhHcVFWOFpITml0aXcyTGVvTHpNdEpNWlVteDg4SWRkc2hIVnM5QjlrTURUVS01Z2owOEZHVkVfeml3LXZ0NmVYNTJVZjNUOEw3SVhxa1dSUGdzWllaakZRblFwelRncTVESlZVWG1RWGUxcUhCRzhoRVZ4S20w?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e2981]:
+              - generic [ref=e2982]:
+                - generic [ref=e2985]: Variety
+                - generic [ref=e2989]:
+                  - generic:
+                    - button "More - Pixar Bears Brunt of Disney Studio Layoffs as Company Axes Several Hundred Staffers" [ref=e2990] [cursor=pointer]:
+                      - img [ref=e2992]
+                    - tooltip [ref=e2994]: More
+              - link "Pixar Bears Brunt of Disney Studio Layoffs as Company Axes Several Hundred Staffers - Variety - 5 days ago - By Todd Spangler" [ref=e2995] [cursor=pointer]:
+                - /url: ./read/CBMiowFBVV95cUxPc1hJcFZmc3R4R05LWU1VNldZR24zQ0piMUxlbHd1aHBzRkRnUDhHcVFWOFpITml0aXcyTGVvTHpNdEpNWlVteDg4SWRkc2hIVnM5QjlrTURUVS01Z2owOEZHVkVfeml3LXZ0NmVYNTJVZjNUOEw3SVhxa1dSUGdzWllaakZRblFwelRncTVESlZVWG1RWGUxcUhCRzhoRVZ4S20w?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Pixar Bears Brunt of Disney Studio Layoffs as Company Axes Several Hundred Staffers
+            - figure [ref=e2996]
+          - generic [ref=e2997]:
+            - time [ref=e2998]: 5 days ago
+            - separator [ref=e2999]
+            - generic [ref=e3000]: By Todd Spangler
+      - generic [ref=e3001]:
+        - separator [ref=e3003]
+        - generic [ref=e3005]:
+          - generic [ref=e3006]:
+            - link [ref=e3008] [cursor=pointer]:
+              - /url: ./read/CBMiqgFBVV95cUxOZHd2VTc0dkhSLUdNV29zSXpBYXE3MDd6TEdadVJJQjVPVGJlTzdtaE1iWFVzeFZCbzVlTTBYOUtpZDVKQTJHV1BiWlBJZFp6NGh4U3YtQVZMLTNZWXZUVjBTRmZSZzFfUkJLME5qQzVLakd6Q1VxbmVKVkhhSTRFLUhIMnBGRy1reml0dnpub3hYRllnSGVpOUdUVmtrWndqWC1XaGJ2VHpKUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3010]:
+              - generic [ref=e3011]:
+                - generic [ref=e3014]: The American Bazaar
+                - generic [ref=e3018]:
+                  - generic:
+                    - button "More - Pixar hit hardest as Disney layoffs eliminate 108 jobs at animation studio" [ref=e3019] [cursor=pointer]:
+                      - img [ref=e3021]
+                    - tooltip [ref=e3023]: More
+              - link "Pixar hit hardest as Disney layoffs eliminate 108 jobs at animation studio - The American Bazaar - 2 days ago - By Shubhangi Chowdhury" [ref=e3024] [cursor=pointer]:
+                - /url: ./read/CBMiqgFBVV95cUxOZHd2VTc0dkhSLUdNV29zSXpBYXE3MDd6TEdadVJJQjVPVGJlTzdtaE1iWFVzeFZCbzVlTTBYOUtpZDVKQTJHV1BiWlBJZFp6NGh4U3YtQVZMLTNZWXZUVjBTRmZSZzFfUkJLME5qQzVLakd6Q1VxbmVKVkhhSTRFLUhIMnBGRy1reml0dnpub3hYRllnSGVpOUdUVmtrWndqWC1XaGJ2VHpKUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Pixar hit hardest as Disney layoffs eliminate 108 jobs at animation studio
+            - figure [ref=e3025]
+          - generic [ref=e3026]:
+            - time [ref=e3027]: 2 days ago
+            - separator [ref=e3028]
+            - generic [ref=e3029]: By Shubhangi Chowdhury
+      - generic [ref=e3030]:
+        - separator [ref=e3032]
+        - generic [ref=e3034]:
+          - generic [ref=e3035]:
+            - link [ref=e3037] [cursor=pointer]:
+              - /url: ./read/CBMi-wFBVV95cUxOdlU0UHZzN1hGaVZ6QXNaRzc0cE1pc1h0dGJYcFg1eVR6SklpbjlldzIwVjlmRnBFRG92aGFVQXFHY3lndmZhcVFzNTFLZ2FaMEQ1SFF4V1NqdTEyR24yUTR6akdWcTU1dTI0VXBJRk1ialdBQWhjSDFMM29QRXlfTFFQNXNzTFpBR1YxQXd3dS15dmN3NmF4aHFoaUgyeXJyNkY1VThRZm1aQlpkY3dXalNZQmZOYlRCbWVFVDZfMXZPRTd4QUJnbk9IUlJVY3Z6bmRFM3ppRS1CdVlrd00yVzRwVGNmcktubWRGYWVKTGJ5a1lfRFdjbVNVRQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3039]:
+              - generic [ref=e3040]:
+                - generic [ref=e3043]: Yahoo Tech
+                - generic [ref=e3047]:
+                  - generic:
+                    - 'button "More - Tech layoffs tracker 2026: All of the current job losses across Monday.com, Oracle, Meta, Microsoft, Samsung and others" [ref=e3048] [cursor=pointer]':
+                      - img [ref=e3050]
+                    - tooltip [ref=e3052]: More
+              - 'link "Tech layoffs tracker 2026: All of the current job losses across Monday.com, Oracle, Meta, Microsoft, Samsung and others - Yahoo Tech - 2 days ago" [ref=e3053] [cursor=pointer]':
+                - /url: ./read/CBMi-wFBVV95cUxOdlU0UHZzN1hGaVZ6QXNaRzc0cE1pc1h0dGJYcFg1eVR6SklpbjlldzIwVjlmRnBFRG92aGFVQXFHY3lndmZhcVFzNTFLZ2FaMEQ1SFF4V1NqdTEyR24yUTR6akdWcTU1dTI0VXBJRk1ialdBQWhjSDFMM29QRXlfTFFQNXNzTFpBR1YxQXd3dS15dmN3NmF4aHFoaUgyeXJyNkY1VThRZm1aQlpkY3dXalNZQmZOYlRCbWVFVDZfMXZPRTd4QUJnbk9IUlJVY3Z6bmRFM3ppRS1CdVlrd00yVzRwVGNmcktubWRGYWVKTGJ5a1lfRFdjbVNVRQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Tech layoffs tracker 2026: All of the current job losses across Monday.com, Oracle, Meta, Microsoft, Samsung and others"
+            - figure [ref=e3054]
+          - time [ref=e3056]: 2 days ago
+      - generic [ref=e3057]:
+        - separator [ref=e3059]
+        - generic [ref=e3061]:
+          - generic [ref=e3062]:
+            - link [ref=e3064] [cursor=pointer]:
+              - /url: ./read/CBMipwFBVV95cUxOYVAwUUNXQkc1Y0RiVWJnS0p2RjViQlVfM2dnVHlXUjQ1R1pTWHJRMkZPZ2xtM3RJbDNiX3RLakxnZ0NVdjZhTmtyWVZucnpzaGI1SkdqRnN0ZTJ2NFBucVU0SHIySndCVVdqRkItYTFEcXR4UnFwenZJZ0RiTm1rYXA2WVcyXzNBd2lzdWdNYk5XRHNXZDBvRmV3NWhGc3B1cXVndGk4VQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3066]:
+              - generic [ref=e3067]:
+                - generic [ref=e3070]: The American Bazaar
+                - generic [ref=e3074]:
+                  - generic:
+                    - button "More - Coinbase HR chief exits after overseeing 700 layoffs" [ref=e3075] [cursor=pointer]:
+                      - img [ref=e3077]
+                    - tooltip [ref=e3079]: More
+              - link "Coinbase HR chief exits after overseeing 700 layoffs - The American Bazaar - 20 hours ago - By Shubhangi Chowdhury" [ref=e3080] [cursor=pointer]:
+                - /url: ./read/CBMipwFBVV95cUxOYVAwUUNXQkc1Y0RiVWJnS0p2RjViQlVfM2dnVHlXUjQ1R1pTWHJRMkZPZ2xtM3RJbDNiX3RLakxnZ0NVdjZhTmtyWVZucnpzaGI1SkdqRnN0ZTJ2NFBucVU0SHIySndCVVdqRkItYTFEcXR4UnFwenZJZ0RiTm1rYXA2WVcyXzNBd2lzdWdNYk5XRHNXZDBvRmV3NWhGc3B1cXVndGk4VQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Coinbase HR chief exits after overseeing 700 layoffs
+            - figure [ref=e3081]
+          - generic [ref=e3082]:
+            - time [ref=e3083]: 20 hours ago
+            - separator [ref=e3084]
+            - generic [ref=e3085]: By Shubhangi Chowdhury
+      - generic [ref=e3086]:
+        - separator [ref=e3088]
+        - generic [ref=e3090]:
+          - generic [ref=e3091]:
+            - link [ref=e3093] [cursor=pointer]:
+              - /url: ./read/CBMilwFBVV95cUxQb0tjZEVzSWtnUkp4eENkS1huNkNzV3dPNUtabDI0ckdHZjV1WEM3UTNrOHRadThVdHh1ZGJZUzVqSlhVZzFKVmo0Uk5tNThhMkFvb1l4Mkp0YW9iZnh3TkZFVEpJTHFOOExpVkJLSC1vTEp0UHNXMzlmdVpUZHBkd1NKU09GZzJkbHZpR3pRcGg3eTc2VExj?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3095]:
+              - generic [ref=e3096]:
+                - generic [ref=e3099]: HR Dive
+                - generic [ref=e3103]:
+                  - generic:
+                    - button "More - More than half of workers say they’ve considered accepting a lower offer after a layoff" [ref=e3104] [cursor=pointer]:
+                      - img [ref=e3106]
+                    - tooltip [ref=e3108]: More
+              - link "More than half of workers say they’ve considered accepting a lower offer after a layoff - HR Dive - 3 days ago - By Ginger Christ" [ref=e3109] [cursor=pointer]:
+                - /url: ./read/CBMilwFBVV95cUxQb0tjZEVzSWtnUkp4eENkS1huNkNzV3dPNUtabDI0ckdHZjV1WEM3UTNrOHRadThVdHh1ZGJZUzVqSlhVZzFKVmo0Uk5tNThhMkFvb1l4Mkp0YW9iZnh3TkZFVEpJTHFOOExpVkJLSC1vTEp0UHNXMzlmdVpUZHBkd1NKU09GZzJkbHZpR3pRcGg3eTc2VExj?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: More than half of workers say they’ve considered accepting a lower offer after a layoff
+            - figure [ref=e3110]
+          - generic [ref=e3111]:
+            - time [ref=e3112]: 3 days ago
+            - separator [ref=e3113]
+            - generic [ref=e3114]: By Ginger Christ
+      - generic [ref=e3115]:
+        - separator [ref=e3117]
+        - generic [ref=e3119]:
+          - generic [ref=e3120]:
+            - link [ref=e3122] [cursor=pointer]:
+              - /url: ./read/CBMiiAFBVV95cUxOel9OWDRiel83N1hDSE4wSDJRZVZKdzc5MkVHRFIwcDhzUldGZGhZTEZ5c050cm1IQzVrZUdET2c5RVBjNTlxQXptMHE3ZjcwZFBUeGxRQXVwb3htc1RGbkNHUlNoaE9kbVNaZ2NsRktiYVg2ZUtDN0JxWXUxcEdxcjdiRnhJNDVp?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3124]:
+              - generic [ref=e3125]:
+                - generic [ref=e3128]: MusicTech
+                - generic [ref=e3132]:
+                  - generic:
+                    - 'button "More - Splice confirms staff layoffs and “strategic restructuring”: “These changes will help us move with greater focus and agility”" [ref=e3133] [cursor=pointer]':
+                      - img [ref=e3135]
+                    - tooltip [ref=e3137]: More
+              - 'link "Splice confirms staff layoffs and “strategic restructuring”: “These changes will help us move with greater focus and agility” - MusicTech - 3 days ago - By Rachel Roberts" [ref=e3138] [cursor=pointer]':
+                - /url: ./read/CBMiiAFBVV95cUxOel9OWDRiel83N1hDSE4wSDJRZVZKdzc5MkVHRFIwcDhzUldGZGhZTEZ5c050cm1IQzVrZUdET2c5RVBjNTlxQXptMHE3ZjcwZFBUeGxRQXVwb3htc1RGbkNHUlNoaE9kbVNaZ2NsRktiYVg2ZUtDN0JxWXUxcEdxcjdiRnhJNDVp?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Splice confirms staff layoffs and “strategic restructuring”: “These changes will help us move with greater focus and agility”"
+            - figure [ref=e3139]
+          - generic [ref=e3140]:
+            - time [ref=e3141]: 3 days ago
+            - separator [ref=e3142]
+            - generic [ref=e3143]: By Rachel Roberts
+      - generic [ref=e3144]:
+        - separator [ref=e3146]
+        - generic [ref=e3148]:
+          - generic [ref=e3149]:
+            - link [ref=e3151] [cursor=pointer]:
+              - /url: ./read/CBMikAFBVV95cUxPbG42alNQS1R1SWVjMjlfREk3OHFMUGMzOVJqaklqOGxfY240YTdrQ3JsWE4tU3Bjc1hzNWdsNEdUZlpqQ2VqTkxlaF9qZ2FEWGRNQy1kVDFvbDBXYUswSTBxQVd0Ql9zblY5VkFLSlpEWTltY29jaHdQVlBYWjJ0YU5tckl5SkVDYVdmVzJuQU0?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3153]:
+              - generic [ref=e3154]:
+                - generic [ref=e3157]: The Information
+                - generic [ref=e3161]:
+                  - generic:
+                    - button "More - Amazon Shuts AI Agent Research Lab In AGI Layoffs" [ref=e3162] [cursor=pointer]:
+                      - img [ref=e3164]
+                    - tooltip [ref=e3166]: More
+              - link "Amazon Shuts AI Agent Research Lab In AGI Layoffs - The Information - 2 days ago - By Kevin McLaughlin and Catherine Perloff" [ref=e3167] [cursor=pointer]:
+                - /url: ./read/CBMikAFBVV95cUxPbG42alNQS1R1SWVjMjlfREk3OHFMUGMzOVJqaklqOGxfY240YTdrQ3JsWE4tU3Bjc1hzNWdsNEdUZlpqQ2VqTkxlaF9qZ2FEWGRNQy1kVDFvbDBXYUswSTBxQVd0Ql9zblY5VkFLSlpEWTltY29jaHdQVlBYWjJ0YU5tckl5SkVDYVdmVzJuQU0?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Amazon Shuts AI Agent Research Lab In AGI Layoffs
+            - figure [ref=e3168]
+          - generic [ref=e3169]:
+            - time [ref=e3170]: 2 days ago
+            - separator [ref=e3171]
+            - generic [ref=e3172]: By Kevin McLaughlin and Catherine Perloff
+      - generic [ref=e3173]:
+        - separator [ref=e3175]
+        - generic [ref=e3177]:
+          - generic [ref=e3178]:
+            - link [ref=e3180] [cursor=pointer]:
+              - /url: ./read/CBMiwAFBVV95cUxQM0dta1UzdnZvOWJzWE9FWWw1MkZoVHZHcU4zekotdktvRDFsRklLejU5M3ZTRVp5SXM1c1BvcWNZdUdEQlNOZHdSX2tFTnBMOFhBQm5OdnJyQlMzc2FzRDFNaFF6emJtYXlnZEd0bi1WY2ZpLXE4bWJiaE1CYUNtMVJGSFcycGZlbkp0T2pVZVY5ZGFCZm04dUlzMGE5QzR5MXpRdVk5Mjk0OVpPVVNpeUlBcXRWamFXeUNSZkJ6dmTSAdQBQVVfeXFMT2Qza0JqT1pGOC1jQW5fdFNyNk5URzFBOW9NRk1HdWZEY01teDhBeXVjSEJGcHdscWQ5VmFOdVZBOTBiQjhXT210SlFzZ1ppeU1IZnc0eEp5R19NOG0yOV9fa3ZNd0FhZmxOb2l3YWFpSXM2WDczaHBzMy1JTmtYTTZTRXE5MnFvcHl6QzZ4a0xBVWR5bGNTWlEycjVOVkhQYnB6aW1jeEVGLWdEdkdlMWJMRWpQb2pLV0VKU082S2RONUljMkRaaHpJVUJlU0IxelpxUTc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3182]:
+              - generic [ref=e3183]:
+                - generic [ref=e3186]: KIRO 7 News Seattle
+                - generic [ref=e3190]:
+                  - generic:
+                    - button "More - Amazon announces layoffs in artificial general intelligence group" [ref=e3191] [cursor=pointer]:
+                      - img [ref=e3193]
+                    - tooltip [ref=e3195]: More
+              - link "Amazon announces layoffs in artificial general intelligence group - KIRO 7 News Seattle - 2 days ago" [ref=e3196] [cursor=pointer]:
+                - /url: ./read/CBMiwAFBVV95cUxQM0dta1UzdnZvOWJzWE9FWWw1MkZoVHZHcU4zekotdktvRDFsRklLejU5M3ZTRVp5SXM1c1BvcWNZdUdEQlNOZHdSX2tFTnBMOFhBQm5OdnJyQlMzc2FzRDFNaFF6emJtYXlnZEd0bi1WY2ZpLXE4bWJiaE1CYUNtMVJGSFcycGZlbkp0T2pVZVY5ZGFCZm04dUlzMGE5QzR5MXpRdVk5Mjk0OVpPVVNpeUlBcXRWamFXeUNSZkJ6dmTSAdQBQVVfeXFMT2Qza0JqT1pGOC1jQW5fdFNyNk5URzFBOW9NRk1HdWZEY01teDhBeXVjSEJGcHdscWQ5VmFOdVZBOTBiQjhXT210SlFzZ1ppeU1IZnc0eEp5R19NOG0yOV9fa3ZNd0FhZmxOb2l3YWFpSXM2WDczaHBzMy1JTmtYTTZTRXE5MnFvcHl6QzZ4a0xBVWR5bGNTWlEycjVOVkhQYnB6aW1jeEVGLWdEdkdlMWJMRWpQb2pLV0VKU082S2RONUljMkRaaHpJVUJlU0IxelpxUTc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Amazon announces layoffs in artificial general intelligence group
+            - figure [ref=e3197]
+          - time [ref=e3199]: 2 days ago
+      - generic [ref=e3200]:
+        - separator [ref=e3202]
+        - generic [ref=e3204]:
+          - generic [ref=e3205]:
+            - link [ref=e3207] [cursor=pointer]:
+              - /url: ./read/CBMi5wJBVV95cUxOalpRQkNtZjFObXk5SEsyN3o4ZG40LVNqbnFfekJUcjYtWWY4WWxBeUZDZ0lKM2hNTHVCVWR1SElrRDR2dHFoOFdpTGd2Nmgxcm9LNlJvMXowYkVmOWdGazVyc0QwQ21EZ3dhUXBYUGJtaW03bWgzbzBHZ2VGZWs4NF9qc0dIVTJnZVJQRVZuRG0zSjhXWmxlcXk5ZXFCVEQ1bVBUOUN0WUxaajlyTGdVdEhfY3FiSXQxcW5UeHM3V2VQTFlvZk9xX3BmZC1sQzhXTkxGbUxrU21BZXpPMVhxR3NtQW41NkRhZjh1Q21wN2ZJNHNrRllFVGpCQXY5WndJdlJZczktcHpXcF9ScHFzYVFnajZUc3BxNUVlb0VJSlYyWkZBRG5VVldDUEZLRFgxOUg3ZEQ2ZlRLaEpEeHNWQ2NYSEhwbkVReGR1Y1hsbE5seEY4aWN0NlZ4RFRLZHJoTExFOVNiOA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3209]:
+              - generic [ref=e3210]:
+                - generic [ref=e3213]: KOMO
+                - generic [ref=e3217]:
+                  - generic:
+                    - button "More - Amazon confirms new AI-related layoffs focused on tech giant's own AI division" [ref=e3218] [cursor=pointer]:
+                      - img [ref=e3220]
+                    - tooltip [ref=e3222]: More
+              - link "Amazon confirms new AI-related layoffs focused on tech giant's own AI division - KOMO - 2 days ago" [ref=e3223] [cursor=pointer]:
+                - /url: ./read/CBMi5wJBVV95cUxOalpRQkNtZjFObXk5SEsyN3o4ZG40LVNqbnFfekJUcjYtWWY4WWxBeUZDZ0lKM2hNTHVCVWR1SElrRDR2dHFoOFdpTGd2Nmgxcm9LNlJvMXowYkVmOWdGazVyc0QwQ21EZ3dhUXBYUGJtaW03bWgzbzBHZ2VGZWs4NF9qc0dIVTJnZVJQRVZuRG0zSjhXWmxlcXk5ZXFCVEQ1bVBUOUN0WUxaajlyTGdVdEhfY3FiSXQxcW5UeHM3V2VQTFlvZk9xX3BmZC1sQzhXTkxGbUxrU21BZXpPMVhxR3NtQW41NkRhZjh1Q21wN2ZJNHNrRllFVGpCQXY5WndJdlJZczktcHpXcF9ScHFzYVFnajZUc3BxNUVlb0VJSlYyWkZBRG5VVldDUEZLRFgxOUg3ZEQ2ZlRLaEpEeHNWQ2NYSEhwbkVReGR1Y1hsbE5seEY4aWN0NlZ4RFRLZHJoTExFOVNiOA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Amazon confirms new AI-related layoffs focused on tech giant's own AI division
+            - figure [ref=e3224]
+          - time [ref=e3226]: 2 days ago
+      - generic [ref=e3227]:
+        - separator [ref=e3229]
+        - generic [ref=e3231]:
+          - generic [ref=e3232]:
+            - link [ref=e3234] [cursor=pointer]:
+              - /url: ./read/CBMiogFBVV95cUxQemRpWUJHTEYxVHRCRlpCUFd6cFV4SHowd0xkZTd6RGFrb2tmbkJsa21YSlVpUU9FdEJ0b2RYMTVHNjNkMm9FV0I2dkpEQlRKV09SM2ZNMXdxeldOSEtPalhpN0x1R25DYmk2VVJCLXZMd1JKc1dGZDNhRzktd1pHX2ZCWGdGTWpheFBsZjJQc3VON0Y4WERaRGxuNFI2Vk9kWUE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3236]:
+              - generic [ref=e3237]:
+                - generic [ref=e3240]: Fierce Biotech
+                - generic [ref=e3244]:
+                  - generic:
+                    - button "More - Amgen sheds around 40 staffers as struggles mount" [ref=e3245] [cursor=pointer]:
+                      - img [ref=e3247]
+                    - tooltip [ref=e3249]: More
+              - link "Amgen sheds around 40 staffers as struggles mount - Fierce Biotech - Yesterday - By Darren Incorvaia" [ref=e3250] [cursor=pointer]:
+                - /url: ./read/CBMiogFBVV95cUxQemRpWUJHTEYxVHRCRlpCUFd6cFV4SHowd0xkZTd6RGFrb2tmbkJsa21YSlVpUU9FdEJ0b2RYMTVHNjNkMm9FV0I2dkpEQlRKV09SM2ZNMXdxeldOSEtPalhpN0x1R25DYmk2VVJCLXZMd1JKc1dGZDNhRzktd1pHX2ZCWGdGTWpheFBsZjJQc3VON0Y4WERaRGxuNFI2Vk9kWUE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Amgen sheds around 40 staffers as struggles mount
+            - figure [ref=e3251]
+          - generic [ref=e3252]:
+            - time [ref=e3253]: Yesterday
+            - separator [ref=e3254]
+            - generic [ref=e3255]: By Darren Incorvaia
+      - generic [ref=e3256]:
+        - separator [ref=e3258]
+        - generic [ref=e3260]:
+          - generic [ref=e3261]:
+            - link [ref=e3263] [cursor=pointer]:
+              - /url: ./read/CBMilAFBVV95cUxNYzRGRThqWXdUclBQWXVBSk5JOVpRZHVCdDVxLTdNMllOUEJDdzJac2dTV2t1cXJBcnFvMnJRX2ZUWlF0RVVhSE1BTWdNa1JkNXVjTkpnVXFIV09VWW04VWQ4VUVlTHUwdFpOTV85dkNON0NxVVMxampjUEY5bjJUTmlzRlBmTzlfdzZPN09JbURKbEpa?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3265]:
+              - generic [ref=e3266]:
+                - generic [ref=e3269]: The New York Times
+                - generic [ref=e3273]:
+                  - generic:
+                    - button "More - Once the ‘Worldwide Leader in Sports,’ ESPN’s latest layoffs cement its new identity" [ref=e3274] [cursor=pointer]:
+                      - img [ref=e3276]
+                    - tooltip [ref=e3278]: More
+              - link "Once the ‘Worldwide Leader in Sports,’ ESPN’s latest layoffs cement its new identity - The New York Times - 3 days ago - By Andrew Marchand" [ref=e3279] [cursor=pointer]:
+                - /url: ./read/CBMilAFBVV95cUxNYzRGRThqWXdUclBQWXVBSk5JOVpRZHVCdDVxLTdNMllOUEJDdzJac2dTV2t1cXJBcnFvMnJRX2ZUWlF0RVVhSE1BTWdNa1JkNXVjTkpnVXFIV09VWW04VWQ4VUVlTHUwdFpOTV85dkNON0NxVVMxampjUEY5bjJUTmlzRlBmTzlfdzZPN09JbURKbEpa?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Once the ‘Worldwide Leader in Sports,’ ESPN’s latest layoffs cement its new identity
+            - figure [ref=e3280]
+          - generic [ref=e3281]:
+            - time [ref=e3282]: 3 days ago
+            - separator [ref=e3283]
+            - generic [ref=e3284]: By Andrew Marchand
+      - generic [ref=e3285]:
+        - separator [ref=e3287]
+        - generic [ref=e3289]:
+          - generic [ref=e3290]:
+            - link [ref=e3292] [cursor=pointer]:
+              - /url: ./read/CBMinAFBVV95cUxOd1ljVTB4eUlvZlYxNEdlTnF0alZRSkV5T29ISVphVi1uS25HS1JHd29KdkdlcE9vYkZIcVBqV0I1S29xQzFweTZ4QzlqOEVDb2xNOTBiVjMxbzJudHVlcTd4RFdDWlF3ZEMtZG1HMlduV0RXQldNdnBTZUtZTFJTbEt1cWJqTVpzcDNVRE5RMVpEakdPWDJrQVZJeG8?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3294]:
+              - generic [ref=e3295]:
+                - generic [ref=e3298]: Business Insider
+                - generic [ref=e3302]:
+                  - generic:
+                    - button "More - Patreon is laying off 20% of its staff. Read the memo its CEO sent to employees." [ref=e3303] [cursor=pointer]:
+                      - img [ref=e3305]
+                    - tooltip [ref=e3307]: More
+              - link "Patreon is laying off 20% of its staff. Read the memo its CEO sent to employees. - Business Insider - 2 days ago - By Sydney Bradley" [ref=e3308] [cursor=pointer]:
+                - /url: ./read/CBMinAFBVV95cUxOd1ljVTB4eUlvZlYxNEdlTnF0alZRSkV5T29ISVphVi1uS25HS1JHd29KdkdlcE9vYkZIcVBqV0I1S29xQzFweTZ4QzlqOEVDb2xNOTBiVjMxbzJudHVlcTd4RFdDWlF3ZEMtZG1HMlduV0RXQldNdnBTZUtZTFJTbEt1cWJqTVpzcDNVRE5RMVpEakdPWDJrQVZJeG8?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Patreon is laying off 20% of its staff. Read the memo its CEO sent to employees.
+            - figure [ref=e3309]
+          - generic [ref=e3310]:
+            - time [ref=e3311]: 2 days ago
+            - separator [ref=e3312]
+            - generic [ref=e3313]: By Sydney Bradley
+      - generic [ref=e3314]:
+        - separator [ref=e3316]
+        - generic [ref=e3318]:
+          - generic [ref=e3319]:
+            - link [ref=e3321] [cursor=pointer]:
+              - /url: ./read/CBMiiAFBVV95cUxPSFFwS0lmdUlRa3llY1RSVVNNOGs4MnBxa3pUQVdjdnJobl82d3Z2d3Y5cUpySlg3eEdlUzVsaUxDcTAxLUhyTEFkMWhjWDZaSTJ2NWE4eFk0c1J5dFhMUHo3emVFV3l4TnBLU3RxRW9ZR24yVVF4ZDQ3WGZWYjBmMnI4OTB6cE9J?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3323]:
+              - generic [ref=e3324]:
+                - generic [ref=e3327]: 조선일보
+                - generic [ref=e3331]:
+                  - generic:
+                    - button "More - U.S. Tech Giants Invest Billions in AI Amid 140,000 Layoffs" [ref=e3332] [cursor=pointer]:
+                      - img [ref=e3334]
+                    - tooltip [ref=e3336]: More
+              - link "U.S. Tech Giants Invest Billions in AI Amid 140,000 Layoffs - 조선일보 - 7 hours ago" [ref=e3337] [cursor=pointer]:
+                - /url: ./read/CBMiiAFBVV95cUxPSFFwS0lmdUlRa3llY1RSVVNNOGs4MnBxa3pUQVdjdnJobl82d3Z2d3Y5cUpySlg3eEdlUzVsaUxDcTAxLUhyTEFkMWhjWDZaSTJ2NWE4eFk0c1J5dFhMUHo3emVFV3l4TnBLU3RxRW9ZR24yVVF4ZDQ3WGZWYjBmMnI4OTB6cE9J?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: U.S. Tech Giants Invest Billions in AI Amid 140,000 Layoffs
+            - figure [ref=e3338]
+          - time [ref=e3340]: 7 hours ago
+      - generic [ref=e3341]:
+        - separator [ref=e3343]
+        - generic [ref=e3345]:
+          - generic [ref=e3346]:
+            - link [ref=e3348] [cursor=pointer]:
+              - /url: ./read/CBMieEFVX3lxTFA5VXdWbWptS2EtcmhzUjMwNmp3QXJtRmZkdUt2N29FMmZaWURGT2hid0lWQ2tVZ0JuWnc2Tk9kQzQtUEhZajFmM3dIRW1tMjd5eFJSa3A4VDYtY2pGeUhWV2E4SGNSUk8yTTFBU0FPWUhsaFV4QU1QdA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3350]:
+              - generic [ref=e3351]:
+                - generic [ref=e3354]: Variety
+                - generic [ref=e3358]:
+                  - generic:
+                    - button "More - ESPN Hit With Layoffs After Combining NFL Network Operations" [ref=e3359] [cursor=pointer]:
+                      - img [ref=e3361]
+                    - tooltip [ref=e3363]: More
+              - link "ESPN Hit With Layoffs After Combining NFL Network Operations - Variety - 5 days ago - By Todd Spangler" [ref=e3364] [cursor=pointer]:
+                - /url: ./read/CBMieEFVX3lxTFA5VXdWbWptS2EtcmhzUjMwNmp3QXJtRmZkdUt2N29FMmZaWURGT2hid0lWQ2tVZ0JuWnc2Tk9kQzQtUEhZajFmM3dIRW1tMjd5eFJSa3A4VDYtY2pGeUhWV2E4SGNSUk8yTTFBU0FPWUhsaFV4QU1QdA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: ESPN Hit With Layoffs After Combining NFL Network Operations
+            - figure [ref=e3365]
+          - generic [ref=e3366]:
+            - time [ref=e3367]: 5 days ago
+            - separator [ref=e3368]
+            - generic [ref=e3369]: By Todd Spangler
+      - generic [ref=e3370]:
+        - separator [ref=e3372]
+        - generic [ref=e3374]:
+          - generic [ref=e3375]:
+            - link [ref=e3377] [cursor=pointer]:
+              - /url: ./read/CBMisgFBVV95cUxPMnpUVk5qSXlZbFAyUlFkY29HUi1QLUdyQ0tEWlFLbzQybEFNcXdjRVV3YVpTLVlfRVRaXzdNVzVrY0t2WGd4N3p1dXNrOHNMWHhMU3JNT1NiN2pybW5wZkM4Rk05aWVubDIwVU1wTXlLR1RpN3pOOUNSTXFDWWJYWTJVMWlYOTVVYVhNUkJQOXJWWmR2OGt0YTRpZl9nQ2RocXBVSW9OazhfNFIwMldvQlJB?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3379]:
+              - generic [ref=e3380]:
+                - generic [ref=e3383]: The American Bazaar
+                - generic [ref=e3387]:
+                  - generic:
+                    - button "More - Patreon CEO announces 20% layoffs due to rapid market changes, including AI" [ref=e3388] [cursor=pointer]:
+                      - img [ref=e3390]
+                    - tooltip [ref=e3392]: More
+              - link "Patreon CEO announces 20% layoffs due to rapid market changes, including AI - The American Bazaar - 2 days ago - By Rajwa Quasim" [ref=e3393] [cursor=pointer]:
+                - /url: ./read/CBMisgFBVV95cUxPMnpUVk5qSXlZbFAyUlFkY29HUi1QLUdyQ0tEWlFLbzQybEFNcXdjRVV3YVpTLVlfRVRaXzdNVzVrY0t2WGd4N3p1dXNrOHNMWHhMU3JNT1NiN2pybW5wZkM4Rk05aWVubDIwVU1wTXlLR1RpN3pOOUNSTXFDWWJYWTJVMWlYOTVVYVhNUkJQOXJWWmR2OGt0YTRpZl9nQ2RocXBVSW9OazhfNFIwMldvQlJB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Patreon CEO announces 20% layoffs due to rapid market changes, including AI
+            - figure [ref=e3394]
+          - generic [ref=e3395]:
+            - time [ref=e3396]: 2 days ago
+            - separator [ref=e3397]
+            - generic [ref=e3398]: By Rajwa Quasim
+      - generic [ref=e3399]:
+        - separator [ref=e3401]
+        - generic [ref=e3403]:
+          - generic [ref=e3404]:
+            - link [ref=e3406] [cursor=pointer]:
+              - /url: ./read/CBMigwFBVV95cUxONEw4Zlc3UFQ5blB2c1ZQTEllWk1IdXhCNnJYUjlFQ0cxUnpHTWZocTR3djZBbDdqNFZkOHowYXpUYzRVM2lpWi0tU283SVlTVThGRDcxbXdZbEszVW1mWlE5THpBcHBwNDM4SWtVRkdNeTFoNG5HWkJJQVAyV1Q2NnRLcw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3408]:
+              - generic [ref=e3409]:
+                - generic [ref=e3412]: HR Executive
+                - generic [ref=e3416]:
+                  - generic:
+                    - button "More - Four big-name AI layoffs, four different explanations" [ref=e3417] [cursor=pointer]:
+                      - img [ref=e3419]
+                    - tooltip [ref=e3421]: More
+              - link "Four big-name AI layoffs, four different explanations - HR Executive - 3 days ago - By Jill Barth" [ref=e3422] [cursor=pointer]:
+                - /url: ./read/CBMigwFBVV95cUxONEw4Zlc3UFQ5blB2c1ZQTEllWk1IdXhCNnJYUjlFQ0cxUnpHTWZocTR3djZBbDdqNFZkOHowYXpUYzRVM2lpWi0tU283SVlTVThGRDcxbXdZbEszVW1mWlE5THpBcHBwNDM4SWtVRkdNeTFoNG5HWkJJQVAyV1Q2NnRLcw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Four big-name AI layoffs, four different explanations
+            - figure [ref=e3423]
+          - generic [ref=e3424]:
+            - time [ref=e3425]: 3 days ago
+            - separator [ref=e3426]
+            - generic [ref=e3427]: By Jill Barth
+      - generic [ref=e3428]:
+        - separator [ref=e3430]
+        - generic [ref=e3432]:
+          - generic [ref=e3433]:
+            - link [ref=e3435] [cursor=pointer]:
+              - /url: ./read/CBMipAFBVV95cUxQZTYxT3IwY245cEl0U3pmcnE2R3c3WVJudEx3YnFTS3E0akhVQlBLXzRDaWpFQlcxQTdMZEc0aDQxZEJNQkxTTXZoVDY3SzU2Zmt5c0RWNS1FMFJ4ZlY3Y0JtanJFdEJFclNvTE1RbjVEVGVBNFhPY0ZCSWlraU1qTzBWSDVNS19QMGlaaHpBVWtxRkgwaXF4NVpqRVBpalBScGlIdg?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3437]:
+              - generic [ref=e3438]:
+                - generic [ref=e3441]: The Business Journals
+                - generic [ref=e3445]:
+                  - generic:
+                    - 'button "More - Airlines fight headwinds: Southwest could cut more jobs, American reports double-digit profit decline" [ref=e3446] [cursor=pointer]':
+                      - img [ref=e3448]
+                    - tooltip [ref=e3450]: More
+              - 'link "Airlines fight headwinds: Southwest could cut more jobs, American reports double-digit profit decline - The Business Journals - 2 days ago - By Leonardo Rosas" [ref=e3451] [cursor=pointer]':
+                - /url: ./read/CBMipAFBVV95cUxQZTYxT3IwY245cEl0U3pmcnE2R3c3WVJudEx3YnFTS3E0akhVQlBLXzRDaWpFQlcxQTdMZEc0aDQxZEJNQkxTTXZoVDY3SzU2Zmt5c0RWNS1FMFJ4ZlY3Y0JtanJFdEJFclNvTE1RbjVEVGVBNFhPY0ZCSWlraU1qTzBWSDVNS19QMGlaaHpBVWtxRkgwaXF4NVpqRVBpalBScGlIdg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Airlines fight headwinds: Southwest could cut more jobs, American reports double-digit profit decline"
+            - figure [ref=e3452]
+          - generic [ref=e3453]:
+            - time [ref=e3454]: 2 days ago
+            - separator [ref=e3455]
+            - generic [ref=e3456]: By Leonardo Rosas
+      - generic [ref=e3457]:
+        - separator [ref=e3459]
+        - generic [ref=e3461]:
+          - generic [ref=e3462]:
+            - link [ref=e3464] [cursor=pointer]:
+              - /url: ./read/CBMipwFBVV95cUxQMG9pcU1oTGE5V2ZaSThRMnk4dzlvSkdzaWJ6b3luODAydFRveFNYSUdBU0J0M0VyTUJOREpPb09VZElZaDVSUWdJR1dVYVlraTlTbC1JMTB2LW5YbDhZbU9aSUNXaERKZVZLRmJxbEMzakpONy1lNTVWYV9FTkNBY0NkYVFGYXE4ejlvZnBjZUN6Zi1FcVdET2cyQTcxekh0enVQT3gtOA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3466]:
+              - generic [ref=e3467]:
+                - generic [ref=e3470]: FreightWaves
+                - generic [ref=e3474]:
+                  - generic:
+                    - 'button "More - Freight Distress Report: Supply chain providers cut more than 1,200 jobs" [ref=e3475] [cursor=pointer]':
+                      - img [ref=e3477]
+                    - tooltip [ref=e3479]: More
+              - 'link "Freight Distress Report: Supply chain providers cut more than 1,200 jobs - FreightWaves - 2 days ago - By Noi Mahoney" [ref=e3480] [cursor=pointer]':
+                - /url: ./read/CBMipwFBVV95cUxQMG9pcU1oTGE5V2ZaSThRMnk4dzlvSkdzaWJ6b3luODAydFRveFNYSUdBU0J0M0VyTUJOREpPb09VZElZaDVSUWdJR1dVYVlraTlTbC1JMTB2LW5YbDhZbU9aSUNXaERKZVZLRmJxbEMzakpONy1lNTVWYV9FTkNBY0NkYVFGYXE4ejlvZnBjZUN6Zi1FcVdET2cyQTcxekh0enVQT3gtOA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Freight Distress Report: Supply chain providers cut more than 1,200 jobs"
+            - figure [ref=e3481]
+          - generic [ref=e3482]:
+            - time [ref=e3483]: 2 days ago
+            - separator [ref=e3484]
+            - generic [ref=e3485]: By Noi Mahoney
+      - generic [ref=e3486]:
+        - separator [ref=e3488]
+        - generic [ref=e3490]:
+          - generic [ref=e3491]:
+            - link [ref=e3493] [cursor=pointer]:
+              - /url: ./read/CBMinwFBVV95cUxQZVBVZm5oeEdFMHExYW04TkRBY1ZWQ3Nocnc5RU5ZcGZJSm5HTUVFdTQ2TGlUZzdTMWZqVjNtUTJwS0VWVVNfQVJNekhEbzREQkdpOWJ3WGpwdVNMMW01d25iZjdvdTRzc3dHVGtxWEJkSWU5NUNRRXRCWEJDZ2pCMElyV1BMQzZMcGpNN0FwUmpLRTJLMmFHelVndGZlejg?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3495]:
+              - generic [ref=e3496]:
+                - generic [ref=e3499]: KQED
+                - generic [ref=e3503]:
+                  - generic:
+                    - button "More - 4,500 Google Employees Demand Job Security Amid Big Tech Layoffs" [ref=e3504] [cursor=pointer]:
+                      - img [ref=e3506]
+                    - tooltip [ref=e3508]: More
+              - link "4,500 Google Employees Demand Job Security Amid Big Tech Layoffs - KQED - 9 days ago" [ref=e3509] [cursor=pointer]:
+                - /url: ./read/CBMinwFBVV95cUxQZVBVZm5oeEdFMHExYW04TkRBY1ZWQ3Nocnc5RU5ZcGZJSm5HTUVFdTQ2TGlUZzdTMWZqVjNtUTJwS0VWVVNfQVJNekhEbzREQkdpOWJ3WGpwdVNMMW01d25iZjdvdTRzc3dHVGtxWEJkSWU5NUNRRXRCWEJDZ2pCMElyV1BMQzZMcGpNN0FwUmpLRTJLMmFHelVndGZlejg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: 4,500 Google Employees Demand Job Security Amid Big Tech Layoffs
+            - figure [ref=e3510]
+          - time [ref=e3512]: 9 days ago
+      - generic [ref=e3513]:
+        - separator [ref=e3515]
+        - generic [ref=e3517]:
+          - generic [ref=e3518]:
+            - link [ref=e3520] [cursor=pointer]:
+              - /url: ./read/CBMigAFBVV95cUxON0lkX3U1U21BM2I1NUEtUEtqSWZvUFg4djFNSV91dGZJOUEzSGFlUEYwZnlMZTBOZVVacUoxajBPeExZS1FGeDB0b24zcDZHWElSNjFwQ3JWT0RNYWhyX0xwVTdFWkZmQ2xXTzVqWmhUcktPSVNCU2VDNXNRQ1RNQw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3522]:
+              - generic [ref=e3523]:
+                - generic [ref=e3526]: Yahoo Finance UK
+                - generic [ref=e3530]:
+                  - generic:
+                    - button "More - What monday.com (MNDY)'s 20% Layoffs and AI Pivot Mean For Shareholders" [ref=e3531] [cursor=pointer]:
+                      - img [ref=e3533]
+                    - tooltip [ref=e3535]: More
+              - link "What monday.com (MNDY)'s 20% Layoffs and AI Pivot Mean For Shareholders - Yahoo Finance UK - Yesterday - By Sasha Jovanovic" [ref=e3536] [cursor=pointer]:
+                - /url: ./read/CBMigAFBVV95cUxON0lkX3U1U21BM2I1NUEtUEtqSWZvUFg4djFNSV91dGZJOUEzSGFlUEYwZnlMZTBOZVVacUoxajBPeExZS1FGeDB0b24zcDZHWElSNjFwQ3JWT0RNYWhyX0xwVTdFWkZmQ2xXTzVqWmhUcktPSVNCU2VDNXNRQ1RNQw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: What monday.com (MNDY)'s 20% Layoffs and AI Pivot Mean For Shareholders
+            - figure [ref=e3537]
+          - generic [ref=e3538]:
+            - time [ref=e3539]: Yesterday
+            - separator [ref=e3540]
+            - generic [ref=e3541]: By Sasha Jovanovic
+      - generic [ref=e3542]:
+        - separator [ref=e3544]
+        - generic [ref=e3546]:
+          - generic [ref=e3547]:
+            - link [ref=e3549] [cursor=pointer]:
+              - /url: ./read/CBMiWkFVX3lxTFBqTXo4TjJ6cTVCX1JjVXo4bW9Xdm9PVjcxdHRPRl84dnZ3ZjlrOHhRcEV1WnhfbTRyQkl1d1ZRQy1XUWJ6QXhMSl80ZU9vSzY5SEVCWVBfbktzQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3551]:
+              - generic [ref=e3552]:
+                - generic [ref=e3555]: BBC
+                - generic [ref=e3559]:
+                  - generic:
+                    - button "More - Microsoft cuts 4,800 jobs and shrinks Xbox in 'significant restructure'" [ref=e3560] [cursor=pointer]:
+                      - img [ref=e3562]
+                    - tooltip [ref=e3564]: More
+              - link "Microsoft cuts 4,800 jobs and shrinks Xbox in 'significant restructure' - BBC - 20 days ago - By Liv Mcmahon" [ref=e3565] [cursor=pointer]:
+                - /url: ./read/CBMiWkFVX3lxTFBqTXo4TjJ6cTVCX1JjVXo4bW9Xdm9PVjcxdHRPRl84dnZ3ZjlrOHhRcEV1WnhfbTRyQkl1d1ZRQy1XUWJ6QXhMSl80ZU9vSzY5SEVCWVBfbktzQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Microsoft cuts 4,800 jobs and shrinks Xbox in 'significant restructure'
+            - figure [ref=e3566]
+          - generic [ref=e3567]:
+            - time [ref=e3568]: 20 days ago
+            - separator [ref=e3569]
+            - generic [ref=e3570]: By Liv Mcmahon
+      - generic [ref=e3571]:
+        - separator [ref=e3573]
+        - generic [ref=e3575]:
+          - generic [ref=e3576]:
+            - link [ref=e3578] [cursor=pointer]:
+              - /url: ./read/CBMikgFBVV95cUxNR2Y5Y1NTeXVDYVdsWmx3dTZUN0xSdURaOHB1RmRhY0hwM2NnREFBVkZtNW1YeGdfT0phc1N6Q0FaU1Y2Tm54MDRxYVBoenFPRXZuNEZvQXFMeUJBbk9XVm9BVEVaLTNkcFhzQlJ1aFZvNTBHQWpVX3h1T2JfNXZQanhyMkZITTgtMk16aXY5QjZzdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3580]:
+              - generic [ref=e3581]:
+                - generic [ref=e3584]: Poynter
+                - generic [ref=e3588]:
+                  - generic:
+                    - button "More - Opinion | ESPN’s latest layoffs claim some of its best-known on-air personalities" [ref=e3589] [cursor=pointer]:
+                      - img [ref=e3591]
+                    - tooltip [ref=e3593]: More
+              - link "Opinion | ESPN’s latest layoffs claim some of its best-known on-air personalities - Poynter - 4 days ago - By Tom Jones" [ref=e3594] [cursor=pointer]:
+                - /url: ./read/CBMikgFBVV95cUxNR2Y5Y1NTeXVDYVdsWmx3dTZUN0xSdURaOHB1RmRhY0hwM2NnREFBVkZtNW1YeGdfT0phc1N6Q0FaU1Y2Tm54MDRxYVBoenFPRXZuNEZvQXFMeUJBbk9XVm9BVEVaLTNkcFhzQlJ1aFZvNTBHQWpVX3h1T2JfNXZQanhyMkZITTgtMk16aXY5QjZzdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Opinion | ESPN’s latest layoffs claim some of its best-known on-air personalities
+            - figure [ref=e3595]
+          - generic [ref=e3596]:
+            - time [ref=e3597]: 4 days ago
+            - separator [ref=e3598]
+            - generic [ref=e3599]: By Tom Jones
+      - generic [ref=e3600]:
+        - separator [ref=e3602]
+        - generic [ref=e3604]:
+          - generic [ref=e3605]:
+            - link [ref=e3607] [cursor=pointer]:
+              - /url: ./read/CBMikwFBVV95cUxQVjd0QzRISWZ1T2FrZXVxNU92TlVkMUVHRTAwUnNCZVEwS05uamJhQ285ZU1pc1RyTzdlOHZaZk51UjRoOG1JVnQ5NXQySkxhVWRGZElxNHhlZGJVc09hcVhUYi1wZ1dlZ1RKanBtMTNhMzc5ZlRMZTd2bjZ4X0c4OUJsQ2VmeHlNXzFvWjBZSnFLemc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3609]:
+              - generic [ref=e3610]:
+                - generic [ref=e3613]: The New York Times
+                - generic [ref=e3617]:
+                  - generic:
+                    - 'button "More - Karl Ravech, Tom Pelissero among ESPN layoffs in latest round of cuts: Sources - The Athletic" [ref=e3618] [cursor=pointer]':
+                      - img [ref=e3620]
+                    - tooltip [ref=e3622]: More
+              - 'link "Karl Ravech, Tom Pelissero among ESPN layoffs in latest round of cuts: Sources - The Athletic - The New York Times - 4 days ago - By Andrew Marchand" [ref=e3623] [cursor=pointer]':
+                - /url: ./read/CBMikwFBVV95cUxQVjd0QzRISWZ1T2FrZXVxNU92TlVkMUVHRTAwUnNCZVEwS05uamJhQ285ZU1pc1RyTzdlOHZaZk51UjRoOG1JVnQ5NXQySkxhVWRGZElxNHhlZGJVc09hcVhUYi1wZ1dlZ1RKanBtMTNhMzc5ZlRMZTd2bjZ4X0c4OUJsQ2VmeHlNXzFvWjBZSnFLemc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Karl Ravech, Tom Pelissero among ESPN layoffs in latest round of cuts: Sources - The Athletic"
+            - figure [ref=e3624]
+          - generic [ref=e3625]:
+            - time [ref=e3626]: 4 days ago
+            - separator [ref=e3627]
+            - generic [ref=e3628]: By Andrew Marchand
+      - generic [ref=e3629]:
+        - separator [ref=e3631]
+        - generic [ref=e3633]:
+          - generic [ref=e3634]:
+            - link [ref=e3636] [cursor=pointer]:
+              - /url: ./read/CBMiigFBVV95cUxNSEtmOS1aSFc2QndHdFBiYmg4RXNyWXJlUk1qckUwM0hVUnd4WVNLaDlIakdKM2ZPLW0tSU1hVkxCUEh1MGxaNFNqenFlMkNtOHE2Q18tend3NHl5N2hJWUxyckEtZTZZbW82a3pOVFZycWlSNmVNOGRocVlOcXZBTHNkb0JFOFVfdHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3638]:
+              - generic [ref=e3639]:
+                - generic [ref=e3642]: Yahoo Sports
+                - generic [ref=e3646]:
+                  - generic:
+                    - button "More - ESPN’s Latest Layoffs Continue the Slow Death of Sports Media’s Middle Class" [ref=e3647] [cursor=pointer]:
+                      - img [ref=e3649]
+                    - tooltip [ref=e3651]: More
+              - link "ESPN’s Latest Layoffs Continue the Slow Death of Sports Media’s Middle Class - Yahoo Sports - 2 days ago" [ref=e3652] [cursor=pointer]:
+                - /url: ./read/CBMiigFBVV95cUxNSEtmOS1aSFc2QndHdFBiYmg4RXNyWXJlUk1qckUwM0hVUnd4WVNLaDlIakdKM2ZPLW0tSU1hVkxCUEh1MGxaNFNqenFlMkNtOHE2Q18tend3NHl5N2hJWUxyckEtZTZZbW82a3pOVFZycWlSNmVNOGRocVlOcXZBTHNkb0JFOFVfdHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: ESPN’s Latest Layoffs Continue the Slow Death of Sports Media’s Middle Class
+            - figure [ref=e3653]
+          - time [ref=e3655]: 2 days ago
+      - generic [ref=e3656]:
+        - separator [ref=e3658]
+        - generic [ref=e3660]:
+          - generic [ref=e3661]:
+            - link [ref=e3663] [cursor=pointer]:
+              - /url: ./read/CBMijgFBVV95cUxPem9kNWQ0a0FubFF1clJfZFd3a3dDRVkyd2NXYUlyTjZMWFNqWFVZR2luYzdzMllwOHg4ZlBfbUNzRU9fbk5XRHBBQjBGZTJpbmJGZlhEZ0E2NW5KY0lxT3NZVkxrUGxRZDVkeGI2Z0lGVXFnRGdJUFRlbzZxZ3RsbXhZUnprT3doc2tvZFNn?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3665]:
+              - generic [ref=e3666]:
+                - generic [ref=e3669]: The Business Journals
+                - generic [ref=e3673]:
+                  - generic:
+                    - button "More - Two San Francisco tech companies execute layoffs while citing AI effects" [ref=e3674] [cursor=pointer]:
+                      - img [ref=e3676]
+                    - tooltip [ref=e3678]: More
+              - link "Two San Francisco tech companies execute layoffs while citing AI effects - The Business Journals - 2 days ago - By Jeremy Owens" [ref=e3679] [cursor=pointer]:
+                - /url: ./read/CBMijgFBVV95cUxPem9kNWQ0a0FubFF1clJfZFd3a3dDRVkyd2NXYUlyTjZMWFNqWFVZR2luYzdzMllwOHg4ZlBfbUNzRU9fbk5XRHBBQjBGZTJpbmJGZlhEZ0E2NW5KY0lxT3NZVkxrUGxRZDVkeGI2Z0lGVXFnRGdJUFRlbzZxZ3RsbXhZUnprT3doc2tvZFNn?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Two San Francisco tech companies execute layoffs while citing AI effects
+            - figure [ref=e3680]
+          - generic [ref=e3681]:
+            - time [ref=e3682]: 2 days ago
+            - separator [ref=e3683]
+            - generic [ref=e3684]: By Jeremy Owens
+      - generic [ref=e3685]:
+        - separator [ref=e3687]
+        - generic [ref=e3689]:
+          - generic [ref=e3690]:
+            - link [ref=e3692] [cursor=pointer]:
+              - /url: ./read/CBMi1AFBVV95cUxNdE9nSXkwUndBcHFiNnFneEtjVTM0amFZaGlOUXFKTGdIemJ6dk0zUTJXT2YwRmdPdGt5QW9GR1BKSFlWa3VJS2poVUtGdUZ0aDVxUXFFTmFUak5TTDEwSXg3Y2piWEVURTdKd2hvTm82MmY4Z0pJNmhHODFWSVNGdkl1cmg0VHhlMElISHFCS2NaaHpQMmRZMy0wNWFQeHQ0bzdSZXVwckgzTENpMmZiLWRRalVMT0V4VW9LSktrdVZJVkdldDlsdGlVWk16ZUZuNUJzeQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3694]:
+              - generic [ref=e3695]:
+                - generic [ref=e3698]: Electronics Weekly
+                - generic [ref=e3702]:
+                  - generic:
+                    - button "More - Most Read – Raspberry Pi display, DSIT abolished, Intel layoffs" [ref=e3703] [cursor=pointer]:
+                      - img [ref=e3705]
+                    - tooltip [ref=e3707]: More
+              - link "Most Read – Raspberry Pi display, DSIT abolished, Intel layoffs - Electronics Weekly - 2 days ago - By Alun Williams" [ref=e3708] [cursor=pointer]:
+                - /url: ./read/CBMi1AFBVV95cUxNdE9nSXkwUndBcHFiNnFneEtjVTM0amFZaGlOUXFKTGdIemJ6dk0zUTJXT2YwRmdPdGt5QW9GR1BKSFlWa3VJS2poVUtGdUZ0aDVxUXFFTmFUak5TTDEwSXg3Y2piWEVURTdKd2hvTm82MmY4Z0pJNmhHODFWSVNGdkl1cmg0VHhlMElISHFCS2NaaHpQMmRZMy0wNWFQeHQ0bzdSZXVwckgzTENpMmZiLWRRalVMT0V4VW9LSktrdVZJVkdldDlsdGlVWk16ZUZuNUJzeQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Most Read – Raspberry Pi display, DSIT abolished, Intel layoffs
+            - figure [ref=e3709]
+          - generic [ref=e3710]:
+            - time [ref=e3711]: 2 days ago
+            - separator [ref=e3712]
+            - generic [ref=e3713]: By Alun Williams
+      - generic [ref=e3714]:
+        - separator [ref=e3716]
+        - generic [ref=e3718]:
+          - generic [ref=e3719]:
+            - link [ref=e3721] [cursor=pointer]:
+              - /url: ./read/CBMihgFBVV95cUxQNVpweHlmcU14RU82QVB0ZW94dGhqWXJsRDN4YjhHWFQtbjNKVVdVM0ZSbGRXVWF5Ym1zTTRRUjJUVVVXZHFwa0xnaFAxdGJOTXpZZ1RIRG9FZ2tjSGxDTF9kc0JFZ1BfRzlfYmUtMHNrbGk2cml0dTFkN21TdHUtUkxrTWZPdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3723]:
+              - generic [ref=e3724]:
+                - generic [ref=e3727]: Business Insider
+                - generic [ref=e3731]:
+                  - generic:
+                    - button "More - Welcome to the era of the forever layoff" [ref=e3732] [cursor=pointer]:
+                      - img [ref=e3734]
+                    - tooltip [ref=e3736]: More
+              - link "Welcome to the era of the forever layoff - Business Insider - 14 days ago - By Tim Paradis" [ref=e3737] [cursor=pointer]:
+                - /url: ./read/CBMihgFBVV95cUxQNVpweHlmcU14RU82QVB0ZW94dGhqWXJsRDN4YjhHWFQtbjNKVVdVM0ZSbGRXVWF5Ym1zTTRRUjJUVVVXZHFwa0xnaFAxdGJOTXpZZ1RIRG9FZ2tjSGxDTF9kc0JFZ1BfRzlfYmUtMHNrbGk2cml0dTFkN21TdHUtUkxrTWZPdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Welcome to the era of the forever layoff
+            - figure [ref=e3738]
+          - generic [ref=e3739]:
+            - time [ref=e3740]: 14 days ago
+            - separator [ref=e3741]
+            - generic [ref=e3742]: By Tim Paradis
+      - generic [ref=e3743]:
+        - separator [ref=e3745]
+        - generic [ref=e3747]:
+          - generic [ref=e3748]:
+            - link [ref=e3750] [cursor=pointer]:
+              - /url: ./read/CBMipwFBVV95cUxPMWZXRWtJWTAwcjNpTm5xNTN4Xzc0WHQtOUFYNXFRQkFRRl9tMjAwUkdJWm5Gd2VQbERsZXExazduWjB3SWE3bmU2NC1oeDNnclRIUWJ5bmplSTh5OU5JNERxd2NoTTJxRENuRDU2Mm83S29DTzNnR3UxV2xoV3VDN0dKczhzRDh5bXZwUU4tdWRFQk9QclN3STlhcW5jTWFjOWlGdGFuNA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3752]:
+              - generic [ref=e3753]:
+                - generic [ref=e3756]: hcamag.com
+                - generic [ref=e3760]:
+                  - generic:
+                    - button "More - How hard is it to prove AI-driven layoffs?" [ref=e3761] [cursor=pointer]:
+                      - img [ref=e3763]
+                    - tooltip [ref=e3765]: More
+              - link "How hard is it to prove AI-driven layoffs? - hcamag.com - 3 days ago - By Jim Wilson" [ref=e3766] [cursor=pointer]:
+                - /url: ./read/CBMipwFBVV95cUxPMWZXRWtJWTAwcjNpTm5xNTN4Xzc0WHQtOUFYNXFRQkFRRl9tMjAwUkdJWm5Gd2VQbERsZXExazduWjB3SWE3bmU2NC1oeDNnclRIUWJ5bmplSTh5OU5JNERxd2NoTTJxRENuRDU2Mm83S29DTzNnR3UxV2xoV3VDN0dKczhzRDh5bXZwUU4tdWRFQk9QclN3STlhcW5jTWFjOWlGdGFuNA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: How hard is it to prove AI-driven layoffs?
+            - figure [ref=e3767]
+          - generic [ref=e3768]:
+            - time [ref=e3769]: 3 days ago
+            - separator [ref=e3770]
+            - generic [ref=e3771]: By Jim Wilson
+      - generic [ref=e3772]:
+        - separator [ref=e3774]
+        - generic [ref=e3776]:
+          - generic [ref=e3777]:
+            - link [ref=e3779] [cursor=pointer]:
+              - /url: ./read/CBMizwFBVV95cUxNTk1WdnRkazQydWxKdm5kbVBPT2xVd0RlenVRVEU1TFEyNi1YVzJ5WUhWVmZzTHo5cVRWNEJTeER4YkJSQi1PR0I4UTZkS1JzVVI5VWUzR0h2UW80VnlEWG1BdTBLSE9YNEt5LW1hY1BxSTZCME84MkU1cXJodXlfdWd6bVJLd2ZFbFJ0YmxVdUF0QWZRTF9xVWZfclRDZGd4aW00ZW9OYXVQR216ZDFnZnNMVXVDbGUtZjBWTVJ5Njl0UnBDb0s0SFE2d3JzaTg?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3781]:
+              - generic [ref=e3782]:
+                - generic [ref=e3785]: The Des Moines Register
+                - generic [ref=e3789]:
+                  - generic:
+                    - button "More - Wells Fargo cuts more jobs in West Des Moines, pushing total past 300" [ref=e3790] [cursor=pointer]:
+                      - img [ref=e3792]
+                    - tooltip [ref=e3794]: More
+              - link "Wells Fargo cuts more jobs in West Des Moines, pushing total past 300 - The Des Moines Register - 3 days ago - By Lucia Cheng and Israel Schuman" [ref=e3795] [cursor=pointer]:
+                - /url: ./read/CBMizwFBVV95cUxNTk1WdnRkazQydWxKdm5kbVBPT2xVd0RlenVRVEU1TFEyNi1YVzJ5WUhWVmZzTHo5cVRWNEJTeER4YkJSQi1PR0I4UTZkS1JzVVI5VWUzR0h2UW80VnlEWG1BdTBLSE9YNEt5LW1hY1BxSTZCME84MkU1cXJodXlfdWd6bVJLd2ZFbFJ0YmxVdUF0QWZRTF9xVWZfclRDZGd4aW00ZW9OYXVQR216ZDFnZnNMVXVDbGUtZjBWTVJ5Njl0UnBDb0s0SFE2d3JzaTg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Wells Fargo cuts more jobs in West Des Moines, pushing total past 300
+            - figure [ref=e3796]
+          - generic [ref=e3797]:
+            - time [ref=e3798]: 3 days ago
+            - separator [ref=e3799]
+            - generic [ref=e3800]: By Lucia Cheng and Israel Schuman
+      - generic [ref=e3801]:
+        - separator [ref=e3803]
+        - generic [ref=e3805]:
+          - generic [ref=e3806]:
+            - link [ref=e3808] [cursor=pointer]:
+              - /url: ./read/CBMijwFBVV95cUxNY3I4YjYtOHBMUHI3dUwzZ01DUksybndfYnVHN0ZfeFNPdjUxQi1SVURTelZyQlRpZU9xNEgtQUdmSE5sVlNTaWVMLXBRNk5YdU1HdFJzVGktYWRteWM1djd4MVV4MWthaXRkVWtVZFJOdFV1TmNGeDN5QkVfMXRUSWx6bXZzSzd6V0x2VW9wWQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3810]:
+              - generic [ref=e3811]:
+                - generic [ref=e3814]: Fierce Pharma
+                - generic [ref=e3818]:
+                  - generic:
+                    - button "More - Novartis dismisses 322 more staffers based out of US headquarters" [ref=e3819] [cursor=pointer]:
+                      - img [ref=e3821]
+                    - tooltip [ref=e3823]: More
+              - link "Novartis dismisses 322 more staffers based out of US headquarters - Fierce Pharma - 19 days ago - By Kevin Dunleavy" [ref=e3824] [cursor=pointer]:
+                - /url: ./read/CBMijwFBVV95cUxNY3I4YjYtOHBMUHI3dUwzZ01DUksybndfYnVHN0ZfeFNPdjUxQi1SVURTelZyQlRpZU9xNEgtQUdmSE5sVlNTaWVMLXBRNk5YdU1HdFJzVGktYWRteWM1djd4MVV4MWthaXRkVWtVZFJOdFV1TmNGeDN5QkVfMXRUSWx6bXZzSzd6V0x2VW9wWQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Novartis dismisses 322 more staffers based out of US headquarters
+            - figure [ref=e3825]
+          - generic [ref=e3826]:
+            - time [ref=e3827]: 19 days ago
+            - separator [ref=e3828]
+            - generic [ref=e3829]: By Kevin Dunleavy
+      - generic [ref=e3830]:
+        - separator [ref=e3832]
+        - generic [ref=e3834]:
+          - generic [ref=e3835]:
+            - link [ref=e3837] [cursor=pointer]:
+              - /url: ./read/CBMihgFBVV95cUxNNFpuNVVzRmVnY3hPdEN1M1ZISGpuaHpMeDhFdm9HSWRnM0lwdDZkNGpabkZsWnU4NjdEeTg0eFFBblNybHpBRG9KWWpsWUpkaUFJakc3NjdfZm1CZEFXa0owLU9GWTFndFM1bmhRQVNTZnpaYUtvVWs2VHlDNm9CVzJidmoydw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3839]:
+              - generic [ref=e3840]:
+                - generic [ref=e3843]: Yahoo Sports
+                - generic [ref=e3847]:
+                  - generic:
+                    - 'button "More - ESPN layoffs 2026: Ryan Clark, Tom Pelissero among talent let go in latest Disney budget cuts" [ref=e3848] [cursor=pointer]':
+                      - img [ref=e3850]
+                    - tooltip [ref=e3852]: More
+              - 'link "ESPN layoffs 2026: Ryan Clark, Tom Pelissero among talent let go in latest Disney budget cuts - Yahoo Sports - 4 days ago - By Dan Treacy" [ref=e3853] [cursor=pointer]':
+                - /url: ./read/CBMihgFBVV95cUxNNFpuNVVzRmVnY3hPdEN1M1ZISGpuaHpMeDhFdm9HSWRnM0lwdDZkNGpabkZsWnU4NjdEeTg0eFFBblNybHpBRG9KWWpsWUpkaUFJakc3NjdfZm1CZEFXa0owLU9GWTFndFM1bmhRQVNTZnpaYUtvVWs2VHlDNm9CVzJidmoydw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "ESPN layoffs 2026: Ryan Clark, Tom Pelissero among talent let go in latest Disney budget cuts"
+            - figure [ref=e3854]
+          - generic [ref=e3855]:
+            - time [ref=e3856]: 4 days ago
+            - separator [ref=e3857]
+            - generic [ref=e3858]: By Dan Treacy
+      - generic [ref=e3859]:
+        - separator [ref=e3861]
+        - generic [ref=e3863]:
+          - generic [ref=e3864]:
+            - link [ref=e3866] [cursor=pointer]:
+              - /url: ./read/CBMingFBVV95cUxOUW1Mc3B2TTEtTC1ONENueGI5YndVaFFNNG1wVlhBS0xOYnpPbGU1bmV6MFRCVHJ4cHdjOGN2bXFpd1pQSWllYWlKUE1GN2Nfb3JZVnZnZlhOUkRXSFd1TVJOMnd3R20zZTBxY2RhT3FpNGZwVWUwbmtkXzZRX3RzS3R1aktoR1JXT2gtVS04SmZjTDlQb3dEXzhNS3ZoQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3868]:
+              - generic [ref=e3869]:
+                - generic [ref=e3872]: The Guardian
+                - generic [ref=e3876]:
+                  - generic:
+                    - button "More - Microsoft cuts 4,800 jobs as it revamps Xbox in latest wave of mass layoffs" [ref=e3877] [cursor=pointer]:
+                      - img [ref=e3879]
+                    - tooltip [ref=e3881]: More
+              - link "Microsoft cuts 4,800 jobs as it revamps Xbox in latest wave of mass layoffs - The Guardian - 20 days ago" [ref=e3882] [cursor=pointer]:
+                - /url: ./read/CBMingFBVV95cUxOUW1Mc3B2TTEtTC1ONENueGI5YndVaFFNNG1wVlhBS0xOYnpPbGU1bmV6MFRCVHJ4cHdjOGN2bXFpd1pQSWllYWlKUE1GN2Nfb3JZVnZnZlhOUkRXSFd1TVJOMnd3R20zZTBxY2RhT3FpNGZwVWUwbmtkXzZRX3RzS3R1aktoR1JXT2gtVS04SmZjTDlQb3dEXzhNS3ZoQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Microsoft cuts 4,800 jobs as it revamps Xbox in latest wave of mass layoffs
+            - figure [ref=e3883]
+          - time [ref=e3885]: 20 days ago
+      - generic [ref=e3886]:
+        - separator [ref=e3888]
+        - generic [ref=e3890]:
+          - generic [ref=e3891]:
+            - link [ref=e3893] [cursor=pointer]:
+              - /url: ./read/CBMieEFVX3lxTFBpc3Q3SVM5YXJtRW1NdG5kbllZekFXZ3lROHk4MlFwbmJYaEdQMUp5WE5lTUxQYVdEelprdG5oWFN1MWdKRFk1UVB5YkVIUUpwWG00VnN6cklSZVJaV0pfckJpWHllUWlGbjdmbWUtaXdpcmxPMy1GNA?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3895]:
+              - generic [ref=e3896]:
+                - generic [ref=e3899]: The Harvard Crimson
+                - generic [ref=e3903]:
+                  - generic:
+                    - button "More - FAS Starts Staff Cuts With Limited First Round of Layoffs" [ref=e3904] [cursor=pointer]:
+                      - img [ref=e3906]
+                    - tooltip [ref=e3908]: More
+              - link "FAS Starts Staff Cuts With Limited First Round of Layoffs - The Harvard Crimson - 6 days ago - By Amann Mahajan" [ref=e3909] [cursor=pointer]:
+                - /url: ./read/CBMieEFVX3lxTFBpc3Q3SVM5YXJtRW1NdG5kbllZekFXZ3lROHk4MlFwbmJYaEdQMUp5WE5lTUxQYVdEelprdG5oWFN1MWdKRFk1UVB5YkVIUUpwWG00VnN6cklSZVJaV0pfckJpWHllUWlGbjdmbWUtaXdpcmxPMy1GNA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: FAS Starts Staff Cuts With Limited First Round of Layoffs
+            - figure [ref=e3910]
+          - generic [ref=e3911]:
+            - time [ref=e3912]: 6 days ago
+            - separator [ref=e3913]
+            - generic [ref=e3914]: By Amann Mahajan
+      - generic [ref=e3915]:
+        - separator [ref=e3917]
+        - generic [ref=e3919]:
+          - generic [ref=e3920]:
+            - link [ref=e3922] [cursor=pointer]:
+              - /url: ./read/CBMilAFBVV95cUxQQ3U2R0Yta3FobXpLMWJKclFTMllqQVNRZ003UzNaMktSMmVjNnIyYW1wYW1wMVVoODlzVlIwY3VwVEhOYS1DS1QxQ0thS2ZlX29mZFd3ZXJQNzFESFo5a1V2dUIwdnNSN0gycU90cjVhTjhnUmdSM0pETVJveGFzejh5S1RzaUJucVIwRG9POHpPS3dx?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3924]:
+              - generic [ref=e3925]:
+                - generic [ref=e3928]: Oregon Public Broadcasting - OPB
+                - generic [ref=e3932]:
+                  - generic:
+                    - button "More - Portland State scales back faculty cuts in final layoff plan" [ref=e3933] [cursor=pointer]:
+                      - img [ref=e3935]
+                    - tooltip [ref=e3937]: More
+              - link "Portland State scales back faculty cuts in final layoff plan - Oregon Public Broadcasting - OPB - 4 days ago - By Tiffany Camhi" [ref=e3938] [cursor=pointer]:
+                - /url: ./read/CBMilAFBVV95cUxQQ3U2R0Yta3FobXpLMWJKclFTMllqQVNRZ003UzNaMktSMmVjNnIyYW1wYW1wMVVoODlzVlIwY3VwVEhOYS1DS1QxQ0thS2ZlX29mZFd3ZXJQNzFESFo5a1V2dUIwdnNSN0gycU90cjVhTjhnUmdSM0pETVJveGFzejh5S1RzaUJucVIwRG9POHpPS3dx?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Portland State scales back faculty cuts in final layoff plan
+            - figure [ref=e3939]
+          - generic [ref=e3940]:
+            - time [ref=e3941]: 4 days ago
+            - separator [ref=e3942]
+            - generic [ref=e3943]: By Tiffany Camhi
+      - generic [ref=e3944]:
+        - separator [ref=e3946]
+        - generic [ref=e3948]:
+          - generic [ref=e3949]:
+            - link [ref=e3951] [cursor=pointer]:
+              - /url: ./read/CBMibEFVX3lxTE04VnktaEt1RXM4RlZLRDMyRUNZdV96M2RiY0s0cnhxakJJejhJb0hTUDg5bU9weDdpMGl5VE9QOFpvWnNUUGVkS3V1UWtTQ3hPbWUwWTNyeXhoUE1DaVNkU21LSmdJdmliWnh1LdIBckFVX3lxTE9nUzhfX0VGSFREZC1mbGl1WEtHNjlOTXoxYVJaQ1NjaExtdFgwZTJMQ1JIa0lTU1RER3U2NHZRUzU3aGFYNzh1QjBabWNvM2FOeEV1UGZ6ZWZBSUtzdlk2QjhJdUk3QjlCMU80N0hiemV3QQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3953]:
+              - generic [ref=e3954]:
+                - generic [ref=e3957]: CNBC
+                - generic [ref=e3961]:
+                  - generic:
+                    - button "More - Current and former employees sue Meta, alleging discrimination in using AI to conduct layoffs" [ref=e3962] [cursor=pointer]:
+                      - img [ref=e3964]
+                    - tooltip [ref=e3966]: More
+              - link "Current and former employees sue Meta, alleging discrimination in using AI to conduct layoffs - CNBC - 12 days ago - By Jonathan Vanian" [ref=e3967] [cursor=pointer]:
+                - /url: ./read/CBMibEFVX3lxTE04VnktaEt1RXM4RlZLRDMyRUNZdV96M2RiY0s0cnhxakJJejhJb0hTUDg5bU9weDdpMGl5VE9QOFpvWnNUUGVkS3V1UWtTQ3hPbWUwWTNyeXhoUE1DaVNkU21LSmdJdmliWnh1LdIBckFVX3lxTE9nUzhfX0VGSFREZC1mbGl1WEtHNjlOTXoxYVJaQ1NjaExtdFgwZTJMQ1JIa0lTU1RER3U2NHZRUzU3aGFYNzh1QjBabWNvM2FOeEV1UGZ6ZWZBSUtzdlk2QjhJdUk3QjlCMU80N0hiemV3QQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Current and former employees sue Meta, alleging discrimination in using AI to conduct layoffs
+            - figure [ref=e3968]
+          - generic [ref=e3969]:
+            - time [ref=e3970]: 12 days ago
+            - separator [ref=e3971]
+            - generic [ref=e3972]: By Jonathan Vanian
+      - generic [ref=e3973]:
+        - separator [ref=e3975]
+        - generic [ref=e3977]:
+          - generic [ref=e3978]:
+            - link [ref=e3980] [cursor=pointer]:
+              - /url: ./read/CBMiuAFBVV95cUxPRUdKWlpwYTFQenVzNUJVNzlGaEtRM2xPRlJrWXY4TEFVNXpUNWg1Q3JTNjhrdUJOUFZ5Z1R5SUNKeDNsNmYwVDlxSUFFbnFkQkw5T2txZm9MZFpHc2I4bVlpTHlmWG9IaEFZMUl4WlFCc3B2Mm9ORHlmQ2tQelMzSmlQb2NMQVltY1RyQVBUSWo5N0Nrb1c2UVRZenAwd3NKbkxQNlg3S0UydU9lZW9qdHlzNXlOb0tw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e3982]:
+              - generic [ref=e3983]:
+                - generic [ref=e3986]: Fierce Biotech
+                - generic [ref=e3990]:
+                  - generic:
+                    - button "More - Merck KGaA institutes in-office requirement for US research team that could lead to 70 layoffs" [ref=e3991] [cursor=pointer]:
+                      - img [ref=e3993]
+                    - tooltip [ref=e3995]: More
+              - link "Merck KGaA institutes in-office requirement for US research team that could lead to 70 layoffs - Fierce Biotech - 13 days ago - By Darren Incorvaia" [ref=e3996] [cursor=pointer]:
+                - /url: ./read/CBMiuAFBVV95cUxPRUdKWlpwYTFQenVzNUJVNzlGaEtRM2xPRlJrWXY4TEFVNXpUNWg1Q3JTNjhrdUJOUFZ5Z1R5SUNKeDNsNmYwVDlxSUFFbnFkQkw5T2txZm9MZFpHc2I4bVlpTHlmWG9IaEFZMUl4WlFCc3B2Mm9ORHlmQ2tQelMzSmlQb2NMQVltY1RyQVBUSWo5N0Nrb1c2UVRZenAwd3NKbkxQNlg3S0UydU9lZW9qdHlzNXlOb0tw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Merck KGaA institutes in-office requirement for US research team that could lead to 70 layoffs
+            - figure [ref=e3997]
+          - generic [ref=e3998]:
+            - time [ref=e3999]: 13 days ago
+            - separator [ref=e4000]
+            - generic [ref=e4001]: By Darren Incorvaia
+      - generic [ref=e4002]:
+        - separator [ref=e4004]
+        - generic [ref=e4006]:
+          - generic [ref=e4007]:
+            - link [ref=e4009] [cursor=pointer]:
+              - /url: ./read/CBMi0wFBVV95cUxNWXN6Nl95M3d2VkZZbzFHWXNLbmUxcHExdE9PTjNsbUFkQUlDTFcxcG5sdTFIZW0wVnNZZURvYjlablZMQl80S0haRUdMTExkcUMyci1OQ2tuZWFsMmE5eVVyX3l4d0s4em56ZUxpcUpRZHB3VmxNRWJTYmNqVFJNUjBmSGswZ05IUWlOWm9fd3ZCdks5RTlrSEpUaE80YzV1U3FsR1RTYmdqaWpDdEdYUXdmd0lDVk1wZm5UVzRzZzd5STdkeGVZWEwwWWFfVmtIMWw4?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4011]:
+              - generic [ref=e4012]:
+                - generic [ref=e4015]: The Register
+                - generic [ref=e4019]:
+                  - generic:
+                    - button "More - Fresh off AI layoffs, Block now wants to whack Slack with agent-human collab tool" [ref=e4020] [cursor=pointer]:
+                      - img [ref=e4022]
+                    - tooltip [ref=e4024]: More
+              - link "Fresh off AI layoffs, Block now wants to whack Slack with agent-human collab tool - The Register - 3 days ago - By Thomas Claburn" [ref=e4025] [cursor=pointer]:
+                - /url: ./read/CBMi0wFBVV95cUxNWXN6Nl95M3d2VkZZbzFHWXNLbmUxcHExdE9PTjNsbUFkQUlDTFcxcG5sdTFIZW0wVnNZZURvYjlablZMQl80S0haRUdMTExkcUMyci1OQ2tuZWFsMmE5eVVyX3l4d0s4em56ZUxpcUpRZHB3VmxNRWJTYmNqVFJNUjBmSGswZ05IUWlOWm9fd3ZCdks5RTlrSEpUaE80YzV1U3FsR1RTYmdqaWpDdEdYUXdmd0lDVk1wZm5UVzRzZzd5STdkeGVZWEwwWWFfVmtIMWw4?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Fresh off AI layoffs, Block now wants to whack Slack with agent-human collab tool
+            - figure [ref=e4026]
+          - generic [ref=e4027]:
+            - time [ref=e4028]: 3 days ago
+            - separator [ref=e4029]
+            - generic [ref=e4030]: By Thomas Claburn
+      - generic [ref=e4031]:
+        - separator [ref=e4033]
+        - generic [ref=e4035]:
+          - generic [ref=e4036]:
+            - link [ref=e4038] [cursor=pointer]:
+              - /url: ./read/CBMiogFBVV95cUxPRTNubGNoZzRUTHB5eTBFVU1PUF80V1RfZW85cUh5Q1NIaGJ1RlhoT081NVlwVHZJbzNSTndxNFd1UERVZWlqcDNOTnJZX0tzVlBWRHpmNFoyRjNaSVR4Q3hsSTNhempzWjIxWVhhNFJqSlJIa19NdW5tR2YxR1JFaDMtR2pObDBJY090Q2stNzRQX2UyVWhUU08tR2JrajZicmc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4040]:
+              - generic [ref=e4041]:
+                - generic [ref=e4044]: Yahoo Finance
+                - generic [ref=e4048]:
+                  - generic:
+                    - button "More - Verizon shuts down longtime customer support option after layoffs" [ref=e4049] [cursor=pointer]:
+                      - img [ref=e4051]
+                    - tooltip [ref=e4053]: More
+              - link "Verizon shuts down longtime customer support option after layoffs - Yahoo Finance - 2 days ago - By Patricia Battle" [ref=e4054] [cursor=pointer]:
+                - /url: ./read/CBMiogFBVV95cUxPRTNubGNoZzRUTHB5eTBFVU1PUF80V1RfZW85cUh5Q1NIaGJ1RlhoT081NVlwVHZJbzNSTndxNFd1UERVZWlqcDNOTnJZX0tzVlBWRHpmNFoyRjNaSVR4Q3hsSTNhempzWjIxWVhhNFJqSlJIa19NdW5tR2YxR1JFaDMtR2pObDBJY090Q2stNzRQX2UyVWhUU08tR2JrajZicmc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Verizon shuts down longtime customer support option after layoffs
+            - figure [ref=e4055]
+          - generic [ref=e4056]:
+            - time [ref=e4057]: 2 days ago
+            - separator [ref=e4058]
+            - generic [ref=e4059]: By Patricia Battle
+      - generic [ref=e4060]:
+        - separator [ref=e4062]
+        - generic [ref=e4064]:
+          - generic [ref=e4065]:
+            - link [ref=e4067] [cursor=pointer]:
+              - /url: ./read/CBMisAFBVV95cUxOYkhPSzlEenZBV1BNbHA1Zk96c1I5RUVKbEJqRFQwYW4yZXFfUnRDcDFWcEM3dHBON01qYV9iVm8zaThjeXNtN0hqZ1BBYTRFekJuSktTTVNWSXoyLWtZRHRINHFEWjVIWTFOVFdXb1ZaR215QXZ2b1hiXzM5MndPN2x4WC0wekthM19IVUJsM2Y1U3RLaURObVUtUjZuY3ZSMW5mLXh6Q2pwQXNqMEhmZQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4069]:
+              - generic [ref=e4070]:
+                - generic [ref=e4073]: Ars Technica
+                - generic [ref=e4077]:
+                  - generic:
+                    - button "More - Hundreds rally at Bethesda HQ to protest Xbox layoffs, and Ars was there" [ref=e4078] [cursor=pointer]:
+                      - img [ref=e4080]
+                    - tooltip [ref=e4082]: More
+              - link "Hundreds rally at Bethesda HQ to protest Xbox layoffs, and Ars was there - Ars Technica - 11 days ago - By Kyle Orland" [ref=e4083] [cursor=pointer]:
+                - /url: ./read/CBMisAFBVV95cUxOYkhPSzlEenZBV1BNbHA1Zk96c1I5RUVKbEJqRFQwYW4yZXFfUnRDcDFWcEM3dHBON01qYV9iVm8zaThjeXNtN0hqZ1BBYTRFekJuSktTTVNWSXoyLWtZRHRINHFEWjVIWTFOVFdXb1ZaR215QXZ2b1hiXzM5MndPN2x4WC0wekthM19IVUJsM2Y1U3RLaURObVUtUjZuY3ZSMW5mLXh6Q2pwQXNqMEhmZQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Hundreds rally at Bethesda HQ to protest Xbox layoffs, and Ars was there
+            - figure [ref=e4084]
+          - generic [ref=e4085]:
+            - time [ref=e4086]: 11 days ago
+            - separator [ref=e4087]
+            - generic [ref=e4088]: By Kyle Orland
+      - generic [ref=e4089]:
+        - separator [ref=e4091]
+        - generic [ref=e4093]:
+          - generic [ref=e4094]:
+            - link [ref=e4096] [cursor=pointer]:
+              - /url: ./read/CBMiqwFBVV95cUxNOWtDa040RHVUazY0ZFBWS1pqNWZPNnRuMWU5OHJ0X2xkYjVybktTTVI2X0VabFBpZ0ZDMWgyYzJnRkhlbDhmSTcxdDMtY3A4QkxTQUc0RkJ4S2RDT3F1ZTEyckZkLXJab0pBRmJtLWhDeDFicEg1MDVnVHcya3paVlhtMnVuU0p3eDJ2NHo1ZXFGcFp6eXpLTW53dXRaRlBRZkVMb2J2SkoxTlE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4098]:
+              - generic [ref=e4099]:
+                - generic [ref=e4102]: Bloomberg.com
+                - generic [ref=e4106]:
+                  - generic:
+                    - button "More - Layoffs May Be Worsening the Gender Pay Gap, Survey Finds" [ref=e4107] [cursor=pointer]:
+                      - img [ref=e4109]
+                    - tooltip [ref=e4111]: More
+              - link "Layoffs May Be Worsening the Gender Pay Gap, Survey Finds - Bloomberg.com - 4 days ago - By Taylor Nicole Rogers" [ref=e4112] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxNOWtDa040RHVUazY0ZFBWS1pqNWZPNnRuMWU5OHJ0X2xkYjVybktTTVI2X0VabFBpZ0ZDMWgyYzJnRkhlbDhmSTcxdDMtY3A4QkxTQUc0RkJ4S2RDT3F1ZTEyckZkLXJab0pBRmJtLWhDeDFicEg1MDVnVHcya3paVlhtMnVuU0p3eDJ2NHo1ZXFGcFp6eXpLTW53dXRaRlBRZkVMb2J2SkoxTlE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Layoffs May Be Worsening the Gender Pay Gap, Survey Finds
+            - figure [ref=e4113]
+          - generic [ref=e4114]:
+            - time [ref=e4115]: 4 days ago
+            - separator [ref=e4116]
+            - generic [ref=e4117]: By Taylor Nicole Rogers
+      - generic [ref=e4118]:
+        - separator [ref=e4120]
+        - generic [ref=e4122]:
+          - generic [ref=e4123]:
+            - link [ref=e4125] [cursor=pointer]:
+              - /url: ./read/CBMihwFBVV95cUxPNzJPX24wM3EzVW5aQ0dLa2FpTnJhT3JRcGd4TXdreVJBUVB2N0xmZnUtM1hyX0JnMkl4c2VwaXhTaGdWQXRJNGNCdFdWczBNR1B6bmNYUF9nYnJ4djJzb0lVOWFlemdiV3NtMVZLVGthMnA1WkxvU2Q5LVlWRWFRNUJ4VVZwbGs?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4127]:
+              - generic [ref=e4128]:
+                - generic [ref=e4131]: HR Brew
+                - generic [ref=e4135]:
+                  - generic:
+                    - button "More - Jobless claims hit record low as employers embrace ‘low hire, low fire’ labor market" [ref=e4136] [cursor=pointer]:
+                      - img [ref=e4138]
+                    - tooltip [ref=e4140]: More
+              - link "Jobless claims hit record low as employers embrace ‘low hire, low fire’ labor market - HR Brew - Yesterday - By Paige McGlauflin" [ref=e4141] [cursor=pointer]:
+                - /url: ./read/CBMihwFBVV95cUxPNzJPX24wM3EzVW5aQ0dLa2FpTnJhT3JRcGd4TXdreVJBUVB2N0xmZnUtM1hyX0JnMkl4c2VwaXhTaGdWQXRJNGNCdFdWczBNR1B6bmNYUF9nYnJ4djJzb0lVOWFlemdiV3NtMVZLVGthMnA1WkxvU2Q5LVlWRWFRNUJ4VVZwbGs?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Jobless claims hit record low as employers embrace ‘low hire, low fire’ labor market
+            - figure [ref=e4142]
+          - generic [ref=e4143]:
+            - time [ref=e4144]: Yesterday
+            - separator [ref=e4145]
+            - generic [ref=e4146]: By Paige McGlauflin
+      - generic [ref=e4147]:
+        - separator [ref=e4149]
+        - generic [ref=e4151]:
+          - generic [ref=e4152]:
+            - link [ref=e4154] [cursor=pointer]:
+              - /url: ./read/CBMigwFBVV95cUxQLWZoWkdyUlZ0MnlzV0F3YnNTQWQ2TkgwVFJOVnJIWmxRMEZPYkpXMmlWYTg0UUExSmM3UFpMZURuTFlHM2RrdW5DdUpTY3F1VFFXS0g0TXZNVmRJa3R2WjVVbVZTRUJxazJFb1QzendMWm85SWpKNHhKNUNVa2g0QThtTQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4156]:
+              - generic [ref=e4157]:
+                - generic [ref=e4160]: Front Office Sports
+                - generic [ref=e4164]:
+                  - generic:
+                    - 'button "More - ESPN Layoffs Mostly Tied to NFL Network Acquisition: Full List" [ref=e4165] [cursor=pointer]':
+                      - img [ref=e4167]
+                    - tooltip [ref=e4169]: More
+              - 'link "ESPN Layoffs Mostly Tied to NFL Network Acquisition: Full List - Front Office Sports - 5 days ago - By Ryan Glasspiegel and Michael McCarthy" [ref=e4170] [cursor=pointer]':
+                - /url: ./read/CBMigwFBVV95cUxQLWZoWkdyUlZ0MnlzV0F3YnNTQWQ2TkgwVFJOVnJIWmxRMEZPYkpXMmlWYTg0UUExSmM3UFpMZURuTFlHM2RrdW5DdUpTY3F1VFFXS0g0TXZNVmRJa3R2WjVVbVZTRUJxazJFb1QzendMWm85SWpKNHhKNUNVa2g0QThtTQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "ESPN Layoffs Mostly Tied to NFL Network Acquisition: Full List"
+            - figure [ref=e4171]
+          - generic [ref=e4172]:
+            - time [ref=e4173]: 5 days ago
+            - separator [ref=e4174]
+            - generic [ref=e4175]: By Ryan Glasspiegel and Michael McCarthy
+      - generic [ref=e4176]:
+        - separator [ref=e4178]
+        - generic [ref=e4180]:
+          - generic [ref=e4181]:
+            - link [ref=e4183] [cursor=pointer]:
+              - /url: ./read/CBMikwFBVV95cUxPclZQWHhNeFdmZ0MzSkVhTEV2dlF6LWczOGRHM2NGeFpCaTNLYVozb0VBeVJGUkYtX01kaVZDOWQ4RFpOcG5mcm02Wmw3ZkhPTlNtS2FsdUVYN1BPNG9SRWR0M2lhWVVFTlFkUVE5ZW1hWVBaRm95R3pURE5JekZlODNLS1RsMWNPZVNubFEwRjlNZHM?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4185]:
+              - generic [ref=e4186]:
+                - generic [ref=e4189]: MJBizDaily
+                - generic [ref=e4193]:
+                  - generic:
+                    - button "More - Mass layoffs at two California cannabis manufacturers amid market struggles" [ref=e4194] [cursor=pointer]:
+                      - img [ref=e4196]
+                    - tooltip [ref=e4198]: More
+              - link "Mass layoffs at two California cannabis manufacturers amid market struggles - MJBizDaily - Yesterday" [ref=e4199] [cursor=pointer]:
+                - /url: ./read/CBMikwFBVV95cUxPclZQWHhNeFdmZ0MzSkVhTEV2dlF6LWczOGRHM2NGeFpCaTNLYVozb0VBeVJGUkYtX01kaVZDOWQ4RFpOcG5mcm02Wmw3ZkhPTlNtS2FsdUVYN1BPNG9SRWR0M2lhWVVFTlFkUVE5ZW1hWVBaRm95R3pURE5JekZlODNLS1RsMWNPZVNubFEwRjlNZHM?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Mass layoffs at two California cannabis manufacturers amid market struggles
+            - figure [ref=e4200]
+          - time [ref=e4202]: Yesterday
+      - generic [ref=e4203]:
+        - separator [ref=e4205]
+        - generic [ref=e4207]:
+          - generic [ref=e4208]:
+            - link [ref=e4210] [cursor=pointer]:
+              - /url: ./read/CBMingFBVV95cUxOeUxSZk9iOTRIZ0xHazM4VlFsc1ZoOXJXaS1ZS2ZqVEl5bndUUEhZOTRlVkJqdTUtVTFSUUZ5WkhFV2NRRjRVc0tWUHNINFFBOVFtTHBJcG9TclZyY0w1WUtkbWlTRTF0WkFwTDdyTV9UX0ZNMzZPeUxkaDFDWmhleTNJWk5HMExuWTdTVTlkaFlETndhcnNZRzczTWdoZw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4212]:
+              - generic [ref=e4213]:
+                - generic [ref=e4216]: Bloomberg.com
+                - generic [ref=e4220]:
+                  - generic:
+                    - button "More - Watch Layoffs Hit ESPN After $3B NFL Network Deal" [ref=e4221] [cursor=pointer]:
+                      - img [ref=e4223]
+                    - tooltip [ref=e4225]: More
+              - link "Watch Layoffs Hit ESPN After $3B NFL Network Deal - Bloomberg.com - 4 days ago" [ref=e4226] [cursor=pointer]:
+                - /url: ./read/CBMingFBVV95cUxOeUxSZk9iOTRIZ0xHazM4VlFsc1ZoOXJXaS1ZS2ZqVEl5bndUUEhZOTRlVkJqdTUtVTFSUUZ5WkhFV2NRRjRVc0tWUHNINFFBOVFtTHBJcG9TclZyY0w1WUtkbWlTRTF0WkFwTDdyTV9UX0ZNMzZPeUxkaDFDWmhleTNJWk5HMExuWTdTVTlkaFlETndhcnNZRzczTWdoZw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Watch Layoffs Hit ESPN After $3B NFL Network Deal
+            - figure [ref=e4227]
+          - time [ref=e4229]: 4 days ago
+      - generic [ref=e4230]:
+        - separator [ref=e4232]
+        - generic [ref=e4234]:
+          - generic [ref=e4235]:
+            - link [ref=e4237] [cursor=pointer]:
+              - /url: ./read/CBMiakFVX3lxTFBnNzRjVzg2aTk0THdpRkRfOHdZdnJYSlFtSjRmUk5ybnc2M2NiSVFyb1dOcTlIc3UtN2V5YWdHQmRUTEVKeFpJXzBqSzBBbUc4dnUzTW9kUnI3YlJNWEJvNHVXZ2hWbmUzTEE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4239]:
+              - generic [ref=e4240]:
+                - generic [ref=e4243]: Front Office Sports
+                - generic [ref=e4247]:
+                  - generic:
+                    - button "More - 5 Takeaways From ESPN’s Latest Layoffs" [ref=e4248] [cursor=pointer]:
+                      - img [ref=e4250]
+                    - tooltip [ref=e4252]: More
+              - link "5 Takeaways From ESPN’s Latest Layoffs - Front Office Sports - 4 days ago - By Michael McCarthy" [ref=e4253] [cursor=pointer]:
+                - /url: ./read/CBMiakFVX3lxTFBnNzRjVzg2aTk0THdpRkRfOHdZdnJYSlFtSjRmUk5ybnc2M2NiSVFyb1dOcTlIc3UtN2V5YWdHQmRUTEVKeFpJXzBqSzBBbUc4dnUzTW9kUnI3YlJNWEJvNHVXZ2hWbmUzTEE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: 5 Takeaways From ESPN’s Latest Layoffs
+            - figure [ref=e4254]
+          - generic [ref=e4255]:
+            - time [ref=e4256]: 4 days ago
+            - separator [ref=e4257]
+            - generic [ref=e4258]: By Michael McCarthy
+      - generic [ref=e4259]:
+        - separator [ref=e4261]
+        - generic [ref=e4263]:
+          - generic [ref=e4264]:
+            - link [ref=e4266] [cursor=pointer]:
+              - /url: ./read/CBMiugFBVV95cUxOeXpzajJiQVM5dEtfLWVGbEE5MFhvaThhd1UtRmZ1aUFmejRaRUZDcVlMR21rLXVsS0c5R2p3SFlSX1RJYjhBejhmSFI2NXo3bFN1TXNqdUFfdGI5aHZreEtadnlHZzBsdVpFak1QVDRPSUFKdTR1UncwVUp0Y0hWT2FMMkU4dEZZUHowY2p3LWFPNm9vRXpWbWpDNjB0QVdxQlFQX1FNVTF2cURnOWpid3NXUTBGM1B1ZHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4268]:
+              - generic [ref=e4269]:
+                - generic [ref=e4272]: Reuters
+                - generic [ref=e4276]:
+                  - generic:
+                    - button "More - Meta used AI to target workers with medical conditions for layoffs, lawsuit claims" [ref=e4277] [cursor=pointer]:
+                      - img [ref=e4279]
+                    - tooltip [ref=e4281]: More
+              - link "Meta used AI to target workers with medical conditions for layoffs, lawsuit claims - Reuters - 12 days ago - By Daniel Wiessner" [ref=e4282] [cursor=pointer]:
+                - /url: ./read/CBMiugFBVV95cUxOeXpzajJiQVM5dEtfLWVGbEE5MFhvaThhd1UtRmZ1aUFmejRaRUZDcVlMR21rLXVsS0c5R2p3SFlSX1RJYjhBejhmSFI2NXo3bFN1TXNqdUFfdGI5aHZreEtadnlHZzBsdVpFak1QVDRPSUFKdTR1UncwVUp0Y0hWT2FMMkU4dEZZUHowY2p3LWFPNm9vRXpWbWpDNjB0QVdxQlFQX1FNVTF2cURnOWpid3NXUTBGM1B1ZHc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Meta used AI to target workers with medical conditions for layoffs, lawsuit claims
+            - figure [ref=e4283]
+          - generic [ref=e4284]:
+            - time [ref=e4285]: 12 days ago
+            - separator [ref=e4286]
+            - generic [ref=e4287]: By Daniel Wiessner
+      - generic [ref=e4288]:
+        - separator [ref=e4290]
+        - generic [ref=e4292]:
+          - generic [ref=e4293]:
+            - link [ref=e4295] [cursor=pointer]:
+              - /url: ./read/CBMitAFBVV95cUxPRENTWmVTcnJRM3kzNU95STBkR2QtaGxEXzJQbmpLRmVQNmdrM3A1RTZaWjNKcWZjWk1jWTRoaERPOEVNcUlIREgyLW5tTHY5WGZSYjFjNTZPTG5Jd0ZVVXN5WWs0czNLdGY0NUg5WFpHYlBBU1V5MnRCZEI0RW1hTk1FQ2o5RGdSd201cS10OFNmNVJnbUw3RnNPWXpKd2xvVGYzUzhpUkNtbXBXUkxTTnlRc3bSAboBQVVfeXFMTWJnQ1VQM19XdkhOa0s2dXJKa3B6b3pNc3otUFRLd2lNTldCTG1rU2hwY05vYUp2dVhUVC1yYlBpN0p0NFh3MnlGTDdZeHpkNXo1R2Jra2Z6M3ktNjJWSlVZVGpvVEhvalhQcVZ4M1ZCcmhRZjl0eU1IcFhTQVZmdlFsV2lENktldkVlRkdBSUMyd1hySngzRUpmR0oxOE9lMzdnc21sVmhKZ0cxTFl6RVI4SjRzOF9LbmZ3?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4297]:
+              - generic [ref=e4298]:
+                - generic [ref=e4301]: CNBC
+                - generic [ref=e4305]:
+                  - generic:
+                    - button "More - Microsoft cuts 4,800 jobs, as Xbox unit downsizes and plans to spin off four gaming studios" [ref=e4306] [cursor=pointer]:
+                      - img [ref=e4308]
+                    - tooltip [ref=e4310]: More
+              - link "Microsoft cuts 4,800 jobs, as Xbox unit downsizes and plans to spin off four gaming studios - CNBC - 20 days ago - By Jordan Novet" [ref=e4311] [cursor=pointer]:
+                - /url: ./read/CBMitAFBVV95cUxPRENTWmVTcnJRM3kzNU95STBkR2QtaGxEXzJQbmpLRmVQNmdrM3A1RTZaWjNKcWZjWk1jWTRoaERPOEVNcUlIREgyLW5tTHY5WGZSYjFjNTZPTG5Jd0ZVVXN5WWs0czNLdGY0NUg5WFpHYlBBU1V5MnRCZEI0RW1hTk1FQ2o5RGdSd201cS10OFNmNVJnbUw3RnNPWXpKd2xvVGYzUzhpUkNtbXBXUkxTTnlRc3bSAboBQVVfeXFMTWJnQ1VQM19XdkhOa0s2dXJKa3B6b3pNc3otUFRLd2lNTldCTG1rU2hwY05vYUp2dVhUVC1yYlBpN0p0NFh3MnlGTDdZeHpkNXo1R2Jra2Z6M3ktNjJWSlVZVGpvVEhvalhQcVZ4M1ZCcmhRZjl0eU1IcFhTQVZmdlFsV2lENktldkVlRkdBSUMyd1hySngzRUpmR0oxOE9lMzdnc21sVmhKZ0cxTFl6RVI4SjRzOF9LbmZ3?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Microsoft cuts 4,800 jobs, as Xbox unit downsizes and plans to spin off four gaming studios
+            - figure [ref=e4312]
+          - generic [ref=e4313]:
+            - time [ref=e4314]: 20 days ago
+            - separator [ref=e4315]
+            - generic [ref=e4316]: By Jordan Novet
+      - generic [ref=e4317]:
+        - separator [ref=e4319]
+        - generic [ref=e4321]:
+          - generic [ref=e4322]:
+            - link [ref=e4324] [cursor=pointer]:
+              - /url: ./read/CBMirwFBVV95cUxPUTFkR253ZDVzNmRUQTJrUTdOVGQ3c2hoRUJuQWJsZGhvcFUtckxCQVpEYXFjQ2xqQkxIeTZTMHZISkVRSzZRdXRHdGk0dDFSQlJZN0EteHJhaXZMNDcxSVNtTDc0YXVTWXVkd1BEQkxPY0RaWGpRNmxvLW44eUtzck5ucTh4WWNWT2tmRS1UUl9CaC1CUVFqd3dBLVl4YzBWZU95ZU9jSDNIbGdKMmNV?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4326]:
+              - generic [ref=e4327]:
+                - generic [ref=e4330]: USA Today
+                - generic [ref=e4334]:
+                  - generic:
+                    - 'button "More - ESPN layoffs: Karl Ravech, Cam Newton among those let go" [ref=e4335] [cursor=pointer]':
+                      - img [ref=e4337]
+                    - tooltip [ref=e4339]: More
+              - 'link "ESPN layoffs: Karl Ravech, Cam Newton among those let go - USA Today - 3 days ago - By Mark Giannotto and Scooby Axson" [ref=e4340] [cursor=pointer]':
+                - /url: ./read/CBMirwFBVV95cUxPUTFkR253ZDVzNmRUQTJrUTdOVGQ3c2hoRUJuQWJsZGhvcFUtckxCQVpEYXFjQ2xqQkxIeTZTMHZISkVRSzZRdXRHdGk0dDFSQlJZN0EteHJhaXZMNDcxSVNtTDc0YXVTWXVkd1BEQkxPY0RaWGpRNmxvLW44eUtzck5ucTh4WWNWT2tmRS1UUl9CaC1CUVFqd3dBLVl4YzBWZU95ZU9jSDNIbGdKMmNV?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "ESPN layoffs: Karl Ravech, Cam Newton among those let go"
+            - figure [ref=e4341]
+          - generic [ref=e4342]:
+            - time [ref=e4343]: 3 days ago
+            - separator [ref=e4344]
+            - generic [ref=e4345]: By Mark Giannotto and Scooby Axson
+      - generic [ref=e4346]:
+        - separator [ref=e4348]
+        - generic [ref=e4350]:
+          - generic [ref=e4351]:
+            - link [ref=e4353] [cursor=pointer]:
+              - /url: ./read/CBMigAFBVV95cUxPUHBqSUc2N0xDalNHZXBYMVhJZzU1QUItLWVzOXJUWmZfYTN6V3E4Q01XOUZJU24xSUxZVXRDbXJPRDRhWDZQaEZSZEY0Y1NvR3E1MnR4ZTdMc0lTTWpjS1g3X2ZoWHROMy1iWGw3TzhyZlRMQ3k0cXhUN21iQUtSLQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4355]:
+              - generic [ref=e4356]:
+                - generic [ref=e4359]: Animation World Network
+                - generic [ref=e4363]:
+                  - generic:
+                    - button "More - Pixar Hit with Layoffs as it Refocuses on Theatrical Features" [ref=e4364] [cursor=pointer]:
+                      - img [ref=e4366]
+                    - tooltip [ref=e4368]: More
+              - link "Pixar Hit with Layoffs as it Refocuses on Theatrical Features - Animation World Network - 2 days ago - By Dan Sarto" [ref=e4369] [cursor=pointer]:
+                - /url: ./read/CBMigAFBVV95cUxPUHBqSUc2N0xDalNHZXBYMVhJZzU1QUItLWVzOXJUWmZfYTN6V3E4Q01XOUZJU24xSUxZVXRDbXJPRDRhWDZQaEZSZEY0Y1NvR3E1MnR4ZTdMc0lTTWpjS1g3X2ZoWHROMy1iWGw3TzhyZlRMQ3k0cXhUN21iQUtSLQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Pixar Hit with Layoffs as it Refocuses on Theatrical Features
+            - figure [ref=e4370]
+          - generic [ref=e4371]:
+            - time [ref=e4372]: 2 days ago
+            - separator [ref=e4373]
+            - generic [ref=e4374]: By Dan Sarto
+      - generic [ref=e4375]:
+        - separator [ref=e4377]
+        - generic [ref=e4379]:
+          - generic [ref=e4380]:
+            - link [ref=e4382] [cursor=pointer]:
+              - /url: ./read/CBMilwFBVV95cUxQSXRxRTY4b1hXRXAwNFo1MTRkMnNTMGlmR3hHWmtlX0R2b2FieFB2cWVRQ0FSQnd6NjNzRVRDM2N2NkdkSlphTEhPWnI4cVVuWUlFYTRxOVpSNkU2SmFQYWxMZ3dXMkFFbDREWnQ3N2U2Q0ktTURQWFZHMkVEZVM4UGcxckRnTWUxVS12d2FBdTF2enFCcFJj?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4384]:
+              - generic [ref=e4385]:
+                - generic [ref=e4388]: The HR Digest
+                - generic [ref=e4392]:
+                  - generic:
+                    - 'button "More - Uber Layoffs Today & Tomorrow: Which jobs will be impacted by 2028?" [ref=e4393] [cursor=pointer]':
+                      - img [ref=e4395]
+                    - tooltip [ref=e4397]: More
+              - 'link "Uber Layoffs Today & Tomorrow: Which jobs will be impacted by 2028? - The HR Digest - 2 days ago - By Priyansha Mistry" [ref=e4398] [cursor=pointer]':
+                - /url: ./read/CBMilwFBVV95cUxQSXRxRTY4b1hXRXAwNFo1MTRkMnNTMGlmR3hHWmtlX0R2b2FieFB2cWVRQ0FSQnd6NjNzRVRDM2N2NkdkSlphTEhPWnI4cVVuWUlFYTRxOVpSNkU2SmFQYWxMZ3dXMkFFbDREWnQ3N2U2Q0ktTURQWFZHMkVEZVM4UGcxckRnTWUxVS12d2FBdTF2enFCcFJj?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Uber Layoffs Today & Tomorrow: Which jobs will be impacted by 2028?"
+            - figure [ref=e4399]
+          - generic [ref=e4400]:
+            - time [ref=e4401]: 2 days ago
+            - separator [ref=e4402]
+            - generic [ref=e4403]: By Priyansha Mistry
+      - generic [ref=e4404]:
+        - separator [ref=e4406]
+        - generic [ref=e4408]:
+          - generic [ref=e4409]:
+            - link [ref=e4411] [cursor=pointer]:
+              - /url: ./read/CBMijgFBVV95cUxQdjVXWVJaOElRWFhTWTZvb25QZVpJbloxbENjNWJsNGVaRUVGbDNmOGZDdFd2ME5IT0pxUmJxdXVGeXF2SmFNNGN4eE5yM0pocU13ODZiMjhEZG9wMHh6TlRyM0JTRjBvSUs2cHIwczdpTXpGZzgxcUJzMVZ6LWNJd3duendBRXV5Y3ZGQXNn?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4413]:
+              - generic [ref=e4414]:
+                - generic [ref=e4417]: SHRM
+                - generic [ref=e4421]:
+                  - generic:
+                    - 'button "More - The AI Layoffs Narrative: Real Transformation, or Scapegoat?" [ref=e4422] [cursor=pointer]':
+                      - img [ref=e4424]
+                    - tooltip [ref=e4426]: More
+              - 'link "The AI Layoffs Narrative: Real Transformation, or Scapegoat? - SHRM - 18 May - By ROY MAURER" [ref=e4427] [cursor=pointer]':
+                - /url: ./read/CBMijgFBVV95cUxQdjVXWVJaOElRWFhTWTZvb25QZVpJbloxbENjNWJsNGVaRUVGbDNmOGZDdFd2ME5IT0pxUmJxdXVGeXF2SmFNNGN4eE5yM0pocU13ODZiMjhEZG9wMHh6TlRyM0JTRjBvSUs2cHIwczdpTXpGZzgxcUJzMVZ6LWNJd3duendBRXV5Y3ZGQXNn?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "The AI Layoffs Narrative: Real Transformation, or Scapegoat?"
+            - figure [ref=e4428]
+          - generic [ref=e4429]:
+            - time [ref=e4430]: 18 May
+            - separator [ref=e4431]
+            - generic [ref=e4432]: By ROY MAURER
+      - generic [ref=e4433]:
+        - separator [ref=e4435]
+        - generic [ref=e4437]:
+          - generic [ref=e4438]:
+            - link [ref=e4440] [cursor=pointer]:
+              - /url: ./read/CBMirAFBVV95cUxPQVl5d25FejEzSDdVOU9vcXlBbnFIWEpRYWY1eW5xX0Y0OVVCRmlMaUYtWmdDSnV6T3J0NlRxSDdueThBVFNRNE1SOVlPWXBUMEpFd3ludzFSY1BTdGppS3hUYnhOcXF0Nm55N3ZKN1R1Vkl3bEgySTVicmJvSk82bk9OX2ZkQ2JIVFJlUnhsaEh0QkFlZzJEeFJ0d0hxWmlyUEJVYzFEVHM2UEZ0?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4442]:
+              - generic [ref=e4443]:
+                - generic [ref=e4446]: Fast Company
+                - generic [ref=e4450]:
+                  - generic:
+                    - button "More - Layoffs just hit a 57-year low. So why does the job market feel so tough?" [ref=e4451] [cursor=pointer]:
+                      - img [ref=e4453]
+                    - tooltip [ref=e4455]: More
+              - link "Layoffs just hit a 57-year low. So why does the job market feel so tough? - Fast Company - 2 days ago - By Taylor Hatmaker" [ref=e4456] [cursor=pointer]:
+                - /url: ./read/CBMirAFBVV95cUxPQVl5d25FejEzSDdVOU9vcXlBbnFIWEpRYWY1eW5xX0Y0OVVCRmlMaUYtWmdDSnV6T3J0NlRxSDdueThBVFNRNE1SOVlPWXBUMEpFd3ludzFSY1BTdGppS3hUYnhOcXF0Nm55N3ZKN1R1Vkl3bEgySTVicmJvSk82bk9OX2ZkQ2JIVFJlUnhsaEh0QkFlZzJEeFJ0d0hxWmlyUEJVYzFEVHM2UEZ0?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Layoffs just hit a 57-year low. So why does the job market feel so tough?
+            - figure [ref=e4457]
+          - generic [ref=e4458]:
+            - time [ref=e4459]: 2 days ago
+            - separator [ref=e4460]
+            - generic [ref=e4461]: By Taylor Hatmaker
+      - generic [ref=e4462]:
+        - separator [ref=e4464]
+        - generic [ref=e4466]:
+          - generic [ref=e4467]:
+            - link [ref=e4469] [cursor=pointer]:
+              - /url: ./read/CBMivAFBVV95cUxQWjdJSlpLcUl6ZjVHNk80NEd0VFVkWjJzUTJPYUNBUjFjUjQySmFFblBYRFFKemFZR3FER2FuUlVUR2UzMXV5bnJ4VDY1R2Rpb3FpX2xlelMyMzJUd0tySzJmRTlDeUl1ZU82a3JsYjUtNVUtLXVic09jdktfZWpzSjgwOW5uakQxYXdFRlk3NDd1ZEI5WktfT0pZdmNyVjlyNkVqR3VGVWF4Ums5TExLRUxUT3FPTnVZXzNETw?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4471]:
+              - generic [ref=e4472]:
+                - generic [ref=e4475]: Reuters
+                - generic [ref=e4479]:
+                  - generic:
+                    - button "More - Microsoft to cut 4,800 jobs, overhaul Xbox unit" [ref=e4480] [cursor=pointer]:
+                      - img [ref=e4482]
+                    - tooltip [ref=e4484]: More
+              - link "Microsoft to cut 4,800 jobs, overhaul Xbox unit - Reuters - 17 days ago - By Aditya Soni and Akash Sriram" [ref=e4485] [cursor=pointer]:
+                - /url: ./read/CBMivAFBVV95cUxQWjdJSlpLcUl6ZjVHNk80NEd0VFVkWjJzUTJPYUNBUjFjUjQySmFFblBYRFFKemFZR3FER2FuUlVUR2UzMXV5bnJ4VDY1R2Rpb3FpX2xlelMyMzJUd0tySzJmRTlDeUl1ZU82a3JsYjUtNVUtLXVic09jdktfZWpzSjgwOW5uakQxYXdFRlk3NDd1ZEI5WktfT0pZdmNyVjlyNkVqR3VGVWF4Ums5TExLRUxUT3FPTnVZXzNETw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Microsoft to cut 4,800 jobs, overhaul Xbox unit
+            - figure [ref=e4486]
+          - generic [ref=e4487]:
+            - time [ref=e4488]: 17 days ago
+            - separator [ref=e4489]
+            - generic [ref=e4490]: By Aditya Soni and Akash Sriram
+      - generic [ref=e4491]:
+        - separator [ref=e4493]
+        - generic [ref=e4495]:
+          - generic [ref=e4496]:
+            - link [ref=e4498] [cursor=pointer]:
+              - /url: ./read/CBMimAFBVV95cUxNMjNsQ3dqOTBQdmF2N08xODV5SmliN0FPZVRHYVJueldyME83eG9YNE9fV01Fa2RhR1l2TnEzemF6VWhLYlQtcVM2WUh6NWUwZHljblhENkgzWFU4TjljYkpuSmVaV3d6b2s4aWZ4NUdWcTE2c2U2clAySGZ1R3gwQW51ZVBLTXdlcFlCR3hQc18zM0NFUzB4NQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4500]:
+              - generic [ref=e4501]:
+                - generic [ref=e4504]: Yahoo Finance
+                - generic [ref=e4508]:
+                  - generic:
+                    - button "More - Do Uber AI Layoffs More American Jobs At Risk?" [ref=e4509] [cursor=pointer]:
+                      - img [ref=e4511]
+                    - tooltip [ref=e4513]: More
+              - link "Do Uber AI Layoffs More American Jobs At Risk? - Yahoo Finance - 2 days ago - By Douglas A. McIntyre" [ref=e4514] [cursor=pointer]:
+                - /url: ./read/CBMimAFBVV95cUxNMjNsQ3dqOTBQdmF2N08xODV5SmliN0FPZVRHYVJueldyME83eG9YNE9fV01Fa2RhR1l2TnEzemF6VWhLYlQtcVM2WUh6NWUwZHljblhENkgzWFU4TjljYkpuSmVaV3d6b2s4aWZ4NUdWcTE2c2U2clAySGZ1R3gwQW51ZVBLTXdlcFlCR3hQc18zM0NFUzB4NQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Do Uber AI Layoffs More American Jobs At Risk?
+            - figure [ref=e4515]
+          - generic [ref=e4516]:
+            - time [ref=e4517]: 2 days ago
+            - separator [ref=e4518]
+            - generic [ref=e4519]: By Douglas A. McIntyre
+      - generic [ref=e4520]:
+        - separator [ref=e4522]
+        - generic [ref=e4524]:
+          - generic [ref=e4525]:
+            - link [ref=e4527] [cursor=pointer]:
+              - /url: ./read/CBMid0FVX3lxTE1CMFdMcjdwOTRyYWdrSWtrMUwwaWNtV1RzLXhGNHFGMWhfa0JfeUpmekduWUhVZ0F4RVJCbVBUOG1MT3pLU25kQno2QjhfcUkzVGtPRGFtbTRaRWc1VXJCandDTDluNVkwa09ucjhXSUxXS0JLdnk4?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4529]:
+              - generic [ref=e4530]:
+                - generic [ref=e4533]: Press Gazette
+                - generic [ref=e4537]:
+                  - generic:
+                    - 'button "More - Journalism job cuts in 2026 tracked: Latest from National Geographic, ESPN and Sherwood News" [ref=e4538] [cursor=pointer]':
+                      - img [ref=e4540]
+                    - tooltip [ref=e4542]: More
+              - 'link "Journalism job cuts in 2026 tracked: Latest from National Geographic, ESPN and Sherwood News - Press Gazette - 4 days ago - By Charlotte Tobitt" [ref=e4543] [cursor=pointer]':
+                - /url: ./read/CBMid0FVX3lxTE1CMFdMcjdwOTRyYWdrSWtrMUwwaWNtV1RzLXhGNHFGMWhfa0JfeUpmekduWUhVZ0F4RVJCbVBUOG1MT3pLU25kQno2QjhfcUkzVGtPRGFtbTRaRWc1VXJCandDTDluNVkwa09ucjhXSUxXS0JLdnk4?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "Journalism job cuts in 2026 tracked: Latest from National Geographic, ESPN and Sherwood News"
+            - figure [ref=e4544]
+          - generic [ref=e4545]:
+            - time [ref=e4546]: 4 days ago
+            - separator [ref=e4547]
+            - generic [ref=e4548]: By Charlotte Tobitt
+      - generic [ref=e4549]:
+        - separator [ref=e4551]
+        - generic [ref=e4553]:
+          - generic [ref=e4554]:
+            - link [ref=e4556] [cursor=pointer]:
+              - /url: ./read/CBMilgFBVV95cUxOUktvZm9zRUgwbzNKVHVFWHc1Q1NWb1RTUUV4V1ZRV3RFckhFYldtVUxDcFh5TTNWWXlrSy1fdFpLVW43WWJsWjR1allHUV9QNi1mcDQ5ME9TVmFNY0NoZGwwckpqMGh6NWFib2RGRGtkOWpwTEVVSE1KSTk0RUlER2RfdVpUQ0F4Z3U2WmZrWGI2SDVPS3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4558]:
+              - generic [ref=e4559]:
+                - generic [ref=e4562]: Yahoo Finance
+                - generic [ref=e4566]:
+                  - generic:
+                    - button "More - Crop seed producer Bayer plans layoffs in Hawaii" [ref=e4567] [cursor=pointer]:
+                      - img [ref=e4569]
+                    - tooltip [ref=e4571]: More
+              - link "Crop seed producer Bayer plans layoffs in Hawaii - Yahoo Finance - 2 days ago - By Andrew Gomes" [ref=e4572] [cursor=pointer]:
+                - /url: ./read/CBMilgFBVV95cUxOUktvZm9zRUgwbzNKVHVFWHc1Q1NWb1RTUUV4V1ZRV3RFckhFYldtVUxDcFh5TTNWWXlrSy1fdFpLVW43WWJsWjR1allHUV9QNi1mcDQ5ME9TVmFNY0NoZGwwckpqMGh6NWFib2RGRGtkOWpwTEVVSE1KSTk0RUlER2RfdVpUQ0F4Z3U2WmZrWGI2SDVPS3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Crop seed producer Bayer plans layoffs in Hawaii
+            - figure [ref=e4573]
+          - generic [ref=e4574]:
+            - time [ref=e4575]: 2 days ago
+            - separator [ref=e4576]
+            - generic [ref=e4577]: By Andrew Gomes
+      - generic [ref=e4578]:
+        - separator [ref=e4580]
+        - generic [ref=e4582]:
+          - generic [ref=e4583]:
+            - link [ref=e4585] [cursor=pointer]:
+              - /url: ./read/CBMibEFVX3lxTE5wRVo5blpOQkh1ZGtMUWdpYWVYWjVkdWw3V3BVN2haRTFVODRJR29acXNXZlpNSEhTaWpOb1hrTnA0YkRXOV9BRWpaTE5nZS1BeUIzcjNjRDdMWnlFZTh1UG1KSVItY05CWHBFag?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e4587]:
+              - generic [ref=e4588]:
+                - generic [ref=e4591]: Front Office Sports
+                - generic [ref=e4595]:
+                  - generic:
+                    - button "More - ESPN Layoffs Begin With Ryan Clark" [ref=e4596] [cursor=pointer]:
+                      - img [ref=e4598]
+                    - tooltip [ref=e4600]: More
+              - link "ESPN Layoffs Begin With Ryan Clark - Front Office Sports - 5 days ago - By Ryan Glasspiegel" [ref=e4601] [cursor=pointer]:
+                - /url: ./read/CBMibEFVX3lxTE5wRVo5blpOQkh1ZGtMUWdpYWVYWjVkdWw3V3BVN2haRTFVODRJR29acXNXZlpNSEhTaWpOb1hrTnA0YkRXOV9BRWpaTE5nZS1BeUIzcjNjRDdMWnlFZTh1UG1KSVItY05CWHBFag?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: ESPN Layoffs Begin With Ryan Clark
+            - figure [ref=e4602]
+          - generic [ref=e4603]:
+            - time [ref=e4604]: 5 days ago
+            - separator [ref=e4605]
+            - generic [ref=e4606]: By Ryan Glasspiegel
+    - complementary [ref=e4607]:
+      - generic [ref=e4609]:
+        - generic [ref=e4612]:
+          - heading "layoffs" [level=2] [ref=e4613]
+          - generic [ref=e4614]: Search results
+        - generic [ref=e4617]:
+          - button "Save this search - layoffs" [ref=e4619]:
+            - img [ref=e4623]
+            - generic [ref=e4625]: Save
+          - tooltip [ref=e4626]: Save this search

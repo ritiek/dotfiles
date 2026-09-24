@@ -1,0 +1,19 @@
+[    1643ms] [LOG] %c%s color: red; background: yellow; font-size: 24px; WARNING! @ /_/mss/boq-dots/_/js/k=boq-dots.DotsSplashUi_desktop_ms.en_IN.E2zbNyEjc3I.2018.O/am=GAIFAAAAAMBMgAED/d=1/excm=_b,_tp,homeview/ed=1/dg=0/wt=2/ujg=1/rs=ALs0n2NwqId0EjU2cmWch0MGKEjGyDfHSA/dti=1/m=_b,_tp:285
+[    1644ms] [LOG] %c%s font-size: 18px; Using this console may allow attackers to impersonate you and steal your information using an attack called Self-XSS.
+Do not enter or paste code that you don't understand. @ /_/mss/boq-dots/_/js/k=boq-dots.DotsSplashUi_desktop_ms.en_IN.E2zbNyEjc3I.2018.O/am=GAIFAAAAAMBMgAED/d=1/excm=_b,_tp,homeview/ed=1/dg=0/wt=2/ujg=1/rs=ALs0n2NwqId0EjU2cmWch0MGKEjGyDfHSA/dti=1/m=_b,_tp:285
+[    2148ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    2182ms] [ERROR] An unknown error occurred when fetching the script. @ :0
+[    2579ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    2730ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    3018ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    3023ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    3262ms] _.Nj
+[    3560ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    3673ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true:0
+[    4151ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    4733ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    4703ms] _.Nj
+[    4785ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    5180ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true&authuser=0:0
+[    5708ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true:0
+[   10030ms] [ERROR] Failed to load resource: net::ERR_BLOCKED_BY_CLIENT @ https://play.google.com/log?format=json&hasfast=true:0

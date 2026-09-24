@@ -1,0 +1,409 @@
+- generic [ref=e2]:
+  - heading "0 notifications" [level=2] [ref=e3]
+  - generic [ref=e4]:
+    - generic:
+      - generic "Skip navigation menu":
+        - generic [ref=e5]:
+          - button "Skip to search" [ref=e6] [cursor=pointer]:
+            - generic [ref=e8]: Skip to search
+          - button "Skip to main content" [ref=e9] [cursor=pointer]:
+            - generic [ref=e11]: Skip to main content
+          - button "Skip to sidebar" [ref=e12] [cursor=pointer]:
+            - generic [ref=e14]: Skip to sidebar
+          - button "Skip to primary content" [ref=e15] [cursor=pointer]:
+            - generic [ref=e17]: Skip to primary content
+          - button "Skip to aside" [ref=e18] [cursor=pointer]:
+            - generic [ref=e20]: Skip to aside
+          - button "Close jump menu" [ref=e22] [cursor=pointer]
+    - generic [ref=e25]:
+      - banner [ref=e27]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - button [ref=e32] [cursor=pointer]
+            - generic [ref=e34]:
+              - status [ref=e35]
+              - search [ref=e36]:
+                - textbox "Search" [ref=e40]
+          - navigation [ref=e42]:
+            - list [ref=e43]:
+              - listitem [ref=e44]:
+                - button "Home, 0 new notifications" [ref=e45] [cursor=pointer]:
+                  - img [ref=e47]
+                  - generic [ref=e50]: Home
+              - listitem [ref=e51]:
+                - link "My Network, 0 new notifications" [ref=e52] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/mynetwork
+                  - img [ref=e54]
+                  - generic [ref=e57]: My Network
+              - listitem [ref=e58]:
+                - link "Jobs, 0 new notifications" [ref=e59] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/jobs/
+                  - img [ref=e61]
+                  - generic [ref=e64]: Jobs
+              - listitem [ref=e65]:
+                - link "Messaging, 0 new notifications" [ref=e66] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/messaging/
+                  - img [ref=e68]
+                  - generic [ref=e71]: Messaging
+              - listitem [ref=e72]:
+                - link "Notifications, 1 new notification" [ref=e73] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/notifications/
+                  - generic [ref=e74]:
+                    - img [ref=e75]
+                    - generic [ref=e77]: "1"
+                  - generic [ref=e79]: Notifications
+              - listitem [ref=e80]:
+                - button "More" [ref=e81] [cursor=pointer]:
+                  - generic [ref=e85]: More
+          - generic [ref=e87]:
+            - button "Ritiek Malhotra Me" [ref=e89] [cursor=pointer]:
+              - generic "Ritiek Malhotra Me" [ref=e90]:
+                - generic [ref=e91]:
+                  - figure [ref=e92]
+                  - paragraph [ref=e94]: Me
+            - generic [ref=e96]:
+              - navigation [ref=e97]:
+                - list [ref=e98]:
+                  - listitem [ref=e99]:
+                    - button "For Business" [ref=e100] [cursor=pointer]:
+                      - img [ref=e102]
+                      - generic [ref=e105]: For Business
+              - link "Try Premium for ₹0" [ref=e108] [cursor=pointer]:
+                - /url: https://www.linkedin.com/feed/
+                - paragraph [ref=e112]: Try Premium for ₹0
+      - main [ref=e115]:
+        - generic [ref=e117]:
+          - complementary "Sidebar" [ref=e118]:
+            - generic [ref=e121]:
+              - generic [ref=e126]:
+                - link [ref=e127] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/ritiek/
+                  - generic [ref=e128]:
+                    - figure [ref=e130]
+                    - figure [ref=e132]:
+                      - img "Ritiek Malhotra" [ref=e133]
+                - generic [ref=e134]:
+                  - link "Ritiek Malhotra Senior Software Engineer at Edra Labs India" [ref=e135] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - generic [ref=e136]:
+                      - paragraph [ref=e139]: Ritiek Malhotra
+                      - paragraph [ref=e141]: Senior Software Engineer at Edra Labs
+                      - paragraph [ref=e142]: India
+                  - link "Edra Labs" [ref=e143] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - generic [ref=e144]:
+                      - figure [ref=e145]
+                      - paragraph [ref=e146]: Edra Labs
+              - generic [ref=e149]:
+                - link "Analytics" [ref=e151] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/dashboard/
+                  - generic "Analytics" [ref=e152]:
+                    - paragraph [ref=e153]: Analytics
+                - link "Profile viewers 61" [ref=e157] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/me/profile-views/
+                  - generic "Profile viewers 61" [ref=e158]:
+                    - generic [ref=e159]:
+                      - paragraph [ref=e161]: Profile viewers
+                      - paragraph [ref=e162]: "61"
+              - link "Get 14x more connections on average with Premium Try 1 month for ₹0" [ref=e167] [cursor=pointer]:
+                - /url: https://www.linkedin.com/premium/products/?upsellOrderOrigin=Tracking%3Av1%3Apremium_homepage_identity_upsell%3ANav%3AIn-Product&utype=job&referenceId=jpwNwoHbRc2m%2FAhYUdeXiw%3D%3D&isSS=true&upsellSlotId=IDENTITY_MODULE
+                - generic [ref=e168]:
+                  - paragraph [ref=e169]: Get 14x more connections on average with Premium
+                  - paragraph [ref=e174]: Try 1 month for ₹0
+          - region "Primary content" [ref=e175]:
+            - list [ref=e176]:
+              - generic [ref=e180]:
+                - generic [ref=e184]:
+                  - generic [ref=e185]:
+                    - generic [ref=e186]:
+                      - generic [ref=e187]:
+                        - paragraph [ref=e188]: The average career is 42 years.
+                        - paragraph [ref=e189]: Invest in your long-term growth with Premium.
+                      - link "Try Premium for ₹0" [ref=e190] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/premium/products/?upsellOrderOrigin=Tracking%3Av1%3Apremium_feed_launchpad_upsell_jss%3AFeed%3AIn-Product&utype=job&referenceId=nPTfZw3QSS6c5yQEXM0VIg%3D%3D&isSS=false&upsellSlotId=LAUNCHPAD_V2
+                        - generic [ref=e192]: Try Premium for ₹0
+                    - paragraph [ref=e193]: 1-month free trial. Cancel anytime.
+                  - generic [ref=e194]:
+                    - figure [ref=e195]
+                    - figure [ref=e196]
+                - button "Dismiss" [ref=e197] [cursor=pointer]
+              - generic [ref=e202]:
+                - generic [ref=e203]:
+                  - link [ref=e205] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - figure [ref=e206]
+                  - link "Start a post" [ref=e208] [cursor=pointer]:
+                    - /url: /preload/sharebox/
+                    - generic "Start a post" [ref=e209]:
+                      - generic [ref=e211]:
+                        - paragraph [ref=e212]: Start a post
+                        - generic:
+                          - paragraph
+                - generic [ref=e213]:
+                  - link "Video" [ref=e214] [cursor=pointer]:
+                    - /url: /preload/sharebox/?detourType=VIDEO
+                    - paragraph [ref=e217]: Video
+                  - link "Photo" [ref=e218] [cursor=pointer]:
+                    - /url: /preload/sharebox/?detourType=IMAGE
+                    - paragraph [ref=e221]: Photo
+                  - link "Write article" [ref=e222] [cursor=pointer]:
+                    - /url: /article/new/
+                    - paragraph [ref=e225]: Write article
+              - 'button "Sort by: Top" [ref=e228] [cursor=pointer]':
+                - paragraph [ref=e230]:
+                  - text: "Sort by:"
+                  - strong [ref=e231]: Top
+              - listitem [ref=e237]:
+                - generic [ref=e239]:
+                  - heading "Feed post" [level=2]:
+                    - generic [ref=e240]: Feed post
+                  - generic [ref=e241]:
+                    - generic [ref=e242]:
+                      - link [ref=e243] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/adityaumeshsingh/
+                        - figure [ref=e244]:
+                          - img "View Aditya Singh’s profile" [ref=e245]
+                      - paragraph [ref=e247]:
+                        - generic [ref=e248]:
+                          - link "Aditya Singh" [ref=e249] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/in/adityaumeshsingh/
+                            - strong [ref=e250]: Aditya Singh
+                          - text: likes this
+                    - button "Open control menu for post by Taeuk Jang" [ref=e251] [cursor=pointer]
+                    - button "Hide post by Taeuk Jang" [ref=e254] [cursor=pointer]
+                  - generic [ref=e257]:
+                    - link [ref=e258] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/in/taeuk-jang-a52674178/
+                      - figure [ref=e259]:
+                        - img "View Taeuk Jang’s profile" [ref=e260]
+                    - generic [ref=e262]:
+                      - link "Taeuk Jang Verified Profile 3rd+" [ref=e265] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/taeuk-jang-a52674178/
+                        - generic "Taeuk Jang Verified Profile 3rd+" [ref=e267]:
+                          - paragraph [ref=e270]: Taeuk Jang
+                          - paragraph [ref=e272]:
+                            - generic [ref=e273]: • 3rd+
+                      - paragraph [ref=e277]: Multi-modal LLM @ Apple || ex-Amazon || Responsible AI || Ph.D. in Computer Engineering
+                      - paragraph [ref=e279]:
+                        - generic [ref=e280]: 6d •
+                      - link:
+                        - /url: https://www.linkedin.com/in/taeuk-jang-a52674178/
+                    - button "Follow Taeuk Jang" [ref=e285] [cursor=pointer]:
+                      - generic [ref=e289]: Follow
+                  - paragraph [ref=e290]:
+                    - generic [ref=e291]:
+                      - text: I’m excited to share that I have joined
+                      - link "Apple" [ref=e292] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/company/apple/
+                        - strong [ref=e294]: Apple
+                      - text: 🍎 as a Multimodal LLMs Research Engineer.
+                      - text: Looking back on the past two years, I am deeply grateful for the invaluable memories and the foundation I built while starting my career at
+                      - link "Amazon" [ref=e296] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/company/amazon/
+                        - strong [ref=e298]: Amazon
+                      - text: .
+                      - text: Now, already one month into my new journey, the excitement is only growing. My work will focus on developing advanced Multimodal LLMs designed to enrich the daily lives of people across the Apple ecosystem.
+                      - text: It has been a fantastic start, and I’m incredibly excited for the technical challenges and innovations that lie ahead. Onward! 🚀
+                      - button:
+                        - generic [ref=e300] [cursor=pointer]: … more
+                  - link [ref=e302] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/feed/
+                    - figure [ref=e303]:
+                      - img "View image" [ref=e304]
+                  - generic [ref=e305]:
+                    - generic [ref=e306]:
+                      - 'button "Reaction button state: no reaction" [ref=e309] [cursor=pointer]':
+                        - generic [ref=e313]: 6,164
+                      - button "Open reactions menu"
+                    - button "Comment" [ref=e314] [cursor=pointer]:
+                      - generic [ref=e318]: "107"
+                    - button "Repost" [ref=e319] [cursor=pointer]:
+                      - generic [ref=e323]: "3"
+                    - link "Send" [ref=e324] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                    - link [ref=e327] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                      - generic "6,164 reactions" [ref=e328]
+              - listitem [ref=e336]
+              - listitem [ref=e341]:
+                - generic [ref=e343]:
+                  - heading "Feed post" [level=2]:
+                    - generic [ref=e344]: Feed post
+                  - generic [ref=e345]:
+                    - paragraph [ref=e348]: Suggested
+                    - button "Open control menu for post by Ibrahim Saifullah" [ref=e349] [cursor=pointer]
+                    - button "Hide post by Ibrahim Saifullah" [ref=e352] [cursor=pointer]
+                  - generic [ref=e355]:
+                    - link [ref=e356] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/in/ibrahimsaifullah/
+                      - figure [ref=e357]:
+                        - img "View Ibrahim Saifullah’s profile" [ref=e358]
+                    - generic [ref=e360]:
+                      - link "Ibrahim Saifullah Premium Profile 3rd+" [ref=e363] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/ibrahimsaifullah/
+                        - generic "Ibrahim Saifullah Premium Profile 3rd+" [ref=e365]:
+                          - paragraph [ref=e368]: Ibrahim Saifullah
+                          - paragraph [ref=e370]:
+                            - generic [ref=e371]: • 3rd+
+                      - paragraph [ref=e375]: Lead Software Engineer @ Pushnami
+                      - paragraph [ref=e377]:
+                        - generic [ref=e378]: 2d •
+                      - link:
+                        - /url: https://www.linkedin.com/in/ibrahimsaifullah/
+                    - button "Follow Ibrahim Saifullah" [ref=e383] [cursor=pointer]:
+                      - generic [ref=e387]: Follow
+                  - paragraph [ref=e388]:
+                    - generic [ref=e389]:
+                      - text: Google Maps has been hiding restaurants from you.
+                      - text: Have you ever come across a restaurant with great reviews and wondered how you missed it? This happens because when you search for restaurants on Google Maps, it only displays a maximum of 60 results, even when there are hundreds or thousands more options available.
+                      - text: I’ve developed a new search algorithm to give you an unbounded search. It stitches together three different Google Maps APIs, dynamically breaking your search area into manageable pieces and then concurrently searching each potential match. As matches are located, they’re streamed back to your device in real-time.
+                      - text: You can also use this for travel planning. After searching over a whole city, you can toggle a heat map that makes it easy to find every area within that city that is worth visiting. Check it out on San Diego in my video to see if you agree.
+                      - text: Try it now at
+                      - link "topspots.fyi" [ref=e390] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/safety/go/?url=http%3A%2F%2Ftopspots%2Efyi&urlhash=fAap&mt=KvLx_MJ7Z_wfahA4FbEIiM8QRmA5p_lNTJQNzQph5bqLzR7V9aqwkeUAa64v84Dm85pPVxBjY3KphgzdTaCNLMd5OXcMeNYenbr5nLTXohnn2laxmEIBJHQkNA&isSdui=true
+                        - strong [ref=e392]: topspots.fyi
+                      - text: . What city will you search first?
+                      - button:
+                        - generic [ref=e394] [cursor=pointer]: … more
+                  - button "Play video" [ref=e399] [cursor=pointer]
+                  - generic [ref=e402]:
+                    - generic [ref=e403]:
+                      - 'button "Reaction button state: no reaction" [ref=e406] [cursor=pointer]':
+                        - generic [ref=e410]: "56"
+                      - button "Open reactions menu"
+                    - button "Comment" [ref=e411] [cursor=pointer]:
+                      - generic [ref=e415]: "13"
+                    - button "Repost" [ref=e416] [cursor=pointer]:
+                      - generic [ref=e420]: "2"
+                    - link "Send" [ref=e421] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                    - link [ref=e424] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                      - generic "56 reactions" [ref=e425]
+              - progressbar "In progress" [ref=e432]
+          - complementary "Aside" [ref=e433]:
+            - generic [ref=e434]:
+              - generic [ref=e435]:
+                - generic [ref=e439]:
+                  - generic [ref=e440]:
+                    - paragraph [ref=e441]: LinkedIn News
+                    - button "Info tooltip" [ref=e442] [cursor=pointer]
+                  - paragraph [ref=e445]: Top stories
+                  - generic [ref=e446]:
+                    - link "The sports conversations to join this week 6d ago • 19,726 readers" [ref=e448] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/the-sports-conversations-to-join-this-week-8332809/
+                      - generic [ref=e450]:
+                        - paragraph [ref=e452]: The sports conversations to join this week
+                        - generic [ref=e453]:
+                          - paragraph [ref=e454]: 6d ago
+                          - paragraph [ref=e455]: •
+                          - paragraph [ref=e456]: 19,726 readers
+                    - link "Fastest-growing cities for jobs and talent in India 2d ago • 11,193 readers" [ref=e458] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/fastest-growing-cities-for-jobs-and-talent-in-india-8379065/
+                      - generic [ref=e460]:
+                        - paragraph [ref=e462]: Fastest-growing cities for jobs and talent in India
+                        - generic [ref=e463]:
+                          - paragraph [ref=e464]: 2d ago
+                          - paragraph [ref=e465]: •
+                          - paragraph [ref=e466]: 11,193 readers
+                    - link "Education Minister Dharmendra Pradhan resigns 18h ago • 5,857 readers" [ref=e468] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/education-minister-dharmendra-pradhan-resigns-9096818/
+                      - generic [ref=e470]:
+                        - paragraph [ref=e472]: Education Minister Dharmendra Pradhan resigns
+                        - generic [ref=e473]:
+                          - paragraph [ref=e474]: 18h ago
+                          - paragraph [ref=e475]: •
+                          - paragraph [ref=e476]: 5,857 readers
+                    - link "Two-wheeler exports see strong momentum 2d ago • 1,276 readers" [ref=e478] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/two-wheeler-exports-see-strong-momentum-9075906/
+                      - generic [ref=e480]:
+                        - paragraph [ref=e482]: Two-wheeler exports see strong momentum
+                        - generic [ref=e483]:
+                          - paragraph [ref=e484]: 2d ago
+                          - paragraph [ref=e485]: •
+                          - paragraph [ref=e486]: 1,276 readers
+                    - link "Top finance experts to follow 2d ago • 1,154 readers" [ref=e488] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/top-finance-experts-to-follow-7984906/
+                      - generic [ref=e490]:
+                        - paragraph [ref=e492]: Top finance experts to follow
+                        - generic [ref=e493]:
+                          - paragraph [ref=e494]: 2d ago
+                          - paragraph [ref=e495]: •
+                          - paragraph [ref=e496]: 1,154 readers
+                    - button "Show more news" [ref=e497] [cursor=pointer]:
+                      - generic [ref=e500]: Show more news
+                - generic [ref=e503]:
+                  - paragraph [ref=e504]: Today’s puzzles
+                  - generic [ref=e505]:
+                    - link "Play Zip" [ref=e507] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/zip/
+                      - generic "Play Zip" [ref=e508]:
+                        - generic [ref=e509]:
+                          - figure [ref=e510]
+                          - generic [ref=e511]:
+                            - paragraph [ref=e512]:
+                              - strong [ref=e513]: Zip
+                              - text: "#496"
+                            - paragraph [ref=e514]: 6 connections played
+                    - link "Play Wend" [ref=e517] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/wend/
+                      - generic "Play Wend" [ref=e518]:
+                        - generic [ref=e519]:
+                          - figure [ref=e520]
+                          - generic [ref=e521]:
+                            - paragraph [ref=e522]:
+                              - strong [ref=e523]: Wend
+                              - text: "#48"
+                            - paragraph [ref=e524]: 4 connections played
+                    - link "Play Patches" [ref=e527] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/patches/
+                      - generic "Play Patches" [ref=e528]:
+                        - generic [ref=e529]:
+                          - figure [ref=e530]
+                          - generic [ref=e531]:
+                            - paragraph [ref=e532]:
+                              - strong [ref=e533]: Patches
+                              - text: "#131"
+                            - paragraph [ref=e534]: 4 connections played
+                    - link "Play MiniSudoku" [ref=e537] [cursor=pointer]:
+                      - /url: /games/mini-sudoku/
+                      - generic "Play MiniSudoku" [ref=e538]:
+                        - generic [ref=e539]:
+                          - figure [ref=e540]
+                          - generic [ref=e541]:
+                            - paragraph [ref=e542]:
+                              - strong [ref=e543]: Mini Sudoku
+                              - text: "#349"
+                            - paragraph [ref=e544]: 1 connection played
+                    - button "Show more" [ref=e547] [cursor=pointer]:
+                      - generic [ref=e550]: Show more
+              - generic [ref=e555]:
+                - generic [ref=e556]:
+                  - link "About" [ref=e557] [cursor=pointer]:
+                    - /url: https://about.linkedin.com/
+                    - paragraph [ref=e558]: About
+                  - link "Accessibility" [ref=e559] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/accessibility/
+                    - paragraph [ref=e560]: Accessibility
+                  - link "Help Center" [ref=e561] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/help/linkedin/
+                    - paragraph [ref=e562]: Help Center
+                  - button "Privacy & Terms" [ref=e563] [cursor=pointer]:
+                    - paragraph [ref=e565]: Privacy & Terms
+                  - link "Ad Choices" [ref=e567] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/help/linkedin/answer/62931/
+                    - paragraph [ref=e568]: Ad Choices
+                  - link "Advertising" [ref=e569] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/ad/start/?trk=n_nav_ads_rr
+                    - paragraph [ref=e570]: Advertising
+                  - button "Business Services" [ref=e571] [cursor=pointer]:
+                    - paragraph [ref=e573]: Business Services
+                  - link "Get the LinkedIn app" [ref=e575] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/mobile/
+                    - paragraph [ref=e576]: Get the LinkedIn app
+                  - link "More" [ref=e577] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/feed/
+                    - paragraph [ref=e578]: More
+                - paragraph [ref=e581]: LinkedIn Corporation © 2026
+  - iframe [ref=e582]:
+    

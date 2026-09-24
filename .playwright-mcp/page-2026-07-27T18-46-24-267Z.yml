@@ -1,0 +1,319 @@
+- generic [ref=e2]:
+  - heading "0 notifications" [level=2] [ref=e3]
+  - generic [ref=e4]:
+    - generic:
+      - generic "Skip navigation menu":
+        - button "Close jump menu" [ref=e6] [cursor=pointer]
+    - generic [ref=e9]:
+      - banner [ref=e11]:
+        - generic [ref=e15]:
+          - button [ref=e16] [cursor=pointer]
+          - generic [ref=e18]:
+            - status [ref=e19]
+            - search [ref=e20]:
+              - textbox "Search" [ref=e24]
+      - main [ref=e27]:
+        - generic [ref=e29]:
+          - complementary "Sidebar" [ref=e30]:
+            - generic [ref=e33]:
+              - generic [ref=e38]:
+                - link [ref=e39] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/ritiek/
+                  - generic [ref=e40]:
+                    - figure [ref=e42]
+                    - figure [ref=e44]
+                - generic [ref=e45]:
+                  - link "Ritiek Malhotra Senior Software Engineer at Edra Labs India" [ref=e46] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - generic [ref=e47]:
+                      - paragraph [ref=e50]: Ritiek Malhotra
+                      - paragraph [ref=e52]: Senior Software Engineer at Edra Labs
+                      - paragraph [ref=e53]: India
+                  - link "Edra Labs" [ref=e54] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - generic [ref=e55]:
+                      - figure [ref=e56]
+                      - paragraph [ref=e57]: Edra Labs
+              - generic [ref=e60]:
+                - link "Analytics" [ref=e62] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/dashboard/
+                  - generic "Analytics" [ref=e63]:
+                    - paragraph [ref=e64]: Analytics
+                - link "Profile viewers 61" [ref=e68] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/me/profile-views/
+                  - generic "Profile viewers 61" [ref=e69]:
+                    - generic [ref=e70]:
+                      - paragraph [ref=e72]: Profile viewers
+                      - paragraph [ref=e73]: "61"
+              - link "Apply to jobs personalized for you with Premium Try 1 month for ₹0" [ref=e78] [cursor=pointer]:
+                - /url: https://www.linkedin.com/premium/products/?upsellOrderOrigin=Tracking%3Av1%3Apremium_homepage_identity_upsell%3ANav%3AIn-Product&utype=job&referenceId=9W2ZBqgKRc2a719Ndj7ljw%3D%3D&isSS=true&upsellSlotId=IDENTITY_MODULE
+                - generic [ref=e79]:
+                  - paragraph [ref=e80]: Apply to jobs personalized for you with Premium
+                  - paragraph [ref=e85]: Try 1 month for ₹0
+          - region "Primary content" [ref=e86]:
+            - list [ref=e87]:
+              - generic [ref=e90]:
+                - generic [ref=e91]:
+                  - link [ref=e93] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - figure [ref=e94]
+                  - link "Start a post" [ref=e96] [cursor=pointer]:
+                    - /url: /preload/sharebox/
+                    - generic "Start a post" [ref=e97]:
+                      - generic [ref=e99]:
+                        - paragraph [ref=e100]: Start a post
+                        - generic:
+                          - paragraph
+                - generic [ref=e101]:
+                  - link "Video" [ref=e102] [cursor=pointer]:
+                    - /url: /preload/sharebox/?detourType=VIDEO
+                    - paragraph [ref=e105]: Video
+                  - link "Photo" [ref=e106] [cursor=pointer]:
+                    - /url: /preload/sharebox/?detourType=IMAGE
+                    - paragraph [ref=e109]: Photo
+                  - link "Write article" [ref=e110] [cursor=pointer]:
+                    - /url: /article/new/
+                    - paragraph [ref=e113]: Write article
+              - listitem [ref=e118]:
+                - generic [ref=e120]:
+                  - heading "Feed post" [level=2]:
+                    - generic [ref=e121]: Feed post
+                  - generic [ref=e122]:
+                    - link [ref=e123] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/in/karan-trehan-84b42b1a2/
+                      - figure [ref=e124]
+                    - generic [ref=e126]:
+                      - link "Karan Trehan, Open to work Verified Profile 1st" [ref=e129] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/karan-trehan-84b42b1a2/
+                        - generic "Karan Trehan, Open to work Verified Profile 1st" [ref=e131]:
+                          - paragraph [ref=e134]: Karan Trehan
+                          - paragraph [ref=e136]:
+                            - generic [ref=e137]: • 1st
+                      - paragraph [ref=e141]: Senior Analyst at Wipro
+                      - paragraph [ref=e143]:
+                        - generic [ref=e144]: 23m •
+                      - link:
+                        - /url: https://www.linkedin.com/in/karan-trehan-84b42b1a2/
+                    - button "Open control menu for post by Karan Trehan" [ref=e146] [cursor=pointer]
+                    - button "Hide post by Karan Trehan" [ref=e149] [cursor=pointer]
+                  - paragraph [ref=e152]:
+                    - generic [ref=e153]:
+                      - text: Can't believe it's already been 5 years at
+                      - link "Wipro" [ref=e154] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/company/wipro/
+                        - strong [ref=e156]: Wipro
+                      - text: "!!"
+                      - text: It feels like just yesterday since I started this journey. These years have been full of learning, challenges, growth, and some really great people and memories along the way.
+                      - text: I am thankful to everyone who has been a part of it and made the experience so worthwhile :-)
+                      - text: Here's to new opportunities, more learning, and the journey ahead.
+                      - text: Thank you
+                      - link "Wipro" [ref=e157] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/company/wipro/
+                        - strong [ref=e159]: Wipro
+                      - text: "! 😊"
+                      - link "#WorkAnniversary" [ref=e160] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%23workanniversary&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e162]: "#WorkAnniversary"
+                      - link "#5Years" [ref=e163] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%235years&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e165]: "#5Years"
+                      - link "#Wipro" [ref=e166] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%23wipro&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e168]: "#Wipro"
+                      - link "#Gratitude" [ref=e169] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%23gratitude&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e171]: "#Gratitude"
+                      - link "#Growth" [ref=e172] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%23growth&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e174]: "#Growth"
+                      - link "#CyberSecurity" [ref=e175] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%23cybersecurity&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e177]: "#CyberSecurity"
+                  - link [ref=e179] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/
+                    - figure [ref=e180]:
+                      - img "View image" [ref=e181]
+                  - generic [ref=e182]:
+                    - generic [ref=e183]:
+                      - 'button "Reaction button state: no reaction" [ref=e186] [cursor=pointer]':
+                        - generic [ref=e190]: "3"
+                      - button "Open reactions menu"
+                    - button "Comment" [ref=e191] [cursor=pointer]:
+                      - generic [ref=e195]: "1"
+                    - button "Repost" [ref=e196] [cursor=pointer]
+                    - link "Send" [ref=e199] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/
+                    - link [ref=e202] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/
+                      - generic "3 reactions" [ref=e203]
+              - listitem [ref=e210]
+              - listitem [ref=e215]:
+                - generic [ref=e217]:
+                  - heading "Feed post" [level=2]:
+                    - generic [ref=e218]: Feed post
+                  - generic [ref=e219]:
+                    - link [ref=e220] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/company/prodigaltech/posts/
+                      - figure [ref=e221]
+                    - generic [ref=e223]:
+                      - link "Prodigal Verified" [ref=e226] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/company/prodigaltech/posts/
+                        - generic "Prodigal Verified" [ref=e228]:
+                          - paragraph [ref=e231]: Prodigal
+                          - paragraph [ref=e233]
+                      - paragraph [ref=e238]:
+                        - generic [ref=e239]: 4d •
+                      - link:
+                        - /url: https://www.linkedin.com/company/prodigaltech/posts/
+                    - button "Open control menu for post by Prodigal" [ref=e241] [cursor=pointer]
+                    - button "Hide post by Prodigal" [ref=e244] [cursor=pointer]
+                  - paragraph [ref=e247]:
+                    - generic [ref=e248]:
+                      - text: Eight years in, the problems we are solving are harder, the ambitions are bigger, and our AI agents are handling real conversations about money and payments for major enterprises.
+                      - text: A few days together in Coorg gave all 78 of us a chance to step away from the work and celebrate how far we have come.
+                      - text: There was pickleball, golf, volleyball, cricket, and plenty of competition.
+                      - text: More importantly, there was time to spend together as a
+                      - link "#team" [ref=e250] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/search/results/all/?keywords=%23team&origin=HASH_TAG_FROM_FEED
+                        - strong [ref=e252]: "#team"
+                      - text: .
+                      - text: We are growing and looking for people who want to solve hard problems with us.
+                  - button "Play video" [ref=e257] [cursor=pointer]
+                  - generic [ref=e260]:
+                    - generic [ref=e261]:
+                      - 'button "Reaction button state: no reaction" [ref=e264] [cursor=pointer]':
+                        - generic [ref=e268]: "71"
+                      - button "Open reactions menu"
+                    - button "Comment" [ref=e269] [cursor=pointer]
+                    - button "Repost" [ref=e272] [cursor=pointer]:
+                      - generic [ref=e276]: "6"
+                    - link "Send" [ref=e277] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/
+                    - link [ref=e280] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/
+                      - generic "71 reactions" [ref=e281]
+              - progressbar "In progress" [ref=e288]
+          - complementary "Aside" [ref=e289]:
+            - generic [ref=e290]:
+              - generic [ref=e291]:
+                - generic [ref=e295]:
+                  - generic [ref=e296]:
+                    - paragraph [ref=e297]: LinkedIn News
+                    - button "Info tooltip" [ref=e298] [cursor=pointer]
+                  - paragraph [ref=e301]: Top stories
+                  - generic [ref=e302]:
+                    - link "Fastest-growing cities for jobs and talent in India 14h ago • 14,404 readers" [ref=e304] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/fastest-growing-cities-for-jobs-and-talent-in-india-8379065/
+                      - generic [ref=e306]:
+                        - paragraph [ref=e308]: Fastest-growing cities for jobs and talent in India
+                        - generic [ref=e309]:
+                          - paragraph [ref=e310]: 14h ago
+                          - paragraph [ref=e311]: •
+                          - paragraph [ref=e312]: 14,404 readers
+                    - link "Young professionals head to emerging cities 14h ago • 2,437 readers" [ref=e314] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/young-professionals-head-to-emerging-cities-9104522/
+                      - generic [ref=e316]:
+                        - paragraph [ref=e318]: Young professionals head to emerging cities
+                        - generic [ref=e319]:
+                          - paragraph [ref=e320]: 14h ago
+                          - paragraph [ref=e321]: •
+                          - paragraph [ref=e322]: 2,437 readers
+                    - link "Mirabai Chanu wins CWG gold medal 8h ago • 1,181 readers" [ref=e324] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/mirabai-chanu-wins-cwg-gold-medal-9100306/
+                      - generic [ref=e326]:
+                        - paragraph [ref=e328]: Mirabai Chanu wins CWG gold medal
+                        - generic [ref=e329]:
+                          - paragraph [ref=e330]: 8h ago
+                          - paragraph [ref=e331]: •
+                          - paragraph [ref=e332]: 1,181 readers
+                    - link "Real estate IPOs fail to attract investors 9h ago • 418 readers" [ref=e334] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/real-estate-ipos-fail-to-attract-investors-8386721/
+                      - generic [ref=e336]:
+                        - paragraph [ref=e338]: Real estate IPOs fail to attract investors
+                        - generic [ref=e339]:
+                          - paragraph [ref=e340]: 9h ago
+                          - paragraph [ref=e341]: •
+                          - paragraph [ref=e342]: 418 readers
+                    - link "India Inc moves to prevent insider trading 10h ago • 322 readers" [ref=e344] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/india-inc-moves-to-prevent-insider-trading-8358801/
+                      - generic [ref=e346]:
+                        - paragraph [ref=e348]: India Inc moves to prevent insider trading
+                        - generic [ref=e349]:
+                          - paragraph [ref=e350]: 10h ago
+                          - paragraph [ref=e351]: •
+                          - paragraph [ref=e352]: 322 readers
+                    - button "Show more news" [ref=e353] [cursor=pointer]:
+                      - generic [ref=e356]: Show more news
+                - generic [ref=e359]:
+                  - paragraph [ref=e360]: Today’s puzzles
+                  - generic [ref=e361]:
+                    - link "Play Zip" [ref=e363] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/zip/
+                      - generic "Play Zip" [ref=e364]:
+                        - generic [ref=e365]:
+                          - figure [ref=e366]
+                          - generic [ref=e367]:
+                            - paragraph [ref=e368]:
+                              - strong [ref=e369]: Zip
+                              - text: "#497"
+                            - paragraph [ref=e370]: 18 connections played
+                    - link "Play Wend" [ref=e373] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/wend/
+                      - generic "Play Wend" [ref=e374]:
+                        - generic [ref=e375]:
+                          - figure [ref=e376]
+                          - generic [ref=e377]:
+                            - paragraph [ref=e378]:
+                              - strong [ref=e379]: Wend
+                              - text: "#49"
+                            - paragraph [ref=e380]: 11 connections played
+                    - link "Play Patches" [ref=e383] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/patches/
+                      - generic "Play Patches" [ref=e384]:
+                        - generic [ref=e385]:
+                          - figure [ref=e386]
+                          - generic [ref=e387]:
+                            - paragraph [ref=e388]:
+                              - strong [ref=e389]: Patches
+                              - text: "#132"
+                            - paragraph [ref=e390]: 10 connections played
+                    - link "Play MiniSudoku" [ref=e393] [cursor=pointer]:
+                      - /url: /games/mini-sudoku/
+                      - generic "Play MiniSudoku" [ref=e394]:
+                        - generic [ref=e395]:
+                          - figure [ref=e396]
+                          - generic [ref=e397]:
+                            - paragraph [ref=e398]:
+                              - strong [ref=e399]: Mini Sudoku
+                              - text: "#350"
+                            - paragraph [ref=e400]: 6 connections played
+                    - button "Show more" [ref=e403] [cursor=pointer]:
+                      - generic [ref=e406]: Show more
+              - generic [ref=e411]:
+                - generic [ref=e412]:
+                  - link "About" [ref=e413] [cursor=pointer]:
+                    - /url: https://about.linkedin.com/
+                    - paragraph [ref=e414]: About
+                  - link "Accessibility" [ref=e415] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/accessibility/
+                    - paragraph [ref=e416]: Accessibility
+                  - link "Help Center" [ref=e417] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/help/linkedin/
+                    - paragraph [ref=e418]: Help Center
+                  - button "Privacy & Terms" [ref=e419] [cursor=pointer]:
+                    - paragraph [ref=e421]: Privacy & Terms
+                  - link "Ad Choices" [ref=e423] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/help/linkedin/answer/62931/
+                    - paragraph [ref=e424]: Ad Choices
+                  - link "Advertising" [ref=e425] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/ad/start/?trk=n_nav_ads_rr
+                    - paragraph [ref=e426]: Advertising
+                  - button "Business Services" [ref=e427] [cursor=pointer]:
+                    - paragraph [ref=e429]: Business Services
+                  - link "Get the LinkedIn app" [ref=e431] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/mobile/
+                    - paragraph [ref=e432]: Get the LinkedIn app
+                  - link "More" [ref=e433] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/
+                    - paragraph [ref=e434]: More
+                - paragraph [ref=e437]: LinkedIn Corporation © 2026

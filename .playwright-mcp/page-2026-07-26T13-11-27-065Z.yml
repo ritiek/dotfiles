@@ -1,0 +1,416 @@
+- generic [ref=e2]:
+  - heading "0 notifications" [level=2] [ref=e3]
+  - generic [ref=e4]:
+    - generic:
+      - generic "Skip navigation menu":
+        - generic [ref=e5]:
+          - button "Skip to search" [ref=e6] [cursor=pointer]:
+            - generic [ref=e8]: Skip to search
+          - button "Skip to main content" [ref=e9] [cursor=pointer]:
+            - generic [ref=e11]: Skip to main content
+          - button "Skip to sidebar" [ref=e12] [cursor=pointer]:
+            - generic [ref=e14]: Skip to sidebar
+          - button "Skip to primary content" [ref=e15] [cursor=pointer]:
+            - generic [ref=e17]: Skip to primary content
+          - button "Skip to aside" [ref=e18] [cursor=pointer]:
+            - generic [ref=e20]: Skip to aside
+          - button "Close jump menu" [ref=e22] [cursor=pointer]
+    - generic [ref=e25]:
+      - banner [ref=e27]:
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - button [ref=e32] [cursor=pointer]
+            - generic [ref=e34]:
+              - status [ref=e35]
+              - search [ref=e36]:
+                - textbox "Search" [ref=e40]
+          - navigation [ref=e42]:
+            - list [ref=e43]:
+              - listitem [ref=e44]:
+                - button "Home, 0 new notifications" [ref=e45] [cursor=pointer]:
+                  - img [ref=e47]
+                  - generic [ref=e50]: Home
+              - listitem [ref=e51]:
+                - link "My Network, 0 new notifications" [ref=e52] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/mynetwork
+                  - img [ref=e54]
+                  - generic [ref=e57]: My Network
+              - listitem [ref=e58]:
+                - link "Jobs, 0 new notifications" [ref=e59] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/jobs/
+                  - img [ref=e61]
+                  - generic [ref=e64]: Jobs
+              - listitem [ref=e65]:
+                - link "Messaging, 0 new notifications" [ref=e66] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/messaging/
+                  - img [ref=e68]
+                  - generic [ref=e71]: Messaging
+              - listitem [ref=e72]:
+                - link "Notifications, 1 new notification" [ref=e73] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/notifications/
+                  - generic [ref=e74]:
+                    - img [ref=e75]
+                    - generic [ref=e77]: "1"
+                  - generic [ref=e79]: Notifications
+              - listitem [ref=e80]:
+                - button "More" [ref=e81] [cursor=pointer]:
+                  - generic [ref=e85]: More
+          - generic [ref=e87]:
+            - button "Ritiek Malhotra Me" [ref=e89] [cursor=pointer]:
+              - generic "Ritiek Malhotra Me" [ref=e90]:
+                - generic [ref=e91]:
+                  - figure [ref=e92]
+                  - paragraph [ref=e94]: Me
+            - generic [ref=e96]:
+              - navigation [ref=e97]:
+                - list [ref=e98]:
+                  - listitem [ref=e99]:
+                    - button "For Business" [ref=e100] [cursor=pointer]:
+                      - img [ref=e102]
+                      - generic [ref=e105]: For Business
+              - link "Try Premium for ₹0" [ref=e108] [cursor=pointer]:
+                - /url: https://www.linkedin.com/feed/
+                - paragraph [ref=e112]: Try Premium for ₹0
+      - main [ref=e115]:
+        - generic [ref=e117]:
+          - complementary "Sidebar" [ref=e118]:
+            - generic [ref=e121]:
+              - generic [ref=e126]:
+                - link [ref=e127] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/in/ritiek/
+                  - generic [ref=e128]:
+                    - figure [ref=e130]
+                    - figure [ref=e132]
+                - generic [ref=e133]:
+                  - link "Ritiek Malhotra Senior Software Engineer at Edra Labs India" [ref=e134] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - generic [ref=e135]:
+                      - paragraph [ref=e138]: Ritiek Malhotra
+                      - paragraph [ref=e140]: Senior Software Engineer at Edra Labs
+                      - paragraph [ref=e141]: India
+                  - link "Edra Labs" [ref=e142] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - generic [ref=e143]:
+                      - figure [ref=e144]
+                      - paragraph [ref=e145]: Edra Labs
+              - generic [ref=e148]:
+                - link "Analytics" [ref=e150] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/dashboard/
+                  - generic "Analytics" [ref=e151]:
+                    - paragraph [ref=e152]: Analytics
+                - link "Profile viewers 61" [ref=e156] [cursor=pointer]:
+                  - /url: https://www.linkedin.com/me/profile-views/
+                  - generic "Profile viewers 61" [ref=e157]:
+                    - generic [ref=e158]:
+                      - paragraph [ref=e160]: Profile viewers
+                      - paragraph [ref=e161]: "61"
+              - link "Get 14x more connections on average with Premium Try 1 month for ₹0" [ref=e166] [cursor=pointer]:
+                - /url: https://www.linkedin.com/premium/products/?upsellOrderOrigin=Tracking%3Av1%3Apremium_homepage_identity_upsell%3ANav%3AIn-Product&utype=job&referenceId=FlwwakcYS9qQ7Fqt5uJSqg%3D%3D&isSS=true&upsellSlotId=IDENTITY_MODULE
+                - generic [ref=e167]:
+                  - paragraph [ref=e168]: Get 14x more connections on average with Premium
+                  - paragraph [ref=e173]: Try 1 month for ₹0
+          - region "Primary content" [ref=e174]:
+            - list [ref=e175]:
+              - generic [ref=e179]:
+                - generic [ref=e183]:
+                  - generic [ref=e184]:
+                    - generic [ref=e185]:
+                      - generic [ref=e186]:
+                        - paragraph [ref=e187]: The average career is 42 years.
+                        - paragraph [ref=e188]: Invest in your long-term growth with Premium.
+                      - link "Try Premium for ₹0" [ref=e189] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/premium/products/?upsellOrderOrigin=Tracking%3Av1%3Apremium_feed_launchpad_upsell_jss%3AFeed%3AIn-Product&utype=job&referenceId=qTthwcSxSRGLwY22yrRIXA%3D%3D&isSS=false&upsellSlotId=LAUNCHPAD_V2
+                        - generic [ref=e191]: Try Premium for ₹0
+                    - paragraph [ref=e192]: 1-month free trial. Cancel anytime.
+                  - generic [ref=e193]:
+                    - figure [ref=e194]
+                    - figure [ref=e195]
+                - button "Dismiss" [ref=e196] [cursor=pointer]
+              - generic [ref=e201]:
+                - generic [ref=e202]:
+                  - link [ref=e204] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/in/ritiek/
+                    - figure [ref=e205]
+                  - link "Start a post" [ref=e207] [cursor=pointer]:
+                    - /url: /preload/sharebox/
+                    - generic "Start a post" [ref=e208]:
+                      - generic [ref=e210]:
+                        - paragraph [ref=e211]: Start a post
+                        - generic:
+                          - paragraph
+                - generic [ref=e212]:
+                  - link "Video" [ref=e213] [cursor=pointer]:
+                    - /url: /preload/sharebox/?detourType=VIDEO
+                    - paragraph [ref=e216]: Video
+                  - link "Photo" [ref=e217] [cursor=pointer]:
+                    - /url: /preload/sharebox/?detourType=IMAGE
+                    - paragraph [ref=e220]: Photo
+                  - link "Write article" [ref=e221] [cursor=pointer]:
+                    - /url: /article/new/
+                    - paragraph [ref=e224]: Write article
+              - 'button "Sort by: Top" [ref=e227] [cursor=pointer]':
+                - paragraph [ref=e229]:
+                  - text: "Sort by:"
+                  - strong [ref=e230]: Top
+              - listitem [ref=e236]:
+                - generic [ref=e238]:
+                  - heading "Feed post" [level=2]:
+                    - generic [ref=e239]: Feed post
+                  - generic [ref=e240]:
+                    - generic [ref=e241]:
+                      - link [ref=e242] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/sanjay-mahaveer-kona-57a74b156/
+                        - figure [ref=e243]
+                      - paragraph [ref=e245]:
+                        - generic [ref=e246]:
+                          - link "Sanjay Mahaveer Kona" [ref=e247] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/in/sanjay-mahaveer-kona-57a74b156/
+                            - strong [ref=e248]: Sanjay Mahaveer Kona
+                          - text: likes this
+                    - button "Open control menu for post by A Jagan Mohan REDDY" [ref=e249] [cursor=pointer]
+                    - button "Hide post by A Jagan Mohan REDDY" [ref=e252] [cursor=pointer]
+                  - generic [ref=e255]:
+                    - link [ref=e256] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/in/a-jagan-mohan-reddy-8156151a0/
+                      - figure [ref=e257]
+                    - generic [ref=e259]:
+                      - link "A Jagan Mohan REDDY Verified Profile 3rd+" [ref=e262] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/a-jagan-mohan-reddy-8156151a0/
+                        - generic "A Jagan Mohan REDDY Verified Profile 3rd+" [ref=e264]:
+                          - paragraph [ref=e267]: A Jagan Mohan REDDY
+                          - paragraph [ref=e269]:
+                            - generic [ref=e270]: • 3rd+
+                      - paragraph [ref=e274]: partner at Al Ready School |
+                      - paragraph [ref=e276]:
+                        - generic [ref=e277]: 2d •
+                      - link:
+                        - /url: https://www.linkedin.com/in/a-jagan-mohan-reddy-8156151a0/
+                    - button "Follow A Jagan Mohan REDDY" [ref=e282] [cursor=pointer]:
+                      - generic [ref=e286]: Follow
+                  - paragraph [ref=e287]:
+                    - generic [ref=e288]:
+                      - text: Tech Mahindra employee protests outside campus over alleged termination after availing leave to care for ailing daughter
+                      - text: In response, Tech Mahindra said it had connected with the employee and was reviewing the matter with urgency. A software employee staged a protest outside the Tech Mahindra campus in Dundigal on Thursday, alleging that she was arbitrarily terminated after availing three days of sick leave to care for her ailing daughter. The employee, identified as Bhavana, claimed she had been working with the firm for about four-and-a-half months when her services were terminated without prior notice or any valid reason.
+                      - text: According to her, she had requested leave to look after her daughter but was instead removed from her job. Bhavana further alleged that the management had earlier harassed her while she was on a 14-day medical leave following a fall on the company premises. She claimed the company repeatedly sent emails asking her to resume work and warned that she would lose her job if she failed to return.
+                      - text: Alleging a hostile work environment, Bhavana said she was required to seek permission even to use the washroom.
+                      - text: In response to The Hindu’s email, Tech Mahindra said, “We have connected with the employee and are reviewing the matter with urgency. Tech Mahindra is an employee focussed company and we remain committed to the well-being and safety of our employees.”
+                      - button:
+                        - generic [ref=e290] [cursor=pointer]: … more
+                  - link [ref=e292] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/feed/
+                    - figure [ref=e293]:
+                      - img "View image" [ref=e294]
+                  - generic [ref=e295]:
+                    - generic [ref=e296]:
+                      - 'button "Reaction button state: no reaction" [ref=e299] [cursor=pointer]':
+                        - generic [ref=e303]: 7,119
+                      - button "Open reactions menu"
+                    - button "Comment" [ref=e304] [cursor=pointer]:
+                      - generic [ref=e308]: "358"
+                    - button "Repost" [ref=e309] [cursor=pointer]:
+                      - generic [ref=e313]: "167"
+                    - link "Send" [ref=e314] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                    - link [ref=e317] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                      - generic "7,119 reactions" [ref=e318]
+              - listitem [ref=e326]
+              - listitem [ref=e331]:
+                - generic [ref=e333]:
+                  - heading "Feed post" [level=2]:
+                    - generic [ref=e334]: Feed post
+                  - generic [ref=e335]:
+                    - generic [ref=e336]:
+                      - link [ref=e337] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/abidqahmad/
+                        - figure [ref=e338]
+                      - paragraph [ref=e340]:
+                        - generic [ref=e341]:
+                          - link "Abid Ahmad" [ref=e342] [cursor=pointer]:
+                            - /url: https://www.linkedin.com/in/abidqahmad/
+                            - strong [ref=e343]: Abid Ahmad
+                          - text: finds this funny
+                    - button "Open control menu for post by Yash Mittal" [ref=e344] [cursor=pointer]
+                    - button "Hide post by Yash Mittal" [ref=e347] [cursor=pointer]
+                  - generic [ref=e350]:
+                    - link [ref=e351] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/in/yashmittalz/
+                      - figure [ref=e352]
+                    - generic [ref=e354]:
+                      - link "Yash Mittal Premium Profile 3rd+" [ref=e357] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/in/yashmittalz/
+                        - generic "Yash Mittal Premium Profile 3rd+" [ref=e359]:
+                          - paragraph [ref=e362]: Yash Mittal
+                          - paragraph [ref=e364]:
+                            - generic [ref=e365]: • 3rd+
+                      - paragraph [ref=e369]: Software Engineer @ Five9 | President, ACM at ASU | Deconstructing System Design, AI Research, Student Leadership, Career Growth & Engineering Mindset daily.
+                      - paragraph [ref=e371]:
+                        - generic [ref=e372]: 1d •
+                      - link:
+                        - /url: https://www.linkedin.com/in/yashmittalz/
+                    - button "Follow Yash Mittal" [ref=e377] [cursor=pointer]:
+                      - generic [ref=e381]: Follow
+                  - paragraph [ref=e382]:
+                    - generic [ref=e383]:
+                      - link "LeetCode" [ref=e384] [cursor=pointer]:
+                        - /url: https://www.linkedin.com/company/leet-code/
+                        - strong [ref=e386]: LeetCode
+                      - text: is dead?
+                      - text: Companies are now asking a completely different technical question.
+                      - text: And most developers are failing it miserably.
+                      - text: "\"Tell me about your agentic coding setup.\""
+                      - text: If your answer is that you just open a prompt and ask the AI to write the code for you, you will not get hired.
+                      - text: Startups are terrified of chaotic vibe coders who generate thousands of lines of code they do not understand.
+                      - text: They are looking for engineers who use AI as a structured tool.
+                      - text: "Here is how you actually answer this question:"
+                      - text: "- Define the Workflow: Do not say the agent does everything. Explain how you use it for the heavy lifting while you maintain architectural control."
+                      - text: "- Explain your Governance: Explicitly state your verification loops. The best engineers enforce strict quality gates before any AI generated code is committed."
+                      - text: "- Discuss Failure Modes: Have a war story ready. Explain a time the AI hallucinated or got stuck in a loop and how you caught the error."
+                      - text: The industry is shifting from writing syntax to orchestrating systems.
+                      - text: You are the architect. The AI is your operator.
+                      - text: How are you currently managing your agentic workflow?
+                      - button:
+                        - generic [ref=e389] [cursor=pointer]: … more
+                  - link [ref=e391] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/feed/
+                    - figure [ref=e392]:
+                      - img "View image" [ref=e393]
+                  - generic [ref=e394]:
+                    - generic [ref=e395]:
+                      - 'button "Reaction button state: no reaction" [ref=e398] [cursor=pointer]':
+                        - generic [ref=e402]: "35"
+                      - button "Open reactions menu"
+                    - button "Comment" [ref=e403] [cursor=pointer]:
+                      - generic [ref=e407]: "6"
+                    - button "Repost" [ref=e408] [cursor=pointer]
+                    - link "Send" [ref=e411] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                    - link [ref=e414] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/feed/
+                      - generic "35 reactions" [ref=e415]
+          - complementary "Aside" [ref=e419]:
+            - generic [ref=e420]:
+              - generic [ref=e421]:
+                - generic [ref=e425]:
+                  - generic [ref=e426]:
+                    - paragraph [ref=e427]: LinkedIn News
+                    - button "Info tooltip" [ref=e428] [cursor=pointer]
+                  - paragraph [ref=e431]: Top stories
+                  - generic [ref=e432]:
+                    - link "The sports conversations to join this week 6d ago • 19,665 readers" [ref=e434] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/the-sports-conversations-to-join-this-week-8332809/
+                      - generic [ref=e436]:
+                        - paragraph [ref=e438]: The sports conversations to join this week
+                        - generic [ref=e439]:
+                          - paragraph [ref=e440]: 6d ago
+                          - paragraph [ref=e441]: •
+                          - paragraph [ref=e442]: 19,665 readers
+                    - link "Fastest-growing cities for jobs and talent in India 2d ago • 11,116 readers" [ref=e444] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/fastest-growing-cities-for-jobs-and-talent-in-india-8379065/
+                      - generic [ref=e446]:
+                        - paragraph [ref=e448]: Fastest-growing cities for jobs and talent in India
+                        - generic [ref=e449]:
+                          - paragraph [ref=e450]: 2d ago
+                          - paragraph [ref=e451]: •
+                          - paragraph [ref=e452]: 11,116 readers
+                    - link "Education Minister Dharmendra Pradhan resigns 18h ago • 5,779 readers" [ref=e454] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/education-minister-dharmendra-pradhan-resigns-9096818/
+                      - generic [ref=e456]:
+                        - paragraph [ref=e458]: Education Minister Dharmendra Pradhan resigns
+                        - generic [ref=e459]:
+                          - paragraph [ref=e460]: 18h ago
+                          - paragraph [ref=e461]: •
+                          - paragraph [ref=e462]: 5,779 readers
+                    - link "Two-wheeler exports see strong momentum 2d ago • 1,240 readers" [ref=e464] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/two-wheeler-exports-see-strong-momentum-9075906/
+                      - generic [ref=e466]:
+                        - paragraph [ref=e468]: Two-wheeler exports see strong momentum
+                        - generic [ref=e469]:
+                          - paragraph [ref=e470]: 2d ago
+                          - paragraph [ref=e471]: •
+                          - paragraph [ref=e472]: 1,240 readers
+                    - link "Top finance experts to follow 2d ago • 1,135 readers" [ref=e474] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/news/story/top-finance-experts-to-follow-7984906/
+                      - generic [ref=e476]:
+                        - paragraph [ref=e478]: Top finance experts to follow
+                        - generic [ref=e479]:
+                          - paragraph [ref=e480]: 2d ago
+                          - paragraph [ref=e481]: •
+                          - paragraph [ref=e482]: 1,135 readers
+                    - button "Show more news" [ref=e483] [cursor=pointer]:
+                      - generic [ref=e486]: Show more news
+                - generic [ref=e489]:
+                  - paragraph [ref=e490]: Today’s puzzles
+                  - generic [ref=e491]:
+                    - link "Play Zip" [ref=e493] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/zip/
+                      - generic "Play Zip" [ref=e494]:
+                        - generic [ref=e495]:
+                          - figure [ref=e496]
+                          - generic [ref=e497]:
+                            - paragraph [ref=e498]:
+                              - strong [ref=e499]: Zip
+                              - text: "#496"
+                            - paragraph [ref=e500]: 6 connections played
+                    - link "Play Wend" [ref=e503] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/wend/
+                      - generic "Play Wend" [ref=e504]:
+                        - generic [ref=e505]:
+                          - figure [ref=e506]
+                          - generic [ref=e507]:
+                            - paragraph [ref=e508]:
+                              - strong [ref=e509]: Wend
+                              - text: "#48"
+                            - paragraph [ref=e510]: 4 connections played
+                    - link "Play Patches" [ref=e513] [cursor=pointer]:
+                      - /url: https://www.linkedin.com/games/patches/
+                      - generic "Play Patches" [ref=e514]:
+                        - generic [ref=e515]:
+                          - figure [ref=e516]
+                          - generic [ref=e517]:
+                            - paragraph [ref=e518]:
+                              - strong [ref=e519]: Patches
+                              - text: "#131"
+                            - paragraph [ref=e520]: 4 connections played
+                    - link "Play MiniSudoku" [ref=e523] [cursor=pointer]:
+                      - /url: /games/mini-sudoku/
+                      - generic "Play MiniSudoku" [ref=e524]:
+                        - generic [ref=e525]:
+                          - figure [ref=e526]
+                          - generic [ref=e527]:
+                            - paragraph [ref=e528]:
+                              - strong [ref=e529]: Mini Sudoku
+                              - text: "#349"
+                            - paragraph [ref=e530]: 1 connection played
+                    - button "Show more" [ref=e533] [cursor=pointer]:
+                      - generic [ref=e536]: Show more
+              - generic [ref=e541]:
+                - generic [ref=e542]:
+                  - link "About" [ref=e543] [cursor=pointer]:
+                    - /url: https://about.linkedin.com/
+                    - paragraph [ref=e544]: About
+                  - link "Accessibility" [ref=e545] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/accessibility/
+                    - paragraph [ref=e546]: Accessibility
+                  - link "Help Center" [ref=e547] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/help/linkedin/
+                    - paragraph [ref=e548]: Help Center
+                  - button "Privacy & Terms" [ref=e549] [cursor=pointer]:
+                    - paragraph [ref=e551]: Privacy & Terms
+                  - link "Ad Choices" [ref=e553] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/help/linkedin/answer/62931/
+                    - paragraph [ref=e554]: Ad Choices
+                  - link "Advertising" [ref=e555] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/ad/start/?trk=n_nav_ads_rr
+                    - paragraph [ref=e556]: Advertising
+                  - button "Business Services" [ref=e557] [cursor=pointer]:
+                    - paragraph [ref=e559]: Business Services
+                  - link "Get the LinkedIn app" [ref=e561] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/mobile/
+                    - paragraph [ref=e562]: Get the LinkedIn app
+                  - link "More" [ref=e563] [cursor=pointer]:
+                    - /url: https://www.linkedin.com/feed/
+                    - paragraph [ref=e564]: More
+                - paragraph [ref=e567]: LinkedIn Corporation © 2026
+  - iframe [ref=e568]:
+    - img [ref=f5e6]

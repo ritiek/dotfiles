@@ -1,0 +1,352 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e4]:
+        - link "Kitsumed Blog" [ref=e5] [cursor=pointer]:
+          - /url: https://kitsumed.github.io/blog/
+        - generic [ref=e6]:
+          - button "Toggle theme" [ref=e7] [cursor=pointer]:
+            - img [ref=e8]
+          - list [ref=e10]:
+            - listitem [ref=e11]: "|"
+            - listitem [ref=e12]:
+              - link "🇫🇷 Français" [ref=e13] [cursor=pointer]:
+                - /url: https://kitsumed.github.io/blog/fr/
+      - list [ref=e14]:
+        - listitem [ref=e15]:
+          - link "Return to portfolio" [ref=e16] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/
+            - text: Return to portfolio
+            - img [ref=e17]
+        - listitem [ref=e21]:
+          - link "Search" [ref=e22] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/search/
+        - listitem [ref=e23]:
+          - link "Posts" [ref=e24] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/posts/
+        - listitem [ref=e25]:
+          - link "Tags" [ref=e26] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/tags/
+  - main [ref=e27]:
+    - article [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - link "Home" [ref=e31] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/
+          - text: »
+          - link "Posts" [ref=e32] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/posts/
+        - heading "Android May Soon Restrict On-Device ADB, Affecting Shizuku, libadb and Developers" [level=1] [ref=e33]
+        - generic [ref=e34]: Changes proposed for ADB could kill an entire ecosystem of open-source power-user apps, mobile developer setups, and rootless privacy tools based on Shizuku.
+        - generic [ref=e35]:
+          - time [ref=e36]: July 20, 2026
+          - text: ·
+          - time [ref=e37]: "Last Edited: July 24, 2026"
+          - text: · 10 min · 1923 words · Kitsumed |
+          - link "Edit Post" [ref=e38] [cursor=pointer]:
+            - /url: https://github.com/kitsumed/blog/tree/main/content/posts/Android%20may%20soon%20restrict%20on-device%20ADB/index.md
+      - group [ref=e40]:
+        - generic "Table of Contents" [ref=e41]
+      - generic [ref=e42]:
+        - heading "Early Warning" [level=1] [ref=e43]
+        - paragraph [ref=e44]:
+          - text: Before we dive in, please note that
+          - strong [ref=e45]: this is not an official Google announcement.
+          - text: Instead,
+          - strong [ref=e46]: this is based on a recent, ongoing feature request on Google IssueTracker
+          - text: ", in which a comment by one of the core ADB maintainers (Google employee) talked about restricting On-Device ADB connections to protect from “bad actors”."
+        - paragraph [ref=e47]:
+          - text: Before you stop what you are doing to head over to that IssueTracker thread,
+          - strong [ref=e48]: "please read this carefully:"
+        - paragraph [ref=e49]:
+          - text: If you plan to visit the issue tracker just to post low-quality comments (such as
+          - emphasis [ref=e50]: “Hey, don’t do this, I need Shizuku!”
+          - text: ), complaints about monopoly, or insults,
+          - strong [ref=e51]: I highly recommend that you refrain from doing so.
+          - text: Spamming the thread will only cause Google developers to lock the issue, ignore valuable community feedback, or stop sharing public updates about this change entirely.
+        - paragraph [ref=e52]:
+          - text: I think a change like this could benefit Google as it goes well along their new
+          - link "Sideloading changes" [ref=e53] [cursor=pointer]:
+            - /url: https://keepandroidopen.org/
+          - text: ", but I do not actively believe this is what is going on here."
+          - strong [ref=e54]: There is a true, valid reason behind this
+          - text: ", and I think two different approach can be taken. We will talk about it in this blog post."
+        - paragraph [ref=e55]:
+          - strong [ref=e56]: How You Can Help
+          - text: ":"
+        - list [ref=e57]:
+          - listitem [ref=e58]:
+            - strong [ref=e59]: "If you have a unique use case:"
+            - text: If you are directly affected and can write a detailed, constructive message explaining your workflow, providing links, or offering technical solutions/compromises,
+            - strong [ref=e60]: please, by all means, share your feedback in Google issue.
+          - listitem [ref=e61]:
+            - strong [ref=e62]: "If your use case has already been mentioned:"
+            - text: You do not need to repeat it. Instead, simply click the
+            - strong [ref=e63]: +1 button
+            - text: in the top right corner of the Google IssueTracker to let Google know you are affected, and toggle notifications to stay updated on the discussion.
+        - paragraph [ref=e64]: I am hesitant to make this blog post, as I fear it may overload the few developers that work on ADB. I am unsure if I should wait more and see what happens or hold it longer and see what approach they take. Waiting too long could also be bad… As of writing this, I am unsure when/if this post will release. I saw some recent updates on assignments which were given to the main guy who previously worked on ADB, so we will see what happens.
+        - heading "Introduction" [level=1] [ref=e65]
+        - paragraph [ref=e66]:
+          - text: Hi! I’m Kitsumed, developer of
+          - link "ShizuCallRecorder" [ref=e67] [cursor=pointer]:
+            - /url: https://github.com/kitsumed/ShizuCallRecorder
+          - text: ", a Shizuku based application. As you may have guessed by now, I would be affected by this change. Obviously, I would really like it if they do not proceed with it in a way that prevent loopback connections."
+        - paragraph [ref=e68]: To talk briefly about myself, I made ShizuCallRecorder to help with some of my own disabilities. I can get by without it, but it’s much easier with it.
+        - paragraph [ref=e69]:
+          - text: You could say I have a very unique use case, and I keep discovering other unusual ones, like
+          - link "this person on Reddit" [ref=e70] [cursor=pointer]:
+            - /url: https://www.reddit.com/r/fossdroid/comments/1uvl4fx
+          - text: ", who used my application to preserve the voicemail of a deceased loved one."
+        - paragraph [ref=e71]: Call recording on Android is a complicated topic. There are countless user requests, an official attempt to add the feature in Android 11 that was later canceled, and many closed-source, privacy-invasive applications that use work-arounds.
+        - paragraph [ref=e72]: I used to hear that many users with disabilities had to trade their privacy for an easier daily life. I guess that’s what people mean when they talk about those trade-offs.
+        - paragraph [ref=e73]: Don’t even get me started on OEMs that force an audio warning such as “This call is being recorded,” when it’s in places where it’s not legally required. People often don’t react well to that, even if you explain why you’re recording the call, it gives a bad impression. To be honest, I probably wouldn’t react well to it either.
+        - paragraph [ref=e74]: I’m sure most of you have a more “power-user” use of Shizuku or even use loopback ADB for developer tasks. I do those too, but I wanted to point out one of my unique use case.
+        - paragraph [ref=e75]: Alright, back on the main topic. Before I explain what the proposed change is, I’m going to explain what is ADB for less technical users.
+        - heading "What’s ADB?" [level=2] [ref=e76]
+        - paragraph [ref=e77]:
+          - link "ADB" [ref=e78] [cursor=pointer]:
+            - /url: https://developer.android.com/tools/adb
+          - text: ", also called"
+          - strong [ref=e79]: A
+          - text: ndroid
+          - strong [ref=e80]: D
+          - text: ebug
+          - strong [ref=e81]: B
+          - text: ridge, is protocol created by Google to let developers do developer things on Android devices…
+        - paragraph [ref=e82]: Basically, it grant us a high level of privileges, give us access to a lot of sensible commands to tests how the phone and application behave. Useful stuff for any developers or power-users.
+        - paragraph [ref=e83]: "ADB was originally designed to work over a USB connection, but later expanded how it could works:"
+        - list [ref=e84]:
+          - listitem [ref=e85]:
+            - strong [ref=e86]: USB
+            - text: ": The original way. ADB communicates directly over a USB cable."
+          - listitem [ref=e87]:
+            - strong [ref=e88]: TCP/IP
+            - text: ": Introduced as a way to run ADB over a network using an IP address and port (typically port"
+            - code [ref=e89]: "5555"
+            - text: ). The connection carries ADB traffic in plain text and provides a YES/NO prompt as authentication.
+            - strong [ref=e90]: Can only be enabled once you already have an active ADB connection.
+          - listitem [ref=e91]:
+            - strong [ref=e92]: Wireless Debugging (Wifi 1.0/2.0)
+            - text: ": Introduced in Android 11, it aims to improve the legacy TCP/IP workflow. It requires pairing the computer with the device using a pairing code or QR code, then establishes an authenticated and encrypted connection for subsequent ADB sessions."
+            - strong [ref=e93]: It does not require an active ADB connection to be enabled.
+        - heading "What’s a On-Device ADB connection?" [level=3] [ref=e94]
+        - paragraph [ref=e95]:
+          - text: ADB was originally intended to be used with two devices (
+          - strong [ref=e96]: simplified explanation
+          - text: "): the Android device being debugged run the ADB Daemon (ADBD) and a separate developer machine run the ADB client. In practice, however, this setup is not always convenient. Some developers work directly from their Android device and do not have access to a second machine."
+        - paragraph [ref=e97]:
+          - text: This led to usage of
+          - strong [ref=e98]: On-Device ADB
+          - text: (this is not a official term). By using a terminal emulator such as
+          - link "Termux" [ref=e99] [cursor=pointer]:
+            - /url: https://github.com/termux/termux-app
+          - text: ", developers can run an ADB client directly on their phone and establish a connection to the local daemon (ADBD) server using either"
+          - strong [ref=e100]: ADB TCP/IP
+          - text: or
+          - strong [ref=e101]: Wireless Debugging
+          - text: . Since both the client and server are running on the same device,
+          - strong [ref=e102]:
+            - text: the connection is made through the loopback address (
+            - code [ref=e103]: 127.0.0.1
+            - text: )
+          - text: . That’s what I call On-Device ADB.
+        - paragraph [ref=e104]:
+          - text: While this is a niche use case compared to how ADB intended to be used, it has led to the creation of projects such as
+          - link "libadb-android" [ref=e105] [cursor=pointer]:
+            - /url: https://github.com/MuntashirAkon/libadb-android
+          - text: by MuntashirAkon and
+          - link "Shizuku" [ref=e106] [cursor=pointer]:
+            - /url: https://github.com/rikkaapps/shizuku
+          - text: by RikkaApps. These projects, along with many others, have created a large open-source community that made a wide range of tools for developers and power-users.
+        - heading "The proposed change" [level=1] [ref=e107]
+        - paragraph [ref=e108]:
+          - text: A
+          - link "new feature" [ref=e109] [cursor=pointer]:
+            - /url: https://issuetracker.google.com/issues/526109803
+          - text: was made on Google IssuerTracker to allow developers to choose what interface ADBD (ADB server daemon) would listen to.
+        - paragraph [ref=e110]:
+          - text: This feature was proposed following a major security issue identified as
+          - link "CVE-2026-0073" [ref=e111] [cursor=pointer]:
+            - /url: https://nvd.nist.gov/vuln/detail/CVE-2026-0073
+          - text: ", which allowed the Wireless ADB authentication process to be fully bypassed. What is proposed in this issue is actually a nice idea."
+        - paragraph [ref=e112]:
+          - text: Right now, ADBD makes itself available on every network your phone is connected to.
+          - strong [ref=e113]: This feature request asks to let developers choose which interface is chosen, reducing the exposure
+          - text: .
+        - heading "The problem" [level=2] [ref=e114]
+        - paragraph [ref=e115]: "The problem lies in the response from one of ADB core maintainers:"
+        - paragraph [ref=e116]:
+          - link "sa…@google.com" [ref=e117] [cursor=pointer]:
+            - /url: https://issuetracker.google.com/issues/526109803#comment3
+            - strong [ref=e118]: sa…@google.com
+          - text: ":"
+        - blockquote [ref=e119]:
+          - paragraph [ref=e120]: Connection to localhost has also been the source of exploit where app are using that socket to adbd to escalate their privileges.
+          - paragraph [ref=e121]:
+            - text: What about we restrict to always only binding to wifi interface
+            - code [ref=e122]: wlan0
+            - text: "?"
+        - paragraph [ref=e123]:
+          - text: Here, we can see that the employee talk about only allowing
+          - strong [ref=e124]: wlan0
+          - text: ", the interface of the Wifi connection. Doing so would break many things, On-Device ADB, ADB via VPN, ADB via Ethernet, and many other unique developers setups."
+        - paragraph [ref=e125]:
+          - text: Another issue I see here is the stance they seems to currently have on “On-Device ADB”. Their comment suggests that On-Device ADB is viewed primarily as an exploit bad actors can use to elevate privileges, yet there a lot of legitimate usages of on-device ADB.
+          - link "Developers themself" [ref=e126] [cursor=pointer]:
+            - /url: https://android-review.googlesource.com/c/platform/packages/apps/Settings/+/4118073
+          - text: uses it when they can’t access a computer.
+        - paragraph [ref=e127]:
+          - text: While it can indeed be used to elevate privileges, a “malicious” application cannot do so alone.
+          - strong [ref=e128]:
+            - text: It requires multiples actions that
+            - emphasis [ref=e129]: MUST
+            - text: be perfomed by a human
+          - text: .
+        - heading "Why On-Device ADB Is Not Really Used by Bad Actors" [level=2] [ref=e130]
+        - paragraph [ref=e131]:
+          - text: A malicious application could use an on-device ADB connection to perform privilege escalation.
+          - strong [ref=e132]: However, it cannot establish one by itself.
+        - paragraph [ref=e133]: To illustrate this, I’ve laid out the general limitations a bad actor would face in a few scenarios, similar to my comment on IssueTracker.
+        - 'heading "Scenario 1: General Android Users" [level=3] [ref=e134]'
+        - list [ref=e135]:
+          - listitem [ref=e136]:
+            - text: You install a malicious application.
+            - list [ref=e137]:
+              - listitem [ref=e138]:
+                - text: ADB is disabled. ADBD is not running, and the application does not have the
+                - code [ref=e139]: WRITE_SECURE_SETTINGS
+                - text: permission, as it must be manually granted via ADB.
+                - strong [ref=e140]: No exploitation attempts are possible.
+        - 'heading "Scenario 2: A Developer on Android 11+ Using Wireless ADB" [level=3] [ref=e141]'
+        - list [ref=e142]:
+          - listitem [ref=e143]: You install a malicious application.
+          - listitem [ref=e144]: You enable USB debugging, starting ADBD.
+          - listitem [ref=e145]: You enable Wireless ADB. ADBD is now running on your phone and listening on all network interfaces.
+          - listitem [ref=e146]:
+            - text: The application would need to perform the one-time pairing process. This requires the user to manually retrieve the one-time code from Settings and provide it.
+            - strong [ref=e147]: No exploitation attempts are possible.
+        - 'heading "Scenario 3: A Developer Using ADB over TCP/IP" [level=3] [ref=e148]'
+        - list [ref=e149]:
+          - listitem [ref=e150]: You install a malicious application.
+          - listitem [ref=e151]: You enable USB debugging, starting ADBD.
+          - listitem [ref=e152]: You connect via USB ADB to enable TCP/IP, then disconnect the USB cable.
+          - listitem [ref=e153]: ADBD continues running and listens on all network interfaces.
+          - listitem [ref=e154]:
+            - text: The application initiates a connection, causing an authorization prompt to appear on the screen. If the user selects
+            - strong [ref=e155]: "No"
+            - text: ", the connection is rejected."
+            - strong [ref=e156]: No silent exploitation attempts are possible.
+        - heading "Conclusion" [level=1] [ref=e157]
+        - paragraph [ref=e158]:
+          - strong [ref=e159]: In a normal scenario, a bad actor cannot gain an ADB connection.
+          - text: It is only possible while the developer is actively using ADB on the device, because
+          - strong [ref=e160]: a bad actor cannot start ADBD by themselves.
+        - paragraph [ref=e161]:
+          - text: However, if we return to a scenario such as
+          - strong [ref=e162]: CVE-2026-0073
+          - text: ", exploitation would become possible in Scenarios 2 and 3,"
+          - strong [ref=e163]:
+            - text: but only
+            - emphasis [ref=e164]: after
+            - text: the user has manually enabled USB debugging
+          - text: . As for scenario 3, it would also require the developer to
+          - strong [ref=e165]: MANUALLY
+          - text: enable TCP/IP. I can understand the motivation for preventing loopback connections by default, but not to fully prevents it.
+        - paragraph [ref=e166]:
+          - text: There is a difference between preventing it by default and permanently preventing it.
+          - strong [ref=e167]: I think this should be something users can disable through a persistent setting
+          - text: . By this, I mean
+          - strong [ref=e168]: a toggle that survives a reboot
+          - text: (
+          - emphasis [ref=e169]: else it would make tools like Shizuku impracticals
+          - text: ) and, ideally, cannot be read by third-party applications. Otherwise, developers would have to repeatedly disable it whenever banking apps or games detect that on-device ADB is availabl. That said, this part could be worked around once a application is manually granted
+          - strong [ref=e170]: WRITE_SECURE_SETTINGS
+          - text: .
+        - paragraph [ref=e171]: I think that justifying blocking it because a human could perform actions to allow it would be far-fetched. A human could also designate a malicious application as a device administrator or grant it Accessibility permissions, and yet we would not get rid of those features.
+        - paragraph [ref=e172]:
+          - strong [ref=e173]: I believe it should be an assumed risk
+          - text: that disabling such a security feature enables on-device debugging while also exposing the device to the rare possibility of a future vulnerability. To me, the feature/risk ratio make sense here, as there is a real, legitimate usage.
+        - paragraph [ref=e174]:
+          - text: Although it may have not been originally intended, On-Device ADB has enabled a niche ecosystem of developer and power-user tools, including projects such as
+          - link "App Manager" [ref=e175] [cursor=pointer]:
+            - /url: https://github.com/muntashirakon/appmanager
+          - text: ","
+          - link "libadb-android" [ref=e176] [cursor=pointer]:
+            - /url: https://github.com/MuntashirAkon/libadb-android
+          - text: ","
+          - link "Canta" [ref=e177] [cursor=pointer]:
+            - /url: https://github.com/samolego/Canta
+          - text: ","
+          - link "aShell" [ref=e178] [cursor=pointer]:
+            - /url: https://gitlab.com/sunilpaulmathew/ashell
+          - text: ","
+          - link "ShizuWall" [ref=e179] [cursor=pointer]:
+            - /url: https://github.com/AhmetCanArslan/ShizuWall
+          - text: ","
+          - link "ShizuCallRecorder" [ref=e180] [cursor=pointer]:
+            - /url: https://github.com/kitsumed/ShizuCallRecorder
+          - text: and
+          - link "Shizuku" [ref=e181] [cursor=pointer]:
+            - /url: https://github.com/rikkaapps/shizuku
+          - text: .
+        - paragraph [ref=e182]:
+          - text: To conclude, I would like to mention my conclusion in
+          - link "What Is Shizuku? How Does It Work? Security Implications?" [ref=e183] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/posts/what-is-shizuku_how-does-it-work_security-implications/
+          - text: ", where I said as a joke:"
+        - blockquote [ref=e184]:
+          - paragraph [ref=e185]:
+            - text: "Here’s my closing thought:"
+            - strong [ref=e186]: I can’t wait to see how they’ll justify disabling loopback ADB
+            - text: over TCP/IP connections on non-emulator devices and start requiring a Google account…
+        - paragraph [ref=e187]:
+          - text: Well I guess they may indeed disable loopback ADB. Huh… I was almost 100% right on that one I guess. If you are a technical user, I invite you to give your feedback inside the issue
+          - link "here" [ref=e188] [cursor=pointer]:
+            - /url: https://issuetracker.google.com/issues/526109803
+          - text: . Please don’t forget the
+          - link "early warning" [ref=e189] [cursor=pointer]:
+            - /url: /blog/posts/android-may-soon-restrict-on-device-adb/#early-warning
+          - text: .
+      - generic [ref=e190]:
+        - list [ref=e191]:
+          - listitem [ref=e192]:
+            - link "Adb" [ref=e193] [cursor=pointer]:
+              - /url: https://kitsumed.github.io/blog/tags/adb/
+          - listitem [ref=e194]:
+            - link "Android" [ref=e195] [cursor=pointer]:
+              - /url: https://kitsumed.github.io/blog/tags/android/
+          - listitem [ref=e196]:
+            - link "Shizuku" [ref=e197] [cursor=pointer]:
+              - /url: https://kitsumed.github.io/blog/tags/shizuku/
+          - listitem [ref=e198]:
+            - link "Story" [ref=e199] [cursor=pointer]:
+              - /url: https://kitsumed.github.io/blog/tags/story/
+          - listitem [ref=e200]:
+            - link "ShizuCallRecorder" [ref=e201] [cursor=pointer]:
+              - /url: https://kitsumed.github.io/blog/tags/shizucallrecorder/
+        - navigation [ref=e202]:
+          - link "Next » My Attempt at Crafting a WebM With Different Video Sources for Various Players" [ref=e203] [cursor=pointer]:
+            - /url: https://kitsumed.github.io/blog/posts/my-attempt-at-crafting-a-webm-with-different-video-sources-for-various-players/
+            - text: Next »
+            - text: My Attempt at Crafting a WebM With Different Video Sources for Various Players
+      - group [ref=e204]:
+        - generic "Toggle to show or hide comments." [ref=e205] [cursor=pointer]: Show Comments
+  - contentinfo [ref=e206]:
+    - generic [ref=e207]:
+      - strong [ref=e208]: © 2024–onward, Kitsumed (Med).
+      - emphasis [ref=e209]:
+        - text: Unless stated otherwise all content on this blog is under
+        - link "CC BY-NC-SA 4.0" [ref=e210] [cursor=pointer]:
+          - /url: https://creativecommons.org/licenses/by-nc-sa/4.0/
+        - text: ; code snippets under
+        - link "MIT" [ref=e211] [cursor=pointer]:
+          - /url: https://choosealicense.com/licenses/mit/
+        - text: . AI/LLM outputs must cite this site and license. Training on this content must follow CC BY-NC-SA 4.0—commercial use of trained models is prohibited.
+    - text: ·
+    - generic [ref=e212]:
+      - text: Powered by
+      - link "Hugo" [ref=e213] [cursor=pointer]:
+        - /url: https://gohugo.io/
+      - text: "&"
+      - link "PaperMod" [ref=e214] [cursor=pointer]:
+        - /url: https://github.com/adityatelange/hugo-PaperMod/

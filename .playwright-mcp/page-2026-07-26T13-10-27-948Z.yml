@@ -1,0 +1,1270 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Google News" [ref=e7] [cursor=pointer]:
+        - /url: ./?hl=en-IN&gl=IN&ceid=IN%3Aen
+        - generic [ref=e9]: News
+      - generic [ref=e10]:
+        - search [ref=e12]:
+          - generic [ref=e17]:
+            - combobox "Search for topics, locations & sources" [expanded] [active] [ref=e19]
+            - status
+          - button "Advanced search" [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]:
+              - generic "Advanced search" [ref=e22]:
+                - img [ref=e23]
+              - tooltip [ref=e25]: Advanced search
+          - button "Search" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+        - generic [ref=e30]:
+          - generic [ref=e35]:
+            - button "Help" [ref=e36] [cursor=pointer]:
+              - img [ref=e38]
+            - tooltip [ref=e40]: Help
+          - generic [ref=e45]:
+            - button "Settings" [ref=e46] [cursor=pointer]:
+              - img [ref=e48]
+            - tooltip [ref=e51]: Settings
+      - generic [ref=e53]:
+        - button "Google apps" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+        - link "Sign in" [ref=e61] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?passive=1209600&continue=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&followup=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&hl=en-IN&ec=GAZAqgM
+    - navigation [ref=e64]:
+      - tablist [ref=e65]:
+        - tab "Home" [selected] [ref=e66] [cursor=pointer]:
+          - tab "Home" [selected] [ref=e67]
+        - tab "For you" [ref=e68] [cursor=pointer]:
+          - tab "For you" [ref=e69]
+        - tab "Following" [ref=e70] [cursor=pointer]:
+          - tab "Following" [ref=e71]
+        - tab "News Showcase" [ref=e72] [cursor=pointer]:
+          - tab "News Showcase" [ref=e73]
+        - tab "India" [ref=e76] [cursor=pointer]:
+          - tab "India" [ref=e77]
+        - tab "World" [ref=e78] [cursor=pointer]:
+          - tab "World" [ref=e79]
+        - tab "Local" [ref=e80] [cursor=pointer]:
+          - tab "Local" [ref=e81]
+        - tab "Business" [ref=e82] [cursor=pointer]:
+          - tab "Business" [ref=e83]
+        - tab "Technology" [ref=e84] [cursor=pointer]:
+          - tab "Technology" [ref=e85]
+        - tab "Entertainment" [ref=e86] [cursor=pointer]:
+          - tab "Entertainment" [ref=e87]
+        - tab "Sports" [ref=e88] [cursor=pointer]:
+          - tab "Sports" [ref=e89]
+        - tab "Science" [ref=e90] [cursor=pointer]:
+          - tab "Science" [ref=e91]
+        - tab "Health" [ref=e92] [cursor=pointer]:
+          - tab "Health" [ref=e93]
+  - main [ref=e98]:
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - heading "Your briefing" [level=1] [ref=e104]
+          - paragraph [ref=e105]: Sunday, 26 July
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - generic [ref=e111]: Today
+              - img [ref=e112]
+              - generic [ref=e113]:
+                - generic [ref=e114]: 33°
+                - generic [ref=e115]: 28°
+            - generic [ref=e116]:
+              - generic [ref=e117]: Mon
+              - img [ref=e118]
+              - generic [ref=e119]:
+                - generic [ref=e120]: 32°
+                - generic [ref=e121]: 27°
+            - generic [ref=e122]:
+              - generic [ref=e123]: Tue
+              - img [ref=e124]
+              - generic [ref=e125]:
+                - generic [ref=e126]: 29°
+                - generic [ref=e127]: 27°
+            - generic [ref=e128]:
+              - generic [ref=e129]: Wed
+              - img [ref=e130]
+              - generic [ref=e131]:
+                - generic [ref=e132]: 31°
+                - generic [ref=e133]: 26°
+          - generic [ref=e134]:
+            - button "Expand to view forecast" [ref=e135] [cursor=pointer]:
+              - img [ref=e136]
+            - generic "Your local weather, 31°C, thunderstorms" [ref=e138]:
+              - img "thunderstorms" [ref=e139]:
+                - img [ref=e141]
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Your local weather
+                  - button "Use precise location" [ref=e159] [cursor=pointer]:
+                    - img [ref=e160]
+                - generic [ref=e162]: 31°C
+                - link "Google Weather" [ref=e163] [cursor=pointer]:
+                  - /url: https://support.google.com/websearch/answer/13687874
+      - generic [ref=e165]:
+        - heading "Top stories" [level=3] [ref=e168]:
+          - link "Top stories" [ref=e169] [cursor=pointer]:
+            - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRFZxYUdjU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Top stories
+            - img [ref=e170]
+        - generic [ref=e175]:
+          - link "Dharmendra Pradhan resigns as Union Education Minister" [ref=e177] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Dharmendra Pradhan resigns as Union Education Minister chevron_right
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - link [ref=e181] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - figure [ref=e182]
+              - generic [ref=e183]:
+                - generic [ref=e186]: The Hindu
+                - generic [ref=e190]:
+                  - generic:
+                    - button "More - Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan" [ref=e191] [cursor=pointer]:
+                      - img [ref=e193]
+                    - tooltip [ref=e195]: More
+              - link "Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan - The Hindu - 4 hours ago" [ref=e196] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan
+              - time [ref=e198]: 4 hours ago
+            - generic [ref=e199]:
+              - generic [ref=e200]:
+                - link [ref=e202] [cursor=pointer]:
+                  - /url: ./read/CBMi3gFBVV95cUxOSEozaUV0UXRoSHBUSHpNVWY5UG9DZ1MxUzA0QWlhZVdtNlZhVFpYc1hpbDE3SEE0NzdoVDJ2dzdIQkYxV1dOdEhvd1c2LUdQLVVTLU9aaVVId3BnOS1PeW94SjM3SkNoYmNwb2JNV0xCTmdwbmcxVTJWUF9HS2ZkTm05Ulk3bzdIeGE4TktKZURVNHVsZlJiNjZpV3pLSWRPRUdEdS0zMmxXOXRnNmFhdHAwTUMyWmVzc2pvazBzdF82OFdIS2h3aFdXR252SS1IdGdCZ2F0azVCekp1c3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e203]:
+                  - generic [ref=e206]: The Times of India
+                  - generic [ref=e210]:
+                    - generic:
+                      - button "More - Pradhan offered to quit on first day of student protest? BJP leader's big claim" [ref=e211] [cursor=pointer]:
+                        - img [ref=e213]
+                      - tooltip [ref=e215]: More
+                - link "Pradhan offered to quit on first day of student protest? BJP leader's big claim - The Times of India - 8 hours ago" [ref=e216] [cursor=pointer]:
+                  - /url: ./read/CBMi3gFBVV95cUxOSEozaUV0UXRoSHBUSHpNVWY5UG9DZ1MxUzA0QWlhZVdtNlZhVFpYc1hpbDE3SEE0NzdoVDJ2dzdIQkYxV1dOdEhvd1c2LUdQLVVTLU9aaVVId3BnOS1PeW94SjM3SkNoYmNwb2JNV0xCTmdwbmcxVTJWUF9HS2ZkTm05Ulk3bzdIeGE4TktKZURVNHVsZlJiNjZpV3pLSWRPRUdEdS0zMmxXOXRnNmFhdHAwTUMyWmVzc2pvazBzdF82OFdIS2h3aFdXR252SS1IdGdCZ2F0azVCekp1c3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Pradhan offered to quit on first day of student protest? BJP leader's big claim
+                - time [ref=e218]: 8 hours ago
+              - generic [ref=e219]:
+                - link [ref=e221] [cursor=pointer]:
+                  - /url: ./read/CBMiygFBVV95cUxNY0JQZjVqMXFZYjVodURYUFdCd0N1X3dwTXBRN3BLaV9YR1RtWkVEeGlVQVdBa19zVTdMczFXdDRjRzZWN0JkeG10eGREMTFVVFUtWGZ2eVMtM25JRndxMVVYWWktSU4ySkp2V2dWLWJDSjNRVzBQMWxzTnhTMEpFb1lHNFh0R3NtVThOWC1pdEhqUEtoZ2N4ckFIR1R5SVNETURHb0dVRkJSbmNJc2M1MUgySDl1ZHptN3ppbXpkQkxPZ3ZEaUlRSTZR0gHQAUFVX3lxTFAtSmJUVTA3M3l0SXV0bk93REluVWlHQzhaOENOc3dpdUc5cXAxWlNRM2M5ZXp1T04xYTk2U0pSLVZYSkxnLVpzYjI5TmZjWlVtQlNmdFVHWDI1RV9XRlVncnlHZ3RoMVI0RjR4VWFCaVJpOXVBazU0SU44ZlpSdkVSQXJEcXJwLUpHcmg3NDVkRDVVRDRxaWR3M01DbXFwNVBGd2ZvUkNFeUZxQ0tYWS1xRFZGakRzcExETkIwaWw5WEFLczJIYTNmamhBS3pzYXg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e222]:
+                  - generic [ref=e225]: The Hindu
+                  - generic [ref=e229]:
+                    - generic:
+                      - button "More - Haryana Congress holds ‘victory march’ after Pradhan’s resignation" [ref=e230] [cursor=pointer]:
+                        - img [ref=e232]
+                      - tooltip [ref=e234]: More
+                - link "Haryana Congress holds ‘victory march’ after Pradhan’s resignation - The Hindu - 23 minutes ago" [ref=e235] [cursor=pointer]:
+                  - /url: ./read/CBMiygFBVV95cUxNY0JQZjVqMXFZYjVodURYUFdCd0N1X3dwTXBRN3BLaV9YR1RtWkVEeGlVQVdBa19zVTdMczFXdDRjRzZWN0JkeG10eGREMTFVVFUtWGZ2eVMtM25JRndxMVVYWWktSU4ySkp2V2dWLWJDSjNRVzBQMWxzTnhTMEpFb1lHNFh0R3NtVThOWC1pdEhqUEtoZ2N4ckFIR1R5SVNETURHb0dVRkJSbmNJc2M1MUgySDl1ZHptN3ppbXpkQkxPZ3ZEaUlRSTZR0gHQAUFVX3lxTFAtSmJUVTA3M3l0SXV0bk93REluVWlHQzhaOENOc3dpdUc5cXAxWlNRM2M5ZXp1T04xYTk2U0pSLVZYSkxnLVpzYjI5TmZjWlVtQlNmdFVHWDI1RV9XRlVncnlHZ3RoMVI0RjR4VWFCaVJpOXVBazU0SU44ZlpSdkVSQXJEcXJwLUpHcmg3NDVkRDVVRDRxaWR3M01DbXFwNVBGd2ZvUkNFeUZxQ0tYWS1xRFZGakRzcExETkIwaWw5WEFLczJIYTNmamhBS3pzYXg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Haryana Congress holds ‘victory march’ after Pradhan’s resignation
+                - time [ref=e237]: 23 minutes ago
+              - generic [ref=e238]:
+                - link [ref=e240] [cursor=pointer]:
+                  - /url: ./read/CBMiwwFBVV95cUxOSWdmckliRGE2eklkN2JvTDU2eloyRHlaSUlvMTdIWlh2ZUxNZ1c0dEdON1p4OEliX2R6VHVBZ2YzblVoVGZmemc5bVVtVmhvMnBaSV9MSjRlSHV3NzVZT1lFZ2Q0VDdHZC1DVzN1ZHBfa0NvYWR5TC1YRFZ2SmQxNjJoNGVxMGhTMERMcnc3Vm1zOHhKTDZsbmZ1a2p4ZEo0dXdab0lQeUZMVEpEMWJxcUhOdmF1cXBNRFc4RjJMZ0R5eVnSAdMBQVVfeXFMUEk0Q28zQTdHb1QtV3g3ejhMZkhmdkl0WWttcVZmaEg4TGtESFhORGhFMWZpX1BnLVdYNGhSV194WTAxV0QzTEUyX2d3dUhPbTZBMjBGaUJNZl8tV1JjNTR6bVMwU0duR3ZBUGpYOFVnZ3RCWGJ5NmUxaWlsUnBpcjctZklUVVBqeTdIY0d6VzZkaE1xWUFtbGdsSmg3cldyZkppQ0tuamkyOGl5YmdJX0tVNm5OaG84em9WM3prVkl0VFh3dF9BRnR4R2VjU3Y2MzlGVQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e241]:
+                  - generic [ref=e244]: TheWire.in
+                  - generic [ref=e248]:
+                    - generic:
+                      - button "More - Control Over Education Is Critical for the RSS. The Sacking of Pradhan Is a Major Setback for It" [ref=e249] [cursor=pointer]:
+                        - img [ref=e251]
+                      - tooltip [ref=e253]: More
+                - link "Control Over Education Is Critical for the RSS. The Sacking of Pradhan Is a Major Setback for It - TheWire.in - 21 hours ago - By Seema Chishti" [ref=e254] [cursor=pointer]:
+                  - /url: ./read/CBMiwwFBVV95cUxOSWdmckliRGE2eklkN2JvTDU2eloyRHlaSUlvMTdIWlh2ZUxNZ1c0dEdON1p4OEliX2R6VHVBZ2YzblVoVGZmemc5bVVtVmhvMnBaSV9MSjRlSHV3NzVZT1lFZ2Q0VDdHZC1DVzN1ZHBfa0NvYWR5TC1YRFZ2SmQxNjJoNGVxMGhTMERMcnc3Vm1zOHhKTDZsbmZ1a2p4ZEo0dXdab0lQeUZMVEpEMWJxcUhOdmF1cXBNRFc4RjJMZ0R5eVnSAdMBQVVfeXFMUEk0Q28zQTdHb1QtV3g3ejhMZkhmdkl0WWttcVZmaEg4TGtESFhORGhFMWZpX1BnLVdYNGhSV194WTAxV0QzTEUyX2d3dUhPbTZBMjBGaUJNZl8tV1JjNTR6bVMwU0duR3ZBUGpYOFVnZ3RCWGJ5NmUxaWlsUnBpcjctZklUVVBqeTdIY0d6VzZkaE1xWUFtbGdsSmg3cldyZkppQ0tuamkyOGl5YmdJX0tVNm5OaG84em9WM3prVkl0VFh3dF9BRnR4R2VjU3Y2MzlGVQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Control Over Education Is Critical for the RSS. The Sacking of Pradhan Is a Major Setback for It
+                - generic [ref=e255]:
+                  - time [ref=e256]: 21 hours ago
+                  - separator [ref=e257]
+                  - generic [ref=e258]: By Seema Chishti
+          - link "See more headlines and perspectives - Dharmendra Pradhan resigns as Union Education Minister" [ref=e261] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - img [ref=e262]
+            - generic [ref=e264]: See more headlines and perspectives
+        - generic [ref=e268]:
+          - link "Indian leaders honor soldiers on Kargil Vijay Diwas" [ref=e270] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lJM2NfU0VSRWoyOFFxREJSMVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Indian leaders honor soldiers on Kargil Vijay Diwas chevron_right
+          - generic [ref=e271]:
+            - generic [ref=e272]:
+              - link [ref=e274] [cursor=pointer]:
+                - /url: ./read/CBMi7gFBVV95cUxNYWZtZDBvWlVyRGFnTUNiSVlBa09Rbk13S2xSVVdpRnZDaFVjbmNHTXQ4RlkzVGNSTERWTWs1ZkxFd0h3eVhhR21pbzl6RTJxNzFteWV6RW9hRHY0dTlsY05xM1lLMldrdzNOb2p2UDhxeVFaUURoSDliREdVSTdnRzlsWHhBQ2FKZ0U5ZTVvejY2Rlk3RXFPTENLZUIyM1l0SUlRWmZEZ1VtSERKMlRpTl82dG1mbFJleURodjNlaks4WFRFV3N3N0V4a19nTHBEWG1ZcjVWVWRRcGZ3aXZ5ZUlXdl9mNTJwS0FyR19B?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - figure [ref=e275]
+              - generic [ref=e276]:
+                - generic [ref=e279]: Hindustan Times
+                - generic [ref=e283]:
+                  - generic:
+                    - 'button "More - On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News" [ref=e284] [cursor=pointer]':
+                      - img [ref=e286]
+                    - tooltip [ref=e288]: More
+              - 'link "On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News - Hindustan Times - 8 hours ago" [ref=e289] [cursor=pointer]':
+                - /url: ./read/CBMi7gFBVV95cUxNYWZtZDBvWlVyRGFnTUNiSVlBa09Rbk13S2xSVVdpRnZDaFVjbmNHTXQ4RlkzVGNSTERWTWs1ZkxFd0h3eVhhR21pbzl6RTJxNzFteWV6RW9hRHY0dTlsY05xM1lLMldrdzNOb2p2UDhxeVFaUURoSDliREdVSTdnRzlsWHhBQ2FKZ0U5ZTVvejY2Rlk3RXFPTENLZUIyM1l0SUlRWmZEZ1VtSERKMlRpTl82dG1mbFJleURodjNlaks4WFRFV3N3N0V4a19nTHBEWG1ZcjVWVWRRcGZ3aXZ5ZUlXdl9mNTJwS0FyR19B?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "On Kargil Diwas, Rajnath Singh's sharp warning to Pakistan: ‘Response beyond imagination’ | India News"
+              - time [ref=e291]: 8 hours ago
+            - generic [ref=e292]:
+              - generic [ref=e293]:
+                - link [ref=e295] [cursor=pointer]:
+                  - /url: ./read/CBMijAJBVV95cUxPZVUwTEtTQ0Uzc2k4a2x5b1ZzU01tSGNFc3luZk5RLUxzWW5kQm5BUVV4U3psbzhZQWlTNVR0c2xPcnZOM2RYS1QyV3ZIbVFTSEFnWVdBcXRqYndGRGh4UnVLZklzZkpmalZibERpTTd5NEZFSC1nLUpHVkxFc0h4T2VYd0tZdk9teDNtRW9ieGZkTHZsSF84VVRhR0xsY2NtSTBTZ2d0d3NBSlR1WERaM2x4TkFKek1oOXdOMHlSMkpodUQxSmdOaThGRmtYTjlDY1lHQm92cS1VSEJQeHVGWWo5VmhVS0x1VWN1V2FHQXNsVVpNeEtESW9kLUNEQldKck5PQXM0WkdZSHRN0gGTAkFVX3lxTE9MbE02UGNKRHFlVk1heTc2dnNoTzVzWjNJeU4tMWFzVU5CaE9NbmI0TmRtNU5GYlhGMlBUSFptYlVqN2pGTHZnMVlxR1UzQ3FWdXNoUl93SjVKU3M4SUFvX1VXWGc0Nkd4ZHZNNjNmVzZQNDg5ZHpXUnFkMlNPQWZ5YkxWWm0xdlZaVm15UFl1eXBrRTBkT2puM1lmeWlGNnBvLVN0bGtxMkQ3TU03SWZpZGNKVUdjQ2xtWDhMUXZlMTcxbDdneVpXbjZqUUc3SkxEc2J5Vi1odW1fdWVHcF9NS0lNc3RtSHBGMElzS1RBUzBEVG1JcGtVaERDbWpIU0YwMWhwTWx3UzY3NzcyVTdIbjJF?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e296]:
+                  - generic [ref=e299]: The Hindu
+                  - generic [ref=e303]:
+                    - generic:
+                      - 'button "More - Kargil Vijay Diwas: Soldiers’ sacrifice is foundation of our freedom and security, says Karnataka CM D.K. Shivakumar" [ref=e304] [cursor=pointer]':
+                        - img [ref=e306]
+                      - tooltip [ref=e308]: More
+                - 'link "Kargil Vijay Diwas: Soldiers’ sacrifice is foundation of our freedom and security, says Karnataka CM D.K. Shivakumar - The Hindu - 5 hours ago" [ref=e309] [cursor=pointer]':
+                  - /url: ./read/CBMijAJBVV95cUxPZVUwTEtTQ0Uzc2k4a2x5b1ZzU01tSGNFc3luZk5RLUxzWW5kQm5BUVV4U3psbzhZQWlTNVR0c2xPcnZOM2RYS1QyV3ZIbVFTSEFnWVdBcXRqYndGRGh4UnVLZklzZkpmalZibERpTTd5NEZFSC1nLUpHVkxFc0h4T2VYd0tZdk9teDNtRW9ieGZkTHZsSF84VVRhR0xsY2NtSTBTZ2d0d3NBSlR1WERaM2x4TkFKek1oOXdOMHlSMkpodUQxSmdOaThGRmtYTjlDY1lHQm92cS1VSEJQeHVGWWo5VmhVS0x1VWN1V2FHQXNsVVpNeEtESW9kLUNEQldKck5PQXM0WkdZSHRN0gGTAkFVX3lxTE9MbE02UGNKRHFlVk1heTc2dnNoTzVzWjNJeU4tMWFzVU5CaE9NbmI0TmRtNU5GYlhGMlBUSFptYlVqN2pGTHZnMVlxR1UzQ3FWdXNoUl93SjVKU3M4SUFvX1VXWGc0Nkd4ZHZNNjNmVzZQNDg5ZHpXUnFkMlNPQWZ5YkxWWm0xdlZaVm15UFl1eXBrRTBkT2puM1lmeWlGNnBvLVN0bGtxMkQ3TU03SWZpZGNKVUdjQ2xtWDhMUXZlMTcxbDdneVpXbjZqUUc3SkxEc2J5Vi1odW1fdWVHcF9NS0lNc3RtSHBGMElzS1RBUzBEVG1JcGtVaERDbWpIU0YwMWhwTWx3UzY3NzcyVTdIbjJF?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "Kargil Vijay Diwas: Soldiers’ sacrifice is foundation of our freedom and security, says Karnataka CM D.K. Shivakumar"
+                - time [ref=e311]: 5 hours ago
+              - generic [ref=e312]:
+                - link [ref=e314] [cursor=pointer]:
+                  - /url: ./read/CBMi6wFBVV95cUxNZ2JaT0Exd3BkdXdWQjNJXzEtbkJBT0lZdUZ0WExYYllUS3VfbjF2RURVMHNIMWZNZDJzUl9idmtMbnozcVpaVHoxYXdyMzNQbjVLeFFaWGNCR2pWcDllM1JXY1NuNXYxOWMxUmFDUkhEVDBzd3hWSVY5WndudUFQckFrU29aenUzNFRzckgzMjVCbE9oZTQ5V3ZUbmxHRkJORmc2T1JzVkRVMTVDNHExa2VSREhiSDQyNkhSRW1FNXVHNjhvM2VQTk40Vmg0bDBEdnpnTlY3U2JqWW53Wlp0UmxjYmZTb2ZkeWNZ0gHwAUFVX3lxTE13WllSOExTSjFMR1F5WnZXc29pTDcyQ0ROQS1pVWhzZmVlVVRFdjFEQ1FVM0hrWG1LY2RTamFkUDl5YzlkVVV6bUUzMHNiTjI0Nmc1T0d2LVh6LURUZDhUWk1ZOUFQNHVnM3I4Z0tDbGJyZE91RDJjNVlHaDJBbmpRNUVRcHl3WlRyTjdWTk1wRXN0SFZ5elZ3NVh3SGtrQTFGUGVzSWI5VVNmb2dVMkZfQ3lURkltWmpJekRrUXZCMDJRSV96Z3BJRjhYSzlVMjBxN1N4RElac3ZRdkxiUHMta1RWbmZWRWsyZWJyV3lWdA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e315]:
+                  - generic [ref=e318]: Telegraph India
+                  - generic [ref=e322]:
+                    - generic:
+                      - 'button "More - ‘India will talk to Pakistan only on PoK’: Defence minister Rajnath Singh rejects broader talks" [ref=e323] [cursor=pointer]':
+                        - img [ref=e325]
+                      - tooltip [ref=e327]: More
+                - 'link "‘India will talk to Pakistan only on PoK’: Defence minister Rajnath Singh rejects broader talks - Telegraph India - 5 hours ago" [ref=e328] [cursor=pointer]':
+                  - /url: ./read/CBMi6wFBVV95cUxNZ2JaT0Exd3BkdXdWQjNJXzEtbkJBT0lZdUZ0WExYYllUS3VfbjF2RURVMHNIMWZNZDJzUl9idmtMbnozcVpaVHoxYXdyMzNQbjVLeFFaWGNCR2pWcDllM1JXY1NuNXYxOWMxUmFDUkhEVDBzd3hWSVY5WndudUFQckFrU29aenUzNFRzckgzMjVCbE9oZTQ5V3ZUbmxHRkJORmc2T1JzVkRVMTVDNHExa2VSREhiSDQyNkhSRW1FNXVHNjhvM2VQTk40Vmg0bDBEdnpnTlY3U2JqWW53Wlp0UmxjYmZTb2ZkeWNZ0gHwAUFVX3lxTE13WllSOExTSjFMR1F5WnZXc29pTDcyQ0ROQS1pVWhzZmVlVVRFdjFEQ1FVM0hrWG1LY2RTamFkUDl5YzlkVVV6bUUzMHNiTjI0Nmc1T0d2LVh6LURUZDhUWk1ZOUFQNHVnM3I4Z0tDbGJyZE91RDJjNVlHaDJBbmpRNUVRcHl3WlRyTjdWTk1wRXN0SFZ5elZ3NVh3SGtrQTFGUGVzSWI5VVNmb2dVMkZfQ3lURkltWmpJekRrUXZCMDJRSV96Z3BJRjhYSzlVMjBxN1N4RElac3ZRdkxiUHMta1RWbmZWRWsyZWJyV3lWdA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "‘India will talk to Pakistan only on PoK’: Defence minister Rajnath Singh rejects broader talks"
+                - time [ref=e330]: 5 hours ago
+              - generic [ref=e331]:
+                - link [ref=e333] [cursor=pointer]:
+                  - /url: ./read/CBMixwFBVV95cUxOVmhQX0Zuamt3ZGpuc1BaZGpCUEVfc1RIVEwxalE3NHQ2TWVIUWdhY3gzUWVPOVdBSjNuMzVBaUFya2xfak1XbjB2eHVKU0RvQ0JSRzRkT3NTTWlNajN5a3oxS05XYTBYcl9oUEZoSjlGNjlhOFBCcllxSklLZVROaXZVckdRQllURGJiNFI4amtsdXlpa2wxVm9oalJsVmtYd0trdmJSRm0wUlcyMVZYeng3UWU3cldZTjh0T2l5NU95eS1YbTVv0gHMAUFVX3lxTE16UVpRZG1oWVN1UUFPRTE1dFh2X0NFSGRHYkpZOXllZUppWmprRVVHdnRoc1hDcDRSRWJ4dDN1UVJzLVF5RERFbks4VzM1ZWNJd2lvV1k0X0NYTnlaNUd3RVhFcFZ0dEdvaFVvaGlFa1F1N2tPdHUzNGZaaFVpTHBvdHRWSGMxM0ZkeFRqVVptV0Q5S3dmRUlMYzY5cHMxa0pvN1dBa3JHcUx2Nl95eVc2QWlqWjNkSEJiU1h5bVRqWW1GdzNZSmFwVjlJQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e334]:
+                  - generic [ref=e337]: ThePrint
+                  - generic [ref=e341]:
+                    - generic:
+                      - button "More - Manipur Guv says national security collective responsibility, calls people to strengthen peace" [ref=e342] [cursor=pointer]:
+                        - img [ref=e344]
+                      - tooltip [ref=e346]: More
+                - link "Manipur Guv says national security collective responsibility, calls people to strengthen peace - ThePrint - 1 hour ago" [ref=e347] [cursor=pointer]:
+                  - /url: ./read/CBMixwFBVV95cUxOVmhQX0Zuamt3ZGpuc1BaZGpCUEVfc1RIVEwxalE3NHQ2TWVIUWdhY3gzUWVPOVdBSjNuMzVBaUFya2xfak1XbjB2eHVKU0RvQ0JSRzRkT3NTTWlNajN5a3oxS05XYTBYcl9oUEZoSjlGNjlhOFBCcllxSklLZVROaXZVckdRQllURGJiNFI4amtsdXlpa2wxVm9oalJsVmtYd0trdmJSRm0wUlcyMVZYeng3UWU3cldZTjh0T2l5NU95eS1YbTVv0gHMAUFVX3lxTE16UVpRZG1oWVN1UUFPRTE1dFh2X0NFSGRHYkpZOXllZUppWmprRVVHdnRoc1hDcDRSRWJ4dDN1UVJzLVF5RERFbks4VzM1ZWNJd2lvV1k0X0NYTnlaNUd3RVhFcFZ0dEdvaFVvaGlFa1F1N2tPdHUzNGZaaFVpTHBvdHRWSGMxM0ZkeFRqVVptV0Q5S3dmRUlMYzY5cHMxa0pvN1dBa3JHcUx2Nl95eVc2QWlqWjNkSEJiU1h5bVRqWW1GdzNZSmFwVjlJQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Manipur Guv says national security collective responsibility, calls people to strengthen peace
+                - time [ref=e349]: 1 hour ago
+          - link "See more headlines and perspectives - Indian leaders honor soldiers on Kargil Vijay Diwas" [ref=e352] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lJM2NfU0VSRWoyOFFxREJSMVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - img [ref=e353]
+            - generic [ref=e355]: See more headlines and perspectives
+        - generic [ref=e359]:
+          - generic [ref=e360]:
+            - link [ref=e362] [cursor=pointer]:
+              - /url: ./read/CBMiygFBVV95cUxNUW9xcVM0dnZlRnJjZm1ZMXNoQlYxLWhiWXh6SFhMTVpfUzdNbi1VQmx4b3ZLWTNacUJEcjFqVVhiTmgxR20tTC1pWFd2TmE1eUpnbnkyMHZvNEcwYlh1Sk1MejlDN2Q4djlLZ283Mk43S1pRMWdGY1ZDQ3JuUEtIczRpTlNYajRxMVdEanpkSjJGb29KMGNuVm1YY0pTdVNlREd5QU9TSlZvNDBrTUc1WUhaU1dhT05qUmZ1Y1VpekhHaVg4bnMtcWh3?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e364]:
+              - generic [ref=e365]:
+                - generic [ref=e368]: NDTV
+                - generic [ref=e372]:
+                  - generic:
+                    - 'button "More - \"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post" [ref=e373] [cursor=pointer]':
+                      - img [ref=e375]
+                    - tooltip [ref=e377]: More
+              - 'link "\"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post - NDTV - 9 hours ago - By Chandrajit Mitra" [ref=e378] [cursor=pointer]':
+                - /url: ./read/CBMiygFBVV95cUxNUW9xcVM0dnZlRnJjZm1ZMXNoQlYxLWhiWXh6SFhMTVpfUzdNbi1VQmx4b3ZLWTNacUJEcjFqVVhiTmgxR20tTC1pWFd2TmE1eUpnbnkyMHZvNEcwYlh1Sk1MejlDN2Q4djlLZ283Mk43S1pRMWdGY1ZDQ3JuUEtIczRpTlNYajRxMVdEanpkSjJGb29KMGNuVm1YY0pTdVNlREd5QU9TSlZvNDBrTUc1WUhaU1dhT05qUmZ1Y1VpekhHaVg4bnMtcWh3?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "\"Just The Beginning, Long Way To Go\": Abhijeet Dipke's Morning Video Post"
+            - figure [ref=e379]
+          - generic [ref=e380]:
+            - time [ref=e381]: 9 hours ago
+            - separator [ref=e382]
+            - generic [ref=e383]: By Chandrajit Mitra
+            - 'link "See more headlines and perspectives - \"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post" [ref=e384] [cursor=pointer]':
+              - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2llOVBYWEVSSEZWam53ZDFDa2p5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - img [ref=e385]
+              - generic [ref=e387]: See more
+        - generic [ref=e391]:
+          - generic [ref=e392]:
+            - link [ref=e394] [cursor=pointer]:
+              - /url: ./read/CBMiogFBVV95cUxOSXpRZUVKLWdPbXlybXhsRDdrOG9nLUMtVGg2RkFhdHF3SGxTZndLTDJ6M2xKaDRWd1JJY3VjMVd5bnMyUjhFT2JIbF8tY3lfM2tncUl5bjJTWlI2UjBpR3VlN2ZwbTc2cXRaNXJyZUJwbHN2OFI4cGw4djRJcHhNV0ZfNHNOaEpSdXl3cXdSM1RqRFhYV241NHRoRjVTd2tsRFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - generic [ref=e400]: The Guardian
+                - generic [ref=e404]:
+                  - generic:
+                    - button "More - US pauses attacks on Iran for a second day as peace talks continue" [ref=e405] [cursor=pointer]:
+                      - img [ref=e407]
+                    - tooltip [ref=e409]: More
+              - link "US pauses attacks on Iran for a second day as peace talks continue - The Guardian - 1 hour ago" [ref=e410] [cursor=pointer]:
+                - /url: ./read/CBMiogFBVV95cUxOSXpRZUVKLWdPbXlybXhsRDdrOG9nLUMtVGg2RkFhdHF3SGxTZndLTDJ6M2xKaDRWd1JJY3VjMVd5bnMyUjhFT2JIbF8tY3lfM2tncUl5bjJTWlI2UjBpR3VlN2ZwbTc2cXRaNXJyZUJwbHN2OFI4cGw4djRJcHhNV0ZfNHNOaEpSdXl3cXdSM1RqRFhYV241NHRoRjVTd2tsRFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: US pauses attacks on Iran for a second day as peace talks continue
+            - figure [ref=e411]
+          - generic [ref=e412]:
+            - time [ref=e413]: 1 hour ago
+            - link "See more headlines and perspectives - US pauses attacks on Iran for a second day as peace talks continue" [ref=e414] [cursor=pointer]:
+              - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lsdlBqVkVSR3FTS1VsVzFQeVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - img [ref=e415]
+              - generic [ref=e417]: See more
+      - generic [ref=e462]:
+        - heading "Picks for you" [level=3] [ref=e465]
+        - generic [ref=e466]:
+          - text: Sign in for personalised stories in your briefing and news feed
+          - generic [ref=e468]:
+            - generic [ref=e470]: Sign in
+            - link "Sign in" [ref=e471] [cursor=pointer]:
+              - /url: https://accounts.google.com/ServiceLogin?hl=en-IN&continue=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&hl=en-IN&gl=IN&ceid=IN%3Aen
+    - generic [ref=e474]:
+      - generic [ref=e475]:
+        - generic [ref=e476]:
+          - heading "More news" [level=2] [ref=e478]
+          - paragraph [ref=e480]: Sign in to get stories based on your interests
+        - generic [ref=e483]:
+          - generic [ref=e485]: Sign in
+          - link "Sign in" [ref=e486] [cursor=pointer]:
+            - /url: https://accounts.google.com/ServiceLogin?hl=en-IN&continue=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en
+      - generic [ref=e487]:
+        - generic [ref=e488]:
+          - generic [ref=e491]:
+            - generic [ref=e492]:
+              - link [ref=e494] [cursor=pointer]:
+                - /url: ./read/CBMiygFBVV95cUxNUWk2UDhJaU8xNHVTT1pEYnh2NGVmT1hFYUFWVVAyRVVzVm5uRW14cTFhdUtLYWZvdVdkbDFPSE4xa3R4WTZVb1pyTjd5U3JiRTBLbVVVQ19oamJGZFRMdTVNZjNpY2FrT094S19rYmFmcldxZWtuZ3RJMEdnSEVVVVBzZlZYMGl6aWJtcW5QTHJyOVFWUmNHTlZJbnBET1FqQldzMDhYRVo1YkpPU0tlZjNkcU9TV0xvU3B1Sm1zNV9lV2tnZFFRdUlB?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - generic [ref=e496]:
+                - generic [ref=e497]:
+                  - generic [ref=e500]: India Today
+                  - generic [ref=e504]:
+                    - generic:
+                      - button "More - Dharmendra Pradhan offered to quit twice, it was rejected. Then something changed" [ref=e505] [cursor=pointer]:
+                        - img [ref=e507]
+                      - tooltip [ref=e509]: More
+                - link "Dharmendra Pradhan offered to quit twice, it was rejected. Then something changed - India Today - 8 hours ago - By Piyush Mishra" [ref=e510] [cursor=pointer]:
+                  - /url: ./read/CBMiygFBVV95cUxNUWk2UDhJaU8xNHVTT1pEYnh2NGVmT1hFYUFWVVAyRVVzVm5uRW14cTFhdUtLYWZvdVdkbDFPSE4xa3R4WTZVb1pyTjd5U3JiRTBLbVVVQ19oamJGZFRMdTVNZjNpY2FrT094S19rYmFmcldxZWtuZ3RJMEdnSEVVVVBzZlZYMGl6aWJtcW5QTHJyOVFWUmNHTlZJbnBET1FqQldzMDhYRVo1YkpPU0tlZjNkcU9TV0xvU3B1Sm1zNV9lV2tnZFFRdUlB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Dharmendra Pradhan offered to quit twice, it was rejected. Then something changed
+              - figure [ref=e511]
+            - generic [ref=e512]:
+              - time [ref=e513]: 8 hours ago
+              - separator [ref=e514]
+              - generic [ref=e515]: By Piyush Mishra
+              - generic [ref=e516]:
+                - link "See more headlines and perspectives - Dharmendra Pradhan offered to quit twice, it was rejected. Then something changed" [ref=e518] [cursor=pointer]:
+                  - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSRU5xYnk4WEJud3RTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - img [ref=e519]
+                - tooltip [ref=e521]: See more headlines and perspectives
+          - separator [ref=e522]
+        - generic [ref=e523]:
+          - generic [ref=e526]:
+            - generic [ref=e527]:
+              - link [ref=e529] [cursor=pointer]:
+                - /url: ./read/CBMiwAFBVV95cUxQY0p3Tk5iZ0xfZUhmdW1iQmhBZjAzZWEzOFliQlhqWHUyMVg4WkZEMVpkS0lBYXdIWVR0bzZ3VU9WRXluVDA5OWw5aEp1YjR0YXhCZmNaTW9QWEdodzBnVHZmV2FuTzc4SDEzWDlXcnVVckwtYXZTRFJsd3o1U05yZWdGdFQ4QUxJTDJiekNXaEpnWFVqNnlIdzhEdkluLTVpbFZSOXh1MnFZZlZEMHlySWJWZ3QwNm8xckdFM2JiZVE?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - generic [ref=e531]:
+                - generic [ref=e532]:
+                  - generic [ref=e535]: NDTV
+                  - generic [ref=e539]:
+                    - generic:
+                      - 'button "More - \"No Child Could''ve Swum Out\": Boy, 6, Drowns In 15-Foot Pit At Noida Housing Complex" [ref=e540] [cursor=pointer]':
+                        - img [ref=e542]
+                      - tooltip [ref=e544]: More
+                - 'link "\"No Child Could''ve Swum Out\": Boy, 6, Drowns In 15-Foot Pit At Noida Housing Complex - NDTV - 7 hours ago - By Pushkar Tiwari and Anushka Kumari" [ref=e545] [cursor=pointer]':
+                  - /url: ./read/CBMiwAFBVV95cUxQY0p3Tk5iZ0xfZUhmdW1iQmhBZjAzZWEzOFliQlhqWHUyMVg4WkZEMVpkS0lBYXdIWVR0bzZ3VU9WRXluVDA5OWw5aEp1YjR0YXhCZmNaTW9QWEdodzBnVHZmV2FuTzc4SDEzWDlXcnVVckwtYXZTRFJsd3o1U05yZWdGdFQ4QUxJTDJiekNXaEpnWFVqNnlIdzhEdkluLTVpbFZSOXh1MnFZZlZEMHlySWJWZ3QwNm8xckdFM2JiZVE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "\"No Child Could've Swum Out\": Boy, 6, Drowns In 15-Foot Pit At Noida Housing Complex"
+              - figure [ref=e546]
+            - generic [ref=e547]:
+              - time [ref=e548]: 7 hours ago
+              - separator [ref=e549]
+              - generic [ref=e550]: By Pushkar Tiwari and Anushka Kumari
+              - generic [ref=e551]:
+                - 'link "See more headlines and perspectives - \"No Child Could''ve Swum Out\": Boy, 6, Drowns In 15-Foot Pit At Noida Housing Complex" [ref=e553] [cursor=pointer]':
+                  - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lkX29mWUVSRlB4eENyOG9COHdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - img [ref=e554]
+                - tooltip [ref=e556]: See more headlines and perspectives
+          - separator [ref=e557]
+        - generic [ref=e558]:
+          - generic [ref=e561]:
+            - generic [ref=e562]:
+              - link [ref=e564] [cursor=pointer]:
+                - /url: ./read/CBMiggJBVV95cUxNTWh4aWItZ19zZks2dFBvSkgwYllXUU9xWkNBY1Jaa1otNlQyR2ZaS0JndFNfaFVndUhFVFdjNmduZy1HVkxuMEFOd210aTNJT0gxTnFKN1FaYW56alo2UF9wUnBVYVd2UGN1SFZmLTBBbFBDWVdHaVlPdEZCeXQ1NkhyNEVQdjJsWVNwcEw4LWx1R1N5ZEVUa3p6YkNGdDVRcjNpSlZVWFZQeVA1eTk4c3JNTzEwc2RLUXdfRjV4WW9zbGlpTzN0bFBiOWtZa2tpclozMzRtejNTdnlmNmVfZHByRnlqN0JDbFBlQS1CZ0NIWk5CUk5BU0dMQzlZLTlsWXfSAYcCQVVfeXFMUDlUOV9kQVJON19GXzBXNDBER2drWnJlZ0VWQnY2SVRncGl6VzBvQ0hlNFJGWnlpM25GcnF2cm9BbTNLb0JITkZtbTF3QzBlQU1SYWtzSUtwQkJHLXhFREx0QllBakhQMkZHcVY2a0NQU3lqdC1Fd1RCb1RPcktCc29ROS0yTmJoNWRhYzJwUVVocmlfY1NGUUxJMDl2NEJvRlJYZE5BYk5rWG5nOUt6Qkg2R3hDTmIxZFNmczZhNWVKbVAtdGJ2VlFqXzVTMUJFQzQ4SXhaRUVoZTU3dm8tTzhfWmVfNEFhUjJuY3lDQkRMb2NyUkdKYWFyeWl4OGJyTVFfb3ZKNVE?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - generic [ref=e566]:
+                - generic [ref=e567]:
+                  - generic [ref=e570]: The Times of India
+                  - generic [ref=e574]:
+                    - generic:
+                      - 'button "More - Ghost flats explained: Why some fully built homes remain empty despite India''s housing shortage" [ref=e575] [cursor=pointer]':
+                        - img [ref=e577]
+                      - tooltip [ref=e579]: More
+                - 'link "Ghost flats explained: Why some fully built homes remain empty despite India''s housing shortage - The Times of India - Yesterday" [ref=e580] [cursor=pointer]':
+                  - /url: ./read/CBMiggJBVV95cUxNTWh4aWItZ19zZks2dFBvSkgwYllXUU9xWkNBY1Jaa1otNlQyR2ZaS0JndFNfaFVndUhFVFdjNmduZy1HVkxuMEFOd210aTNJT0gxTnFKN1FaYW56alo2UF9wUnBVYVd2UGN1SFZmLTBBbFBDWVdHaVlPdEZCeXQ1NkhyNEVQdjJsWVNwcEw4LWx1R1N5ZEVUa3p6YkNGdDVRcjNpSlZVWFZQeVA1eTk4c3JNTzEwc2RLUXdfRjV4WW9zbGlpTzN0bFBiOWtZa2tpclozMzRtejNTdnlmNmVfZHByRnlqN0JDbFBlQS1CZ0NIWk5CUk5BU0dMQzlZLTlsWXfSAYcCQVVfeXFMUDlUOV9kQVJON19GXzBXNDBER2drWnJlZ0VWQnY2SVRncGl6VzBvQ0hlNFJGWnlpM25GcnF2cm9BbTNLb0JITkZtbTF3QzBlQU1SYWtzSUtwQkJHLXhFREx0QllBakhQMkZHcVY2a0NQU3lqdC1Fd1RCb1RPcktCc29ROS0yTmJoNWRhYzJwUVVocmlfY1NGUUxJMDl2NEJvRlJYZE5BYk5rWG5nOUt6Qkg2R3hDTmIxZFNmczZhNWVKbVAtdGJ2VlFqXzVTMUJFQzQ4SXhaRUVoZTU3dm8tTzhfWmVfNEFhUjJuY3lDQkRMb2NyUkdKYWFyeWl4OGJyTVFfb3ZKNVE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "Ghost flats explained: Why some fully built homes remain empty despite India's housing shortage"
+              - figure [ref=e581]
+            - time [ref=e583]: Yesterday
+          - separator [ref=e584]
+        - generic [ref=e585]:
+          - generic [ref=e588]:
+            - generic [ref=e589]:
+              - link [ref=e591] [cursor=pointer]:
+                - /url: ./read/CBMiygFBVV95cUxQV1NCOVFuZjAyQ3hjUHByQjVUeXN0dUZxUTd0bDJzUzB4a1cwS0wzckpSZ21lM0ZLVVZXZTB1a2dtc3RjWThFMjN5eXRuMTZHblpPQk04dDQ2RWN5ZXRBVHFSMTV0U2d5RE1jNXN3bURqUG5GQmR0NFdzQjNNRGRqSmJQZkhsanlJVmFNRW8yTTNIbHBzTXFtS09WRXVpYU1ob0RVN092cDR4UHhoU1ZtMjZxd0t0N2RleVhUbzcxWldESFlrWGlOQzBR?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - generic [ref=e593]:
+                - generic [ref=e594]:
+                  - generic [ref=e597]: India Today
+                  - generic [ref=e601]:
+                    - generic:
+                      - button "More - Trump pauses Iran strikes after 13 days. Was a shortage of munitions to blame?" [ref=e602] [cursor=pointer]:
+                        - img [ref=e604]
+                      - tooltip [ref=e606]: More
+                - link "Trump pauses Iran strikes after 13 days. Was a shortage of munitions to blame? - India Today - 4 hours ago - By Prateek Chakraborty" [ref=e607] [cursor=pointer]:
+                  - /url: ./read/CBMiygFBVV95cUxQV1NCOVFuZjAyQ3hjUHByQjVUeXN0dUZxUTd0bDJzUzB4a1cwS0wzckpSZ21lM0ZLVVZXZTB1a2dtc3RjWThFMjN5eXRuMTZHblpPQk04dDQ2RWN5ZXRBVHFSMTV0U2d5RE1jNXN3bURqUG5GQmR0NFdzQjNNRGRqSmJQZkhsanlJVmFNRW8yTTNIbHBzTXFtS09WRXVpYU1ob0RVN092cDR4UHhoU1ZtMjZxd0t0N2RleVhUbzcxWldESFlrWGlOQzBR?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Trump pauses Iran strikes after 13 days. Was a shortage of munitions to blame?
+              - figure [ref=e608]
+            - generic [ref=e609]:
+              - time [ref=e610]: 4 hours ago
+              - separator [ref=e611]
+              - generic [ref=e612]: By Prateek Chakraborty
+              - generic [ref=e613]:
+                - link "See more headlines and perspectives - Trump pauses Iran strikes after 13 days. Was a shortage of munitions to blame?" [ref=e615] [cursor=pointer]:
+                  - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lsdlBqVkVSRVBKWkw5Ni1Nd015Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - img [ref=e616]
+                - tooltip [ref=e618]: See more headlines and perspectives
+          - separator [ref=e619]
+        - generic [ref=e623]:
+          - generic [ref=e624]:
+            - link [ref=e626] [cursor=pointer]:
+              - /url: ./read/CBMi3gFBVV95cUxOdm9iZkdwR3ZBUjMwNW1Wa1V2VURlZm5SVnlYZ1p3dGtyNGZGdTlXSUZoS3hzOUVpMEN6SGVHMnRJS0pjVEpNUkZhQTBEMEJrT2h4bFMwMWNua0RrZHZaUV9seEgtcDZoZ2NKYzJrQlhFZXVmdHVrb1BITm5pWVo1RWhhbkVaNkZyMUpad2tBMXFiaWQ5QVFsWDFNT2RFazVqVm9jeXhmcHZ0MHdia0w4bGs0TnVxanVxU2xBNVZiTG9SaGJCZlZkM0xIckhoakN6Q3ZEZHVuMnhpcWV0NFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e628]:
+              - generic [ref=e629]:
+                - generic [ref=e632]: NDTV
+                - generic [ref=e636]:
+                  - generic:
+                    - button "More - Patna's Bankipur Seat Vacated By BJP Chief Weighs Gen Z Impact In Bypoll" [ref=e637] [cursor=pointer]:
+                      - img [ref=e639]
+                    - tooltip [ref=e641]: More
+              - link "Patna's Bankipur Seat Vacated By BJP Chief Weighs Gen Z Impact In Bypoll - NDTV - 3 hours ago - By Prabhakar Kumar" [ref=e642] [cursor=pointer]:
+                - /url: ./read/CBMi3gFBVV95cUxOdm9iZkdwR3ZBUjMwNW1Wa1V2VURlZm5SVnlYZ1p3dGtyNGZGdTlXSUZoS3hzOUVpMEN6SGVHMnRJS0pjVEpNUkZhQTBEMEJrT2h4bFMwMWNua0RrZHZaUV9seEgtcDZoZ2NKYzJrQlhFZXVmdHVrb1BITm5pWVo1RWhhbkVaNkZyMUpad2tBMXFiaWQ5QVFsWDFNT2RFazVqVm9jeXhmcHZ0MHdia0w4bGs0TnVxanVxU2xBNVZiTG9SaGJCZlZkM0xIckhoakN6Q3ZEZHVuMnhpcWV0NFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Patna's Bankipur Seat Vacated By BJP Chief Weighs Gen Z Impact In Bypoll
+            - figure [ref=e643]
+          - generic [ref=e644]:
+            - time [ref=e645]: 3 hours ago
+            - separator [ref=e646]
+            - generic [ref=e647]: By Prabhakar Kumar
+            - generic [ref=e648]:
+              - link "See more headlines and perspectives - Patna's Bankipur Seat Vacated By BJP Chief Weighs Gen Z Impact In Bypoll" [ref=e650] [cursor=pointer]:
+                - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2p5Z2NUWEVSRTFGMDNVaXVjT1pTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - img [ref=e651]
+              - tooltip [ref=e653]: See more headlines and perspectives
+        - generic [ref=e657]:
+          - generic [ref=e658]:
+            - link [ref=e660] [cursor=pointer]:
+              - /url: ./read/CBMijwJBVV95cUxPOWJaUmFKeFUzaDFuRW9JNGx5SXhEUFc1MDI5YzQ4endxUVJCS2l4ZUo0cXoyQUt3SFFTWHlnLXJEZE5nTGVDbUYxZWxTUUNSckR3aHN6akFtLXN1S3ljdEZCdG5KZnF5TzduLWVPd0x0cjRsM3l0cGJ1QnpyWTNYMWdiQ2paY29PLW9CRFM1eUtLX0NyVE85WTRQa2ZkVHptZjdTRi14dFhIVTF6NkRVei1McU5teDhuajNmOFZCN2FBVWZpWm9oTUN3bjNtVkpnTXRUaFBIdENiOUttUlFWcUs2b0MzR2NmSlBsZUQyY21fYmRoUU5rNG43c0xUcVl6MnEtMGN0VDZ0VTROcjRF?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e662]:
+              - generic [ref=e663]:
+                - generic [ref=e666]: The Times of India
+                - generic [ref=e670]:
+                  - generic:
+                    - 'button "More - ''I won''t contest 2028 assembly polls'': Ex-Karnataka CM Siddaramaiah cites age, health, and ''corrupt polit" [ref=e671] [cursor=pointer]':
+                      - img [ref=e673]
+                    - tooltip [ref=e675]: More
+              - 'link "''I won''t contest 2028 assembly polls'': Ex-Karnataka CM Siddaramaiah cites age, health, and ''corrupt polit - The Times of India - 2 hours ago" [ref=e676] [cursor=pointer]':
+                - /url: ./read/CBMijwJBVV95cUxPOWJaUmFKeFUzaDFuRW9JNGx5SXhEUFc1MDI5YzQ4endxUVJCS2l4ZUo0cXoyQUt3SFFTWHlnLXJEZE5nTGVDbUYxZWxTUUNSckR3aHN6akFtLXN1S3ljdEZCdG5KZnF5TzduLWVPd0x0cjRsM3l0cGJ1QnpyWTNYMWdiQ2paY29PLW9CRFM1eUtLX0NyVE85WTRQa2ZkVHptZjdTRi14dFhIVTF6NkRVei1McU5teDhuajNmOFZCN2FBVWZpWm9oTUN3bjNtVkpnTXRUaFBIdENiOUttUlFWcUs2b0MzR2NmSlBsZUQyY21fYmRoUU5rNG43c0xUcVl6MnEtMGN0VDZ0VTROcjRF?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "'I won't contest 2028 assembly polls': Ex-Karnataka CM Siddaramaiah cites age, health, and 'corrupt polit"
+            - figure [ref=e677]
+          - generic [ref=e678]:
+            - time [ref=e679]: 2 hours ago
+            - generic [ref=e680]:
+              - 'link "See more headlines and perspectives - ''I won''t contest 2028 assembly polls'': Ex-Karnataka CM Siddaramaiah cites age, health, and ''corrupt polit" [ref=e682] [cursor=pointer]':
+                - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pFNE1MWUVSR09JSmg4QkNpM19pZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - img [ref=e683]
+              - tooltip [ref=e685]: See more headlines and perspectives
+    - generic [ref=e689]:
+      - generic [ref=e690]:
+        - heading "Your topics" [level=2] [ref=e692]
+        - button "Customise" [ref=e695]:
+          - img [ref=e698]
+          - generic [ref=e700]: Customise
+      - generic [ref=e701]:
+        - generic [ref=e704]:
+          - heading "India" [level=3] [ref=e706]:
+            - link "India" [ref=e707] [cursor=pointer]:
+              - /url: ./topics/CAAqJQgKIh9DQkFTRVFvSUwyMHZNRE55YXpBU0JXVnVMVWRDS0FBUAE?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: India
+              - img [ref=e708]
+          - separator [ref=e710]
+          - generic [ref=e711]:
+            - generic [ref=e714]:
+              - generic [ref=e715]:
+                - link [ref=e717] [cursor=pointer]:
+                  - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e719]:
+                  - generic [ref=e720]:
+                    - generic [ref=e723]: The Hindu
+                    - generic [ref=e727]:
+                      - generic:
+                        - button "More - Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan" [ref=e728] [cursor=pointer]:
+                          - img [ref=e730]
+                        - tooltip [ref=e732]: More
+                  - link "Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan - The Hindu - 4 hours ago" [ref=e733] [cursor=pointer]:
+                    - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan
+                - figure [ref=e734]
+              - generic [ref=e735]:
+                - time [ref=e736]: 4 hours ago
+                - generic [ref=e737]:
+                  - link "See more headlines and perspectives - Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan" [ref=e739] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e740]
+                  - tooltip [ref=e742]: See more headlines and perspectives
+            - separator [ref=e743]
+            - generic [ref=e746]:
+              - generic [ref=e747]:
+                - link [ref=e749] [cursor=pointer]:
+                  - /url: ./read/CBMigAJBVV95cUxNMEtzNktBSHROR1VQNFlfRXNjcm9BWmVxQTlrR1lIMVNja1hreHVQd09NSlhmQVJ1cWJTUzluel9MT2dxWmp1RGRpTFRvNkNITGdOMW9GVGc3LUpTSm9CQ1VIUGE4QXRsX2R2YmQxYW9GV2EyR2diMjYzNTVzc29fUkI2OERlbEdQTnBKRHBERHhrR1RqUDN4TlQxbkVwMUlFRl9QRVBpSHNtOXRvZ1p4eUt5cXhjeTBtQXZmOTllRkl3VE9DR2Ziblo2N3YwclpsYVdXdDZjRGhuYzdqM1ZndkVCcm1aNF9WSWZmRlpScEIxOTV6cUx0WEFuanRQNDll?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e751]:
+                  - generic [ref=e752]:
+                    - generic [ref=e755]: The Times of India
+                    - generic [ref=e759]:
+                      - generic:
+                        - 'button "More - ''Every misadventure by Pakistan will draw response beyond their imagination'': Rajnath Singh on Vijay Diwa" [ref=e760] [cursor=pointer]':
+                          - img [ref=e762]
+                        - tooltip [ref=e764]: More
+                  - 'link "''Every misadventure by Pakistan will draw response beyond their imagination'': Rajnath Singh on Vijay Diwa - The Times of India - 7 hours ago" [ref=e765] [cursor=pointer]':
+                    - /url: ./read/CBMigAJBVV95cUxNMEtzNktBSHROR1VQNFlfRXNjcm9BWmVxQTlrR1lIMVNja1hreHVQd09NSlhmQVJ1cWJTUzluel9MT2dxWmp1RGRpTFRvNkNITGdOMW9GVGc3LUpTSm9CQ1VIUGE4QXRsX2R2YmQxYW9GV2EyR2diMjYzNTVzc29fUkI2OERlbEdQTnBKRHBERHhrR1RqUDN4TlQxbkVwMUlFRl9QRVBpSHNtOXRvZ1p4eUt5cXhjeTBtQXZmOTllRkl3VE9DR2Ziblo2N3YwclpsYVdXdDZjRGhuYzdqM1ZndkVCcm1aNF9WSWZmRlpScEIxOTV6cUx0WEFuanRQNDll?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "'Every misadventure by Pakistan will draw response beyond their imagination': Rajnath Singh on Vijay Diwa"
+                - figure [ref=e766]
+              - generic [ref=e767]:
+                - time [ref=e768]: 7 hours ago
+                - generic [ref=e769]:
+                  - 'link "See more headlines and perspectives - ''Every misadventure by Pakistan will draw response beyond their imagination'': Rajnath Singh on Vijay Diwa" [ref=e771] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lJM2NfU0VSSE1pb0didG1uZE5DZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e772]
+                  - tooltip [ref=e774]: See more headlines and perspectives
+            - separator [ref=e775]
+            - generic [ref=e778]:
+              - generic [ref=e779]:
+                - link [ref=e781] [cursor=pointer]:
+                  - /url: ./read/CBMiywFBVV95cUxOQkQ2R203b2plY3RLb3ZHbnUwazg3blJEdVVVanZPVzltSGpvTUJaVVcxdnJNRHRTY0l3VkFzVFc1d3FDZ215SVptU1ZYRnRPQ2g2QUJQUmlSaWpDbXAzXzAzNThoNlJmZWw1MC1NaEN5ek1GQkE2Y1dJOHZoem5FXzZlUDZMVmdfeWtmTm1PMjJubE5ibURRY2Z0NVlhX21LcFJ3ZFVvUDlhNGdGU29YaU9kYk00UUQ1ZnFQMkZ4ODh2ZjJuUUprcDhvZ9IB0wFBVV95cUxOalR6VjQ0cFNxTUR4TFY5OGZzdEJ3bnJJSXRvdzU5T0syWHN0b09aWXdnWkVfODhaM1JkeEpxOFJGNlNvczdvQzV2Z2tXWXBFMm5laEx6dzRQWVpRdmFwRFc2MEQyWUNKWGg4SGVLZjhKbnIzVTlWUzAzVHlEaXY5N281UzFtRFdqQmwtbmtuVi1QMm90YnNkZ0RJWWRxSVVESDI1X3VUYTBrQnY3WTYyb29TVXl0RjBkdDI3VWpIZFlOY2xwVnZEc1BOZS1uT3FzWHRR?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e783]:
+                  - generic [ref=e784]:
+                    - generic [ref=e787]: NDTV
+                    - generic [ref=e791]:
+                      - generic:
+                        - button "More - 2 Indians Missing After Another Attack On Ship At Odesa Port In Ukraine" [ref=e792] [cursor=pointer]:
+                          - img [ref=e794]
+                        - tooltip [ref=e796]: More
+                  - link "2 Indians Missing After Another Attack On Ship At Odesa Port In Ukraine - NDTV - 5 hours ago - By Manjiri Chitre" [ref=e797] [cursor=pointer]:
+                    - /url: ./read/CBMiywFBVV95cUxOQkQ2R203b2plY3RLb3ZHbnUwazg3blJEdVVVanZPVzltSGpvTUJaVVcxdnJNRHRTY0l3VkFzVFc1d3FDZ215SVptU1ZYRnRPQ2g2QUJQUmlSaWpDbXAzXzAzNThoNlJmZWw1MC1NaEN5ek1GQkE2Y1dJOHZoem5FXzZlUDZMVmdfeWtmTm1PMjJubE5ibURRY2Z0NVlhX21LcFJ3ZFVvUDlhNGdGU29YaU9kYk00UUQ1ZnFQMkZ4ODh2ZjJuUUprcDhvZ9IB0wFBVV95cUxOalR6VjQ0cFNxTUR4TFY5OGZzdEJ3bnJJSXRvdzU5T0syWHN0b09aWXdnWkVfODhaM1JkeEpxOFJGNlNvczdvQzV2Z2tXWXBFMm5laEx6dzRQWVpRdmFwRFc2MEQyWUNKWGg4SGVLZjhKbnIzVTlWUzAzVHlEaXY5N281UzFtRFdqQmwtbmtuVi1QMm90YnNkZ0RJWWRxSVVESDI1X3VUYTBrQnY3WTYyb29TVXl0RjBkdDI3VWpIZFlOY2xwVnZEc1BOZS1uT3FzWHRR?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: 2 Indians Missing After Another Attack On Ship At Odesa Port In Ukraine
+                - figure [ref=e798]
+              - generic [ref=e799]:
+                - time [ref=e800]: 5 hours ago
+                - separator [ref=e801]
+                - generic [ref=e802]: By Manjiri Chitre
+                - generic [ref=e803]:
+                  - link "See more headlines and perspectives - 2 Indians Missing After Another Attack On Ship At Odesa Port In Ukraine" [ref=e805] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pKamRxOUVSR1owQXdxN3M1X1hDZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e806]
+                  - tooltip [ref=e808]: See more headlines and perspectives
+        - generic [ref=e811]:
+          - heading "World" [level=3] [ref=e813]:
+            - link "World" [ref=e814] [cursor=pointer]:
+              - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRGx1YlY4U0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: World
+              - img [ref=e815]
+          - separator [ref=e817]
+          - generic [ref=e818]:
+            - generic [ref=e821]:
+              - generic [ref=e822]:
+                - link [ref=e824] [cursor=pointer]:
+                  - /url: ./read/CBMi5wFBVV95cUxONGItbG5oZUhmRWtwN0VBc0x3SXB6YXJ3cUdYUnRiN2ZUMUZ4a2stM2VzcHM3Z0xfemRUZ3plc3gzUXBXaWZwYU9SaEs4VDlGTERmVUhESmV1ektQUUEtUnBNV3JYNjYySHFsS3QxZE9vdmVMaHpwcFd1Ymx5eS14dGJxbkkwRGEzMGxwWWtDbnpmV0VDTzB5bGNibTQzTmZmV0d5SVZNbG81QXdqVVhOczI5VVJNd0xjblprRVdRQ2M1ejRLcHhfVkFWbWZMaUNVSG1POVl1UUs5b2tNZ2RhclRmSmx4Z28?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e826]:
+                  - generic [ref=e827]:
+                    - generic [ref=e830]: The Times of India
+                    - generic [ref=e834]:
+                      - generic:
+                        - 'button "More - Baby crib sent flying, 800,000 flee: Typhoon Noul hits China; scary visuals emerge" [ref=e835] [cursor=pointer]':
+                          - img [ref=e837]
+                        - tooltip [ref=e839]: More
+                  - 'link "Baby crib sent flying, 800,000 flee: Typhoon Noul hits China; scary visuals emerge - The Times of India - 2 hours ago" [ref=e840] [cursor=pointer]':
+                    - /url: ./read/CBMi5wFBVV95cUxONGItbG5oZUhmRWtwN0VBc0x3SXB6YXJ3cUdYUnRiN2ZUMUZ4a2stM2VzcHM3Z0xfemRUZ3plc3gzUXBXaWZwYU9SaEs4VDlGTERmVUhESmV1ektQUUEtUnBNV3JYNjYySHFsS3QxZE9vdmVMaHpwcFd1Ymx5eS14dGJxbkkwRGEzMGxwWWtDbnpmV0VDTzB5bGNibTQzTmZmV0d5SVZNbG81QXdqVVhOczI5VVJNd0xjblprRVdRQ2M1ejRLcHhfVkFWbWZMaUNVSG1POVl1UUs5b2tNZ2RhclRmSmx4Z28?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "Baby crib sent flying, 800,000 flee: Typhoon Noul hits China; scary visuals emerge"
+                - figure [ref=e841]
+              - generic [ref=e842]:
+                - time [ref=e843]: 2 hours ago
+                - generic [ref=e844]:
+                  - 'link "See more headlines and perspectives - Baby crib sent flying, 800,000 flee: Typhoon Noul hits China; scary visuals emerge" [ref=e846] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pld01MVkVSRjc4MEhBMXZHUXJDZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e847]
+                  - tooltip [ref=e849]: See more headlines and perspectives
+            - separator [ref=e850]
+            - generic [ref=e853]:
+              - generic [ref=e854]:
+                - link [ref=e856] [cursor=pointer]:
+                  - /url: ./read/CBMi5AFBVV95cUxNNW9nczZaU3ZNY09aT3pyQVBIT0dUY0xNa3ZhWmx5S2xCZHdpTXVrdGdJLURRUk9UcnlZTHQ2SUl1S1VuX3ZRb1I5T0tpVlExMjVvbXVCb3ZlcnZMZTVGVGJ6Q0hnbWcwREdPOVJtdWItMTk0alJra1IzbEttc3JTalZ3cGdYVmduSXZUeUFxWllnMDRDLVd2OUdFVW5WS2lNc3BfYndLd1VMUlJld3hnOUFFOU5GTmw3X0VZWkZWRGdjQUhUdVU4ODREdDBkWXd3ZkVieDF2RUlRdTBjTXdxeXlfc1LSAewBQVVfeXFMUGU3QUVkalQwQVlKWk5jYUFGQ2FIa3BlY0Z4WVZuV3lWdmxQM3VxVEJtZ0tRdUItUFNwRnhoLXQ3T25aYjVxeXFMbG55U1hrREJhbW10czNOcVdraXlBdTBPRUVrVlhXY01COF9idm50bTVSVWxVemhBUlA4STUwbUxhMzA3UzRJSVgySjI0WkU2Y2cwR2ZsMTV6aEQ3bW05OUNNT0VMak92cGtMYmM2QndjWkNiaTY5VEtCRWVkQjJ1S1JlNWdjbFJ0VUhJRlVra1VKX1ZvMEJfZFNBRHktLTBMSHlLcERLV0NZQmk?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e858]:
+                  - generic [ref=e859]:
+                    - generic [ref=e862]: NDTV
+                    - generic [ref=e866]:
+                      - generic:
+                        - button "More - Canada Seizes Drugs Worth $139 Million, Indian-Origin Truck Drivers Arrested" [ref=e867] [cursor=pointer]:
+                          - img [ref=e869]
+                        - tooltip [ref=e871]: More
+                  - link "Canada Seizes Drugs Worth $139 Million, Indian-Origin Truck Drivers Arrested - NDTV - 4 hours ago" [ref=e872] [cursor=pointer]:
+                    - /url: ./read/CBMi5AFBVV95cUxNNW9nczZaU3ZNY09aT3pyQVBIT0dUY0xNa3ZhWmx5S2xCZHdpTXVrdGdJLURRUk9UcnlZTHQ2SUl1S1VuX3ZRb1I5T0tpVlExMjVvbXVCb3ZlcnZMZTVGVGJ6Q0hnbWcwREdPOVJtdWItMTk0alJra1IzbEttc3JTalZ3cGdYVmduSXZUeUFxWllnMDRDLVd2OUdFVW5WS2lNc3BfYndLd1VMUlJld3hnOUFFOU5GTmw3X0VZWkZWRGdjQUhUdVU4ODREdDBkWXd3ZkVieDF2RUlRdTBjTXdxeXlfc1LSAewBQVVfeXFMUGU3QUVkalQwQVlKWk5jYUFGQ2FIa3BlY0Z4WVZuV3lWdmxQM3VxVEJtZ0tRdUItUFNwRnhoLXQ3T25aYjVxeXFMbG55U1hrREJhbW10czNOcVdraXlBdTBPRUVrVlhXY01COF9idm50bTVSVWxVemhBUlA4STUwbUxhMzA3UzRJSVgySjI0WkU2Y2cwR2ZsMTV6aEQ3bW05OUNNT0VMak92cGtMYmM2QndjWkNiaTY5VEtCRWVkQjJ1S1JlNWdjbFJ0VUhJRlVra1VKX1ZvMEJfZFNBRHktLTBMSHlLcERLV0NZQmk?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Canada Seizes Drugs Worth $139 Million, Indian-Origin Truck Drivers Arrested
+                - figure [ref=e873]
+              - generic [ref=e874]:
+                - time [ref=e875]: 4 hours ago
+                - generic [ref=e876]:
+                  - link "See more headlines and perspectives - Canada Seizes Drugs Worth $139 Million, Indian-Origin Truck Drivers Arrested" [ref=e878] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2liaE96VkVSRllMQUw4NkRBdU1pZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e879]
+                  - tooltip [ref=e881]: See more headlines and perspectives
+            - separator [ref=e882]
+            - generic [ref=e885]:
+              - generic [ref=e886]:
+                - link [ref=e888] [cursor=pointer]:
+                  - /url: ./read/CBMitgFBVV95cUxOcTQ5MF9vNGN3SlotSkQ1VmF0MWNuZmo2aFRZMS1VQVN3X21DZ1dVbDJLeXMxZGJ2M2JGQ1NUeWh6SmRnMXgzZEtOa0Z6RGM5REN0WHhuaXFGVC1UdVZUa09xazd1dnpLT3RSbUZSZTdCMG1TLWE5Rl9QVlN3WGY1S0lCcEQyTV9QMk92YU1hNi11a0dsLTdoTlBFWEZCZEtjckxxTXJSVFpXcHNCd0NoZTcxbG9HUdIBuwFBVV95cUxQZTBuUlVXbEljQUJ4WEVac2JtNExTeU53UDNzNDNLZUhTUGhNdTljTkRBX29hQnNPR1FzZUg1Vi1wUVBPcFhoRjlPOVl4b2t5X3ZKNWVTNlNUQ1dvNDQwNWdITUpnWllVLTNzNFR5bFJnRWRzTkRjTjlvMEZKY19lb0FlMnN4eVp5S0FmTUp6SThvZ0VzUVFiakdBdkRyRVp3MjVnMkFnMlJoOEZHNjFZZy1MUnJ0ZDBRZ09j?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e890]:
+                  - generic [ref=e891]:
+                    - generic [ref=e894]: Al Jazeera
+                    - generic [ref=e898]:
+                      - generic:
+                        - button "More - New front in US-Iran war escalates as Houthis fire at Saudi oil facilities" [ref=e899] [cursor=pointer]:
+                          - img [ref=e901]
+                        - tooltip [ref=e903]: More
+                  - link "New front in US-Iran war escalates as Houthis fire at Saudi oil facilities - Al Jazeera - 8 hours ago" [ref=e904] [cursor=pointer]:
+                    - /url: ./read/CBMitgFBVV95cUxOcTQ5MF9vNGN3SlotSkQ1VmF0MWNuZmo2aFRZMS1VQVN3X21DZ1dVbDJLeXMxZGJ2M2JGQ1NUeWh6SmRnMXgzZEtOa0Z6RGM5REN0WHhuaXFGVC1UdVZUa09xazd1dnpLT3RSbUZSZTdCMG1TLWE5Rl9QVlN3WGY1S0lCcEQyTV9QMk92YU1hNi11a0dsLTdoTlBFWEZCZEtjckxxTXJSVFpXcHNCd0NoZTcxbG9HUdIBuwFBVV95cUxQZTBuUlVXbEljQUJ4WEVac2JtNExTeU53UDNzNDNLZUhTUGhNdTljTkRBX29hQnNPR1FzZUg1Vi1wUVBPcFhoRjlPOVl4b2t5X3ZKNWVTNlNUQ1dvNDQwNWdITUpnWllVLTNzNFR5bFJnRWRzTkRjTjlvMEZKY19lb0FlMnN4eVp5S0FmTUp6SThvZ0VzUVFiakdBdkRyRVp3MjVnMkFnMlJoOEZHNjFZZy1MUnJ0ZDBRZ09j?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: New front in US-Iran war escalates as Houthis fire at Saudi oil facilities
+                - figure [ref=e905]
+              - generic [ref=e906]:
+                - time [ref=e907]: 8 hours ago
+                - generic [ref=e908]:
+                  - link "See more headlines and perspectives - New front in US-Iran war escalates as Houthis fire at Saudi oil facilities" [ref=e910] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lNX05qTEVSRUQ3b1BfakVNOWVDZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e911]
+                  - tooltip [ref=e913]: See more headlines and perspectives
+        - generic [ref=e916]:
+          - heading "Business" [level=3] [ref=e918]:
+            - link "Business" [ref=e919] [cursor=pointer]:
+              - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRGx6TVdZU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: Business
+              - img [ref=e920]
+          - separator [ref=e922]
+          - generic [ref=e923]:
+            - generic [ref=e926]:
+              - generic [ref=e927]:
+                - link [ref=e929] [cursor=pointer]:
+                  - /url: ./read/CBMingFBVV95cUxQVGRhVHMzRk1MTEhGM3ZlVkMzWUstWXNMZ1d1OERMeEVKdzQ1QnJGbTc1d3NkRUtMMklZN2pHVWFqNjBZeHlUVXlRQkwtb3JyZ1Q3LXBOaV9Xa1BNdDVuX0UyNU00Q19SWlJZR0l4dEswa3J5MzlVZURLS3dreklYZmlDaFBoQUZ1b25OTHlnaXNETGZfdUZsYW9Fd0Q2UdIBpgFBVV95cUxQVTdUVzFESzR5TDlfbF8tY1ZkVmhScHUwd0ZWSVEyRnVNZ3NuajQ0eDQ3ZlBfcDA3ZnFTNnFERnhyRUJKdWM3MkUzRldXc1kzUzdQcnNySUNYamIwTjBlZnFiaWl5MHRVQnl4bXFiRzdfdmRGRHNER2RzUXlXMVVWV3BVZmZEN0ZlQmFkc3F5ODNLSm8xNkp0NkhKc2lHLXBSTDZEbGtB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e931]:
+                  - generic [ref=e932]:
+                    - generic [ref=e935]: NDTV
+                    - generic [ref=e939]:
+                      - generic:
+                        - 'button "More - NDTV Profit Business Leadership Awards 2026: All About It" [ref=e940] [cursor=pointer]':
+                          - img [ref=e942]
+                        - tooltip [ref=e944]: More
+                  - 'link "NDTV Profit Business Leadership Awards 2026: All About It - NDTV - 7 hours ago - By Kritika Bobal" [ref=e945] [cursor=pointer]':
+                    - /url: ./read/CBMingFBVV95cUxQVGRhVHMzRk1MTEhGM3ZlVkMzWUstWXNMZ1d1OERMeEVKdzQ1QnJGbTc1d3NkRUtMMklZN2pHVWFqNjBZeHlUVXlRQkwtb3JyZ1Q3LXBOaV9Xa1BNdDVuX0UyNU00Q19SWlJZR0l4dEswa3J5MzlVZURLS3dreklYZmlDaFBoQUZ1b25OTHlnaXNETGZfdUZsYW9Fd0Q2UdIBpgFBVV95cUxQVTdUVzFESzR5TDlfbF8tY1ZkVmhScHUwd0ZWSVEyRnVNZ3NuajQ0eDQ3ZlBfcDA3ZnFTNnFERnhyRUJKdWM3MkUzRldXc1kzUzdQcnNySUNYamIwTjBlZnFiaWl5MHRVQnl4bXFiRzdfdmRGRHNER2RzUXlXMVVWV3BVZmZEN0ZlQmFkc3F5ODNLSm8xNkp0NkhKc2lHLXBSTDZEbGtB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "NDTV Profit Business Leadership Awards 2026: All About It"
+                - figure [ref=e946]
+              - generic [ref=e947]:
+                - time [ref=e948]: 7 hours ago
+                - separator [ref=e949]
+                - generic [ref=e950]: By Kritika Bobal
+                - generic [ref=e951]:
+                  - 'link "See more headlines and perspectives - NDTV Profit Business Leadership Awards 2026: All About It" [ref=e953] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2o0czR2UEVSRng4azJwNGlyX0ZTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e954]
+                  - tooltip [ref=e956]: See more headlines and perspectives
+            - separator [ref=e957]
+            - generic [ref=e960]:
+              - generic [ref=e961]:
+                - link [ref=e963] [cursor=pointer]:
+                  - /url: ./read/CBMivAFBVV95cUxQNExXMGRnLXdNLXk1eS1jUlljZjl4aVp3UF9nSjJqcW1yb2NGakJ2V1ROaGVRX1JZSWNyS1RMTDM5MTFFZ0JjYmdLU0h1WlZOQXcxOERYdGIyQVEwb1FFbTBUU0ZPMWJDd2FhR0t0TnFUcUJKR1JDamo0TlFkZlpiSWxOQXpVRnVGeDhtRTk5WjFnUHdfem9NTXpVV2lPWDN6OU9HTXBNWDlPUGJmRWtSMzFiY0ZuRmxhMTlnaQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e965]:
+                  - generic [ref=e966]:
+                    - generic [ref=e969]: The Peninsula Qatar
+                    - generic [ref=e973]:
+                      - generic:
+                        - button "More - Residents cash in on Dubai real estate cooldown amid regional turmoil" [ref=e974] [cursor=pointer]:
+                          - img [ref=e976]
+                        - tooltip [ref=e978]: More
+                  - link "Residents cash in on Dubai real estate cooldown amid regional turmoil - The Peninsula Qatar - 8 hours ago" [ref=e979] [cursor=pointer]:
+                    - /url: ./read/CBMivAFBVV95cUxQNExXMGRnLXdNLXk1eS1jUlljZjl4aVp3UF9nSjJqcW1yb2NGakJ2V1ROaGVRX1JZSWNyS1RMTDM5MTFFZ0JjYmdLU0h1WlZOQXcxOERYdGIyQVEwb1FFbTBUU0ZPMWJDd2FhR0t0TnFUcUJKR1JDamo0TlFkZlpiSWxOQXpVRnVGeDhtRTk5WjFnUHdfem9NTXpVV2lPWDN6OU9HTXBNWDlPUGJmRWtSMzFiY0ZuRmxhMTlnaQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Residents cash in on Dubai real estate cooldown amid regional turmoil
+                - figure [ref=e980]
+              - generic [ref=e981]:
+                - time [ref=e982]: 8 hours ago
+                - generic [ref=e983]:
+                  - link "See more headlines and perspectives - Residents cash in on Dubai real estate cooldown amid regional turmoil" [ref=e985] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2p3cTdEVkVSRVJqMWdMNUVsUnp5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e986]
+                  - tooltip [ref=e988]: See more headlines and perspectives
+            - separator [ref=e989]
+            - generic [ref=e992]:
+              - generic [ref=e993]:
+                - link "Sensex -0.43% 76,059.77" [ref=e994] [cursor=pointer]:
+                  - /url: https://www.google.com/search?q=INDEXBOM+SENSEX&hl=en-GB&source=news
+                  - generic [ref=e997]: Sensex
+                  - generic [ref=e998]: "-0.43%"
+                  - generic [ref=e1000]: 76,059.77
+                - link "NIFTY 50 -0.43% 23,767.45" [ref=e1001] [cursor=pointer]:
+                  - /url: https://www.google.com/search?q=INDEXNSE+NIFTY_50&hl=en-GB&source=news
+                  - generic [ref=e1004]: NIFTY 50
+                  - generic [ref=e1005]: "-0.43%"
+                  - generic [ref=e1007]: 23,767.45
+                - link "Nikkei 225 -2.73% 64,611.15" [ref=e1008] [cursor=pointer]:
+                  - /url: https://www.google.com/search?q=INDEXNIKKEI+NI225&hl=en-GB&source=news
+                  - generic [ref=e1011]: Nikkei 225
+                  - generic [ref=e1012]: "-2.73%"
+                  - generic [ref=e1014]: 64,611.15
+              - generic [ref=e1015]:
+                - time [ref=e1016]: 2 days ago
+                - generic [ref=e1017]:
+                  - link "Disclaimer" [ref=e1018] [cursor=pointer]:
+                    - /url: //www.google.com/intl/en-GB_IN/googlefinance/disclaimer/
+                  - separator [ref=e1019]
+                  - link "More from Google Finance" [ref=e1020] [cursor=pointer]:
+                    - /url: https://finance.google.com/?hl=en-GB&gl=IN&source=news
+        - generic [ref=e1023]:
+          - heading "Technology" [level=3] [ref=e1025]:
+            - link "Technology" [ref=e1026] [cursor=pointer]:
+              - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRGRqTVhZU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: Technology
+              - img [ref=e1027]
+          - separator [ref=e1029]
+          - generic [ref=e1030]:
+            - generic [ref=e1033]:
+              - generic [ref=e1034]:
+                - link [ref=e1036] [cursor=pointer]:
+                  - /url: ./read/CBMipAFBVV95cUxOQjJ2T2NKTlh6OWpIRDlmZWtmM0g0OWxDUnQ2dXhsaWpzMzNMdUEyQjdZRk5DRExrNzJSOXlVV2FBVm1JZ1dSOTZGT2J4UWh0OUtSanJfSWNYRE81T1UzTUxoQzhHd1R4VEVwV3NYQzZ0MmkwMnZhcDhIVzIzLVZpbWpfQU9tRnhJRExBRld3bXBBQUJheE1oUzBqMUFqb1dpbzh0cw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1038]:
+                  - generic [ref=e1039]:
+                    - generic [ref=e1042]: PCMag
+                    - generic [ref=e1046]:
+                      - generic:
+                        - button "More - Roku Is Raising Its Hardware Prices By Up to 50%. Here's How to Avoid the Increase" [ref=e1047] [cursor=pointer]:
+                          - img [ref=e1049]
+                        - tooltip [ref=e1051]: More
+                  - link "Roku Is Raising Its Hardware Prices By Up to 50%. Here's How to Avoid the Increase - PCMag - 17 hours ago - By Will Mccurdy" [ref=e1052] [cursor=pointer]:
+                    - /url: ./read/CBMipAFBVV95cUxOQjJ2T2NKTlh6OWpIRDlmZWtmM0g0OWxDUnQ2dXhsaWpzMzNMdUEyQjdZRk5DRExrNzJSOXlVV2FBVm1JZ1dSOTZGT2J4UWh0OUtSanJfSWNYRE81T1UzTUxoQzhHd1R4VEVwV3NYQzZ0MmkwMnZhcDhIVzIzLVZpbWpfQU9tRnhJRExBRld3bXBBQUJheE1oUzBqMUFqb1dpbzh0cw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Roku Is Raising Its Hardware Prices By Up to 50%. Here's How to Avoid the Increase
+                - figure [ref=e1053]
+              - generic [ref=e1054]:
+                - time [ref=e1055]: 17 hours ago
+                - separator [ref=e1056]
+                - generic [ref=e1057]: By Will Mccurdy
+                - generic [ref=e1058]:
+                  - link "See more headlines and perspectives - Roku Is Raising Its Hardware Prices By Up to 50%. Here's How to Avoid the Increase" [ref=e1060] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2l0cUpYWEVSRWw4NHZxZFlpNXp5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1061]
+                  - tooltip [ref=e1063]: See more headlines and perspectives
+            - separator [ref=e1064]
+            - generic [ref=e1067]:
+              - generic [ref=e1068]:
+                - link [ref=e1070] [cursor=pointer]:
+                  - /url: ./read/CBMiswFBVV95cUxPaTA3ekR1aXNuRjAtUVFZc2FwczhVQUs1RmNmV2lGaV84ZFJQVEp2bUtJVzVZVl9HdnIzWndDVXUxMEI0ZTVkY25NaW9xVTRwZ2dMbnFQMnVqT1Vnb0RYR2gySm9CcEVIeVp1ZUlOYk5pbE1GZUVWbkY0NTRuUEhnLTd4WWl1Y3Z0LVh6bU9rYVhwWWhPRVF6cG5wSEJNQXdzbjJzNTh5RUJpbTZLTGRJZ3JObw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1072]:
+                  - generic [ref=e1073]:
+                    - generic [ref=e1076]: GSMArena.com
+                    - generic [ref=e1080]:
+                      - generic:
+                        - 'button "More - Deals: pre-orders for the Galaxy Z Fold8, Z Fold8 Ultra and Z Flip8 are a go" [ref=e1081] [cursor=pointer]':
+                          - img [ref=e1083]
+                        - tooltip [ref=e1085]: More
+                  - 'link "Deals: pre-orders for the Galaxy Z Fold8, Z Fold8 Ultra and Z Flip8 are a go - GSMArena.com - 48 minutes ago" [ref=e1086] [cursor=pointer]':
+                    - /url: ./read/CBMiswFBVV95cUxPaTA3ekR1aXNuRjAtUVFZc2FwczhVQUs1RmNmV2lGaV84ZFJQVEp2bUtJVzVZVl9HdnIzWndDVXUxMEI0ZTVkY25NaW9xVTRwZ2dMbnFQMnVqT1Vnb0RYR2gySm9CcEVIeVp1ZUlOYk5pbE1GZUVWbkY0NTRuUEhnLTd4WWl1Y3Z0LVh6bU9rYVhwWWhPRVF6cG5wSEJNQXdzbjJzNTh5RUJpbTZLTGRJZ3JObw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "Deals: pre-orders for the Galaxy Z Fold8, Z Fold8 Ultra and Z Flip8 are a go"
+                - figure [ref=e1087]
+              - generic [ref=e1088]:
+                - time [ref=e1089]: 48 minutes ago
+                - generic [ref=e1090]:
+                  - 'link "See more headlines and perspectives - Deals: pre-orders for the Galaxy Z Fold8, Z Fold8 Ultra and Z Flip8 are a go" [ref=e1092] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pFbnNmTkVSSDJBU3BzaDQ3UXJTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1093]
+                  - tooltip [ref=e1095]: See more headlines and perspectives
+            - separator [ref=e1096]
+            - generic [ref=e1099]:
+              - generic [ref=e1100]:
+                - link [ref=e1102] [cursor=pointer]:
+                  - /url: ./read/CBMifEFVX3lxTFBlYnY0a0lYNEtKalBtZnJnRFZFNTlzOWN2dXhDQTNySUdoeHhaVmZxNmtUZXNzQnkyWms4cktqU012OF9QV1hIV1JqcGtrMHgxZHZSeUdvbE1Cenp2Rkxqb0pSV04xd0x0RThyMzExNTRaR0ppTUxNczR1Nko?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1104]:
+                  - generic [ref=e1105]:
+                    - generic [ref=e1108]: The Next Web
+                    - generic [ref=e1112]:
+                      - generic:
+                        - button "More - Google confirms higher Pixel 11 prices as RAM costs surge sixfold, and says it is reworking Android to use less memory" [ref=e1113] [cursor=pointer]:
+                          - img [ref=e1115]
+                        - tooltip [ref=e1117]: More
+                  - link "Google confirms higher Pixel 11 prices as RAM costs surge sixfold, and says it is reworking Android to use less memory - The Next Web - 1 hour ago" [ref=e1118] [cursor=pointer]:
+                    - /url: ./read/CBMifEFVX3lxTFBlYnY0a0lYNEtKalBtZnJnRFZFNTlzOWN2dXhDQTNySUdoeHhaVmZxNmtUZXNzQnkyWms4cktqU012OF9QV1hIV1JqcGtrMHgxZHZSeUdvbE1Cenp2Rkxqb0pSV04xd0x0RThyMzExNTRaR0ppTUxNczR1Nko?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Google confirms higher Pixel 11 prices as RAM costs surge sixfold, and says it is reworking Android to use less memory
+              - generic [ref=e1119]:
+                - time [ref=e1120]: 1 hour ago
+                - generic [ref=e1121]:
+                  - link "See more headlines and perspectives - Google confirms higher Pixel 11 prices as RAM costs surge sixfold, and says it is reworking Android to use less memory" [ref=e1123] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lENE1QWEVSRzJKdm9HNXd4WFJpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1124]
+                  - tooltip [ref=e1126]: See more headlines and perspectives
+        - generic [ref=e1129]:
+          - heading "Entertainment" [level=3] [ref=e1131]:
+            - link "Entertainment" [ref=e1132] [cursor=pointer]:
+              - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNREpxYW5RU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: Entertainment
+              - img [ref=e1133]
+          - separator [ref=e1135]
+          - generic [ref=e1136]:
+            - generic [ref=e1139]:
+              - generic [ref=e1140]:
+                - link [ref=e1142] [cursor=pointer]:
+                  - /url: ./read/CBMigwJBVV95cUxQNmtLMHZRalk1S2xOLW93Q1VaT3pybUtmMDNKOHE0T2dKYmRKTXgxMjl3ZF9GeDRrNFd5NmxaU0s4ZjhFTTYxZHpuZmJNUWl4clRLd2VJdDBoQzY5NHB6RjdlRHRyLUJ2cHlNakNHUkNwQzJaVlpta0RSNi1oSVNUV3VLX1JnX0JGbk10dnFEOW5CZS1uNGJLb0V6YkVvRUJLOFZ6RElXT3hpRmgyUjJqazBCOU5MMDh2ZkJscHQ2WU9vNWNTeV9xeGJKcGJNLUN3Vlc5cjhyWWRYUXZRTG0tN1FxOWY0UF85aUNYZkRwRWFXMmlmNWhnYVdLYTEtQ041REw0?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1144]:
+                  - generic [ref=e1145]:
+                    - generic [ref=e1148]: Koimoi
+                    - generic [ref=e1152]:
+                      - generic:
+                        - 'button "More - The Odyssey India Box Office Day 9: Becomes 2026''s First Hollywood Film To Enter The 100 Crore Club, Christopher Nolan Scores His 2nd Century" [ref=e1153] [cursor=pointer]':
+                          - img [ref=e1155]
+                        - tooltip [ref=e1157]: More
+                  - 'link "The Odyssey India Box Office Day 9: Becomes 2026''s First Hollywood Film To Enter The 100 Crore Club, Christopher Nolan Scores His 2nd Century - Koimoi - 6 hours ago" [ref=e1158] [cursor=pointer]':
+                    - /url: ./read/CBMigwJBVV95cUxQNmtLMHZRalk1S2xOLW93Q1VaT3pybUtmMDNKOHE0T2dKYmRKTXgxMjl3ZF9GeDRrNFd5NmxaU0s4ZjhFTTYxZHpuZmJNUWl4clRLd2VJdDBoQzY5NHB6RjdlRHRyLUJ2cHlNakNHUkNwQzJaVlpta0RSNi1oSVNUV3VLX1JnX0JGbk10dnFEOW5CZS1uNGJLb0V6YkVvRUJLOFZ6RElXT3hpRmgyUjJqazBCOU5MMDh2ZkJscHQ2WU9vNWNTeV9xeGJKcGJNLUN3Vlc5cjhyWWRYUXZRTG0tN1FxOWY0UF85aUNYZkRwRWFXMmlmNWhnYVdLYTEtQ041REw0?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "The Odyssey India Box Office Day 9: Becomes 2026's First Hollywood Film To Enter The 100 Crore Club, Christopher Nolan Scores His 2nd Century"
+                - figure [ref=e1159]
+              - generic [ref=e1160]:
+                - time [ref=e1161]: 6 hours ago
+                - generic [ref=e1162]:
+                  - 'link "See more headlines and perspectives - The Odyssey India Box Office Day 9: Becomes 2026''s First Hollywood Film To Enter The 100 Crore Club, Christopher Nolan Scores His 2nd Century" [ref=e1164] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2psZ2RIWEVSRlpVc2VHaFNuSl9pZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1165]
+                  - tooltip [ref=e1167]: See more headlines and perspectives
+            - separator [ref=e1168]
+            - generic [ref=e1171]:
+              - generic [ref=e1172]:
+                - link [ref=e1174] [cursor=pointer]:
+                  - /url: ./read/CBMiugFBVV95cUxNVGpXMFB3b1ZLSnpmalptSkNJTk1tMnpsRXRtNERZZjcyb2FzVWRISmh4ZjdQY0hQcUZjeGlIUzZhYU9kUTFjWC14OFYtS2hqSWZxc1RmanczN2xHLWZQbUJPeFZuNHpMRzFZQ2IzTEpVaXRIRlZIY0ZYaU9zVE9wQjlWTUJtTnRKLW9vNGxBNWxORHFtMTc0QjF3cUF6RExFOEtwZ2pXVXlCNG1vOHVaSFRUY0Yyd2dWUEHSAcIBQVVfeXFMTXp6MmRoQ0dzY3ExN2s0ZG5VY3ZlUF9QeERtZGVMLXhvdHM3VDBZejlvQ19LWW5YMnplX0RQckE3Ql9sY25TdmlQazdwYURYd0QtWklNWmtZS0ZiQlM2SkdiMmlFbnRzS0ZCTUltTlFWdE81MmtMTkZsOUVaMTdQNVZmVGw0cGkxcFVHTjFBMzVQSHItcDdkUGE3MVMxRGkyd3lvZXdlcndwZHRpR1RIbi1BMlJEaTd0Mk5HZGp3ZDl5RUE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1176]:
+                  - generic [ref=e1177]:
+                    - generic [ref=e1180]: NDTV
+                    - generic [ref=e1184]:
+                      - generic:
+                        - 'button "More - Ramayana: Ranbir Kapoor Says Final Face-Off With Yash Is Yet To Be Shot" [ref=e1185] [cursor=pointer]':
+                          - img [ref=e1187]
+                        - tooltip [ref=e1189]: More
+                  - 'link "Ramayana: Ranbir Kapoor Says Final Face-Off With Yash Is Yet To Be Shot - NDTV - 8 hours ago" [ref=e1190] [cursor=pointer]':
+                    - /url: ./read/CBMiugFBVV95cUxNVGpXMFB3b1ZLSnpmalptSkNJTk1tMnpsRXRtNERZZjcyb2FzVWRISmh4ZjdQY0hQcUZjeGlIUzZhYU9kUTFjWC14OFYtS2hqSWZxc1RmanczN2xHLWZQbUJPeFZuNHpMRzFZQ2IzTEpVaXRIRlZIY0ZYaU9zVE9wQjlWTUJtTnRKLW9vNGxBNWxORHFtMTc0QjF3cUF6RExFOEtwZ2pXVXlCNG1vOHVaSFRUY0Yyd2dWUEHSAcIBQVVfeXFMTXp6MmRoQ0dzY3ExN2s0ZG5VY3ZlUF9QeERtZGVMLXhvdHM3VDBZejlvQ19LWW5YMnplX0RQckE3Ql9sY25TdmlQazdwYURYd0QtWklNWmtZS0ZiQlM2SkdiMmlFbnRzS0ZCTUltTlFWdE81MmtMTkZsOUVaMTdQNVZmVGw0cGkxcFVHTjFBMzVQSHItcDdkUGE3MVMxRGkyd3lvZXdlcndwZHRpR1RIbi1BMlJEaTd0Mk5HZGp3ZDl5RUE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "Ramayana: Ranbir Kapoor Says Final Face-Off With Yash Is Yet To Be Shot"
+                - figure [ref=e1191]
+              - generic [ref=e1192]:
+                - time [ref=e1193]: 8 hours ago
+                - generic [ref=e1194]:
+                  - 'link "See more headlines and perspectives - Ramayana: Ranbir Kapoor Says Final Face-Off With Yash Is Yet To Be Shot" [ref=e1196] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2k1cGUzUUVSRURtbXQyVEFSSDZTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1197]
+                  - tooltip [ref=e1199]: See more headlines and perspectives
+            - separator [ref=e1200]
+            - generic [ref=e1203]:
+              - generic [ref=e1204]:
+                - link [ref=e1206] [cursor=pointer]:
+                  - /url: ./read/CBMinwFBVV95cUxORGs5WEFDS243dWtodTM0ZkJxNUJ6WEpVUlA4bWN0am9QNm9oSWdVVWlKSFh3OUVPZnp4RllLTmxwLTJuMzFYN3JORlBGM0pGdVU4LVpKOUU3WWxuRGd1a21jUmlhVnk1QWlUZmRvMnVFRFpmd3FDYms1RGxZZ1QzdWlzM0UzNE5uMm5YUmtmNDdzWUxFTVR5VGZZcjdVa1U?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1208]:
+                  - generic [ref=e1209]:
+                    - generic [ref=e1212]: Variety
+                    - generic [ref=e1216]:
+                      - generic:
+                        - button "More - Marvel’s Comic-Con Panel Excites Fans for ‘Doomsday’ but Leaves Them Cautiously Optimistic About What’s Beyond" [ref=e1217] [cursor=pointer]:
+                          - img [ref=e1219]
+                        - tooltip [ref=e1221]: More
+                  - link "Marvel’s Comic-Con Panel Excites Fans for ‘Doomsday’ but Leaves Them Cautiously Optimistic About What’s Beyond - Variety - 8 hours ago - By Jordan Moreau" [ref=e1222] [cursor=pointer]:
+                    - /url: ./read/CBMinwFBVV95cUxORGs5WEFDS243dWtodTM0ZkJxNUJ6WEpVUlA4bWN0am9QNm9oSWdVVWlKSFh3OUVPZnp4RllLTmxwLTJuMzFYN3JORlBGM0pGdVU4LVpKOUU3WWxuRGd1a21jUmlhVnk1QWlUZmRvMnVFRFpmd3FDYms1RGxZZ1QzdWlzM0UzNE5uMm5YUmtmNDdzWUxFTVR5VGZZcjdVa1U?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Marvel’s Comic-Con Panel Excites Fans for ‘Doomsday’ but Leaves Them Cautiously Optimistic About What’s Beyond
+                - figure [ref=e1223]
+              - generic [ref=e1224]:
+                - time [ref=e1225]: 8 hours ago
+                - separator [ref=e1226]
+                - generic [ref=e1227]: By Jordan Moreau
+                - generic [ref=e1228]:
+                  - link "See more headlines and perspectives - Marvel’s Comic-Con Panel Excites Fans for ‘Doomsday’ but Leaves Them Cautiously Optimistic About What’s Beyond" [ref=e1230] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lycjRiVEVSR0VKbFYxMHNkaGRDZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1231]
+                  - tooltip [ref=e1233]: See more headlines and perspectives
+        - generic [ref=e1236]:
+          - heading "Sports" [level=3] [ref=e1238]:
+            - link "Sports" [ref=e1239] [cursor=pointer]:
+              - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRFp1ZEdvU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - text: Sports
+              - img [ref=e1240]
+          - separator [ref=e1242]
+          - generic [ref=e1243]:
+            - generic [ref=e1246]:
+              - generic [ref=e1247]:
+                - link [ref=e1249] [cursor=pointer]:
+                  - /url: ./read/CBMihAFBVV95cUxOZEtiYmFfWjJzVDAweFFfZ0dhZ01JQWZxenVBSFI2SVY3T3BVRncxMXFnaEhEX2ZXNmFEN09CYW91WG9rN1pRb3pycnU2MDFwaHJaR3VlMUpxWERlS3pjUC1uZTNKLVhaSW1LUG1VRHFQRXpGZ0ZJXzVSSXhicHdRLWE4VHo?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1251]:
+                  - generic [ref=e1252]:
+                    - generic [ref=e1255]: Yahoo Sports
+                    - generic [ref=e1259]:
+                      - generic:
+                        - button "More - Where to watch Zimbabwe vs India live stream, TV channel, start time and lineups for 3rd T20I" [ref=e1260] [cursor=pointer]:
+                          - img [ref=e1262]
+                        - tooltip [ref=e1264]: More
+                  - link "Where to watch Zimbabwe vs India live stream, TV channel, start time and lineups for 3rd T20I - Yahoo Sports - 10 hours ago - By Anselm Noronha" [ref=e1265] [cursor=pointer]:
+                    - /url: ./read/CBMihAFBVV95cUxOZEtiYmFfWjJzVDAweFFfZ0dhZ01JQWZxenVBSFI2SVY3T3BVRncxMXFnaEhEX2ZXNmFEN09CYW91WG9rN1pRb3pycnU2MDFwaHJaR3VlMUpxWERlS3pjUC1uZTNKLVhaSW1LUG1VRHFQRXpGZ0ZJXzVSSXhicHdRLWE4VHo?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Where to watch Zimbabwe vs India live stream, TV channel, start time and lineups for 3rd T20I
+                - figure [ref=e1266]
+              - generic [ref=e1267]:
+                - time [ref=e1268]: 10 hours ago
+                - separator [ref=e1269]
+                - generic [ref=e1270]: By Anselm Noronha
+                - generic [ref=e1271]:
+                  - link "See more headlines and perspectives - Where to watch Zimbabwe vs India live stream, TV channel, start time and lineups for 3rd T20I" [ref=e1273] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lral9uS0VSSFgxSUFYbWpWM2dTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1274]
+                  - tooltip [ref=e1276]: See more headlines and perspectives
+            - separator [ref=e1277]
+            - generic [ref=e1280]:
+              - generic [ref=e1281]:
+                - link [ref=e1283] [cursor=pointer]:
+                  - /url: ./read/CBMikwJBVV95cUxNM050QldzT2JCXzBxYm9idEpOSW9tcDFmVGN3ZkJVQzRzMzdmMHJpTUFjb1FwWFhybzRfOERMdm8xaDI1d1MxRUFON0hLMDRTV1dDbWNydjBOb1N3X2w1ZjlIUVByb0xNZHpaWVdLR19lblF6cy1VaVhmTlpmbl9oTjUtNWhVTDVWcVNZTV83cTRiNlYwR0xiLW9TSUdUVjNLN3ZtQ05FNmFlRXozSVMwbWQ2WWZXZ3pvYURSVWdpc0dOTS1TTFFIaU5Ld0JkTHFMLVVub093eWlTdURobEZmZ0VGX0g2bEdHakdYTnBaekNXeXAxYVdwMzltcHdBcVBvQUhUcWlRY1dBbGcxMUxLM1A1TdIBmgJBVV95cUxQUldfRlhzdzh6c2tWalZCcndwR21GNnhkRy1NUXlNSXh6S0RVeGhpMnVZd1I2dWRzYVE5bWV1Q0RqSE5JdGJKaXFfeXc0QWw4TXJoWXRLUW9NNkdGNEhwaG5uT1Y5V1Q1b1NpaE45ZnljVm9JNHcyXy1hcXRSNGxteE1wY1ZtWUVONTgwZnk1OHc3MkQ2bUdsNk5BRWZYeWJ4Mnl0bTdmeGczd2lsQlBHeXdJRFU4a05DM3NKYVRjVnc2M2xLbkhiQnYwUmFmUXJpZzlBaC1vZlF0dlVDaWQ0VUxhUldRREptd3JCSzZ3dGpqQXJtX213TmZDSmNsZW94YS1XbHc4TDViTk5YSm5vRENiTEJmaUQtN3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1285]:
+                  - generic [ref=e1286]:
+                    - generic [ref=e1289]: Sportstar
+                    - generic [ref=e1293]:
+                      - generic:
+                        - 'button "More - CWG Glasgow 2026 LIVE Updates, Day 4: Rishikanta wins weightlifting silver with Commonwealth Games record in Snatch" [ref=e1294] [cursor=pointer]':
+                          - img [ref=e1296]
+                        - tooltip [ref=e1298]: More
+                  - 'link "CWG Glasgow 2026 LIVE Updates, Day 4: Rishikanta wins weightlifting silver with Commonwealth Games record in Snatch - Sportstar - 23 minutes ago - By Santadeep Dey" [ref=e1299] [cursor=pointer]':
+                    - /url: ./read/CBMikwJBVV95cUxNM050QldzT2JCXzBxYm9idEpOSW9tcDFmVGN3ZkJVQzRzMzdmMHJpTUFjb1FwWFhybzRfOERMdm8xaDI1d1MxRUFON0hLMDRTV1dDbWNydjBOb1N3X2w1ZjlIUVByb0xNZHpaWVdLR19lblF6cy1VaVhmTlpmbl9oTjUtNWhVTDVWcVNZTV83cTRiNlYwR0xiLW9TSUdUVjNLN3ZtQ05FNmFlRXozSVMwbWQ2WWZXZ3pvYURSVWdpc0dOTS1TTFFIaU5Ld0JkTHFMLVVub093eWlTdURobEZmZ0VGX0g2bEdHakdYTnBaekNXeXAxYVdwMzltcHdBcVBvQUhUcWlRY1dBbGcxMUxLM1A1TdIBmgJBVV95cUxQUldfRlhzdzh6c2tWalZCcndwR21GNnhkRy1NUXlNSXh6S0RVeGhpMnVZd1I2dWRzYVE5bWV1Q0RqSE5JdGJKaXFfeXc0QWw4TXJoWXRLUW9NNkdGNEhwaG5uT1Y5V1Q1b1NpaE45ZnljVm9JNHcyXy1hcXRSNGxteE1wY1ZtWUVONTgwZnk1OHc3MkQ2bUdsNk5BRWZYeWJ4Mnl0bTdmeGczd2lsQlBHeXdJRFU4a05DM3NKYVRjVnc2M2xLbkhiQnYwUmFmUXJpZzlBaC1vZlF0dlVDaWQ0VUxhUldRREptd3JCSzZ3dGpqQXJtX213TmZDSmNsZW94YS1XbHc4TDViTk5YSm5vRENiTEJmaUQtN3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: "CWG Glasgow 2026 LIVE Updates, Day 4: Rishikanta wins weightlifting silver with Commonwealth Games record in Snatch"
+                - figure [ref=e1300]
+              - generic [ref=e1301]:
+                - time [ref=e1302]: 23 minutes ago
+                - separator [ref=e1303]
+                - generic [ref=e1304]: By Santadeep Dey
+                - generic [ref=e1305]:
+                  - 'link "See more headlines and perspectives - CWG Glasgow 2026 LIVE Updates, Day 4: Rishikanta wins weightlifting silver with Commonwealth Games record in Snatch" [ref=e1307] [cursor=pointer]':
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lCd2NuWUVSRVdxbGdTQm9ic09pZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1308]
+                  - tooltip [ref=e1310]: See more headlines and perspectives
+            - separator [ref=e1311]
+            - generic [ref=e1314]:
+              - generic [ref=e1315]:
+                - link [ref=e1317] [cursor=pointer]:
+                  - /url: ./read/CBMiogJBVV95cUxNSUxSamZnWDFocWM4aUZncmR2czZGOVl3bEVDcm5DeWVtaVRIWGJ6WWtFb3R3U01NNlZvNmdpYmpjajlzY2FyV1ZMNWRXd3J4ZXY1TTE2UGIxdkJOeFdOMHktN1Bwbklzd3REQ0RaSmEzamZMNFUtX0VRd0FyMHFSSTRUcnhjcmVmUWlXODhvM3Y4b1k1ckNwODBoYVcycnBLd2VtemFiZW5kbHVCdk1jaWlmeGptdDIydHNTYjZWTDZtc1hvY003WDB2d2FoYkVCd1lKOFRncXZkRUoyUm8zX1ZIRmZrdlhqMGs1N04zMlhHMnBXcElTMHVJRUo5Sk5yU044VXZ0QVhYNWJiSS13ZDVpYUtFMW01dk9YZ1E1XzNTdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1319]:
+                  - generic [ref=e1320]:
+                    - generic [ref=e1323]: The Times of India
+                    - generic [ref=e1327]:
+                      - generic:
+                        - button "More - Anahat Singh scripts history, becomes first Indian to win world junior squash title; ends Egypt's 13-year" [ref=e1328] [cursor=pointer]:
+                          - img [ref=e1330]
+                        - tooltip [ref=e1332]: More
+                  - link "Anahat Singh scripts history, becomes first Indian to win world junior squash title; ends Egypt's 13-year - The Times of India - 18 hours ago" [ref=e1333] [cursor=pointer]:
+                    - /url: ./read/CBMiogJBVV95cUxNSUxSamZnWDFocWM4aUZncmR2czZGOVl3bEVDcm5DeWVtaVRIWGJ6WWtFb3R3U01NNlZvNmdpYmpjajlzY2FyV1ZMNWRXd3J4ZXY1TTE2UGIxdkJOeFdOMHktN1Bwbklzd3REQ0RaSmEzamZMNFUtX0VRd0FyMHFSSTRUcnhjcmVmUWlXODhvM3Y4b1k1ckNwODBoYVcycnBLd2VtemFiZW5kbHVCdk1jaWlmeGptdDIydHNTYjZWTDZtc1hvY003WDB2d2FoYkVCd1lKOFRncXZkRUoyUm8zX1ZIRmZrdlhqMGs1N04zMlhHMnBXcElTMHVJRUo5Sk5yU044VXZ0QVhYNWJiSS13ZDVpYUtFMW01dk9YZ1E1XzNTdw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - text: Anahat Singh scripts history, becomes first Indian to win world junior squash title; ends Egypt's 13-year
+                - figure [ref=e1334]
+              - generic [ref=e1335]:
+                - time [ref=e1336]: 18 hours ago
+                - generic [ref=e1337]:
+                  - link "See more headlines and perspectives - Anahat Singh scripts history, becomes first Indian to win world junior squash title; ends Egypt's 13-year" [ref=e1339] [cursor=pointer]:
+                    - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lSMEpqUUVSRlJfcHYtWmV6YjJTZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                    - img [ref=e1340]
+                  - tooltip [ref=e1342]: See more headlines and perspectives
+    - generic [ref=e1346]:
+      - heading "Sources" [level=2] [ref=e1347]
+      - paragraph [ref=e1348]: Popular in your area
+      - generic [ref=e1349]:
+        - button [ref=e1354] [cursor=pointer]:
+          - img [ref=e1356]
+        - generic [ref=e1358]:
+          - generic [ref=e1362]:
+            - generic [ref=e1363]: Introducing News Showcase
+            - generic [ref=e1364]: A new feature from Google highlighting stories selected by newsroom editors
+          - generic [ref=e1370]:
+            - generic [ref=e1371]:
+              - link "NDTV" [ref=e1372] [cursor=pointer]:
+                - /url: ./publications/CAAqIQgKIhtDQklTRGdnTWFnb0tDRzVrZEhZdVkyOXRLQUFQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "NDTV" [level=3] [ref=e1373]:
+                  - img "NDTV" [ref=e1374]
+              - generic [ref=e1376]:
+                - button "Follow this source - NDTV" [ref=e1378]:
+                  - img [ref=e1382]
+                  - generic [ref=e1384]: Follow
+                - tooltip [ref=e1385]: Follow this source
+            - heading "Top Headlines" [level=4] [ref=e1386]
+            - generic [ref=e1387]:
+              - generic [ref=e1388]:
+                - link [ref=e1390] [cursor=pointer]:
+                  - /url: ./read/CBMi3wJBVV95cUxQMkw4eTBEeC1nM084ZHVBbWZ4Z3dZcUgzZHI1NDlXOHJzVzVvaFBhSTI0YWlMM3N1VTd3TkZJa29zeGtONlZMZ04zMXdIV29rY3p5ZXVaeVRjNnVaTE9FcDYwOXQ3TUF2VktGai1tbU5HV3U3dmM4c0tHMU44TVVUMk16NFZld3BvSHFxU3dHWkhnWEZTZ01KZ2lpemxqMXdHUTVBUXY2bFdRWHlNTHFVRHFNNFBCc2REY3R5ZFh2NVNUdlJncE1LRmZtMFJKVW5idG0ydHVTYm9kcXZrQW54Q2xEdHhhczBjbGhyeEk1ZHFDLTJQQkRkUENONVo0YWpqUDd2QVIxNDhEZDRtS2RJb2JxQktpaVc2N0VYQXA3emM4Q01CNG1ocXI2SkpkaWJxdGdDbUdVdUdOeDB2aTZkeWNxeTViaExtWXQwcHNGbHYyMVIxWU9yeEtvOXNYX0E?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1391]: New Delhi
+                - 'link "Government Never Tried To Stop Student Protests: Nirmala Sit..." [ref=e1392] [cursor=pointer]':
+                  - /url: ./read/CBMi3wJBVV95cUxQMkw4eTBEeC1nM084ZHVBbWZ4Z3dZcUgzZHI1NDlXOHJzVzVvaFBhSTI0YWlMM3N1VTd3TkZJa29zeGtONlZMZ04zMXdIV29rY3p5ZXVaeVRjNnVaTE9FcDYwOXQ3TUF2VktGai1tbU5HV3U3dmM4c0tHMU44TVVUMk16NFZld3BvSHFxU3dHWkhnWEZTZ01KZ2lpemxqMXdHUTVBUXY2bFdRWHlNTHFVRHFNNFBCc2REY3R5ZFh2NVNUdlJncE1LRmZtMFJKVW5idG0ydHVTYm9kcXZrQW54Q2xEdHhhczBjbGhyeEk1ZHFDLTJQQkRkUENONVo0YWpqUDd2QVIxNDhEZDRtS2RJb2JxQktpaVc2N0VYQXA3emM4Q01CNG1ocXI2SkpkaWJxdGdDbUdVdUdOeDB2aTZkeWNxeTViaExtWXQwcHNGbHYyMVIxWU9yeEtvOXNYX0E?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1393]
+              - generic [ref=e1394]:
+                - link [ref=e1396] [cursor=pointer]:
+                  - /url: ./read/CBMi1gJBVV95cUxPNmxRM3pXTldPWVNYTlZlWUEteE5OZVZpUjBCcGo5REMtSlFtS21iQnh4M1pUclI2LXNWOXIzanFWLUpKSWstNUJqdGFwMWk1TmNGLWZMMWNKQmVhQUxZZHdJelVrRVFZSTRCTTVaUUlTZzJnY2hBdEtna3BRVUJteXE3Y0psQVk5LXB5ck1nSTN5TFRkNmgtWU4yUlA0WGdVOTFmb09HLThQRlJxSzNXZllrWWhOVnBkMENlcTJmMHhIVkFsT3RuVjBSRXZCaWFKa1dBTUNrS3NIZTJIeFkyOEtvbWdnTkZndHZWc3R6cHJSRW1XU3BDMFpvVk5xWnYyXzZhY19FRXZKam43UFc3aE9vYm9CM2w5bFdrRDZRai1HU0NUQVlibWEyN2RxY28tNGltTHRGTTFGRkgxOEYxZWxFNjR2aFQ0TWxsZjdoa1gxTGRBblE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1397]: Chandigarh
+                - link "Now, BJP Demands Punjab Education Minister's Exit. Bhagwant ..." [ref=e1398] [cursor=pointer]:
+                  - /url: ./read/CBMi1gJBVV95cUxPNmxRM3pXTldPWVNYTlZlWUEteE5OZVZpUjBCcGo5REMtSlFtS21iQnh4M1pUclI2LXNWOXIzanFWLUpKSWstNUJqdGFwMWk1TmNGLWZMMWNKQmVhQUxZZHdJelVrRVFZSTRCTTVaUUlTZzJnY2hBdEtna3BRVUJteXE3Y0psQVk5LXB5ck1nSTN5TFRkNmgtWU4yUlA0WGdVOTFmb09HLThQRlJxSzNXZllrWWhOVnBkMENlcTJmMHhIVkFsT3RuVjBSRXZCaWFKa1dBTUNrS3NIZTJIeFkyOEtvbWdnTkZndHZWc3R6cHJSRW1XU3BDMFpvVk5xWnYyXzZhY19FRXZKam43UFc3aE9vYm9CM2w5bFdrRDZRai1HU0NUQVlibWEyN2RxY28tNGltTHRGTTFGRkgxOEYxZWxFNjR2aFQ0TWxsZjdoa1gxTGRBblE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1399]
+              - generic [ref=e1400]:
+                - link [ref=e1402] [cursor=pointer]:
+                  - /url: ./read/CBMi7AJBVV95cUxONmJMbjVIQy1IeFpGOHB5dFNlRHVOcHFjdUd0MzdIc0RGZFJ2c0ZxUkJ5MHBpMHQ4SmswMjNaQTl5TnMxRXUzQk16QnBtUEl1RGJMUFBqbUo1czVVVzVyR1BLWDl1TVFMRENJVjBkelM1enlfMzJkcDJ4bDVMcTdiTmhvVUZBaXZYNTMtTkFPS3g4S296YVdORDE1ODktUHRjcmhiYno1ekh6WGdzRXZ4U2t2dG5tZUl0ZWhRY3NJcllRWmZ5alVXTlp4bEY0ZUVpaEQyYTZsYWd5Y0xFY3dVUGVpRXNIY2lBSURUSUxSZk9MaTlGczdlRGVoSUtUVUVMNzZtYWRiRF8tZkVja04wZFZuMVVyeEJQLU9pcjFSNk9HUW5UOHlzMUVfMHFKdTRUVnZjWU55SXIxbW9FWXN6T0d3MloxQldteHpKYnFwYjJId1ROXzVkbDBXa1FUSUtEYkVFV052TW9jbjBD?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1403]: New Delhi
+                - 'link "\"Won''t Delete\": BJP MP''s Daughter''s Viral Post On Dharmendra..." [ref=e1404] [cursor=pointer]':
+                  - /url: ./read/CBMi7AJBVV95cUxONmJMbjVIQy1IeFpGOHB5dFNlRHVOcHFjdUd0MzdIc0RGZFJ2c0ZxUkJ5MHBpMHQ4SmswMjNaQTl5TnMxRXUzQk16QnBtUEl1RGJMUFBqbUo1czVVVzVyR1BLWDl1TVFMRENJVjBkelM1enlfMzJkcDJ4bDVMcTdiTmhvVUZBaXZYNTMtTkFPS3g4S296YVdORDE1ODktUHRjcmhiYno1ekh6WGdzRXZ4U2t2dG5tZUl0ZWhRY3NJcllRWmZ5alVXTlp4bEY0ZUVpaEQyYTZsYWd5Y0xFY3dVUGVpRXNIY2lBSURUSUxSZk9MaTlGczdlRGVoSUtUVUVMNzZtYWRiRF8tZkVja04wZFZuMVVyeEJQLU9pcjFSNk9HUW5UOHlzMUVfMHFKdTRUVnZjWU55SXIxbW9FWXN6T0d3MloxQldteHpKYnFwYjJId1ROXzVkbDBXa1FUSUtEYkVFV052TW9jbjBD?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1405]
+            - generic [ref=e1406]:
+              - generic [ref=e1407]:
+                - generic [ref=e1408]: Showcase
+                - time [ref=e1409]: • 34 minutes ago
+              - generic [ref=e1414]:
+                - button "More - NDTV" [ref=e1415] [cursor=pointer]:
+                  - img [ref=e1417]
+                - tooltip [ref=e1419]: More
+          - generic [ref=e1423]:
+            - generic [ref=e1424]:
+              - link "The Hindu" [ref=e1425] [cursor=pointer]:
+                - /url: ./publications/CAAqJggKIiBDQklTRWdnTWFnNEtESFJvWldocGJtUjFMbU52YlNnQVAB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "The Hindu" [level=3] [ref=e1426]:
+                  - img "The Hindu" [ref=e1427]
+              - generic [ref=e1429]:
+                - button "Follow this source - The Hindu" [ref=e1431]:
+                  - img [ref=e1435]
+                  - generic [ref=e1437]: Follow
+                - tooltip [ref=e1438]: Follow this source
+            - heading "Top India News" [level=4] [ref=e1439]
+            - generic [ref=e1440]:
+              - generic [ref=e1441]:
+                - link [ref=e1443] [cursor=pointer]:
+                  - /url: ./read/CBMiwAVBVV95cUxQdnMxSkNQbEZ0YzZkR0t5XzdoSFJXUkZobXVHZDB5RUNHS0JtSEdrTDBnUk9kM3hhVlkxcHdsaHRBQ3EybVBaRnIzb1p5UDBBaW1UbERwQll5RDJOa3kwMTdNNFhBQXBaZW1rb0d1bEFnV2xkbDlYTWR3T3VxRGlmdkZqMnFGMjhURElDTHJQbE1RcGZiVzZscWxlSV9Gb18zZTBPbURDMDE0SnpPdjZnZzUzSUxldXl6czZWRkVSWmNPTG5ET2tiR1kzWXdJSHZmdTM2QTZEYk5NVm8zSVpWZ0JOYWxNWHE3d1dNTDVwWGUxWVBpQ09WRy1jWTlLaWdXLXVVSUJUM3I0bjhMdGFhTVN6b0xfc1RDRlF1MExKbF9JMmlRekxHbTRkQksxS2JuY1FzVWJrQzJlWUxibHFodjZsakVaU2w4cUFpalJCc0o3SmFWUWhWSWd1U0E1Nk9hOENZbF82SUJ0V2F5b28zS2FPSjl2RWNnZ1lZb29Hb3lrbWRta2Vkem9mRlZrdmtfLVdEdE0zeU9xaFkzeXM3cG5FUXJkeHN4YjV1bW9MRDNmM1RlRUhWc0t3dk9RMEtXTUpvSnNLbjZyQ3RNVTFyYVNSQ1gyYzQ5aURFRkY4ckhLM0pWbFFyeDlvN0MxRE5ITklaUTlkMUR5cmpjYXFTZmx2bEJ5cW5nMzk1UTRTVU5NUTdMZ2xaTFdrbzBTRmlqdHVNdkJRSWpZQTZDLUJiWXJfTVp4RUd6aUNfNl9BMVgtZjhkbFVfNlVBWE93Z3RkSXpyZU4xVVBmRDhiQ0NtR1VXVmIzQ2gyRWY5N2ZFYV9lZkl4dzhYRV9pZXhqX1Izdm5aWWtrcTBtV2lEcmVvTVFfY25yaFRzSkNsMXdhVEJ2cm9GQnEyMWs0UU0zOTNxRmlmLUtaZUhza3VWTFBVUw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1444]: Jantar Mantar protest
+                - 'link "Jantar Mantar protest updates: President accepts Dharmendra P..." [ref=e1445] [cursor=pointer]':
+                  - /url: ./read/CBMiwAVBVV95cUxQdnMxSkNQbEZ0YzZkR0t5XzdoSFJXUkZobXVHZDB5RUNHS0JtSEdrTDBnUk9kM3hhVlkxcHdsaHRBQ3EybVBaRnIzb1p5UDBBaW1UbERwQll5RDJOa3kwMTdNNFhBQXBaZW1rb0d1bEFnV2xkbDlYTWR3T3VxRGlmdkZqMnFGMjhURElDTHJQbE1RcGZiVzZscWxlSV9Gb18zZTBPbURDMDE0SnpPdjZnZzUzSUxldXl6czZWRkVSWmNPTG5ET2tiR1kzWXdJSHZmdTM2QTZEYk5NVm8zSVpWZ0JOYWxNWHE3d1dNTDVwWGUxWVBpQ09WRy1jWTlLaWdXLXVVSUJUM3I0bjhMdGFhTVN6b0xfc1RDRlF1MExKbF9JMmlRekxHbTRkQksxS2JuY1FzVWJrQzJlWUxibHFodjZsakVaU2w4cUFpalJCc0o3SmFWUWhWSWd1U0E1Nk9hOENZbF82SUJ0V2F5b28zS2FPSjl2RWNnZ1lZb29Hb3lrbWRta2Vkem9mRlZrdmtfLVdEdE0zeU9xaFkzeXM3cG5FUXJkeHN4YjV1bW9MRDNmM1RlRUhWc0t3dk9RMEtXTUpvSnNLbjZyQ3RNVTFyYVNSQ1gyYzQ5aURFRkY4ckhLM0pWbFFyeDlvN0MxRE5ITklaUTlkMUR5cmpjYXFTZmx2bEJ5cW5nMzk1UTRTVU5NUTdMZ2xaTFdrbzBTRmlqdHVNdkJRSWpZQTZDLUJiWXJfTVp4RUd6aUNfNl9BMVgtZjhkbFVfNlVBWE93Z3RkSXpyZU4xVVBmRDhiQ0NtR1VXVmIzQ2gyRWY5N2ZFYV9lZkl4dzhYRV9pZXhqX1Izdm5aWWtrcTBtV2lEcmVvTVFfY25yaFRzSkNsMXdhVEJ2cm9GQnEyMWs0UU0zOTNxRmlmLUtaZUhza3VWTFBVUw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1446]
+              - generic [ref=e1447]:
+                - link [ref=e1449] [cursor=pointer]:
+                  - /url: ./read/CBMinAVBVV95cUxOOWpmVlZydG9kcEczZ1IyUXgxcTV1QXpJRTdyRUtKTDdZdkVQVVYyNlp0aDRoZEZVMGhsRTRCNHVBSjVHMVRVV1BSSUhDVzd3YkdMR3VheXJGOVRSWlhuWmhoZHhHRXZmT2gzU2U4NV9JNlZMZU1JRHQtcFdDaFVoRnpSYjBUQV84Ni05NS1uTUdNdFpRdm5mdVo2Z1g0c29ibUZCaGRPaHRnd2JhWE1TdWJhMGFyNDRqUURlVmhTUmpLd0FpRERMWWlyLUExZGo4Z0Q2TnFWUWxkYXhLNG1TeHprWEVtYUFZc3JwYW5nLTFSRDBYVVhwYkRWZHZldnoyOTRzd1lVWTNwYUhYM1o1aWhsd1JBb2k4WWdHZER1SWNvbGZRMnhUT1FfUktqX3lkZ3dZdWhBUmptcEhPeXMxSFhHYmJUQTFlMGdtcDNCbC1qc2V2VERiZ0ZSRTVzTkxvOG9yZjRGXzlHWWtUazdFZEZ5RE1iRjVoUzZxM3UwWjBCRVlZZ2dWaWpNU0hTZWVQcHVJSmpKeHFfN3dJak8ta0FZTVZ5dUF3RFFuZHJaNkJ3dXR5bHFvaXFYU244YlpzV2xSaVVZQzEteGMxOEttWEJFdFJjd3dwZE54Wi02Q2ltX1FPOE51U2tGTkVtTXpQQXprRTBMNm0taUhBSkpOUHNTTjJvQVViNXdIZ05NaFhoTC1xcFQ2b2Q3eGpqNmZaa0M3NzNGT2F4YkZCdkJqN1pTWHpKLXBkMFZGb21DN1E0TlU4NVBqbTl4YXdUc3RWQjhHZWU3UUgyOUxrT0ZkNTVvd2U4Z3VDaENFYXJteFhiQ2ZKR3VMN2huZUZFeXRqUmNhSWpRc3A2bGxoa3Iwd0tGc2ZnYVlpRDh0Rg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1450]: Anti-cheating law
+                - link "Centre proposes Bill to strengthen anti-cheating law in bid t..." [ref=e1451] [cursor=pointer]:
+                  - /url: ./read/CBMinAVBVV95cUxOOWpmVlZydG9kcEczZ1IyUXgxcTV1QXpJRTdyRUtKTDdZdkVQVVYyNlp0aDRoZEZVMGhsRTRCNHVBSjVHMVRVV1BSSUhDVzd3YkdMR3VheXJGOVRSWlhuWmhoZHhHRXZmT2gzU2U4NV9JNlZMZU1JRHQtcFdDaFVoRnpSYjBUQV84Ni05NS1uTUdNdFpRdm5mdVo2Z1g0c29ibUZCaGRPaHRnd2JhWE1TdWJhMGFyNDRqUURlVmhTUmpLd0FpRERMWWlyLUExZGo4Z0Q2TnFWUWxkYXhLNG1TeHprWEVtYUFZc3JwYW5nLTFSRDBYVVhwYkRWZHZldnoyOTRzd1lVWTNwYUhYM1o1aWhsd1JBb2k4WWdHZER1SWNvbGZRMnhUT1FfUktqX3lkZ3dZdWhBUmptcEhPeXMxSFhHYmJUQTFlMGdtcDNCbC1qc2V2VERiZ0ZSRTVzTkxvOG9yZjRGXzlHWWtUazdFZEZ5RE1iRjVoUzZxM3UwWjBCRVlZZ2dWaWpNU0hTZWVQcHVJSmpKeHFfN3dJak8ta0FZTVZ5dUF3RFFuZHJaNkJ3dXR5bHFvaXFYU244YlpzV2xSaVVZQzEteGMxOEttWEJFdFJjd3dwZE54Wi02Q2ltX1FPOE51U2tGTkVtTXpQQXprRTBMNm0taUhBSkpOUHNTTjJvQVViNXdIZ05NaFhoTC1xcFQ2b2Q3eGpqNmZaa0M3NzNGT2F4YkZCdkJqN1pTWHpKLXBkMFZGb21DN1E0TlU4NVBqbTl4YXdUc3RWQjhHZWU3UUgyOUxrT0ZkNTVvd2U4Z3VDaENFYXJteFhiQ2ZKR3VMN2huZUZFeXRqUmNhSWpRc3A2bGxoa3Iwd0tGc2ZnYVlpRDh0Rg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1452]
+              - generic [ref=e1453]:
+                - link [ref=e1455] [cursor=pointer]:
+                  - /url: ./read/CBMiowVBVV95cUxNTUVKODY0TndBZ0tENUxfRHlGTTdBSGtOcmtrZW1iYWFTUVp2cWdLeG5LRzgwSDVmRW5BU1pPcVlpTVkwZ3hXU2RSZFBaTDdhcWxNdEpVbkwyR1RudlFOZG5pSmQ2WHllcWN6SGRNM29ETmQzYWdkblFCUDczVmJDcjlHY2pURGtFakxnNlhwS0FVbERjSG9JbGZIVE5iRHNfcjdsZGsyN0xQS2xnMFhCSEQ1VTBJNUFiT01UZ0VWVS0zWkVKSFlfcW1weXRqTVd5NXFTZmlHTjA2TGoyYWo3MmUtTEpIUEhJTHloYjQyOWE3aVd3alN4X0dEOUpsLUNyVDFjMl9IX3FMVHp1SFpZYlhSc2QtVlV5MExkSGE4NE9STmZYZGxwa0U5d3hyNVFYSUtBMEN4bkNTWlQxYVByZmhTY2tJbnh0Y0ZmcTNRV18tczg2VGpHbEF0MlRPdUl1X3hiNTZaNENmNDlGU0h1MDFfcThGS29nWm1xSUdRZzFrTm5WWFJDWFBxaWctd2x4UXVrZjgwR0tmOG54bTdhTkg5UVpHLUlqRGJiREVPOUxXbGRSYWljVlBWRk93NUpfLTNLNGJOTm96V0FsUm05UlA2RFJJb2Via2xZWXpUbWVlb1JzcG5HTzBTaEZTTk1nV080eVdiY2plLUVDaEoybm1BTUdQZnlWa3RUWnZobnhEZFRCQzRsVkd3UWxaaTFNZDdBaHVFZGV5OFNtcW5Mc3ViT2N4YnZGOWhuQ3l0YTNfVHRiMTJHcmRQbElkRWt6OTN3cGVKTUlCbG5YRmI3SS01Z0R5TldCUVRObU5tRG41YlFySGlBc3QzaXN5aWFBSzVRTHFycVB6OThDWmZFbVRvWGg2YlY2NEFuRWVCbERlTW8?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1456]: Jantar Mantar protest
+                - link "Jantar Mantar not a prison; desist from unlawfully detaining ..." [ref=e1457] [cursor=pointer]:
+                  - /url: ./read/CBMiowVBVV95cUxNTUVKODY0TndBZ0tENUxfRHlGTTdBSGtOcmtrZW1iYWFTUVp2cWdLeG5LRzgwSDVmRW5BU1pPcVlpTVkwZ3hXU2RSZFBaTDdhcWxNdEpVbkwyR1RudlFOZG5pSmQ2WHllcWN6SGRNM29ETmQzYWdkblFCUDczVmJDcjlHY2pURGtFakxnNlhwS0FVbERjSG9JbGZIVE5iRHNfcjdsZGsyN0xQS2xnMFhCSEQ1VTBJNUFiT01UZ0VWVS0zWkVKSFlfcW1weXRqTVd5NXFTZmlHTjA2TGoyYWo3MmUtTEpIUEhJTHloYjQyOWE3aVd3alN4X0dEOUpsLUNyVDFjMl9IX3FMVHp1SFpZYlhSc2QtVlV5MExkSGE4NE9STmZYZGxwa0U5d3hyNVFYSUtBMEN4bkNTWlQxYVByZmhTY2tJbnh0Y0ZmcTNRV18tczg2VGpHbEF0MlRPdUl1X3hiNTZaNENmNDlGU0h1MDFfcThGS29nWm1xSUdRZzFrTm5WWFJDWFBxaWctd2x4UXVrZjgwR0tmOG54bTdhTkg5UVpHLUlqRGJiREVPOUxXbGRSYWljVlBWRk93NUpfLTNLNGJOTm96V0FsUm05UlA2RFJJb2Via2xZWXpUbWVlb1JzcG5HTzBTaEZTTk1nV080eVdiY2plLUVDaEoybm1BTUdQZnlWa3RUWnZobnhEZFRCQzRsVkd3UWxaaTFNZDdBaHVFZGV5OFNtcW5Mc3ViT2N4YnZGOWhuQ3l0YTNfVHRiMTJHcmRQbElkRWt6OTN3cGVKTUlCbG5YRmI3SS01Z0R5TldCUVRObU5tRG41YlFySGlBc3QzaXN5aWFBSzVRTHFycVB6OThDWmZFbVRvWGg2YlY2NEFuRWVCbERlTW8?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1458]
+            - generic [ref=e1459]:
+              - generic [ref=e1460]:
+                - generic [ref=e1461]: Showcase
+                - time [ref=e1462]: • 13 hours ago
+              - generic [ref=e1467]:
+                - button "More - The Hindu" [ref=e1468] [cursor=pointer]:
+                  - img [ref=e1470]
+                - tooltip [ref=e1472]: More
+          - generic [ref=e1476]:
+            - generic [ref=e1477]:
+              - link "India Today" [ref=e1478] [cursor=pointer]:
+                - /url: ./publications/CAAqKAgKIiJDQklTRXdnTWFnOEtEV2x1WkdsaGRHOWtZWGt1YVc0b0FBUAE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "India Today" [level=3] [ref=e1479]:
+                  - img "India Today" [ref=e1480]
+              - generic [ref=e1482]:
+                - button "Follow this source - India Today" [ref=e1484]:
+                  - img [ref=e1488]
+                  - generic [ref=e1490]: Follow
+                - tooltip [ref=e1491]: Follow this source
+            - heading "Dharmendra Pradhan resignation fallout" [level=4] [ref=e1492]
+            - generic [ref=e1493]:
+              - generic [ref=e1494]:
+                - link [ref=e1496] [cursor=pointer]:
+                  - /url: ./read/CBMi2wJBVV95cUxNZm10Q1U3TzRYOWcyeUFteU9LN1VUZ2FNbEw4X2NFaDFPTEVzbWJXR3RCTm5EYmFER2tMZFl1YnBCY1FtVTFIVVNGTXpXcU52cGNVUTNrQWhoSmI0Q3JYM3NfdFFSVUI2YXJIRU9IeWt1VWJPSVBSNmgtMDFsbHNReTVhQ3ZEeERxSTc5Yy1CUk5jYU5LRFVfNmdONS1ncGtQWXZMVExDaXVQNmZHclR4VkFBMFM3UnlZdUJjcHJtNTN1VG13a0twTERNcTQ2SEtxMExmMjBCVHg1SS14TkhJU0x1Mng2WFMyNVdXS2xZU1A5QkpBRk5TRmo0a0tPcTZaT21CM19VSGdTbk5pbXJRTGc4ZWJHQ1ZNcXQwT3RoRUxTTEpjdmtxeG5kNF80OHFocUx2LU9MYkZkcFVTTWNwdEd5ZEFDM0JhQ3lSQlh5dVlUYndFX2lVNl9fbw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1497]: Inside story of Pradhan's exit
+                - link "Pradhan wanted to quit twice, it was rejected. Something changed" [ref=e1498] [cursor=pointer]:
+                  - /url: ./read/CBMi2wJBVV95cUxNZm10Q1U3TzRYOWcyeUFteU9LN1VUZ2FNbEw4X2NFaDFPTEVzbWJXR3RCTm5EYmFER2tMZFl1YnBCY1FtVTFIVVNGTXpXcU52cGNVUTNrQWhoSmI0Q3JYM3NfdFFSVUI2YXJIRU9IeWt1VWJPSVBSNmgtMDFsbHNReTVhQ3ZEeERxSTc5Yy1CUk5jYU5LRFVfNmdONS1ncGtQWXZMVExDaXVQNmZHclR4VkFBMFM3UnlZdUJjcHJtNTN1VG13a0twTERNcTQ2SEtxMExmMjBCVHg1SS14TkhJU0x1Mng2WFMyNVdXS2xZU1A5QkpBRk5TRmo0a0tPcTZaT21CM19VSGdTbk5pbXJRTGc4ZWJHQ1ZNcXQwT3RoRUxTTEpjdmtxeG5kNF80OHFocUx2LU9MYkZkcFVTTWNwdEd5ZEFDM0JhQ3lSQlh5dVlUYndFX2lVNl9fbw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1499]
+              - generic [ref=e1500]:
+                - link [ref=e1502] [cursor=pointer]:
+                  - /url: ./read/CBMi4gJBVV95cUxPajY4VC02LWFvTmFpZGdObjJrX0JLVnFxZE5oUXVVQkVGSXNWclNvQ092c1lpYjd3NXNMbm82NjgtaW1BREU1Ulo5cVpGVnUyUVdNVExJT010TDE2Y1Z2Y0xJeDluU08xNkZVYmNJWXJpLWNvaTFTNk5kWlNVNDRTV29kYjl3RjBHck42UVNBV3BtNzAwRlI4NnhydVg2WmJBWnplcnhZbXhiMnlaWkxzTFdudE9DUkxuTWpuTDk0UjFQY1dDdlpQQjdSZWFZN3lWWmJPM0JNN1dBb2dsRGlkR2xoZ2tJWlJVZ2RkYnJMallVNmR0X2lablpTd1hkcFJsZmdiclJtaWFyWXVvaVJCSElRR2lHR1lzb3dsMEVHUTNGR2dwTGhsVGxHdl9tY3NBRW95U1JtUmpBUHdQYU45NllTZHd4ckhKYlkxeUFvMVhaWXluc3c2Yi1SU1RCZkJPelE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1503]: Paper leak in Punjab?
+                - link "Calls for Punjab ministers' resignation grow over paper leaks" [ref=e1504] [cursor=pointer]:
+                  - /url: ./read/CBMi4gJBVV95cUxPajY4VC02LWFvTmFpZGdObjJrX0JLVnFxZE5oUXVVQkVGSXNWclNvQ092c1lpYjd3NXNMbm82NjgtaW1BREU1Ulo5cVpGVnUyUVdNVExJT010TDE2Y1Z2Y0xJeDluU08xNkZVYmNJWXJpLWNvaTFTNk5kWlNVNDRTV29kYjl3RjBHck42UVNBV3BtNzAwRlI4NnhydVg2WmJBWnplcnhZbXhiMnlaWkxzTFdudE9DUkxuTWpuTDk0UjFQY1dDdlpQQjdSZWFZN3lWWmJPM0JNN1dBb2dsRGlkR2xoZ2tJWlJVZ2RkYnJMallVNmR0X2lablpTd1hkcFJsZmdiclJtaWFyWXVvaVJCSElRR2lHR1lzb3dsMEVHUTNGR2dwTGhsVGxHdl9tY3NBRW95U1JtUmpBUHdQYU45NllTZHd4ckhKYlkxeUFvMVhaWXluc3c2Yi1SU1RCZkJPelE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1505]
+              - generic [ref=e1506]:
+                - link [ref=e1508] [cursor=pointer]:
+                  - /url: ./read/CBMijANBVV95cUxOTG95Ym5vc0pyQXhqM3BjUWNiVTV1TGRnWS1MZjMxNjdBTUxnbnRHWFhUWkc4WDIzME96RndHVWI1WXZKWkhON25BSmlWLTY3UVdUUFpwVGlCUVdfWTJkcXJyTTUxWFczZWRaWDlFdnpjWnJKZGFndWRIYVo3SjlGc3Mxa1FadVhiQmxua3d1ZEMwWU9aMzdqUW94MXNrV2QtNG0wOXdnckd5QVZ2b21sWjgzRXQ2X09SNm5RVTBIR3BVbVVoRURJSWVTSkt5YzZqVExwQ1RnQndYYWpDeTBlRmRWYmdwOEdoaVRueE16YlpiS1FiWjBvY0J3eTJvTVhNQkdrU0JUdmFJUWE0Q1pOYzg0Nm5QeTlnR2NPc3pqWVFzb0lLUjRCdllHakpqODZFZ1BfYmFKU1paUk1aMGcxbU1TazVSeXczRnhUWWtDUXBrVTdTakJoNWVFME1UcVdaa2JPcm5YUHJsMW83UjItS05ETFl0QUpFNU8zZlp6OEt0X0F6cDU0Q0FzLVc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1509]: Rahul writes to Amit Shah
+                - link "Who gave the order? Rahul to Amit Shah over assault on students" [ref=e1510] [cursor=pointer]:
+                  - /url: ./read/CBMijANBVV95cUxOTG95Ym5vc0pyQXhqM3BjUWNiVTV1TGRnWS1MZjMxNjdBTUxnbnRHWFhUWkc4WDIzME96RndHVWI1WXZKWkhON25BSmlWLTY3UVdUUFpwVGlCUVdfWTJkcXJyTTUxWFczZWRaWDlFdnpjWnJKZGFndWRIYVo3SjlGc3Mxa1FadVhiQmxua3d1ZEMwWU9aMzdqUW94MXNrV2QtNG0wOXdnckd5QVZ2b21sWjgzRXQ2X09SNm5RVTBIR3BVbVVoRURJSWVTSkt5YzZqVExwQ1RnQndYYWpDeTBlRmRWYmdwOEdoaVRueE16YlpiS1FiWjBvY0J3eTJvTVhNQkdrU0JUdmFJUWE0Q1pOYzg0Nm5QeTlnR2NPc3pqWVFzb0lLUjRCdllHakpqODZFZ1BfYmFKU1paUk1aMGcxbU1TazVSeXczRnhUWWtDUXBrVTdTakJoNWVFME1UcVdaa2JPcm5YUHJsMW83UjItS05ETFl0QUpFNU8zZlp6OEt0X0F6cDU0Q0FzLVc?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1511]
+            - generic [ref=e1512]:
+              - generic [ref=e1513]:
+                - generic [ref=e1514]: Showcase
+                - time [ref=e1515]: • 3 hours ago
+              - generic [ref=e1520]:
+                - button "More - India Today" [ref=e1521] [cursor=pointer]:
+                  - img [ref=e1523]
+                - tooltip [ref=e1525]: More
+          - generic [ref=e1529]:
+            - generic [ref=e1530]:
+              - link "The Indian Express" [ref=e1531] [cursor=pointer]:
+                - /url: ./publications/CAAqLQgKIidDQklTRndnTWFoTUtFV2x1WkdsaGJtVjRjSEpsYzNNdVkyOXRLQUFQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "The Indian Express" [level=3] [ref=e1532]:
+                  - img "The Indian Express" [ref=e1533]
+              - generic [ref=e1535]:
+                - button "Follow this source - The Indian Express" [ref=e1537]:
+                  - img [ref=e1541]
+                  - generic [ref=e1543]: Follow
+                - tooltip [ref=e1544]: Follow this source
+            - heading "After Dharmendra Pradhan resigns" [level=4] [ref=e1545]
+            - generic [ref=e1546]:
+              - generic [ref=e1547]:
+                - link [ref=e1549] [cursor=pointer]:
+                  - /url: ./read/CBMiiwVBVV95cUxQME15eTZQaGxzNUR1UVBxcV9waG5oQVJFdWw0UXFxa0Q0eWZTNXl4WVZYd29TX0I3TXhJVmRTUXp6dXRCbUNSZS1lTGMwSmlWYnZZM014Vm5IVTlOelhzYXFVNnIxakFYWldTckVycHRCdlNUR2ttUW5fS3kxMk5Id0dXMGtrUm5fdGhxWGxZajNIRE10M25oQ0FzeDlIUlRKUFZLeWlQTmlkRThFbHVRaWlaeHkwZUNtWFJrNU1KQWVkUlFuQm45RWdqZktWcS1NZGhrdU04RFRHaXJWRXZVYWszeHkyUG5RUUw5VTBtS0V3N09uQzV2dUM2NDNvZzVnbE55VVBJdTVlbTEzTERrX3RDRVJuTGRzMElTeE5UcV9HZU82WlV5aENsMEVYWUtPZFIwX1k2N3NrdERpRkJCdGdBUHQ1RkhuTTk4TlhrTGxBMTE2V1JRNGtJZjZfTEstWUVEVnoyZTZfMDFsMnNBRkRNelJ4MGUzb3pyRDJWUFRHQ08yXzVJWi1JOGFIZ3VJOGxCT3NTT3U5REF2WXc0bEdHeWJ1bVAtbVNVdUU4MXJfaTN3VUlZX2lmdWE0NjA2dUdpSlMtbkVjT3dqYVlpMExzWWp1VEZzSjROTDZ4Z2U5SnFEb3RMRGNKclR5N2JyQUx2aDM2cldNSFJJQjVNTE1nYjVpQ25zNmpjekRKRzJ2LTBjZTdCa2pIRzVoMlMwVVMxbzNXcHh4Z0ZKYmNYMTYtMl9EMWE0RXdyU0pkTzF6Wkp4UkJVVk1weUVOVXg0ZzNrVnBXbUFTZURTOHY3WEhBQVVSVzJjSDgxNzVyNU9KMm52cm1GRUVrby15ZnRpZjJRemYzQ2pHS2M?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1550]: Day after resignation
+                - link "Pralhad Joshi takes charge as Union Education Minister" [ref=e1551] [cursor=pointer]:
+                  - /url: ./read/CBMiiwVBVV95cUxQME15eTZQaGxzNUR1UVBxcV9waG5oQVJFdWw0UXFxa0Q0eWZTNXl4WVZYd29TX0I3TXhJVmRTUXp6dXRCbUNSZS1lTGMwSmlWYnZZM014Vm5IVTlOelhzYXFVNnIxakFYWldTckVycHRCdlNUR2ttUW5fS3kxMk5Id0dXMGtrUm5fdGhxWGxZajNIRE10M25oQ0FzeDlIUlRKUFZLeWlQTmlkRThFbHVRaWlaeHkwZUNtWFJrNU1KQWVkUlFuQm45RWdqZktWcS1NZGhrdU04RFRHaXJWRXZVYWszeHkyUG5RUUw5VTBtS0V3N09uQzV2dUM2NDNvZzVnbE55VVBJdTVlbTEzTERrX3RDRVJuTGRzMElTeE5UcV9HZU82WlV5aENsMEVYWUtPZFIwX1k2N3NrdERpRkJCdGdBUHQ1RkhuTTk4TlhrTGxBMTE2V1JRNGtJZjZfTEstWUVEVnoyZTZfMDFsMnNBRkRNelJ4MGUzb3pyRDJWUFRHQ08yXzVJWi1JOGFIZ3VJOGxCT3NTT3U5REF2WXc0bEdHeWJ1bVAtbVNVdUU4MXJfaTN3VUlZX2lmdWE0NjA2dUdpSlMtbkVjT3dqYVlpMExzWWp1VEZzSjROTDZ4Z2U5SnFEb3RMRGNKclR5N2JyQUx2aDM2cldNSFJJQjVNTE1nYjVpQ25zNmpjekRKRzJ2LTBjZTdCa2pIRzVoMlMwVVMxbzNXcHh4Z0ZKYmNYMTYtMl9EMWE0RXdyU0pkTzF6Wkp4UkJVVk1weUVOVXg0ZzNrVnBXbUFTZURTOHY3WEhBQVVSVzJjSDgxNzVyNU9KMm52cm1GRUVrby15ZnRpZjJRemYzQ2pHS2M?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1552]
+              - generic [ref=e1553]:
+                - link [ref=e1555] [cursor=pointer]:
+                  - /url: ./read/CBMi9wRBVV95cUxPcldXR3IxZUNsdGFFZXdqczhIUjQ5U05Vc1hlUkI1VF9rMHV3N2hLTWFNeFFXS2VDVkcycGFBeEVIRGNNalNkc1hzWXc4OWZyLXJCOUlrTWJJZmxXYXFSVHdWd0lYRVExeE9sMHpaS2V5NlpWM0hjQkRjekFEMXRkQ0lRTUhfLWRHcDQ2MGpCMkpGYUpndW4tSEJLdFVEWWdfNWRGSUhHMm5rOFFuZnkwdC15SmY2ZXNEU2xZc09GOWFUR3MzRVpGaENIbkprVkJyblFQd3drcEtjeEltbENSMjlXY3BSenZBSG9HQUtMVWhmaFVfblFsa3ZsenJwVUZuREhjRXdBVTZpVGNJV1g0S2JWRF9EZHlZakpVQWRjeFU2X0IySWtrb1N0UkpKZ252RlhGX3BqeWM3QTB3Z1Q2VWV5dUF6MUlLenhkVVFNdWo2aEVEaXVsdkNTQzh0a3djeUo3czNXc0J0M2RDOFE0ZkwtSEFRd0lwczJGeXcwYmxKVTA4ckQ5NGZ3WXI3bUZteXViSVpjZUNUU2ptbmRoMFJsSFVudDRZQkE5czBBblRQcXhWeTI3dGgybGFORWNhdjRGbGJBSTk5ZE04V3BJTFpSUzE0R3lGSGRLZzZjX1ZHdTFPUm9CSm1MWGJpYTZjeXlRaEw4TkEwaTVoWmdjMlFNaV96OHA3dmo5VnIyODZjMTFackNqRWt1a1pYMDlqT0xONlFWTEZVcUxJeV9fZ2pCbTFyYzktZG41SC1LNG9xZzhPN2M0X3VzWTJSTmFia2lOV0xRY05ZQUUwQnVPODFtRjVWeFpranBlOF9JV3I5b01sQmlz?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1556]: On Sansad Chalo march
+                - 'link "Force gradient adopted for crowd control not per standards: RAF" [ref=e1557] [cursor=pointer]':
+                  - /url: ./read/CBMi9wRBVV95cUxPcldXR3IxZUNsdGFFZXdqczhIUjQ5U05Vc1hlUkI1VF9rMHV3N2hLTWFNeFFXS2VDVkcycGFBeEVIRGNNalNkc1hzWXc4OWZyLXJCOUlrTWJJZmxXYXFSVHdWd0lYRVExeE9sMHpaS2V5NlpWM0hjQkRjekFEMXRkQ0lRTUhfLWRHcDQ2MGpCMkpGYUpndW4tSEJLdFVEWWdfNWRGSUhHMm5rOFFuZnkwdC15SmY2ZXNEU2xZc09GOWFUR3MzRVpGaENIbkprVkJyblFQd3drcEtjeEltbENSMjlXY3BSenZBSG9HQUtMVWhmaFVfblFsa3ZsenJwVUZuREhjRXdBVTZpVGNJV1g0S2JWRF9EZHlZakpVQWRjeFU2X0IySWtrb1N0UkpKZ252RlhGX3BqeWM3QTB3Z1Q2VWV5dUF6MUlLenhkVVFNdWo2aEVEaXVsdkNTQzh0a3djeUo3czNXc0J0M2RDOFE0ZkwtSEFRd0lwczJGeXcwYmxKVTA4ckQ5NGZ3WXI3bUZteXViSVpjZUNUU2ptbmRoMFJsSFVudDRZQkE5czBBblRQcXhWeTI3dGgybGFORWNhdjRGbGJBSTk5ZE04V3BJTFpSUzE0R3lGSGRLZzZjX1ZHdTFPUm9CSm1MWGJpYTZjeXlRaEw4TkEwaTVoWmdjMlFNaV96OHA3dmo5VnIyODZjMTFackNqRWt1a1pYMDlqT0xONlFWTEZVcUxJeV9fZ2pCbTFyYzktZG41SC1LNG9xZzhPN2M0X3VzWTJSTmFia2lOV0xRY05ZQUUwQnVPODFtRjVWeFpranBlOF9JV3I5b01sQmlz?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1558]
+              - generic [ref=e1559]:
+                - link [ref=e1561] [cursor=pointer]:
+                  - /url: ./read/CBMipgVBVV95cUxPUUdOczJDNmJ2eFJIN0w4NEV3S1lGc2NFbGE4cFFPZTdPMlFEMnhOdkljN1VJVUVqbEg2S0lwUjRuX3UzZG55VGNuek1WS2JiQW9uc2xoWXZRbmUweV95MlNGWVBVU3F4dllBQUpLZTlLQlBaNjQ4elNWZXJqMXpnTzhKbERKbTFyelNXazNTckJfNkx1ZHFOU2JsUWJWMjRRQTlvbDBOclQwZGpuUWQtODdjaVllYnJ1d1JOWmlHdU5kUTkzYXdYdE92N1JGSmhQSVN3UmtzTHl4NDlMdUxkaWlhVFNxaFlQYTR6a3N2ZTQ4cFpKR0tDZXNfUDR0UWlwYlBLdnZtWDgwUnRtMzIxZkFJRDRueEdQUXQ5Rk1GU0hSdlRKcHBISU01LTJZRWFsZGJNQTZXUkJFYkxEdFpFVlhJSTM5VGZwN29yZFhqQi16blVTdWgwakJPejM4ZnpwcU5aRFNPeU8xdXppeS1rSHkwUTJmbllPWElqR3dLTm1KNGt2UFdaaFVha19PYmpXaVM1R1ZxSV8yRlYwUnBIeURTNUtTUHVSbUFNaHN6UkdJcXhIYi1DdjFLX1U1bzRmc012a08yYTRYby1fdF9uODExNi1sMEtJVjlxOEgyelZYUldFSVRlSkJsdG1HR1BmUURjckJ2MjlsVXNfaG9GcG9CMmdaZUpONmtIMVFBR3JzanRoVXN0ZmpYVk1nWGxkZjRVSW9nSDFUNTRTa0ptemJoMXdCS0kzRWw0emJzenZVX2loMndwVnlQZzBaWG1kWnRGaV94cm5BZFU2MVVvdmdTU3lUUmNyeGpGQi03amZ0XzQyMWZocjhsNEVTajhRZlNtcmg1TnoyMEtiOS04NVVDaVVJcnBlVDVDMXZPamh0X0l1WEE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1562]: Dharmendra Pradhan’s exit
+                - link "What changed in 48 hours?" [ref=e1563] [cursor=pointer]:
+                  - /url: ./read/CBMipgVBVV95cUxPUUdOczJDNmJ2eFJIN0w4NEV3S1lGc2NFbGE4cFFPZTdPMlFEMnhOdkljN1VJVUVqbEg2S0lwUjRuX3UzZG55VGNuek1WS2JiQW9uc2xoWXZRbmUweV95MlNGWVBVU3F4dllBQUpLZTlLQlBaNjQ4elNWZXJqMXpnTzhKbERKbTFyelNXazNTckJfNkx1ZHFOU2JsUWJWMjRRQTlvbDBOclQwZGpuUWQtODdjaVllYnJ1d1JOWmlHdU5kUTkzYXdYdE92N1JGSmhQSVN3UmtzTHl4NDlMdUxkaWlhVFNxaFlQYTR6a3N2ZTQ4cFpKR0tDZXNfUDR0UWlwYlBLdnZtWDgwUnRtMzIxZkFJRDRueEdQUXQ5Rk1GU0hSdlRKcHBISU01LTJZRWFsZGJNQTZXUkJFYkxEdFpFVlhJSTM5VGZwN29yZFhqQi16blVTdWgwakJPejM4ZnpwcU5aRFNPeU8xdXppeS1rSHkwUTJmbllPWElqR3dLTm1KNGt2UFdaaFVha19PYmpXaVM1R1ZxSV8yRlYwUnBIeURTNUtTUHVSbUFNaHN6UkdJcXhIYi1DdjFLX1U1bzRmc012a08yYTRYby1fdF9uODExNi1sMEtJVjlxOEgyelZYUldFSVRlSkJsdG1HR1BmUURjckJ2MjlsVXNfaG9GcG9CMmdaZUpONmtIMVFBR3JzanRoVXN0ZmpYVk1nWGxkZjRVSW9nSDFUNTRTa0ptemJoMXdCS0kzRWw0emJzenZVX2loMndwVnlQZzBaWG1kWnRGaV94cm5BZFU2MVVvdmdTU3lUUmNyeGpGQi03amZ0XzQyMWZocjhsNEVTajhRZlNtcmg1TnoyMEtiOS04NVVDaVVJcnBlVDVDMXZPamh0X0l1WEE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1564]
+            - generic [ref=e1565]:
+              - generic [ref=e1566]:
+                - generic [ref=e1567]: Showcase
+                - time [ref=e1568]: • 4 hours ago
+              - generic [ref=e1573]:
+                - button "More - The Indian Express" [ref=e1574] [cursor=pointer]:
+                  - img [ref=e1576]
+                - tooltip [ref=e1578]: More
+          - generic [ref=e1582]:
+            - generic [ref=e1583]:
+              - link "Economic Times" [ref=e1584] [cursor=pointer]:
+                - /url: ./publications/CAAqLQgKIidDQklTRndnTWFoTUtFV1ZqYjI1dmJXbGpkR2x0WlhNdVkyOXRLQUFQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "Economic Times" [level=3] [ref=e1585]:
+                  - img "Economic Times" [ref=e1586]
+              - generic [ref=e1588]:
+                - button "Follow this source - Economic Times" [ref=e1590]:
+                  - img [ref=e1594]
+                  - generic [ref=e1596]: Follow
+                - tooltip [ref=e1597]: Follow this source
+            - heading "Headlines Not To Miss" [level=4] [ref=e1598]
+            - generic [ref=e1599]:
+              - generic [ref=e1600]:
+                - link [ref=e1602] [cursor=pointer]:
+                  - /url: ./read/CBMiygVBVV95cUxPWUFQQ3FVWVJMeFlEb1U3RzdnNG5DRC15T3lqZ0lRbWhXTkxBZkhyOWVIZTZHWWgzQmJoWnhHbDlIU3lvWHN0aXdVRTNKNUtSSm9ESGV0VkNWaXZ3ZjRWUXNDMFMxZFI5cmRoSUJnT29ySHNKSGxlZDhzaXJ2V3F5ZEpkdng2VWxqR3JHY2t5ZFZ2cDA0eTNNQ040M1BFLU9aQWNEaFNEeVU0aG1VNzh5RHpLdVVBclZhcjhEQXFlczNWcnJCUll0dG5INmxyMDlmVWtGUWNOa001LWxDcXJRR1duUnVzWFZmUmEyQWt5Q1NWT2YzTmdidWhkOThBemlJZWRkSHVETEE4WjZteVl4VTBBSlc0QjJ6X3F0YVg5TkQ0TkE2WHJoaEZhcVZKWWpyOG8zbm90RHhhdElhM2d5a3k4ODN3SFI4Z2g5akx2Wk15V3R5bmlsMFlXeGc3em1NOGJBLUlQejdLWTRCQVZxMElndTJnT2ZKUm1qcENBZEtzaDZZQkk4QmRxbG80ai10alQtdGtmRFRVU3lOcUtzTmtRcTFPZVVUMG1OQmd0NWlsYVhkVEZTRVZ5OEprZ2l5ZkZmdmpzaXNpQkdFNFRadE93WjA3WktDelZsdXJOaTZOSEQ2ZHpzb29PTW1PVmJWN2xGOE5sZ3VVbFYtQUd6R2E3WVRXVzBIMTdVQ3FlSllaWHVqeG5Kakt2ZHE3SHphQXQ3UVc4cF9ROHFSTkRvTFZjb0Q5TkZFekZXM2RJa1pVVXRSd0tGemZsX2ViUk96Y2xzNVA0TVQ2RG9QbXQtanBhLTFxekViNDhHbmpHUS1yZC1tN0ZWcFd2c0lnblZuRm16Q2c3QlJDeXM3WHpxOVVJbzhEbVRxNmJja3BoODRKR251MXplMFppYXlqQldiOXJjOEdpSDFHVWtIYUpyeWVPUUlKaHgtd1E?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1603]: Too hooked on US?
+                - link "Trump's new threat could be India's much-needed wake-up call" [ref=e1604] [cursor=pointer]:
+                  - /url: ./read/CBMiygVBVV95cUxPWUFQQ3FVWVJMeFlEb1U3RzdnNG5DRC15T3lqZ0lRbWhXTkxBZkhyOWVIZTZHWWgzQmJoWnhHbDlIU3lvWHN0aXdVRTNKNUtSSm9ESGV0VkNWaXZ3ZjRWUXNDMFMxZFI5cmRoSUJnT29ySHNKSGxlZDhzaXJ2V3F5ZEpkdng2VWxqR3JHY2t5ZFZ2cDA0eTNNQ040M1BFLU9aQWNEaFNEeVU0aG1VNzh5RHpLdVVBclZhcjhEQXFlczNWcnJCUll0dG5INmxyMDlmVWtGUWNOa001LWxDcXJRR1duUnVzWFZmUmEyQWt5Q1NWT2YzTmdidWhkOThBemlJZWRkSHVETEE4WjZteVl4VTBBSlc0QjJ6X3F0YVg5TkQ0TkE2WHJoaEZhcVZKWWpyOG8zbm90RHhhdElhM2d5a3k4ODN3SFI4Z2g5akx2Wk15V3R5bmlsMFlXeGc3em1NOGJBLUlQejdLWTRCQVZxMElndTJnT2ZKUm1qcENBZEtzaDZZQkk4QmRxbG80ai10alQtdGtmRFRVU3lOcUtzTmtRcTFPZVVUMG1OQmd0NWlsYVhkVEZTRVZ5OEprZ2l5ZkZmdmpzaXNpQkdFNFRadE93WjA3WktDelZsdXJOaTZOSEQ2ZHpzb29PTW1PVmJWN2xGOE5sZ3VVbFYtQUd6R2E3WVRXVzBIMTdVQ3FlSllaWHVqeG5Kakt2ZHE3SHphQXQ3UVc4cF9ROHFSTkRvTFZjb0Q5TkZFekZXM2RJa1pVVXRSd0tGemZsX2ViUk96Y2xzNVA0TVQ2RG9QbXQtanBhLTFxekViNDhHbmpHUS1yZC1tN0ZWcFd2c0lnblZuRm16Q2c3QlJDeXM3WHpxOVVJbzhEbVRxNmJja3BoODRKR251MXplMFppYXlqQldiOXJjOEdpSDFHVWtIYUpyeWVPUUlKaHgtd1E?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1605]
+              - generic [ref=e1606]:
+                - link [ref=e1608] [cursor=pointer]:
+                  - /url: ./read/CBMirgVBVV95cUxQTmRQSkkyOFUtTS1sTDR5OExHNWwyNjFkNk00LXM5UXdmSHNtNmJaZWI0SGl1d0dXVXRMU2JUbXZlQVNRTUJVVmItV1BqNXZJN3JybEV4QmVudzJIUlNJWXczaU80TU14ZUdlTHdUWU44Zk8wMjZ0WWRRa1ZPWDBQaFhIWnlRQzR6bFRrN18xdGxFbTlKZ1R6a21jQ2swQkdLSkgxZmdYbHY4aE81Q3FqMTNsNFM1TEtLV2pkMnFtMjBEM2pWRW1TWE1WQkVERlJVQVUyQTcydy1HbmFLcW9PNkVHV2doQUlueVg0MHJHRkVlQ0xwTkZEVkZDXzRfb19EQUZnelZtVkhVejN0LVNURGRLcTROd0IzQkowa3pQdWg5VkI4UkpMcUFZVHRySGFYY2tGTFotUE96N3hCLXljTVlnbUQ4WGJaeUhhUUJYaXE1SFVqbmhWSHVfZHhfZnZLUC1xVXBuTFZKVmNYNTgyMjlDdGM1OUtla1d3R2lxalhyY1ZUMzhXdHprczRsNDdEdUdpNTJVZkl1eTF6MDRWRnpzUDNZVmcwZXJ1MUdZcDFvTHAtODdDT0RFVWVta2djUmNDQTRGOHpJU0tTSjlRWWVFc0U1ZEp0N01VMFByZDVxVjgzZU1yQlo0N1FQNWZIZi00bWRpNTNySDh4ajA3UjRwMVNoR1VoTmF5a0JQX1Q4OVpQS0FKLUttU1JWZkZ4MDhEbjdUUW5scGVlTlFFMUprVTIyb3RYX1JzWTllTHppeUpaQktwQXB1bVA3MnpNZkNfd21JNzBwaFBITkNOTG9oMFFJcXVuOUIyS0ZOaDlfYV9Ibm9FZDk0OTZDMlhrY200elEwMGpHSG1wOWloSUJLLTZ1enktNHA4d1ZtMHB2MzIxS2M4dWhITkRFUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1609]: Student protest may be over...
+                - link "...But Parliament's biggest fight could just be beginning" [ref=e1610] [cursor=pointer]:
+                  - /url: ./read/CBMirgVBVV95cUxQTmRQSkkyOFUtTS1sTDR5OExHNWwyNjFkNk00LXM5UXdmSHNtNmJaZWI0SGl1d0dXVXRMU2JUbXZlQVNRTUJVVmItV1BqNXZJN3JybEV4QmVudzJIUlNJWXczaU80TU14ZUdlTHdUWU44Zk8wMjZ0WWRRa1ZPWDBQaFhIWnlRQzR6bFRrN18xdGxFbTlKZ1R6a21jQ2swQkdLSkgxZmdYbHY4aE81Q3FqMTNsNFM1TEtLV2pkMnFtMjBEM2pWRW1TWE1WQkVERlJVQVUyQTcydy1HbmFLcW9PNkVHV2doQUlueVg0MHJHRkVlQ0xwTkZEVkZDXzRfb19EQUZnelZtVkhVejN0LVNURGRLcTROd0IzQkowa3pQdWg5VkI4UkpMcUFZVHRySGFYY2tGTFotUE96N3hCLXljTVlnbUQ4WGJaeUhhUUJYaXE1SFVqbmhWSHVfZHhfZnZLUC1xVXBuTFZKVmNYNTgyMjlDdGM1OUtla1d3R2lxalhyY1ZUMzhXdHprczRsNDdEdUdpNTJVZkl1eTF6MDRWRnpzUDNZVmcwZXJ1MUdZcDFvTHAtODdDT0RFVWVta2djUmNDQTRGOHpJU0tTSjlRWWVFc0U1ZEp0N01VMFByZDVxVjgzZU1yQlo0N1FQNWZIZi00bWRpNTNySDh4ajA3UjRwMVNoR1VoTmF5a0JQX1Q4OVpQS0FKLUttU1JWZkZ4MDhEbjdUUW5scGVlTlFFMUprVTIyb3RYX1JzWTllTHppeUpaQktwQXB1bVA3MnpNZkNfd21JNzBwaFBITkNOTG9oMFFJcXVuOUIyS0ZOaDlfYV9Ibm9FZDk0OTZDMlhrY200elEwMGpHSG1wOWloSUJLLTZ1enktNHA4d1ZtMHB2MzIxS2M4dWhITkRFUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1611]
+              - generic [ref=e1612]:
+                - link [ref=e1614] [cursor=pointer]:
+                  - /url: ./read/CBMi1AVBVV95cUxOeDlSdW5NUS1pSnVvU2RHLUNvMHk1V2xLN2RZeVo3YTFBZFZSOVZkOWFXUWtEU1NrUHJZbFJud3dSaHNzWWtna0NqREEtaVZzU0NobkdJRTFlQnBBSzVYejdMN0hqSUVLNzBPTzdNMmwzLXlqMzc2Vno2a3ZpUHYtcEJvejluQ1Z0VWNlRVdtRmh3cGxob3RUSndjd0J2c1Q3cFFjdGQ1MGdEQ2YtOWdMLV9YY1FXTWJ1VWRoQ1dIZV83QzgwbFZmeXVFUlhJNzA4WnZyRE95eVFqLUw5SnNJNjhxSUpjdWc0V0FoX1J1NE5RMVZubGlLU0pucTJBSTRhTVk3UjBKRk0wQ0NIU0h1aUctVkFkZmZ3cTB6Ty0yT1A4MGVCR1hDQk5WeTVLUGJZdnBhdE43Y3VGMEJoaDd4WmVwdmczMURFcnV4SHdjLUgteDZkRXBWem53LXJCSzVxNjZEMERPUVBwMUMtVkNROTVoQTJOUm1tUXNmcnVNdGdoQWctUEVZUzh2SzQ2NFl2anIwc1pXbGVlUk5LZTdnWnZNR3dxV21zWm5PUjQzN3F6Rkg4YTlHREFjZGtCc2NzTkNad0p4eV9RUGNDQWk5SUVhVU1LaElIMU1QOU13S1Y4aUZVS2xWN0s4QXZiYUFUU3dEd3d5VkM5V2kzYkpnMkFLWlhSaTB6aGNiLUFuWUJ0d25sUndvNjE3LW9BS3otcm9CcXZvUEdBbnI3OHpBTTkxV2ZOdUswUWsyU0NYYmsxNDY1bmFrRVdpeDQxZFJXSGlFUUVYcnA3elE3Q0Etb3VzNXFrejVPV1BNU0FEQUtRYXdVUkd2ZHZEMG40blVRVEpoS3gxaU5nalpabWVCYk5BblpHYUFGbmJjY25sWUFOV3dDV3VPR09oTHVRSVIzRlVwWTNHU05uVEV4bGhyUzJrVDdXX1BwY2ZPX3RQQm5scWVI?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1615]: Forward looking
+                - link "Hindustan Zinc pours ₹5,000 cr into expansion plans" [ref=e1616] [cursor=pointer]:
+                  - /url: ./read/CBMi1AVBVV95cUxOeDlSdW5NUS1pSnVvU2RHLUNvMHk1V2xLN2RZeVo3YTFBZFZSOVZkOWFXUWtEU1NrUHJZbFJud3dSaHNzWWtna0NqREEtaVZzU0NobkdJRTFlQnBBSzVYejdMN0hqSUVLNzBPTzdNMmwzLXlqMzc2Vno2a3ZpUHYtcEJvejluQ1Z0VWNlRVdtRmh3cGxob3RUSndjd0J2c1Q3cFFjdGQ1MGdEQ2YtOWdMLV9YY1FXTWJ1VWRoQ1dIZV83QzgwbFZmeXVFUlhJNzA4WnZyRE95eVFqLUw5SnNJNjhxSUpjdWc0V0FoX1J1NE5RMVZubGlLU0pucTJBSTRhTVk3UjBKRk0wQ0NIU0h1aUctVkFkZmZ3cTB6Ty0yT1A4MGVCR1hDQk5WeTVLUGJZdnBhdE43Y3VGMEJoaDd4WmVwdmczMURFcnV4SHdjLUgteDZkRXBWem53LXJCSzVxNjZEMERPUVBwMUMtVkNROTVoQTJOUm1tUXNmcnVNdGdoQWctUEVZUzh2SzQ2NFl2anIwc1pXbGVlUk5LZTdnWnZNR3dxV21zWm5PUjQzN3F6Rkg4YTlHREFjZGtCc2NzTkNad0p4eV9RUGNDQWk5SUVhVU1LaElIMU1QOU13S1Y4aUZVS2xWN0s4QXZiYUFUU3dEd3d5VkM5V2kzYkpnMkFLWlhSaTB6aGNiLUFuWUJ0d25sUndvNjE3LW9BS3otcm9CcXZvUEdBbnI3OHpBTTkxV2ZOdUswUWsyU0NYYmsxNDY1bmFrRVdpeDQxZFJXSGlFUUVYcnA3elE3Q0Etb3VzNXFrejVPV1BNU0FEQUtRYXdVUkd2ZHZEMG40blVRVEpoS3gxaU5nalpabWVCYk5BblpHYUFGbmJjY25sWUFOV3dDV3VPR09oTHVRSVIzRlVwWTNHU05uVEV4bGhyUzJrVDdXX1BwY2ZPX3RQQm5scWVI?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1617]
+            - generic [ref=e1618]:
+              - generic [ref=e1619]:
+                - generic [ref=e1620]: Showcase
+                - time [ref=e1621]: • 39 minutes ago
+              - generic [ref=e1626]:
+                - button "More - Economic Times" [ref=e1627] [cursor=pointer]:
+                  - img [ref=e1629]
+                - tooltip [ref=e1631]: More
+          - generic [ref=e1635]:
+            - generic [ref=e1636]:
+              - link "The Tribune India" [ref=e1637] [cursor=pointer]:
+                - /url: ./publications/CAAqLAgKIiZDQklTRmdnTWFoSUtFSFJ5YVdKMWJtVnBibVJwWVM1amIyMG9BQVAB?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "The Tribune India" [level=3] [ref=e1638]:
+                  - img "The Tribune India" [ref=e1639]
+              - generic [ref=e1641]:
+                - button "Follow this source - The Tribune India" [ref=e1643]:
+                  - img [ref=e1647]
+                  - generic [ref=e1649]: Follow
+                - tooltip [ref=e1650]: Follow this source
+            - heading "Stories of the day" [level=4] [ref=e1651]
+            - generic [ref=e1652]:
+              - generic [ref=e1653]:
+                - link [ref=e1655] [cursor=pointer]:
+                  - /url: ./read/CBMi9gJBVV95cUxPNkx6SGNqSVVYLXQybkViNk1YcHZWRGMwY3RvS0VEWTY5SnlsZ3FaR3hEbWtjWVE0T3U0QWN1aEFFOTRxbW4tX0lkS2cyRHZQTWpOQ093RFZFZXB6YTMzWjBkWHFlaGNEb3JDTWdOSEhsS3I5UHJaR3VDdGhWYlFJdTNIY0tLSWhKSXRGZFFFdDNMUFFLLXdhSUZQSERPOHlXSkpQTnhvLUhoT191VllQNHFRNEhLMEt1TTdpWm1DVEo0eGVOVnJVQTdValhLWDdDWWg0MVZwVHV3MlhPaDc4N0RUX3lscUQ1MnJNNUNRZlB2THUwcGg2UGRLdHRINFpfSnctSVg5NmktLUE0VDhZRExlQWRYTW12azBaWUdMeE9nNWFXZ090QVNvaFR6ZlRiRVRCUV9GRk5CUUdER0hpSllURFdEazBnRjlpVU5JVER3VFRaX2xrZng4bkJHb3ZxX21ONVZPVlBaeWNzdjhfcGtFVFRBQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1656]: Nation
+                - link "President accepts Dharmendra Pradhan’s resignation; Pralhad Joshi given additional charge of Education Ministry" [ref=e1657] [cursor=pointer]:
+                  - /url: ./read/CBMi9gJBVV95cUxPNkx6SGNqSVVYLXQybkViNk1YcHZWRGMwY3RvS0VEWTY5SnlsZ3FaR3hEbWtjWVE0T3U0QWN1aEFFOTRxbW4tX0lkS2cyRHZQTWpOQ093RFZFZXB6YTMzWjBkWHFlaGNEb3JDTWdOSEhsS3I5UHJaR3VDdGhWYlFJdTNIY0tLSWhKSXRGZFFFdDNMUFFLLXdhSUZQSERPOHlXSkpQTnhvLUhoT191VllQNHFRNEhLMEt1TTdpWm1DVEo0eGVOVnJVQTdValhLWDdDWWg0MVZwVHV3MlhPaDc4N0RUX3lscUQ1MnJNNUNRZlB2THUwcGg2UGRLdHRINFpfSnctSVg5NmktLUE0VDhZRExlQWRYTW12azBaWUdMeE9nNWFXZ090QVNvaFR6ZlRiRVRCUV9GRk5CUUdER0hpSllURFdEazBnRjlpVU5JVER3VFRaX2xrZng4bkJHb3ZxX21ONVZPVlBaeWNzdjhfcGtFVFRBQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1658]
+              - generic [ref=e1659]:
+                - link [ref=e1661] [cursor=pointer]:
+                  - /url: ./read/CBMi5AFBVV95cUxObnU0TlEzM2FBSWVaWVBpdE5GSXcwYkZfZk1xalFuM1NOT1BDWmtDaUZzRlBWYVR4QUxtZGxGUFptYlhmTEVFNVBqeDl5aWpsV05oZTA0VU1HeUY0RUlEdVVkLVlPdTRXQVdSbXdIUkNfZjIyOWtET0ZlN1NjNlA3SWs1NkFLalRkdEItX0t6UERVSGxiSE9ValZVd2hTdFJQMVMxcHN2NjRUdVFpNnFnaUZ2c0V2OWRmOTZEbDhQZGx2ZHY4U0d2Vk52anlWZ0RIc3NoNndxaldwdzBvdHdoMWl4bXPSAegBQVVfeXFMTUVOVUY5ZFI3X2Vhd3dKSGIzbzJwU0JoSE5yX2FIbm1obHFtdHdCUWwwSGs0bmlCZERzRWh6dVNBMGZ4OS1hMVBwaW1WaUI3OHVucHFFYUx3OG4zemxmX0Y4SXRIS2ZKTDVaalhLb0pSRDE0X3IzSUxHaGlSU3p1bVJEV0tNcHlDa0lTYWY4NUFjTVc2Zm16SUkzS2kzdkZqVFpIaktXREZyZm8tMVExLUxYVjVyWEduNVhHcVZmTnlyTHlqbUtRYW1xcUJwdkRIam92TGZDbGpvc2E3MWczY3I0Y19qSS1hTQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1662]: Nation
+                - link "Demands accepted, CJP declares withdrawal of 36-day protest; next round of talks after 4 weeks" [ref=e1663] [cursor=pointer]:
+                  - /url: ./read/CBMi5AFBVV95cUxObnU0TlEzM2FBSWVaWVBpdE5GSXcwYkZfZk1xalFuM1NOT1BDWmtDaUZzRlBWYVR4QUxtZGxGUFptYlhmTEVFNVBqeDl5aWpsV05oZTA0VU1HeUY0RUlEdVVkLVlPdTRXQVdSbXdIUkNfZjIyOWtET0ZlN1NjNlA3SWs1NkFLalRkdEItX0t6UERVSGxiSE9ValZVd2hTdFJQMVMxcHN2NjRUdVFpNnFnaUZ2c0V2OWRmOTZEbDhQZGx2ZHY4U0d2Vk52anlWZ0RIc3NoNndxaldwdzBvdHdoMWl4bXPSAegBQVVfeXFMTUVOVUY5ZFI3X2Vhd3dKSGIzbzJwU0JoSE5yX2FIbm1obHFtdHdCUWwwSGs0bmlCZERzRWh6dVNBMGZ4OS1hMVBwaW1WaUI3OHVucHFFYUx3OG4zemxmX0Y4SXRIS2ZKTDVaalhLb0pSRDE0X3IzSUxHaGlSU3p1bVJEV0tNcHlDa0lTYWY4NUFjTVc2Zm16SUkzS2kzdkZqVFpIaktXREZyZm8tMVExLUxYVjVyWEduNVhHcVZmTnlyTHlqbUtRYW1xcUJwdkRIam92TGZDbGpvc2E3MWczY3I0Y19qSS1hTQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1664]
+              - generic [ref=e1665]:
+                - link [ref=e1667] [cursor=pointer]:
+                  - /url: ./read/CBMitAJBVV95cUxNd0hQZlpISFBPMzZRdWFUNktXSlhOOGJnblJzdkw0dnp3VElfcC1zUDNKcGFYVUZ1NUNCTWhHTmlUYU9wN3JFc1NCRm5xS3ZWMnB3b1hydXdKMkJONFM2TUcyUFFXUkVnSkotTHY3T3pwaklrNXBzMk5wMzg4VUYweVN5WHVlci1ScXoxVXZEcTg2Nk02bl9PMWtrdHBaeVZWRWl1Z3FBSUdING1VOWJZUjR5ZEdIMGI0aHJvazNjS2RIZE5DOXF5amZCNUFYNEFxZDVNZEthbUVhc2JabTFfanBPWFI1TU9VaXdpQlVOVzlzbzZQS21BM21kbS1uNHg5NTZ2RDRZdTZ4b1RTWG1leExwZUtrWjYxTnNNLWxPTW5sa1VKaEdOb2VnRTN6THBnaVJSeA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1668]: Punjab
+                - link "Punjab braces for heavy rain till July 31, IMD issues alerts" [ref=e1669] [cursor=pointer]:
+                  - /url: ./read/CBMitAJBVV95cUxNd0hQZlpISFBPMzZRdWFUNktXSlhOOGJnblJzdkw0dnp3VElfcC1zUDNKcGFYVUZ1NUNCTWhHTmlUYU9wN3JFc1NCRm5xS3ZWMnB3b1hydXdKMkJONFM2TUcyUFFXUkVnSkotTHY3T3pwaklrNXBzMk5wMzg4VUYweVN5WHVlci1ScXoxVXZEcTg2Nk02bl9PMWtrdHBaeVZWRWl1Z3FBSUdING1VOWJZUjR5ZEdIMGI0aHJvazNjS2RIZE5DOXF5amZCNUFYNEFxZDVNZEthbUVhc2JabTFfanBPWFI1TU9VaXdpQlVOVzlzbzZQS21BM21kbS1uNHg5NTZ2RDRZdTZ4b1RTWG1leExwZUtrWjYxTnNNLWxPTW5sa1VKaEdOb2VnRTN6THBnaVJSeA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1670]
+            - generic [ref=e1671]:
+              - generic [ref=e1672]:
+                - generic [ref=e1673]: Showcase
+                - time [ref=e1674]: • 18 hours ago
+              - generic [ref=e1679]:
+                - button "More - The Tribune India" [ref=e1680] [cursor=pointer]:
+                  - img [ref=e1682]
+                - tooltip [ref=e1684]: More
+          - generic [ref=e1688]:
+            - generic [ref=e1689]:
+              - link "The New Indian Express" [ref=e1690] [cursor=pointer]:
+                - /url: ./publications/CAAqMQgKIitDQklTR2dnTWFoWUtGRzVsZDJsdVpHbGhibVY0Y0hKbGMzTXVZMjl0S0FBUAE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - heading "The New Indian Express" [level=3] [ref=e1691]:
+                  - img "The New Indian Express" [ref=e1692]
+              - generic [ref=e1694]:
+                - button "Follow this source - The New Indian Express" [ref=e1696]:
+                  - img [ref=e1700]
+                  - generic [ref=e1702]: Follow
+                - tooltip [ref=e1703]: Follow this source
+            - heading "Gen Z protest ✊" [level=4] [ref=e1704]
+            - generic [ref=e1705]:
+              - generic [ref=e1706]:
+                - link [ref=e1708] [cursor=pointer]:
+                  - /url: ./read/CBMiogJBVV95cUxNTGEzdzhPdG1SSmozZURqTHVCRHlwMVNaWGdoVGJ3aU9BbFg2RVBud0pqN2RnaENlLWMwbXpRaVRwX3hBN3hoQXd6cFVqTmxaS0ZlUzdvak5rNEdZVWN3OVdTWFRWZ1ZVWHRRMDgtNU5vTzNhMXpGaTQ3YXg4ODJpaXhPOTd4dDQzN2U5aFdsNnVPc2tudHJuT0l4QldjWE5TYkZHOXotMlFMMzN2RzBoZFNLQ0ZOY2tVQkU4VVd4cnhqb0x5Q1htQUJTYVBLX0lRX2hfdVNCWnRDMXBjSlVoVG5JeTFNR0xKTUkzQW03UHVCT3lJaF94ekRfVVpCNGtBeVRQVDNWSjJfMzBqVlFmbVh3ZHBldTk2M1dpeDlXdXJHUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1709]: Power & politics
+                - link "Column | Pradhan’s loss, Rahul’s gain?" [ref=e1710] [cursor=pointer]:
+                  - /url: ./read/CBMiogJBVV95cUxNTGEzdzhPdG1SSmozZURqTHVCRHlwMVNaWGdoVGJ3aU9BbFg2RVBud0pqN2RnaENlLWMwbXpRaVRwX3hBN3hoQXd6cFVqTmxaS0ZlUzdvak5rNEdZVWN3OVdTWFRWZ1ZVWHRRMDgtNU5vTzNhMXpGaTQ3YXg4ODJpaXhPOTd4dDQzN2U5aFdsNnVPc2tudHJuT0l4QldjWE5TYkZHOXotMlFMMzN2RzBoZFNLQ0ZOY2tVQkU4VVd4cnhqb0x5Q1htQUJTYVBLX0lRX2hfdVNCWnRDMXBjSlVoVG5JeTFNR0xKTUkzQW03UHVCT3lJaF94ekRfVVpCNGtBeVRQVDNWSjJfMzBqVlFmbVh3ZHBldTk2M1dpeDlXdXJHUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1711]
+              - generic [ref=e1712]:
+                - link [ref=e1714] [cursor=pointer]:
+                  - /url: ./read/CBMiuAJBVV95cUxNMjFfQ3M0eWV4eWtoNXhHN3ZuS0VabWUyNkdSRnNnS1NfQWRsTEJUYkVJUnlNWTNlRGRNdkxhRFE1XzBVTGVTRjAtNXFzZU9zU0tLVFVWcnZSYzl4TWNkZHAxRUFTc0NRTXE4WG0ybFBVX0FzSHpIQWFLSWx3dFVxeUt4WXZ2NTZOdU1nejQ2cTI4X0NUVWpSTmdDY295Q2hDMkx1MGxvaGhNRnZBZzlXV0Roc2RSc1RwMkNvWUhNSUpRMmU0NjBJZzhzSFRadlRpRmZWWElIUHRTV1daVmg5czJNV1ZfaDJHdFZ5QWM0aEFVdl9PcElJUV9NMFBnUXFmQlpGeVJrV1lqVXRHR1FLcy1vVnRjb0xadzR1ejJXZUt3WlJJdVlMRXJQVmJTcjg4QjJLTXNmc1o?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1715]: CJP protest
+                - link "Gen-Z icons are at the heart of the capital" [ref=e1716] [cursor=pointer]:
+                  - /url: ./read/CBMiuAJBVV95cUxNMjFfQ3M0eWV4eWtoNXhHN3ZuS0VabWUyNkdSRnNnS1NfQWRsTEJUYkVJUnlNWTNlRGRNdkxhRFE1XzBVTGVTRjAtNXFzZU9zU0tLVFVWcnZSYzl4TWNkZHAxRUFTc0NRTXE4WG0ybFBVX0FzSHpIQWFLSWx3dFVxeUt4WXZ2NTZOdU1nejQ2cTI4X0NUVWpSTmdDY295Q2hDMkx1MGxvaGhNRnZBZzlXV0Roc2RSc1RwMkNvWUhNSUpRMmU0NjBJZzhzSFRadlRpRmZWWElIUHRTV1daVmg5czJNV1ZfaDJHdFZ5QWM0aEFVdl9PcElJUV9NMFBnUXFmQlpGeVJrV1lqVXRHR1FLcy1vVnRjb0xadzR1ejJXZUt3WlJJdVlMRXJQVmJTcjg4QjJLTXNmc1o?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1717]
+              - generic [ref=e1718]:
+                - link [ref=e1720] [cursor=pointer]:
+                  - /url: ./read/CBMirAJBVV95cUxQVUZubF9IeG5PZXVZVUduQW1RbnlTQUFiazk2ZGpsMGlhSjBYak9mcHFyV0ZIWWJCdEJycjJ0b0MtT2NTM1FzcmNDWXVRN3N2WlhPSlJSWVAwTjdOTG1QbjBiOHQ3bDZ3ZUo2dERPVlhQMmhyYXoyN2R3eVRDYndIMEFUeF9TU0ZBMloyVXJTWHdoY2YwLVBkV1NFd00teUZHOGFfd29iNWliWUNJeVlLcUstRnVGZS0tb3RCaHNMRW9JeHc3Z19SVDZmd3MzcElPcXJSLUpJTzgtbWdlTEZoRVZjaUN3THNjdlRWdWowNTVKZWp5Y2U2WEJ4ZTJ4MnlhZGRZVkFhMy01M1VmMWctNTZ1ajFBZm95SU5zMzlia3lJS0pzT3prdlY4bDE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e1721]: Interest free
+                - link "Column | When the future writes its own entrance exam" [ref=e1722] [cursor=pointer]:
+                  - /url: ./read/CBMirAJBVV95cUxQVUZubF9IeG5PZXVZVUduQW1RbnlTQUFiazk2ZGpsMGlhSjBYak9mcHFyV0ZIWWJCdEJycjJ0b0MtT2NTM1FzcmNDWXVRN3N2WlhPSlJSWVAwTjdOTG1QbjBiOHQ3bDZ3ZUo2dERPVlhQMmhyYXoyN2R3eVRDYndIMEFUeF9TU0ZBMloyVXJTWHdoY2YwLVBkV1NFd00teUZHOGFfd29iNWliWUNJeVlLcUstRnVGZS0tb3RCaHNMRW9JeHc3Z19SVDZmd3MzcElPcXJSLUpJTzgtbWdlTEZoRVZjaUN3THNjdlRWdWowNTVKZWp5Y2U2WEJ4ZTJ4MnlhZGRZVkFhMy01M1VmMWctNTZ1ajFBZm95SU5zMzlia3lJS0pzT3prdlY4bDE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - figure [ref=e1723]
+            - generic [ref=e1724]:
+              - generic [ref=e1725]:
+                - generic [ref=e1726]: Showcase
+                - time [ref=e1727]: • 7 hours ago
+              - generic [ref=e1732]:
+                - button "More - The New Indian Express" [ref=e1733] [cursor=pointer]:
+                  - img [ref=e1735]
+                - tooltip [ref=e1737]: More
+          - link "See more sources" [ref=e1739] [cursor=pointer]:
+            - /url: ./showcase?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - button "See more sources" [ref=e1740]:
+              - img [ref=e1742]
+            - generic [ref=e1744]: See more sources
+    - generic [ref=e1746]:
+      - generic [ref=e1747]: Sign in to get news based on your interests
+      - generic [ref=e1749]:
+        - generic [ref=e1751]: Sign in
+        - link "Sign in" [ref=e1752] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?hl=en-IN&continue=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&hl=en-IN&gl=IN&ceid=IN%3Aen

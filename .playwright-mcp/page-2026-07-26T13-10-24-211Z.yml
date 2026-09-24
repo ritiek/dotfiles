@@ -1,0 +1,300 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Google News" [ref=e7] [cursor=pointer]:
+        - /url: ./?hl=en-IN&gl=IN&ceid=IN%3Aen
+        - generic [ref=e9]: News
+      - generic [ref=e10]:
+        - search [ref=e12]:
+          - generic [ref=e17]:
+            - combobox "Search for topics, locations & sources" [ref=e19]
+            - status
+          - button "Advanced search" [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]:
+              - generic "Advanced search" [ref=e22]:
+                - img [ref=e23]
+              - tooltip [ref=e25]: Advanced search
+          - button "Search" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+        - generic [ref=e30]:
+          - generic [ref=e35]:
+            - button "Help" [ref=e36] [cursor=pointer]:
+              - img [ref=e38]
+            - tooltip [ref=e40]: Help
+          - generic [ref=e45]:
+            - button "Settings" [ref=e46] [cursor=pointer]:
+              - img [ref=e48]
+            - tooltip [ref=e51]: Settings
+      - generic [ref=e53]:
+        - button "Google apps" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+        - link "Sign in" [ref=e61] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?passive=1209600&continue=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&followup=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&hl=en-IN&ec=GAZAqgM
+    - navigation [ref=e64]:
+      - tablist [ref=e65]:
+        - tab "Home" [selected] [ref=e66] [cursor=pointer]:
+          - tab "Home" [selected] [ref=e67]
+        - tab "For you" [ref=e68] [cursor=pointer]:
+          - tab "For you" [ref=e69]
+        - tab "Following" [ref=e70] [cursor=pointer]:
+          - tab "Following" [ref=e71]
+        - tab "News Showcase" [ref=e72] [cursor=pointer]:
+          - tab "News Showcase" [ref=e73]
+        - tab "India" [ref=e76] [cursor=pointer]:
+          - tab "India" [ref=e77]
+        - tab "World" [ref=e78] [cursor=pointer]:
+          - tab "World" [ref=e79]
+        - tab "Local" [ref=e80] [cursor=pointer]:
+          - tab "Local" [ref=e81]
+        - tab "Business" [ref=e82] [cursor=pointer]:
+          - tab "Business" [ref=e83]
+        - tab "Technology" [ref=e84] [cursor=pointer]:
+          - tab "Technology" [ref=e85]
+        - tab "Entertainment" [ref=e86] [cursor=pointer]:
+          - tab "Entertainment" [ref=e87]
+        - tab "Sports" [ref=e88] [cursor=pointer]:
+          - tab "Sports" [ref=e89]
+        - tab "Science" [ref=e90] [cursor=pointer]:
+          - tab "Science" [ref=e91]
+        - tab "Health" [ref=e92] [cursor=pointer]:
+          - tab "Health" [ref=e93]
+  - main [ref=e98]:
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - heading "Your briefing" [level=1] [ref=e104]
+          - paragraph [ref=e105]: Sunday, 26 July
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - generic [ref=e111]: Today
+              - img [ref=e112]
+              - generic [ref=e113]:
+                - generic [ref=e114]: 33°
+                - generic [ref=e115]: 28°
+            - generic [ref=e116]:
+              - generic [ref=e117]: Mon
+              - img [ref=e118]
+              - generic [ref=e119]:
+                - generic [ref=e120]: 32°
+                - generic [ref=e121]: 27°
+            - generic [ref=e122]:
+              - generic [ref=e123]: Tue
+              - img [ref=e124]
+              - generic [ref=e125]:
+                - generic [ref=e126]: 29°
+                - generic [ref=e127]: 27°
+            - generic [ref=e128]:
+              - generic [ref=e129]: Wed
+              - img [ref=e130]
+              - generic [ref=e131]:
+                - generic [ref=e132]: 31°
+                - generic [ref=e133]: 26°
+          - generic [ref=e134]:
+            - button "Expand to view forecast" [ref=e135] [cursor=pointer]:
+              - img [ref=e136]
+            - generic "Your local weather, 31°C, thunderstorms" [ref=e138]:
+              - img "thunderstorms" [ref=e139]:
+                - img [ref=e141]
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Your local weather
+                  - button "Use precise location" [ref=e159] [cursor=pointer]:
+                    - img [ref=e160]
+                - generic [ref=e162]: 31°C
+                - link "Google Weather" [ref=e163] [cursor=pointer]:
+                  - /url: https://support.google.com/websearch/answer/13687874
+      - generic [ref=e165]:
+        - heading "Top stories" [level=3] [ref=e168]:
+          - link "Top stories" [ref=e169] [cursor=pointer]:
+            - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRFZxYUdjU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Top stories
+            - img [ref=e170]
+        - generic [ref=e175]:
+          - link "Dharmendra Pradhan resigns as Union Education Minister" [ref=e177] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Dharmendra Pradhan resigns as Union Education Minister chevron_right
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - link [ref=e181] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - figure [ref=e182]
+              - generic [ref=e183]:
+                - generic [ref=e186]: The Hindu
+                - generic [ref=e190]:
+                  - generic:
+                    - button "More - Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan" [ref=e191] [cursor=pointer]:
+                      - img [ref=e193]
+                    - tooltip [ref=e195]: More
+              - link "Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan - The Hindu - 4 hours ago" [ref=e196] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan
+              - time [ref=e198]: 4 hours ago
+            - generic [ref=e199]:
+              - generic [ref=e200]:
+                - link [ref=e202] [cursor=pointer]:
+                  - /url: ./read/CBMi3gFBVV95cUxOSEozaUV0UXRoSHBUSHpNVWY5UG9DZ1MxUzA0QWlhZVdtNlZhVFpYc1hpbDE3SEE0NzdoVDJ2dzdIQkYxV1dOdEhvd1c2LUdQLVVTLU9aaVVId3BnOS1PeW94SjM3SkNoYmNwb2JNV0xCTmdwbmcxVTJWUF9HS2ZkTm05Ulk3bzdIeGE4TktKZURVNHVsZlJiNjZpV3pLSWRPRUdEdS0zMmxXOXRnNmFhdHAwTUMyWmVzc2pvazBzdF82OFdIS2h3aFdXR252SS1IdGdCZ2F0azVCekp1c3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e203]:
+                  - generic [ref=e206]: The Times of India
+                  - generic [ref=e210]:
+                    - generic:
+                      - button "More - Pradhan offered to quit on first day of student protest? BJP leader's big claim" [ref=e211] [cursor=pointer]:
+                        - img [ref=e213]
+                      - tooltip [ref=e215]: More
+                - link "Pradhan offered to quit on first day of student protest? BJP leader's big claim - The Times of India - 8 hours ago" [ref=e216] [cursor=pointer]:
+                  - /url: ./read/CBMi3gFBVV95cUxOSEozaUV0UXRoSHBUSHpNVWY5UG9DZ1MxUzA0QWlhZVdtNlZhVFpYc1hpbDE3SEE0NzdoVDJ2dzdIQkYxV1dOdEhvd1c2LUdQLVVTLU9aaVVId3BnOS1PeW94SjM3SkNoYmNwb2JNV0xCTmdwbmcxVTJWUF9HS2ZkTm05Ulk3bzdIeGE4TktKZURVNHVsZlJiNjZpV3pLSWRPRUdEdS0zMmxXOXRnNmFhdHAwTUMyWmVzc2pvazBzdF82OFdIS2h3aFdXR252SS1IdGdCZ2F0azVCekp1c3c?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Pradhan offered to quit on first day of student protest? BJP leader's big claim
+                - time [ref=e218]: 8 hours ago
+              - generic [ref=e219]:
+                - link [ref=e221] [cursor=pointer]:
+                  - /url: ./read/CBMiygFBVV95cUxNY0JQZjVqMXFZYjVodURYUFdCd0N1X3dwTXBRN3BLaV9YR1RtWkVEeGlVQVdBa19zVTdMczFXdDRjRzZWN0JkeG10eGREMTFVVFUtWGZ2eVMtM25JRndxMVVYWWktSU4ySkp2V2dWLWJDSjNRVzBQMWxzTnhTMEpFb1lHNFh0R3NtVThOWC1pdEhqUEtoZ2N4ckFIR1R5SVNETURHb0dVRkJSbmNJc2M1MUgySDl1ZHptN3ppbXpkQkxPZ3ZEaUlRSTZR0gHQAUFVX3lxTFAtSmJUVTA3M3l0SXV0bk93REluVWlHQzhaOENOc3dpdUc5cXAxWlNRM2M5ZXp1T04xYTk2U0pSLVZYSkxnLVpzYjI5TmZjWlVtQlNmdFVHWDI1RV9XRlVncnlHZ3RoMVI0RjR4VWFCaVJpOXVBazU0SU44ZlpSdkVSQXJEcXJwLUpHcmg3NDVkRDVVRDRxaWR3M01DbXFwNVBGd2ZvUkNFeUZxQ0tYWS1xRFZGakRzcExETkIwaWw5WEFLczJIYTNmamhBS3pzYXg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e222]:
+                  - generic [ref=e225]: The Hindu
+                  - generic [ref=e229]:
+                    - generic:
+                      - button "More - Haryana Congress holds ‘victory march’ after Pradhan’s resignation" [ref=e230] [cursor=pointer]:
+                        - img [ref=e232]
+                      - tooltip [ref=e234]: More
+                - link "Haryana Congress holds ‘victory march’ after Pradhan’s resignation - The Hindu - 23 minutes ago" [ref=e235] [cursor=pointer]:
+                  - /url: ./read/CBMiygFBVV95cUxNY0JQZjVqMXFZYjVodURYUFdCd0N1X3dwTXBRN3BLaV9YR1RtWkVEeGlVQVdBa19zVTdMczFXdDRjRzZWN0JkeG10eGREMTFVVFUtWGZ2eVMtM25JRndxMVVYWWktSU4ySkp2V2dWLWJDSjNRVzBQMWxzTnhTMEpFb1lHNFh0R3NtVThOWC1pdEhqUEtoZ2N4ckFIR1R5SVNETURHb0dVRkJSbmNJc2M1MUgySDl1ZHptN3ppbXpkQkxPZ3ZEaUlRSTZR0gHQAUFVX3lxTFAtSmJUVTA3M3l0SXV0bk93REluVWlHQzhaOENOc3dpdUc5cXAxWlNRM2M5ZXp1T04xYTk2U0pSLVZYSkxnLVpzYjI5TmZjWlVtQlNmdFVHWDI1RV9XRlVncnlHZ3RoMVI0RjR4VWFCaVJpOXVBazU0SU44ZlpSdkVSQXJEcXJwLUpHcmg3NDVkRDVVRDRxaWR3M01DbXFwNVBGd2ZvUkNFeUZxQ0tYWS1xRFZGakRzcExETkIwaWw5WEFLczJIYTNmamhBS3pzYXg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Haryana Congress holds ‘victory march’ after Pradhan’s resignation
+                - time [ref=e237]: 23 minutes ago
+              - generic [ref=e238]:
+                - link [ref=e240] [cursor=pointer]:
+                  - /url: ./read/CBMiwwFBVV95cUxOSWdmckliRGE2eklkN2JvTDU2eloyRHlaSUlvMTdIWlh2ZUxNZ1c0dEdON1p4OEliX2R6VHVBZ2YzblVoVGZmemc5bVVtVmhvMnBaSV9MSjRlSHV3NzVZT1lFZ2Q0VDdHZC1DVzN1ZHBfa0NvYWR5TC1YRFZ2SmQxNjJoNGVxMGhTMERMcnc3Vm1zOHhKTDZsbmZ1a2p4ZEo0dXdab0lQeUZMVEpEMWJxcUhOdmF1cXBNRFc4RjJMZ0R5eVnSAdMBQVVfeXFMUEk0Q28zQTdHb1QtV3g3ejhMZkhmdkl0WWttcVZmaEg4TGtESFhORGhFMWZpX1BnLVdYNGhSV194WTAxV0QzTEUyX2d3dUhPbTZBMjBGaUJNZl8tV1JjNTR6bVMwU0duR3ZBUGpYOFVnZ3RCWGJ5NmUxaWlsUnBpcjctZklUVVBqeTdIY0d6VzZkaE1xWUFtbGdsSmg3cldyZkppQ0tuamkyOGl5YmdJX0tVNm5OaG84em9WM3prVkl0VFh3dF9BRnR4R2VjU3Y2MzlGVQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e241]:
+                  - generic [ref=e244]: TheWire.in
+                  - generic [ref=e248]:
+                    - generic:
+                      - button "More - Control Over Education Is Critical for the RSS. The Sacking of Pradhan Is a Major Setback for It" [ref=e249] [cursor=pointer]:
+                        - img [ref=e251]
+                      - tooltip [ref=e253]: More
+                - link "Control Over Education Is Critical for the RSS. The Sacking of Pradhan Is a Major Setback for It - TheWire.in - 21 hours ago - By Seema Chishti" [ref=e254] [cursor=pointer]:
+                  - /url: ./read/CBMiwwFBVV95cUxOSWdmckliRGE2eklkN2JvTDU2eloyRHlaSUlvMTdIWlh2ZUxNZ1c0dEdON1p4OEliX2R6VHVBZ2YzblVoVGZmemc5bVVtVmhvMnBaSV9MSjRlSHV3NzVZT1lFZ2Q0VDdHZC1DVzN1ZHBfa0NvYWR5TC1YRFZ2SmQxNjJoNGVxMGhTMERMcnc3Vm1zOHhKTDZsbmZ1a2p4ZEo0dXdab0lQeUZMVEpEMWJxcUhOdmF1cXBNRFc4RjJMZ0R5eVnSAdMBQVVfeXFMUEk0Q28zQTdHb1QtV3g3ejhMZkhmdkl0WWttcVZmaEg4TGtESFhORGhFMWZpX1BnLVdYNGhSV194WTAxV0QzTEUyX2d3dUhPbTZBMjBGaUJNZl8tV1JjNTR6bVMwU0duR3ZBUGpYOFVnZ3RCWGJ5NmUxaWlsUnBpcjctZklUVVBqeTdIY0d6VzZkaE1xWUFtbGdsSmg3cldyZkppQ0tuamkyOGl5YmdJX0tVNm5OaG84em9WM3prVkl0VFh3dF9BRnR4R2VjU3Y2MzlGVQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Control Over Education Is Critical for the RSS. The Sacking of Pradhan Is a Major Setback for It
+                - generic [ref=e255]:
+                  - time [ref=e256]: 21 hours ago
+                  - separator [ref=e257]
+                  - generic [ref=e258]: By Seema Chishti
+          - link "See more headlines and perspectives - Dharmendra Pradhan resigns as Union Education Minister" [ref=e261] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - img [ref=e262]
+            - generic [ref=e264]: See more headlines and perspectives
+        - generic [ref=e268]:
+          - link "Indian leaders honor soldiers on Kargil Vijay Diwas" [ref=e270] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lJM2NfU0VSRWoyOFFxREJSMVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Indian leaders honor soldiers on Kargil Vijay Diwas chevron_right
+          - generic [ref=e271]:
+            - generic [ref=e272]:
+              - link [ref=e274] [cursor=pointer]:
+                - /url: ./read/CBMi7gFBVV95cUxNYWZtZDBvWlVyRGFnTUNiSVlBa09Rbk13S2xSVVdpRnZDaFVjbmNHTXQ4RlkzVGNSTERWTWs1ZkxFd0h3eVhhR21pbzl6RTJxNzFteWV6RW9hRHY0dTlsY05xM1lLMldrdzNOb2p2UDhxeVFaUURoSDliREdVSTdnRzlsWHhBQ2FKZ0U5ZTVvejY2Rlk3RXFPTENLZUIyM1l0SUlRWmZEZ1VtSERKMlRpTl82dG1mbFJleURodjNlaks4WFRFV3N3N0V4a19nTHBEWG1ZcjVWVWRRcGZ3aXZ5ZUlXdl9mNTJwS0FyR19B?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - figure [ref=e275]
+              - generic [ref=e276]:
+                - generic [ref=e279]: Hindustan Times
+                - generic [ref=e283]:
+                  - generic:
+                    - 'button "More - On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News" [ref=e284] [cursor=pointer]':
+                      - img [ref=e286]
+                    - tooltip [ref=e288]: More
+              - 'link "On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News - Hindustan Times - 8 hours ago" [ref=e289] [cursor=pointer]':
+                - /url: ./read/CBMi7gFBVV95cUxNYWZtZDBvWlVyRGFnTUNiSVlBa09Rbk13S2xSVVdpRnZDaFVjbmNHTXQ4RlkzVGNSTERWTWs1ZkxFd0h3eVhhR21pbzl6RTJxNzFteWV6RW9hRHY0dTlsY05xM1lLMldrdzNOb2p2UDhxeVFaUURoSDliREdVSTdnRzlsWHhBQ2FKZ0U5ZTVvejY2Rlk3RXFPTENLZUIyM1l0SUlRWmZEZ1VtSERKMlRpTl82dG1mbFJleURodjNlaks4WFRFV3N3N0V4a19nTHBEWG1ZcjVWVWRRcGZ3aXZ5ZUlXdl9mNTJwS0FyR19B?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "On Kargil Diwas, Rajnath Singh's sharp warning to Pakistan: ‘Response beyond imagination’ | India News"
+              - time [ref=e291]: 8 hours ago
+            - generic [ref=e292]:
+              - generic [ref=e293]:
+                - link [ref=e295] [cursor=pointer]:
+                  - /url: ./read/CBMijAJBVV95cUxPZVUwTEtTQ0Uzc2k4a2x5b1ZzU01tSGNFc3luZk5RLUxzWW5kQm5BUVV4U3psbzhZQWlTNVR0c2xPcnZOM2RYS1QyV3ZIbVFTSEFnWVdBcXRqYndGRGh4UnVLZklzZkpmalZibERpTTd5NEZFSC1nLUpHVkxFc0h4T2VYd0tZdk9teDNtRW9ieGZkTHZsSF84VVRhR0xsY2NtSTBTZ2d0d3NBSlR1WERaM2x4TkFKek1oOXdOMHlSMkpodUQxSmdOaThGRmtYTjlDY1lHQm92cS1VSEJQeHVGWWo5VmhVS0x1VWN1V2FHQXNsVVpNeEtESW9kLUNEQldKck5PQXM0WkdZSHRN0gGTAkFVX3lxTE9MbE02UGNKRHFlVk1heTc2dnNoTzVzWjNJeU4tMWFzVU5CaE9NbmI0TmRtNU5GYlhGMlBUSFptYlVqN2pGTHZnMVlxR1UzQ3FWdXNoUl93SjVKU3M4SUFvX1VXWGc0Nkd4ZHZNNjNmVzZQNDg5ZHpXUnFkMlNPQWZ5YkxWWm0xdlZaVm15UFl1eXBrRTBkT2puM1lmeWlGNnBvLVN0bGtxMkQ3TU03SWZpZGNKVUdjQ2xtWDhMUXZlMTcxbDdneVpXbjZqUUc3SkxEc2J5Vi1odW1fdWVHcF9NS0lNc3RtSHBGMElzS1RBUzBEVG1JcGtVaERDbWpIU0YwMWhwTWx3UzY3NzcyVTdIbjJF?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e296]:
+                  - generic [ref=e299]: The Hindu
+                  - generic [ref=e303]:
+                    - generic:
+                      - 'button "More - Kargil Vijay Diwas: Soldiers’ sacrifice is foundation of our freedom and security, says Karnataka CM D.K. Shivakumar" [ref=e304] [cursor=pointer]':
+                        - img [ref=e306]
+                      - tooltip [ref=e308]: More
+                - 'link "Kargil Vijay Diwas: Soldiers’ sacrifice is foundation of our freedom and security, says Karnataka CM D.K. Shivakumar - The Hindu - 5 hours ago" [ref=e309] [cursor=pointer]':
+                  - /url: ./read/CBMijAJBVV95cUxPZVUwTEtTQ0Uzc2k4a2x5b1ZzU01tSGNFc3luZk5RLUxzWW5kQm5BUVV4U3psbzhZQWlTNVR0c2xPcnZOM2RYS1QyV3ZIbVFTSEFnWVdBcXRqYndGRGh4UnVLZklzZkpmalZibERpTTd5NEZFSC1nLUpHVkxFc0h4T2VYd0tZdk9teDNtRW9ieGZkTHZsSF84VVRhR0xsY2NtSTBTZ2d0d3NBSlR1WERaM2x4TkFKek1oOXdOMHlSMkpodUQxSmdOaThGRmtYTjlDY1lHQm92cS1VSEJQeHVGWWo5VmhVS0x1VWN1V2FHQXNsVVpNeEtESW9kLUNEQldKck5PQXM0WkdZSHRN0gGTAkFVX3lxTE9MbE02UGNKRHFlVk1heTc2dnNoTzVzWjNJeU4tMWFzVU5CaE9NbmI0TmRtNU5GYlhGMlBUSFptYlVqN2pGTHZnMVlxR1UzQ3FWdXNoUl93SjVKU3M4SUFvX1VXWGc0Nkd4ZHZNNjNmVzZQNDg5ZHpXUnFkMlNPQWZ5YkxWWm0xdlZaVm15UFl1eXBrRTBkT2puM1lmeWlGNnBvLVN0bGtxMkQ3TU03SWZpZGNKVUdjQ2xtWDhMUXZlMTcxbDdneVpXbjZqUUc3SkxEc2J5Vi1odW1fdWVHcF9NS0lNc3RtSHBGMElzS1RBUzBEVG1JcGtVaERDbWpIU0YwMWhwTWx3UzY3NzcyVTdIbjJF?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "Kargil Vijay Diwas: Soldiers’ sacrifice is foundation of our freedom and security, says Karnataka CM D.K. Shivakumar"
+                - time [ref=e311]: 5 hours ago
+              - generic [ref=e312]:
+                - link [ref=e314] [cursor=pointer]:
+                  - /url: ./read/CBMi6wFBVV95cUxNZ2JaT0Exd3BkdXdWQjNJXzEtbkJBT0lZdUZ0WExYYllUS3VfbjF2RURVMHNIMWZNZDJzUl9idmtMbnozcVpaVHoxYXdyMzNQbjVLeFFaWGNCR2pWcDllM1JXY1NuNXYxOWMxUmFDUkhEVDBzd3hWSVY5WndudUFQckFrU29aenUzNFRzckgzMjVCbE9oZTQ5V3ZUbmxHRkJORmc2T1JzVkRVMTVDNHExa2VSREhiSDQyNkhSRW1FNXVHNjhvM2VQTk40Vmg0bDBEdnpnTlY3U2JqWW53Wlp0UmxjYmZTb2ZkeWNZ0gHwAUFVX3lxTE13WllSOExTSjFMR1F5WnZXc29pTDcyQ0ROQS1pVWhzZmVlVVRFdjFEQ1FVM0hrWG1LY2RTamFkUDl5YzlkVVV6bUUzMHNiTjI0Nmc1T0d2LVh6LURUZDhUWk1ZOUFQNHVnM3I4Z0tDbGJyZE91RDJjNVlHaDJBbmpRNUVRcHl3WlRyTjdWTk1wRXN0SFZ5elZ3NVh3SGtrQTFGUGVzSWI5VVNmb2dVMkZfQ3lURkltWmpJekRrUXZCMDJRSV96Z3BJRjhYSzlVMjBxN1N4RElac3ZRdkxiUHMta1RWbmZWRWsyZWJyV3lWdA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e315]:
+                  - generic [ref=e318]: Telegraph India
+                  - generic [ref=e322]:
+                    - generic:
+                      - 'button "More - ‘India will talk to Pakistan only on PoK’: Defence minister Rajnath Singh rejects broader talks" [ref=e323] [cursor=pointer]':
+                        - img [ref=e325]
+                      - tooltip [ref=e327]: More
+                - 'link "‘India will talk to Pakistan only on PoK’: Defence minister Rajnath Singh rejects broader talks - Telegraph India - 5 hours ago" [ref=e328] [cursor=pointer]':
+                  - /url: ./read/CBMi6wFBVV95cUxNZ2JaT0Exd3BkdXdWQjNJXzEtbkJBT0lZdUZ0WExYYllUS3VfbjF2RURVMHNIMWZNZDJzUl9idmtMbnozcVpaVHoxYXdyMzNQbjVLeFFaWGNCR2pWcDllM1JXY1NuNXYxOWMxUmFDUkhEVDBzd3hWSVY5WndudUFQckFrU29aenUzNFRzckgzMjVCbE9oZTQ5V3ZUbmxHRkJORmc2T1JzVkRVMTVDNHExa2VSREhiSDQyNkhSRW1FNXVHNjhvM2VQTk40Vmg0bDBEdnpnTlY3U2JqWW53Wlp0UmxjYmZTb2ZkeWNZ0gHwAUFVX3lxTE13WllSOExTSjFMR1F5WnZXc29pTDcyQ0ROQS1pVWhzZmVlVVRFdjFEQ1FVM0hrWG1LY2RTamFkUDl5YzlkVVV6bUUzMHNiTjI0Nmc1T0d2LVh6LURUZDhUWk1ZOUFQNHVnM3I4Z0tDbGJyZE91RDJjNVlHaDJBbmpRNUVRcHl3WlRyTjdWTk1wRXN0SFZ5elZ3NVh3SGtrQTFGUGVzSWI5VVNmb2dVMkZfQ3lURkltWmpJekRrUXZCMDJRSV96Z3BJRjhYSzlVMjBxN1N4RElac3ZRdkxiUHMta1RWbmZWRWsyZWJyV3lWdA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "‘India will talk to Pakistan only on PoK’: Defence minister Rajnath Singh rejects broader talks"
+                - time [ref=e330]: 5 hours ago
+              - generic [ref=e331]:
+                - link [ref=e333] [cursor=pointer]:
+                  - /url: ./read/CBMixwFBVV95cUxOVmhQX0Zuamt3ZGpuc1BaZGpCUEVfc1RIVEwxalE3NHQ2TWVIUWdhY3gzUWVPOVdBSjNuMzVBaUFya2xfak1XbjB2eHVKU0RvQ0JSRzRkT3NTTWlNajN5a3oxS05XYTBYcl9oUEZoSjlGNjlhOFBCcllxSklLZVROaXZVckdRQllURGJiNFI4amtsdXlpa2wxVm9oalJsVmtYd0trdmJSRm0wUlcyMVZYeng3UWU3cldZTjh0T2l5NU95eS1YbTVv0gHMAUFVX3lxTE16UVpRZG1oWVN1UUFPRTE1dFh2X0NFSGRHYkpZOXllZUppWmprRVVHdnRoc1hDcDRSRWJ4dDN1UVJzLVF5RERFbks4VzM1ZWNJd2lvV1k0X0NYTnlaNUd3RVhFcFZ0dEdvaFVvaGlFa1F1N2tPdHUzNGZaaFVpTHBvdHRWSGMxM0ZkeFRqVVptV0Q5S3dmRUlMYzY5cHMxa0pvN1dBa3JHcUx2Nl95eVc2QWlqWjNkSEJiU1h5bVRqWW1GdzNZSmFwVjlJQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e334]:
+                  - generic [ref=e337]: ThePrint
+                  - generic [ref=e341]:
+                    - generic:
+                      - button "More - Manipur Guv says national security collective responsibility, calls people to strengthen peace" [ref=e342] [cursor=pointer]:
+                        - img [ref=e344]
+                      - tooltip [ref=e346]: More
+                - link "Manipur Guv says national security collective responsibility, calls people to strengthen peace - ThePrint - 1 hour ago" [ref=e347] [cursor=pointer]:
+                  - /url: ./read/CBMixwFBVV95cUxOVmhQX0Zuamt3ZGpuc1BaZGpCUEVfc1RIVEwxalE3NHQ2TWVIUWdhY3gzUWVPOVdBSjNuMzVBaUFya2xfak1XbjB2eHVKU0RvQ0JSRzRkT3NTTWlNajN5a3oxS05XYTBYcl9oUEZoSjlGNjlhOFBCcllxSklLZVROaXZVckdRQllURGJiNFI4amtsdXlpa2wxVm9oalJsVmtYd0trdmJSRm0wUlcyMVZYeng3UWU3cldZTjh0T2l5NU95eS1YbTVv0gHMAUFVX3lxTE16UVpRZG1oWVN1UUFPRTE1dFh2X0NFSGRHYkpZOXllZUppWmprRVVHdnRoc1hDcDRSRWJ4dDN1UVJzLVF5RERFbks4VzM1ZWNJd2lvV1k0X0NYTnlaNUd3RVhFcFZ0dEdvaFVvaGlFa1F1N2tPdHUzNGZaaFVpTHBvdHRWSGMxM0ZkeFRqVVptV0Q5S3dmRUlMYzY5cHMxa0pvN1dBa3JHcUx2Nl95eVc2QWlqWjNkSEJiU1h5bVRqWW1GdzNZSmFwVjlJQQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Manipur Guv says national security collective responsibility, calls people to strengthen peace
+                - time [ref=e349]: 1 hour ago
+          - link "See more headlines and perspectives - Indian leaders honor soldiers on Kargil Vijay Diwas" [ref=e352] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lJM2NfU0VSRWoyOFFxREJSMVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - img [ref=e353]
+            - generic [ref=e355]: See more headlines and perspectives
+        - generic [ref=e359]:
+          - generic [ref=e360]:
+            - link [ref=e362] [cursor=pointer]:
+              - /url: ./read/CBMiygFBVV95cUxNUW9xcVM0dnZlRnJjZm1ZMXNoQlYxLWhiWXh6SFhMTVpfUzdNbi1VQmx4b3ZLWTNacUJEcjFqVVhiTmgxR20tTC1pWFd2TmE1eUpnbnkyMHZvNEcwYlh1Sk1MejlDN2Q4djlLZ283Mk43S1pRMWdGY1ZDQ3JuUEtIczRpTlNYajRxMVdEanpkSjJGb29KMGNuVm1YY0pTdVNlREd5QU9TSlZvNDBrTUc1WUhaU1dhT05qUmZ1Y1VpekhHaVg4bnMtcWh3?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e364]:
+              - generic [ref=e365]:
+                - generic [ref=e368]: NDTV
+                - generic [ref=e372]:
+                  - generic:
+                    - 'button "More - \"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post" [ref=e373] [cursor=pointer]':
+                      - img [ref=e375]
+                    - tooltip [ref=e377]: More
+              - 'link "\"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post - NDTV - 9 hours ago - By Chandrajit Mitra" [ref=e378] [cursor=pointer]':
+                - /url: ./read/CBMiygFBVV95cUxNUW9xcVM0dnZlRnJjZm1ZMXNoQlYxLWhiWXh6SFhMTVpfUzdNbi1VQmx4b3ZLWTNacUJEcjFqVVhiTmgxR20tTC1pWFd2TmE1eUpnbnkyMHZvNEcwYlh1Sk1MejlDN2Q4djlLZ283Mk43S1pRMWdGY1ZDQ3JuUEtIczRpTlNYajRxMVdEanpkSjJGb29KMGNuVm1YY0pTdVNlREd5QU9TSlZvNDBrTUc1WUhaU1dhT05qUmZ1Y1VpekhHaVg4bnMtcWh3?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "\"Just The Beginning, Long Way To Go\": Abhijeet Dipke's Morning Video Post"
+            - figure [ref=e379]
+          - generic [ref=e380]:
+            - time [ref=e381]: 9 hours ago
+            - separator [ref=e382]
+            - generic [ref=e383]: By Chandrajit Mitra
+            - 'link "See more headlines and perspectives - \"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post" [ref=e384] [cursor=pointer]':
+              - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2llOVBYWEVSSEZWam53ZDFDa2p5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - img [ref=e385]
+              - generic [ref=e387]: See more
+        - generic [ref=e391]:
+          - generic [ref=e392]:
+            - link [ref=e394] [cursor=pointer]:
+              - /url: ./read/CBMiogFBVV95cUxOSXpRZUVKLWdPbXlybXhsRDdrOG9nLUMtVGg2RkFhdHF3SGxTZndLTDJ6M2xKaDRWd1JJY3VjMVd5bnMyUjhFT2JIbF8tY3lfM2tncUl5bjJTWlI2UjBpR3VlN2ZwbTc2cXRaNXJyZUJwbHN2OFI4cGw4djRJcHhNV0ZfNHNOaEpSdXl3cXdSM1RqRFhYV241NHRoRjVTd2tsRFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e396]:
+              - generic [ref=e397]:
+                - generic [ref=e400]: The Guardian
+                - generic [ref=e404]:
+                  - generic:
+                    - button "More - US pauses attacks on Iran for a second day as peace talks continue" [ref=e405] [cursor=pointer]:
+                      - img [ref=e407]
+                    - tooltip [ref=e409]: More
+              - link "US pauses attacks on Iran for a second day as peace talks continue - The Guardian - 1 hour ago" [ref=e410] [cursor=pointer]:
+                - /url: ./read/CBMiogFBVV95cUxOSXpRZUVKLWdPbXlybXhsRDdrOG9nLUMtVGg2RkFhdHF3SGxTZndLTDJ6M2xKaDRWd1JJY3VjMVd5bnMyUjhFT2JIbF8tY3lfM2tncUl5bjJTWlI2UjBpR3VlN2ZwbTc2cXRaNXJyZUJwbHN2OFI4cGw4djRJcHhNV0ZfNHNOaEpSdXl3cXdSM1RqRFhYV241NHRoRjVTd2tsRFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: US pauses attacks on Iran for a second day as peace talks continue
+            - figure [ref=e411]
+          - generic [ref=e412]:
+            - time [ref=e413]: 1 hour ago
+            - link "See more headlines and perspectives - US pauses attacks on Iran for a second day as peace talks continue" [ref=e414] [cursor=pointer]:
+              - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lsdlBqVkVSR3FTS1VsVzFQeVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - img [ref=e415]
+              - generic [ref=e417]: See more
+      - heading "Local news" [level=3] [ref=e423]:
+        - link "Local news" [ref=e424] [cursor=pointer]:
+          - /url: ./topics/CAAqHAgKIhZDQklTQ2pvSWJHOWpZV3hmZGpJb0FBUAE?hl=en-IN&gl=IN&ceid=IN%3Aen
+          - text: Local news
+          - img [ref=e425]

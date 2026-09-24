@@ -21,6 +21,9 @@
       OD_BIND_HOST = "0.0.0.0";
       OD_PORT = "7456";
       OD_WEB_PORT = "7456";
+      # Browser UI is served from this origin; the daemon rejects any
+      # cross-origin /api call whose Origin header isn't listed here.
+      OD_ALLOWED_ORIGINS = "http://pilab.lion-zebra.ts.net:7456";
       # od mcp's stdio client has no code path to send an Authorization
       # header, so an enforced OD_API_TOKEN would 401 every MCP tool call
       # from other hosts. Tailscale (this host is only reachable via

@@ -1,0 +1,307 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "Google News" [ref=e7] [cursor=pointer]:
+        - /url: ./?hl=en-IN&gl=IN&ceid=IN%3Aen
+        - generic [ref=e9]: News
+      - generic [ref=e10]:
+        - search [ref=e12]:
+          - generic [ref=e17]:
+            - combobox "Search for topics, locations & sources" [ref=e19]
+            - status
+          - button "Advanced search" [ref=e20] [cursor=pointer]:
+            - generic [ref=e21]:
+              - generic "Advanced search" [ref=e22]:
+                - img [ref=e23]
+              - tooltip [ref=e25]: Advanced search
+          - button "Search" [ref=e26] [cursor=pointer]:
+            - img [ref=e27]
+        - generic [ref=e30]:
+          - generic [ref=e35]:
+            - button "Help" [ref=e36] [cursor=pointer]:
+              - img [ref=e38]
+            - tooltip [ref=e40]: Help
+          - generic [ref=e45]:
+            - button "Settings" [ref=e46] [cursor=pointer]:
+              - img [ref=e48]
+            - tooltip [ref=e51]: Settings
+      - generic [ref=e53]:
+        - button "Google apps" [ref=e57] [cursor=pointer]:
+          - img [ref=e58]
+        - link "Sign in" [ref=e61] [cursor=pointer]:
+          - /url: https://accounts.google.com/ServiceLogin?passive=1209600&continue=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&followup=https://news.google.com/home?hl%3Den-IN%26gl%3DIN%26ceid%3DIN:en&hl=en-IN&ec=GAZAqgM
+    - navigation [ref=e64]:
+      - tablist [ref=e65]:
+        - tab "Home" [selected] [ref=e66] [cursor=pointer]:
+          - tab "Home" [selected] [ref=e67]
+        - tab "For you" [ref=e68] [cursor=pointer]:
+          - tab "For you" [ref=e69]
+        - tab "Following" [ref=e70] [cursor=pointer]:
+          - tab "Following" [ref=e71]
+        - tab "News Showcase" [ref=e72] [cursor=pointer]:
+          - tab "News Showcase" [ref=e73]
+        - tab "India" [ref=e76] [cursor=pointer]:
+          - tab "India" [ref=e77]
+        - tab "World" [ref=e78] [cursor=pointer]:
+          - tab "World" [ref=e79]
+        - tab "Local" [ref=e80] [cursor=pointer]:
+          - tab "Local" [ref=e81]
+        - tab "Business" [ref=e82] [cursor=pointer]:
+          - tab "Business" [ref=e83]
+        - tab "Technology" [ref=e84] [cursor=pointer]:
+          - tab "Technology" [ref=e85]
+        - tab "Entertainment" [ref=e86] [cursor=pointer]:
+          - tab "Entertainment" [ref=e87]
+        - tab "Sports" [ref=e88] [cursor=pointer]:
+          - tab "Sports" [ref=e89]
+        - tab "Science" [ref=e90] [cursor=pointer]:
+          - tab "Science" [ref=e91]
+        - tab "Health" [ref=e92] [cursor=pointer]:
+          - tab "Health" [ref=e93]
+  - main [ref=e98]:
+    - generic [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - heading "Your briefing" [level=1] [ref=e104]
+          - paragraph [ref=e105]: Sunday, 26 July
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]:
+              - generic [ref=e111]: Today
+              - img [ref=e112]
+              - generic [ref=e113]:
+                - generic [ref=e114]: 33°
+                - generic [ref=e115]: 28°
+            - generic [ref=e116]:
+              - generic [ref=e117]: Mon
+              - img [ref=e118]
+              - generic [ref=e119]:
+                - generic [ref=e120]: 32°
+                - generic [ref=e121]: 27°
+            - generic [ref=e122]:
+              - generic [ref=e123]: Tue
+              - img [ref=e124]
+              - generic [ref=e125]:
+                - generic [ref=e126]: 29°
+                - generic [ref=e127]: 27°
+            - generic [ref=e128]:
+              - generic [ref=e129]: Wed
+              - img [ref=e130]
+              - generic [ref=e131]:
+                - generic [ref=e132]: 31°
+                - generic [ref=e133]: 26°
+          - generic [ref=e134]:
+            - button "Expand to view forecast" [ref=e135] [cursor=pointer]:
+              - img [ref=e136]
+            - generic "Your local weather, 31°C, thunderstorms" [ref=e138]:
+              - img "thunderstorms" [ref=e139]:
+                - img [ref=e141]
+              - generic [ref=e156]:
+                - generic [ref=e157]:
+                  - generic [ref=e158]: Your local weather
+                  - button "Use precise location" [ref=e159] [cursor=pointer]:
+                    - img [ref=e160]
+                - generic [ref=e162]: 31°C
+                - link "Google Weather" [ref=e163] [cursor=pointer]:
+                  - /url: https://support.google.com/websearch/answer/13687874
+      - generic [ref=e165]:
+        - heading "Top stories" [level=3] [ref=e168]:
+          - link "Top stories" [ref=e169] [cursor=pointer]:
+            - /url: ./topics/CAAqKggKIiRDQkFTRlFvSUwyMHZNRFZxYUdjU0JXVnVMVWRDR2dKSlRpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Top stories
+            - img [ref=e170]
+        - generic [ref=e175]:
+          - link "Dharmendra Pradhan resigns as India's education minister" [ref=e177] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Dharmendra Pradhan resigns as India's education minister chevron_right
+          - generic [ref=e178]:
+            - generic [ref=e179]:
+              - link [ref=e181] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - figure [ref=e182]
+              - generic [ref=e183]:
+                - generic [ref=e186]: The Hindu
+                - generic [ref=e190]:
+                  - generic:
+                    - button "More - Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan" [ref=e191] [cursor=pointer]:
+                      - img [ref=e193]
+                    - tooltip [ref=e195]: More
+              - link "Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan - The Hindu - 4 hours ago" [ref=e196] [cursor=pointer]:
+                - /url: ./read/CBMiqwFBVV95cUxPNm51QlBMLTM5ZDZ0bkcwS21LMzZwdDVIS0NNeFduakRqQ0VTUTVsdEVKbWdWSElJTG5pUElWSTJiMkZ2ajdHMVBCLXJsWFhSd2xZU1ZpdFlDcnllLWt5VzJoLWQtUTR1d0xGdzNPeHNyUFUwQkt2Y3BhSk1GQVhmeEVsQ1luQkhQZ1hzcGY4RTkxZXR5MXhHX1c0cE5jOTFtN19GRVVwTWZwSTDSAbIBQVVfeXFMTlo0Ql92Nko2VWswRTkwZzh6Z1JDY01TQXdMSXBnQnpRcGRXM1dTRW9yZk1rMVhhTGFNUXBRdGVjaXRSelhzTTFtazYtMVkwSHdhZU5nLVVST3JSRWt4Sjl6VzhIcmdfQnRqa3J5VDkxdnpRWHFqU2NRYzZGQXNGZmRXRHVvbTNUREVITnE0ZWxFcXRvYW5lb3dYVjVCWEZhSjlFSEYyM3VnSFpVa0FySzZLUQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: Prahlad Joshi takes charge as Education Minister after resignation of Dharmendra Pradhan
+              - time [ref=e198]: 4 hours ago
+            - generic [ref=e199]:
+              - generic [ref=e200]:
+                - link [ref=e202] [cursor=pointer]:
+                  - /url: ./read/CBMi7AFBVV95cUxQZ25QbmUyOWhpbmdPeFZlVVdQa3NKcnpZeUJGRkxaU1hDZ1BNX0NDTmNFRnI2WHRpY3N1OElnM3MtU0JKVkNxTERFUk9MT21hTjdGOVdibEFiR05mT1V3eWxWRnFhNklJa3M4ZHVEcnhnUjlkanhrRkh6MEltT0NkTjV0TXdJSWJjMjJRUnkxZmw5dkRSRzBQejllcWlaS3NCZmhNNnJzamFWU2xPYzNHZEVwVmdwdDMxRHRXWmpuV2NoWmtxVkxEVkhGV292bkJGTHd4S2RlWlM1MGVxRFV0cVhKNlo3U1REcnUwWtIB8wFBVV95cUxQYlhHZldlMXZ5V25INjFTTDlfQndnc2w1RGdzdHZ0dkRnWjFrTW04dUY2TTNUTG9fc013TENheEpzTW9ZQ3hyd1pBTEZRTHpBbFVpU08wZDh0UENSU2lRQ0RfQlQ1dDJOOU9NNE5jdjRCUXZoYzdBc214WGJJMk1IekNyNmNTSTVwQ01xYmpuRDU0eW43VXg4Q1JWUXdSRk5TU3pKQ1BUamJqU0I5YVAwMTVzV2dyTVR1Wm1BWHl5dUZ4bHQtR004dS1BaHJOaEloT3NUeTdEVjdCcTlBbTF2Y3pkWFBxTXFJNFVwQVVLZ25lNk0?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e203]:
+                  - generic [ref=e206]: The Hindu
+                  - generic [ref=e210]:
+                    - generic:
+                      - 'button "More - Youth at the vanguard: On the Education Minister’s resignation" [ref=e211] [cursor=pointer]':
+                        - img [ref=e213]
+                      - tooltip [ref=e215]: More
+                - 'link "Youth at the vanguard: On the Education Minister’s resignation - The Hindu - 1 hour ago" [ref=e216] [cursor=pointer]':
+                  - /url: ./read/CBMi7AFBVV95cUxQZ25QbmUyOWhpbmdPeFZlVVdQa3NKcnpZeUJGRkxaU1hDZ1BNX0NDTmNFRnI2WHRpY3N1OElnM3MtU0JKVkNxTERFUk9MT21hTjdGOVdibEFiR05mT1V3eWxWRnFhNklJa3M4ZHVEcnhnUjlkanhrRkh6MEltT0NkTjV0TXdJSWJjMjJRUnkxZmw5dkRSRzBQejllcWlaS3NCZmhNNnJzamFWU2xPYzNHZEVwVmdwdDMxRHRXWmpuV2NoWmtxVkxEVkhGV292bkJGTHd4S2RlWlM1MGVxRFV0cVhKNlo3U1REcnUwWtIB8wFBVV95cUxQYlhHZldlMXZ5V25INjFTTDlfQndnc2w1RGdzdHZ0dkRnWjFrTW04dUY2TTNUTG9fc013TENheEpzTW9ZQ3hyd1pBTEZRTHpBbFVpU08wZDh0UENSU2lRQ0RfQlQ1dDJOOU9NNE5jdjRCUXZoYzdBc214WGJJMk1IekNyNmNTSTVwQ01xYmpuRDU0eW43VXg4Q1JWUXdSRk5TU3pKQ1BUamJqU0I5YVAwMTVzV2dyTVR1Wm1BWHl5dUZ4bHQtR004dS1BaHJOaEloT3NUeTdEVjdCcTlBbTF2Y3pkWFBxTXFJNFVwQVVLZ25lNk0?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "Youth at the vanguard: On the Education Minister’s resignation"
+                - generic [ref=e217]:
+                  - time [ref=e218]: 1 hour ago
+                  - separator [ref=e219]
+                  - generic [ref=e220]: Opinion
+              - generic [ref=e221]:
+                - link [ref=e223] [cursor=pointer]:
+                  - /url: ./read/CBMi5wFBVV95cUxNa1hYQkVRTERINWgwNFlJWFluanowNTdYSTFaMzV5U1RaWHBEREVvMkhvMk4zMmtnZE8wLUF6WUZ3UGlRUWxmUGRBcUVxcEE5d01relc0dTdheDlkbTZvdFhuYmJzMnhEUWJ4QTBHcDd0bGo0ZGZVck9hSnZTblJkSjZHRGhXc3BYNkh1MWt1cGRjd0M1bzNjcW8wUVhleS1Bc2VKSGlZNzVUNG5Td19ueHhDRm9nZ0c4Y0p5ejQtd2VNRy1Na25qTXRveFl6d01ld0luWXFfV3JPaGRlRWJXcjNZT2JsNzg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e224]:
+                  - generic [ref=e227]: The Times of India
+                  - generic [ref=e231]:
+                    - generic:
+                      - 'button "More - ''This is a new subject for me'': Pralhad Joshi after taking charge as education minister" [ref=e232] [cursor=pointer]':
+                        - img [ref=e234]
+                      - tooltip [ref=e236]: More
+                - 'link "''This is a new subject for me'': Pralhad Joshi after taking charge as education minister - The Times of India - 2 hours ago" [ref=e237] [cursor=pointer]':
+                  - /url: ./read/CBMi5wFBVV95cUxNa1hYQkVRTERINWgwNFlJWFluanowNTdYSTFaMzV5U1RaWHBEREVvMkhvMk4zMmtnZE8wLUF6WUZ3UGlRUWxmUGRBcUVxcEE5d01relc0dTdheDlkbTZvdFhuYmJzMnhEUWJ4QTBHcDd0bGo0ZGZVck9hSnZTblJkSjZHRGhXc3BYNkh1MWt1cGRjd0M1bzNjcW8wUVhleS1Bc2VKSGlZNzVUNG5Td19ueHhDRm9nZ0c4Y0p5ejQtd2VNRy1Na25qTXRveFl6d01ld0luWXFfV3JPaGRlRWJXcjNZT2JsNzg?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "'This is a new subject for me': Pralhad Joshi after taking charge as education minister"
+                - time [ref=e239]: 2 hours ago
+              - generic [ref=e240]:
+                - link [ref=e242] [cursor=pointer]:
+                  - /url: ./read/CBMiswFBVV95cUxPYkdRakRqeDUwUDhIQ1BRR1liREREU3paeGtSYVN6UGVSeUJmZFhNcTFBWXplUXdtM0RwOWpBa0kzd2NLQTB2TnM5Ty1LRnpNNjdRYmEtSlI4em1IVk9LaU1aLU9NeVFnVGpncURjazNYbVlhR0dfZlRiX21XR3JKVDNkb3pLRXA0ME9LVVVMLTZKajZfYnVDX1BlWGkwNTZLR1Eta2ZXckIxWVV0cnozWGI4MNIBuwFBVV95cUxQWW82bC1KMzBzRE1YbVk1RlJ6Wl9EUkdDVDNBeEE3ZUJTeTg3djNOX3RzeWdPcktqRFQ2eDd2a3FEQlFPUjYtS1pyYlVWM05WeG1aWkZpWHNzQjlmNE5ma1cxb2lQS0YxYlpqZkxIYmM1RzBfWURtUmVaS0lSc0Zia2pkZWpqa2NfOS1LNU9nWXBJRHg4UEtMMmx4SHB3ZjRGSDc0Wk9Rd3BSMkJIMEY4SXIxdGg2a19nNVVz?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e243]:
+                  - generic [ref=e246]: NDTV
+                  - generic [ref=e250]:
+                    - generic:
+                      - 'button "More - NEP Architect, NEET Row: Dharmendra Pradhan''s 4 Years As Education Minister" [ref=e251] [cursor=pointer]':
+                        - img [ref=e253]
+                      - tooltip [ref=e255]: More
+                - 'link "NEP Architect, NEET Row: Dharmendra Pradhan''s 4 Years As Education Minister - NDTV - 1 hour ago - By Tanushka Dutta" [ref=e256] [cursor=pointer]':
+                  - /url: ./read/CBMiswFBVV95cUxPYkdRakRqeDUwUDhIQ1BRR1liREREU3paeGtSYVN6UGVSeUJmZFhNcTFBWXplUXdtM0RwOWpBa0kzd2NLQTB2TnM5Ty1LRnpNNjdRYmEtSlI4em1IVk9LaU1aLU9NeVFnVGpncURjazNYbVlhR0dfZlRiX21XR3JKVDNkb3pLRXA0ME9LVVVMLTZKajZfYnVDX1BlWGkwNTZLR1Eta2ZXckIxWVV0cnozWGI4MNIBuwFBVV95cUxQWW82bC1KMzBzRE1YbVk1RlJ6Wl9EUkdDVDNBeEE3ZUJTeTg3djNOX3RzeWdPcktqRFQ2eDd2a3FEQlFPUjYtS1pyYlVWM05WeG1aWkZpWHNzQjlmNE5ma1cxb2lQS0YxYlpqZkxIYmM1RzBfWURtUmVaS0lSc0Zia2pkZWpqa2NfOS1LNU9nWXBJRHg4UEtMMmx4SHB3ZjRGSDc0Wk9Rd3BSMkJIMEY4SXIxdGg2a19nNVVz?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "NEP Architect, NEET Row: Dharmendra Pradhan's 4 Years As Education Minister"
+                - generic [ref=e257]:
+                  - time [ref=e258]: 1 hour ago
+                  - separator [ref=e259]
+                  - generic [ref=e260]: By Tanushka Dutta
+          - link "See more headlines and perspectives - Dharmendra Pradhan resigns as India's education minister" [ref=e263] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2pxMC1UV0VSSHBDSi1RNm9mX0x5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - img [ref=e264]
+            - generic [ref=e266]: See more headlines and perspectives
+        - generic [ref=e270]:
+          - link "Abhijeet Dipke leads Cockroach Janta Party youth movement in India" [ref=e272] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2llOVBYWEVSSEZWam53ZDFDa2p5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - text: Abhijeet Dipke leads Cockroach Janta Party youth movement in India chevron_right
+          - generic [ref=e273]:
+            - generic [ref=e274]:
+              - link [ref=e276] [cursor=pointer]:
+                - /url: ./read/CBMiygFBVV95cUxNUW9xcVM0dnZlRnJjZm1ZMXNoQlYxLWhiWXh6SFhMTVpfUzdNbi1VQmx4b3ZLWTNacUJEcjFqVVhiTmgxR20tTC1pWFd2TmE1eUpnbnkyMHZvNEcwYlh1Sk1MejlDN2Q4djlLZ283Mk43S1pRMWdGY1ZDQ3JuUEtIczRpTlNYajRxMVdEanpkSjJGb29KMGNuVm1YY0pTdVNlREd5QU9TSlZvNDBrTUc1WUhaU1dhT05qUmZ1Y1VpekhHaVg4bnMtcWh3?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - figure [ref=e277]
+              - generic [ref=e278]:
+                - generic [ref=e281]: NDTV
+                - generic [ref=e285]:
+                  - generic:
+                    - 'button "More - \"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post" [ref=e286] [cursor=pointer]':
+                      - img [ref=e288]
+                    - tooltip [ref=e290]: More
+              - 'link "\"Just The Beginning, Long Way To Go\": Abhijeet Dipke''s Morning Video Post - NDTV - 9 hours ago - By Chandrajit Mitra" [ref=e291] [cursor=pointer]':
+                - /url: ./read/CBMiygFBVV95cUxNUW9xcVM0dnZlRnJjZm1ZMXNoQlYxLWhiWXh6SFhMTVpfUzdNbi1VQmx4b3ZLWTNacUJEcjFqVVhiTmgxR20tTC1pWFd2TmE1eUpnbnkyMHZvNEcwYlh1Sk1MejlDN2Q4djlLZ283Mk43S1pRMWdGY1ZDQ3JuUEtIczRpTlNYajRxMVdEanpkSjJGb29KMGNuVm1YY0pTdVNlREd5QU9TSlZvNDBrTUc1WUhaU1dhT05qUmZ1Y1VpekhHaVg4bnMtcWh3?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "\"Just The Beginning, Long Way To Go\": Abhijeet Dipke's Morning Video Post"
+              - generic [ref=e292]:
+                - time [ref=e293]: 9 hours ago
+                - separator [ref=e294]
+                - generic [ref=e295]: By Chandrajit Mitra
+            - generic [ref=e296]:
+              - generic [ref=e297]:
+                - link [ref=e299] [cursor=pointer]:
+                  - /url: ./read/CBMirgJBVV95cUxOUVBiZkk4cnRDSTE1dmtsay1QY1FrS0xadXNJQ3lBTXBGa0l3NnZwWnlZSUR4SzJ0LUtzRDJqOENTa214RVRUbEJhQ1lFazdOMzA5dDFHUHNHU2JjRUJIMkNsYVNieGtQQUJPMHFJX2kzY0VucGNnS2ZpZE5hYkNvUF9rOUdfZVVtektzd2QxRWpCWTFIVkExT0FhcmdhQ2ZJak1IQ01wWlcwTERieWJBM0ZRMWQ4YmhCYkRUR0h1LS1HS3g1cVVybEs2MzFhYy1DSXhWZjdZblJva1BDSC1iVlFvN1dEUmFrNnBUZlZjalEyM3N1MXlwRUlVV2tOX2ptb1J4TWJIUkZHRE1MVjMyb1F2VnROWExaQnd0VjhvS0NHZUllTENCNWlGMVJqZw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e300]:
+                  - generic [ref=e303]: The Times of India
+                  - generic [ref=e307]:
+                    - generic:
+                      - 'button "More - ''If you had not called us ''cockroaches''...'': Abhijit Dipke''s message to CJI Surya Kant from Jantar Mantar after Dharmendra Pradhan''s resignation" [ref=e308] [cursor=pointer]':
+                        - img [ref=e310]
+                      - tooltip [ref=e312]: More
+                - 'link "''If you had not called us ''cockroaches''...'': Abhijit Dipke''s message to CJI Surya Kant from Jantar Mantar after Dharmendra Pradhan''s resignation - The Times of India - 9 hours ago" [ref=e313] [cursor=pointer]':
+                  - /url: ./read/CBMirgJBVV95cUxOUVBiZkk4cnRDSTE1dmtsay1QY1FrS0xadXNJQ3lBTXBGa0l3NnZwWnlZSUR4SzJ0LUtzRDJqOENTa214RVRUbEJhQ1lFazdOMzA5dDFHUHNHU2JjRUJIMkNsYVNieGtQQUJPMHFJX2kzY0VucGNnS2ZpZE5hYkNvUF9rOUdfZVVtektzd2QxRWpCWTFIVkExT0FhcmdhQ2ZJak1IQ01wWlcwTERieWJBM0ZRMWQ4YmhCYkRUR0h1LS1HS3g1cVVybEs2MzFhYy1DSXhWZjdZblJva1BDSC1iVlFvN1dEUmFrNnBUZlZjalEyM3N1MXlwRUlVV2tOX2ptb1J4TWJIUkZHRE1MVjMyb1F2VnROWExaQnd0VjhvS0NHZUllTENCNWlGMVJqZw?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "'If you had not called us 'cockroaches'...': Abhijit Dipke's message to CJI Surya Kant from Jantar Mantar after Dharmendra Pradhan's resignation"
+                - time [ref=e315]: 9 hours ago
+              - generic [ref=e316]:
+                - link [ref=e318] [cursor=pointer]:
+                  - /url: ./read/CBMinwFBVV95cUxNSFNPRmdWR09fVDZhRzNwQ28tYnBfdS14QUdNLWc1MlBJUjRKREpfZ0pDVDZ4d0VPV2UzbkRRMWdzb051bWZzUnhCdXVIeXJRb3ZnTjZTYThlMVM2QWpMWHhsYkdVcEhuSDUyaTVqVFZYb0g3UUJWeUlBaWNLV2loM1k3MzJNNzFkdWtyTjYwWGx1cVNxQzhkT2tVcjNsQzA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e319]:
+                  - generic [ref=e322]: Scroll.in
+                  - generic [ref=e326]:
+                    - generic:
+                      - button "More - Cockroach protest was the boy who yelled about the emperor’s new clothes" [ref=e327] [cursor=pointer]:
+                        - img [ref=e329]
+                      - tooltip [ref=e331]: More
+                - link "Cockroach protest was the boy who yelled about the emperor’s new clothes - Scroll.in - Yesterday - By Nachiket Deuskar" [ref=e332] [cursor=pointer]:
+                  - /url: ./read/CBMinwFBVV95cUxNSFNPRmdWR09fVDZhRzNwQ28tYnBfdS14QUdNLWc1MlBJUjRKREpfZ0pDVDZ4d0VPV2UzbkRRMWdzb051bWZzUnhCdXVIeXJRb3ZnTjZTYThlMVM2QWpMWHhsYkdVcEhuSDUyaTVqVFZYb0g3UUJWeUlBaWNLV2loM1k3MzJNNzFkdWtyTjYwWGx1cVNxQzhkT2tVcjNsQzA?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: Cockroach protest was the boy who yelled about the emperor’s new clothes
+                - generic [ref=e333]:
+                  - time [ref=e334]: Yesterday
+                  - separator [ref=e335]
+                  - generic [ref=e336]: By Nachiket Deuskar
+              - generic [ref=e337]:
+                - link [ref=e339] [cursor=pointer]:
+                  - /url: ./read/CBMi2wFBVV95cUxQUGsyM1pZM0hnVzNJWVBjdHN4aFo3VTNYRFRWeUFySElvWXBINXgtWFNibzZzRHV0N0JueGRXQ0ZucWw5UEVTRERyUHVTVUR3T1owUlRPYk9VNGEyUmNjeFl2SlBmOGFzZEVCMGlhLXJFRTBSMGhpSF9rTjdTbVdybml5eU9aLWMtUjg2Vlp3Y19NNG94ckdkRFY1NVNRaXpoZE5wemJjWEt4aG1PcTJ6OS1SUlBOYkZ3RlVQazM2dFkxbnlRajA0S2EyVFdyRVhHRmpYbmh3aEhtU1HSAdsBQVVfeXFMUFBrMjNaWTNIZ1czSVlQY3RzeGhaN1UzWERUVnlBckhJb1lwSDV4LVhTYm82c0R1dDdCbnhkV0NGbnFsOVBFU0REclB1U1VEd09aMFJUT2JPVTRhMlJjY3hZdkpQZjhhc2RFQjBpYS1yRUUwUjBoaUhfa043U21Xcm5peXlPWi1jLVI4NlZad2NfTTRveHJHZERWNTVTUWl6aGROcHpiY1hLeGhtT3EyejktUlJQTmJGd0ZVUGszNnRZMW55UWowNEthMlRXckVYR0ZqWG5od2hIbVNR?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - generic [ref=e340]:
+                  - generic [ref=e343]: The New Indian Express
+                  - generic [ref=e347]:
+                    - generic:
+                      - 'button "More - From satire to street protests: The trio who built the Cockroach Janta Party" [ref=e348] [cursor=pointer]':
+                        - img [ref=e350]
+                      - tooltip [ref=e352]: More
+                - 'link "From satire to street protests: The trio who built the Cockroach Janta Party - The New Indian Express - 5 hours ago" [ref=e353] [cursor=pointer]':
+                  - /url: ./read/CBMi2wFBVV95cUxQUGsyM1pZM0hnVzNJWVBjdHN4aFo3VTNYRFRWeUFySElvWXBINXgtWFNibzZzRHV0N0JueGRXQ0ZucWw5UEVTRERyUHVTVUR3T1owUlRPYk9VNGEyUmNjeFl2SlBmOGFzZEVCMGlhLXJFRTBSMGhpSF9rTjdTbVdybml5eU9aLWMtUjg2Vlp3Y19NNG94ckdkRFY1NVNRaXpoZE5wemJjWEt4aG1PcTJ6OS1SUlBOYkZ3RlVQazM2dFkxbnlRajA0S2EyVFdyRVhHRmpYbmh3aEhtU1HSAdsBQVVfeXFMUFBrMjNaWTNIZ1czSVlQY3RzeGhaN1UzWERUVnlBckhJb1lwSDV4LVhTYm82c0R1dDdCbnhkV0NGbnFsOVBFU0REclB1U1VEd09aMFJUT2JPVTRhMlJjY3hZdkpQZjhhc2RFQjBpYS1yRUUwUjBoaUhfa043U21Xcm5peXlPWi1jLVI4NlZad2NfTTRveHJHZERWNTVTUWl6aGROcHpiY1hLeGhtT3EyejktUlJQTmJGd0ZVUGszNnRZMW55UWowNEthMlRXckVYR0ZqWG5od2hIbVNR?hl=en-IN&gl=IN&ceid=IN%3Aen
+                  - text: "From satire to street protests: The trio who built the Cockroach Janta Party"
+                - time [ref=e355]: 5 hours ago
+          - link "See more headlines and perspectives - Abhijeet Dipke leads Cockroach Janta Party youth movement in India" [ref=e358] [cursor=pointer]:
+            - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2llOVBYWEVSSEZWam53ZDFDa2p5Z0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - img [ref=e359]
+            - generic [ref=e361]: See more headlines and perspectives
+        - generic [ref=e365]:
+          - generic [ref=e366]:
+            - link [ref=e368] [cursor=pointer]:
+              - /url: ./read/CBMi7gFBVV95cUxNYWZtZDBvWlVyRGFnTUNiSVlBa09Rbk13S2xSVVdpRnZDaFVjbmNHTXQ4RlkzVGNSTERWTWs1ZkxFd0h3eVhhR21pbzl6RTJxNzFteWV6RW9hRHY0dTlsY05xM1lLMldrdzNOb2p2UDhxeVFaUURoSDliREdVSTdnRzlsWHhBQ2FKZ0U5ZTVvejY2Rlk3RXFPTENLZUIyM1l0SUlRWmZEZ1VtSERKMlRpTl82dG1mbFJleURodjNlaks4WFRFV3N3N0V4a19nTHBEWG1ZcjVWVWRRcGZ3aXZ5ZUlXdl9mNTJwS0FyR19B?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e370]:
+              - generic [ref=e371]:
+                - generic [ref=e374]: Hindustan Times
+                - generic [ref=e378]:
+                  - generic:
+                    - 'button "More - On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News" [ref=e379] [cursor=pointer]':
+                      - img [ref=e381]
+                    - tooltip [ref=e383]: More
+              - 'link "On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News - Hindustan Times - 7 hours ago" [ref=e384] [cursor=pointer]':
+                - /url: ./read/CBMi7gFBVV95cUxNYWZtZDBvWlVyRGFnTUNiSVlBa09Rbk13S2xSVVdpRnZDaFVjbmNHTXQ4RlkzVGNSTERWTWs1ZkxFd0h3eVhhR21pbzl6RTJxNzFteWV6RW9hRHY0dTlsY05xM1lLMldrdzNOb2p2UDhxeVFaUURoSDliREdVSTdnRzlsWHhBQ2FKZ0U5ZTVvejY2Rlk3RXFPTENLZUIyM1l0SUlRWmZEZ1VtSERKMlRpTl82dG1mbFJleURodjNlaks4WFRFV3N3N0V4a19nTHBEWG1ZcjVWVWRRcGZ3aXZ5ZUlXdl9mNTJwS0FyR19B?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: "On Kargil Diwas, Rajnath Singh's sharp warning to Pakistan: ‘Response beyond imagination’ | India News"
+            - figure [ref=e385]
+          - generic [ref=e386]:
+            - time [ref=e387]: 7 hours ago
+            - 'link "See more headlines and perspectives - On Kargil Diwas, Rajnath Singh''s sharp warning to Pakistan: ‘Response beyond imagination’ | India News" [ref=e388] [cursor=pointer]':
+              - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lJM2NfU0VSRWoyOFFxREJSMVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - img [ref=e389]
+              - generic [ref=e391]: See more
+        - generic [ref=e395]:
+          - generic [ref=e396]:
+            - link [ref=e398] [cursor=pointer]:
+              - /url: ./read/CBMiogFBVV95cUxOSXpRZUVKLWdPbXlybXhsRDdrOG9nLUMtVGg2RkFhdHF3SGxTZndLTDJ6M2xKaDRWd1JJY3VjMVd5bnMyUjhFT2JIbF8tY3lfM2tncUl5bjJTWlI2UjBpR3VlN2ZwbTc2cXRaNXJyZUJwbHN2OFI4cGw4djRJcHhNV0ZfNHNOaEpSdXl3cXdSM1RqRFhYV241NHRoRjVTd2tsRFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+            - generic [ref=e400]:
+              - generic [ref=e401]:
+                - generic [ref=e404]: The Guardian
+                - generic [ref=e408]:
+                  - generic:
+                    - button "More - US pauses attacks on Iran for a second day as peace talks continue" [ref=e409] [cursor=pointer]:
+                      - img [ref=e411]
+                    - tooltip [ref=e413]: More
+              - link "US pauses attacks on Iran for a second day as peace talks continue - The Guardian - 56 minutes ago" [ref=e414] [cursor=pointer]:
+                - /url: ./read/CBMiogFBVV95cUxOSXpRZUVKLWdPbXlybXhsRDdrOG9nLUMtVGg2RkFhdHF3SGxTZndLTDJ6M2xKaDRWd1JJY3VjMVd5bnMyUjhFT2JIbF8tY3lfM2tncUl5bjJTWlI2UjBpR3VlN2ZwbTc2cXRaNXJyZUJwbHN2OFI4cGw4djRJcHhNV0ZfNHNOaEpSdXl3cXdSM1RqRFhYV241NHRoRjVTd2tsRFE?hl=en-IN&gl=IN&ceid=IN%3Aen
+                - text: US pauses attacks on Iran for a second day as peace talks continue
+            - figure [ref=e415]
+          - generic [ref=e416]:
+            - time [ref=e417]: 56 minutes ago
+            - link "See more headlines and perspectives - US pauses attacks on Iran for a second day as peace talks continue" [ref=e418] [cursor=pointer]:
+              - /url: ./stories/CAAqNggKIjBDQklTSGpvSmMzUnZjbmt0TXpZd1NoRUtEd2lsdlBqVkVSR3FTS1VsVzFQeVdpZ0FQAQ?hl=en-IN&gl=IN&ceid=IN%3Aen
+              - img [ref=e419]
+              - generic [ref=e421]: See more
+      - heading "Local news" [level=3] [ref=e427]:
+        - link "Local news" [ref=e428] [cursor=pointer]:
+          - /url: ./topics/CAAqHAgKIhZDQklTQ2pvSWJHOWpZV3hmZGpJb0FBUAE?hl=en-IN&gl=IN&ceid=IN%3Aen
+          - text: Local news
+          - img [ref=e429]
