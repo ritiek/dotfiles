@@ -94,6 +94,7 @@ in
     ./compose/audiomuse
     ./compose/grampsweb.nix
     ./compose/readeck.nix
+    ./compose/open-design
     # ./compose/kopia
   ];
 
