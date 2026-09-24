@@ -264,6 +264,13 @@
             };
           }
           {
+            "OpenDesign" = {
+              icon = "mdi-palette";
+              href = "http://pilab.lion-zebra.ts.net:7456";
+              description = "Agent-native design tool";
+            };
+          }
+          {
             "AudioMuse" = {
               icon = "audiomuse";
               href = "http://pilab.lion-zebra.ts.net:8250";
