@@ -133,6 +133,8 @@ in
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
+
+    pkgs.codegraph
   ];
   programs.chromium = playwright.chromiumProgram;
   programs.opencode = {
