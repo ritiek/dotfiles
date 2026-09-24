@@ -14,7 +14,10 @@
 
   # Containers
   virtualisation.oci-containers.containers."open-design" = {
-    image = "ghcr.io/nexu-io/od:latest";
+    # Built locally from ghcr.io/nexu-io/od:latest + libc6-compat (see the
+    # open-design-image-build service below) so the glibc-linked
+    # vela-cli-linux-arm64 binary can actually run on this Alpine image.
+    image = "open-design-local:latest";
     environment = {
       NODE_ENV = "production";
       NODE_OPTIONS = "--max-old-space-size=192";
@@ -48,6 +51,9 @@
     ];
     log-driver = "journald";
     autoStart = false;
+    # dependsOn only wires up other oci-containers.containers entries;
+    # the image-build step is a plain systemd oneshot, so it's added to
+    # after/requires below instead.
     dependsOn = [
       "open-design-vela-install"
     ];
@@ -73,11 +79,36 @@
     after = [
       "docker-network-open-design_open-design-net.service"
       "docker-open-design-vela-install.service"
+      "open-design-image-build.service"
     ];
     requires = [
       "docker-network-open-design_open-design-net.service"
       "docker-open-design-vela-install.service"
+      "open-design-image-build.service"
     ];
+  };
+
+  # One-shot: build open-design-local:latest from the upstream od image plus
+  # libc6-compat. The upstream ghcr.io/nexu-io/od image is plain Alpine
+  # (musl); vela-cli's arm64/x64 native binaries are glibc-linked, so they
+  # fail with ENOENT (missing /lib/ld-linux-*.so) without this. Matches
+  # upstream's own deploy/Dockerfile.local approach for mounted host CLIs.
+  systemd.services."open-design-image-build" = {
+    path = [ pkgs.docker ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      docker build -t open-design-local:latest - <<'EOF'
+      FROM ghcr.io/nexu-io/od:latest
+      USER root
+      RUN apk add --no-cache libc6-compat
+      USER open-design
+      EOF
+    '';
+    after = [ "docker.service" ];
+    requires = [ "docker.service" ];
   };
 
   # One-shot: install the vela CLI into a named volume so it can be
