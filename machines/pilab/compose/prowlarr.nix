@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, config, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, config, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -18,7 +18,7 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "${servicePaths.prowlarr.configSource}:/config:rw"
+      "${everythingElsePath}/arr/configs/prowlarr:/config:rw"
     ];
     ports = [
       "9696:9696/tcp"

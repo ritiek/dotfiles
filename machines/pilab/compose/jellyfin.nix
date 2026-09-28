@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ config, pkgs, lib, servicePaths, everythingElsePath, homelabMediaPath, ... }:
+{ config, pkgs, lib, everythingElsePath, homelabMediaPath, ... }:
 
 let
   webUIPort = 8096;
@@ -13,7 +13,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [
-      servicePaths.jellyfin.configSource
+      "${everythingElsePath}/arr/configs/jellyfin"
       "${everythingElsePath}/arr/movies"
       "${everythingElsePath}/arr/tv"
       "${homelabMediaPath}/services/spotdl"
@@ -59,10 +59,10 @@ in lib.mkMerge [
       "FFMPEG_PATH" = "/usr/local/bin/ffmpeg";
     };
     volumes = [
-      "${servicePaths.jellyfin.configSource}:/var/lib/jellyfin:rw"
+      "${everythingElsePath}/arr/configs/jellyfin:/var/lib/jellyfin:rw"
       # XXX: Also keeping :/config mount for saving log files as I wasn't
       #      able to find a way to change log directory in Jellyfin.
-      "${servicePaths.jellyfin.configSource}:/config:rw"
+      "${everythingElsePath}/arr/configs/jellyfin:/config:rw"
 
       "${everythingElsePath}/arr/movies:/var/data/jellyfin/movies:rw"
       "${everythingElsePath}/arr/tv:/var/data/jellyfin/tvshows:rw"
@@ -109,7 +109,7 @@ in lib.mkMerge [
     ];
     unitConfig = {
       RequiresMountsFor = [
-        servicePaths.jellyfin.configSource
+        "${everythingElsePath}/arr/configs/jellyfin"
         "${everythingElsePath}/arr/movies"
         "${everythingElsePath}/arr/tv"
         "${homelabMediaPath}/services/spotdl"
@@ -123,7 +123,7 @@ in lib.mkMerge [
       ${pkgs.coreutils}/bin/mkdir -p /export/jellyfin/{config,data}
 
       if ! ${pkgs.util-linux}/bin/mountpoint -q /export/jellyfin/config; then
-        ${pkgs.util-linux}/bin/mount --bind ${servicePaths.jellyfin.configSource} /export/jellyfin/config
+        ${pkgs.util-linux}/bin/mount --bind ${everythingElsePath}/arr/configs/jellyfin /export/jellyfin/config
       fi
       if ! ${pkgs.util-linux}/bin/mountpoint -q /export/jellyfin/data/movies; then
         ${pkgs.coreutils}/bin/mkdir -p /export/jellyfin/data/movies
