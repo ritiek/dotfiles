@@ -160,6 +160,7 @@ let
       systemctl start autostart-manyfold.service
       systemctl start autostart-linkding.service
       systemctl start docker-open-archiver.service
+      systemctl start docker-open-design.service
       systemctl start autostart-meridian-proxy.service
       # systemctl start docker-audiomuse-ai-flask-app.service docker-audiomuse-ai-worker-instance.service
       systemctl start autostart-grampsweb.service
