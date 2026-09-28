@@ -4,6 +4,7 @@
   imports = [
     ./home
     ./services/nixarr.nix
+    ./services/syncthing.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix

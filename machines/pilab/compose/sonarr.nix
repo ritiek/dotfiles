@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -18,7 +18,7 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "${servicePaths.sonarr.configSource}:/config:rw"
+      "${everythingElsePath}/arr/configs/sonarr:/config:rw"
       "${everythingElsePath}/arr/tv:/tv:rw"
       "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
@@ -55,7 +55,7 @@
     ];
     unitConfig = {
       RequiresMountsFor = [
-        servicePaths.sonarr.configSource
+        "${everythingElsePath}/arr/configs/sonarr"
         "${everythingElsePath}/arr/tv"
         "${everythingElsePath}/qbittorrent/downloads/complete"
       ];

@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 let
   webUIPort = 5055;
@@ -13,7 +13,7 @@ let
     webUIPort = webUIPort;
     internalPort = internalWebUIPort;
     requiredMounts = [
-      servicePaths.jellyseerr.configSource
+      "${everythingElsePath}/arr/configs/jellyseerr"
     ];
     requiredMountPoint = everythingElsePath;
     idleCheckInterval = "*:0/20";
@@ -38,7 +38,7 @@ in lib.mkMerge [
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "${servicePaths.jellyseerr.configSource}:/app/config:rw"
+      "${everythingElsePath}/arr/configs/jellyseerr:/app/config:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:5055/tcp"
@@ -66,7 +66,7 @@ in lib.mkMerge [
     ];
     unitConfig = {
       RequiresMountsFor = [
-        servicePaths.jellyseerr.configSource
+        "${everythingElsePath}/arr/configs/jellyseerr"
       ];
       ConditionPathIsMountPoint = everythingElsePath;
     };

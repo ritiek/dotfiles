@@ -13,6 +13,29 @@
     ];
   };
 
+  # Receive targets for the radrubble media stack.
+  #
+  # These used to be created by the lsyncd tmpfiles loop, which derives from
+  # servicePaths. Those entries are now commented out (the services live on
+  # radrubble), so the directories are declared here instead.
+  #
+  # Ownership is 1000:100 rather than root:root because the syncthing
+  # container runs as uid 1000 and must be able to write into them.
+  systemd.tmpfiles.rules =
+    let
+      arrDirs = map (a: "${homelabMediaPath}/services/arr/${a}/config") [
+        "radarr"
+        "sonarr"
+        "bazarr"
+        "prowlarr"
+        "jellyseerr"
+        "jellyfin"
+      ];
+    in
+    map (d: "d ${d} 0755 1000 100 -") (
+      arrDirs ++ [ "${homelabMediaPath}/services/qbittorrent/config" ]
+    );
+
   # Runtime
   virtualisation.docker = {
     enable = true;

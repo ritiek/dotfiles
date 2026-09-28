@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -18,7 +18,7 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "${servicePaths.bazarr.configSource}:/config:rw"
+      "${everythingElsePath}/arr/configs/bazarr:/config:rw"
       "${everythingElsePath}/arr/movies:/movies:rw"
       "${everythingElsePath}/arr/tv:/tv:rw"
     ];
@@ -55,7 +55,7 @@
     ];
     unitConfig = {
       RequiresMountsFor = [
-        servicePaths.bazarr.configSource
+        "${everythingElsePath}/arr/configs/bazarr"
         "${everythingElsePath}/arr/movies"
         "${everythingElsePath}/arr/tv"
       ];

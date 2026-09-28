@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.3.2.
-{ pkgs, lib, servicePaths, everythingElsePath, ... }:
+{ pkgs, lib, everythingElsePath, ... }:
 
 {
   # Runtime
@@ -18,7 +18,7 @@
       "TZ" = "Asia/Kolkata";
     };
     volumes = [
-      "${servicePaths.radarr.configSource}:/config:rw"
+      "${everythingElsePath}/arr/configs/radarr:/config:rw"
       "${everythingElsePath}/arr/movies:/movies:rw"
       "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
@@ -55,7 +55,7 @@
     ];
     unitConfig = {
       RequiresMountsFor = [
-        servicePaths.radarr.configSource
+        "${everythingElsePath}/arr/configs/radarr"
         "${everythingElsePath}/arr/movies"
         "${everythingElsePath}/qbittorrent/downloads/complete"
       ];
