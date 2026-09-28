@@ -622,9 +622,10 @@ in
       };
 
       plugin = [
-        "opencode-claude-auth@2.0.0"
-        "@mohak34/opencode-notifier@0.2.8"
-        "@tarquinen/opencode-dcp@3.1.14"
+        "opencode-claude-auth@2.2.1"
+        "@mohak34/opencode-notifier@0.4.0"
+        "@tarquinen/opencode-dcp@3.2.0"
+        "@dietrichgebert/ponytail@4.10.0"
       ];
 
       autoupdate = false;
@@ -636,7 +637,7 @@ in
       theme = "lucent-orng";
       scroll_speed = 5;
       plugin = [
-        "oc-tps@0.0.8"
+        "oc-tps@0.0.12"
       ];
     };
   };
