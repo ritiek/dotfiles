@@ -132,6 +132,10 @@ in
     allowedUDPPorts = [ 22000 21027 ];
   };
 
+  # The NixOS module defaults to PrivateUsers=yes, which makes root appear as
+  # an unprivileged UID and prevents access to the 0700 service config dirs.
+  systemd.services.syncthing.serviceConfig.PrivateUsers = lib.mkForce false;
+
   # The drive can be physically detached, so syncthing must not run without
   # it - an empty source directory on a sendonly folder would propagate
   # deletions to pilab.
