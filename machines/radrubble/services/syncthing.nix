@@ -109,6 +109,7 @@ in
           "jellyfin/images"
           "jellyfin/transcodes"
           "rffmpeg/rffmpeg.log"
+          "rffmpeg/.ssh"
           ".cache"
           ".aspnet"
         ];
