@@ -130,11 +130,10 @@ in
     # FIXME: Current source URL giving 403. Uncomment when nixpkgs pin in flake.lock gets updated.
     # inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
+    pkgs.codegraph
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
-
-    pkgs.codegraph
   ];
   programs.chromium = playwright.chromiumProgram;
   programs.opencode = {
