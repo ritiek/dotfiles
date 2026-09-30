@@ -196,10 +196,11 @@ in
       # $ curl -s https://opencode.ai/zen/v1/models | jq
 
       # model = "anthropic/claude-sonnet-5";
-      model = "opencode-go/gpt-5.6-luna";
-      # small_model = "opencode/deepseek-v4-flash-free";
-      small_model = "opencode-go/deepseek-v4-flash";
-      default_agent = "plan";
+      # model = "opencode-go/gpt-5.6-luna";
+      model = "github-copilot/gpt-6-luna";
+      # small_model = "opencode-go/deepseek-v4-flash";
+      small_model = "github-copilot/gpt-6-luna";
+      default_agent = "build";
       provider = {
         "opencode".options.timeout = false;
         "opencode-go".options.timeout = false;
@@ -497,6 +498,20 @@ in
       };
 
       agent = {
+        build = {
+          # Setting `prompt` replaces opencode's per-model provider prompt, so re-include it.
+          # ponytail: pinned to gpt.txt (what gpt-6-luna maps to in v1.18.29); update hash on
+          # opencode bumps or if the default model family changes (see session/system.ts).
+          prompt = builtins.readFile (pkgs.fetchurl {
+            url = "https://raw.githubusercontent.com/anomalyco/opencode/v1.18.29/packages/opencode/src/session/prompt/gpt.txt";
+            hash = "sha256-g6ZqRqX+u8IUVBYdXwU2OLItJdleCdd7j22jPevISK0=";
+          }) + ''
+
+            ## Startup
+            At the start of every session, load the `ponytail` skill using the skill tool
+            (full intensity) to favour the simplest solution that works.
+          '';
+        };
         debug = {
           mode = "primary";
           description = "Code Debugging Agent";
@@ -507,6 +522,7 @@ in
             At the start of every session, load the following skills using the skill tool:
             - `karpathy-guidelines` — behavioral guidelines for careful, minimal code changes
             - `caveman` — ultra-compressed communication mode (full intensity)
+            - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
 
             ## Guidelines
             - Skim through the codebase initially. Continue gaining a better understanding of the
