@@ -127,8 +127,8 @@ in
     pkgs.procps
     pkgs.nodejs_24
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk
-    # FIXME: Current source URL giving 403. Uncomment when nixpkgs pin in flake.lock gets updated.
-    # inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
+    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pdfvision
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codegraph
   ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
@@ -371,6 +371,14 @@ in
           enabled = true;
           type = "local";
           command = ["${pkgs.mcp-nixos}/bin/mcp-nixos"];
+        };
+        pdfvision = {
+          enabled = true;
+          type = "local";
+          command = [
+            "${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pdfvision}/bin/pdfvision"
+            "mcp"
+          ];
         };
         github = {
           enabled = true;
