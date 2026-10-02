@@ -333,31 +333,23 @@ in
         # default = "opencode-go/qwen3.7-plus";
         # default = "opencode-go/mimo-v2.5";
         # default = "opencode-go/glm-5.3-flash";
-        default = "mimo-v2.5-free";
-        # default = "big-pickle";
-        provider = "opencode";
-        # provider = "opencode-go";
-        # Keyless free-tier endpoint. The relay serves *-free slugs anonymously
-        # (no api_key) as long as an X-Session-ID header is present; without it
-        # the relay 400s "MissingSessionID / OpenCode's free tier can only be
-        # used in OpenCode". The Go endpoint (/zen/go/v1) 401s -free slugs with
-        # ModelError, and the plain /zen/v1 WITHOUT a session id 429s per-IP.
-        base_url = "https://opencode.ai/zen/v1";
-        # No api_key: default_headers.Authorization="" overrides the SDK's Bearer
-        # placeholder so the request goes out truly anonymous.
+        default = "gpt-5.6-luna";
+        provider = "github-copilot";
+        # Multimodal. Auth: COPILOT_GITHUB_TOKEN/GH_TOKEN (gho_/github_pat_, NOT
+        # classic ghp_) or `hermes auth add github-copilot` (device flow).
         supports_vision = true;
 
-        # model.default_headers is merged over provider/SDK defaults by
-        # agent/auxiliary_client.py:_apply_user_default_headers (user values win).
-        # A FIXED session id is deliberate: reusing it gets prompt caching
-        # (relay reports cached_tokens on reuse) and still avoids the 429.
-        default_headers = {
-          "Authorization" = "";
-          "HTTP-Referer" = "https://opencode.ai/";
-          "X-Title" = "opencode";
-          "User-Agent" = "opencode/0.20.5";
-          "X-Session-ID" = "hermes-c5c231f4-db63-4992-a75d-001e0e40bb4b";
-        };
+        # Previous: opencode free tier (keyless, fixed X-Session-ID).
+        # default = "mimo-v2.5-free";
+        # provider = "opencode";
+        # base_url = "https://opencode.ai/zen/v1";
+        # default_headers = {
+        #   "Authorization" = "";
+        #   "HTTP-Referer" = "https://opencode.ai/";
+        #   "X-Title" = "opencode";
+        #   "User-Agent" = "opencode/0.20.5";
+        #   "X-Session-ID" = "hermes-c5c231f4-db63-4992-a75d-001e0e40bb4b";
+        # };
 
         # default = "claude-sonnet-4-6";
         # provider = "anthropic";
