@@ -195,22 +195,6 @@
           "homeassistant.components.command_line" = "debug";
         };
       };
-      http = {
-        server_host = "0.0.0.0";
-        server_port = 8123;
-        cors_allowed_origins = [ "*" ];
-        use_x_forwarded_for = true;
-        trusted_proxies = [
-          "127.0.0.1"
-          "::1"
-          "10.0.0.0/8"
-          "172.16.0.0/12"
-          "192.168.0.0/16"
-          "100.64.0.0/10"
-        ];
-        ip_ban_enabled = false;
-        base_url = "https://ha.clawsiecats.omg.lol/";
-      };
     };
 
     # Allow UI configuration changes

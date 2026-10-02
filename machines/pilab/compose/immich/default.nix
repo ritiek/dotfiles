@@ -78,7 +78,7 @@ in
     ];
   };
   virtualisation.oci-containers.containers."immich_postgres" = {
-    image = "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0";
+    image = "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23";
     environment = {
       "TZ" = "Asia/Kolkata";
     };
@@ -113,7 +113,7 @@ in
     ];
   };
   virtualisation.oci-containers.containers."immich_redis" = {
-    image = "redis:6.2-alpine@sha256:80cc8518800438c684a53ed829c621c94afd1087aaeb59b0d4343ed3e7bcf6c5";
+    image = "docker.io/valkey/valkey:9@sha256:70739f85ad2ee01a726a965584a0f94895f01b0c60b3cc8b0aeef11eaa6888cf";
     environmentFiles = [
       config.sops.secrets."compose/immich.env".path
     ];
