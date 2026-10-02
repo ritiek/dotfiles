@@ -160,9 +160,10 @@ let
       systemctl start autostart-manyfold.service
       systemctl start autostart-linkding.service
       systemctl start docker-open-archiver.service
-      systemctl start docker-open-design.service
-      systemctl start autostart-meridian-proxy.service
-      # systemctl start docker-audiomuse-ai-flask-app.service docker-audiomuse-ai-worker-instance.service
+       systemctl start docker-open-design.service
+       systemctl start autostart-meridian-proxy.service
+       systemctl start docker-ryot.service
+       # systemctl start docker-audiomuse-ai-flask-app.service docker-audiomuse-ai-worker-instance.service
       systemctl start autostart-grampsweb.service
       systemctl start autostart-readeck.service
       # systemctl start docker-kopia.service
@@ -368,6 +369,7 @@ in
         systemctl stop autostart-linkding.service docker-compose-linkding-root.target
         systemctl stop docker-compose-open-archiver-root.target
         systemctl stop autostart-meridian-proxy.service autostart-docker-compose-meridian-root.target
+        systemctl stop docker-ryot.service docker-ryot-db.service docker-compose-ryot-root.target
         # systemctl stop docker-compose-audiomuse-root.target
         systemctl stop autostart-grampsweb.service docker-compose-grampsweb-root.target
         systemctl stop autostart-readeck.service docker-compose-readeck-root.target

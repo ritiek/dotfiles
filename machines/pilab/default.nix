@@ -92,6 +92,7 @@ in
     ./compose/open-archiver
     ./compose/meridian
     ./compose/audiomuse
+    ./compose/ryot
     ./compose/grampsweb.nix
     ./compose/readeck.nix
     ./compose/open-design
