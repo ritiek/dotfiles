@@ -68,10 +68,13 @@ class TPLinkRouter(BaseRouter):
 
         for table in tables:
             try:
+                # Both tabs' tables stay in the DOM; only the visible one is current.
+                if not await table.is_visible():
+                    continue
                 rows = await table.query_selector_all('tbody tr')
                 for row in rows:
                     cells = await row.query_selector_all('td')
-                    if len(cells) >= 7:
+                    if len(cells) >= 4:
                         ip_text = await cells[2].text_content()
                         mac_text = await cells[3].text_content()
 
@@ -91,7 +94,7 @@ class TPLinkRouter(BaseRouter):
 
         for row in rows:
             cells = await row.query_selector_all('td')
-            if len(cells) >= 7:
+            if len(cells) >= 4:
                 name_input = await cells[1].query_selector('input')
                 if name_input:
                     name = await name_input.input_value()
@@ -103,9 +106,10 @@ class TPLinkRouter(BaseRouter):
                     "name": name,
                     "ip_address": await cells[2].text_content(),
                     "mac_address": await cells[3].text_content(),
-                    "connection_type": await cells[4].text_content(),
-                    "link_rate": await cells[5].text_content(),
-                    "attached_to": await cells[6].text_content()
+                    # Newer firmware only renders #, name, IP, MAC.
+                    "connection_type": await cells[4].text_content() if len(cells) > 4 else "unknown",
+                    "link_rate": await cells[5].text_content() if len(cells) > 5 else "unknown",
+                    "attached_to": await cells[6].text_content() if len(cells) > 6 else "unknown"
                 }
                 self.clients["wireless"].append(client)
 
@@ -122,15 +126,17 @@ class TPLinkRouter(BaseRouter):
 
         for table in tables:
             try:
+                # Both tabs' tables stay in the DOM; only the visible one is current.
+                if not await table.is_visible():
+                    continue
                 rows = await table.query_selector_all('tbody tr')
                 for row in rows:
                     cells = await row.query_selector_all('td')
-                    if len(cells) >= 7:
+                    if len(cells) >= 4:
                         ip_text = await cells[2].text_content()
                         mac_text = await cells[3].text_content()
-                        conn_type = await cells[4].text_content()
 
-                        if ('192.168.2.' in ip_text and ':' in mac_text and ip_text != '192.168.2.1' and 'Wired' in conn_type):
+                        if ('192.168.2.' in ip_text and ':' in mac_text and ip_text != '192.168.2.1'):
                             client_table = table
                             break
                 if client_table:
@@ -146,7 +152,7 @@ class TPLinkRouter(BaseRouter):
 
         for row in rows:
             cells = await row.query_selector_all('td')
-            if len(cells) >= 7:
+            if len(cells) >= 4:
                 name_input = await cells[1].query_selector('input')
                 if name_input:
                     name = await name_input.input_value()
@@ -158,9 +164,10 @@ class TPLinkRouter(BaseRouter):
                     "name": name,
                     "ip_address": await cells[2].text_content(),
                     "mac_address": await cells[3].text_content(),
-                    "connection_type": await cells[4].text_content(),
-                    "link_rate": await cells[5].text_content(),
-                    "attached_to": await cells[6].text_content()
+                    # Newer firmware only renders #, name, IP, MAC.
+                    "connection_type": await cells[4].text_content() if len(cells) > 4 else "unknown",
+                    "link_rate": await cells[5].text_content() if len(cells) > 5 else "unknown",
+                    "attached_to": await cells[6].text_content() if len(cells) > 6 else "unknown"
                 }
                 self.clients["wired"].append(client)
 
