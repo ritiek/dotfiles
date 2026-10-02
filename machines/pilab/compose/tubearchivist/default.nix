@@ -124,8 +124,35 @@ in lib.mkMerge [
     wantedBy = [ "docker-compose-tubearchivist-root.target" ];
   };
 
+  virtualisation.oci-containers.containers."bgutil-provider" = {
+    image = "brainicism/bgutil-ytdlp-pot-provider:2.0.0";
+    log-driver = "journald";
+    autoStart = false;
+    extraOptions = [
+      "--init"
+      "--network-alias=bgutil-provider"
+      "--network=tubearchivist_default"
+    ];
+  };
+  systemd.services."docker-bgutil-provider" = {
+    serviceConfig = {
+      Restart = lib.mkOverride 500 "always";
+      RestartMaxDelaySec = lib.mkOverride 500 "1m";
+      RestartSec = lib.mkOverride 500 "100ms";
+      RestartSteps = lib.mkOverride 500 9;
+    };
+    after = [ "docker-network-tubearchivist_default.service" ];
+    requires = [ "docker-network-tubearchivist_default.service" ];
+    partOf = [ "docker-compose-tubearchivist-root.target" ];
+    wantedBy = [ "docker-compose-tubearchivist-root.target" ];
+  };
+
   virtualisation.oci-containers.containers."tubearchivist" = {
-    image = "bbilly1/tubearchivist:v0.5.10";
+    image = "bbilly1/tubearchivist:v0.5.12";
+    environment = {
+      PYTHONPATH = "/root/.local/bin";
+      TA_AUTO_UPDATE_YTDLP = "nightly";
+    };
     environmentFiles = [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
@@ -139,6 +166,7 @@ in lib.mkMerge [
     dependsOn = [
       "archivist-es"
       "archivist-redis"
+      "bgutil-provider"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -165,6 +193,7 @@ in lib.mkMerge [
     ];
     requires = [
       "docker-network-tubearchivist_default.service"
+      "docker-bgutil-provider.service"
     ];
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/tubearchivist/cache"
