@@ -19,8 +19,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."backvault" = {
-    # TODO: Use the upstream image from `mvflc/backvault` when it supports ARM64.
-    image = "ghcr.io/ritiek/backvault";
+    image = "docker.io/mvflc/backvault:2.0.15";
     environmentFiles = [
       config.sops.secrets."compose/backvault.env".path
     ];
