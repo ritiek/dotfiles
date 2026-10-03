@@ -36,6 +36,7 @@
     extraOptions = [
       "--network-alias=ryot"
       "--network=ryot_default"
+      "--add-host=host.docker.internal:host-gateway"
     ];
     labels = {
       "homepage.description" = "Media tracking";
