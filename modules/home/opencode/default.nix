@@ -94,6 +94,23 @@ let
     chmod 600 "$AUTH_FILE"
     rm -f "$NIXOS_JSON"
   '';
+
+  # Setting an agent `prompt` replaces opencode's per-model provider prompt, so re-include it.
+  # ponytail: pinned to gpt.txt (what gpt-6-luna maps to in v1.18.29); update hash on
+  # opencode bumps or if the default model family changes (see session/system.ts).
+  providerPrompt = builtins.readFile (pkgs.fetchurl {
+    url = "https://raw.githubusercontent.com/anomalyco/opencode/v1.18.29/packages/opencode/src/session/prompt/gpt.txt";
+    hash = "sha256-g6ZqRqX+u8IUVBYdXwU2OLItJdleCdd7j22jPevISK0=";
+  });
+
+  # Skills every agent loads at startup.
+  startupSkills = ''
+    ## Startup
+    At the start of every session, load the following skills using the skill tool:
+    - `ponytail` (full intensity) to favour the simplest solution that works
+    - `i-have-adhd` to shape output for a reader with ADHD
+    - `humanizer` to avoid AI-sounding prose
+  '';
 in
 {
   sops.secrets = {
@@ -507,18 +524,10 @@ in
 
       agent = {
         build = {
-          # Setting `prompt` replaces opencode's per-model provider prompt, so re-include it.
-          # ponytail: pinned to gpt.txt (what gpt-6-luna maps to in v1.18.29); update hash on
-          # opencode bumps or if the default model family changes (see session/system.ts).
-          prompt = builtins.readFile (pkgs.fetchurl {
-            url = "https://raw.githubusercontent.com/anomalyco/opencode/v1.18.29/packages/opencode/src/session/prompt/gpt.txt";
-            hash = "sha256-g6ZqRqX+u8IUVBYdXwU2OLItJdleCdd7j22jPevISK0=";
-          }) + ''
-
-            ## Startup
-            At the start of every session, load the `ponytail` skill using the skill tool
-            (full intensity) to favour the simplest solution that works.
-          '';
+          prompt = providerPrompt + "\n" + startupSkills;
+        };
+        plan = {
+          prompt = providerPrompt + "\n" + startupSkills;
         };
         debug = {
           mode = "primary";
@@ -531,6 +540,8 @@ in
             - `karpathy-guidelines` — behavioral guidelines for careful, minimal code changes
             - `caveman` — ultra-compressed communication mode (full intensity)
             - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
+            - `i-have-adhd` — shape output for a reader with ADHD
+            - `humanizer` — avoid AI-sounding prose
 
             ## Guidelines
             - Skim through the codebase initially. Continue gaining a better understanding of the
@@ -563,6 +574,7 @@ in
             You are a professional software engineer who uses the playwright tool to interact
             with the Internet.
 
+            ${startupSkills}
             ## Guidelines
             - Skip captchas.
             - Do not write ANY file on the local filesystem WHATSOEVER.
@@ -572,6 +584,7 @@ in
           tools = {
             "*" = false;
             read = true;
+            skill = true;
             "playwright*" = true;
             # Avoid installing browsers during confusion since browsers can't be installed
             # in NixOS through the approach taken by this tool.
@@ -585,6 +598,7 @@ in
           prompt = ''
             You are a professional software engineer who'll mentor the user.
 
+            ${startupSkills}
             ## Guidelines
             - Provide the user with hints, suggestions, and guidance.
             - Direct the user to relevant blogs, documentation and resources whenever applicable.
@@ -603,7 +617,8 @@ in
           description = "Conversational Agent";
           prompt = ''
             Engage in meaningful and context-aware conversations with the user. Be rational.
-          '';
+
+            ${startupSkills}          '';
           tools = {
             write = false;
             bash = false;
@@ -738,6 +753,20 @@ in
     if [ ! -d "${config.home.homeDirectory}/.agents/skills/karpathy-guidelines" ]; then
       PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
         ${pkgs.nodejs_24}/bin/npx --yes skills add forrestchang/andrej-karpathy-skills -g -a opencode -y
+    fi
+  '';
+
+  home.activation.opencode-skills-adhd = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "${config.home.homeDirectory}/.agents/skills/i-have-adhd" ]; then
+      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
+        ${pkgs.nodejs_24}/bin/npx --yes skills add ayghri/i-have-adhd -g -a opencode -y
+    fi
+  '';
+
+  home.activation.opencode-skills-humanizer = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    if [ ! -d "${config.home.homeDirectory}/.agents/skills/humanizer" ]; then
+      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
+        ${pkgs.nodejs_24}/bin/npx --yes skills add blader/humanizer -g -a opencode -y
     fi
   '';
 
