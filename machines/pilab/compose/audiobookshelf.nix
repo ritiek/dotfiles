@@ -25,6 +25,9 @@ let
 in lib.mkMerge [
   lazyLoadingServices
   {
+  # Allow Docker containers (e.g. ryot) to reach the lazy-loading proxy via host.docker.internal.
+  networking.firewall.allowedTCPPorts = [ webUIPort ];
+
   # Runtime
   virtualisation.docker = {
     enable = true;
@@ -35,9 +38,6 @@ in lib.mkMerge [
   # Containers
   virtualisation.oci-containers.containers."audiobookshelf" = {
     image = "ghcr.io/advplyr/audiobookshelf:latest";
-    environmentFiles = [
-      "/home/ritiek/.env"
-    ];
     volumes = [
       "${homelabMediaPath}/services/audiobookshelf/audiobooks:/audiobooks:rw"
       "${homelabMediaPath}/services/audiobookshelf/config:/config:rw"
