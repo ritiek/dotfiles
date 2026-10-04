@@ -207,6 +207,15 @@ in
     "${arrConfigs}/jellyfin".Z = { user = "jellyfin"; group = "media"; };
     "${qbtConfig}".Z = { user = "qbittorrent"; group = "media"; };
 
+    # nixarr's *-api oneshots rewrite these key files in place (keeping the
+    # old group), and the *-api GIDs are dynamically allocated, so they
+    # changed when the SD card was reflashed. Re-group them on every mount.
+    "${config.nixarr.stateDir}/secrets/radarr.api-key".z = { group = "radarr-api"; };
+    "${config.nixarr.stateDir}/secrets/sonarr.api-key".z = { group = "sonarr-api"; };
+    "${config.nixarr.stateDir}/secrets/prowlarr.api-key".z = { group = "prowlarr-api"; };
+    "${config.nixarr.stateDir}/secrets/bazarr.api-key".z = { group = "bazarr-api"; };
+    "${config.nixarr.stateDir}/secrets/seerr.api-key".z = { group = "seerr-api"; };
+
     "${everythingElsePath}/arr/movies".Z = { mode = "2775"; user = "root"; group = "media"; };
     "${everythingElsePath}/arr/tv".Z = { mode = "2775"; user = "root"; group = "media"; };
     "${everythingElsePath}/qbittorrent/downloads".Z = { mode = "2775"; user = "root"; group = "media"; };

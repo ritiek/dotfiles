@@ -80,7 +80,39 @@ in
     '';
   };
 
-  rockchip.uBoot = pkgs.ubootRadxaZero3W;
+  # btrfs root: U-Boot reads kernel/initrd from /boot on the root partition
+  # via extlinux, and its defconfig only enables ext2/ext4/fat.
+  rockchip.uBoot = pkgs.ubootRadxaZero3W.overrideAttrs (old: {
+    extraConfig = (old.extraConfig or "") + ''
+      CONFIG_FS_BTRFS=y
+      CONFIG_CMD_BTRFS=y
+    '';
+  });
+
+  sdImage.rootFilesystemCreator = ./make-btrfs-fs.nix;
+  fileSystems."/" = {
+    fsType = lib.mkForce "btrfs";
+    options = [ "defaults" "noatime" "nodiscard" "noautodefrag" "space_cache=v2" "compress-force=zstd:3" ];
+  };
+
+  # Replaces sdImageRockchip's first-boot script, which runs resize2fs
+  # (ext4-only) under `set -e` and would abort before registering the store.
+  boot.postBootCommands = lib.mkForce ''
+    if [ -f /nix-path-registration ]; then
+      set -euo pipefail
+      set -x
+      rootPart=$(${pkgs.util-linux}/bin/findmnt -n -o SOURCE /)
+      bootDevice=$(${pkgs.util-linux}/bin/lsblk -npo PKNAME $rootPart)
+      echo ",+," | ${pkgs.util-linux}/bin/sfdisk -N2 --no-reread $bootDevice
+      ${pkgs.parted}/bin/partprobe
+      ${pkgs.btrfs-progs}/bin/btrfs filesystem resize max /
+
+      ${config.nix.package.out}/bin/nix-store --load-db < /nix-path-registration
+      touch /etc/NIXOS
+      ${config.nix.package.out}/bin/nix-env -p /nix/var/nix/profiles/system --set /run/current-system
+      rm -f /nix-path-registration
+    fi
+  '';
 
   boot.kernelPackages = pkgs.linuxPackages_6_12;
 
