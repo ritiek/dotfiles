@@ -33,6 +33,7 @@
     # ./../../../../modules/home/pi.nix
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
+    ./../../../../modules/home/lutris.nix
     ./../../../../scripts/home/spotdl-patched.nix
     ./../../../../scripts/home/spotify-adblock-pinned.nix
     ./../../../../scripts/home/sync-chromium-to-deskette.nix
@@ -116,21 +117,6 @@
       # osu-lazer-bin
       # XXX: Suffers from: https://github.com/efroemling/ballistica/discussions/697
       # bombsquad
-
-      (unstable.lutris.override {
-        extraPkgs = pkgs: [
-          # # Bombsquad Game
-          # python312
-          # SDL2
-          # libvorbis
-          # libGL
-          # openal
-          # stdenv.cc.cc
-        ];
-        extraLibraries = pkgs: [
-          # python312Packages.tkinter
-        ];
-      })
 
       feishin
       nemo

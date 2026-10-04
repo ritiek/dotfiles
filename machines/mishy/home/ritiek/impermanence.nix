@@ -35,11 +35,13 @@
       
       ".local/share/Steam"
       ".local/share/lutris"
+      ".config/lutris/games"
     ];
     files = [
       ".zsh_history"
       ".bash_history"
       ".claude.json"
+      ".config/lutris/lutris.conf"
     ];
     # allowOther = true;
   };
