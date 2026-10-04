@@ -44,47 +44,16 @@ in lib.mkMerge [
   virtualisation.oci-containers.backend = "docker";
 
   # Containers
-  virtualisation.oci-containers.containers."meridian-init" = {
-    image = "busybox";
-    volumes = [
-      "${homelabMediaPath}/services/meridian/claude-auth:/home/claude/.claude:rw"
-    ];
-    user = "root";
-    log-driver = "journald";
-    autoStart = false;
-    extraOptions = [
-      "--entrypoint=[\"sh\", \"-c\", \"chown -R 1000:1000 /home/claude/.claude\"]"
-      "--network-alias=init"
-      "--network=meridian_default"
-    ];
-  };
-  systemd.services."docker-meridian-init" = {
-    serviceConfig = {
-      Restart = lib.mkOverride 90 "no";
-    };
-    after = [
-      "docker-network-meridian_default.service"
-    ];
-    requires = [
-      "docker-network-meridian_default.service"
-    ];
-    unitConfig.RequiresMountsFor = [
-      "${homelabMediaPath}/services/meridian/claude-auth"
-    ];
-  };
   virtualisation.oci-containers.containers."meridian-proxy" = {
-    image = "ghcr.io/rynfar/meridian:latest";
+    image = "ghcr.io/rynfar/meridian:1.79.0";
     environmentFiles = [
       config.sops.secrets."compose/meridian.env".path
     ];
     volumes = [
-      "${homelabMediaPath}/services/meridian/claude-auth:/home/claude/.claude:rw"
+      "/home/ritiek/.claude:/home/claude/.claude:rw"
     ];
     ports = [
       "127.0.0.1:${toString internalWebUIPort}:3456/tcp"  # Internal port only
-    ];
-    dependsOn = [
-      "meridian-init"
     ];
     user = "claude";
     log-driver = "journald";
