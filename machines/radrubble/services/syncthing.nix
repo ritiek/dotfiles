@@ -36,8 +36,15 @@ let
   };
 in
 {
+  # Pinned identity, so a reflash keeps the same device ID and pilab keeps
+  # trusting it (device U7WLZFQ-...).
+  sops.secrets."syncthing.cert" = {};
+  sops.secrets."syncthing.key" = {};
+
   services.syncthing = {
     enable = true;
+    cert = config.sops.secrets."syncthing.cert".path;
+    key = config.sops.secrets."syncthing.key".path;
 
     # Must be root. The arr config directories are mode 0700 owned by each
     # service's own user (e.g. `drwx------ jellyfin media`), so adding
