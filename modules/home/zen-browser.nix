@@ -271,8 +271,8 @@
         "browser.ctrlTab.recentlyUsedOrder" = false;
         "browser.discovery.enabled" = false;
         "browser.safebrowsing.downloads.enabled" = false;
-        "browser.search.defaultenginename" = "Startpage";
-        "browser.search.order.1" = "Startpage";
+        "browser.search.defaultenginename" = "Google";
+        "browser.search.order.1" = "Google";
         "browser.sessionstore.resume_from_crash" = true;
         "browser.shell.checkDefaultBrowser" = false;
         "browser.ssb.enabled" = true;
@@ -342,13 +342,13 @@
 
       search = {
         force = true;
-        default = "Startpage";
+        default = "google";
         order = [
+          "google"
           "Startpage"
           "ddg"
           "SearXNG"
           "kagi"
-          "google"
         ];
         engines = {
           "bing".metaData.hidden = true;
