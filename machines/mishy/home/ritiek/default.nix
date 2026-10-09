@@ -87,6 +87,7 @@
       # spotify
       # local.piano-rs
       psmisc
+      tigervnc
       moreutils
       file
       nix-output-monitor
