@@ -574,7 +574,6 @@ in
             You are a professional software engineer who uses the playwright tool to interact
             with the Internet.
 
-            ${startupSkills}
             ## Guidelines
             - Skip captchas.
             - Do not write ANY file on the local filesystem WHATSOEVER.
@@ -618,7 +617,11 @@ in
           prompt = ''
             Engage in meaningful and context-aware conversations with the user. Be rational.
 
-            ${startupSkills}          '';
+            ## Startup
+            At the start of every session, load the following skills using the skill tool:
+            - `i-have-adhd` to shape output for a reader with ADHD
+            - `humanizer` to avoid AI-sounding prose
+          '';
           tools = {
             write = false;
             bash = false;
