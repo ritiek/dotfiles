@@ -21,20 +21,10 @@
   #
   # Ownership is 1000:100 rather than root:root because the syncthing
   # container runs as uid 1000 and must be able to write into them.
-  systemd.tmpfiles.rules =
-    let
-      arrDirs = map (a: "${homelabMediaPath}/services/arr/${a}/config") [
-        "radarr"
-        "sonarr"
-        "bazarr"
-        "prowlarr"
-        "jellyseerr"
-        "jellyfin"
-      ];
-    in
-    map (d: "d ${d} 0755 1000 100 -") (
-      arrDirs ++ [ "${homelabMediaPath}/services/qbittorrent/config" ]
-    );
+  systemd.tmpfiles.rules = map (d: "d ${d} 0755 1000 100 -") [
+    "${homelabMediaPath}/services/arr"
+    "${homelabMediaPath}/services/qbittorrent/config"
+  ];
 
   # Runtime
   virtualisation.docker = {
