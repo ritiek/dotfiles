@@ -10,23 +10,8 @@ let
   # /media/HOMELAB_MEDIA/services which restic already snapshots.
   pilabId = "4ZGXF3T-AU3D6ZJ-JO4UQYO-O6TD5VT-KXB5XAA-BFMWMI7-Y7BFEFK-TUAIEA3";
 
-  # Shared across the three .NET *arr apps: rolling text logs, the separate
-  # logs database, cached poster art, and the SQLite sidecars. The sidecars
-  # are excluded deliberately - copying a -wal/-shm without its parent .db
-  # mid-write is worse than not copying it at all. The weekly Backups/*.zip
-  # each app produces is a consistent dump and IS synced.
-  arrIgnores = [
-    "logs"
-    "logs.db"
-    "logs.db-shm"
-    "logs.db-wal"
-    "MediaCover"
-    "*.db-shm"
-    "*.db-wal"
-  ];
-
-  mkFolder = id: path: ignorePatterns: {
-    inherit id path ignorePatterns;
+  mkFolder = id: label: path: ignorePatterns: {
+    inherit id label path ignorePatterns;
     enable = true;
     devices = [ "pilab" ];
     # sendonly: radrubble is the source of truth. This makes it structurally
@@ -71,58 +56,40 @@ in
       };
 
       folders = {
-        "radrubble-radarr" = mkFolder "radrubble-radarr" "${arrConfigs}/radarr" arrIgnores;
-        "radrubble-sonarr" = mkFolder "radrubble-sonarr" "${arrConfigs}/sonarr" arrIgnores;
-
-        # Definitions/ is the indexer definition set, re-downloaded on start.
-        "radrubble-prowlarr" =
-          mkFolder "radrubble-prowlarr" "${arrConfigs}/prowlarr"
-            (arrIgnores ++ [ "Definitions" ]);
-
-        "radrubble-bazarr" = mkFolder "radrubble-bazarr" "${arrConfigs}/bazarr" [
-          "log"
-          "cache"
-          "restore"
-          "db/*.db-shm"
-          "db/*.db-wal"
-          "config/releases.txt"
-          "config/announcements.json"
-        ];
-
-        "radrubble-jellyseerr" = mkFolder "radrubble-jellyseerr" "${arrConfigs}/jellyseerr" [
-          "logs"
-          "cache"
-          "anime-list.xml"
-        ];
-
-        # By far the largest source. What is kept is jellyfin.db (users,
-        # passwords, watch state, resume positions, playlists), the top-level
-        # *.xml config, data/root and data/plugins - roughly 400M.
+        # Every app under arr/configs in one folder. Unanchored patterns apply
+        # to all apps; the rest are anchored to one app's subdirectory.
         #
-        # data/metadata is ~9G of scraped artwork and NFOs that Jellyfin will
-        # re-fetch, and data/data/*.bak*/*.old are ~4.3G of stale migration
-        # copies. data/data/backups holds the 1.7G manual webui export, which
-        # is a one-off and not worth replicating.
-        "radrubble-jellyfin" = mkFolder "radrubble-jellyfin" "${arrConfigs}/jellyfin" [
-          "cache"
-          "log"
-          "data/metadata"
-          "data/transcodes"
-          "data/data/*.bak*"
-          "data/data/*.old"
-          "data/data/*.db-shm"
-          "data/data/*.db-wal"
-          "data/data/backups"
-          "jellyfin/images"
-          "jellyfin/transcodes"
-          "rffmpeg/rffmpeg.log"
-          ".cache"
-          ".aspnet"
+        # SQLite -wal/-shm are excluded deliberately - copying a sidecar
+        # without its parent .db mid-write is worse than not copying it.
+        # Caches are small (~150M total) and are synced.
+        "radrubble-arr" = mkFolder "radrubble-arr" "*arr Stack" arrConfigs [
+          "*.db-shm"
+          "*.db-wal"
+          "logs"
+          "logs.db"
+          "/bazarr/log"
+          "/bazarr/restore"
+          "/bazarr/config/releases.txt"
+          "/bazarr/config/announcements.json"
+          "/jellyseerr/anime-list.xml"
+          # Indexer definitions, re-downloaded on start.
+          "/prowlarr/Definitions"
+          # data/metadata is ~9G of scraped artwork Jellyfin re-fetches;
+          # data/data/backups holds a one-off ~9G manual webui export.
+          "/jellyfin/log"
+          "/jellyfin/data/metadata"
+          "/jellyfin/data/transcodes"
+          "/jellyfin/data/data/*.bak*"
+          "/jellyfin/data/data/*.old"
+          "/jellyfin/data/data/backups"
+          "/jellyfin/jellyfin/transcodes"
+          "/jellyfin/rffmpeg/rffmpeg.log"
+          "/jellyfin/.aspnet"
         ];
 
         # qBittorrent's own settings are already declarative via extraConfig,
         # but BT_backup (the active torrents and their resume data) is not.
-        "radrubble-qbittorrent" = mkFolder "radrubble-qbittorrent" qbtConfig [
+        "radrubble-qbittorrent" = mkFolder "radrubble-qbittorrent" "qBittorrent" qbtConfig [
           "qBittorrent/logs"
           "qBittorrent/cache"
           "qBittorrent/data/logs"
