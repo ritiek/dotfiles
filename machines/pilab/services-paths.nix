@@ -32,27 +32,27 @@ let
     #
     # radarr = {
     #   configSource = "${everythingElsePath}/arr/configs/radarr";
-    #   configBackup = "${homelabMediaPath}/services/arr/radarr/config";
+    #   configBackup = "${homelabMediaPath}/services/arr/radarr";
     # };
     # sonarr = {
     #   configSource = "${everythingElsePath}/arr/configs/sonarr";
-    #   configBackup = "${homelabMediaPath}/services/arr/sonarr/config";
+    #   configBackup = "${homelabMediaPath}/services/arr/sonarr";
     # };
     # bazarr = {
     #   configSource = "${everythingElsePath}/arr/configs/bazarr";
-    #   configBackup = "${homelabMediaPath}/services/arr/bazarr/config";
+    #   configBackup = "${homelabMediaPath}/services/arr/bazarr";
     # };
     # prowlarr = {
     #   configSource = "${everythingElsePath}/arr/configs/prowlarr";
-    #   configBackup = "${homelabMediaPath}/services/arr/prowlarr/config";
+    #   configBackup = "${homelabMediaPath}/services/arr/prowlarr";
     # };
     # jellyseerr = {
     #   configSource = "${everythingElsePath}/arr/configs/jellyseerr";
-    #   configBackup = "${homelabMediaPath}/services/arr/jellyseerr/config";
+    #   configBackup = "${homelabMediaPath}/services/arr/jellyseerr";
     # };
     # jellyfin = {
     #   configSource = "${everythingElsePath}/arr/configs/jellyfin";
-    #   configBackup = "${homelabMediaPath}/services/arr/jellyfin/config";
+    #   configBackup = "${homelabMediaPath}/services/arr/jellyfin";
     # };
     # qbittorrent = {
     #   configSource = "${everythingElsePath}/qbittorrent/config";
