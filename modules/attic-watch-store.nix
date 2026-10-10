@@ -92,9 +92,10 @@ in
       RestartSec = 10;
       User = "attic-watch-store";
       Group = "attic-watch-store";
+      # Nice 19, not SCHED_IDLE: idle policy gets zero CPU while all cores are
+      # busy (e.g. long local builds), stalling uploads for hours.
       Nice = 19;
       IOSchedulingClass = "idle";
-      CPUSchedulingPolicy = "idle";
     };
   };
 }
