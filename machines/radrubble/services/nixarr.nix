@@ -18,6 +18,49 @@ let
       [ config.sops.secrets."gotify.token".path ]
       (builtins.readFile ./qbittorrent-notify.sh);
   };
+
+  # Rockchip MPP/RGA userspace at the commits jellyfin-ffmpeg's own builder
+  # pins (builder/scripts.d/50-rkmpp.sh, 50-rkrga.sh).
+  rkMirrors = rev: hash: pkgs.fetchFromGitHub {
+    owner = "nyanmisaka";
+    repo = "rk-mirrors";
+    inherit rev hash;
+  };
+  rockchip-mpp = pkgs.stdenv.mkDerivation {
+    pname = "rockchip-mpp";
+    version = "jellyfin-a9380ef";
+    src = rkMirrors "a9380ef333102ac318628f83b5f7a460d377749e" "sha256-W18KrNdd1HNcubDv0K+CmAEdbXiqB5y0ECb0FUefUrk=";
+    nativeBuildInputs = [ pkgs.cmake ];
+    # Its .pc files do ${prefix}/@CMAKE_INSTALL_LIBDIR@, so keep the dirs relative.
+    cmakeFlags = [ "-DBUILD_TEST=OFF" "-DCMAKE_INSTALL_LIBDIR=lib" "-DCMAKE_INSTALL_INCLUDEDIR=include" ];
+  };
+  librga = pkgs.stdenv.mkDerivation {
+    pname = "librga";
+    version = "jellyfin-1d330cc";
+    src = rkMirrors "1d330cc28551943bed3380261a5a9c6fbd58ff53" "sha256-EO/YvkyaAgIyAZQJjXa8b5SEgCo4vfDpYoeKcJH1n4o=";
+    nativeBuildInputs = with pkgs; [ meson ninja pkg-config ];
+    mesonFlags = [ "-Dcpp_args=-fpermissive" "-Dlibdrm=false" "-Dlibrga_demo=false" ];
+  };
+  jellyfin-ffmpeg = pkgs.jellyfin-ffmpeg.overrideAttrs (old: {
+    buildInputs = old.buildInputs ++ [ rockchip-mpp librga ];
+    configureFlags = old.configureFlags ++ [ "--enable-rkmpp" "--enable-rkrga" ];
+  });
+  # Swap the ffmpeg paths in jellyfin's wrapper instead of rebuilding the
+  # dotnet app via jellyfin.override. Both outputs: the wrapper also puts
+  # ffmpeg's lib output on LD_LIBRARY_PATH, which would load the old libav*.
+  jellyfin = pkgs.symlinkJoin {
+    name = "jellyfin-rkmpp-${pkgs.jellyfin.version}";
+    inherit (pkgs.jellyfin) version meta;
+    paths = [ pkgs.jellyfin ];
+    postBuild = ''
+      rm $out/bin/jellyfin
+      sed -e 's|${pkgs.jellyfin-ffmpeg.bin}|${jellyfin-ffmpeg.bin}|g' \
+          -e 's|${pkgs.jellyfin-ffmpeg.lib}|${jellyfin-ffmpeg.lib}|g' \
+          ${pkgs.jellyfin}/bin/jellyfin > $out/bin/jellyfin
+      grep -q ${jellyfin-ffmpeg.lib} $out/bin/jellyfin
+      chmod +x $out/bin/jellyfin
+    '';
+  };
 in
 
 # Migrated from pilab's docker/oci-containers *arr stack. EVERYTHING_ELSE is
@@ -48,6 +91,7 @@ let
     "qui.service"
     "jellyfin.service"
     "seerr.service"
+    "podman-frigate.service" # ./frigate.nix
   ];
 
   requiredMounts = [ everythingElsePath ];
@@ -167,7 +211,10 @@ in
         };
       };
     };
-    jellyfin.enable = true;
+    jellyfin = {
+      enable = true;
+      package = jellyfin;
+    };
     seerr = {
       enable = true;
       stateDir = "${arrConfigs}/jellyseerr";
@@ -186,7 +233,31 @@ in
     cacheDir = lib.mkForce "${arrConfigs}/jellyfin/cache";
     logDir = lib.mkForce "${arrConfigs}/jellyfin/log";
     openFirewall = lib.mkForce true;
+    hardwareAcceleration = {
+      enable = true;
+      type = "rkmpp";
+      device = "/dev/mpp_service";
+    };
+    # The migrated encoding.xml is pilab's QSV config; own it declaratively.
+    forceEncodingConfig = true;
+    transcoding = {
+      # RK3566 has no hardware HDR tonemapping; software is too slow here.
+      enableToneMapping = false;
+      throttleTranscoding = true;
+      enableHardwareEncoding = true;
+      hardwareEncodingCodecs.hevc = true;
+      hardwareDecodingCodecs = {
+        h264 = true;
+        hevc = true;
+        hevc10bit = true;
+        mpeg2 = true;
+        vp8 = true;
+        vp9 = true;
+      };
+    };
   };
+
+  users.users.jellyfin.extraGroups = [ "video" "render" ];
 
   # Self-healing ownership fixups for the migrated pilab data: nixarr's
   # hardcoded per-service UIDs (radarr=275, sonarr=274, bazarr=232,
@@ -268,6 +339,12 @@ in
     {
       qbittorrent.preStart =
         "${pkgs.coreutils}/bin/rm -f ${qbtConfig}/qBittorrent/config/lockfile";
+      # RKMPP also needs RGA, dma-heaps and DRM (udev rules in ../rockchip-bsp.nix).
+      jellyfin.serviceConfig.DeviceAllow = [
+        "/dev/rga rw"
+        "char-dma_heap rw"
+        "char-drm rw"
+      ];
     };
 
   # Auto-stop everything if EVERYTHING_ELSE is unplugged without running
