@@ -1,8 +1,11 @@
-# Rockchip BSP 6.1 kernel (Armbian's rk-6.1-rkr7.2 tree + Armbian's config).
+# Radxa Zero 3W/3E (RK3566): Rockchip BSP 6.1 kernel (Armbian's rk-6.1-rkr7.2
+# tree + Armbian's config) and a btrfs SD root.
 # Mainline has no RK3566 video encoder/HEVC decoder or NPU driver; this tree
 # has MPP (VPU), RGA and RKNPU. The GPU stays on panfrost (Armbian builds no
 # Mali kbase driver for Bifrost).
-{ pkgs, lib, ... }:
+# The vendor kernel needs Rockchip's BL31 in U-Boot (pkgs.rkbin.BL31_RK3568);
+# U-Boot also needs CONFIG_FS_BTRFS for the btrfs root. Set per board.
+{ config, pkgs, lib, ... }:
 
 let
   stdenv = pkgs.gcc13Stdenv;
@@ -51,11 +54,13 @@ in
   boot.initrd.allowMissingModules = true;
 
   hardware.deviceTree = {
-    # Ship the vendor dtb under the mainline name U-Boot already loads via
-    # FDTDIR. Setting `name` instead would rewrite FDT for every extlinux
-    # entry, breaking older mainline generations that lack the vendor name.
-    dtbSource = pkgs.runCommand "rk3566-radxa-zero-3w-vendor-dtb" { } ''
-      install -D ${kernel}/dtbs/rockchip/rk3566-radxa-zero3.dtb $out/rockchip/rk3566-radxa-zero-3w.dtb
+    # One vendor dtb covers 3W and 3E; ship it under the mainline names U-Boot
+    # already loads via FDTDIR. Setting `name` instead would rewrite FDT for
+    # every extlinux entry, breaking older mainline generations.
+    dtbSource = pkgs.runCommand "rk3566-radxa-zero3-vendor-dtb" { } ''
+      for b in 3w 3e; do
+        install -D ${kernel}/dtbs/rockchip/rk3566-radxa-zero3.dtb $out/rockchip/rk3566-radxa-zero-$b.dtb
+      done
     '';
     # NPU is disabled in the board DT. Port of radxa-overlays'
     # rk3568-npu-enable.dts.
@@ -78,17 +83,53 @@ in
           };
         };
       '';
-    } {
-      # The shared Zero 3 DT enables the 3E's ethernet; the 3W has none.
-      name = "rk3566-zero3w-no-gmac";
-      dtsText = ''
-        /dts-v1/;
-        /plugin/;
-        / { compatible = "rockchip,rk3566"; };
-        &gmac1 { status = "disabled"; };
-      '';
     }];
   };
+
+  sdImage.rootFilesystemCreator = ./make-btrfs-fs.nix;
+  fileSystems."/" = {
+    fsType = lib.mkForce "btrfs";
+    options = [ "defaults" "noatime" "nodiscard" "noautodefrag" "space_cache=v2" "compress-force=zstd:3" ];
+  };
+
+  # Replaces sdImageRockchip's first-boot script, which runs resize2fs
+  # (ext4-only) under `set -e` and would abort before registering the store.
+  boot.postBootCommands = lib.mkForce ''
+    if [ -f /nix-path-registration ]; then
+      set -euo pipefail
+      set -x
+      rootPart=$(${pkgs.util-linux}/bin/findmnt -n -o SOURCE /)
+      bootDevice=$(${pkgs.util-linux}/bin/lsblk -npo PKNAME $rootPart)
+      echo ",+," | ${pkgs.util-linux}/bin/sfdisk -N2 --no-reread $bootDevice
+      ${pkgs.parted}/bin/partprobe
+      ${pkgs.btrfs-progs}/bin/btrfs filesystem resize max /
+
+      ${config.nix.package.out}/bin/nix-store --load-db < /nix-path-registration
+      touch /etc/NIXOS
+      ${config.nix.package.out}/bin/nix-env -p /nix/var/nix/profiles/system --set /run/current-system
+      rm -f /nix-path-registration
+    fi
+  '';
+
+  # sdImageRockchip's populateRootCommands (nabam/nixos-rockchip) calls
+  # generic-extlinux-compatible.populateCmd with no -g flag, so it falls
+  # back to nixpkgs' own configurationLimit default. -g N (any N > 0) makes
+  # extlinux-conf-builder.sh scrape the *build host's* /nix/var/nix/profiles
+  # for extra system-*-link generations and copy each one's kernel+initrd
+  # into the image, same as switchboard's disko.nix hit: since these
+  # aarch64 images are built natively on alcove, that bakes alcove's own
+  # generations into the image - dead menu entries whose init=
+  # store paths don't exist on this rootfs, a kernel for a different SoC,
+  # plus dead weight under /boot/nixos. Pass -g 0 so only the default entry
+  # is emitted - getopts honours the last occurrence, overriding the -g
+  # already baked into populateCmd. This only affects the image; on the
+  # running system the bootloader installer runs on the target against its
+  # own profile, so deploys still get proper rollback entries.
+  sdImage.populateRootCommands = lib.mkForce ''
+    mkdir -p ./files/boot
+    ${config.boot.loader.generic-extlinux-compatible.populateCmd} \
+      -c ${config.system.build.toplevel} -d ./files/boot -g 0
+  '';
 
   # MPP (VPU) and RGA device access, from Jellyfin's Rockchip docs.
   services.udev.extraRules = ''
