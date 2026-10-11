@@ -1,0 +1,16 @@
+diff --git a/drivers/phy/allwinner/sunxi-inno-combophy.c b/drivers/phy/allwinner/sunxi-inno-combophy.c
+index e37ca99..f233110 100644
+--- a/drivers/phy/allwinner/sunxi-inno-combophy.c
++++ b/drivers/phy/allwinner/sunxi-inno-combophy.c
+@@ -306,7 +306,10 @@ static int pcie_usb3_sub_system_init(struct platform_device *pdev)
+ 
+ 
+     if (combphy->phy_ctl) {
+-        if (readl(combphy->phy_ctl + PCIE_COMBO_PHY_CTL) & PHY_RSTN) {
++        u32 val = readl(combphy->phy_ctl + PCIE_COMBO_PHY_CTL);
++        /* Only trust the bootloader if it left the PHY in the mode we want */
++        if ((val & PHY_RSTN) &&
++            !!(val & PHY_USE_SEL) == (combphy->user == PHY_USE_BY_USB3)) {
+             dev_info(dev, "PHY already enabled by Bootloader.\n");
+             already_enabled = true;
+         }

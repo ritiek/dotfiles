@@ -214,7 +214,7 @@ let
     profile = "radxa_cubie-a5e";
     # Pinned by the bootstrap build (set to pkgs.lib.fakeHash, build once,
     # and replace with the `got:` hash nix reports).
-    downloadsHash = "sha256-ikSScTd9tmOLQ2IlNDONYzt8XNYmwmhFOwUTNWpTM7o=";
+    downloadsHash = "sha256-Qjy2ZZYSzJY5S1wrVPqtaqGnbrKYepIaOABQHa4gtqc=";
 
     # See the "Go on an aarch64 build host" note above.
     extraBuildInputs = [ pkgs.go ];
@@ -246,6 +246,14 @@ let
       "tools/fakeroot/patches/900-einval.patch" =
         ./patches/900-einval-neutralized.patch;
       "package/base-files/Makefile" = ./patches/base-files-Makefile;
+      # USB 3.0 (DWC3/xHCI) on the combo PHY, ported from nixos-cubie-a5e
+      # 9cc11a0. Replaces PCIe/M.2 (they share one PHY).
+      "target/linux/sunxi/patches-6.18/814-clk-sunxi-ng-a523-add-usb3-clocks.patch" =
+        ./patches/814-clk-sunxi-ng-a523-add-usb3-clocks.patch;
+      "target/linux/sunxi/patches-6.18/815-phy-allwinner-inno-combophy-reinit-on-mode-mismatch.patch" =
+        ./patches/815-phy-allwinner-inno-combophy-reinit-on-mode-mismatch.patch;
+      "target/linux/sunxi/patches-6.18/816-arm64-dts-cubie-a5e-enable-usb3-dwc3.patch" =
+        ./patches/816-arm64-dts-cubie-a5e-enable-usb3-dwc3.patch;
       # NOTE: files/ deliberately does NOT appear in this attribute.
       # Everything here is spliced into the *full build's* postPatch as a
       # content-addressed store path (see CONFIG_IB above), so listing a
@@ -419,6 +427,9 @@ let
       "kmod-usb-net-rndis"
       "kmod-usb-net-cdc-ether"
       "kmod-usb-net-ipheth"
+      "kmod-usb3"
+      "kmod-usb-dwc3"
+      "kmod-usb-storage"
     ];
     # Shipped verbatim; the modes are fixed up in the ImageBuilder instead --
     # see the `chmod -R u+w files/` injection in the override below.
