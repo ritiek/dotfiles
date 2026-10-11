@@ -1,75 +1,237 @@
-{ pkgs, everythingElsePath, ... }:
+{ lib, pkgs, everythingElsePath, ... }:
 
-# Started/stopped with the media stack (unit listed in ./nixarr.nix `units`),
-# not at boot, since all its data lives on EVERYTHING_ELSE.
+# Native frigate (nixpkgs module) with the RK3566 NPU detector. Not started at
+# boot; run `systemctl start frigate` after `mediaserver-mount` (it conflicts
+# with the media stack, see below). Data stays in the old podman layout on EVERYTHING_ELSE:
+# config/ (DB, model cache) and storage/ (clips, recordings, exports).
 let
-  # storage/ holds pilab's old clips/recordings. config/ is separate so pilab's
-  # ./config.yml there isn't overwritten.
   dataDir = "${everythingElsePath}/frigate";
-  # Regenerated into ${dataDir}/config/config.yml on every start; UI edits don't persist.
-  configFile = (pkgs.formats.yaml { }).generate "frigate.yml" {
-    mqtt.enabled = false;
-    # RK3566 NPU; the -rk3566 .rknn model is downloaded into model_cache on first start.
-    detectors.npu = {
-      type = "rknn";
-      num_cores = 0;
+  librknnrt = pkgs.stdenv.mkDerivation {
+    pname = "librknnrt";
+    version = "2.3.2";
+    src = pkgs.fetchurl {
+      url = "https://github.com/MarcA711/rknn-toolkit2/releases/download/v2.3.2/librknnrt.so";
+      hash = "sha256-0x/BnIW4X2CRsr0PavnZYtUmSk5BC/tTZALskrrHOOg=";
     };
-    model = {
-      path = "frigate-fp16-yolov9-t";
-      model_type = "yolo-generic";
-      width = 320;
-      height = 320;
-      input_tensor = "nhwc";
-      labelmap_path = "/labelmap/coco-80.txt";
-    };
-    record.enabled = false;
-    snapshots.enabled = false;
-    objects.track = [ "person" "car" "bicycle" "motorcycle" "dog" ];
-    cameras.pavilion = {
-      ffmpeg.inputs = [{
-        path = "http://64.191.148.57/mjpg/video.mjpg";
-        input_args = "preset-http-mjpeg-generic";
-        roles = [ "detect" ];
-      }];
-      detect = {
-        enabled = true;
-        width = 800;
-        height = 450;
-        # The public feed only delivers ~3 fps from here.
-        fps = 5;
+    dontUnpack = true;
+    nativeBuildInputs = [ pkgs.autoPatchelfHook ];
+    buildInputs = [ pkgs.stdenv.cc.cc.lib ];
+    installPhase = "install -Dm755 $src $out/lib/librknnrt.so";
+  };
+
+  # Minimal stand-in for rknn-toolkit-lite2's `rknnlite.api.RKNNLite`, which
+  # only ships cpython<=3.12 wheels while nixpkgs' frigate runs on python 3.13.
+  # Covers just what frigate's RKNNModelRunner calls, via librknnrt's C API
+  # (rknn_api.h).
+  rknnlite = pkgs.writeTextDir "rknnlite/api/__init__.py" ''
+    import ctypes as C
+
+    import numpy as np
+
+    _lib = C.CDLL("${librknnrt}/lib/librknnrt.so")
+    _ctx_t = C.c_uint64  # rknn_context is uint64_t on aarch64
+
+    _DTYPES = {
+        np.dtype(np.float32): 0,
+        np.dtype(np.float16): 1,
+        np.dtype(np.int8): 2,
+        np.dtype(np.uint8): 3,
+        np.dtype(np.int16): 4,
+    }
+    _NHWC = 1
+    _QUERY_IN_OUT_NUM, _QUERY_OUTPUT_ATTR = 0, 2
+
+
+    class _InOutNum(C.Structure):
+        _fields_ = [("n_input", C.c_uint32), ("n_output", C.c_uint32)]
+
+
+    class _TensorAttr(C.Structure):
+        _fields_ = [
+            ("index", C.c_uint32),
+            ("n_dims", C.c_uint32),
+            ("dims", C.c_uint32 * 16),
+            ("name", C.c_char * 256),
+            ("n_elems", C.c_uint32),
+            ("size", C.c_uint32),
+            ("fmt", C.c_int),
+            ("type", C.c_int),
+            ("qnt_type", C.c_int),
+            ("fl", C.c_int8),
+            ("zp", C.c_int32),
+            ("scale", C.c_float),
+            ("w_stride", C.c_uint32),
+            ("size_with_stride", C.c_uint32),
+            ("pass_through", C.c_uint8),
+            ("h_stride", C.c_uint32),
+        ]
+
+
+    class _Input(C.Structure):
+        _fields_ = [
+            ("index", C.c_uint32),
+            ("buf", C.c_void_p),
+            ("size", C.c_uint32),
+            ("pass_through", C.c_uint8),
+            ("type", C.c_int),
+            ("fmt", C.c_int),
+        ]
+
+
+    class _Output(C.Structure):
+        _fields_ = [
+            ("want_float", C.c_uint8),
+            ("is_prealloc", C.c_uint8),
+            ("index", C.c_uint32),
+            ("buf", C.c_void_p),
+            ("size", C.c_uint32),
+        ]
+
+
+    class RKNNLite:
+        NPU_CORE_AUTO = 0
+
+        def __init__(self, verbose=False, **_):
+            self._ctx = _ctx_t(0)
+            self._model = None
+            self._outputs = []
+
+        def load_rknn(self, path):
+            with open(path, "rb") as f:
+                self._model = f.read()
+            return 0
+
+        def init_runtime(self, core_mask=0, **_):
+            model = C.create_string_buffer(self._model, len(self._model))
+            ret = _lib.rknn_init(C.byref(self._ctx), model, len(self._model), 0, None)
+            if ret != 0:
+                return ret
+            # Single-core SoCs (rk3566) reject explicit masks; 0 = auto.
+            if core_mask and _lib.rknn_set_core_mask(self._ctx, core_mask) != 0:
+                return -1
+            num = _InOutNum()
+            ret = _lib.rknn_query(self._ctx, _QUERY_IN_OUT_NUM, C.byref(num), C.sizeof(num))
+            if ret != 0:
+                return ret
+            for i in range(num.n_output):
+                attr = _TensorAttr(index=i)
+                ret = _lib.rknn_query(self._ctx, _QUERY_OUTPUT_ATTR, C.byref(attr), C.sizeof(attr))
+                if ret != 0:
+                    return ret
+                self._outputs.append(tuple(attr.dims[: attr.n_dims]))
+            return 0
+
+        def inference(self, inputs, **_):
+            inputs = [np.ascontiguousarray(x) for x in inputs]
+            ins = (_Input * len(inputs))()
+            for i, x in enumerate(inputs):
+                ins[i] = _Input(i, x.ctypes.data, x.nbytes, 0, _DTYPES[x.dtype], _NHWC)
+            if _lib.rknn_inputs_set(self._ctx, len(inputs), ins) != 0:
+                return None
+            if _lib.rknn_run(self._ctx, None) != 0:
+                return None
+            results = [np.empty(shape, dtype=np.float32) for shape in self._outputs]
+            outs = (_Output * len(results))()
+            for i, r in enumerate(results):
+                outs[i] = _Output(1, 1, i, r.ctypes.data, r.nbytes)
+            ret = _lib.rknn_outputs_get(self._ctx, len(results), outs, None)
+            _lib.rknn_outputs_release(self._ctx, len(results), outs)
+            return results if ret == 0 else None
+
+        def release(self):
+            if self._ctx.value:
+                _lib.rknn_destroy(self._ctx)
+                self._ctx = _ctx_t(0)
+  '';
+
+  # Shipped in the source tree but not installed by the package.
+  labelmap = pkgs.runCommand "coco-80.txt" { } ''
+    cp ${pkgs.frigate.src}/docker/main/rootfs/labelmap/coco-80.txt $out
+  '';
+in
+{
+  services.frigate = {
+    enable = true;
+    hostname = "radrubble.lion-zebra.ts.net";
+    settings = {
+      database.path = "${dataDir}/config/frigate.db";
+      mqtt.enabled = false;
+      # The -rk3566 .rknn model is downloaded into model_cache on first start.
+      detectors.npu = {
+        type = "rknn";
+        num_cores = 0;
+      };
+      model = {
+        path = "frigate-fp16-yolov9-t";
+        model_type = "yolo-generic";
+        width = 320;
+        height = 320;
+        input_tensor = "nhwc";
+        labelmap_path = "${labelmap}";
+      };
+      record.enabled = false;
+      snapshots.enabled = false;
+      objects.track = [ "person" "car" "bicycle" "motorcycle" "dog" ];
+      cameras.pavilion = {
+        ffmpeg.inputs = [{
+          path = "http://64.191.148.57/mjpg/video.mjpg";
+          input_args = "preset-http-mjpeg-generic";
+          roles = [ "detect" ];
+        }];
+        detect = {
+          enabled = true;
+          width = 800;
+          height = 450;
+          # The public feed only delivers ~3 fps from here.
+          fps = 5;
+        };
       };
     };
   };
-in
-{
-  virtualisation.podman.enable = true;
-  virtualisation.oci-containers.backend = "podman";
-  virtualisation.oci-containers.containers.frigate = {
-    image = "ghcr.io/blakeblackshear/frigate:0.18.0-rk";
-    volumes = [
-      "${dataDir}/config:/config"
-      "${dataDir}/storage:/media/frigate"
-      "/etc/localtime:/etc/localtime:ro"
-      "/sys:/sys:ro"
-    ];
-    extraOptions = [
-      # Host network: no netavark NAT; nixos-fw decides what is reachable.
-      "--network=host"
-      "--shm-size=256m"
-      "--mount=type=tmpfs,target=/tmp/cache,tmpfs-size=64m"
-      "--device=/dev/dri"
-      "--device=/dev/dma_heap"
-      "--device=/dev/rga"
-      "--device=/dev/mpp_service"
-      # Docker's systempaths=unconfined: the RKNN plugin reads /proc/device-tree/compatible.
-      "--security-opt=unmask=ALL"
-    ];
+
+  # The package hardcodes /var/lib/frigate as its media dir, and nginx serves
+  # clips/recordings from there too, so bind it on the host (not BindPaths).
+  # Fails while EVERYTHING_ELSE is unmounted (its empty mountpoint is +i).
+  systemd.mounts = [{
+    what = "${dataDir}/storage";
+    where = "/var/lib/frigate";
+    type = "none";
+    options = "bind";
+    unitConfig.StopWhenUnneeded = true;
+  }];
+
+  # The podman container ran as root; native frigate runs as `frigate`.
+  # Applied by `mediaserver-mount` re-running systemd-tmpfiles.
+  systemd.tmpfiles.settings."frigate-radrubble"."${dataDir}".Z = {
+    user = "frigate";
+    group = "frigate";
   };
 
-  systemd.services.podman-frigate.preStart = ''
-    install -D -m 0644 ${configFile} ${dataDir}/config/config.yml
-  '';
+  systemd.services.frigate = {
+    environment.PYTHONPATH = lib.mkForce "${pkgs.frigate.pythonPath}:${rknnlite}";
+    unitConfig.RequiresMountsFor = [ "/var/lib/frigate" ];
+    # 2GB can't hold frigate (~1GB) next to the voice models or the media
+    # stack; together they swap-thrash the board into a watchdog reboot.
+    # Starting either side stops the other.
+    conflicts = [
+      "sensevoice-stt.service" "paroli-tts.service"
+      "radarr.service" "sonarr.service" "bazarr.service" "prowlarr.service"
+      "qbittorrent.service" "qui.service" "jellyfin.service" "seerr.service"
+    ];
+    serviceConfig = {
+      BindPaths = [ "${dataDir}/config/model_cache:/var/cache/frigate/model_cache" ];
+      # librknnrt opens the NPU via /dev/dri/card1 (root:video 0660).
+      SupplementaryGroups = [ "video" ];
+      # Frigate's watchdog reads /proc/1 before exiting on a stalled
+      # detector; "invisible" makes that crash instead of restarting.
+      ProtectProc = lib.mkForce "default";
+      Restart = lib.mkForce "always";
+      # 2GB board: an OOM-kill beats thrashing into a watchdog reboot.
+      MemoryMax = "1200M";
+    };
+  };
 
-  # Authenticated UI (admin password is printed in the container log on first start).
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 8971 ];
+  # nginx vhost with frigate's login (admin password is printed in
+  # `journalctl -u frigate` on first start).
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 ];
 }
