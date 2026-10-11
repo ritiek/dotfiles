@@ -91,7 +91,7 @@ let
     "qui.service"
     "jellyfin.service"
     "seerr.service"
-    "podman-frigate.service" # ./frigate.nix
+    "frigate.service" # ./frigate.nix
   ];
 
   requiredMounts = [ everythingElsePath ];
