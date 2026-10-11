@@ -19,8 +19,19 @@ in
     inputs.rockchip.nixosModules.noZFS
     ./aic8800.nix
     ./boot-test.nix
-    ./rockchip-bsp.nix
+    ./../../modules/radxa-zero3
   ];
+
+  # The shared Zero 3 DT enables the 3E's ethernet; the 3W has none.
+  hardware.deviceTree.overlays = [{
+    name = "rk3566-zero3w-no-gmac";
+    dtsText = ''
+      /dts-v1/;
+      /plugin/;
+      / { compatible = "rockchip,rk3566"; };
+      &gmac1 { status = "disabled"; };
+    '';
+  }];
 
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelModules = [ "g_ether" ];
@@ -94,51 +105,6 @@ in
       CONFIG_CMD_BTRFS=y
     '';
   });
-
-  sdImage.rootFilesystemCreator = ./make-btrfs-fs.nix;
-  fileSystems."/" = {
-    fsType = lib.mkForce "btrfs";
-    options = [ "defaults" "noatime" "nodiscard" "noautodefrag" "space_cache=v2" "compress-force=zstd:3" ];
-  };
-
-  # Replaces sdImageRockchip's first-boot script, which runs resize2fs
-  # (ext4-only) under `set -e` and would abort before registering the store.
-  boot.postBootCommands = lib.mkForce ''
-    if [ -f /nix-path-registration ]; then
-      set -euo pipefail
-      set -x
-      rootPart=$(${pkgs.util-linux}/bin/findmnt -n -o SOURCE /)
-      bootDevice=$(${pkgs.util-linux}/bin/lsblk -npo PKNAME $rootPart)
-      echo ",+," | ${pkgs.util-linux}/bin/sfdisk -N2 --no-reread $bootDevice
-      ${pkgs.parted}/bin/partprobe
-      ${pkgs.btrfs-progs}/bin/btrfs filesystem resize max /
-
-      ${config.nix.package.out}/bin/nix-store --load-db < /nix-path-registration
-      touch /etc/NIXOS
-      ${config.nix.package.out}/bin/nix-env -p /nix/var/nix/profiles/system --set /run/current-system
-      rm -f /nix-path-registration
-    fi
-  '';
-
-  # sdImageRockchip's populateRootCommands (nabam/nixos-rockchip) calls
-  # generic-extlinux-compatible.populateCmd with no -g flag, so it falls
-  # back to nixpkgs' own configurationLimit default. -g N (any N > 0) makes
-  # extlinux-conf-builder.sh scrape the *build host's* /nix/var/nix/profiles
-  # for extra system-*-link generations and copy each one's kernel+initrd
-  # into the image, same as switchboard's disko.nix hit: since these
-  # aarch64 images are built natively on alcove, that bakes alcove's own
-  # generations into radrubble's image - dead menu entries whose init=
-  # store paths don't exist on this rootfs, a kernel for a different SoC,
-  # plus dead weight under /boot/nixos. Pass -g 0 so only the default entry
-  # is emitted - getopts honours the last occurrence, overriding the -g
-  # already baked into populateCmd. This only affects the image; on the
-  # running system the bootloader installer runs on the target against its
-  # own profile, so deploys still get proper rollback entries.
-  sdImage.populateRootCommands = lib.mkForce ''
-    mkdir -p ./files/boot
-    ${config.boot.loader.generic-extlinux-compatible.populateCmd} \
-      -c ${config.system.build.toplevel} -d ./files/boot -g 0
-  '';
 
   # Ref:
   # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h

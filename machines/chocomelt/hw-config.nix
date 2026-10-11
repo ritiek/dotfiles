@@ -17,8 +17,14 @@ let
   # board into a MaskROM boot loop. Override CONFIG_DEFAULT_FDT_FILE to point
   # at the 3E's DTB instead - confirmed working on real hardware.
   ubootRadxaZero3E = pkgs.ubootRadxaZero3W.overrideAttrs (old: {
+    # Rockchip's BL31 (as Armbian uses): the vendor kernel needs its SCMI/SIP
+    # services, mainline TF-A hangs it.
+    env = old.env // { BL31 = pkgs.rkbin.BL31_RK3568; };
+    # btrfs: U-Boot reads kernel/initrd from /boot on the btrfs root.
     extraConfig = (old.extraConfig or "") + ''
       CONFIG_DEFAULT_FDT_FILE="rockchip/rk3566-radxa-zero-3e.dtb"
+      CONFIG_FS_BTRFS=y
+      CONFIG_CMD_BTRFS=y
     '';
   });
 in
@@ -26,7 +32,21 @@ in
   imports = [
     inputs.rockchip.nixosModules.sdImageRockchip
     inputs.rockchip.nixosModules.noZFS
+    ./../../modules/radxa-zero3
   ];
+
+  # The shared Zero 3 DT enables the 3W's WiFi/BT; the 3E has none. Same as
+  # the vendor's radxa-zero3-disabled-wireless.dtbo.
+  hardware.deviceTree.overlays = [{
+    name = "rk3566-zero3e-no-wireless";
+    dtsText = ''
+      /dts-v1/;
+      /plugin/;
+      / { compatible = "rockchip,rk3566"; };
+      &uart1 { status = "disabled"; };
+      &sdmmc1 { status = "disabled"; };
+    '';
+  }];
 
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelModules = [ "g_ether" ];
@@ -37,12 +57,6 @@ in
   }];
 
   rockchip.uBoot = ubootRadxaZero3E;
-
-  # Zero 3E has no WiFi (it has Gigabit Ethernet instead of the 3W's aic8800
-  # WiFi chip), so unlike radrubble (Zero 3W, pinned to linuxPackages_6_12
-  # because the aic8800 driver doesn't build on kernel 7.x+), chocomelt has
-  # no reason to stay pinned and can track the latest nixpkgs kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   networking.useDHCP = lib.mkDefault true;
 
