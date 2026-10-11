@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, lib, ... }:
 {
   # Bare passphrase, no trailing newline required: the hostapd module splices
   # it in with `wpa_passphrase=$(cat <file>)`, which strips trailing newlines
@@ -72,7 +72,7 @@
           # and the advertised MFPC bit alone is enough to trip old client
           # parsers. pihole.nix's host list shows ESP8266/ESP32 sensors and
           # imou-* cameras on this network.
-          ieee80211w = 0;
+          ieee80211w = lib.mkForce 0;
         };
 
         authentication = {

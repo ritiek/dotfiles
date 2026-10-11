@@ -26,7 +26,8 @@ let
       sourceRoot = "source/src/SDIO/driver_fw/driver/aic8800";
 
       patchFlags = [ "-p6" ];
-      patches = [ ./aic8800-kernel-7.0.patch ];
+      patches = [ ./aic8800-kernel-7.0.patch ]
+        ++ lib.optionals (lib.versionAtLeast kernel.version "7.1") [ ./aic8800-kernel-7.1.patch ];
 
       nativeBuildInputs = kernel.moduleBuildDependencies ++ [ kmod ];
 

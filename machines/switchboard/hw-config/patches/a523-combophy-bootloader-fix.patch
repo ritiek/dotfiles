@@ -1,0 +1,48 @@
+diff --git a/drivers/phy/allwinner/sunxi-inno-combophy.c b/drivers/phy/allwinner/sunxi-inno-combophy.c
+index e37ca99..776d62d 100644
+--- a/drivers/phy/allwinner/sunxi-inno-combophy.c
++++ b/drivers/phy/allwinner/sunxi-inno-combophy.c
+@@ -306,9 +306,25 @@ static int pcie_usb3_sub_system_init(struct platform_device *pdev)
+ 
+ 
+     if (combphy->phy_ctl) {
+-        if (readl(combphy->phy_ctl + PCIE_COMBO_PHY_CTL) & PHY_RSTN) {
+-            dev_info(dev, "PHY already enabled by Bootloader.\n");
+-            already_enabled = true;
++        u32 val = readl(combphy->phy_ctl + PCIE_COMBO_PHY_CTL);
++
++        if (val & PHY_RSTN) {
++            /* Only trust the bootloader if it left the PHY in the mode we want */
++            if (!!(val & PHY_USE_SEL) == (combphy->user == PHY_USE_BY_USB3)) {
++                dev_info(dev, "PHY already enabled by Bootloader.\n");
++                already_enabled = true;
++            } else {
++                /*
++                 * Bootloader brought the PHY up in the other mode (U-Boot
++                 * PCIe). Flipping USE_SEL on a running PHY leaves its PLL
++                 * lock to chance; put it fully in reset before re-enabling.
++                 */
++                dev_info(dev, "PHY enabled by Bootloader in wrong mode, resetting.\n");
++                combo_pcie_clk_set(combphy, false);
++                combo_usb3_clk_set(combphy, false);
++                combo_phy_mode_set(combphy, false);
++                usleep_range(1000, 2000);
++            }
+         }
+     }
+ 
+@@ -717,6 +733,14 @@ static int sunxi_combphy_pcie_exit(struct sunxi_combphy *combphy)
+ 
+ static int sunxi_combphy_usb3_init(struct sunxi_combphy *combphy)
+ {
++	/*
++	 * U-Boot's PCIe init leaves the power-down bits clear, which would make
++	 * the first power_on a no-op. Force a real off->on cycle like a rebind.
++	 */
++	dev_info(combphy->dev, "usb3 init: pd 0x14=%08x 0x0=%08x\n",
++		 readl(combphy->phy_clk + 0x14), readl(combphy->phy_clk + 0x0));
++	sunxi_combphy_usb3_power_set(combphy, false);
++	usleep_range(1000, 2000);
+ 	sunxi_combphy_usb3_phy_set(combphy, true);
+ 
+ 	return 0;
