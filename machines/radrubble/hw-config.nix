@@ -18,6 +18,8 @@ in
     inputs.rockchip.nixosModules.sdImageRockchip
     inputs.rockchip.nixosModules.noZFS
     ./aic8800.nix
+    ./boot-test.nix
+    ./rockchip-bsp.nix
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
@@ -83,6 +85,10 @@ in
   # btrfs root: U-Boot reads kernel/initrd from /boot on the root partition
   # via extlinux, and its defconfig only enables ext2/ext4/fat.
   rockchip.uBoot = pkgs.ubootRadxaZero3W.overrideAttrs (old: {
+    # Rockchip's BL31 (as Armbian uses): the vendor kernel needs its SCMI/SIP
+    # services, mainline TF-A hangs it. Mainline kernels boot fine on it too.
+    # Not auto-flashed: dd u-boot-rockchip.bin to the SD card at byte 32768.
+    env = old.env // { BL31 = pkgs.rkbin.BL31_RK3568; };
     extraConfig = (old.extraConfig or "") + ''
       CONFIG_FS_BTRFS=y
       CONFIG_CMD_BTRFS=y
@@ -113,8 +119,6 @@ in
       rm -f /nix-path-registration
     fi
   '';
-
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
 
   # sdImageRockchip's populateRootCommands (nabam/nixos-rockchip) calls
   # generic-extlinux-compatible.populateCmd with no -g flag, so it falls

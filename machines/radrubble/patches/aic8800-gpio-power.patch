@@ -1,9 +1,9 @@
 --- a/src/SDIO/driver_fw/driver/aic8800/aic8800_bsp/aicsdio.c
 +++ b/src/SDIO/driver_fw/driver/aic8800/aic8800_bsp/aicsdio.c
 @@ -28,6 +28,14 @@
- #include "aic_bsp_driver.h"
- #include "aicsdio_txrxif.h"
-
+ #endif /* CONFIG_PLATFORM_ROCKCHIP */
+ 
+ 
 +#ifdef CONFIG_PLATFORM_UBUNTU
 +#include <linux/gpio.h>
 +#include <linux/mmc/host.h>
@@ -13,12 +13,12 @@
 +#endif
 +
  #ifdef CONFIG_PLATFORM_ALLWINNER
- extern int sunxi_wlan_get_bus_index(void);
+ extern void sunxi_mmc_rescan_card(unsigned ids);
  extern void sunxi_wlan_set_power(int on);
-@@ -515,6 +523,11 @@ static int aicbsp_platform_power_on(void)
+@@ -571,6 +579,11 @@
              rockchip_wifi_set_carddetect(1);
  #endif /*CONFIG_PLATFORM_ROCKCHIP2*/
-
+ 
 +#ifdef CONFIG_PLATFORM_UBUNTU
 +	if (skip_power_wait)
 +		return 0;
