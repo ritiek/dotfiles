@@ -28,11 +28,15 @@ let
   # the shared inputs; the cost is that input bumps now cost a kernel build.
 
   patchDir = "${inputs.kvmd-nix.packages.${pkgs.stdenv.hostPlatform.system}.pikvm-packages}/packages/linux-rpi-pikvm";
+  # Mirrors kvmd-nix's modules/variants/rpi4.nix (not exported); upstream
+  # renumbers these files, so re-sync this list whenever kvmd-nix is bumped.
   pikvmKernelPatches = [
-    { name = "pikvm-hid-remote-wakeup"; patch = "${patchDir}/1001-pikvm-hid-remote-wakeup-support.patch"; }
-    { name = "pikvm-hid-clean-set-report-buf"; patch = "${patchDir}/1002-pikvm-hid-clean-set_report_buf-on-hidg-disabling.patch"; }
-    { name = "pikvm-msd-dvd-support"; patch = "${patchDir}/2001-pikvm-msd-dvd-support.patch"; }
-    { name = "pikvm-msd-inquiry-flash-cdrom"; patch = "${patchDir}/2002-pikvm-msd-inquiry-for-flash-and-cdrom.patch"; }
+    { name = "pikvm-hid-clean-set-report-buf"; patch = "${patchDir}/1001-pikvm-hid-clean-set_report_buf-on-hidg-disabling.patch"; }
+    { name = "pikvm-hid-remote-wakeup"; patch = "${patchDir}/1002-pikvm-hid-remote-wakeup-support.patch"; }
+    { name = "pikvm-hid-remove-string-ids"; patch = "${patchDir}/1003-pikvm-gadget-hid-Remove-string-IDs.patch"; }
+    { name = "pikvm-msd-inquiry-flash-cdrom"; patch = "${patchDir}/1101-pikvm-msd-inquiry-for-flash-and-cdrom.patch"; }
+    { name = "pikvm-msd-dvd-support"; patch = "${patchDir}/1102-pikvm-msd-dvd-support.patch"; }
+    { name = "pikvm-msd-remove-string-ids"; patch = "${patchDir}/1103-pikvm-gadget-msd-Remove-string-IDs.patch"; }
   ];
 
   # Previous approach, kept for reference: the same four patches vendored
