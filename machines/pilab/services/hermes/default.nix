@@ -333,7 +333,7 @@ in
         # default = "opencode-go/qwen3.7-plus";
         # default = "opencode-go/mimo-v2.5";
         # default = "opencode-go/glm-5.3-flash";
-        default = "gpt-5.6-luna";
+        default = "gpt-6-luna";
         provider = "github-copilot";
         # Multimodal. Auth: COPILOT_GITHUB_TOKEN/GH_TOKEN (gho_/github_pat_, NOT
         # classic ghp_) or `hermes auth add github-copilot` (device flow).
