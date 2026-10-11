@@ -302,6 +302,11 @@ let
           proxy_set_header Connection "";
         '';
       };
+      # Serve the attic-action cache at the domain root too, for substituter
+      # consumers like nixbuild.net that reject URLs with a path.
+      locations."~ ^/(nix-cache-info|[0-9a-z]+\\.narinfo|nar/.+)$".extraConfig = ''
+        rewrite ^/(.*)$ /attic-action/$1 last;
+      '';
     };
     "readeck.${domain}" = http3Vhost // {
       forceSSL = true;
