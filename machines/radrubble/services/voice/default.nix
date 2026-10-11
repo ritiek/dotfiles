@@ -136,6 +136,9 @@ in
         "--espeak_data ${pkgs.piper-phonemize}/share/espeak-ng-data"
         "--ip 0.0.0.0 --port 7257 --disable-web-ui"
       ];
+      # Drogon creates ./uploads at startup; give it a writable cwd.
+      RuntimeDirectory = "paroli";
+      WorkingDirectory = "/run/paroli";
       DynamicUser = true;
       SupplementaryGroups = [ "video" "render" ];
       Restart = "on-failure";
