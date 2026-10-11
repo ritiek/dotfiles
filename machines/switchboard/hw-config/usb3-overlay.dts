@@ -19,4 +19,74 @@
 			status = "disabled";
 		};
 	};
+
+	/* GMA340 mux: PB6 high = PCIe lanes, low = USB3 lanes.
+	 * The base DT drives PB6 high via an always-on regulator; disable it
+	 * and add an active-low one driving PB6 low instead (mirrors the
+	 * vendor gma340_usb3 node). */
+	fragment@2 {
+		target = <&gma340_pcie>;
+		__overlay__ {
+			status = "disabled";
+		};
+	};
+
+	fragment@3 {
+		target-path = "/";
+		__overlay__ {
+			gma340_usb3: gma340-usb3 {
+				compatible = "regulator-fixed";
+				regulator-name = "gma340-usb3";
+				regulator-min-microvolt = <3300000>;
+				regulator-max-microvolt = <3300000>;
+				regulator-always-on;
+				regulator-boot-on;
+				gpio = <&pio 1 6 1>; /* PB6, GPIO_ACTIVE_LOW */
+			};
+		};
+	};
+
+	/* DWC3's UTMI port is hard-wired to the third USB2 PHY (pmu2). Expose
+	 * it so phy-sun4i-usb powers/clocks it; without it xHCI times out
+	 * (-110). CLK_USB2 = 181, RST_BUS_3 = 56. */
+	fragment@5 {
+		target = <&usbphy>;
+		__overlay__ {
+			reg = <0x4100400 0x100>, <0x4101800 0x100>,
+			      <0x4200800 0x100>, <0x4e00000 0x100>;
+			reg-names = "phy_ctrl", "pmu0", "pmu1", "pmu2";
+			clocks = <&osc24M>, <&osc24M>, <&ccu 181>;
+			clock-names = "usb0_phy", "usb1_phy", "usb2_phy";
+			resets = <&ccu 49>, <&ccu 50>, <&ccu 56>;
+			reset-names = "usb0_reset", "usb1_reset", "usb2_reset";
+		};
+	};
+
+	/* The USB3 socket's D+/D- and VBUS (PL8) belong to usb1: VBUS turns on
+	 * when EHCI1/OHCI1 power up PHY1. If that happens before xHCI is
+	 * running, the drive misses SuperSpeed rx-detect and settles at 480M
+	 * on EHCI1. The phandle below is only for ordering: fw_devlink defers
+	 * EHCI1/OHCI1 until dwc3 (and its xHCI child) has probed. */
+	fragment@6 {
+		target = <&ehci1>;
+		__overlay__ {
+			extcon = <&usb3>;
+		};
+	};
+
+	fragment@7 {
+		target = <&ohci1>;
+		__overlay__ {
+			extcon = <&usb3>;
+		};
+	};
+
+	/* DWC3 / xHCI USB 3.0 host */
+	fragment@4 {
+		target = <&usb3>;
+		__overlay__ {
+			phys = <&usbphy 2>, <&combophy 4>;
+			status = "okay";
+		};
+	};
 };

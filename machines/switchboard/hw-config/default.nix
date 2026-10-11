@@ -14,22 +14,14 @@
 
   hardware.cubie-a5e.enable = true;
 
-  # One ComboPHY, shared: PCIe/NVMe or USB 3.0, never both. Keep it on PCIe.
-  #
-  # "usb3" was tried (fd9c88c) and reverted: it does flip the PHY (verified
-  # live, /proc/device-tree/soc/phy@4f00000 status=okay phy_use_sel=1) but
-  # nothing drives it. Our patch set has the INNO combo PHY driver
-  # (patches/drv-phy-allwinner-add-pcie-usb3-driver.patch) yet the dtsi patch
-  # adds no xHCI/DWC3 controller node - only the vendor-style usbc1@11, which
-  # mainline's xhci-platform cannot bind. So the USB ports stayed at 480 Mbps
-  # and PCIe was lost for nothing. PCIe works because
-  # patches/drv-pci-sunxi-enable-pcie-support.patch supplies a real controller
-  # driver; there is no USB3 equivalent. Revisit only if an xHCI node lands.
-  hardware.cubie-a5e.combophy = "pcie";
+  # One ComboPHY, shared: PCIe/NVMe or USB 3.0, never both. USB 3.0 needs the
+  # DWC3 node + third USB2 PHY from patches/a523-dwc3-dts.patch and
+  # usb3-overlay.dts (verified 5000M, ~145 MB/s on this board).
+  hardware.cubie-a5e.combophy = "usb3";
 
   # Pinned to match the nixos-cubie-a5e repo's own kernel version (the aic8800
   # SDIO wifi/bt driver requires kernel >= 7.0 - see ./aic8800-sdio.nix).
-  boot.kernelPackages = pkgs.linuxPackages_7_0;
+  boot.kernelPackages = pkgs.linuxPackages_7_1;
 
   # A523/A527 thermal sensor support (THS0/THS1) is provided via
   # boot.kernelPatches in ./cubie-a5e.nix (gated on hardware.cubie-a5e.enable
@@ -70,6 +62,8 @@
   # cleanly, and ttyS0 registers reliably on this board.
   boot.kernelParams = [
     "earlycon=uart8250,mmio32,0x02500000"
+    # TEMP diagnostic: log xHCI port events on the first boot instance
+    ''dyndbg="func handle_port_status +p; func xhci_hub_control +p; file drivers/usb/core/hub.c +p"''
   ];
 
   # See alcove/cubie-a7s.nix's comment for the full writeup on why this

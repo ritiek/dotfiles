@@ -1,0 +1,32 @@
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
+index 10fbc35..6079cfb 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
+@@ -983,6 +983,27 @@
+ 			status = "disabled";
+ 		};
+ 
++		usb3: usb@4d00000 {
++			compatible = "snps,dwc3";
++			reg = <0x04d00000 0x100000>;
++			interrupts = <GIC_SPI 35 IRQ_TYPE_LEVEL_HIGH>;
++			dr_mode = "host";
++			clocks = <&ccu CLK_MBUS_USB3>, <&ccu CLK_USB3_REF>,
++				 <&ccu CLK_USB2>, <&ccu CLK_USB3_SUSPEND>;
++			clock-names = "bus_clk", "ref_clk3", "ref_clk2", "suspend";
++			maximum-speed = "super-speed";
++			phy_type = "utmi";
++			snps,dis_enblslpm_quirk;
++			snps,dis-u1-entry-quirk;
++			snps,dis-u2-entry-quirk;
++			snps,dis_u3_susphy_quirk;
++			snps,dis_u2_susphy_quirk;
++			snps,dis_rxdet_inp3_quirk;
++			phys = <&usbphy 1>, <&combophy PHY_TYPE_USB3>;
++			phy-names = "usb2-phy", "usb3-phy";
++			status = "disabled";
++		};
++
+ 		pcie: pcie@4800000 {
+ 			compatible = "allwinner,sunxi-pcie-v210-rc";
+ 			#address-cells = <3>;

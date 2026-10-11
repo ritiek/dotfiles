@@ -45,6 +45,10 @@ in
       { name = "a523-pcie-rc"; patch = ./patches/drv-pci-sunxi-enable-pcie-support.patch; }
       { name = "a523-pcie-dts"; patch = ./patches/arm64-dts-sun55i-dtsi-add-iommu-usbc-pcie-combophy-nodes.patch; }
       { name = "a523-cubie-pcie-dts"; patch = ./patches/arm64-dts-sun55i-a527-cubie-a5e-enable-usbc-pcie-combophy.patch; }
+      # USB 3.0 (DWC3/xHCI) on the combo PHY - from nixos-cubie-a5e 9cc11a0.
+      { name = "a523-usb3-clks"; patch = ./patches/a523-usb3-clks.patch; }
+      { name = "a523-combophy-bootloader-fix"; patch = ./patches/a523-combophy-bootloader-fix.patch; }
+      { name = "a523-dwc3-dts"; patch = ./patches/a523-dwc3-dts.patch; }
       {
         name = "a523-pcie-config";
         patch = null;

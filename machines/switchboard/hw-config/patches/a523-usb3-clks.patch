@@ -1,0 +1,54 @@
+diff --git a/drivers/clk/sunxi-ng/ccu-sun55i-a523.c b/drivers/clk/sunxi-ng/ccu-sun55i-a523.c
+index fad583d..58265d9 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun55i-a523.c
++++ b/drivers/clk/sunxi-ng/ccu-sun55i-a523.c
+@@ -1194,6 +1194,14 @@ static SUNXI_CCU_M_DATA_WITH_MUX_GATE(usb3_ref_clk, "usb3-ref",
+ 		BIT(31),	/* gate */
+ 		0);
+ 
++static SUNXI_CCU_GATE_DATA(usb2_clk, "usb2", osc24M, 0x0A80, BIT(31), 0);
++
++static SUNXI_CCU_M_DATA_WITH_MUX_GATE(usb3_suspend_clk, "usb3-suspend",
++		losc_hosc_parents, 0x0A88,
++		0, 5,	/* M */
++		24, 1,	/* mux */
++		BIT(31),	/* gate */
++		0);
+ 
+ /*
+  * Contains all clocks that are controlled by a hardware register. They
+@@ -1364,6 +1372,8 @@ static struct ccu_common *sun55i_a523_ccu_clks[] = {
+ 	&fanout1_clk.common,
+ 	&fanout2_clk.common,
+ 	&usb3_ref_clk.common,
++	&usb2_clk.common,
++	&usb3_suspend_clk.common,
+ };
+ 
+ static struct clk_hw_onecell_data sun55i_a523_hw_clks = {
+@@ -1549,8 +1559,11 @@ static struct clk_hw_onecell_data sun55i_a523_hw_clks = {
+ 		[CLK_FANOUT2]		= &fanout2_clk.common.hw,
+ 		[CLK_NPU]		= &npu_clk.common.hw,
+ 		[CLK_USB3_REF]		= &usb3_ref_clk.common.hw,
++		[CLK_USB2]		= &usb2_clk.common.hw,
++		[CLK_USB3_SUSPEND]	= &usb3_suspend_clk.common.hw,
++		[CLK_MBUS_USB3]		= &mbus_usb3_clk.common.hw,
+ 	},
+-	.num	= CLK_USB3_REF + 1,
++	.num	= CLK_MBUS_USB3 + 1,
+ };
+ 
+ static struct ccu_reset_map sun55i_a523_ccu_resets[] = {
+diff --git a/include/dt-bindings/clock/sun55i-a523-ccu.h b/include/dt-bindings/clock/sun55i-a523-ccu.h
+index 02cc8c4..33a649a 100644
+--- a/include/dt-bindings/clock/sun55i-a523-ccu.h
++++ b/include/dt-bindings/clock/sun55i-a523-ccu.h
+@@ -187,5 +187,8 @@
+ #define CLK_FANOUT2		178
+ #define CLK_NPU			179
+ #define CLK_USB3_REF		180
++#define CLK_USB2		181
++#define CLK_USB3_SUSPEND	182
++#define CLK_MBUS_USB3		183
+ 
+ #endif /* _DT_BINDINGS_CLK_SUN55I_A523_CCU_H_ */
