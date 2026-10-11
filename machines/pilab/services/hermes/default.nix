@@ -76,6 +76,21 @@ let
     exit 0
   '';
 
+  # Same contract as kittenLocalTts, but synthesises on radrubble's NPU via
+  # paroli (Piper en_US-kristin-medium). $3 (voice) is ignored: single speaker.
+  paroliTts = pkgs.writeShellScriptBin "paroli-tts" ''
+    set -eu
+    in="$1"; out="$2"
+    ${pkgs.curl}/bin/curl -fsS -X POST http://radrubble.lion-zebra.ts.net:7257/api/v1/synthesise \
+      -H 'Content-Type: application/json' \
+      --data "$(${pkgs.jq}/bin/jq -Rs '{text: ., audio_format: "opus"}' < "$in")" \
+      -o "$out"
+    XDG_RUNTIME_DIR=/run/user/1000 \
+      /run/current-system/sw/bin/pw-play \
+        --target="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1" "$out" >/dev/null 2>&1 &
+    exit 0
+  '';
+
 in
 
 {
@@ -420,12 +435,22 @@ in
       # stt = {
       #   provider = "groq";
       # };
+      # Previous local STT (Moonshine TINY on this Pi); kept for rollback.
+      # stt = {
+      #   provider = "openai";
+      #   openai = {
+      #     base_url = "http://127.0.0.1:7258/v1";
+      #     api_key  = "local";
+      #     model    = "moonshine-tiny";
+      #   };
+      # };
+      # SenseVoice-small on radrubble's NPU (machines/radrubble/services/voice).
       stt = {
         provider = "openai";
         openai = {
-          base_url = "http://127.0.0.1:7258/v1";
+          base_url = "http://radrubble.lion-zebra.ts.net:7258/v1";
           api_key  = "local";
-          model    = "moonshine-tiny";
+          model    = "sensevoice";
         };
       };
       voice = {
@@ -439,8 +464,16 @@ in
       # plays it on the Bluetooth speaker (backgrounded). hermes still uploads
       # {output_path} as a Matrix voice message, so speaker playback mirrors
       # exactly the voice messages hermes already sends.
+      # Active: paroli-radrubble (Piper Kristin on radrubble's NPU). Set
+      # provider back to "kitten-local" to roll back.
       tts = {
-        provider = "kitten-local";
+        provider = "paroli-radrubble";
+        providers.paroli-radrubble = {
+          command = "${paroliTts}/bin/paroli-tts {input_path} {output_path} {voice}";
+          voice = "kristin";
+          output_format = "ogg";
+          timeout = 30;
+        };
         providers.kitten-local = {
           command = "${kittenLocalTts}/bin/kitten-local-tts {input_path} {output_path} {voice}";
           voice = "Rosie";
