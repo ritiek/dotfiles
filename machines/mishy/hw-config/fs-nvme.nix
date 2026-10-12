@@ -4,17 +4,20 @@
   boot.supportedFilesystems = [ "ntfs" "nfs" ];
 
   fileSystems."/var/lib/jellyfin" = {
-    device = "pilab.lion-zebra.ts.net:/export/jellyfin/config";
+    # device = "pilab.lion-zebra.ts.net:/export/jellyfin/config";
+    device = "radrubble.lion-zebra.ts.net:/export/jellyfin/config";
     fsType = "nfs";
     options = [ "noatime" "x-systemd.automount" "noauto" "nfsvers=3" ];
   };
   fileSystems."/var/data/jellyfin/movies" = {
-    device = "pilab.lion-zebra.ts.net:/export/jellyfin/data/movies";
+    # device = "pilab.lion-zebra.ts.net:/export/jellyfin/data/movies";
+    device = "radrubble.lion-zebra.ts.net:/export/jellyfin/data/movies";
     fsType = "nfs";
     options = [ "noatime" "x-systemd.automount" "noauto" "nfsvers=3" ];
   };
   fileSystems."/var/data/jellyfin/tvshows" = {
-    device = "pilab.lion-zebra.ts.net:/export/jellyfin/data/tvshows";
+    # device = "pilab.lion-zebra.ts.net:/export/jellyfin/data/tvshows";
+    device = "radrubble.lion-zebra.ts.net:/export/jellyfin/data/tvshows";
     fsType = "nfs";
     options = [ "noatime" "x-systemd.automount" "noauto" "nfsvers=3" ];
   };
