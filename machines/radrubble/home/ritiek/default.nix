@@ -3,7 +3,7 @@ let
   # Nixarr's per-service systemd unit names (seerr.service, not
   # jellyseerr.service; qui.service is a separate WebUI proxy unit alongside
   # qbittorrent.service). Keep in sync with machines/radrubble/services/nixarr.nix.
-  units = "radarr.service sonarr.service bazarr.service prowlarr.service qbittorrent.service qui.service jellyfin.service seerr.service";
+  units = "radarr.service sonarr.service bazarr.service prowlarr.service qbittorrent.service qui.service jellyfin.service seerr.service frigate.service";
 
   mediaserver-mount = pkgs.writeShellScriptBin "mediaserver-mount" ''
     set -ex
@@ -48,9 +48,7 @@ let
 
   mediaserver-stop = pkgs.writeShellScriptBin "mediaserver-stop" ''
     set -x
-    # frigate isn't in `units`: it conflicts with them (2GB RAM), so start it
-    # alone with `systemctl start frigate` after mediaserver-mount.
-    systemctl stop ${units} frigate.service
+    systemctl stop ${units}
   '';
 
   mediaserver-unmount = pkgs.writeShellScriptBin "mediaserver-unmount" ''

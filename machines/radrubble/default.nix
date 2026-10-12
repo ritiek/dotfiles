@@ -171,6 +171,13 @@
     enable = true;
     memoryPercent = 200;
   };
+  # zram swap is cheap, SD-card reads aren't: prefer compressing idle anon
+  # pages over evicting code pages (python/.NET libs) that get re-read from
+  # the SD card, which is what thrashed frigate + the media stack together.
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.page-cluster" = 0;
+  };
 
   boot.tmp = {
     useTmpfs = false;
@@ -185,10 +192,12 @@
   # stay continuously above the limit (default 60%) for this long before
   # oomd kills the offending cgroup, so brief legitimate spikes are ignored
   # and only genuinely sustained thrashing (e.g. a stuck transcode) triggers it.
+  # Must stay well under RuntimeWatchdogSec: a thrashing board freezes and
+  # the watchdog reboots it long before a 1h window would ever elapse.
   systemd.oomd = {
     enableRootSlice = true;
     enableSystemSlice = true;
-    settings.OOM.DefaultMemoryPressureDurationSec = "1h";
+    settings.OOM.DefaultMemoryPressureDurationSec = "2min";
   };
 
   hardware.enableRedistributableFirmware = true;

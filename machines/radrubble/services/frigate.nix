@@ -1,8 +1,8 @@
 { lib, pkgs, everythingElsePath, ... }:
 
-# Native frigate (nixpkgs module) with the RK3566 NPU detector. Not started at
-# boot; run `systemctl start frigate` after `mediaserver-mount` (it conflicts
-# with the media stack, see below). Data stays in the old podman layout on EVERYTHING_ELSE:
+# Native frigate (nixpkgs module) with the RK3566 NPU detector. Started/stopped
+# with the media stack (unit listed in ./nixarr.nix `units`), not at boot, to
+# keep RAM free. Data stays in the old podman layout on EVERYTHING_ELSE:
 # config/ (DB, model cache) and storage/ (clips, recordings, exports).
 let
   dataDir = "${everythingElsePath}/frigate";
@@ -10,7 +10,7 @@ let
     pname = "librknnrt";
     version = "2.3.2";
     src = pkgs.fetchurl {
-      url = "https://github.com/MarcA711/rknn-toolkit2/releases/download/v2.3.2/librknnrt.so";
+      url = "https://raw.githubusercontent.com/airockchip/rknn-toolkit2/v2.3.2/rknpu2/runtime/Linux/librknn_api/aarch64/librknnrt.so";
       hash = "sha256-0x/BnIW4X2CRsr0PavnZYtUmSk5BC/tTZALskrrHOOg=";
     };
     dontUnpack = true;
@@ -210,14 +210,10 @@ in
   systemd.services.frigate = {
     environment.PYTHONPATH = lib.mkForce "${pkgs.frigate.pythonPath}:${rknnlite}";
     unitConfig.RequiresMountsFor = [ "/var/lib/frigate" ];
-    # 2GB can't hold frigate (~1GB) next to the voice models or the media
-    # stack; together they swap-thrash the board into a watchdog reboot.
-    # Starting either side stops the other.
-    conflicts = [
-      "sensevoice-stt.service" "paroli-tts.service"
-      "radarr.service" "sonarr.service" "bazarr.service" "prowlarr.service"
-      "qbittorrent.service" "qui.service" "jellyfin.service" "seerr.service"
-    ];
+    # 2GB can't hold frigate (~1GB) next to the voice models (~1.1GB); together
+    # they swap-thrash the board into a watchdog reboot. Starting either side
+    # stops the other.
+    conflicts = [ "sensevoice-stt.service" "paroli-tts.service" ];
     serviceConfig = {
       BindPaths = [ "${dataDir}/config/model_cache:/var/cache/frigate/model_cache" ];
       # librknnrt opens the NPU via /dev/dri/card1 (root:video 0660).
@@ -225,6 +221,13 @@ in
       # Frigate's watchdog reads /proc/1 before exiting on a stalled
       # detector; "invisible" makes that crash instead of restarting.
       ProtectProc = lib.mkForce "default";
+      # Stats poll /sys/kernel/debug/rknpu/load every ~15s; debugfs root is
+      # 0700 but rknpu/ is world-readable, so expose just that.
+      TemporaryFileSystem = lib.mkForce [
+        "/dev/shm:mode=1777,nosuid,nodev" # from the upstream module
+        "/sys/kernel/debug:ro"
+      ];
+      BindReadOnlyPaths = [ "/sys/kernel/debug/rknpu" ];
       Restart = lib.mkForce "always";
       # 2GB board: an OOM-kill beats thrashing into a watchdog reboot.
       MemoryMax = "1200M";
