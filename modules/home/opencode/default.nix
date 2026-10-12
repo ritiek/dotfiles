@@ -584,6 +584,8 @@ in
             "*" = false;
             read = true;
             skill = true;
+            "codegraph*" = true;
+            "pdfvision*" = true;
             "playwright*" = true;
             # Avoid installing browsers during confusion since browsers can't be installed
             # in NixOS through the approach taken by this tool.
@@ -653,12 +655,15 @@ in
           tools = {
             "*" = false;
             homeassistant_GetDateTime = true;
+            read = true;
             webfetch = true;
             "kindly-web-search*" = true;
             "github*" = true;
             "context7*" = true;
             "nixos*" = true;
             "indmoney*" = true;
+            "pdfvision*" = true;
+            "codegraph*" = true;
           };
         };
       };
