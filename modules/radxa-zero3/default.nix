@@ -46,6 +46,34 @@ let
   kernel = pkgs.linuxManualConfig {
     inherit src version stdenv configfile;
     allowImportFromDerivation = true;
+    kernelPatches = [{
+      # Since 5.19 dw_mmc programs the read timeout as exactly what the core
+      # asks for: 100ms for SD. The SanDisk card on radrubble sometimes takes
+      # longer to start a read under load (DRTO, status 0x200), and each
+      # timeout forces a full card reset that can end in "Card stuck being
+      # busy" / "recovery failed" and a frozen root fs. Use the hardware
+      # maximum again (0xFFFFFF card clocks). On radrubble at SDR104 this
+      # took the journal-read repro from erroring most runs to 0/15.
+      name = "dw_mmc-max-data-timeout";
+      patch = pkgs.writeText "dw_mmc-max-data-timeout.patch" ''
+        --- a/drivers/mmc/host/dw_mmc.c
+        +++ b/drivers/mmc/host/dw_mmc.c
+        @@ -1349,11 +1349,8 @@
+         	/* TMOUT[7:0] (RESPONSE_TIMEOUT) */
+         	tmout = 0xFF; /* Set maximum */
+         
+        -	/* TMOUT[31:8] (DATA_TIMEOUT) */
+        -	if (!tmp || tmp > 0xFFFFFF)
+        -		tmout |= (0xFFFFFF << 8);
+        -	else
+        -		tmout |= (tmp & 0xFFFFFF) << 8;
+        +	/* TMOUT[31:8] (DATA_TIMEOUT): hardware maximum, as before 5.19 */
+        +	tmout |= (0xFFFFFF << 8);
+         
+         	mci_writel(host, TMOUT, tmout);
+         	dev_dbg(host->dev, "timeout_ns: %u => TMOUT[31:8]: %#08x",
+      '';
+    }];
   };
 in
 {
