@@ -225,9 +225,8 @@ stdenv.mkDerivation (finalAttrs: {
     # Step 5: drop bsp/Makefile's nand/ and gpu/ subdirs - both use
     # out-of-tree build conventions incompatible with an in-tree kernel
     # build. NAND is unused on this MMC-only board; the GPU's pvrsrvkm.ko
-    # is out of scope for this headless-only build (deferred to a future
-    # display bring-up phase, built out-of-tree against $out/lib/modules
-    # the same way OctaneOS's post-build.sh does).
+    # is built out-of-tree against $out/build in accel.nix (same approach
+    # as OctaneOS's post-build.sh and Radxa's img-bxm-dkms).
     sed -i '/obj-y += modules\/nand\//d' bsp/Makefile
     sed -i '/obj-y += modules\/gpu\//d'  bsp/Makefile
 
@@ -271,6 +270,11 @@ stdenv.mkDerivation (finalAttrs: {
   postPatch = ''
     find bsp -name 'Kconfig*' -exec grep -l '\$(BSP_TOP)' {} \; \
       | xargs -r sed -i 's|\$(BSP_TOP)|bsp/|g'
+
+    # cedar-ve: platforms/ve_plat_*.c include "cedar_ve.h" from the parent dir
+    echo 'ccflags-y += -I$(src)' >> bsp/drivers/ve/cedar-ve/Makefile
+    # vipcore (NPU) builds with -Werror; newer gcc warnings must not fail it
+    sed -i 's/-Werror //' bsp/drivers/npu/aw_nna_vip/vip2/Kbuild
   '';
 
   # Merge the base Radxa defconfig with OctaneOS's A733-specific fragment
