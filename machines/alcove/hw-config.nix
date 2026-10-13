@@ -17,6 +17,7 @@ in
     ./cubie-a7s.nix
     ./aic8800-usb.nix
     ./accel.nix
+    ./browser.nix
     "${modulesPath}/installer/sd-card/sd-image-aarch64.nix"
   ];
 
