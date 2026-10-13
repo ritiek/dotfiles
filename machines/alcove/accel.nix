@@ -164,8 +164,9 @@ in
     cedarc
     viplite
     # `sudo rk-top`: live NPU/GPU/VE load, same as on radrubble. Only the NPU
-    # driver reports real load; GPU/VE show runtime-PM powered-on time per
-    # second (they suspend when idle), so it reads as "in use", not utilisation.
+    # driver reports real load; GPU shows runtime-PM powered-on time per second
+    # (it suspends when idle). VE never suspends, so it shows its IRQ rate
+    # instead (roughly frames/s).
     (writeShellApplication {
       name = "rk-top";
       runtimeInputs = [ coreutils gawk gnused ncurses ];
@@ -175,7 +176,9 @@ in
         clk=/sys/kernel/debug/clk
         mhz() { echo "$(( $(cat "$1") / 1000000 )) MHz"; }
         declare -A prev pct
-        for d in 1800000.gpu 1c0e000.ve 1c10000.ve2; do prev[$d]=$(cat "$s/$d/power/runtime_active_time"); done
+        irqs() { awk -v n="$1" '$NF == n { s = 0; for (i = 2; i < NF - 3; i++) s += $i; print s }' /proc/interrupts; }
+        prev[1800000.gpu]=$(cat "$s/1800000.gpu/power/runtime_active_time")
+        dec=$(irqs cedar_dev); enc=$(irqs cedar_dev_ve2)
         t0=$(date +%s%3N)
         while :; do
           sleep 1
@@ -185,17 +188,19 @@ in
             p=$(( (a - prev[$d]) * 100 / dt )); pct[$d]=$(( p > 100 ? 100 : p ))%
             prev[$d]=$a
           done
+          d=$(irqs cedar_dev); e=$(irqs cedar_dev_ve2)
           out=$(
             printf '%-9s %8s %9s\n' UNIT LOAD CLOCK
-            printf '%-9s %8s %9s\n' NPU "$(awk '{print $NF}' /sys/kernel/debug/viplite/core_loading)" "$(mhz $df/3600000.npu/cur_freq)"
+            printf '%-9s %8s %9s\n' NPU "$(awk 'NR == 1 {print $NF}' /sys/kernel/debug/viplite/core_loading)" "$(mhz $df/3600000.npu/cur_freq)"
             printf '%-9s %8s %9s\n' GPU "''${pct[1800000.gpu]}" "$(mhz $df/1800000.gpu/cur_freq)"
-            printf '%-9s %8s %9s\n' VE-DEC "''${pct[1c0e000.ve]}" "$(mhz $clk/ve-dec/clk_rate)"
-            printf '%-9s %8s %9s\n' VE-ENC "''${pct[1c10000.ve2]}" "$(mhz $clk/ve-enc0/clk_rate)"
+            printf '%-9s %6s/s %9s\n' VE-DEC "$((d - dec))" "$(mhz $clk/ve-dec/clk_rate)"
+            printf '%-9s %6s/s %9s\n' VE-ENC "$((e - enc))" "$(mhz $clk/ve-enc0/clk_rate)"
             printf '%-9s %8s %9s\n' DRAM - "$(mhz $clk/dram0/clk_rate)"
             for z in /sys/class/thermal/thermal_zone*; do
               printf '%-9s %7sC\n' "$(sed 's/_thermal_zone//; s/_zone//' "$z/type")" "$(( $(cat "$z/temp") / 1000 ))"
             done
           )
+          dec=$d; enc=$e
           clear; echo "$out"
         done
       '';
