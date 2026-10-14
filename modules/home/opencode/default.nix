@@ -405,26 +405,6 @@ in
             Authorization = "Bearer {file:${config.sops.secrets."github.token".path}}";
           };
         };
-        karakeep = {
-          enabled = true;
-          type = "local";
-          timeout = 60000;  # 60 seconds to compensate for lazy load.
-          command = [
-            "${pkgs.nodejs_24}/bin/node"
-            "${pkgs.nodejs_24}/bin/npx"
-            "-y"
-            "@karakeep/mcp@0.32.1"
-          ];
-          environment = {
-            # PATH = "${pkgs.bash}/bin:${pkgs.nodejs_24}/bin";
-            PATH = pkgs.lib.makeBinPath [
-              pkgs.nodejs_24
-              pkgs.bash
-            ];
-            KARAKEEP_API_ADDR = "{file:${config.sops.secrets."karakeep_api.address".path}}";
-            KARAKEEP_API_KEY = "{file:${config.sops.secrets."karakeep_api.key".path}}";
-          };
-        };
         paperless = {
           enabled = true;
           type = "local";

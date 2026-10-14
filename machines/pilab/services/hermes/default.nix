@@ -536,24 +536,6 @@ in
         command = "${mcp-servers-nix.context7-mcp}/bin/context7-mcp";
         args = [ ];
       };
-      karakeep = {
-        enabled = true;
-        command = "${pkgs.nodejs_24}/bin/node";
-        args = [
-          "${pkgs.nodejs_24}/bin/npx"
-          "-y"
-          "@karakeep/mcp"
-        ];
-        env = {
-          PATH = lib.makeBinPath [
-            pkgs.nodejs_24
-            pkgs.bash
-          ];
-          KARAKEEP_API_ADDR = "\${HERMES_MCP_KARAKEEP_ADDR}";
-          KARAKEEP_API_KEY  = "\${HERMES_MCP_KARAKEEP_KEY}";
-        };
-        timeout = 60;
-      };
       paperless = {
         enabled = true;
         command = "${pkgs.nodejs_24}/bin/node";
@@ -657,8 +639,6 @@ in
     restartUnits = [ "hermes-agent.service" ];
     content = ''
       HERMES_MCP_GITHUB_TOKEN=${config.sops.placeholder."github.token"}
-      HERMES_MCP_KARAKEEP_ADDR=${config.sops.placeholder."karakeep_api.address"}
-      HERMES_MCP_KARAKEEP_KEY=${config.sops.placeholder."karakeep_api.key"}
       HERMES_MCP_PAPERLESS_URL=${config.sops.placeholder."paperless.url"}
       HERMES_MCP_PAPERLESS_API_KEY=${config.sops.placeholder."paperless_api.key"}
       HERMES_MCP_PAPERLESS_PUB_URL=${config.sops.placeholder."paperless_public.url"}
