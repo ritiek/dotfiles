@@ -116,8 +116,6 @@ in
   sops.secrets = {
     "z_ai_api.key" = lib.mkIf hasZaiApiKey {};
     "github.token" = {};
-    "karakeep_api.address" = {};
-    "karakeep_api.key" = {};
     "paperless.url" = {};
     "paperless_api.key" = {};
     "paperless_public.url" = {};

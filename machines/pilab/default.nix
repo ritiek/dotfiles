@@ -124,8 +124,6 @@ in
     # opencode's MCPs. Declared here independently so the system-level hermes
     # service reads from /run/secrets instead of opencode's home-manager path.
     "github.token" = { owner = "ritiek"; };
-    "karakeep_api.address" = { owner = "ritiek"; };
-    "karakeep_api.key" = { owner = "ritiek"; };
     "paperless.url" = { owner = "ritiek"; };
     "paperless_api.key" = { owner = "ritiek"; };
     "paperless_public.url" = { owner = "ritiek"; };
