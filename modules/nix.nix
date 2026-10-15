@@ -1,21 +1,24 @@
 { config, lib, pkgs, ... }:
 let
   cache = import ../substituters.nix;
-  hasRnixbldKey = config ? sops && config.sops.secrets ? "rnixbld.id_ed25519";
-  # Last field is eu.nixbuild.net's base64 host key, so no known_hosts entry is needed.
-  nixbuildMachines = pkgs.writeText "nixbuild-machines" ''
-    ssh-ng://eu.nixbuild.net x86_64-linux,aarch64-linux ${config.sops.secrets."rnixbld.id_ed25519".path} 100 1 benchmark,big-parallel - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBJUUNaYzU0cG9KOHZxYXdkOFRyYU5yeVFlSm52SDFlTHBJRGdiaXF5bU0=
-  '';
+  # On-demand remote builds: `<name> <any nix command>` sends builds to the
+  # nixbuild.net account that `secret` (an SSH key) is registered with.
+  # Only installed on hosts that declare the secret.
+  # Last machines field is eu.nixbuild.net's base64 host key, so no known_hosts entry is needed.
+  mkNixbuild = name: secret:
+    lib.optional (config ? sops && config.sops.secrets ? ${secret})
+      (pkgs.writeShellScriptBin name ''
+        export NIX_CONFIG="builders = @${pkgs.writeText "${name}-machines" ''
+          ssh-ng://eu.nixbuild.net x86_64-linux,aarch64-linux ${config.sops.secrets.${secret}.path} 100 1 benchmark,big-parallel - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBJUUNaYzU0cG9KOHZxYXdkOFRyYU5yeVFlSm52SDFlTHBJRGdiaXF5bU0=
+        ''}
+        ''${NIX_CONFIG:-}"
+        exec "$@"
+      '');
 in
 {
-  # On-demand remote builds: `nixbuild <any nix command>` sends builds to nixbuild.net.
-  environment.systemPackages = lib.optionals hasRnixbldKey [
-    (pkgs.writeShellScriptBin "nixbuild" ''
-      export NIX_CONFIG="builders = @${nixbuildMachines}
-      ''${NIX_CONFIG:-}"
-      exec "$@"
-    '')
-  ];
+  environment.systemPackages =
+    mkNixbuild "nixbuild" "rnixbld.id_ed25519"
+    ++ mkNixbuild "nixbuild2" "nixbuild2.id_ed25519";
 
   nix.settings = {
     inherit (cache)
