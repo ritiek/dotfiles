@@ -96,8 +96,8 @@
       # Added during bring-up to debug the onboard Ethernet PHY over MDIO
       # (now resolved - it was a bad cable, see plan doc). Harmless/cheap to
       # keep for any future diagnostics; remove if a leaner image is wanted.
+      # (phytool dropped: fails to build with the current GCC under -Werror.)
       mdio-tools
-      phytool
     ];
   };
 
