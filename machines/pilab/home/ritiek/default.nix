@@ -236,11 +236,11 @@ in
       sd
       compsize
       iotop
-      python313Packages.ipython
+      python3Packages.ipython
       parted
       gdu
 
-      python313
+      python3
       docker-compose
       compose2nix
 
