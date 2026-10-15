@@ -43,8 +43,29 @@ let
     exec ${pkgs.chromium}/bin/chromium --ozone-platform=wayland \
       --use-gl=angle --use-angle=gles-egl --ignore-gpu-blocklist "$@"
   '';
+
+  # Launch target for the playwright-alcove MCP (modules/home/opencode/playwright.nix).
+  # Runs on a throwaway copy of the caller's synced profile; CDP arrives on fds
+  # 3/4 (--remote-debugging-pipe). Chromium exits on Browser.close or when the
+  # pipe closes (client gone), then the copy is deleted.
+  chromium-agent = pkgs.writeShellScriptBin "chromium-agent" ''
+    set -e
+    unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+    seed=$HOME/''${CHROMIUM_SEED:-.config/chromium}
+    dir=$(mktemp -d /tmp/chromium-agent-XXXXXX)
+    trap 'rm -rf "$dir"' EXIT
+    mkdir "$dir/Default"
+    cp -a "$seed/Default/." "$dir/Default/" 2>/dev/null || true # no seed = fresh profile
+    args=()
+    for a in "$@"; do [[ $a == --user-data-dir=* ]] || args+=("$a"); done # client-side path
+    ${chromium-gpu}/bin/chromium-gpu "''${args[@]}" --user-data-dir="$dir"
+  '';
 in
 {
+  # A vanished client's ssh session (and so its chromium-agent, via pipe EOF)
+  # dies in ~45s instead of waiting for TCP keepalive (~2h).
+  services.openssh.settings.ClientAliveInterval = 15;
+
   systemd.services.sway-headless = {
     description = "Headless sway on the GPU, VNC on 127.0.0.1:5900";
     wantedBy = [ "multi-user.target" ];
@@ -67,5 +88,5 @@ in
     };
   };
 
-  environment.systemPackages = [ chromium-gpu ];
+  environment.systemPackages = [ chromium-gpu chromium-agent ];
 }
