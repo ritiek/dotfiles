@@ -236,6 +236,10 @@ in
   systemd.services.hermes-agent.restartIfChanged = false;
   systemd.services.hermes-agent.stopIfChanged = false;
 
+  # Dashboard unit stays defined but doesn't autostart; run it on demand with
+  # `sudo systemctl start hermes-backend`.
+  systemd.services.hermes-backend.wantedBy = lib.mkForce [ ];
+
   # ── Hermes Agent gateway daemon ─────────────────────────────────────
   services.hermes-agent = {
     enable = true;
