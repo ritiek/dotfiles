@@ -145,6 +145,13 @@ in
   # Override it so ritiek's passwordless sudo access actually works.
   systemd.services.hermes-agent.serviceConfig.NoNewPrivileges = lib.mkForce false;
 
+  # Share ritiek's Claude Code login with hermes (HOME=/var/lib/hermes, and hermes
+  # hardcodes ~/.claude/.credentials.json). Link the whole dir, not the file:
+  # hermes writes refreshed tokens via temp file + rename, which would replace a
+  # file symlink. ProtectSystem=strict makes /home read-only, hence ReadWritePaths.
+  systemd.tmpfiles.rules = [ "L+ /var/lib/hermes/.claude - - - - /home/ritiek/.claude" ];
+  systemd.services.hermes-agent.serviceConfig.ReadWritePaths = [ "/home/ritiek/.claude" ];
+
   # Local KittenTTS server (kitten_tts_rs, Rust) exposing an OpenAI-compatible
   # /v1/audio/speech endpoint. hermes' built-in `openai` TTS provider points at
   # this (base_url below). Keeping the model warm in a long-lived process avoids
@@ -152,7 +159,7 @@ in
   # -- reachable over Tailscale/LAN.
   # hermes-agent wants kitten-tts-server so it starts alongside hermes
   # (lazy: not at boot, only when hermes-agent starts).
-  systemd.services.hermes-agent.wants = [ "kitten-tts-server.service" "moonshine-stt-server.service" ];
+  systemd.services.hermes-agent.wants = [ "kitten-tts-server.service" "moonshine-stt-server.service" "hermes-backend.service" ];
   systemd.services.hermes-agent.after = [ "kitten-tts-server.service" "moonshine-stt-server.service" ];
 
   systemd.services.kitten-tts-server = {
@@ -243,7 +250,12 @@ in
     group = "users";
     createUser = false;
 
-    extraDependencyGroups = [ "matrix" ];
+    extraDependencyGroups = [ "matrix" "anthropic" ];
+
+    # Web dashboard as a separate hermes-backend unit (http://127.0.0.1:9119).
+    # Loopback only: any other bind engages the auth gate and needs
+    # dashboard.basic_auth credentials in settings.
+    backend.mode = "dashboard";
 
     # Make config.yaml fully Nix-managed (declarative, no imperative drift).
     #
@@ -281,6 +293,12 @@ in
           platform = "matrix";
           chat_id = "!H1PCpqBZygxcuIbrB3qiA0hEeKTa7FBmsQt2NjWhw9k";
           name = "ritiek";
+        };
+        # Per-room model. `/model` in the room still wins for that session.
+        # Reasoning effort is per-model: see agent.reasoning_overrides.
+        channel_overrides."!DhGz4cPBPFmEUlVLeO5-jjWiSG2_5Vr0qcD2yCvzuc4" = {
+          model = "claude-opus-5-5";
+          provider = "anthropic";
         };
       };
       platforms.homeassistant = {
@@ -387,6 +405,8 @@ in
         # mid-task twice, once leaving a decided LIKE unexecuted and AGENTS.md
         # unpatched. A single profile costs ~20-30 turns.
         max_turns = 9999;
+        # Per-model effort (beats global agent.reasoning_effort).
+        reasoning_overrides."claude-opus-5-5" = "high";
       };
       compression = {
         enabled = true;
