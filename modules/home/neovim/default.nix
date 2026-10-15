@@ -26,8 +26,8 @@
       # deno    # Not available on armv6l
       clang-tools
       lua-language-server
-      python312
-      python312Packages.python-lsp-server
+      python3
+      python3Packages.python-lsp-server
       rust-analyzer
       typescript-language-server
       gcc
