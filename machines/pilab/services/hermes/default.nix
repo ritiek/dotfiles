@@ -10,6 +10,8 @@ let
   # https://github.com/NousResearch/hermes-agent/issues/13065
   hermesDetailAutoOverlay = pkgs.callPackage ./patches/detail-auto { };
 
+  edgeTtsPython = pkgs.python314.withPackages (ps: [ ps.edge-tts ]);
+
   # The dependency-complete hermes CLI (sealed venv WITH the matrix+anthropic
   # groups) is the package used by the gateway service's ExecStart. The bare
   # `config.services.hermes-agent.package` lacks those deps, so we derive the
@@ -110,7 +112,8 @@ in
   # into every Python program on the system).
   systemd.services.hermes-agent.environment = {
     HERMES_DETAIL_AUTO_OVERLAY_DIR = "${hermesDetailAutoOverlay}";
-    PYTHONPATH = "${hermesClaudeAuth}:${pkgs.python312.withPackages (ps: [ ps.edge-tts ])}/lib/python3.12/site-packages:/var/lib/hermes/.hermes/local-packages";
+    # edgeTtsPython must match hermes' interpreter (pm/lock.json in hermes-agent).
+    PYTHONPATH = "${hermesClaudeAuth}:${edgeTtsPython}/${edgeTtsPython.sitePackages}:/var/lib/hermes/.hermes/local-packages";
     HERMES_PATCHES_DIR = "${hermesClaudeAuth}";
     # ffmpeg required for TTS (Edge TTS audio conversion)
     PATH = lib.mkForce (lib.makeBinPath [ pkgs.ffmpeg ] + ":/run/wrappers/bin:/run/current-system/sw/bin");

@@ -34,7 +34,6 @@
     ./../../../../modules/home/direnv.nix
     ./../../../../modules/home/rbw.nix
     ./../../../../modules/home/lutris.nix
-    ./../../../../scripts/home/spotdl-patched.nix
     ./../../../../scripts/home/spotify-adblock-pinned.nix
   ];
 
@@ -173,10 +172,10 @@
       sqlcipher
       sqldiff
 
-      python312
-      python312Packages.pip
-      python312Packages.ipython
-      python312Packages.bk7231tools
+      python3
+      python3Packages.pip
+      python3Packages.ipython
+      python3Packages.bk7231tools
 
       # rustc
       # cargo
@@ -203,9 +202,11 @@
       imagemagick
       qrencode
 
+      spotdl
+
       esptool
       tio
-      python312Packages.tinytuya
+      python3Packages.tinytuya
 
       # nrfutil
       # nrf5-sdk
