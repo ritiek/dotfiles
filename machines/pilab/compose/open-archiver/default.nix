@@ -211,7 +211,8 @@
     volumes = [
       "${homelabMediaPath}/services/open-archiver/valkeydata:/data:rw"
     ];
-    cmd = [ "valkey-server" "--requirepass" "***REMOVED***" ];
+    # REDIS_PASSWORD comes from the sops env file; go through the image entrypoint to keep its privilege drop.
+    cmd = [ "sh" "-c" "exec docker-entrypoint.sh valkey-server --requirepass \"$REDIS_PASSWORD\"" ];
     log-driver = "journald";
     autoStart = false;
     extraOptions = [
