@@ -12,6 +12,10 @@ in
   };
   services.radicle.node.enable = true;
 
+  # Flagged for unencrypted private-repo traffic between nodes:
+  # https://radicle.dev/2026/09/23/disclosure-of-vulnerability-in-network-protocol
+  nixpkgs.config.permittedInsecurePackages = [ "radicle-node-1.10.3" ];
+
   sops.secrets."radicle.clawsiecats" = {};
 
   home.file.".radicle/config.json".force = true;
