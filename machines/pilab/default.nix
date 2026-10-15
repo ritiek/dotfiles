@@ -111,6 +111,11 @@ in
       owner = "root";
       group = "nixbld";
     };
+    "nixbuild2.id_ed25519" = {
+      mode = "600";
+      owner = "root";
+      group = "nixbld";
+    };
     "yubiluks.env" = {};
     "hermes.env" = {
       restartUnits = [ "hermes-agent.service" ];
