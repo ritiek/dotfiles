@@ -352,9 +352,12 @@ in
     ];
   };
 
-  # nixpkgs.config.permittedInsecurePackages = [
-  #   "jitsi-meet-1.0.8043"
-  # ];
+  nixpkgs.config.permittedInsecurePackages = [
+    # "jitsi-meet-1.0.8043"
+    # Flagged for unencrypted private-repo traffic between nodes:
+    # https://radicle.dev/2026/09/23/disclosure-of-vulnerability-in-network-protocol
+    "radicle-node-1.10.3"
+  ];
 
   services = {
     udisks2.enable = true;

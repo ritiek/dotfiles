@@ -11,7 +11,6 @@
   ];
 
   boot.supportedFilesystems = [ "ntfs" ];
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_rpi4;
   boot.kernelModules = [
     "libcomposite"
     "cma=2048M"

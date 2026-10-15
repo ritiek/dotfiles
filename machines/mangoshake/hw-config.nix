@@ -1,11 +1,13 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, inputs, ... }:
 
 {
   boot.initrd.availableKernelModules = [ "xhci_pci" "usbhid" "usb_storage" ];
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
-  boot.kernelPackages = pkgs.linuxKernel.packages.linux_rpi4;
+  # nixpkgs dropped linux_rpi*; nixos-hardware now carries the kernel.
+  boot.kernelPackages = pkgs.linuxPackagesFor
+    (pkgs.callPackage "${inputs.nixos-hardware}/raspberry-pi/common/kernel.nix" { rpiVersion = 4; });
 
   # Needed for building SD images.
   nixpkgs.overlays = [
