@@ -184,6 +184,9 @@ in
         to run any tools not currently available on the system.
       - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
         to rebuild NixOS configuration and do NOT use `home-manager switch`.
+      - For heavy builds, offload to nixbuild.net remote builders by prefixing the command
+        with `nixbuild` or `nixbuild2` (e.g. `nixbuild sudo nixos-rebuild switch --flake ...`).
+        These are separate accounts; if one fails or runs out of credits, try the other.
       - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
         through code and files.
     '';
