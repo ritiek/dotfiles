@@ -191,7 +191,6 @@ in
     ./services/verify-sqlcipher-integrity.nix
     ./services/dns-resolution
     ./services/radicle.nix
-    ./../../../../scripts/home/spotdl-patched.nix
     ./../../../../scripts/home/immich-env.nix
     ./../../../../scripts/home/tradingagents.nix
     ./../../../../modules/home/sops.nix

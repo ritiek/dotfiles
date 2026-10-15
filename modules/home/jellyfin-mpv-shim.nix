@@ -4,15 +4,14 @@
   # switch, and starts the shim with graphical-session.target.
   services.jellyfin-mpv-shim = {
     enable = true;
-    # Fix dead keybindings and missing subtitles after a quality change:
-    # load external subtitles asynchronously, and run key handlers off the
-    # mpv event thread. Upstream: jellyfin/jellyfin-mpv-shim#343, #223.
+    # Fix keybindings dying while external subtitles load after a quality
+    # change: load them asynchronously. Upstream: jellyfin/jellyfin-mpv-shim#343.
     package = pkgs.jellyfin-mpv-shim.overridePythonAttrs (old: {
       patches = (old.patches or [ ]) ++ [
         (pkgs.writeText "jellyfin-mpv-shim-async-sub.patch" ''
           --- a/jellyfin_mpv_shim/player.py
           +++ b/jellyfin_mpv_shim/player.py
-          @@ -1017,15 +1017,22 @@
+          @@ -4795,15 +4795,22 @@
                    if sub_id in self.external_subtitles:
                        self._player.sub = self.external_subtitles[sub_id]
                    else:
@@ -42,36 +41,8 @@
           +
           +            self._player.command_async("sub-add", sub_url, callback=loaded)
            
-               @synchronous("_lock")
-               def toggle_fullscreen(self):
-        '')
-        (pkgs.writeText "jellyfin-mpv-shim-keys-off-event-thread.patch" ''
-          --- a/jellyfin_mpv_shim/player.py
-          +++ b/jellyfin_mpv_shim/player.py
-          @@ -271,10 +271,13 @@
-                       self._player.resume_playback = False
            
-                   # Wrapper for on_key_press that ignores None.
-          +        # Handlers run on the action thread: many take _lock, and running
-          +        # them on the mpv event thread deadlocks with _play_media, which holds
-          +        # _lock while waiting for an event (e.g. a keypress while loading).
-                   def keypress(key):
-                       def wrapper(func):
-                           if key is not None:
-          -                    self._player.on_key_press(key)(func)
-          +                    self._player.on_key_press(key)(lambda: self.put_task(func))
-                           return func
            
-                       return wrapper
-          @@ -529,7 +532,7 @@
-                                   return
-                               self.menu.mouse_select(int(args[1]))
-                           elif args[0] == "shim-menu-click":
-          -                    self.menu.menu_action("ok")
-          +                    self.put_task(self.menu.menu_action, "ok")
-                           elif args[0] == "shim-close":
-                               log.info("Received shim-close message")
-                               if self._video and not self._player.playback_abort:
         '')
       ];
     });
