@@ -36,7 +36,6 @@
     ./../../../../modules/home/lutris.nix
     ./../../../../scripts/home/spotdl-patched.nix
     ./../../../../scripts/home/spotify-adblock-pinned.nix
-    ./../../../../scripts/home/sync-chromium-to-deskette.nix
   ];
 
   # TODO: Make adjustments and set this to false.

@@ -3,7 +3,7 @@ let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
   isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
 
-  playwright = import ./playwright.nix { inherit pkgs inputs lib hostName; };
+  playwright = import ./playwright.nix { inherit config pkgs inputs hostName; };
 
   secretsFile =
     if hostName == "mishy-usb"
@@ -135,6 +135,7 @@ in
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
     ocx
     mcp-servers-nix.playwright-mcp
+    playwright.sync-chromium-to-alcove
     mcp-servers-nix.context7-mcp
     # inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.vibe-kanban
     pkgs.rsync
@@ -379,12 +380,7 @@ in
           type = "local";
           command = ["${mcp-servers-nix.context7-mcp}/bin/context7-mcp"];
         };
-        playwright = {
-          enabled = true;
-          type = "local";
-          timeout = 120000;
-          command = playwright.mcpCommand;
-        };
+        inherit (playwright.mcp) playwright playwright-alcove playwright-lightpanda;
         nixos = {
           enabled = true;
           type = "local";
@@ -554,6 +550,14 @@ in
           prompt = ''
             You are a professional software engineer who uses the playwright tool to interact
             with the Internet.
+
+            ## Browsers
+            Three playwright servers are available. Use `playwright-alcove` by default.
+            - `playwright-alcove`: GPU Chromium on a remote machine (alcove), logged in with
+              this machine's browser profile. First call takes 5-20 s to start.
+            - `playwright`: local Chromium with a fresh profile (no logins). Use if
+              `playwright-alcove` fails to start.
+            - `playwright-lightpanda`: cloud Chrome with a fresh profile. Use if both above fail.
 
             ## Guidelines
             - Skip captchas.
@@ -794,7 +798,5 @@ in
       };
       Install.WantedBy = [ "default.target" ];
     };
-  } // playwright.systemdServices;
-
-  systemd.user.timers = playwright.systemdTimers;
+  };
 }
