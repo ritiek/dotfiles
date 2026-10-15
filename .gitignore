@@ -4,3 +4,4 @@ result
 # zellij plugins
 *.wasm
 .codegraph/
+.playwright-mcp/

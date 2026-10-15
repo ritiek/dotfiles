@@ -103,6 +103,10 @@ in
   sops.secrets."gotify.token" = {
     owner = "qbittorrent";
   };
+  # Full "@ByteArray(salt:hash)" value for qBittorrent's WebUI\Password_PBKDF2.
+  sops.secrets."qbittorrent.password_pbkdf2" = {
+    owner = "qbittorrent";
+  };
 
   nixarr = {
     enable = true;
@@ -169,7 +173,8 @@ in
         };
         Preferences = {
           "WebUI\\Username" = "ritiek";
-          "WebUI\\Password_PBKDF2" = "***REMOVED***";
+          # Substituted from sops at service start, see ExecStartPre below.
+          "WebUI\\Password_PBKDF2" = "@QBT_WEBUI_PASSWORD_PBKDF2@";
           "Connection\\UPnP" = false;
           "General\\Locale" = "en";
           "General\\StatusbarExternalIPDisplayed" = true;
@@ -339,6 +344,16 @@ in
     {
       qbittorrent.preStart =
         "${pkgs.coreutils}/bin/rm -f ${qbtConfig}/qBittorrent/config/lockfile";
+      # A list definition is concatenated with nixpkgs' bare-string
+      # ExecStartPre; mkAfter runs it after the store-generated
+      # qBittorrent.conf is installed, so the hash never lands in the store.
+      qbittorrent.serviceConfig.ExecStartPre = lib.mkAfter [
+        (pkgs.writeShellScript "qbittorrent-webui-password" ''
+          ${pkgs.gnused}/bin/sed -i \
+            "s|@QBT_WEBUI_PASSWORD_PBKDF2@|$(cat ${config.sops.secrets."qbittorrent.password_pbkdf2".path})|" \
+            "${qbtConfig}/qBittorrent/config/qBittorrent.conf"
+        '')
+      ];
       # RKMPP also needs RGA, dma-heaps and DRM (udev rules in ../rockchip-bsp.nix).
       jellyfin.serviceConfig.DeviceAllow = [
         "/dev/rga rw"
