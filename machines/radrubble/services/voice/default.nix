@@ -36,6 +36,13 @@ let
     '';
   };
 
+  # Upstream test binary streams a char32_t, which C++20 libstdc++ deletes.
+  piper-phonemize = pkgs.piper-phonemize.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace src/test.cpp --replace-fail "<< phoneme <<" "<< (uint32_t)phoneme <<"
+    '';
+  });
+
   paroli = pkgs.stdenv.mkDerivation {
     pname = "paroli";
     version = "0-unstable-2026-02-28";
@@ -65,7 +72,7 @@ let
     cmakeFlags = [
       "-DUSE_RKNN=ON"
       "-DORT_ROOT=${pkgs.onnxruntime}"
-      "-DPIPER_PHONEMIZE_ROOT=${pkgs.piper-phonemize}"
+      "-DPIPER_PHONEMIZE_ROOT=${piper-phonemize}"
     ];
     env.NIX_CFLAGS_COMPILE = "-I${pkgs.onnxruntime.dev}/include/onnxruntime";
 
@@ -133,7 +140,7 @@ in
         "--encoder /var/lib/paroli/kristin/encoder.onnx"
         "--decoder /var/lib/paroli/kristin/decoder.rknn"
         "--config /var/lib/paroli/kristin/model.json"
-        "--espeak_data ${pkgs.piper-phonemize}/share/espeak-ng-data"
+        "--espeak_data ${piper-phonemize}/share/espeak-ng-data"
         "--ip 0.0.0.0 --port 7257 --disable-web-ui"
       ];
       # Drogon creates ./uploads at startup; give it a writable cwd.
