@@ -73,7 +73,7 @@
           {
             "Home Assistant" = {
               icon = "home-assistant";
-              href = "http://pilab.lion-zebra.ts.net:8123/lovelace";
+              href = "http://radrubble.lion-zebra.ts.net:8123/lovelace";
               description = "Home control";
             };
           }

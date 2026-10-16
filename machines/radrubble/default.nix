@@ -5,6 +5,8 @@
     ./home
     ./services/voice
     ./services/continuwuity.nix
+    ./services/hermes
+    ./services/home-assistant
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
@@ -28,6 +30,19 @@
       owner = "root";
       group = "nixbld";
     };
+
+    "hermes.env" = {
+      restartUnits = [ "hermes-agent.service" ];
+    };
+    # Read by hermes-agent ExecStartPre (root) into sops templates.
+    "groq_api.key" = { owner = "ritiek"; };
+    "elevenlabs_api.key" = { owner = "ritiek"; };
+    "github.token" = { owner = "ritiek"; };
+    "paperless.url" = { owner = "ritiek"; };
+    "paperless_api.key" = { owner = "ritiek"; };
+    "paperless_public.url" = { owner = "ritiek"; };
+    "searx.url" = { owner = "ritiek"; };
+    "opencode_api.key" = { owner = "ritiek"; };
   };
 
   networking.hostName = "radrubble";
@@ -35,6 +50,16 @@
 
   # TODO: Make adjustments and set this to false.
   nixpkgs.config.allowUnfree = true;
+
+  # Hermes MCPs use pkgs.unstable.chromium (stable has no aarch64 cache).
+  nixpkgs.overlays = [
+    (final: _prev: {
+      unstable = import inputs.unstable {
+        inherit (final) system;
+        config.allowUnfree = true;
+      };
+    })
+  ];
 
   # nix = {
   #   distributedBuilds = true;
@@ -102,8 +127,12 @@
     users.ritiek = {
       isNormalUser = true;
       password = "ff";
+      # Keep user pipewire/wireplumber running without a login so Hermes can
+      # play TTS on the Bluetooth speaker.
+      linger = true;
       extraGroups = [
         "wheel"
+        "hermes"
       ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
@@ -151,6 +180,47 @@
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
       };
+    };
+
+    # Bluetooth speaker output for Hermes TTS (pw-play as ritiek).
+    # Headless: socket activation never triggers without a login, so
+    # wireplumber is started at boot (see wantedBy below + linger).
+    pipewire = {
+      enable = true;
+      socketActivation = false;
+      alsa.enable = true;
+      pulse.enable = true;
+      wireplumber = {
+        enable = true;
+        configPackages = [
+          (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluetooth-seat-fix.conf" ''
+            wireplumber.profiles = {
+              main = {
+                monitor.bluez.seat-monitoring = disabled
+                support.logind = disabled
+              }
+            }
+          '')
+          (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-bluez-config.conf" ''
+            monitor.bluez.properties = {
+              bluez5.roles = [ a2dp_sink a2dp_source ]
+              bluez5.codecs = [ sbc sbc_xq aac ]
+              bluez5.auto-connect = [ a2dp_sink a2dp_source ]
+            }
+          '')
+        ];
+      };
+    };
+  };
+
+  systemd.user.services.wireplumber.wantedBy = [ "default.target" ];
+
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings.General = {
+      Enable = "Source,Sink,Media,Socket";
+      Experimental = true;
     };
   };
 

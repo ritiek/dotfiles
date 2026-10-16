@@ -1,15 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
 
-let
-  # Dynamically extract sudo target paths from HA shell_command definitions.
-  # Any command using "sudo -E <path>" will automatically get a sudo-rs rule.
-  haShellCmds = config.services.home-assistant.config.shell_command or {};
-  extractSudoPath = cmd:
-    let m = builtins.match ".*/sudo -E ([^ ]+).*" cmd;
-    in if m != null then builtins.head m else null;
-  hasSudoPaths = lib.filter (p: p != null) (map extractSudoPath (lib.attrValues haShellCmds));
-in
-
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
@@ -18,9 +8,9 @@ in
     ./home
     ./services-paths.nix
     ./services/restic.nix
-    ./services/lsyncd.nix
-    ./services/hermes
-    ./services/home-assistant
+    # Nothing left to sync (see services-paths.nix); lsyncd refuses to start
+    # with zero sources.
+    # ./services/lsyncd.nix
     ./services/homelab-trigger.nix
     # ./services/attic.nix
     # ./services/paperless-ngx.nix
@@ -122,30 +112,9 @@ in
       group = "nixbld";
     };
     "yubiluks.env" = {};
-    "hermes.env" = {
-      restartUnits = [ "hermes-agent.service" ];
-    };
-
-    # Hermes-only secrets (system-level; read by hermes-agent ExecStartPre as root).
-    "groq_api.key" = { owner = "ritiek"; };
-    "elevenlabs_api.key" = { owner = "ritiek"; };
-
-    # Shared secrets: also declared at home-manager level (opencode.nix) for
-    # opencode's MCPs. Declared here independently so the system-level hermes
-    # service reads from /run/secrets instead of opencode's home-manager path.
-    "github.token" = { owner = "ritiek"; };
-    "paperless.url" = { owner = "ritiek"; };
-    "paperless_api.key" = { owner = "ritiek"; };
-    "paperless_public.url" = { owner = "ritiek"; };
-    "home_assistant.long_lived_token" = { owner = "ritiek"; };
-    "searx.url" = { owner = "ritiek"; };
-    "opencode_api.key" = { owner = "ritiek"; };
   };
 
   nixpkgs.config.allowUnfree = false;
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "kongo09/philips_airpurifier_coap"
-  ];
 
   # nix = {
   #   distributedBuilds = true;
@@ -310,7 +279,6 @@ in
         "i2c"
         "gpio"
         "adbusers"
-        "hermes"
       ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
@@ -381,6 +349,21 @@ in
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
       };
+    };
+
+    # Stays on pilab next to the BME680 publisher; Home Assistant on radrubble
+    # connects over tailscale.
+    mosquitto = {
+      enable = true;
+      listeners = [
+        {
+          address = "0.0.0.0";
+          port = 1883;
+          acl = [ "pattern readwrite #" ];
+          omitPasswordAuth = true;
+          settings.allow_anonymous = true;
+        }
+      ];
     };
 
     pipewire = {
@@ -484,13 +467,6 @@ in
     sudo-rs = {
       enable = true;
       wheelNeedsPassword = lib.mkDefault false;
-      extraRules = lib.optional (hasSudoPaths != []) {
-        users = [ "hass" ];
-        commands = map (path: {
-          command = path;
-          options = [ "NOPASSWD" "SETENV" ];
-        }) hasSudoPaths;
-      };
     };
   };
 

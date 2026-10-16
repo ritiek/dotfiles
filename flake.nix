@@ -522,7 +522,6 @@
         nixpkgs = nixpkgs-patched;
         specialArgs = inputs // { inherit inputs; nixos-raspberrypi = inputs.nixos-raspberrypi; };
         modules = [
-          inputs.hermes-agent.nixosModules.default
           ./machines/pilab
           ./machines/pilab/hw-config.nix
         ];
@@ -679,6 +678,7 @@
     nixosConfigurations.radrubble = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
+        inputs.hermes-agent.nixosModules.default
         ./machines/radrubble
         ./machines/radrubble/hw-config.nix
       ];

@@ -160,10 +160,9 @@ in
   # this (base_url below). Keeping the model warm in a long-lived process avoids
   # the ~2s cold-load on every reply. Bound on 0.0.0.0:7257 (no auth) per intent
   # -- reachable over Tailscale/LAN.
-  # hermes-agent wants kitten-tts-server so it starts alongside hermes
-  # (lazy: not at boot, only when hermes-agent starts).
-  systemd.services.hermes-agent.wants = [ "kitten-tts-server.service" "moonshine-stt-server.service" "hermes-backend.service" ];
-  systemd.services.hermes-agent.after = [ "kitten-tts-server.service" "moonshine-stt-server.service" ];
+  # Not pulled in by hermes-agent: voice is paroli-tts/sensevoice-stt (NPU,
+  # ./../voice), which already hold ports 7257/7258 on this host. Stop those
+  # before `sudo systemctl start kitten-tts-server moonshine-stt-server`.
 
   systemd.services.kitten-tts-server = {
     description = "KittenTTS server (OpenAI-compatible TTS for hermes)";
@@ -542,7 +541,7 @@ in
 
       mcp_servers.homeassistant = {
         enabled = true;
-        url = "http://pilab.lion-zebra.ts.net:8123/mcp_server/sse";
+        url = "http://radrubble.lion-zebra.ts.net:8123/mcp_server/sse";
         transport = "sse";
         headers.Authorization = "Bearer \${HASS_TOKEN}";
       };
@@ -597,7 +596,7 @@ in
             pkgs.git
             pkgs.coreutils
             pkgs.python3
-            # pilab (aarch64): stable pkgs.chromium has no binary cache and would
+            # aarch64: stable pkgs.chromium has no binary cache and would
             # build from source (~100GB scratch). unstable nixpkgs has a cached
             # aarch64 build, so use it.
             pkgs.unstable.chromium

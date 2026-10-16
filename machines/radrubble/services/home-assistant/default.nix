@@ -1,8 +1,14 @@
 { config, pkgs, lib, inputs, ... }:
 
+let
+  # The homelab trigger and HOMELAB_MEDIA mount live on pilab. This key can
+  # only run the forced command in machines/pilab/services/homelab-trigger.nix.
+  sshPilab = "${pkgs.openssh}/bin/ssh -i ${config.sops.secrets."homelab_trigger.ssh_key".path} -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 homelab-trigger@pilab.lion-zebra.ts.net";
+in
+
 {
   # Home Assistant configuration - SOPS encrypted
-  # Edit config: cd /etc/nixos && sops-ssh-home machines/pilab/services/home-assistant/configuration.yaml
+  # Edit config: cd /etc/nixos && sops-ssh-home machines/radrubble/services/home-assistant/configuration.yaml
   # All secrets go directly in configuration.yaml (no separate secrets.yaml needed)
 
   # Decrypt entire HA configuration file
@@ -32,22 +38,12 @@
   # };
 
   sops.secrets."caldav_password" = {
-    sopsFile = ./secrets.yaml;
     restartUnits = [ "home-assistant.service" ];
   };
+  sops.secrets."homelab_trigger.ssh_key" = { owner = "hass"; };
 
-  services.mosquitto = {
-    enable = true;
-    listeners = [
-      {
-        address = "0.0.0.0";
-        port = 1883;
-        acl = [ "pattern readwrite #" ];
-        omitPasswordAuth = true;
-        settings.allow_anonymous = true;
-      }
-    ];
-  };
+  services.openssh.knownHosts."pilab.lion-zebra.ts.net".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPBOR/hkaC38bXYpfyEDWiBLIAzNrvZWTKfCoyC8sU0Q";
 
   services.home-assistant = {
     enable = true;
@@ -124,10 +120,10 @@
       };
 
       shell_command = {
-        # Write OTP to a trigger file in /run/homelab-trigger/.
-        # A root-level systemd path unit (homelab-start-trigger) picks this up
-        # and runs the command outside HA's privilege-restricted sandbox.
-        homelab_start = "${pkgs.bash}/bin/bash -c 'printf \"%s\" \"{{ otp }}\" > /run/homelab-trigger/start'";
+        # Pipe the OTP to pilab, which writes it to /run/homelab-trigger/start.
+        # A root-level systemd path unit (homelab-start-trigger) on pilab picks
+        # this up and runs homelab-start.
+        homelab_start = "${pkgs.bash}/bin/bash -c 'printf \"%s\" \"{{ otp }}\" | ${sshPilab} start'";
       };
 
       homeassistant = {
@@ -146,7 +142,7 @@
           binary_sensor = {
             name = "Homelab Mount Status";
             unique_id = "homelab_mount_status";
-            command = "grep -q ' /media/HOMELAB_MEDIA ' /proc/mounts && echo true || echo false";
+            command = "${sshPilab} mount-status";
             payload_on = "true";
             payload_off = "false";
             scan_interval = 30;
@@ -247,7 +243,7 @@
       CALDAV_PASSWORD=$(cat ${config.sops.secrets."caldav_password".path})
       cat > /var/lib/hass/caldav.yaml <<EOF
 - platform: caldav
-  url: "http://127.0.0.1:5880/dav.php/"
+  url: "http://pilab.lion-zebra.ts.net:5880/dav.php/"
   username: "ritiek"
   password: "$CALDAV_PASSWORD"
 EOF
@@ -322,9 +318,6 @@ EOF
       chown hass:hass /var/lib/hass/.storage/lovelace_resources
     ''}")
   ];
-
-  # Allow HA to write OTP trigger files (ProtectSystem=strict blocks /run by default)
-  systemd.services.home-assistant.serviceConfig.ReadWritePaths = [ "/run/homelab-trigger" ];
 
   networking.firewall.allowedTCPPorts = [ 8123 ];
 }

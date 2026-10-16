@@ -1,11 +1,43 @@
 { pkgs, ... }:
 
+let
+  # Forced command for Home Assistant on radrubble. The key can only write the
+  # OTP trigger file or report whether HOMELAB_MEDIA is mounted.
+  sshCommand = pkgs.writeShellScript "homelab-trigger-ssh" ''
+    case "$SSH_ORIGINAL_COMMAND" in
+      start)
+        # Write then rename so the path unit never sees a half-written file.
+        head -c 255 > /run/homelab-trigger/.start.tmp
+        mv /run/homelab-trigger/.start.tmp /run/homelab-trigger/start
+        ;;
+      mount-status)
+        grep -q ' /media/HOMELAB_MEDIA ' /proc/mounts && echo true || echo false
+        ;;
+      *)
+        echo "unknown command" >&2
+        exit 1
+        ;;
+    esac
+  '';
+in
+
 {
-  # Create trigger directory owned by hass so HA shell_command can write OTP files.
-  # A root-level path unit watches this file and runs the actual command outside
-  # HA's restrictive systemd sandbox (which blocks setuid/privilege syscalls).
+  users.users.homelab-trigger = {
+    isSystemUser = true;
+    group = "homelab-trigger";
+    # sshd runs the forced command through the login shell.
+    shell = pkgs.bash;
+    openssh.authorizedKeys.keys = [
+      ''restrict,command="${sshCommand}" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGjFMSYJiGbMZ2mCmRsMfRuno7ima7EXLSUDZmuhmZt/ hass@radrubble''
+    ];
+  };
+  users.groups.homelab-trigger = { };
+
+  # Trigger directory owned by homelab-trigger so the SSH forced command can
+  # write OTP files. A root-level path unit watches this file and runs the
+  # actual command.
   systemd.tmpfiles.rules = [
-    "d /run/homelab-trigger 0750 hass root -"
+    "d /run/homelab-trigger 0750 homelab-trigger root -"
   ];
 
   # --- homelab-start trigger ---

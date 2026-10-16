@@ -424,7 +424,7 @@ in
         homeassistant = {
           enabled = true;
           type = "remote";
-          url = "http://pilab.lion-zebra.ts.net:8123/mcp_server/sse";
+          url = "http://radrubble.lion-zebra.ts.net:8123/mcp_server/sse";
           headers = {
             Authorization = "Bearer {file:${config.sops.secrets."home_assistant.long_lived_token".path}}";
           };

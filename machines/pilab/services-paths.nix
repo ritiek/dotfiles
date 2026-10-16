@@ -2,24 +2,9 @@
 
 let
   services = {
-    home-assistant = {
-      configSource = "/var/lib/hass";
-      configBackup = "${homelabMediaPath}/services/hass";
-    };
-
-    hermes = {
-      configSource = "/var/lib/hermes";
-      configBackup = "${homelabMediaPath}/services/hermes";
-      # Reinstallable / regenerable bulk: takes 8.1G -> ~1.5G.
-      exclude = [
-        ".hermes/local-packages"
-        ".hermes/cache"
-        ".hermes/logs"
-        ".hermes/lsp"
-        ".cache"
-        ".npm"
-      ];
-    };
+    # home-assistant (/var/lib/hass) and hermes (/var/lib/hermes) moved to
+    # radrubble, out of lsyncd's reach. The last copies stay under
+    # ${homelabMediaPath}/services/{hass,hermes}.
 
     # The *arr stack, jellyfin and qbittorrent moved to chocomelt along with
     # the EVERYTHING_ELSE drive, so lsyncd can no longer reach their configs
