@@ -196,6 +196,25 @@ jobs:
         run: |
           timeout -k 300 17400 nix build .#zerostash-sd
 
+  zerokvm:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: "Build: .#zerokvm-sd"
+        run: |
+          timeout -k 300 17400 nix build .#zerokvm-sd
+
   radrubble:
     needs: check
     if: needs.check.outputs.should_run == 'true'

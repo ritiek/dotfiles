@@ -287,6 +287,33 @@ jobs:
         run: |
           timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.zerostash.config.system.build.toplevel
 
+  zerokvm:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: "write"
+      contents: "read"
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Setup Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Setup Attic cache
+        uses: ritiek/attic-action@main
+        with:
+          endpoint: https://attic.clawsiecats.omg.lol/
+          cache: attic-action
+          create: true
+          token: ${{ secrets.ATTIC_PUSH_TOKEN }}
+
+      - name: "Build: .#zerokvm"
+        run: |
+          timeout -k 300 17400 nix build --fallback --keep-going .#nixosConfigurations.zerokvm.config.system.build.toplevel
+
   radrubble:
     needs: check
     if: needs.check.outputs.should_run == 'true'
