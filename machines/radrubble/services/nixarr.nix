@@ -135,11 +135,9 @@ in
       enable = true;
       stateDir = qbtConfig;
       openFirewall = true;
-      # qui 1.31.1: TestSeasonPackApply_Returns500ForFailedApplyResponse fails
-      # in the build sandbox. Drop once nixpkgs ships a fixed qui.
-      qui.package = pkgs.qui.overrideAttrs {
-        checkFlags = [ "-skip=TestRollback|TestSeasonPackApply_Returns500ForFailedApplyResponse" ];
-      };
+      # qui 1.31.1: several crossseed tests (hardlink/cross-device, season
+      # pack apply) fail in the build sandbox. Drop once nixpkgs ships a fixed qui.
+      qui.package = pkgs.qui.overrideAttrs { doCheck = false; };
       # nixarr always sets services.qbittorrent.serverConfig non-empty,
       # which triggers an ExecStartPre that copies a store-generated
       # qBittorrent.conf, wiping any WebUI password changes on restart.
