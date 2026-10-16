@@ -21,10 +21,10 @@ let
       ];
     };
 
-    # The *arr stack, jellyfin and qbittorrent moved to radrubble along with
+    # The *arr stack, jellyfin and qbittorrent moved to chocomelt along with
     # the EVERYTHING_ELSE drive, so lsyncd can no longer reach their configs
     # from pilab. They now replicate onto ${homelabMediaPath}/services/... via
-    # syncthing (see machines/radrubble/services/syncthing.nix), and restic
+    # syncthing (see machines/chocomelt/services/syncthing.nix), and restic
     # picks them up from there like everything else under services/.
     #
     # Kept commented rather than deleted: if the drive ever comes back to

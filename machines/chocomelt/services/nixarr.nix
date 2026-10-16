@@ -8,7 +8,7 @@ let
   #
   # The Gotify token is never embedded in the script text: it's substituted
   # here with the sops-nix runtime secret *path* (not the secret value
-  # itself -- that's only decrypted on-disk on radrubble at activation time,
+  # itself -- that's only decrypted on-disk on chocomelt at activation time,
   # long after this Nix expression is evaluated/built on alcove).
   qbNotifyScript = pkgs.writeShellApplication {
     name = "qbittorrent-notify";
@@ -70,7 +70,7 @@ in
 #
 # Nothing here auto-starts at boot: EVERYTHING_ELSE is mounted/unmounted
 # imperatively via `sudo mediaserver-mount`/`mediaserver-unmount`
-# (machines/radrubble/home/ritiek/default.nix), and services are started/
+# (machines/chocomelt/home/ritiek/default.nix), and services are started/
 # stopped explicitly via `sudo mediaserver-start`/`mediaserver-stop`. A udev
 # rule additionally stops everything if the drive is unplugged without
 # running mediaserver-stop first.
@@ -97,7 +97,7 @@ let
   requiredMounts = [ everythingElsePath ];
 in
 {
-  # Decrypted from the default system sops file (machines/radrubble/secrets.yaml).
+  # Decrypted from the default system sops file (machines/chocomelt/secrets.yaml).
   # Owned by qbittorrent since qbittorrent-notify.sh runs as that user (exec'd
   # directly by qBittorrent's AutoRun, not via a systemd EnvironmentFile).
   sops.secrets."gotify.token" = {

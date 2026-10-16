@@ -269,7 +269,7 @@
       virtualHosts."jellyfin-proxy" = {
         listen = [ { addr = "0.0.0.0"; port = 8096; } ];
         locations."/" = {
-          proxyPass = "http://radrubble.lion-zebra.ts.net:8096";
+          proxyPass = "http://chocomelt.lion-zebra.ts.net:8096";
           proxyWebsockets = true;
           recommendedProxySettings = true;
         };

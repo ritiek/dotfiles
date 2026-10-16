@@ -3,9 +3,6 @@
 {
   imports = [
     ./home
-    ./services/nixarr.nix
-    ./services/syncthing.nix
-    ./services/frigate.nix
     # Off for now: STT alone takes ~1.1GB, frigate + it freezes the 2GB board.
     # ./services/voice
     inputs.sops-nix.nixosModules.sops

@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, everythingElsePath, ... }:
+{ config, pkgs, inputs, ... }:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -15,7 +15,7 @@
   home-manager = {
     useUserPackages = true;
     extraSpecialArgs = {
-      inherit inputs everythingElsePath;
+      inherit inputs;
       hostName = config.networking.hostName;
     };
 

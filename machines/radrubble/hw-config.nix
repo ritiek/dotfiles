@@ -8,12 +8,8 @@ let
       })
     ];
   };
-
-  everythingElsePath = "/media/EVERYTHING_ELSE";
 in
 {
-  _module.args.everythingElsePath = everythingElsePath;
-
   imports = [
     inputs.rockchip.nixosModules.sdImageRockchip
     inputs.rockchip.nixosModules.noZFS
@@ -105,19 +101,6 @@ in
       CONFIG_CMD_BTRFS=y
     '';
   });
-
-  # Ref:
-  # https://www.freedesktop.org/software/systemd/man/latest/tmpfiles.d.html#h
-  systemd.tmpfiles.settings = {
-    "10-everything-else"."${everythingElsePath}" = {
-      d = {
-        group = "root";
-        mode = "0755";
-        user = "root";
-      };
-      h.argument = "+i";
-    };
-  };
 
   networking.useDHCP = lib.mkDefault true;
 

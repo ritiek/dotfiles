@@ -13,11 +13,11 @@
     ];
   };
 
-  # Receive targets for the radrubble media stack.
+  # Receive targets for the chocomelt media stack.
   #
   # These used to be created by the lsyncd tmpfiles loop, which derives from
   # servicePaths. Those entries are now commented out (the services live on
-  # radrubble), so the directories are declared here instead.
+  # chocomelt), so the directories are declared here instead.
   #
   # Ownership is 1000:100 rather than root:root because the syncthing
   # container runs as uid 1000 and must be able to write into them.

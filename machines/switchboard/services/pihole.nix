@@ -126,6 +126,7 @@
           "keyberry,keyberry.lion-zebra.ts.net,600"
           "clawsiecats,clawsiecats.lion-zebra.ts.net,600"
           "radrubble,radrubble.lion-zebra.ts.net,600"
+          "chocomelt,chocomelt.lion-zebra.ts.net,600"
         ];
       };
 

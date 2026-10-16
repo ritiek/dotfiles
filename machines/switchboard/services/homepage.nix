@@ -330,49 +330,49 @@
           {
             "Jellyfin" = {
               icon = "jellyfin";
-              href = "http://radrubble.lion-zebra.ts.net:8096";
+              href = "http://chocomelt.lion-zebra.ts.net:8096";
               description = "Media Server";
             };
           }
           {
             "Jellyseerr" = {
               icon = "jellyseerr";
-              href = "http://radrubble.lion-zebra.ts.net:5055";
+              href = "http://chocomelt.lion-zebra.ts.net:5055";
               description = "Media Requests";
             };
           }
           {
             "Sonarr" = {
               icon = "sonarr";
-              href = "http://radrubble.lion-zebra.ts.net:8989";
+              href = "http://chocomelt.lion-zebra.ts.net:8989";
               description = "TV Series";
             };
           }
           {
             "Radarr" = {
               icon = "radarr";
-              href = "http://radrubble.lion-zebra.ts.net:7878";
+              href = "http://chocomelt.lion-zebra.ts.net:7878";
               description = "Movies";
             };
           }
           {
             "Bazarr" = {
               icon = "bazarr";
-              href = "http://radrubble.lion-zebra.ts.net:6767";
+              href = "http://chocomelt.lion-zebra.ts.net:6767";
               description = "Subtitles";
             };
           }
           {
             "Prowlarr" = {
               icon = "prowlarr";
-              href = "http://radrubble.lion-zebra.ts.net:9696";
+              href = "http://chocomelt.lion-zebra.ts.net:9696";
               description = "Torrent Requests";
             };
           }
           {
             "qBittorrent" = {
               icon = "qbittorrent";
-              href = "http://radrubble.lion-zebra.ts.net:8085";
+              href = "http://chocomelt.lion-zebra.ts.net:8085";
               description = "Torrenting";
             };
           }

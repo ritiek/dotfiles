@@ -681,7 +681,6 @@
       modules = [
         ./machines/radrubble
         ./machines/radrubble/hw-config.nix
-        inputs.nixarr.nixosModules.default
       ];
       specialArgs = { inherit inputs; };
     };
@@ -696,7 +695,7 @@
         inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "radrubble"; }
       ];
-      extraSpecialArgs = { inherit inputs; everythingElsePath = "/media/EVERYTHING_ELSE"; };
+      extraSpecialArgs = { inherit inputs; };
     };
 
     nixosConfigurations.alcove = inputs.nixpkgs.lib.nixosSystem {
@@ -726,6 +725,7 @@
       modules = [
         ./machines/chocomelt
         ./machines/chocomelt/hw-config.nix
+        inputs.nixarr.nixosModules.default
       ];
       specialArgs = { inherit inputs; };
     };
@@ -740,7 +740,7 @@
         inputs.sops-nix.homeManagerModule
         { _module.args.hostName = "chocomelt"; }
       ];
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = { inherit inputs; everythingElsePath = "/media/EVERYTHING_ELSE"; };
     };
 
     nixosConfigurations.switchboard = inputs.nixpkgs.lib.nixosSystem {

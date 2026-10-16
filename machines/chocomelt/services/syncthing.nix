@@ -14,7 +14,7 @@ let
     inherit id label path ignorePatterns;
     enable = true;
     devices = [ "pilab" ];
-    # sendonly: radrubble is the source of truth. This makes it structurally
+    # sendonly: chocomelt is the source of truth. This makes it structurally
     # impossible for an empty or half-provisioned directory on pilab to
     # propagate back and delete live service state here.
     type = "sendonly";
@@ -44,14 +44,14 @@ in
     # broadcast ports we do not need on a tailnet-only link.
     openDefaultPorts = false;
 
-    # Loopback only - reach it with `ssh -L 8384:localhost:8384 radrubble`.
+    # Loopback only - reach it with `ssh -L 8384:localhost:8384 chocomelt`.
     # No GUI password secret needed as a result.
     guiAddress = "127.0.0.1:8384";
 
     settings = {
       devices.pilab = {
         id = pilabId;
-        # radrubble only ever pushes; it should not accept folders from pilab.
+        # chocomelt only ever pushes; it should not accept folders from pilab.
         autoAcceptFolders = false;
       };
 

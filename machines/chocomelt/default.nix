@@ -3,6 +3,9 @@
 {
   imports = [
     ./home
+    ./services/nixarr.nix
+    ./services/syncthing.nix
+    ./services/frigate.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
@@ -164,6 +167,13 @@
     enable = true;
     memoryPercent = 200;
   };
+  # zram swap is cheap, SD-card reads aren't: prefer compressing idle anon
+  # pages over evicting code pages (python/.NET libs) that get re-read from
+  # the SD card, which is what thrashed frigate + the media stack together.
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.page-cluster" = 0;
+  };
 
   boot.tmp = {
     useTmpfs = false;
@@ -171,6 +181,14 @@
   };
 
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
+
+  # oomd kills a cgroup only after pressure stays above the limit for 2min
+  # (e.g. a stuck transcode), well under RuntimeWatchdogSec.
+  systemd.oomd = {
+    enableRootSlice = true;
+    enableSystemSlice = true;
+    settings.OOM.DefaultMemoryPressureDurationSec = "2min";
+  };
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";

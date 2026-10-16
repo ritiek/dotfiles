@@ -152,7 +152,7 @@ in
 {
   services.frigate = {
     enable = true;
-    hostname = "radrubble.lion-zebra.ts.net";
+    hostname = "chocomelt.lion-zebra.ts.net";
     settings = {
       database.path = "${dataDir}/config/frigate.db";
       mqtt.enabled = false;
@@ -210,10 +210,6 @@ in
   systemd.services.frigate = {
     environment.PYTHONPATH = lib.mkForce "${pkgs.frigate.pythonPath}:${rknnlite}";
     unitConfig.RequiresMountsFor = [ "/var/lib/frigate" ];
-    # 2GB can't hold frigate (~1GB) next to the voice models (~1.1GB); together
-    # they swap-thrash the board into a watchdog reboot. Starting either side
-    # stops the other.
-    conflicts = [ "sensevoice-stt.service" "paroli-tts.service" ];
     serviceConfig = {
       BindPaths = [ "${dataDir}/config/model_cache:/var/cache/frigate/model_cache" ];
       # librknnrt opens the NPU via /dev/dri/card1 (root:video 0660).
