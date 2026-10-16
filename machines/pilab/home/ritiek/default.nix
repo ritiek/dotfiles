@@ -121,7 +121,6 @@ let
       systemctl start docker-gotify.service
       # systemctl start docker-shiori.service
       systemctl start autostart-homebox.service
-      # continuwuity runs as a native NixOS service (continuwuity.service), auto-started by systemd
       systemctl start autostart-grocy.service
       # systemctl start docker-changedetection.service
       # systemctl start docker-frigate.service
@@ -329,7 +328,6 @@ in
         systemctl stop docker-compose-gotify-root.target
         # systemctl stop docker-compose-shiori-root.target
         systemctl stop autostart-homebox.service docker-compose-homebox-root.target
-        systemctl stop continuwuity.service
         systemctl stop autostart-grocy.service docker-compose-grocy-root.target
         # systemctl stop docker-compose-changedetection-root.target
         # systemctl stop docker-compose-frigate-root.target

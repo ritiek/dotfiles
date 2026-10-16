@@ -3,8 +3,8 @@
 {
   imports = [
     ./home
-    # Off for now: STT alone takes ~1.1GB, frigate + it freezes the 2GB board.
-    # ./services/voice
+    ./services/voice
+    ./services/continuwuity.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix

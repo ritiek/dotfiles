@@ -444,30 +444,7 @@ in
       enable = true;
       passwordFile = config.sops.secrets."syncplay.password".path;
     };
-
-    # Migrated from the conduwuit/continuwuity Docker container to the native
-    # NixOS module. The upstream Docker image ships jemalloc compiled for 4KB
-    # pages and crashes on this Pi 5's 16KB-page kernel; the nixpkgs build
-    # (compiled locally) uses the correct page size.
-    matrix-continuwuity = {
-      enable = true;
-      admin.enable = true;
-      settings.global = {
-        server_name = "pilab.lion-zebra.ts.net";
-        port = [ 6168 ];
-        address = [ "0.0.0.0" "::" ];
-        allow_registration = false;
-        yes_i_am_very_very_sure_i_want_an_open_registration_server_prone_to_abuse = false;
-        unix_socket_perms = 660;
-        allow_federation = false;
-        allow_encryption = true;
-        trusted_servers = [ ];
-        max_request_size = 20000000;
-      };
-    };
   };
-
-  networking.firewall.allowedTCPPorts = [ 6168 ];
 
   # With socket activation disabled, start wireplumber at boot so the bluez
   # A2DP backend is registered before any device tries to connect (headless).

@@ -17,7 +17,7 @@ let
   # mention + HTML formatting) and sends the build log as a threaded reply.
   matrixNotifyScript = pkgs.writeShellScript "matrix-notify-script" ''
     set -euo pipefail
-    HOMESERVER="http://pilab.lion-zebra.ts.net:6168"
+    HOMESERVER="http://radrubble.lion-zebra.ts.net:6168"
     USERNAME="github-actions"
     PASSWORD="$(cat /run/secrets/github_actions_matrix_user.password)"
     ROOM_ID="!hbc1delAaoyVn6To30BJ8gWvbkVUkR-P3r4ZJTlJT04"
