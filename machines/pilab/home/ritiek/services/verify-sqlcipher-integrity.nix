@@ -12,7 +12,7 @@ let
 
       if [ $unzip_exit_code -ne 0 ]; then
         ${pkgs.coreutils}/bin/rm -rf /tmp/verify-sqlcipher-integrity/*.db
-        ${pkgs.coreutils}/bin/echo "Unzip failed with exit code: $unzip_code_code."
+        ${pkgs.coreutils}/bin/echo "Unzip failed with exit code: $unzip_exit_code."
         exit $unzip_exit_code
       fi
 
