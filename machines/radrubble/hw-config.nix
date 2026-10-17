@@ -27,6 +27,52 @@ in
       / { compatible = "rockchip,rk3566"; };
       &gmac1 { status = "disabled"; };
     '';
+  } {
+    # Waveshare 2.13inch Touch e-Paper HAT: panel on SPI3 M1 (/dev/spidev3.0,
+    # from radxa-overlays rk3568-spi3-m1-cs0-spidev). Header pins 3/5 are
+    # I2C3 M0, but i2c3 is muxed to M1 for the on-board fusb302 (USB-C), so
+    # the GT1151 touch (addr 0x14) gets a bit-banged bus on those pins instead,
+    # pinned to /dev/i2c-7. GPIO1_A0 = SDA, GPIO1_A1 = SCL; 6 = open drain.
+    name = "rk3566-zero3w-epaper";
+    dtsText = ''
+      /dts-v1/;
+      /plugin/;
+      / { compatible = "rockchip,rk3566"; };
+      &spi3 {
+        status = "okay";
+        #address-cells = <1>;
+        #size-cells = <0>;
+        pinctrl-names = "default", "high_speed";
+        pinctrl-0 = <&spi3m1_cs0 &spi3m1_pins>;
+        pinctrl-1 = <&spi3m1_cs0 &spi3m1_pins_hs>;
+        max-freq = <50000000>;
+        spidev@0 {
+          compatible = "rockchip,spidev";
+          status = "okay";
+          reg = <0>;
+          spi-max-frequency = <50000000>;
+        };
+      };
+      &pinctrl {
+        epd {
+          epd_i2c_pins: epd-i2c-pins {
+            rockchip,pins = <1 0 0 &pcfg_pull_up>, <1 1 0 &pcfg_pull_up>;
+          };
+        };
+      };
+      &{/} {
+        epd_i2c: i2c-epd {
+          compatible = "i2c-gpio";
+          pinctrl-names = "default";
+          pinctrl-0 = <&epd_i2c_pins>;
+          sda-gpios = <&gpio1 0 6>;
+          scl-gpios = <&gpio1 1 6>;
+          #address-cells = <1>;
+          #size-cells = <0>;
+        };
+      };
+      &{/aliases} { i2c7 = "/i2c-epd"; };
+    '';
   }];
 
   boot.supportedFilesystems = [ "ntfs" ];
