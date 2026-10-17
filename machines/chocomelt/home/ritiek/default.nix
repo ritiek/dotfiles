@@ -3,7 +3,7 @@ let
   # Nixarr's per-service systemd unit names (seerr.service, not
   # jellyseerr.service; qui.service is a separate WebUI proxy unit alongside
   # qbittorrent.service). Keep in sync with machines/chocomelt/services/nixarr.nix.
-  units = "radarr.service sonarr.service bazarr.service prowlarr.service qbittorrent.service qui.service jellyfin.service seerr.service frigate.service";
+  units = "radarr.service sonarr.service bazarr.service prowlarr.service qbittorrent.service qui.service jellyfin.service seerr.service frigate.service syncthing.service syncthing-init.service";
 
   mediaserver-mount = pkgs.writeShellScriptBin "mediaserver-mount" ''
     set -ex

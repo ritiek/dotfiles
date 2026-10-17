@@ -114,13 +114,16 @@ in
   # it - an empty source directory on a sendonly folder would propagate
   # deletions to pilab.
   #
-  # Deliberately only RequiresMountsFor, matching nixarr.nix. Naming
-  # media-EVERYTHING_ELSE.mount in requires= would be wrong: that unit is
-  # synthesised from /proc/self/mountinfo rather than declared via
-  # fileSystems, so it evaluates to not-found whenever the drive is absent,
-  # which yields a silent ConditionResult=no instead of a real failure.
-  # That is the exact failure mode that left pilab's lsyncd dead for two
-  # months. RequiresMountsFor is resolved against the path at runtime and
-  # degrades honestly.
-  systemd.services.syncthing.unitConfig.RequiresMountsFor = [ everythingElsePath ];
+  # RequiresMountsFor alone does not stop it: with no declared mount unit it
+  # only orders after -.mount, and syncthing happily scanned the empty
+  # mountpoint dirs on chocomelt. So, like nixarr.nix, nothing starts it at
+  # boot (mediaserver-start does, after mounting) and the assert fails the
+  # unit loudly if anything starts it while the drive is absent.
+  systemd.services.syncthing = {
+    wantedBy = lib.mkForce [ ];
+    unitConfig.RequiresMountsFor = [ everythingElsePath ];
+    unitConfig.AssertPathIsMountPoint = everythingElsePath;
+  };
+  # syncthing-init Requires= syncthing, so it would pull syncthing in at boot.
+  systemd.services.syncthing-init.wantedBy = lib.mkForce [ ];
 }
