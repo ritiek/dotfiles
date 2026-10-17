@@ -115,8 +115,13 @@ in
     # edgeTtsPython must match hermes' interpreter (pm/lock.json in hermes-agent).
     PYTHONPATH = "${hermesClaudeAuth}:${edgeTtsPython}/${edgeTtsPython.sitePackages}:/var/lib/hermes/.hermes/local-packages";
     HERMES_PATCHES_DIR = "${hermesClaudeAuth}";
-    # ffmpeg required for TTS (Edge TTS audio conversion)
-    PATH = lib.mkForce (lib.makeBinPath [ pkgs.ffmpeg ] + ":/run/wrappers/bin:/run/current-system/sw/bin");
+    # ffmpeg required for TTS (Edge TTS audio conversion).
+    # claude-code: hermes sends `claude --version` as the OAuth client version
+    # (falls back to 2.1.74 if not found); Opus 5.5 needs >= 2.1.280.
+    PATH = lib.mkForce (lib.makeBinPath [
+      pkgs.ffmpeg
+      inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
+    ] + ":/run/wrappers/bin:/run/current-system/sw/bin");
     LD_LIBRARY_PATH = "${pkgs.gcc-unwrapped.lib}/lib:${pkgs.libopus}/lib";
     # Kept for the (now commented) openai TTS provider: the openai python client
     # refuses to initialise without a non-empty key. Harmless while the active
