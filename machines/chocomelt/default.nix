@@ -111,6 +111,9 @@
         # pilab's homelab-mount (Home Assistant OTP flow) pipes the LUKS
         # passphrase in on stdin; this key can only run mediaserver-start.
         ''restrict,command="/run/wrappers/bin/sudo /run/current-system/sw/bin/env PATH=/etc/profiles/per-user/ritiek/bin:/run/current-system/sw/bin:/run/wrappers/bin mediaserver-start" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIClaWA6QKLNUcMz8dAC5bBZcIMFuHmfi9pxy1Y1Q554y root@pilab-homelab-mount''
+
+        # Home Assistant's Homelab tile on radrubble: only reports the mount.
+        ''restrict,command="/run/current-system/sw/bin/mountpoint -q /media/EVERYTHING_ELSE && echo true || echo false" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGjFMSYJiGbMZ2mCmRsMfRuno7ima7EXLSUDZmuhmZt/ hass@radrubble''
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default

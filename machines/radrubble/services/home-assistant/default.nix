@@ -1,9 +1,12 @@
 { config, pkgs, lib, inputs, ... }:
 
 let
-  # The homelab trigger and HOMELAB_MEDIA mount live on pilab. This key can
-  # only run the forced command in machines/pilab/services/homelab-trigger.nix.
-  sshPilab = "${pkgs.openssh}/bin/ssh -i ${config.sops.secrets."homelab_trigger.ssh_key".path} -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 homelab-trigger@pilab.lion-zebra.ts.net";
+  # The homelab trigger and HOMELAB_MEDIA mount live on pilab, EVERYTHING_ELSE
+  # on chocomelt. This key only runs the forced commands in
+  # machines/pilab/services/homelab-trigger.nix and machines/chocomelt/default.nix.
+  ssh = "${pkgs.openssh}/bin/ssh -i ${config.sops.secrets."homelab_trigger.ssh_key".path} -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10";
+  sshPilab = "${ssh} homelab-trigger@pilab.lion-zebra.ts.net";
+  sshChocomelt = "${ssh} ritiek@chocomelt.lion-zebra.ts.net";
 in
 
 {
@@ -44,6 +47,8 @@ in
 
   services.openssh.knownHosts."pilab.lion-zebra.ts.net".publicKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPBOR/hkaC38bXYpfyEDWiBLIAzNrvZWTKfCoyC8sU0Q";
+  services.openssh.knownHosts."chocomelt.lion-zebra.ts.net".publicKey =
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKTI0loab2G3JTfgh4J8I2hc7JTb5+G+/xbu1Ng7TaFQ";
 
   # Sensor publishers (keyberry dht22, pilab bme680) connect over tailscale.
   services.mosquitto = {
@@ -156,7 +161,8 @@ in
           binary_sensor = {
             name = "Homelab Mount Status";
             unique_id = "homelab_mount_status";
-            command = "${sshPilab} mount-status";
+            # On only when both HOMELAB_MEDIA (pilab) and EVERYTHING_ELSE (chocomelt) are mounted.
+            command = ''[ "$(${sshPilab} mount-status)" = true ] && [ "$(${sshChocomelt})" = true ] && echo true || echo false'';
             payload_on = "true";
             payload_off = "false";
             scan_interval = 30;
@@ -165,7 +171,9 @@ in
       ];
 
       # Template switch surfaced as an Android Quick Settings tile.
-      # - State mirrors the mount status sensor (tile enabled = mounted).
+      # - State mirrors the mount status sensor (tile enabled = both drives
+      #   mounted). Tapping with one missing reruns homelab-start, which skips
+      #   whatever is already mounted.
       # - turn_on (tap when disabled) (re)starts the OTP reply-notification script.
       #   We use script.turn_on (fire-and-forget) instead of calling the script
       #   directly: the script waits up to 24h for a reply, and calling it inline
