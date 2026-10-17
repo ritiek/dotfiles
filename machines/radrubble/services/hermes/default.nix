@@ -265,6 +265,14 @@ in
     group = "users";
     createUser = false;
 
+    # Upstream's flake builds with version 0.0.0, which fails every plugin's
+    # requires_hermes check (homeassistant left core and needs >=0.21.5).
+    # ponytail: hand-set, bump with the hermes-agent input (locked rev is
+    # v0.22.1 + 23 commits).
+    package = inputs.hermes-agent.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+      version = "0.22.1";
+    };
+
     extraDependencyGroups = [ "matrix" "anthropic" ];
 
     # Web dashboard as a separate hermes-backend unit (http://127.0.0.1:9119).
