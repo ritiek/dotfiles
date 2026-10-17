@@ -1,4 +1,4 @@
-# NPU-accelerated speech for hermes (which runs on pilab):
+# NPU-accelerated speech for hermes:
 #   STT: SenseVoice-small (RK3566 RKNN build) via sherpa-onnx, OpenAI-compatible
 #        /v1/audio/transcriptions on :7258
 #   TTS: Piper en_US-kristin-medium via paroli, decoder on NPU, encoder on CPU,
@@ -109,9 +109,11 @@ let
   };
 in
 {
+  # Not started at boot: the model pins ~1GB of unswappable NPU memory and gets
+  # OOM-killed next to hermes + home-assistant on this 2GB board. hermes uses
+  # the CPU moonshine-stt-server (../hermes) instead; both bind :7258.
   systemd.services.sensevoice-stt = {
     description = "SenseVoice STT on the RK3566 NPU (OpenAI-compatible)";
-    wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     path = [ pkgs.ffmpeg-headless ];
     environment = {

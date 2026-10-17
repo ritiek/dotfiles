@@ -164,9 +164,9 @@ in
   # this (base_url below). Keeping the model warm in a long-lived process avoids
   # the ~2s cold-load on every reply. Bound on 0.0.0.0:7257 (no auth) per intent
   # -- reachable over Tailscale/LAN.
-  # Not pulled in by hermes-agent: voice is paroli-tts/sensevoice-stt (NPU,
-  # ./../voice), which already hold ports 7257/7258 on this host. Stop those
-  # before `sudo systemctl start kitten-tts-server moonshine-stt-server`.
+  # TTS is paroli-tts (NPU, ../voice) on :7257; stop it before
+  # `sudo systemctl start kitten-tts-server`. STT is moonshine-stt-server below.
+  systemd.services.hermes-agent.wants = [ "moonshine-stt-server.service" ];
 
   systemd.services.kitten-tts-server = {
     description = "KittenTTS server (OpenAI-compatible TTS for hermes)";
@@ -465,22 +465,14 @@ in
       # stt = {
       #   provider = "groq";
       # };
-      # Previous local STT (Moonshine TINY on this Pi); kept for rollback.
-      # stt = {
-      #   provider = "openai";
-      #   openai = {
-      #     base_url = "http://127.0.0.1:7258/v1";
-      #     api_key  = "local";
-      #     model    = "moonshine-tiny";
-      #   };
-      # };
-      # SenseVoice-small on radrubble's NPU (machines/radrubble/services/voice).
+      # Moonshine TINY on CPU. The NPU SenseVoice server (../voice) doesn't fit
+      # in RAM next to hermes + home-assistant.
       stt = {
         provider = "openai";
         openai = {
-          base_url = "http://radrubble.lion-zebra.ts.net:7258/v1";
+          base_url = "http://127.0.0.1:7258/v1";
           api_key  = "local";
-          model    = "sensevoice";
+          model    = "moonshine-tiny";
         };
       };
       voice = {
