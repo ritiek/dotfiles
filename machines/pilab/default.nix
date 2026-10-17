@@ -351,21 +351,6 @@
       };
     };
 
-    # Stays on pilab next to the BME680 publisher; Home Assistant on radrubble
-    # connects over tailscale.
-    mosquitto = {
-      enable = true;
-      listeners = [
-        {
-          address = "0.0.0.0";
-          port = 1883;
-          acl = [ "pattern readwrite #" ];
-          omitPasswordAuth = true;
-          settings.allow_anonymous = true;
-        }
-      ];
-    };
-
     pipewire = {
       enable = true;
       # Headless box: socket activation never triggers without an interactive

@@ -1,6 +1,12 @@
 { config, pkgs, lib, inputs, ... }:
 
 let
+  # Broker runs on radrubble next to Home Assistant.
+  mqttHosts = [
+    "radrubble.lion-zebra.ts.net:1883"
+    # "192.168.1.14:1883"  # Offline for now, may be needed in future.
+  ];
+
   # Custom Adafruit_DHT package for pi400 - fully declarative
   adafruit-dht-pi400 = pkgs.python3Packages.buildPythonPackage {
     pname = "Adafruit_Python_DHT";
@@ -80,7 +86,7 @@ let
           echo "Sensor readings: Temp=$temperature°C, Humidity=$humidity%"
 
           # Read MQTT configuration
-          mqtt_hosts_content=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."mqtt.hosts".path})
+          mqtt_hosts_content='${lib.concatStringsSep "\n" mqttHosts}'
           mqtt_topic_base=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."mqtt.topic.base".path})
 
           # Publish to all MQTT brokers
@@ -132,9 +138,6 @@ in
 {
   sops = {
     secrets = {
-      "mqtt.hosts" = {
-        sopsFile = ./secrets.yaml;
-      };
       "mqtt.topic.base" = {
         sopsFile = ./secrets.yaml;
       };

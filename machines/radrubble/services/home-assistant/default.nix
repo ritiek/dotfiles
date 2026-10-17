@@ -45,6 +45,20 @@ in
   services.openssh.knownHosts."pilab.lion-zebra.ts.net".publicKey =
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPBOR/hkaC38bXYpfyEDWiBLIAzNrvZWTKfCoyC8sU0Q";
 
+  # Sensor publishers (keyberry dht22, pilab bme680) connect over tailscale.
+  services.mosquitto = {
+    enable = true;
+    listeners = [
+      {
+        address = "0.0.0.0";
+        port = 1883;
+        acl = [ "pattern readwrite #" ];
+        omitPasswordAuth = true;
+        settings.allow_anonymous = true;
+      }
+    ];
+  };
+
   services.home-assistant = {
     enable = true;
 

@@ -49,6 +49,12 @@
 # done
 
 let
+  # Broker runs on radrubble next to Home Assistant.
+  mqttHosts = [
+    "radrubble.lion-zebra.ts.net:1883"
+    # "192.168.1.14:1883"  # Offline for now, may be needed in future.
+  ];
+
   bme680Script = pkgs.writeText "bme680_reader.py" ''
     #!/usr/bin/env python3
     import bme680
@@ -144,7 +150,7 @@ let
           echo "Sensor readings: Temp=$temperature°C, Pressure=$pressure hPa, Humidity=$humidity%, Gas=$gas_resistance_formatted Ohms"
 
           # Read MQTT configuration
-          mqtt_hosts_content=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."mqtt.hosts".path})
+          mqtt_hosts_content='${lib.concatStringsSep "\n" mqttHosts}'
           mqtt_topic_base=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."mqtt.topic.base".path})
 
           # Calculate Air Quality Score (if gas resistance is available)
@@ -271,9 +277,6 @@ in
 {
   sops = {
     secrets = {
-      "mqtt.hosts" = {
-        sopsFile = ./secrets.yaml;
-      };
       "mqtt.topic.base" = {
         sopsFile = ./secrets.yaml;
       };
