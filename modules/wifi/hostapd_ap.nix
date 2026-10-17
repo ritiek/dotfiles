@@ -5,7 +5,7 @@
   # anyway. hostapd runs as root, so sops' default 0400 root mode is fine.
   sops.secrets."hostapd.psk".restartUnits = [ "hostapd.service" ];
 
-  # Carried over from modules/wifi/network_manager.nix, which switchboard no
+  # Carried over from modules/wifi/network-manager.nix, which switchboard no
   # longer imports (a client-mode supplicant and hostapd cannot share this
   # radio). Without the regulatory database the kernel sits at country 00 and
   # marks channels 12/13 NO-IR.

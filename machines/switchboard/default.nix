@@ -8,7 +8,7 @@
     ./../../modules/nix.nix
     ./../../modules/sops.nix
     ./../../modules/attic-watch-store.nix
-    # NOTE: modules/wifi/network_manager.nix is deliberately NOT imported.
+    # NOTE: modules/wifi/network-manager.nix is deliberately NOT imported.
     # The AIC8800 cannot run a station supplicant and hostapd at the same
     # time, and NetworkManager would fight systemd-networkd over the LAN
     # bridge. hostapd_ap.nix carries over the regulatory-database and

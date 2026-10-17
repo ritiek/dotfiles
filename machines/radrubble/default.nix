@@ -11,7 +11,7 @@
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
     ./../../modules/sops.nix
-    ./../../modules/wifi/network_manager.nix
+    ./../../modules/wifi/network-manager.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
