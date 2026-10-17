@@ -107,6 +107,10 @@
 
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC8R2qe15XyGUVQSHlPsDg6lE9ekfoB+qRA6jjw9pXD5"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8pxSJhzTQav5ZHhaqDMy3zMcOBRyXdvNAE2gXM8y6h"
+
+        # pilab's homelab-mount (Home Assistant OTP flow) pipes the LUKS
+        # passphrase in on stdin; this key can only run mediaserver-start.
+        ''restrict,command="/run/wrappers/bin/sudo /run/current-system/sw/bin/env PATH=/etc/profiles/per-user/ritiek/bin:/run/current-system/sw/bin:/run/wrappers/bin mediaserver-start" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIClaWA6QKLNUcMz8dAC5bBZcIMFuHmfi9pxy1Y1Q554y root@pilab-homelab-mount''
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default

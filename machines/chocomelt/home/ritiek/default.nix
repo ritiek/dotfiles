@@ -8,9 +8,9 @@ let
   mediaserver-mount = pkgs.writeShellScriptBin "mediaserver-mount" ''
     set -ex
 
-    # Mount EVERYTHING_ELSE partition only if not already mounted. No OTP
-    # support here (unlike pilab's homelab-mount) -- always prompts
-    # interactively for the LUKS passphrase.
+    # Mount EVERYTHING_ELSE partition only if not already mounted. cryptsetup
+    # prompts for the LUKS passphrase, or reads it from stdin when that isn't
+    # a tty: pilab's homelab-mount pipes in the OTP-derived one over SSH.
     if ! mountpoint -q ${everythingElsePath}; then
       if [ ! -e /dev/mapper/EVERYTHING_ELSE ]; then
         cryptsetup open \

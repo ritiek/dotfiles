@@ -112,6 +112,8 @@
       group = "nixbld";
     };
     "yubiluks.env" = {};
+    # homelab-mount (root) unlocks EVERYTHING_ELSE on chocomelt with this.
+    "chocomelt_mediaserver.ssh_key" = {};
   };
 
   nixpkgs.config.allowUnfree = false;
@@ -348,6 +350,7 @@
       };
       knownHosts = {
         "github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+        "chocomelt.lion-zebra.ts.net".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKTI0loab2G3JTfgh4J8I2hc7JTb5+G+/xbu1Ng7TaFQ";
       };
     };
 

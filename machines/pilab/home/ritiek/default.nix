@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, homelabMediaPath, everythingElsePath, enableLEDs, yubiluksEnvPath, ...}:
+{ config, pkgs, inputs, homelabMediaPath, enableLEDs, yubiluksEnvPath, chocomeltKeyPath, ...}:
 let
   verify-otp = pkgs.writeShellScriptBin "verify-otp" ''
     exec ${pkgs.python3.withPackages (ps: [ ps.pycryptodome ])}/bin/python3 \
@@ -42,36 +42,18 @@ let
         ${homelabMediaPath}
     fi
 
-    # Mount EVERYTHING_ELSE partition only if present and not already mounted.
-    # The disk is sometimes physically disconnected (e.g. moved to another
-    # machine) -- skip silently instead of noisily failing cryptsetup/mount.
-    if [ -e /dev/mapper/EVERYTHING_ELSE ] || [ -e /dev/disk/by-label/EVERYTHING_ELSE ]; then
-      if ! mountpoint -q ${everythingElsePath}; then
-        if [ ! -e /dev/mapper/EVERYTHING_ELSE ]; then
-          set +x
-          if [ -n "$LUKS_PASSPHRASE" ]; then
-            printf '%s' "$LUKS_PASSPHRASE" | cryptsetup open \
-              /dev/disk/by-label/EVERYTHING_ELSE \
-              EVERYTHING_ELSE \
-              --key-file=-
-          else
-            cryptsetup open \
-              /dev/disk/by-label/EVERYTHING_ELSE \
-              EVERYTHING_ELSE
-          fi
-          set -x
-        fi
-        mount -o defaults,noatime,nodiscard,noautodefrag,ssd,space_cache=v2,compress-force=zstd:3 \
-          /dev/mapper/EVERYTHING_ELSE \
-          ${everythingElsePath}
-      fi
-    else
-      set +x
-      echo "homelab-mount: EVERYTHING_ELSE not connected, skipping"
-      set -x
-    fi
-
+    # EVERYTHING_ELSE lives on chocomelt. Hand it the same passphrase over SSH;
+    # this key's forced command there runs mediaserver-start (unlock, mount,
+    # start the media stack). A failure there must not stop pilab's services.
     set +x
+    if [ -n "$LUKS_PASSPHRASE" ]; then
+      printf '%s' "$LUKS_PASSPHRASE" | ${pkgs.openssh}/bin/ssh -i ${chocomeltKeyPath} \
+        -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=10 \
+        ritiek@chocomelt.lion-zebra.ts.net \
+        || echo "homelab-mount: couldn't unlock EVERYTHING_ELSE on chocomelt"
+    else
+      echo "homelab-mount: run mediaserver-start on chocomelt for EVERYTHING_ELSE"
+    fi
     unset LUKS_PASSPHRASE
     set -x
 
@@ -84,22 +66,6 @@ let
     source ${yubiluksEnvPath}
     set -x
     homelab-mount && (
-      # EVERYTHING_ELSE-dependent services (qbittorrent/jellyfin/radarr/sonarr/
-      # bazarr/prowlarr/jellyseerr) already declare RequiresMountsFor
-      # on their own systemd units, so `systemctl start` on them would fail
-      # loudly (and leave the units in a failed state) whenever the disk is
-      # disconnected. Check availability once here and skip starting them
-      # instead of letting each one fail individually. syncthing doesn't
-      # require EVERYTHING_ELSE and is always started below.
-      if mountpoint -q ${everythingElsePath}; then
-        everything_else_available=1
-      else
-        everything_else_available=0
-        set +x
-        echo "homelab-start: EVERYTHING_ELSE not mounted, skipping qbittorrent/jellyfin/radarr/sonarr/bazarr/prowlarr/jellyseerr"
-        set -x
-      fi
-
       systemctl start autostart-vaultwarden.service
       systemctl start docker-backvault.service
       # systemctl start docker-dashy.service
@@ -137,13 +103,6 @@ let
       # systemctl start docker-karakeep.service
       # systemctl start docker-n8n-worker.service
       # systemctl start docker-transmission.service
-      [ "$everything_else_available" = 1 ] && systemctl start docker-qbittorrent.service
-      [ "$everything_else_available" = 1 ] && systemctl start autostart-jellyfin.service
-      [ "$everything_else_available" = 1 ] && systemctl start docker-radarr.service
-      [ "$everything_else_available" = 1 ] && systemctl start docker-sonarr.service
-      [ "$everything_else_available" = 1 ] && systemctl start docker-bazarr.service
-      [ "$everything_else_available" = 1 ] && systemctl start docker-prowlarr.service
-      [ "$everything_else_available" = 1 ] && systemctl start autostart-jellyseerr.service
       systemctl start docker-glances.service
       systemctl start autostart-calibre-web-automated.service
       systemctl start autostart-calibre-web-automated-book-downloader.service
@@ -277,13 +236,13 @@ in
       (writeShellScriptBin "homelab-unmount" ''
         set -x
 
-        # Unmount EVERY mountpoint backed by each encrypted device (deepest
-        # path first), including bind mounts such as jellyfin's
-        # /export/jellyfin/{config,data/movies,data/tvshows} and any NFS-
-        # exported paths. A bare "umount -l ${everythingElsePath}" leaves those
-        # bind mounts referencing the device, so "cryptsetup close" loops
-        # forever on "Device or resource busy".
-        for dev in HOMELAB_MEDIA EVERYTHING_ELSE; do
+        # Unmount EVERY mountpoint backed by the encrypted device (deepest
+        # path first), including bind mounts and any NFS-exported paths. A
+        # bare "umount -l ${homelabMediaPath}" leaves those bind mounts
+        # referencing the device, so "cryptsetup close" loops forever on
+        # "Device or resource busy". EVERYTHING_ELSE is on chocomelt
+        # (mediaserver-unmount there).
+        for dev in HOMELAB_MEDIA; do
           mapper="/dev/mapper/$dev"
           [ -e "$mapper" ] || continue
 

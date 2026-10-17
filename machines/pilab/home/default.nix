@@ -49,6 +49,7 @@
       inherit inputs homelabMediaPath everythingElsePath enableLEDs;
       hostName = config.networking.hostName;
       yubiluksEnvPath = config.sops.secrets."yubiluks.env".path;
+      chocomeltKeyPath = config.sops.secrets."chocomelt_mediaserver.ssh_key".path;
     };
 
     users.ritiek = {
