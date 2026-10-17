@@ -547,6 +547,11 @@ in
       # _scan_bundled_plugin_platforms() but fails at runtime. Disable
       # to suppress the "not a valid Platform" warning.
       plugins.disabled = [ "google_chat-platform" ];
+      # Catalog plugin, installed at runtime into .hermes/plugins/ by
+      # `hermes plugins install homeassistant` (formerly core). Enabled here
+      # because `--enable` fails on Nix installs (it resolves deps against a
+      # uv.lock the store path doesn't ship).
+      plugins.enabled = [ "homeassistant" ];
 
       mcp_servers.homeassistant = {
         enabled = true;
