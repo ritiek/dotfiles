@@ -152,7 +152,11 @@ in
   # hardcodes ~/.claude/.credentials.json). Link the whole dir, not the file:
   # hermes writes refreshed tokens via temp file + rename, which would replace a
   # file symlink. ProtectSystem=strict makes /home read-only, hence ReadWritePaths.
-  systemd.tmpfiles.rules = [ "L+ /var/lib/hermes/.claude - - - - /home/ritiek/.claude" ];
+  # The dir must exist or the unit fails at mount namespace setup.
+  systemd.tmpfiles.rules = [
+    "d /home/ritiek/.claude 0755 ritiek users -"
+    "L+ /var/lib/hermes/.claude - - - - /home/ritiek/.claude"
+  ];
   systemd.services.hermes-agent.serviceConfig.ReadWritePaths = [ "/home/ritiek/.claude" ];
 
   # Local KittenTTS server (kitten_tts_rs, Rust) exposing an OpenAI-compatible
