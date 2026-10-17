@@ -549,7 +549,8 @@ in
     mcpServers = {
       # -- Stdio servers --
       # connect_timeout: the default 60s is too short for these to start on
-      # radrubble's A55 cores (paperless also runs an npx install first).
+      # radrubble's A55 cores (paperless and kindly-web-search also fetch
+      # their package on every start).
       nixos = {
         enabled = true;
         command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
@@ -609,6 +610,7 @@ in
           KINDLY_WEB_SEARCH_MAX_CONCURRENCY     = "3";
         };
         timeout = 60;
+        connect_timeout = 180;
       };
       playwright = {
         enabled = true;
