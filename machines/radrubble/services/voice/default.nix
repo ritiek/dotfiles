@@ -1,5 +1,5 @@
 # NPU-accelerated speech for hermes:
-#   STT: SenseVoice-small (RK3566 RKNN build) via sherpa-onnx, OpenAI-compatible
+#   STT: Whisper tiny (English), encoder and decoder on NPU, OpenAI-compatible
 #        /v1/audio/transcriptions on :7258
 #   TTS: Piper en_US-kristin-medium via paroli, decoder on NPU, encoder on CPU,
 #        POST /api/v1/synthesise on :7257
@@ -8,6 +8,10 @@
 # the Piper training checkpoint (mush42/piper streaming branch) and converted
 # with paroli's tools/decoder2rknn.py (target_platform rk3566). Copy them along
 # with model.json (en_US-kristin-medium.onnx.json) into /var/lib/paroli/kristin.
+#
+# The Whisper .rknn files come from ./whisper-export.py (see its docstring).
+# Copy them along with mel_80_filters.txt and vocab_en.txt from rknn_model_zoo
+# (examples/whisper/model) into /var/lib/whisper-stt.
 { pkgs, lib, ... }:
 
 let
@@ -87,43 +91,25 @@ let
     ps.uvicorn
     ps.python-multipart
     ps.numpy
-    (ps.buildPythonPackage {
-      pname = "sherpa-onnx";
-      version = "1.13.8";
-      format = "wheel";
-      # RKNN-enabled build from https://k2-fsa.github.io/sherpa/onnx/rk-npu.html
-      src = pkgs.fetchurl {
-        url = "https://huggingface.co/csukuangfj2/sherpa-onnx-wheels/resolve/main/rknn/1.13.8/sherpa_onnx-1.13.8-cp314-cp314-manylinux_2_27_aarch64.whl";
-        hash = "sha256-IDlhtp64kuRuTzebPo1WAE0pxhb8qVFNMgQRT27ONyY=";
-      };
-      nativeBuildInputs = [ pkgs.autoPatchelfHook ];
-      buildInputs = [ pkgs.stdenv.cc.cc.lib pkgs.alsa-lib librknnrt ];
-      dependencies = [ ps.numpy ];
-      doCheck = false;
-    })
   ]);
-
-  senseVoice = pkgs.fetchzip {
-    url = "https://github.com/k2-fsa/sherpa-onnx/releases/download/asr-models/sherpa-onnx-rk3566-20-seconds-sense-voice-zh-en-ja-ko-yue-2025-09-09.tar.bz2";
-    hash = "sha256-LDykfnAWybYQSVUKWWYLSThcJEI1w7e10kRRGcnnp3M=";
-  };
 in
 {
-  # Not started at boot: the model pins ~1GB of unswappable NPU memory and gets
-  # OOM-killed next to hermes + home-assistant on this 2GB board. hermes uses
-  # the CPU moonshine-stt-server (../hermes) instead; both bind :7258.
-  systemd.services.sensevoice-stt = {
-    description = "SenseVoice STT on the RK3566 NPU (OpenAI-compatible)";
+  # Pins ~190MB of NPU memory. SenseVoice pinned ~1GB and got OOM-killed next
+  # to hermes + home-assistant on this 2GB board.
+  systemd.services.whisper-stt = {
+    description = "Whisper tiny STT on the RK3566 NPU (OpenAI-compatible)";
+    wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
+    unitConfig.ConditionPathExists = "/var/lib/whisper-stt/whisper-tiny-encoder.rknn";
     path = [ pkgs.ffmpeg-headless ];
     environment = {
-      STT_MODEL = "${senseVoice}/model.rknn";
-      STT_TOKENS = "${senseVoice}/tokens.txt";
+      RKNN_LIB = "${librknnrt}/lib/librknnrt.so";
+      STT_MODEL_DIR = "/var/lib/whisper-stt";
       STT_HOST = "0.0.0.0";
       STT_PORT = "7258";
     };
     serviceConfig = {
-      ExecStart = "${sttPython}/bin/python ${./stt-server.py}";
+      ExecStart = "${sttPython}/bin/python ${./whisper-stt-server.py}";
       DynamicUser = true;
       SupplementaryGroups = [ "video" "render" ];
       Restart = "on-failure";

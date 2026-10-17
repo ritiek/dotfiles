@@ -169,9 +169,9 @@ in
   # this (base_url below). Keeping the model warm in a long-lived process avoids
   # the ~2s cold-load on every reply. Bound on 0.0.0.0:7257 (no auth) per intent
   # -- reachable over Tailscale/LAN.
-  # TTS is paroli-tts (NPU, ../voice) on :7257; stop it before
-  # `sudo systemctl start kitten-tts-server`. STT is moonshine-stt-server below.
-  systemd.services.hermes-agent.wants = [ "moonshine-stt-server.service" ];
+  # Voice runs on the NPU (../voice): paroli-tts on :7257, whisper-stt on :7258.
+  # kitten-tts-server and moonshine-stt-server below are CPU fallbacks on the
+  # same ports; stop the NPU unit before starting one.
 
   systemd.services.kitten-tts-server = {
     description = "KittenTTS server (OpenAI-compatible TTS for hermes)";
@@ -470,14 +470,14 @@ in
       # stt = {
       #   provider = "groq";
       # };
-      # Moonshine TINY on CPU. The NPU SenseVoice server (../voice) doesn't fit
-      # in RAM next to hermes + home-assistant.
+      # Whisper tiny on the NPU (../voice). moonshine-stt-server is the CPU
+      # fallback on the same port; both ignore the model name.
       stt = {
         provider = "openai";
         openai = {
           base_url = "http://127.0.0.1:7258/v1";
           api_key  = "local";
-          model    = "moonshine-tiny";
+          model    = "whisper-tiny";
         };
       };
       voice = {
