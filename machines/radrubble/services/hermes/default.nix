@@ -548,10 +548,13 @@ in
     # HASS_TOKEN is already in /run/secrets/hermes.env (via environmentFiles below).
     mcpServers = {
       # -- Stdio servers --
+      # connect_timeout: the default 60s is too short for these to start on
+      # radrubble's A55 cores (paperless also runs an npx install first).
       nixos = {
         enabled = true;
         command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
         args = [ ];
+        connect_timeout = 180;
       };
       context7 = {
         enabled = true;
@@ -575,6 +578,7 @@ in
           PAPERLESS_API_KEY    = "\${HERMES_MCP_PAPERLESS_API_KEY}";
           PAPERLESS_PUBLIC_URL = "\${HERMES_MCP_PAPERLESS_PUB_URL}";
         };
+        connect_timeout = 180;
       };
       kindly-web-search = {
         enabled = true;
