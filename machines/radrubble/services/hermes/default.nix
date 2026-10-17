@@ -262,6 +262,26 @@ in
   systemd.services.hermes-agent.restartIfChanged = false;
   systemd.services.hermes-agent.stopIfChanged = false;
 
+  # Voice-note turns scan the whole messages table in state.db before replying;
+  # once the DB fragments that takes ~70s cold on the microSD instead of ~3s.
+  # Defragment monthly (FTS merge + VACUUM, deletes nothing). optimize refuses
+  # while the gateway holds state.db, so hermes is down for the run (~20 min).
+  systemd.services.hermes-sessions-optimize = {
+    startAt = "*-*-01 04:00:00";
+    environment.HOME = "/var/lib/hermes";
+    serviceConfig = {
+      Type = "oneshot";
+      User = "ritiek";
+      WorkingDirectory = "/var/lib/hermes";
+      Nice = 10;
+      IOSchedulingClass = "idle";
+      ExecStartPre = "+${pkgs.systemd}/bin/systemctl stop hermes-agent.service";
+      ExecStart = "${hermesWrapped}/bin/hermes sessions optimize";
+      # Runs on failure too, so hermes always comes back.
+      ExecStopPost = "+${pkgs.systemd}/bin/systemctl start hermes-agent.service";
+    };
+  };
+
   # Dashboard unit stays defined but doesn't autostart; run it on demand with
   # `sudo systemctl start hermes-backend`.
   systemd.services.hermes-backend.wantedBy = lib.mkForce [ ];
