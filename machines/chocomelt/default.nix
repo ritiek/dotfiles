@@ -10,7 +10,6 @@
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
     ./../../modules/sops.nix
-    ./../../modules/attic-watch-store.nix
     ./../../modules/tailscale-controlplane.nix
     ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
