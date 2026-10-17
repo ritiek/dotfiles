@@ -212,6 +212,9 @@ in
     unitConfig.RequiresMountsFor = [ "/var/lib/frigate" ];
     serviceConfig = {
       BindPaths = [ "${dataDir}/config/model_cache:/var/cache/frigate/model_cache" ];
+      # database.path lives here; ProtectSystem=strict makes it read-only
+      # otherwise and the camera processor dies on its first DB write.
+      ReadWritePaths = [ "${dataDir}/config" ];
       # librknnrt opens the NPU via /dev/dri/card1 (root:video 0660).
       SupplementaryGroups = [ "video" ];
       # Frigate's watchdog reads /proc/1 before exiting on a stalled
