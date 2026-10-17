@@ -18,6 +18,10 @@
       allow_encryption = true;
       trusted_servers = [ ];
       max_request_size = 20000000;
+      # OAuth endpoints are advertised under https://<server_name>, which
+      # nothing serves; Element X based clients then fail at client
+      # registration. Password login only.
+      oauth.compatibility_mode = "disabled";
     };
   };
 
