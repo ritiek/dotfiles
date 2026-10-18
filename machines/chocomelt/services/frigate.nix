@@ -186,6 +186,21 @@ in
           fps = 5;
         };
       };
+      # Seeed XIAO ESP32S3 Sense (OV3660) on custom Tasmota: 1600x1200 MJPEG
+      # at ~8 fps on its port-81 stream server.
+      cameras.xiao = {
+        ffmpeg.inputs = [{
+          path = "http://192.168.2.15:81/stream";
+          input_args = "preset-http-mjpeg-generic";
+          roles = [ "detect" ];
+        }];
+        detect = {
+          enabled = true;
+          width = 800;
+          height = 600;
+          fps = 5;
+        };
+      };
     };
   };
 
