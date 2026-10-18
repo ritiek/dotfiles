@@ -79,6 +79,9 @@ in
     script = ''
       rm -f ${dbCopy}/home-assistant_v2.db.tmp
       sqlite3 /var/lib/hass/home-assistant_v2.db "VACUUM INTO '${dbCopy}/home-assistant_v2.db.tmp'"
+      # VACUUM INTO doesn't fsync its output; flush it before the rename so a
+      # power cut can't leave a torn copy for syncthing to ship.
+      sync ${dbCopy}/home-assistant_v2.db.tmp
       mv ${dbCopy}/home-assistant_v2.db.tmp ${dbCopy}/home-assistant_v2.db
     '';
   };
