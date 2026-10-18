@@ -62,37 +62,48 @@ let
   #   * jq -Rs builds a JSON-safe body (handles quotes/newlines in the reply).
   #   * pw-play needs XDG_RUNTIME_DIR to reach ritiek's (uid 1000) PipeWire; the
   #     speaker is pinned by stable node.name so default-sink changes don't matter.
-  # Plays $1 on the BT speaker with the speaker (sink) volume at speakerVolume
-  # (0-1.0, same scale as wpctl), then puts the previous volume back. That's
-  # the speaker's own AVRCP volume, which it may share with its other
-  # multipoint connection, hence the restore.
-  speakerVolume = "0.45";
+  # Plays $1 on the BT speaker at speakerVolume (0-1.0), then puts the
+  # speaker's volume back. The speaker keeps one volume for both multipoint
+  # connections (e.g. mishy's) and only tells us its current level ~3s after
+  # it switches to our stream, so play silence until that arrives, else we'd
+  # restore a stale level and change the other device's volume.
+  speakerVolume = 0.45;
   speakerPlay = pkgs.writeShellScript "speaker-play" ''
     export XDG_RUNTIME_DIR=/run/user/1000
-    wpctl=${pkgs.wireplumber}/bin/wpctl
-    awk=${pkgs.gawk}/bin/awk
-    node="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1"
+    mac=$(cat ${config.sops.secrets."bt_speaker.mac_address".path})
+    node="bluez_output.$mac.1"
+    hw=${toString (builtins.floor (speakerVolume * 127 + 0.5))}  # AVRCP 0-127
+    busctl=${pkgs.systemd}/bin/busctl
+    pwcat=${pkgs.pipewire}/bin/pw-cat
     # One reply at a time, so the volume saved below is never our own.
     exec 9>"$XDG_RUNTIME_DIR/speaker-play.lock"
     ${pkgs.util-linux}/bin/flock 9
-    # wpctl only takes numeric node IDs.
-    id=$(${pkgs.pipewire}/bin/pw-dump | ${pkgs.jq}/bin/jq -r --arg n "$node" \
-      '.[] | select(.info.props["node.name"] == $n) | .id')
-    [ -n "$id" ] || exit 1
-    prev=$($wpctl get-volume "$id" | $awk '{print $2}')
-    $wpctl set-volume "$id" ${speakerVolume}
-    ${pkgs.pipewire}/bin/pw-play --target="$node" "$1" & play=$!
-    # 2-5s into a stream the speaker pushes back the level it keeps for this
-    # connection, overriding ours, so keep re-applying it for the first ~10s.
-    for _ in $(seq 50); do
+    # The BlueZ transport has the exact 0-127 value; wpctl rounds it to 2
+    # decimals, which nudges the speaker a step up on every restore.
+    tp=$($busctl --list tree org.bluez | grep -m1 "/org/bluez/hci0/dev_$mac/sep[0-9]*/fd[0-9]*$")
+    [ -n "$tp" ] || exit 1
+    vol() { $busctl get-property org.bluez "$tp" org.bluez.MediaTransport1 Volume | cut -d' ' -f2; }
+    setvol() { $busctl set-property org.bluez "$tp" org.bluez.MediaTransport1 Volume q "$1"; }
+    prev=$(vol)
+    $pwcat -p --raw --format s16 --rate 48000 --channels 2 --target "$node" - < /dev/zero & keep=$!
+    trap 'kill $keep' EXIT
+    # No change within ~6s: the speaker's level is still the one we have.
+    for _ in $(seq 25); do
       sleep 0.2
-      kill -0 $play 2>/dev/null || break
-      $wpctl get-volume "$id" | $awk -v v=${speakerVolume} \
-        '{ exit !($2 - v > 0.02 || v - $2 > 0.02) }' \
-        && $wpctl set-volume "$id" ${speakerVolume}
+      cur=$(vol)
+      [ "$cur" = "$prev" ] || { prev=$cur; break; }
     done
-    wait $play
-    $wpctl set-volume "$id" "$prev"
+    setvol $hw
+    $pwcat -p --target "$node" "$1" & play=$!
+    while kill -0 $play 2>/dev/null; do
+      sleep 0.2
+      # A late level from the speaker: remember it, then put ours back.
+      cur=$(vol)
+      [ "$cur" = $hw ] || { prev=$cur; setvol $hw; }
+    done
+    # Restore while our stream still holds the speaker, so it takes.
+    setvol "$prev"
+    sleep 1
   '';
 
   kittenLocalTts = pkgs.writeShellScriptBin "kitten-local-tts" ''
