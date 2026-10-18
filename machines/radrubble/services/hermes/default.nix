@@ -62,7 +62,9 @@ let
   #   * jq -Rs builds a JSON-safe body (handles quotes/newlines in the reply).
   #   * pw-play needs XDG_RUNTIME_DIR to reach ritiek's (uid 1000) PipeWire; the
   #     speaker is pinned by stable node.name so default-sink changes don't matter.
-  # Plays $1 on the BT speaker at speakerVolume (0-1.0), then puts the
+  # Plays the audio file open on fd 8 (callers open it: hermes deletes the file
+  # once it's uploaded, well before the wait below ends) on the BT speaker at
+  # speakerVolume (0-1.0), then puts the
   # speaker's volume back. The speaker keeps one volume for both multipoint
   # connections (e.g. mishy's) and only tells us its current level ~3s after
   # it switches to our stream, so play silence until that arrives, else we'd
@@ -94,7 +96,7 @@ let
       [ "$cur" = "$prev" ] || { prev=$cur; break; }
     done
     setvol $hw
-    $pwcat -p --target "$node" "$1" & play=$!
+    $pwcat -p --target "$node" /proc/self/fd/8 & play=$!
     while kill -0 $play 2>/dev/null; do
       sleep 0.2
       # A late level from the speaker: remember it, then put ours back.
@@ -116,7 +118,7 @@ let
       -o "$out"
     # Play on the BT speaker, non-blocking. Failures here must not fail the
     # provider (hermes still needs $out for the Matrix upload), so guard it.
-    ${speakerPlay} "$out" >/dev/null 2>&1 &
+    ${speakerPlay} 8<"$out" >/dev/null 2>&1 &
     exit 0
   '';
 
@@ -129,7 +131,7 @@ let
       -H 'Content-Type: application/json' \
       --data "$(${pkgs.jq}/bin/jq -Rs '{text: ., audio_format: "opus"}' < "$in")" \
       -o "$out"
-    ${speakerPlay} "$out" >/dev/null 2>&1 &
+    ${speakerPlay} 8<"$out" >/dev/null 2>&1 &
     exit 0
   '';
 
