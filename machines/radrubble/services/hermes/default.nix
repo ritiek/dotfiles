@@ -62,15 +62,26 @@ let
   #   * jq -Rs builds a JSON-safe body (handles quotes/newlines in the reply).
   #   * pw-play needs XDG_RUNTIME_DIR to reach ritiek's (uid 1000) PipeWire; the
   #     speaker is pinned by stable node.name so default-sink changes don't matter.
-  # Plays $1 on the BT speaker. speakerVolume (0-1.0) scales only hermes'
-  # stream. The sink volume is the speaker's own volume (AVRCP absolute
-  # volume), which the speaker may share with its other multipoint
-  # connection, so it's left alone; hermes can't get louder than that.
-  speakerVolume = "1.0";
+  # Plays $1 on the BT speaker with the speaker (sink) volume at speakerVolume
+  # (0-1.0, same scale as wpctl), then puts the previous volume back. That's
+  # the speaker's own AVRCP volume, which it may share with its other
+  # multipoint connection, hence the restore.
+  speakerVolume = "0.5";
   speakerPlay = pkgs.writeShellScript "speaker-play" ''
-    XDG_RUNTIME_DIR=/run/user/1000 exec ${pkgs.pipewire}/bin/pw-play \
-      --volume=${speakerVolume} \
-      --target="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1" "$1"
+    export XDG_RUNTIME_DIR=/run/user/1000
+    wpctl=${pkgs.wireplumber}/bin/wpctl
+    node="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1"
+    # One reply at a time, so the volume saved below is never our own.
+    exec 9>"$XDG_RUNTIME_DIR/speaker-play.lock"
+    ${pkgs.util-linux}/bin/flock 9
+    # wpctl only takes numeric node IDs.
+    id=$(${pkgs.pipewire}/bin/pw-dump | ${pkgs.jq}/bin/jq -r --arg n "$node" \
+      '.[] | select(.info.props["node.name"] == $n) | .id')
+    [ -n "$id" ] || exit 1
+    prev=$($wpctl get-volume "$id" | ${pkgs.gawk}/bin/awk '{print $2}')
+    $wpctl set-volume "$id" ${speakerVolume}
+    ${pkgs.pipewire}/bin/pw-play --target="$node" "$1"
+    $wpctl set-volume "$id" "$prev"
   '';
 
   kittenLocalTts = pkgs.writeShellScriptBin "kitten-local-tts" ''
