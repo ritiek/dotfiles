@@ -66,10 +66,11 @@ let
   # (0-1.0, same scale as wpctl), then puts the previous volume back. That's
   # the speaker's own AVRCP volume, which it may share with its other
   # multipoint connection, hence the restore.
-  speakerVolume = "1.0";
+  speakerVolume = "0.45";
   speakerPlay = pkgs.writeShellScript "speaker-play" ''
     export XDG_RUNTIME_DIR=/run/user/1000
     wpctl=${pkgs.wireplumber}/bin/wpctl
+    awk=${pkgs.gawk}/bin/awk
     node="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1"
     # One reply at a time, so the volume saved below is never our own.
     exec 9>"$XDG_RUNTIME_DIR/speaker-play.lock"
@@ -78,9 +79,19 @@ let
     id=$(${pkgs.pipewire}/bin/pw-dump | ${pkgs.jq}/bin/jq -r --arg n "$node" \
       '.[] | select(.info.props["node.name"] == $n) | .id')
     [ -n "$id" ] || exit 1
-    prev=$($wpctl get-volume "$id" | ${pkgs.gawk}/bin/awk '{print $2}')
+    prev=$($wpctl get-volume "$id" | $awk '{print $2}')
     $wpctl set-volume "$id" ${speakerVolume}
-    ${pkgs.pipewire}/bin/pw-play --target="$node" "$1"
+    ${pkgs.pipewire}/bin/pw-play --target="$node" "$1" & play=$!
+    # 2-5s into a stream the speaker pushes back the level it keeps for this
+    # connection, overriding ours, so keep re-applying it for the first ~10s.
+    for _ in $(seq 50); do
+      sleep 0.2
+      kill -0 $play 2>/dev/null || break
+      $wpctl get-volume "$id" | $awk -v v=${speakerVolume} \
+        '{ exit !($2 - v > 0.02 || v - $2 > 0.02) }' \
+        && $wpctl set-volume "$id" ${speakerVolume}
+    done
+    wait $play
     $wpctl set-volume "$id" "$prev"
   '';
 
