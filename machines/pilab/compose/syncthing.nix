@@ -24,6 +24,13 @@
   systemd.tmpfiles.rules = map (d: "d ${d} 0755 1000 100 -") [
     "${homelabMediaPath}/services/arr"
     "${homelabMediaPath}/services/qbittorrent/config"
+  ]
+  # From radrubble (machines/radrubble/services/syncthing.nix). 0700 because
+  # Home Assistant's .storage holds auth tokens. services/hass is the last
+  # copy from when HA ran here.
+  ++ map (d: "d ${d} 0700 1000 100 -") [
+    "${homelabMediaPath}/services/radrubble-hass"
+    "${homelabMediaPath}/services/radrubble-hass-db"
   ];
 
   # Runtime

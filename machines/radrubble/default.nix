@@ -7,6 +7,7 @@
     ./services/continuwuity.nix
     ./services/hermes
     ./services/home-assistant
+    ./services/syncthing.nix
     inputs.sops-nix.nixosModules.sops
     inputs.nix-index-database.nixosModules.nix-index
     ./../../modules/nix.nix
