@@ -202,7 +202,28 @@ in
         }
       ];
 
-      recorder = {};
+      # Keep history forever. Raw states of sensors with a state_class are
+      # trimmed to 30 days by the automation below; their 5-minute
+      # (statistics_short_term) and hourly statistics are kept forever.
+      # auto_repack only runs as part of auto_purge, so it's off too; run
+      # recorder.purge with repack: true by hand after big deletions.
+      recorder.auto_purge = false;
+      "automation nix" = [
+        {
+          id = "recorder_trim_raw_history";
+          alias = "Trim raw history of sensors that have statistics";
+          triggers = [{ trigger = "time"; at = "04:12:00"; }];
+          actions = [
+            {
+              action = "recorder.purge_entities";
+              data = {
+                keep_days = 30;
+                entity_id = "{{ states | selectattr('attributes.state_class', 'defined') | map(attribute='entity_id') | list }}";
+              };
+            }
+          ];
+        }
+      ];
       history = {};
       logger = {
         default = "warning";
