@@ -241,18 +241,18 @@ in
       # Frigate's watchdog reads /proc/1 before exiting on a stalled
       # detector; "invisible" makes that crash instead of restarting.
       ProtectProc = lib.mkForce "default";
-      # Stats poll /sys/kernel/debug/rknpu/load every ~15s; debugfs root is
-      # 0700 but rknpu/ is world-readable, so expose just that. Frigate also
-      # polls rkrga/load (because of preset-rkmpp), which this kernel lacks;
-      # a missing file is ignored, a permission error is a traceback.
-      # ProtectKernelTunables would mount the real debugfs back over the
-      # tmpfs below; /sys stays root-only for writes anyway.
+      # Stats poll rknpu/load (NPU usage) and rkrga/load (shown as GPU usage,
+      # because of preset-rkmpp) every ~15s. debugfs root is 0700 but both
+      # dirs are world-readable, so expose just those. ProtectKernelTunables
+      # would mount the real debugfs back over the tmpfs below and turn the
+      # reads into permission-error tracebacks; /sys stays root-only for
+      # writes anyway.
       ProtectKernelTunables = lib.mkForce false;
       TemporaryFileSystem = lib.mkForce [
         "/dev/shm:mode=1777,nosuid,nodev" # from the upstream module
         "/sys/kernel/debug:ro"
       ];
-      BindReadOnlyPaths = [ "/sys/kernel/debug/rknpu" ];
+      BindReadOnlyPaths = [ "/sys/kernel/debug/rknpu" "/sys/kernel/debug/rkrga" ];
       Restart = lib.mkForce "always";
       # 2GB board: an OOM-kill beats thrashing into a watchdog reboot.
       MemoryMax = "1200M";
