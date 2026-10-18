@@ -156,6 +156,12 @@ in
     settings = {
       database.path = "${dataDir}/config/frigate.db";
       mqtt.enabled = false;
+      # Decode and downscale the MJPEG streams on the RK3566's MPP/RGA instead
+      # of the CPU: about a third of the CPU for the XIAO's 1600x1200 stream.
+      ffmpeg = {
+        path = (import ./rockchip-ffmpeg.nix pkgs).bin;
+        hwaccel_args = "preset-rkmpp";
+      };
       # The -rk3566 .rknn model is downloaded into model_cache on first start.
       detectors.npu = {
         type = "rknn";
@@ -236,7 +242,12 @@ in
       # detector; "invisible" makes that crash instead of restarting.
       ProtectProc = lib.mkForce "default";
       # Stats poll /sys/kernel/debug/rknpu/load every ~15s; debugfs root is
-      # 0700 but rknpu/ is world-readable, so expose just that.
+      # 0700 but rknpu/ is world-readable, so expose just that. Frigate also
+      # polls rkrga/load (because of preset-rkmpp), which this kernel lacks;
+      # a missing file is ignored, a permission error is a traceback.
+      # ProtectKernelTunables would mount the real debugfs back over the
+      # tmpfs below; /sys stays root-only for writes anyway.
+      ProtectKernelTunables = lib.mkForce false;
       TemporaryFileSystem = lib.mkForce [
         "/dev/shm:mode=1777,nosuid,nodev" # from the upstream module
         "/sys/kernel/debug:ro"
