@@ -62,6 +62,17 @@ let
   #   * jq -Rs builds a JSON-safe body (handles quotes/newlines in the reply).
   #   * pw-play needs XDG_RUNTIME_DIR to reach ritiek's (uid 1000) PipeWire; the
   #     speaker is pinned by stable node.name so default-sink changes don't matter.
+  # Plays $1 on the BT speaker. speakerVolume (0-1.0) scales only hermes'
+  # stream. The sink volume is the speaker's own volume (AVRCP absolute
+  # volume), which the speaker may share with its other multipoint
+  # connection, so it's left alone; hermes can't get louder than that.
+  speakerVolume = "1.0";
+  speakerPlay = pkgs.writeShellScript "speaker-play" ''
+    XDG_RUNTIME_DIR=/run/user/1000 exec ${pkgs.pipewire}/bin/pw-play \
+      --volume=${speakerVolume} \
+      --target="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1" "$1"
+  '';
+
   kittenLocalTts = pkgs.writeShellScriptBin "kitten-local-tts" ''
     set -eu
     in="$1"; out="$2"; voice="$3"
@@ -72,9 +83,7 @@ let
       -o "$out"
     # Play on the BT speaker, non-blocking. Failures here must not fail the
     # provider (hermes still needs $out for the Matrix upload), so guard it.
-    XDG_RUNTIME_DIR=/run/user/1000 \
-      /run/current-system/sw/bin/pw-play \
-        --target="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1" "$out" >/dev/null 2>&1 &
+    ${speakerPlay} "$out" >/dev/null 2>&1 &
     exit 0
   '';
 
@@ -87,9 +96,7 @@ let
       -H 'Content-Type: application/json' \
       --data "$(${pkgs.jq}/bin/jq -Rs '{text: ., audio_format: "opus"}' < "$in")" \
       -o "$out"
-    XDG_RUNTIME_DIR=/run/user/1000 \
-      /run/current-system/sw/bin/pw-play \
-        --target="bluez_output.$(cat ${config.sops.secrets."bt_speaker.mac_address".path}).1" "$out" >/dev/null 2>&1 &
+    ${speakerPlay} "$out" >/dev/null 2>&1 &
     exit 0
   '';
 
