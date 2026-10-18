@@ -66,7 +66,7 @@ let
   # (0-1.0, same scale as wpctl), then puts the previous volume back. That's
   # the speaker's own AVRCP volume, which it may share with its other
   # multipoint connection, hence the restore.
-  speakerVolume = "0.5";
+  speakerVolume = "1.0";
   speakerPlay = pkgs.writeShellScript "speaker-play" ''
     export XDG_RUNTIME_DIR=/run/user/1000
     wpctl=${pkgs.wireplumber}/bin/wpctl
