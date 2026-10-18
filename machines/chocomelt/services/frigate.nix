@@ -150,6 +150,18 @@ let
   '';
 in
 {
+  # Frigate reads GPU/NPU temperatures from RK3588 zone numbers (thermal_zone5
+  # and 6); on the RK3566 gpu-thermal is zone1. Look the zones up by type.
+  # An overlay, not services.frigate.package: the package's pythonPath (used
+  # below) points at pkgs.frigate.
+  nixpkgs.overlays = [
+    (final: prev: {
+      frigate = prev.frigate.overridePythonAttrs (old: {
+        patches = old.patches ++ [ ./frigate-thermal-zone-by-type.patch ];
+      });
+    })
+  ];
+
   services.frigate = {
     enable = true;
     hostname = "chocomelt.lion-zebra.ts.net";

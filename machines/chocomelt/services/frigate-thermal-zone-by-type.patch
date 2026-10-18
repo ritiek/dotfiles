@@ -1,0 +1,63 @@
+--- a/frigate/util/services.py	2026-10-18 17:44:53.391377636 +0530
++++ b/frigate/util/services.py	2026-10-18 17:45:27.223535049 +0530
+@@ -703,6 +703,28 @@
+         return None
+ 
+ 
++def get_thermal_zone_temp(zone_type: str) -> float | None:
++    """Temperature in Celsius of the thermal zone with this type. Zone numbers
++    differ between SoCs: gpu-thermal is zone5 on RK3588 but zone1 on RK3566."""
++    base = "/sys/class/thermal"
++    try:
++        zones = [z for z in os.listdir(base) if z.startswith("thermal_zone")]
++    except OSError:
++        return None
++
++    for zone in zones:
++        try:
++            with open(f"{base}/{zone}/type") as f:
++                if f.read().strip() != zone_type:
++                    continue
++            with open(f"{base}/{zone}/temp") as f:
++                return round(int(f.read().strip()) / 1000, 1)
++        except (OSError, ValueError):
++            continue
++
++    return None
++
++
+ def get_rockchip_gpu_stats() -> dict[str, str | float] | None:
+     """Get GPU stats using rk."""
+     try:
+@@ -723,12 +745,9 @@
+     average_load = f"{round(sum(load_values) / len(load_values), 2)}%"
+     stats: dict[str, str | float] = {"gpu": average_load, "mem": "-%"}
+ 
+-    try:
+-        with open("/sys/class/thermal/thermal_zone5/temp") as f:
+-            line = f.readline().strip()
+-            stats["temp"] = round(int(line) / 1000, 1)
+-    except (FileNotFoundError, OSError, ValueError):
+-        pass
++    temp = get_thermal_zone_temp("gpu-thermal")
++    if temp is not None:
++        stats["temp"] = temp
+ 
+     return stats
+ 
+@@ -755,12 +774,9 @@
+     mean = round(sum(percentages) / len(percentages), 2)
+     stats: dict[str, float | str] = {"npu": mean, "mem": "-%"}
+ 
+-    try:
+-        with open("/sys/class/thermal/thermal_zone6/temp") as f:
+-            line = f.readline().strip()
+-            stats["temp"] = round(int(line) / 1000, 1)
+-    except (FileNotFoundError, OSError, ValueError):
+-        pass
++    temp = get_thermal_zone_temp("npu-thermal")
++    if temp is not None:
++        stats["temp"] = temp
+ 
+     return stats
+ 
