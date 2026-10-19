@@ -409,7 +409,7 @@ in
             "${pkgs.nodejs_24}/bin/node"
             "${pkgs.nodejs_24}/bin/npx"
             "-y"
-            "@baruchiro/paperless-mcp@2.0.0"
+            "@baruchiro/paperless-mcp@2.2.1"
           ];
           environment = {
             PATH = pkgs.lib.makeBinPath [
