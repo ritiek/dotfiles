@@ -49,6 +49,8 @@
     # radrubble needs ~20-40s to start a transcode after a quality change;
     # with the 30s default the shim gives up and closes mpv.
     settings.playback_timeout = 120;
+    # Auto-hide the playback HUD after 2s of no input (default 4s).
+    settings.hud_hide_secs = 2.0;
     mpvConfig = config.programs.mpv.config // {
       # After a quality change Jellyfin extracts subtitles from the whole file
       # before serving them (~60s+ on radrubble); mpv's 60s default gives up.
