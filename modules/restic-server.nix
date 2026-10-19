@@ -76,6 +76,8 @@ in
       "nofail"
       "x-systemd.automount"
       "x-systemd.mount-timeout=5s"
+      # Stop writing on the first fs error instead of piling on more damage.
+      "errors=remount-ro"
     ];
   };
 
