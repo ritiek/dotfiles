@@ -190,20 +190,22 @@ in
       record.enabled = false;
       snapshots.enabled = false;
       objects.track = [ "person" "car" "bicycle" "motorcycle" "dog" ];
-      cameras.pavilion = {
-        ffmpeg.inputs = [{
-          path = "http://64.191.148.57/mjpg/video.mjpg";
-          input_args = "preset-http-mjpeg-generic";
-          roles = [ "detect" ];
-        }];
-        detect = {
-          enabled = true;
-          width = 800;
-          height = 450;
-          # The public feed only delivers ~3 fps from here.
-          fps = 5;
-        };
-      };
+      # Test camera (a public feed), off to save memory. Uncomment to test
+      # detection without the XIAO.
+      # cameras.pavilion = {
+      #   ffmpeg.inputs = [{
+      #     path = "http://64.191.148.57/mjpg/video.mjpg";
+      #     input_args = "preset-http-mjpeg-generic";
+      #     roles = [ "detect" ];
+      #   }];
+      #   detect = {
+      #     enabled = true;
+      #     width = 800;
+      #     height = 450;
+      #     # The public feed only delivers ~3 fps from here.
+      #     fps = 5;
+      #   };
+      # };
       # Seeed XIAO ESP32S3 Sense (OV3660) on custom Tasmota: 1600x1200 MJPEG
       # at ~8 fps on its port-81 stream server.
       cameras.xiao = {
