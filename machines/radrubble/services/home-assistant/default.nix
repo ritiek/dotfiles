@@ -165,7 +165,7 @@ in
             command = ''[ "$(${sshPilab} mount-status)" = true ] && [ "$(${sshChocomelt})" = true ] && echo true || echo false'';
             payload_on = "true";
             payload_off = "false";
-            scan_interval = 30;
+            scan_interval = 300;
           };
         }
       ];
