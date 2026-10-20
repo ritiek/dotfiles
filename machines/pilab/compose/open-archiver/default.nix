@@ -178,7 +178,7 @@
     ];
   };
   virtualisation.oci-containers.containers."tika" = {
-    image = "apache/tika:3.2.2.0-full";
+    image = "apache/tika:3.3.1.0-full";
     environmentFiles = [
       config.sops.secrets."compose/open-archiver.env".path
     ];

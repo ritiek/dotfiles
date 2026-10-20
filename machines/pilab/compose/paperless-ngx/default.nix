@@ -69,7 +69,7 @@
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-gotenberg" = {
-    image = "docker.io/gotenberg/gotenberg:8.7";
+    image = "docker.io/gotenberg/gotenberg:8.37";
     environmentFiles = [
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
@@ -96,7 +96,7 @@
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-tika" = {
-    image = "docker.io/apache/tika:latest";
+    image = "docker.io/apache/tika:3.3.1.0";
     environmentFiles = [
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
@@ -139,7 +139,7 @@
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-webserver" = {
-    image = "ghcr.io/paperless-ngx/paperless-ngx:3.0.5";
+    image = "ghcr.io/paperless-ngx/paperless-ngx:3.3.3";
     environmentFiles = [
       config.sops.secrets."compose/paperless-ngx.env".path
     ];

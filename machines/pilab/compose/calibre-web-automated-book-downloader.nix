@@ -31,21 +31,24 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."calibre-web-automated-book-downloader" = {
-    image = "ghcr.io/calibrain/calibre-web-automated-book-downloader:latest";
+    # Renamed to Shelfmark in 1.0. Settings now persist in /config and the
+    # default download destination moved from /cwa-book-ingest to /books.
+    image = "ghcr.io/calibrain/shelfmark:latest";
     environment = {
       "APP_ENV" = "prod";
       "BOOK_LANGUAGE" = "en";
       "DOWNLOAD_PROGRESS_UPDATE_INTERVAL" = "5";
       "FLASK_PORT" = "8084";
-      "GID" = "1000";
+      "PGID" = "1000";
       "LOG_LEVEL" = "info";
       "MAX_CONCURRENT_DOWNLOADS" = "3";
       "TZ" = "Asia/Kolkata";
-      "UID" = "1000";
+      "PUID" = "1000";
       "USE_BOOK_TITLE" = "true";
     };
     volumes = [
-      "${homelabMediaPath}/services/calibre/ingest:/cwa-book-ingest:rw"
+      "${homelabMediaPath}/services/calibre/ingest:/books:rw"
+      "${homelabMediaPath}/services/calibre/shelfmark:/config:rw"
       "${homelabMediaPath}/services/calibre/config/app.db:/auth/app.db:ro"
     ];
     ports = [

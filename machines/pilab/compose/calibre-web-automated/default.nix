@@ -42,7 +42,7 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."calibre-web-automated" = {
-    image = "crocodilestick/calibre-web-automated:v4.0.6";
+    image = "crocodilestick/calibre-web-automated:v4.0.8";
     environment = {
       "CWA_PORT_OVERRIDE" = "8083";
       "NETWORK_SHARE_MODE" = "false";

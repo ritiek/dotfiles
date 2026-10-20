@@ -38,7 +38,7 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."readeck" = {
-    image = "codeberg.org/readeck/readeck:0.23.2";
+    image = "codeberg.org/readeck/readeck:0.23.4";
     volumes = [
       "${homelabMediaPath}/services/readeck:/readeck:rw"
     ];

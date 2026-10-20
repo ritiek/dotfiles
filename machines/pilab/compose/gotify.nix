@@ -11,7 +11,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."gotify" = {
-    image = "gotify/server-arm64:3.0.0";
+    image = "gotify/server-arm64:3.1.1";
     environment = {
       "GOTIFY_DEFAULTUSER_PASS" = "custom";
     };

@@ -31,8 +31,9 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."jellyseerr" = {
-    image = "fallenbagel/jellyseerr:latest";
-    # image = "ghcr.io/seerr-team/seerr:develop";
+    # Jellyseerr merged into Seerr. Seerr runs as UID 1000 and ships no init,
+    # so the config dir must be owned by 1000:1000.
+    image = "ghcr.io/seerr-team/seerr:latest";
     environment = {
       "LOG_LEVEL" = "debug";
       "TZ" = "Asia/Kolkata";
@@ -47,6 +48,7 @@ in lib.mkMerge [
     autoStart = false;
     extraOptions = [
       "--add-host=host.docker.internal:host-gateway"
+      "--init"
       "--network-alias=jellyseerr"
       "--network=jellyseerr_default"
     ];

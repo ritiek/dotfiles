@@ -113,7 +113,7 @@ in
     ];
   };
   virtualisation.oci-containers.containers."immich_redis" = {
-    image = "docker.io/valkey/valkey:9@sha256:70739f85ad2ee01a726a965584a0f94895f01b0c60b3cc8b0aeef11eaa6888cf";
+    image = "docker.io/valkey/valkey:9@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d";
     environmentFiles = [
       config.sops.secrets."compose/immich.env".path
     ];

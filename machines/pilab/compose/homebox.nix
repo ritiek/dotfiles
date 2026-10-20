@@ -1,5 +1,5 @@
 # Auto-generated using compose2nix v0.2.3.
-{ pkgs, lib, homelabMediaPath, ... }:
+{ pkgs, lib, config, homelabMediaPath, ... }:
 
 let
   # Configuration
@@ -22,6 +22,13 @@ let
 in lib.mkMerge [
   lazyLoadingServices
   {
+  # Holds HBOX_AUTH_API_KEY_PEPPER (required since homebox 0.27)
+  sops.secrets."compose/homebox.env" = {
+    sopsFile = ./homebox/stack.env;
+    format = "dotenv";
+    restartUnits = [ "docker-homebox.service" ];
+  };
+
   # Runtime
   virtualisation.docker = {
     enable = true;
@@ -38,6 +45,9 @@ in lib.mkMerge [
       "HBOX_WEB_MAX_UPLOAD_SIZE" = "10";
       "TZ" = "Asia/Kolkata";
     };
+    environmentFiles = [
+      config.sops.secrets."compose/homebox.env".path
+    ];
     volumes = [
       "${homelabMediaPath}/services/homebox:/data:rw"
     ];

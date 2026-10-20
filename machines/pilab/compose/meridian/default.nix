@@ -45,7 +45,7 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."meridian-proxy" = {
-    image = "ghcr.io/rynfar/meridian:1.79.0";
+    image = "ghcr.io/rynfar/meridian:1.84.0";
     environmentFiles = [
       config.sops.secrets."compose/meridian.env".path
     ];

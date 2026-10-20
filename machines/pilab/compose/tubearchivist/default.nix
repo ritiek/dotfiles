@@ -125,7 +125,7 @@ in lib.mkMerge [
   };
 
   virtualisation.oci-containers.containers."bgutil-provider" = {
-    image = "brainicism/bgutil-ytdlp-pot-provider:2.0.0";
+    image = "brainicism/bgutil-ytdlp-pot-provider:2.0.2";
     log-driver = "journald";
     autoStart = false;
     extraOptions = [

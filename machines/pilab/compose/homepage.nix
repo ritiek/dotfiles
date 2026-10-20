@@ -34,7 +34,8 @@ in lib.mkMerge [
     environment = {
       # "PGID" = "1000";
       # "PUID" = "1000";
-      "HOMEPAGE_ALLOWED_HOSTS" = "pilab.lion-zebra.ts.net";
+      # 127.0.0.1 entry is for the lazy-loading readiness probe
+      "HOMEPAGE_ALLOWED_HOSTS" = "pilab.lion-zebra.ts.net,127.0.0.1:${toString internalWebUIPort}";
     };
     volumes = [
       "${homelabMediaPath}/services/homepage:/app/config:rw"
@@ -57,6 +58,8 @@ in lib.mkMerge [
       RestartMaxDelaySec = lib.mkOverride 90 "1m";
       RestartSec = lib.mkOverride 90 "100ms";
       RestartSteps = lib.mkOverride 90 9;
+      # homepage v2 exits 143 on SIGTERM (lazy-loading autostop)
+      SuccessExitStatus = [ 143 ];
     };
     after = [
       "docker-network-homepage_default.service"
