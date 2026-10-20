@@ -3,7 +3,17 @@ let
   # Nixarr's per-service systemd unit names (seerr.service, not
   # jellyseerr.service; qui.service is a separate WebUI proxy unit alongside
   # qbittorrent.service). Keep in sync with machines/chocomelt/services/nixarr.nix.
-  units = "radarr.service sonarr.service bazarr.service prowlarr.service qbittorrent.service qui.service jellyfin.service seerr.service frigate.service syncthing.service syncthing-init.service";
+  # Listed in start order.
+  units = "qbittorrent.service qui.service syncthing.service syncthing-init.service prowlarr.service radarr.service sonarr.service bazarr.service seerr.service jellyfin.service frigate.service";
+
+  # One unit a minute: started together their startup peaks overlap past the
+  # 2GB of RAM and the board thrashes in zram until it stops answering.
+  mediaserver-stagger = pkgs.writeShellScript "mediaserver-stagger" ''
+    for u in ${units}; do
+      ${pkgs.systemd}/bin/systemctl start "$u"
+      sleep 60
+    done
+  '';
 
   mediaserver-mount = pkgs.writeShellScriptBin "mediaserver-mount" ''
     set -ex
@@ -43,11 +53,14 @@ let
 
   mediaserver-start = pkgs.writeShellScriptBin "mediaserver-start" ''
     set -x
-    mediaserver-mount && systemctl start ${units}
+    # In the background (~11 min) so pilab's homelab-mount, which runs this
+    # over SSH, isn't held up. Follow with: journalctl -fu mediaserver-stagger
+    mediaserver-mount && systemd-run --collect --unit=mediaserver-stagger ${mediaserver-stagger}
   '';
 
   mediaserver-stop = pkgs.writeShellScriptBin "mediaserver-stop" ''
     set -x
+    systemctl stop mediaserver-stagger.service 2>/dev/null || true
     systemctl stop ${units}
   '';
 
