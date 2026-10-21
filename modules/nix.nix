@@ -49,6 +49,14 @@ in
     persistent = true;
   };
 
+  # Distrust roots of the leaked eMudhra intermediate CA keys.
+  # https://ghuntley.com/patch/
+  # TODO: Remove this when things have cooled down a bit.
+  security.pki.caCertificateBlacklist = [
+    "Comodo AAA Services root"
+    "emSign ECC Root CA - G3"
+  ];
+
   # Configure nix-daemon socket for remote builder access
   # systemd.tmpfiles.rules = [
   #   "d /nix/var/nix/daemon-socket 0755 root nixbld - -"
