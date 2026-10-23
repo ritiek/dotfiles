@@ -18,13 +18,15 @@ let
 
   # Pushes this machine's Chromium profile (logins, cookies) to alcove, where
   # chromium-agent (machines/alcove/browser.nix) copies it per browser instance.
+  # Optional $1 picks the target seed host (default: this host), e.g.
+  # `sync-chromium-to-alcove alcove` seeds playwright-alcove run on alcove itself.
   sync-chromium-to-alcove = pkgs.writeShellScriptBin "sync-chromium-to-alcove" ''
     src="$HOME/.config/chromium/Default/"
     [ -d "$src" ] || { echo "no $src, alcove will use a fresh profile" >&2; exit 0; }
     exec ${pkgs.rsync}/bin/rsync -az --delete --mkpath -e "${ssh}" \
       --exclude='Service Worker/' --exclude='GPUCache/' --exclude='Shared Dictionary/' \
       --exclude='File System/' --exclude='DawnWebGPUCache/' --exclude='DawnGraphiteCache/' \
-      "$src" "${alcove}:${seed}/Default/"
+      "$src" "${alcove}:.cache/chromium-seed/''${1:-${hostName}}/Default/"
   '';
 
   # Playwright's --executable-path: it speaks CDP on our fds 3 (in) and 4 (out);

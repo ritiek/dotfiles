@@ -51,7 +51,7 @@ let
   chromium-agent = pkgs.writeShellScriptBin "chromium-agent" ''
     set -e
     unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
-    seed=$HOME/''${CHROMIUM_SEED:-.config/chromium}
+    seed=$HOME/''${CHROMIUM_SEED:-.cache/chromium-seed/alcove} # set by remote callers
     dir=$(mktemp -d /tmp/chromium-agent-XXXXXX)
     trap 'rm -rf "$dir"' EXIT
     mkdir "$dir/Default"
