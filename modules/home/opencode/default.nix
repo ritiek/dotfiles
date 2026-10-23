@@ -184,7 +184,9 @@ in
       - You're working with NixOS. Use `nix-shell -p` or comma (e.g. `, cowsay hi`)
         to run any tools not currently available on the system.
       - Unless stated otherwise, Use `sudo nixos-rebuild switch --flake </path/to/>#<flake>`
-        to rebuild NixOS configuration and do NOT use `home-manager switch`.
+        to rebuild NixOS configuration and do NOT use `home-manager switch`. This applies only
+        when rebuilding the machine you (opencode) are running on. To deploy to any other
+        machine, use `deploy -s </path/to/>#<flake>`.
       - For heavy builds, offload to nixbuild.net remote builders by prefixing the command
         with `nixbuild`, `nixbuild2` or `nixbuild3` (e.g. `nixbuild sudo nixos-rebuild switch --flake ...`).
         These are separate accounts; if one fails or runs out of credits, try another.
