@@ -82,7 +82,9 @@ let
     ${pkgs.util-linux}/bin/flock 9
     # The BlueZ transport has the exact 0-127 value; wpctl rounds it to 2
     # decimals, which nudges the speaker a step up on every restore.
-    tp=$($busctl --list tree org.bluez | grep -m1 "/org/bluez/hci0/dev_$mac/sep[0-9]*/fd[0-9]*$")
+    # Under sepN/ or straight under the device, depending on BlueZ version
+    # and which side connected.
+    tp=$($busctl --list tree org.bluez | grep -m1 -E "/org/bluez/hci0/dev_$mac/(sep[0-9]+/)?fd[0-9]+$")
     [ -n "$tp" ] || exit 1
     vol() { $busctl get-property org.bluez "$tp" org.bluez.MediaTransport1 Volume | cut -d' ' -f2; }
     setvol() { $busctl set-property org.bluez "$tp" org.bluez.MediaTransport1 Volume q "$1"; }
@@ -150,10 +152,13 @@ in
     unitConfig.ConditionUser = "ritiek";
     script = ''
       mac=$(tr _ : < ${config.sops.secrets."bt_speaker.mac_address".path})
+      btctl=${config.hardware.bluetooth.package}/bin/bluetoothctl
       for _ in $(seq 20); do
         sleep 30
+        # Connecting an already-connected speaker errors out, so check first.
         # Output names the MAC, which is kept in sops; keep it out of the journal.
-        timeout 30 ${config.hardware.bluetooth.package}/bin/bluetoothctl connect "$mac" >/dev/null 2>&1 && exit 0
+        $btctl info "$mac" 2>/dev/null | grep -q 'Connected: yes' && exit 0
+        timeout 30 $btctl connect "$mac" >/dev/null 2>&1 && exit 0
       done
     '';
   };
