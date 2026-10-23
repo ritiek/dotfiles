@@ -408,6 +408,15 @@ in
           model = "claude-opus-5-5";
           provider = "anthropic";
         };
+        channel_overrides."!TiSyl7i3cEsHc7V4_xhUmEHCpF1kOONPsXEUPq_46H0" = {
+          # Free Nous Portal model; OAuth login lives in .hermes/auth.json
+          # (`hermes auth add nous --type oauth --no-browser`).
+          # model = "ornith/ornith-1.5-122b:free";
+          # provider = "nous";
+          # OpenCode free tier via the oc-free-provider plugin (see plugins.enabled).
+          model = "deepseek-v4.1-flash-free";
+          provider = "opencode-free";
+        };
       };
       platforms.homeassistant = {
         enabled = true;
@@ -636,7 +645,10 @@ in
       # `hermes plugins install homeassistant` (formerly core). Enabled here
       # because `--enable` fails on Nix installs (it resolves deps against a
       # uv.lock the store path doesn't ship).
-      plugins.enabled = [ "homeassistant" ];
+      # oc-free-provider: catalog plugin (`hermes plugins install
+      # oc-free-provider`), adds the `opencode-free` provider for OpenCode
+      # Zen free models.
+      plugins.enabled = [ "homeassistant" "oc-free-provider" ];
 
       mcp_servers.homeassistant = {
         enabled = true;
