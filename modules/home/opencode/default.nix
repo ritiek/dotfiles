@@ -190,6 +190,11 @@ in
       - For heavy builds, offload to nixbuild.net remote builders by prefixing the command
         with `nixbuild`, `nixbuild2` or `nixbuild3` (e.g. `nixbuild sudo nixos-rebuild switch --flake ...`).
         These are separate accounts; if one fails or runs out of credits, try another.
+      - If a request fails with a rate limit error (e.g. HTTP 429), retry it through the 3proxy
+        HTTP proxy (port 8090, over Tailscale) on a machine outside your subnet, so the request
+        leaves from a different public IP. 3proxy runs on pilab, keyberry, mishy and clawsiecats
+        (e.g. `curl -x http://<user>:<pass>@clawsiecats.lion-zebra.ts.net:8090 ...`).
+        Credentials are in `/run/secrets/3proxy.users` on those machines (`user:CL:pass` format).
       - Use `rg` (ripgrep) instead of `grep` and `fd` (fd-find) instead of `find` for searching
         through code and files.
     '';
