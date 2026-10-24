@@ -210,7 +210,7 @@ in
       # at ~8 fps on its port-81 stream server.
       cameras.xiao = {
         ffmpeg.inputs = [{
-          path = "http://192.168.2.15:81/stream";
+          path = "http://xiao-sense-esp32-cam.pihole:81/stream";
           input_args = "preset-http-mjpeg-generic";
           roles = [ "detect" ];
         }];
