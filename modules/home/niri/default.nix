@@ -32,13 +32,76 @@ let
       sleep 2
     done
   '';
+
+  # Desktop client for pilab's ntfy server. `ntfy subscribe` runs
+  # ntfy-notify once per message (fields come in as NTFY_* env vars).
+  # Per-service icons, <service>.png, pinned from homarr-labs/dashboard-icons.
+  ntfy-icons = pkgs.linkFarm "ntfy-icons" (lib.mapAttrsToList (name: hash: {
+    name = "${name}.png";
+    path = pkgs.fetchurl {
+      url = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/d3b9234dd56f3af5862f06741f0dce101193b3df/png/${name}.png";
+      inherit hash;
+    };
+  }) {
+    frigate = "sha256-h2Qs+wPZAqvZDC+XnjZU5Aa0qXJeT2uPcc4zORzlw9s=";
+    qbittorrent = "sha256-PQOiyRRAqFq2h5IH+Q4XqP+clYCuWibsOmSywkGPcBk=";
+    gatus = "sha256-ExDhrhereHDotI9PjDtfEATqwlMk4GD0aDg6d2MlEGY=";
+    uptime-kuma = "sha256-TunsQnTgLWMJLdtx2i5xyVCr5A3GvoqIBCtWZGTAtww=";
+    radarr = "sha256-LRU0+HUT4qejtpllTf7SunD29laT7UoBXklzFRNeLmc=";
+    sonarr = "sha256-ptMoPQIytaC9BXLz0m7cvmTQfTb0PD/CjU8LwVXq9Jo=";
+    prowlarr = "sha256-cPzVvWQr/mWTbkdGlJfeY4773rjTDqkW/ff5x0PX6Qg=";
+    bazarr = "sha256-UnzDBbVWV+odsX3p2WK+ZhGgmz8ZcrEltoo+s7FSnkU=";
+    jellyfin = "sha256-LkXHuwSx/bxwc3vhZ2xzvPvpjc2fctzQYxlscHXGWzc=";
+    seerr = "sha256-pjGSKgB6EEz3kSBpH1mbVoYvKF3XZbqwt0TaAHmnBcw=";
+    changedetection = "sha256-EjJROboeUjDSQwLlSRKqivFfVdxpJ8gry/iqvkiePBc=";
+    ntfy = "sha256-eHqBHmPXPz7tJGfsMG4WlER4zsrmL2vIovP2V3S9vJg=";
+  });
+  ntfy-notify = pkgs.writeShellScript "ntfy-notify" ''
+    PATH=${lib.makeBinPath [ pkgs.jq pkgs.curl pkgs.libnotify pkgs.xdg-utils pkgs.coreutils ]}
+    click=$(jq -r '.click // empty' <<<"$NTFY_RAW")
+    image=$(jq -r '.attachment.url // empty' <<<"$NTFY_RAW")
+    # The topic names the service, except the shared "arr" topic, where the
+    # title starts with the app name ("Sonarr - Episode Grabbed").
+    service=$NTFY_TOPIC
+    if [ "$service" = arr ]; then
+      service=''${NTFY_TITLE%% *}
+      service=''${service,,}
+    fi
+    icon=${ntfy-icons}/$service.png
+    [ -f "$icon" ] || icon=${ntfy-icons}/ntfy.png
+    # Backgrounded so a notification waiting on its "Open" action doesn't
+    # block the next message.
+    (
+      snap=
+      if [ -n "$image" ]; then
+        snap=$(mktemp --suffix=.jpg)
+        curl -sf -o "$snap" "$image" || { rm -f "$snap"; snap=; }
+      fi
+      urgency=normal
+      [ "''${NTFY_PRIORITY:-3}" -ge 4 ] && urgency=critical
+      action=$(notify-send -a "$service" -u "$urgency" -i "$icon" \
+        ''${snap:+-h "string:image-path:$snap"} ''${click:+-A open=Open} \
+        "''${NTFY_TITLE:-$NTFY_TOPIC}" "$NTFY_MESSAGE")
+      [ "$action" = open ] && xdg-open "$click"
+      [ -n "$snap" ] && rm -f "$snap"
+    ) </dev/null >/dev/null 2>&1 &
+  '';
+  ntfy-desktop = pkgs.writeShellScript "ntfy-desktop" ''
+    while true; do
+      ${pkgs.ntfy-sh}/bin/ntfy subscribe \
+        -k "$(cat ${config.sops.secrets."ntfy.token".path})" \
+        http://pilab.lion-zebra.ts.net:8894/frigate,qbittorrent,gatus,uptime-kuma,arr,jellyfin,seerr,changedetection \
+        ${ntfy-notify}
+      sleep 10
+    done
+  '';
 in
 {
   imports = [
     ./../../../scripts/home/swaync-focus-window.nix
   ];
 
-  sops.secrets."gotify.token" = {};
+  sops.secrets."ntfy.token" = {};
 
   home.packages = with pkgs; [
     niri
@@ -62,7 +125,6 @@ in
     wlopm
     xwayland-satellite
     rose-pine-cursor
-    gotify-desktop
   ] ++ (if osConfig.hardware.nvidia.enabled or false then [
     # Wrapper to disable NVIDIA offload (use Intel GPU instead)
     # for screenshare to work.
@@ -460,7 +522,7 @@ spawn-at-startup "waybar"
 spawn-at-startup "hyprpaper"
 spawn-at-startup "hypridle"
 spawn-at-startup "gammastep" "-O" "4300" "-r" "-m" "wayland"
-spawn-at-startup "gotify-desktop"
+spawn-at-startup "${ntfy-desktop}"
 spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "swayosd-server"
@@ -867,18 +929,6 @@ animations {
 //         off
 //     }
 // }
-  '';
-
-  xdg.configFile."gotify-desktop/config.toml".text = ''
-    [gotify]
-    auto_delete = false
-    url = "ws://pilab.lion-zebra.ts.net:8893"
-
-    [gotify.token]
-    command = "${pkgs.coreutils}/bin/cat ${config.sops.secrets."gotify.token".path}"
-
-    [notification]
-    min_priority = 0
   '';
 
   services = {

@@ -167,7 +167,11 @@ in
     hostname = "chocomelt.lion-zebra.ts.net";
     settings = {
       database.path = "${dataDir}/config/frigate.db";
-      mqtt.enabled = false;
+      # Broker on pilab, read by frigate-notify there to push alerts to ntfy.
+      mqtt = {
+        enabled = true;
+        host = "pilab.lion-zebra.ts.net";
+      };
       # Decode and downscale the MJPEG streams on the RK3566's MPP/RGA instead
       # of the CPU: about a third of the CPU for the XIAO's 1600x1200 stream.
       ffmpeg = {
@@ -188,7 +192,10 @@ in
         labelmap_path = "${labelmap}";
       };
       record.enabled = false;
-      snapshots.enabled = false;
+      snapshots = {
+        enabled = true;
+        retain.default = 7;
+      };
       objects.track = [ "person" "car" "bicycle" "motorcycle" "dog" ];
       # Test camera (a public feed), off to save memory. Uncomment to test
       # detection without the XIAO.
@@ -276,4 +283,15 @@ in
   # nginx vhost with frigate's login (admin password is printed in
   # `journalctl -u frigate` on first start).
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 ];
+
+  # frigate-notify (pilab) posts its login JSON without a Content-Type, which
+  # Frigate rejects with 422, so every later API call 401s. The web UI sends
+  # JSON here anyway. Exact match wins over the module's nested /api/login.
+  services.nginx.virtualHosts."chocomelt.lion-zebra.ts.net".locations."= /api/login" = {
+    proxyPass = "http://frigate-api/login";
+    recommendedProxySettings = true;
+    extraConfig = ''
+      proxy_set_header Content-Type application/json;
+    '';
+  };
 }

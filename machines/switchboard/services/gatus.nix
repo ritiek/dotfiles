@@ -18,7 +18,7 @@
 # preserve parity -- flip to `true` to reactivate them.
 #
 # Notifications are migrated 1:1 from pilab's uptime-kuma (see its
-# `notification`/`monitor_notification` tables): Gotify is attached to the
+# `notification`/`monitor_notification` tables): ntfy is attached to the
 # same 7 push monitors, and email/SMTP (Mailgun) is attached only to
 # ballistica-archive. Discord was skipped since it wasn't attached to any
 # monitor on pilab (isDefault=false, no monitor_notification rows).
@@ -40,15 +40,15 @@
       };
 
       # Notifications, migrated 1:1 from pilab's uptime-kuma. Discord was
-      # skipped since it isn't attached to any monitor on pilab. Gotify
-      # (priority=2, same as pilab) is attached to the 7 push monitors
-      # that had it in uptime-kuma; email/SMTP (Mailgun) is attached only
-      # to ballistica-archive, same as pilab.
+      # skipped since it isn't attached to any monitor on pilab. ntfy
+      # is attached to the push monitors that had it in
+      # uptime-kuma; email/SMTP (Mailgun) is attached only to
+      # ballistica-archive, same as pilab.
       alerting = {
-        gotify = {
-          "server-url" = "http://pilab.lion-zebra.ts.net:8893";
-          token = "\${GATUS_GOTIFY_TOKEN}";
-          priority = 2;
+        ntfy = {
+          url = "http://pilab.lion-zebra.ts.net:8894";
+          topic = "gatus";
+          token = "\${GATUS_NTFY_TOKEN}";
         };
         email = {
           from = "\"Gatus (switchboard)\" <uptime-kuma@pi400kb>";
@@ -158,7 +158,7 @@
           url = "http://switchboard.lion-zebra.ts.net:6040/";
           interval = "60s";
           conditions = [ "[STATUS] == 200" ];
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
 
         # LAN hosts
@@ -261,31 +261,31 @@
           group = "backups";
           token = "\${GATUS_TOKEN_PAPERLESS_NGX_SYNC}";
           heartbeat.interval = "3h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
         {
           name = "whatsapp-backup-verify";
           group = "backups";
           token = "\${GATUS_TOKEN_WHATSAPP_BACKUP_VERIFY}";
           heartbeat.interval = "16h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
         {
           name = "restic-backups-homelab@pilab";
           group = "backups";
           token = "\${GATUS_TOKEN_RESTIC_PILAB}";
           heartbeat.interval = "16h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
         {
           name = "restic-backups-homelab@keyberry";
           group = "backups";
           token = "\${GATUS_TOKEN_RESTIC_KEYBERRY}";
           heartbeat.interval = "60h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
         {
-          # No Gotify on pilab for this one -- left without alerting to
+          # No alerting on pilab for this one -- left without alerting to
           # match.
           name = "bme680-sensor";
           group = "telemetry";
@@ -297,10 +297,10 @@
           group = "telemetry";
           token = "\${GATUS_TOKEN_PIHOLE_DNS_CHECK}";
           heartbeat.interval = "8h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
         {
-          # No Gotify on pilab for this one -- left without alerting to
+          # No alerting on pilab for this one -- left without alerting to
           # match.
           name = "dht22-sensor";
           group = "telemetry";
@@ -316,7 +316,7 @@
           enabled = false;
           token = "\${GATUS_TOKEN_SPOTDL_SYNC}";
           heartbeat.interval = "48h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
         {
           name = "sqlcipher-integrity";
@@ -324,7 +324,7 @@
           enabled = false;
           token = "\${GATUS_TOKEN_SQLCIPHER_INTEGRITY}";
           heartbeat.interval = "12h";
-          alerts = [ { type = "gotify"; } ];
+          alerts = [ { type = "ntfy"; } ];
         }
       ];
     };

@@ -39,7 +39,9 @@
     ./compose/memos.nix
     ./compose/syncthing.nix
     ./compose/miniflux
-    ./compose/gotify.nix
+    # ./compose/gotify.nix
+    ./compose/frigate-notify.nix
+    ./compose/ntfy.nix
     # ./compose/shiori
     ./compose/homebox.nix
     ./compose/grocy

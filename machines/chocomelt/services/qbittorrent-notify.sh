@@ -1,5 +1,5 @@
 #
-# qBittorrent Gotify Notification Script
+# qBittorrent ntfy Notification Script
 # Sends formatted notifications when torrents are added/completed
 #
 # Usage:
@@ -7,11 +7,10 @@
 #
 
 # Configuration
-GOTIFY_URL="http://pilab.lion-zebra.ts.net:8893"
-# @GOTIFY_TOKEN_FILE@ is substituted at build time (see nixarr.nix) with the
+NTFY_URL="http://pilab.lion-zebra.ts.net:8894/qbittorrent"
+# @NTFY_TOKEN_FILE@ is substituted at build time (see nixarr.nix) with the
 # sops-nix decrypted secret path; the token itself is never embedded here.
-GOTIFY_TOKEN=$(cat "@GOTIFY_TOKEN_FILE@")
-PRIORITY=3
+NTFY_TOKEN=$(cat "@NTFY_TOKEN_FILE@")
 
 # Torrent parameters from qBittorrent
 #
@@ -87,13 +86,13 @@ format_message() {
     printf "%b" "$msg"
 }
 
-# Send notification to Gotify
+# Send notification to ntfy
 MESSAGE=$(format_message)
 
-curl -s -X POST "$GOTIFY_URL/message?token=$GOTIFY_TOKEN" \
-    -F "title=$TITLE" \
-    -F "message=$MESSAGE" \
-    -F "priority=$PRIORITY" \
+curl -s -X POST "$NTFY_URL" \
+    -H "Authorization: Bearer $NTFY_TOKEN" \
+    -H "Title: $TITLE" \
+    -d "$MESSAGE" \
     > /dev/null
 
 # Log success (optional)

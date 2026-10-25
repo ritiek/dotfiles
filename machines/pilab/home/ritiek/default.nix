@@ -84,7 +84,9 @@ let
       systemctl start autostart-memos.service
       systemctl start docker-syncthing.service
       systemctl start docker-miniflux.service
-      systemctl start docker-gotify.service
+      # systemctl start docker-gotify.service
+      systemctl start docker-ntfy.service
+      systemctl start docker-frigate-notify.service
       # systemctl start docker-shiori.service
       systemctl start autostart-homebox.service
       systemctl start autostart-grocy.service
@@ -284,7 +286,8 @@ in
         systemctl stop autostart-memos.service docker-compose-memos-root.target
         systemctl stop docker-compose-syncthing-root.target
         systemctl stop docker-compose-miniflux-root.target
-        systemctl stop docker-compose-gotify-root.target
+        # systemctl stop docker-compose-gotify-root.target
+        systemctl stop docker-frigate-notify.service mosquitto.service docker-ntfy.service
         # systemctl stop docker-compose-shiori-root.target
         systemctl stop autostart-homebox.service docker-compose-homebox-root.target
         systemctl stop autostart-grocy.service docker-compose-grocy-root.target

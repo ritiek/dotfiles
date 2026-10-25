@@ -6,7 +6,7 @@ let
   # wrapping (via runtimeInputs) is required for the script's `curl` call to
   # actually be found when qBittorrent invokes it as an AutoRun program.
   #
-  # The Gotify token is never embedded in the script text: it's substituted
+  # The ntfy token is never embedded in the script text: it's substituted
   # here with the sops-nix runtime secret *path* (not the secret value
   # itself -- that's only decrypted on-disk on chocomelt at activation time,
   # long after this Nix expression is evaluated/built on alcove).
@@ -14,8 +14,8 @@ let
     name = "qbittorrent-notify";
     runtimeInputs = [ pkgs.curl ];
     text = builtins.replaceStrings
-      [ "@GOTIFY_TOKEN_FILE@" ]
-      [ config.sops.secrets."gotify.token".path ]
+      [ "@NTFY_TOKEN_FILE@" ]
+      [ config.sops.secrets."ntfy.qbittorrent_token".path ]
       (builtins.readFile ./qbittorrent-notify.sh);
   };
 
@@ -75,7 +75,7 @@ in
   # Decrypted from the default system sops file (machines/chocomelt/secrets.yaml).
   # Owned by qbittorrent since qbittorrent-notify.sh runs as that user (exec'd
   # directly by qBittorrent's AutoRun, not via a systemd EnvironmentFile).
-  sops.secrets."gotify.token" = {
+  sops.secrets."ntfy.qbittorrent_token" = {
     owner = "qbittorrent";
   };
   # Full "@ByteArray(salt:hash)" value for qBittorrent's WebUI\Password_PBKDF2.
