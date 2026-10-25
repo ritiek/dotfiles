@@ -40,8 +40,9 @@
     ./compose/syncthing.nix
     ./compose/miniflux
     # ./compose/gotify.nix
-    ./compose/frigate-notify.nix
-    ./compose/ntfy.nix
+    ./compose/mosquitto
+    ./compose/frigate-notify
+    ./compose/ntfy
     # ./compose/shiori
     ./compose/homebox.nix
     ./compose/grocy
