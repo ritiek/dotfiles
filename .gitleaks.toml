@@ -1,0 +1,8 @@
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "SSH public host keys are not secrets"
+targetRules = ["generic-api-key"]
+regexTarget = "line"
+regexes = ['''publicHostKey\s*=''']
