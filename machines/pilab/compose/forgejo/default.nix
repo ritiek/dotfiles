@@ -24,6 +24,8 @@
     environmentFiles = [
       config.sops.secrets."compose/forgejo.env".path
     ];
+    # Forgejo 17 defaults to "session", which collides with Flask apps on the same host.
+    environment.FORGEJO__session__COOKIE_NAME = "i_like_gitea";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/etc/timezone:/etc/timezone:ro"
