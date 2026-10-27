@@ -262,6 +262,8 @@
       strict-order = true;
       # Don't read /etc/resolv.conf for upstream servers; we define them above.
       no-resolv = true;
+      # Pass the real client IP to Pi-hole (EDNS0 ECS) so it doesn't log everything as 127.0.0.1.
+      add-subnet = "32,128";
     };
   };
 
