@@ -35,6 +35,22 @@ let
 
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
 
+  # Playwright's --executable-path for the Applications room: GPU Chromium in
+  # alcove's sway, seeded from alcove's copy of the laptop profile (mishy).
+  # CDP travels over ssh fds 3/4, the same contract as
+  # modules/home/opencode/playwright.nix. No profile sync here -- refresh the
+  # seed by running `sync-chromium-to-alcove mishy` on mishy.
+  chromiumAlcove = pkgs.writeShellScript "chromium-alcove-hermes" ''
+    exec ${pkgs.coreutils}/bin/env -u HTTP_PROXY -u HTTPS_PROXY \
+      -u http_proxy -u https_proxy \
+      ${pkgs.openssh}/bin/ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
+      -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 \
+      -i /home/ritiek/.ssh/sops.id_ed25519 -o IdentitiesOnly=yes \
+      ritiek@alcove.lion-zebra.ts.net \
+      CHROMIUM_SEED=.cache/chromium-seed/mishy chromium-agent "''${@@Q}" \
+      '3<&0 4>&1 </dev/null >&2' <&3 >&4
+  '';
+
   # Prebuilt kitten_tts_rs (aarch64) binaries: `kitten-tts` CLI +
   # `kitten-tts-server` (OpenAI-compatible /v1/audio/speech). autoPatchelf'd.
   kittenTtsRs = pkgs.callPackage ./pkgs/kitten-tts-rs { };
@@ -226,6 +242,8 @@ in
   systemd.tmpfiles.rules = [
     "d /home/ritiek/.claude 0755 ritiek users -"
     "L+ /var/lib/hermes/.claude - - - - /home/ritiek/.claude"
+    # ssh (HOME=/var/lib/hermes) needs a dir for known_hosts.
+    "d /var/lib/hermes/.ssh 0700 ritiek users -"
   ];
   systemd.services.hermes-agent.serviceConfig.ReadWritePaths = [ "/home/ritiek/.claude" ];
 
@@ -288,24 +306,6 @@ in
     };
   };
 
-  # Give the gateway enough stop time to finish its drain. The module ships
-  # TimeoutStopSec=90s but the gateway's drain_timeout is 180s, so systemd
-  # SIGKILLs it mid-drain on stop/rebuild -> dirty exit code 1 (the unit then
-  # stays failed). 210s = drain_timeout + headroom, per the gateway's own
-  # startup warning.
-  systemd.services.hermes-agent.serviceConfig.TimeoutStopSec = lib.mkForce 210;
-
-  # Self-rebuild suicide guard. Hermes runs `nixos-rebuild switch` as its own
-  # terminal tool; the rebuild's final `systemctl restart hermes-agent` SIGTERMs
-  # the hermes-agent.service cgroup, killing the in-flight rebuild mid-activation
-  # so the restart cycle only does STOP and never completes START -> unit failed.
-  # restartIfChanged=false leaves the running process untouched on rebuild (new
-  # config is staged but not switched into this unit), so nothing hermes does can
-  # restart-kill itself, regardless of how it invokes the rebuild (sudo, absolute
-  # path, etc. -- a PATH shim cannot win that). stopIfChanged=false keeps the
-  # same single-restart semantics off for the stop path too.
-  # TRADE-OFF: changes to THIS unit no longer auto-apply on rebuild; apply them
-  # manually from a non-hermes shell: `sudo systemctl restart hermes-agent`.
   # OpenCode free-tier bridge: OpenAI-compatible loopback proxy that replays the
   # OpenCode CLI request shape (see ./pkgs/ocfree/ocfree.ts). Hermes reaches it
   # via providers.ocfree below.
@@ -335,6 +335,24 @@ in
     };
   };
 
+  # Give the gateway enough stop time to finish its drain. The module ships
+  # TimeoutStopSec=90s but the gateway's drain_timeout is 180s, so systemd
+  # SIGKILLs it mid-drain on stop/rebuild -> dirty exit code 1 (the unit then
+  # stays failed). 210s = drain_timeout + headroom, per the gateway's own
+  # startup warning.
+  systemd.services.hermes-agent.serviceConfig.TimeoutStopSec = lib.mkForce 210;
+
+  # Self-rebuild suicide guard. Hermes runs `nixos-rebuild switch` as its own
+  # terminal tool; the rebuild's final `systemctl restart hermes-agent` SIGTERMs
+  # the hermes-agent.service cgroup, killing the in-flight rebuild mid-activation
+  # so the restart cycle only does STOP and never completes START -> unit failed.
+  # restartIfChanged=false leaves the running process untouched on rebuild (new
+  # config is staged but not switched into this unit), so nothing hermes does can
+  # restart-kill itself, regardless of how it invokes the rebuild (sudo, absolute
+  # path, etc. -- a PATH shim cannot win that). stopIfChanged=false keeps the
+  # same single-restart semantics off for the stop path too.
+  # TRADE-OFF: changes to THIS unit no longer auto-apply on rebuild; apply them
+  # manually from a non-hermes shell: `sudo systemctl restart hermes-agent`.
   systemd.services.hermes-agent.restartIfChanged = false;
   systemd.services.hermes-agent.stopIfChanged = false;
 
@@ -438,6 +456,9 @@ in
           provider = "anthropic";
         };
         channel_overrides."!TiSyl7i3cEsHc7V4_xhUmEHCpF1kOONPsXEUPq_46H0" = {
+          # OpenCode free tier via the local ocfree bridge (systemd.services.ocfree).
+          model = "deepseek-v4.1-flash-free";
+          provider = "custom:ocfree";
           # Free Nous Portal model; OAuth login lives in .hermes/auth.json
           # (`hermes auth add nous --type oauth --no-browser`).
           # model = "ornith/ornith-1.5-122b:free";
@@ -453,9 +474,6 @@ in
         # Current: no-op sentinel — silences the warning without
         # forwarding any real events to the agent.
         #
-          # OpenCode free tier via the local ocfree bridge (systemd.services.ocfree).
-          model = "deepseek-v4.1-flash-free";
-          provider = "custom:ocfree";
         # To receive events, replace with e.g.:
         #   extra = {
         #     watch_domains = [
@@ -505,6 +523,12 @@ in
         };
       };
 
+      providers.ocfree = {
+        api = "http://127.0.0.1:9997/v1";
+        default_model = "deepseek-v4.1-flash-free";
+        transport = "chat_completions";
+      };
+
       model = {
         # default = "nemotron-3-ultra-free";
         # default = "opencode/deepseek-v4-flash-free";
@@ -523,12 +547,6 @@ in
         # provider = "opencode";
         # base_url = "https://opencode.ai/zen/v1";
         # default_headers = {
-      providers.ocfree = {
-        api = "http://127.0.0.1:9997/v1";
-        default_model = "deepseek-v4.1-flash-free";
-        transport = "chat_completions";
-      };
-
         #   "Authorization" = "";
         #   "HTTP-Referer" = "https://opencode.ai/";
         #   "X-Title" = "opencode";
@@ -773,6 +791,17 @@ in
           "--viewport-size" "1271x936"
         ];
         timeout = 30;
+      };
+      # GPU Chromium in alcove's headless sway, on the logged-in mishy profile.
+      # Watch it at alcove:5900. Available to every room (hermes has no per-room
+      # tool gating); the Applications room's topic tells it when to use this.
+      playwright-alcove = {
+        enabled = true;
+        command = "${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp";
+        args = [ "--caps" "vision" "--executable-path" "${chromiumAlcove}" ];
+        env.PLAYWRIGHT_MCP_HEADLESS = "false";
+        timeout = 120;
+        connect_timeout = 180;
       };
       # -- Remote HTTP servers --
       github = {

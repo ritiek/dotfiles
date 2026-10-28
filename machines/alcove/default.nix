@@ -62,6 +62,9 @@
 
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC8R2qe15XyGUVQSHlPsDg6lE9ekfoB+qRA6jjw9pXD5 ritiek@paintball-machine"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG8pxSJhzTQav5ZHhaqDMy3zMcOBRyXdvNAE2gXM8y6h cardno:30_084_843"
+        # radrubble's key (also ~/.ssh/sops.id_ed25519 there): lets hermes'
+        # playwright-alcove MCP launch chromium-agent over ssh.
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBRF7Eqv1PrSBPfBqZzpKjPqPfbJ8Msnj+3EHP8WcpxV radrubble"
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
