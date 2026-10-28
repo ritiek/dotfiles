@@ -83,6 +83,117 @@ in
     wantedBy = [ "docker-compose-frigate-notify-root.target" ];
   };
 
+  # The xiao sits behind the door peephole, too dark for Frigate's person
+  # detection, so alert on motion inside the peephole instead (mask and
+  # threshold are in chocomelt's frigate.nix). The frame is nearly black, so
+  # send the peephole circle cropped and brightened.
+  # The camera is mounted on the door, so when the door opens the peephole
+  # view swings and gets ~2.5x brighter. A 1s poll of a tiny frame catches
+  # that jump; the swing also trips motion, which then stays quiet.
+  systemd.services.xiao-motion-notify = {
+    after = [ "docker-mosquitto.service" "docker-ntfy.service" ];
+    partOf = [ "docker-frigate-notify.service" ];
+    wantedBy = [ "docker-frigate-notify.service" ];
+    unitConfig.ConditionPathIsMountPoint = homelabMediaPath;
+    serviceConfig = {
+      EnvironmentFile = config.sops.secrets."compose/frigate-notify.env".path;
+      DynamicUser = true;
+      Restart = "always";
+      RestartSec = "10s";
+    };
+    script = lib.getExe (pkgs.writeShellApplication {
+      name = "xiao-motion-notify";
+      runtimeInputs = with pkgs; [ mosquitto curl jq imagemagick coreutils ];
+      text = ''
+        frigate=http://chocomelt.lion-zebra.ts.net
+        tmp=$(mktemp -d)
+        trap 'rm -rf "$tmp"' EXIT
+
+        login() {
+          jq -n --arg user "$FRIGATE_USERNAME" --arg password "$FRIGATE_PASSWORD" \
+            '{$user, $password}' \
+            | curl -sf -c "$1" -H 'Content-Type: application/json' -d @- "$frigate/api/login" >/dev/null
+        }
+
+        # notify <title> <message>
+        notify() {
+          local d
+          d=$(mktemp -d -p "$tmp")
+          login "$d/jar"
+          curl -sf -b "$d/jar" -o "$d/frame.jpg" "$frigate/api/xiao/latest.jpg?quality=100"
+          magick "$d/frame.jpg" -crop 220x220+290+134 +repage -normalize "$d/door.jpg"
+          curl -sf -T "$d/door.jpg" \
+            -H "Authorization: Bearer $NTFY_TOKEN" \
+            -H "Title: $1" \
+            -H "Message: $2" \
+            -H "Filename: door.jpg" \
+            -H "X-Click: $frigate/#xiao" \
+            http://localhost:8894/frigate >/dev/null
+          local rc=$?
+          rm -rf "$d"
+          return $rc
+        }
+
+        # Peephole brightness in tenths (crop of a 200x150 frame). Door opened
+        # = at least 1.5x and +10 over the darkest of the last 10 polls, which
+        # ignores slow light changes and a person darkening the view.
+        # ponytail: brightness heuristic, a Frigate state classification model
+        # if lighting ever fakes it.
+        door_loop() {
+          local vals=() v ref x now last=0
+          while sleep 1; do
+            if ! curl -sf -b "$tmp/poll.jar" -o "$tmp/small.jpg" "$frigate/api/xiao/latest.jpg?height=150"; then
+              login "$tmp/poll.jar" || sleep 30
+              vals=()
+              continue
+            fi
+            v=$(magick "$tmp/small.jpg" -crop 52x52+74+35 -colorspace gray -format '%[fx:int(mean*2550)]' info:) || continue
+            ref=$v
+            for x in "''${vals[@]}"; do if ((x < ref)); then ref=$x; fi; done
+            # Keep the last 10 values (a negative slice yields nothing while the array is shorter).
+            vals+=("$v")
+            if ((''${#vals[@]} > 10)); then vals=("''${vals[@]:1}"); fi
+            now=$(date +%s)
+            if ((v * 10 >= ref * 15 && v - ref >= 100 && now - last >= 60)); then
+              last=$now
+              echo "$now" > "$tmp/door_at"
+              if notify "Door opened" "The front door swung open"; then
+                echo "door: notified ($v vs $ref)"
+              else
+                echo "door: notify failed"
+              fi
+            fi
+          done
+        }
+
+        motion_loop() {
+          local state now last=0
+          # -R skips the retained state from before this service started.
+          mosquitto_sub -h localhost -R -t frigate/xiao/motion | while read -r state; do
+            now=$(date +%s)
+            if [ "$state" != ON ] || [ $((now - last)) -lt 120 ]; then continue; fi
+            # Give door_loop time to spot a swing, which already alerted.
+            sleep 4
+            if [ $(($(date +%s) - $(cat "$tmp/door_at"))) -lt 10 ]; then continue; fi
+            last=$now
+            if notify "Motion at the door" "Movement seen through the peephole"; then
+              echo "motion: notified"
+            else
+              echo "motion: notify failed"
+            fi
+          done
+        }
+
+        echo 0 > "$tmp/door_at"
+        door_loop &
+        motion_loop &
+        # Exit (and get restarted) if either loop dies.
+        wait -n
+        exit 1
+      '';
+    });
+  };
+
   # Root service
   # When started, this will automatically create all resources and start
   # the containers. When stopped, this will teardown all resources.

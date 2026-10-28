@@ -227,6 +227,16 @@ in
           height = 600;
           fps = 5;
         };
+        # Mounted behind the door peephole: only the lens circle shows the
+        # corridor, and it is too dark and small for the person model. Motion
+        # inside the circle is what pilab's xiao-motion-notify alerts on.
+        # improve_contrast turns the sensor noise of the dark frame into
+        # constant motion; threshold 12 catches someone standing outside.
+        motion = {
+          improve_contrast = false;
+          threshold = 12;
+          mask.outside_peephole.coordinates = "0.5,0,0.500,0.232,0.534,0.238,0.566,0.255,0.593,0.283,0.614,0.319,0.627,0.361,0.631,0.407,0.627,0.452,0.614,0.494,0.593,0.530,0.566,0.558,0.534,0.576,0.500,0.582,0.466,0.576,0.434,0.558,0.407,0.530,0.386,0.494,0.373,0.452,0.369,0.407,0.373,0.361,0.386,0.319,0.407,0.283,0.434,0.255,0.466,0.238,0.500,0.232,0.5,0,1,0,1,1,0,1,0,0";
+        };
       };
     };
   };
