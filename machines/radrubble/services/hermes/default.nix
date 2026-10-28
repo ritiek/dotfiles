@@ -306,6 +306,35 @@ in
   # same single-restart semantics off for the stop path too.
   # TRADE-OFF: changes to THIS unit no longer auto-apply on rebuild; apply them
   # manually from a non-hermes shell: `sudo systemctl restart hermes-agent`.
+  # OpenCode free-tier bridge: OpenAI-compatible loopback proxy that replays the
+  # OpenCode CLI request shape (see ./pkgs/ocfree/ocfree.ts). Hermes reaches it
+  # via providers.ocfree below.
+  # Proxy credentials (user:CL:pass) for rotating ocfree's egress IP when one runs out of quota.
+  sops.secrets."3proxy.users" = { };
+
+  systemd.services.ocfree = {
+    description = "OpenCode free-tier bridge (OpenAI-compatible, for hermes)";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    environment = {
+      PORT = "9997";
+      # 3proxy nodes with their own egress; ocfree dedupes by public IP.
+      OCFREE_PROXY_HOSTS = lib.concatMapStringsSep "," (h: "${h}.lion-zebra.ts.net:8090") [ "clawsiecats" "pilab" "mishy" ];
+    };
+    serviceConfig = {
+      LoadCredential = "3proxy:${config.sops.secrets."3proxy.users".path}";
+      ExecStart = "${pkgs.bun}/bin/bun run ${./pkgs/ocfree}/ocfree.ts";
+      Restart = "on-failure";
+      RestartSec = 3;
+      DynamicUser = true;
+      ProtectSystem = "strict";
+      ProtectHome = true;
+      PrivateTmp = true;
+      NoNewPrivileges = true;
+    };
+  };
+
   systemd.services.hermes-agent.restartIfChanged = false;
   systemd.services.hermes-agent.stopIfChanged = false;
 
@@ -413,9 +442,6 @@ in
           # (`hermes auth add nous --type oauth --no-browser`).
           # model = "ornith/ornith-1.5-122b:free";
           # provider = "nous";
-          # OpenCode free tier via the oc-free-provider plugin (see plugins.enabled).
-          model = "deepseek-v4.1-flash-free";
-          provider = "opencode-free";
         };
       };
       platforms.homeassistant = {
@@ -427,6 +453,9 @@ in
         # Current: no-op sentinel — silences the warning without
         # forwarding any real events to the agent.
         #
+          # OpenCode free tier via the local ocfree bridge (systemd.services.ocfree).
+          model = "deepseek-v4.1-flash-free";
+          provider = "custom:ocfree";
         # To receive events, replace with e.g.:
         #   extra = {
         #     watch_domains = [
@@ -494,6 +523,12 @@ in
         # provider = "opencode";
         # base_url = "https://opencode.ai/zen/v1";
         # default_headers = {
+      providers.ocfree = {
+        api = "http://127.0.0.1:9997/v1";
+        default_model = "deepseek-v4.1-flash-free";
+        transport = "chat_completions";
+      };
+
         #   "Authorization" = "";
         #   "HTTP-Referer" = "https://opencode.ai/";
         #   "X-Title" = "opencode";
