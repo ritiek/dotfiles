@@ -109,6 +109,32 @@
     ];
   };
 
+  # FTL stops writing its query DB after a transient read error (SQLITE_CORRUPT on
+  # 2026-10-27 and 10-29 while DNS kept working) until restarted.
+  # ponytail: band-aid restart, drop once pilab's memory pressure is fixed.
+  systemd.services.pihole-db-watchdog = {
+    description = "Restart Pi-hole if its query DB stops updating";
+    path = [ config.virtualisation.docker.package ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+      last=$(docker exec pihole pihole-FTL sqlite3 /etc/pihole/pihole-FTL.db \
+        "SELECT CAST(max(timestamp) AS INT) FROM query_storage;") || exit 0
+      age=$(( $(date +%s) - ''${last:-0} ))
+      echo "Newest query is ''${age}s old"
+      if [ "$age" -gt 600 ]; then
+        echo "Restarting docker-pihole"
+        systemctl try-restart docker-pihole.service
+      fi
+    '';
+  };
+  systemd.timers.pihole-db-watchdog = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "15m";
+      OnUnitActiveSec = "5m";
+    };
+  };
+
   # Root service
   # When started, this will automatically create all resources and start
   # the containers. When stopped, this will teardown all resources.
