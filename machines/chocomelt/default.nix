@@ -188,13 +188,8 @@
 
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
-  # oomd kills a cgroup only after pressure stays above the limit for 2min
-  # (e.g. a stuck transcode), well under RuntimeWatchdogSec.
-  systemd.oomd = {
-    enableRootSlice = true;
-    enableSystemSlice = true;
-    settings.OOM.DefaultMemoryPressureDurationSec = "2min";
-  };
+  # No oomd: a thrashing board freezes and RuntimeWatchdogSec reboots it.
+  systemd.oomd.enable = false;
 
   hardware.enableRedistributableFirmware = true;
   system.stateVersion = "24.11";

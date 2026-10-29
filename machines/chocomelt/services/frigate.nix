@@ -285,8 +285,6 @@ in
       ];
       BindReadOnlyPaths = [ "/sys/kernel/debug/rknpu" "/sys/kernel/debug/rkrga" ];
       Restart = lib.mkForce "always";
-      # 2GB board: an OOM-kill beats thrashing into a watchdog reboot.
-      MemoryMax = "1200M";
     };
   };
 
