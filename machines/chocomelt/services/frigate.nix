@@ -219,13 +219,20 @@ in
         ffmpeg.inputs = [{
           path = "http://xiao-sense-esp32-cam.pihole:81/stream";
           input_args = "preset-http-mjpeg-generic";
-          roles = [ "detect" ];
+          roles = [ "detect" "record" ];
         }];
+        # preset-record-mjpeg, but encoding on the MPP instead of libx264.
+        ffmpeg.output_args.record = "-f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v h264_rkmpp -an";
         detect = {
           enabled = true;
           width = 800;
           height = 600;
           fps = 5;
+        };
+        # Rolling 7 days of segments with motion; nothing else is kept.
+        record = {
+          enabled = true;
+          motion.days = 7;
         };
         # Mounted behind the door peephole: only the lens circle shows the
         # corridor, and it is too dark and small for the person model. Motion
