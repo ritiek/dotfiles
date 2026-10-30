@@ -46,6 +46,10 @@
       "FTLCONF_misc_etc_dnsmasq_d" = "true";
       # Listen on port 5335 so NixOS dnsmasq can own port 53 and forward to us.
       "FTLCONF_dns_port" = "5335";
+      # IPv4 only: pilab has no IPv6 route, so v6 upstreams just fail every few minutes.
+      "FTLCONF_dns_upstreams" = "1.0.0.1;1.1.1.1";
+      # Ask Tailscale MagicDNS for reverse lookups so tailnet clients show up by name.
+      "FTLCONF_dns_revServers" = "true,100.64.0.0/10,100.100.100.100";
     };
     environmentFiles = [
       config.sops.secrets."compose/pihole.env".path
