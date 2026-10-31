@@ -1,3 +1,14 @@
+# PS4 jailbreak exploit server (PSFree + Lapse via WebKitty).
+#
+# PS4 network settings (LAN cable, static):
+#   IP Address:       10.13.37.2
+#   Subnet Mask:      255.255.255.0
+#   Default Gateway:  10.13.37.1
+#   Primary DNS:      10.13.37.1
+#   Secondary DNS:    10.13.37.1
+#
+# All DNS resolves to keyberry, so auto-updates are blocked too.
+
 { pkgs, lib, ... }:
 
 let
@@ -40,13 +51,29 @@ in
   };
 
   # HTTP: serve WebKitty (PSFree + GoldHEN) on port 80.
+  # Redirect any hostname (captive DNS) to the real IP so AppCache
+  # manifests and relative paths resolve correctly.
+  services.nginx.virtualHosts."ps4-redirect" = {
+    listen = [{ addr = "0.0.0.0"; port = 80; }];
+    serverName = "~.";
+    extraConfig = ''
+      return 302 http://10.13.37.1$request_uri;
+    '';
+  };
+
   services.nginx.virtualHosts."ps4-exploit" = {
     listen = [{ addr = "0.0.0.0"; port = 80; }];
+    serverName = "10.13.37.1";
     root = webkitty;
     locations."/" = {
       index = "index.html";
       tryFiles = "$uri $uri/ /index.html";
     };
+    extraConfig = ''
+      types {
+        text/cache-manifest manifest;
+      }
+    '';
   };
 
   # Firewall: allow DNS and HTTP from PS4, allow inbound to PS4 from
