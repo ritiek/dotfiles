@@ -659,6 +659,11 @@ in
 
       plugin = [
         # 3.x is V2-only, 2.x is V1-only.
+        # On V2 the V1 Anthropic login doesn't carry over and gets billed as
+        # extra usage (429). Once per machine, import the Claude Code login and
+        # drop the old one:
+        #   opencode auth login anthropic --method claude-code
+        #   opencode auth logout anthropic OAuth
         (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
         "@tarquinen/opencode-dcp@3.2.0"
         "@dietrichgebert/ponytail@5.3.3"
