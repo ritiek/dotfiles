@@ -16,6 +16,7 @@
     ./../../modules/3proxy.nix
     ./../../modules/restic-server.nix
     ./gpio/dht22.nix
+    ./services/psfree.nix
   ];
 
   sops.secrets = {
@@ -193,7 +194,7 @@
     };
 
     tailscale.extraUpFlags = lib.mkAfter [
-      "--advertise-routes=192.168.1.0/24"
+      "--advertise-routes=192.168.1.0/24,10.13.37.0/24"
     ];
 
     pulseaudio.enable = false;
