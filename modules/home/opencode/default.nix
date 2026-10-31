@@ -2,6 +2,8 @@
 let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
   isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
+  isWayland = (lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "";
+  isOpencodeV2 = lib.versionAtLeast (lib.getVersion config.programs.opencode.package) "2";
 
   playwright = import ./playwright.nix { inherit config pkgs inputs hostName; };
 
@@ -11,24 +13,6 @@ let
     else ./../../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
-
-
-  ocx-pkg = pkgs.stdenv.mkDerivation {
-    pname = "ocx";
-    version = "2.0.11";
-    src = pkgs.fetchurl {
-      url = "https://registry.npmjs.org/ocx/-/ocx-2.0.11.tgz";
-      hash = "sha256-Pw9ka7wX7WMaSzKRrXClbiHwebxZRiy0Z2wmLF+Jfj8=";
-    };
-    dontBuild = true;
-    installPhase = ''
-      mkdir -p $out
-      tar xzf $src --strip-components=1 -C $out
-    '';
-  };
-  ocx = pkgs.writeShellScriptBin "ocx" ''
-    exec ${pkgs.bun}/bin/bun --no-env-file "${ocx-pkg}/dist/index.js" "$@"
-  '';
 
   searxDomain = "clawsiecats.omg.lol";
 
@@ -133,7 +117,6 @@ in
     pkgs.uv
     pkgs.bun
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.claude-code
-    ocx
     mcp-servers-nix.playwright-mcp
     playwright.sync-chromium-to-alcove
     mcp-servers-nix.context7-mcp
@@ -147,7 +130,7 @@ in
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pdfvision
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codegraph
-  ] ++ lib.optionals ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") [
+  ] ++ lib.optionals isWayland [
     # Required to play notification sounds with opencode-notifier.
     pkgs.pulseaudio
   ];
@@ -431,7 +414,7 @@ in
         homeassistant = {
           enabled = true;
           type = "remote";
-          url = "http://radrubble.lion-zebra.ts.net:8123/mcp_server/sse";
+          url = "http://radrubble.lion-zebra.ts.net:8123/api/mcp";
           headers = {
             Authorization = "Bearer {file:${config.sops.secrets."home_assistant.long_lived_token".path}}";
           };
@@ -661,10 +644,12 @@ in
       };
 
       plugin = [
-        "opencode-claude-auth@2.2.1"
-        "@mohak34/opencode-notifier@0.4.0"
+        # 3.x is V2-only, 2.x is V1-only.
+        (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
         "@tarquinen/opencode-dcp@3.2.0"
-        "@dietrichgebert/ponytail@4.10.0"
+        "@dietrichgebert/ponytail@5.3.3"
+      ] ++ lib.optionals isWayland [
+        "@mohak34/opencode-notifier@1.1.1"
       ];
 
       autoupdate = false;
@@ -695,7 +680,7 @@ in
         };
       };
     }
-    (lib.mkIf ((lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "") {
+    (lib.mkIf isWayland {
       ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
         notification = true;
         sound = true;
@@ -779,13 +764,6 @@ in
   home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
       PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
-    fi
-  '';
-
-  home.activation.opencode-worktree = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -f "${config.home.homeDirectory}/.opencode/plugins/worktree.ts" ]; then
-      PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx init --cwd "${config.home.homeDirectory}" || true
-      PATH=${pkgs.lib.makeBinPath [pkgs.bun pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${ocx}/bin/ocx add kdco/worktree --from https://registry.kdco.dev --cwd "${config.home.homeDirectory}"
     fi
   '';
 
