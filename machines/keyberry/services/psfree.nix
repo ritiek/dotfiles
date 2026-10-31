@@ -69,10 +69,8 @@ in
       index = "index.html";
       tryFiles = "$uri $uri/ /index.html";
     };
-    extraConfig = ''
-      types {
-        text/cache-manifest manifest;
-      }
+    locations."~ \\.manifest$".extraConfig = ''
+      default_type text/cache-manifest;
     '';
   };
 
