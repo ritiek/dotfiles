@@ -41,7 +41,7 @@ in
 
   # HTTP: serve WebKitty (PSFree + GoldHEN) on port 80.
   services.nginx.virtualHosts."ps4-exploit" = {
-    listen = [{ addr = "10.13.37.1"; port = 80; }];
+    listen = [{ addr = "0.0.0.0"; port = 80; }];
     root = webkitty;
     locations."/" = {
       index = "index.html";
