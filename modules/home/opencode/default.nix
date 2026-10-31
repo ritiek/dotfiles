@@ -31,6 +31,35 @@ let
     exec ${cloud-cdp-proxy-env}/bin/python3 ${cloud-cdp-proxy-py} "$@"
   '';
 
+  # OpenDesign's `od mcp` stdio client, lifted out of the daemon image so it
+  # runs on plain nodejs without a local Docker daemon. It is pure JS that
+  # talks HTTP to the daemon on pilab; the native/media deps are dropped.
+  # ponytail: pinned digest, bump with nix-prefetch-docker if the pilab
+  # daemon (which tracks :latest) grows an incompatible API.
+  open-design-mcp = let
+    image = pkgs.dockerTools.pullImage {
+      imageName = "ghcr.io/nexu-io/od";
+      imageDigest = "sha256:5fc38ad9dd67dceb89a332c52ded43745be1071816c6683607f7032200693643";
+      hash = {
+        x86_64-linux = "sha256-n6w+cwHtm0s1uE0Llx8UZDJUgo390RPp1HfSqWZKb+s=";
+        aarch64-linux = "sha256-s/TzUrpd5+06Rs5G3aNM1DFQWwM0FAfbrrygN6kP8IY=";
+      }.${pkgs.stdenv.hostPlatform.system};
+      finalImageTag = "latest";
+    };
+    daemon = pkgs.runCommand "open-design-daemon" { nativeBuildInputs = [ pkgs.jq ]; } ''
+      mkdir image $out
+      tar -xf ${image} -C image
+      for layer in $(jq -r '.[0].Layers[]' image/manifest.json); do
+        tar -xf "image/$layer" -C $out --strip-components=3 app/apps/daemon 2>/dev/null || true
+      done
+      cd $out/node_modules/.pnpm
+      rm -rf onnxruntime-node@* @ffmpeg-installer+* node-pty@* @img+sharp* esbuild@* @esbuild+*
+      test -f $out/dist/cli.js
+    '';
+  in pkgs.writeShellScript "open-design-mcp" ''
+    exec ${pkgs.nodejs_24}/bin/node ${daemon}/dist/cli.js mcp "$@"
+  '';
+
   # Shared auth generator — used by both home.activation (interactive hm switch)
   # and systemd --user service (boot: runs after sops-nix.service decrypts secrets).
   # The guard at the top prevents failure at boot when systemd --user isn't running
@@ -422,21 +451,13 @@ in
         codegraph = {
           enabled = true;
           type = "local";
+          # Nix build: the npm package's prebuilt binary is generic-linux and
+          # won't exec on NixOS.
           command = [
-            "${pkgs.nodejs_24}/bin/node"
-            "${pkgs.nodejs_24}/bin/npx"
-            "-y"
-            "@colbymchenry/codegraph@1.4.1"
+            "${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codegraph}/bin/codegraph"
             "serve"
             "--mcp"
           ];
-          environment = {
-            PATH = pkgs.lib.makeBinPath [
-              pkgs.nodejs_24
-              pkgs.bash
-              pkgs.coreutils
-            ];
-          };
         };
         indmoney = {
           enabled = true;
@@ -449,14 +470,7 @@ in
           # The daemon runs on pilab with OD_DISABLE_API_AUTH=1 (Tailscale
           # is the trust boundary), so no token needs to be passed here.
           command = [
-            "${pkgs.docker}/bin/docker"
-            "run"
-            "--rm"
-            "-i"
-            "ghcr.io/nexu-io/od:latest"
-            "node"
-            "apps/daemon/dist/cli.js"
-            "mcp"
+            "${open-design-mcp}"
             "--daemon-url"
             "http://pilab.lion-zebra.ts.net:7456"
           ];
