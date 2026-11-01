@@ -26,15 +26,33 @@ in
     prefixLength = 24;
   }];
 
-  # Captive DNS: resolve every domain to keyberry so any URL the PS4
-  # browser opens lands on the exploit page.
+  # DNS on the PS4 ethernet link: block Sony update/telemetry domains,
+  # forward everything else to Tailscale MagicDNS.
   environment.etc."dnsmasq-ps4.conf".text = ''
     interface=end0
     bind-interfaces
     listen-address=10.13.37.1
     no-dhcp-interface=end0
-    address=/#/10.13.37.1
+
+    # Upstream: Tailscale MagicDNS
     no-resolv
+    server=100.100.100.100
+
+    # Block Sony update & telemetry domains (NXDOMAIN)
+    address=/playstation.net/
+    address=/playstation.com/
+    address=/psndl.net/
+    address=/sonyentertainmentnetwork.com/
+    address=/playstation.sony.akadns.net/
+    address=/ribob01.net/
+    address=/akamai.net/
+
+    # Exceptions: allow STUN/NAT traversal and network services
+    server=/stun.playstation.net/100.100.100.100
+    server=/ena.net.playstation.net/100.100.100.100
+    server=/post.net.playstation.net/100.100.100.100
+    server=/get.net.playstation.net/100.100.100.100
+    server=/gst.prod.dl.playstation.net/100.100.100.100
   '';
 
   systemd.services.dnsmasq-ps4 = {
@@ -51,19 +69,8 @@ in
   };
 
   # HTTP: serve WebKitty (PSFree + GoldHEN) on port 80.
-  # Redirect any hostname (captive DNS) to the real IP so AppCache
-  # manifests and relative paths resolve correctly.
-  services.nginx.virtualHosts."ps4-redirect" = {
-    listen = [{ addr = "0.0.0.0"; port = 80; }];
-    serverName = "~.";
-    extraConfig = ''
-      return 302 http://10.13.37.1$request_uri;
-    '';
-  };
-
   services.nginx.virtualHosts."ps4-exploit" = {
     listen = [{ addr = "0.0.0.0"; port = 80; }];
-    serverName = "10.13.37.1";
     root = webkitty;
     locations."/" = {
       index = "index.html";
