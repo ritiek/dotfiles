@@ -1118,6 +1118,7 @@
     switchboard-sd = self.nixosConfigurations.switchboard.config.system.build.sdImage;
 
     zerokvm-sd = self.nixosConfigurations.zerokvm.config.system.build.sdImage;
+    nixstation-sd = self.nixosConfigurations.nixstation.config.system.build.sdImage;
 
     # NOTE: Reason for commenting this out:
     # For some reason 'sd-aarch64-installer' assigns the value of

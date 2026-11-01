@@ -35,6 +35,7 @@ in
     ./../../modules/attic-watch-store.nix
     ./../../modules/net-tuning.nix
     ./../../modules/wifi/network-manager.nix
+    ./sd-image.nix
   ];
 
   # Kernel is the prebuilt Strawberry 7.0.8 Baikal bzImage (nearly everything
