@@ -517,7 +517,6 @@ window-rule {
 //     open-floating true
 // }
 
-spawn-at-startup "swaync"
 spawn-at-startup "waybar"
 spawn-at-startup "hyprpaper"
 spawn-at-startup "hypridle"
