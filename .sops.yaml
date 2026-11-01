@@ -15,6 +15,7 @@ keys:
   - &mangoshake_ssh age17r6ljsa6sg0706cq7j3gfevnk3k8knlvz5vppelaj996q5gnf4jqzyxk28
   - &bifrost_ssh age16sdz4k8ljddf6tggtvjfeltus9vpqg8yncfr6k5m5f70agfz6qnq6zyfe4
   - &minimachine_ssh age1azu44d4kmgh7ad0wwlrfqd4hmwvjx93cx6ewqsswvjw8w725qpfsxgwt6x
+  - &nixstation_ssh age1jzj6gcx5nscmw9fw7dkgwjz96tuwekugfyw7nj2xynqscuaj04cs6lxd9w
 
   - &yubika
   - &yubikko age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2
@@ -83,6 +84,10 @@ combination_keys:
       age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq
   - &bifrost >-
       age16sdz4k8ljddf6tggtvjfeltus9vpqg8yncfr6k5m5f70agfz6qnq6zyfe4,
+      age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2,
+      age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq
+  - &nixstation >-
+      age1jzj6gcx5nscmw9fw7dkgwjz96tuwekugfyw7nj2xynqscuaj04cs6lxd9w,
       age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2,
       age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq
 
@@ -225,6 +230,13 @@ creation_rules:
     pgp: *ritiek
     age: *bifrost
 
+  - path_regex: machines/nixstation/secrets\.yaml$
+    pgp: *ritiek
+    age: *nixstation
+  - path_regex: machines/nixstation/home/.*/secrets\.yaml$
+    pgp: *ritiek
+    age: *nixstation
+
   # nixbuild3 SSH key, shared by every host that has nixbuild2 (pilab keeps
   # its own copy in machines/pilab/secrets.yaml).
   - path_regex: machines/nixbuild3\.yaml$
@@ -239,5 +251,6 @@ creation_rules:
       age1zevap9lncyhs437ktg9gdmjnaqajpeufmnn6urhg557sxsavuqsqgj4288,
       age1klwz7myerkgfy0599yzlfr5elappvc9sp9tcq8xagc84e06kjuasr40jtm,
       age1dkal8p2x5hadgdxfzdv4ezlc5zwdmqyqx26nmygl46462npytf2sa39ayg,
+      age1jzj6gcx5nscmw9fw7dkgwjz96tuwekugfyw7nj2xynqscuaj04cs6lxd9w,
       age1fido2-hmac1qqpdd5uttx40y0s32yakjkmz5lq2ldf0hzkqy8a0mhwtx8hjqu3pgygp39resz5qh05xt0238d7uwph4c4kz0lcp99tfsl9zgccgm4g9r98z4fdqcngv63uucth4xm84eek4y4tesvyqng7kmf3d37pf3m4p4p3vvwrulc04u0qhup0emzlv2ldqjrc4g8rqz6g4k6zveqlhfeehl5wcp0q2,
       age1fido2-hmac1qqprl2wmagll0ht56zn7d2t7e7ed3a35t3lxhj4m0q575j9s3kmnxqcp39yc4ycvgpsjyddm3a2j6lk3afq2gwdxahpwnag5fv7lfg9lz7l5hyud9s97t8m3220c0khq66n29mau6hel3dmgqfgu9hky3ye4nc4p9zujw80a45l6pzatvq8h4ls9zjvdvnx3nq50p99fr4a5vh4zwgtpm4uq

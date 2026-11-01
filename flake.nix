@@ -666,6 +666,12 @@
       specialArgs = { inherit inputs; };
     };
 
+    nixosConfigurations.nixstation = inputs.nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ ./machines/nixstation ];
+      specialArgs = { inherit inputs; };
+    };
+
     nixosConfigurations.zerokvm = inputs.nixpkgs.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
@@ -957,6 +963,15 @@
       profiles.system = {
         user = "root";
         path = inputs.deploy-rs.lib.aarch64-linux.activate.nixos self.nixosConfigurations.zerostash;
+      };
+      sshUser = "ritiek";
+    };
+
+    deploy.nodes.nixstation = {
+      hostname = "nixstation.lion-zebra.ts.net";
+      profiles.system = {
+        user = "root";
+        path = inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.nixstation;
       };
       sshUser = "ritiek";
     };
