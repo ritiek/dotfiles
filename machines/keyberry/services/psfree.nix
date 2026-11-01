@@ -32,15 +32,13 @@ in
     enable = true;
     resolveLocalQueries = false;
     settings = {
-      interface = "end0";
-      except-interface = "lo";
-      bind-dynamic = true; # start without end0, bind when it appears
+      bind-dynamic = true; # bind every interface, including ones that appear later
       server = map (d: "/${d}/#") allowed;
       address = map (d: "/${d}/") blocked;
     };
   };
 
-  # Listens on 0.0.0.0 so nginx starts without end0; firewall limits it to the PS4.
+  # Listens on 0.0.0.0 so nginx starts without end0 and serves every interface.
   services.nginx.virtualHosts."ps4-exploit" = {
     listen = [{ addr = "0.0.0.0"; port = 80; }];
     root = webkitty;
@@ -61,10 +59,8 @@ in
   };
 
   networking.firewall = {
-    interfaces.end0 = {
-      allowedTCPPorts = [ 53 80 ];
-      allowedUDPPorts = [ 53 ];
-    };
+    allowedTCPPorts = [ 53 80 ];
+    allowedUDPPorts = [ 53 ];
     # Force all PS4 DNS through dnsmasq (even hardcoded servers) and block DNS-over-TLS.
     extraCommands = ''
       iptables -t nat -A PREROUTING -i end0 -p udp --dport 53 -j REDIRECT
