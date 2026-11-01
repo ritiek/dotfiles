@@ -139,7 +139,14 @@
       # libreoffice-bin
       transmission_4-gtk
       syncplay
-      chiaki-ng
+      # chiaki-ng's QML UI fails to load with QT_STYLE_OVERRIDE=kvantum
+      # ("module kvantum is not installed"), so unset it for chiaki.
+      (symlinkJoin {
+        name = "chiaki-ng";
+        paths = [ chiaki-ng ];
+        nativeBuildInputs = [ makeWrapper ];
+        postBuild = "wrapProgram $out/bin/chiaki --unset QT_STYLE_OVERRIDE";
+      })
       moonlight-qt
       scrcpy
       qtscrcpy
