@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 {
   # home-manager merges `settings` into the shim's writable conf.json on each
-  # switch, and starts the shim with graphical-session.target.
+  # switch. The shim is started on demand from the desktop entry below.
   services.jellyfin-mpv-shim = {
     enable = true;
     # Fix keybindings dying while external subtitles load after a quality
@@ -66,6 +66,7 @@
   sops.secrets."jellyfin.password" = { };
   systemd.user.services.jellyfin-mpv-shim = {
     Unit.After = [ "sops-nix.service" ];
+    Install.WantedBy = lib.mkForce [ ];
     # "-": a failed login (server or network down) must not stop the shim.
     Service.ExecStartPre = "-${pkgs.writers.writePython3 "jellyfin-mpv-shim-login" {
       libraries = [ (pkgs.python3Packages.toPythonModule config.services.jellyfin-mpv-shim.package) ];
@@ -93,5 +94,14 @@
       # The shim leaves non-daemon threads running; exit without joining them.
       os._exit(0)
     ''}";
+  };
+
+  xdg.desktopEntries.jellyfin-mpv-shim = {
+    name = "Jellyfin MPV Shim";
+    comment = "Cast from Jellyfin to mpv";
+    icon = "${config.services.jellyfin-mpv-shim.package}/share/icons/hicolor/128x128/apps/jellyfin-mpv-shim.png";
+    # Through the unit so the login above runs first.
+    exec = "systemctl --user start jellyfin-mpv-shim.service";
+    categories = [ "AudioVideo" "Video" ];
   };
 }
