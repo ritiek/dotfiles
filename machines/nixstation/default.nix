@@ -44,10 +44,24 @@ in
   boot.loader.grub.enable = false;
   boot.loader.initScript.enable = true;
 
+  # initramfs-ps4 mounts LABEL=psxitarch as-is (top-level subvolume, default
+  # options); systemd-remount-fs applies these options afterwards.
   fileSystems."/" = {
     device = "/dev/disk/by-label/psxitarch";
-    fsType = "ext4";
+    fsType = "btrfs";
+    # Same as pilab's btrfs mounts. `ssd` because the USB bridge reports the
+    # SSD as rotational.
+    options = [
+      "noatime"
+      "nodiscard"
+      "noautodefrag"
+      "ssd"
+      "space_cache=v2"
+      "compress-force=zstd:3"
+    ];
   };
+
+  services.btrfs.autoScrub.enable = true;
 
   networking.hostName = "nixstation";
   time.timeZone = "Asia/Kolkata";
