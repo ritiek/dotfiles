@@ -157,6 +157,20 @@
     libgpiod
     i2c-tools
     mosquitto
+
+    # The PS4 wakes from full power-off when its paired DS4 pages it over
+    # Bluetooth, so borrow the DS4's address briefly and page the PS4.
+    (writeShellApplication {
+      name = "ps4-wake";
+      runtimeInputs = [ bluez ];
+      text = ''
+        trap 'btmgmt power off; btmgmt public-addr E4:5F:01:15:E9:A9; btmgmt power on' EXIT
+        btmgmt power off
+        btmgmt public-addr 84:30:95:02:28:35  # DS4
+        btmgmt power on
+        l2ping -c 3 -t 5 28:3A:4D:B1:82:B2 || true  # PS4
+      '';
+    })
   ];
 
   programs = {
