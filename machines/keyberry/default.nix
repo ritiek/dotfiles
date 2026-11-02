@@ -162,14 +162,34 @@
     # Bluetooth, so borrow the DS4's address briefly and page the PS4.
     (writeShellApplication {
       name = "ps4-wake";
-      runtimeInputs = [ bluez ];
+      runtimeInputs = [ bluez iputils ];
       text = ''
-        trap 'btmgmt power off; btmgmt public-addr E4:5F:01:15:E9:A9; btmgmt power on' EXIT
-        btmgmt power off
-        btmgmt public-addr 84:30:95:02:28:35  # DS4
-        btmgmt power on
-        sleep 2  # controller re-initialises after the address change
-        l2ping -c 3 -t 5 28:3A:4D:B1:82:B2 || true  # PS4
+        # hci0 is re-registered after an address change and btmgmt exits 0
+        # even on failure, so retry power on until it reports powered.
+        use_addr() {
+          btmgmt power off >/dev/null
+          btmgmt public-addr "$1" >/dev/null
+          for _ in $(seq 20); do
+            btmgmt power on >/dev/null 2>&1
+            [[ $(btmgmt info 2>/dev/null) == *"current settings: powered"* ]] && return
+            sleep 0.25
+          done
+          echo "hci0 did not come back up as $1" >&2
+          return 1
+        }
+        trap 'use_addr E4:5F:01:15:E9:A9' EXIT
+        use_addr 84:30:95:02:28:35  # DS4
+        for _ in 1 2 3 4 5; do
+          l2ping -c 1 -t 5 28:3A:4D:B1:82:B2 >/dev/null 2>&1 && break  # PS4
+        done
+        use_addr E4:5F:01:15:E9:A9
+        trap - EXIT
+        echo "Paged PS4, waiting for it to boot..."
+        for _ in $(seq 180); do
+          ping -c 1 -W 1 10.13.37.2 >/dev/null 2>&1 && { echo "PS4 is up"; exit 0; }
+        done
+        echo "PS4 did not come up" >&2
+        exit 1
       '';
     })
   ];
