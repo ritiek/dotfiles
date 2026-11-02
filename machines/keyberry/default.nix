@@ -168,6 +168,7 @@
         btmgmt power off
         btmgmt public-addr 84:30:95:02:28:35  # DS4
         btmgmt power on
+        sleep 2  # controller re-initialises after the address change
         l2ping -c 3 -t 5 28:3A:4D:B1:82:B2 || true  # PS4
       '';
     })
