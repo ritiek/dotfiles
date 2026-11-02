@@ -53,6 +53,29 @@
           };
         };
       '';
+    }
+    {
+      # The firmware normally fills in bt_pins; booting the DTB directly leaves
+      # CTS/RTS (GPIO30/31) unmuxed, so the BT UART never gets an answer.
+      name = "bt-ctsrts-overlay";
+      dtsText = ''
+        /dts-v1/;
+        /plugin/;
+
+        / {
+          compatible = "brcm,bcm2711";
+
+          fragment@0 {
+            target = <&bt_pins>;
+            __overlay__ {
+              brcm,pins = <30 31>;
+              brcm,function = <7>;
+              brcm,pull = <2 0>;
+            };
+          };
+        };
+      '';
     }];
+    bluetooth.enable = true;
   };
 }
