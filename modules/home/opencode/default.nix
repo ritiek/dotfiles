@@ -121,8 +121,6 @@ let
     ## Startup
     At the start of every session, load the following skills using the skill tool:
     - `ponytail` (full intensity) to favour the simplest solution that works
-    ''${/* - `i-have-adhd` to shape output for a reader with ADHD */ ""}
-    ''${/* - `humanizer` to avoid AI-sounding prose */ ""}
   '';
 in
 {
@@ -510,8 +508,6 @@ in
             ## Startup
             At the start of every session, load the following skills using the skill tool:
             - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
-            ''${/* - `i-have-adhd` — shape output for a reader with ADHD */ ""}
-            ''${/* - `humanizer` — avoid AI-sounding prose */ ""}
 
             ## Guidelines
             - Skim through the codebase initially. Continue gaining a better understanding of the
@@ -596,11 +592,6 @@ in
           description = "Conversational Agent";
           prompt = ''
             Engage in meaningful and context-aware conversations with the user. Be rational.
-
-            ''${/* ## Startup
-            At the start of every session, load the following skills using the skill tool:
-            - `i-have-adhd` to shape output for a reader with ADHD
-            - `humanizer` to avoid AI-sounding prose */ ""}
           '';
           tools = {
             write = false;
@@ -734,20 +725,6 @@ in
       };
     })
   ];
-
-  home.activation.opencode-skills-adhd = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -d "${config.home.homeDirectory}/.agents/skills/i-have-adhd" ]; then
-      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
-        ${pkgs.nodejs_24}/bin/npx --yes skills add ayghri/i-have-adhd -g -a opencode -y
-    fi
-  '';
-
-  home.activation.opencode-skills-humanizer = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -d "${config.home.homeDirectory}/.agents/skills/humanizer" ]; then
-      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
-        ${pkgs.nodejs_24}/bin/npx --yes skills add blader/humanizer -g -a opencode -y
-    fi
-  '';
 
   home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
