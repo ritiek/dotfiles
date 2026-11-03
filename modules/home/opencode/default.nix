@@ -215,15 +215,6 @@ in
         Rebuild and switch to NixOS flake configuration you're currently working on.
         Usage: /rebuild-switch
       '';
-      caveman = ''
-        Activate caveman ultra-compressed communication mode.
-        Supports intensity levels: lite, full (default), ultra.
-        Usage: /caveman [level]
-      '';
-      karpathy-guidelines = ''
-        Load Andrej Karpathy behavioral guidelines skill.
-        Usage: /karpathy-guidelines
-      '';
     };
     settings = {
       # NOTE: This requires `programs.mcp` to be configured. For now, I've defined
@@ -518,8 +509,6 @@ in
 
             ## Startup
             At the start of every session, load the following skills using the skill tool:
-            - `karpathy-guidelines` — behavioral guidelines for careful, minimal code changes
-            - `caveman` — ultra-compressed communication mode (full intensity)
             - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
             ''${/* - `i-have-adhd` — shape output for a reader with ADHD */ ""}
             ''${/* - `humanizer` — avoid AI-sounding prose */ ""}
@@ -745,20 +734,6 @@ in
       };
     })
   ];
-
-  home.activation.opencode-skills-caveman = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -d "${config.home.homeDirectory}/.agents/skills/caveman" ]; then
-      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
-        ${pkgs.nodejs_24}/bin/npx --yes skills add juliusbrussee/caveman -g -a opencode -y
-    fi
-  '';
-
-  home.activation.opencode-skills-karpathy = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -d "${config.home.homeDirectory}/.agents/skills/karpathy-guidelines" ]; then
-      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.git]} \
-        ${pkgs.nodejs_24}/bin/npx --yes skills add forrestchang/andrej-karpathy-skills -g -a opencode -y
-    fi
-  '';
 
   home.activation.opencode-skills-adhd = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -d "${config.home.homeDirectory}/.agents/skills/i-have-adhd" ]; then
