@@ -665,7 +665,7 @@ in
         #   opencode auth login anthropic --method claude-code
         #   opencode auth logout anthropic OAuth
         (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
-        "@tarquinen/opencode-dcp@3.2.0"
+        # "@tarquinen/opencode-dcp@3.2.0"
         "@dietrichgebert/ponytail@5.3.3"
       ] ++ lib.optionals isWayland [
         "@mohak34/opencode-notifier@1.1.1"
@@ -691,13 +691,13 @@ in
         telemetry.enabled = false;
       };
 
-      ".config/opencode/dcp.jsonc".text = builtins.toJSON {
-        "$schema" = "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json";
-        compress = {
-          minContextLimit = 75000;
-          maxContextLimit = 150000;
-        };
-      };
+      # ".config/opencode/dcp.jsonc".text = builtins.toJSON {
+      #   "$schema" = "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json";
+      #   compress = {
+      #     minContextLimit = 75000;
+      #     maxContextLimit = 150000;
+      #   };
+      # };
     }
     (lib.mkIf isWayland {
       ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
