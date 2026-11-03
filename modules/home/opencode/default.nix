@@ -121,7 +121,7 @@ let
     ## Startup
     At the start of every session, load the following skills using the skill tool:
     - `ponytail` (full intensity) to favour the simplest solution that works
-    - `i-have-adhd` to shape output for a reader with ADHD
+    ''${/* - `i-have-adhd` to shape output for a reader with ADHD */ ""}
     - `humanizer` to avoid AI-sounding prose
   '';
 in
@@ -521,7 +521,7 @@ in
             - `karpathy-guidelines` — behavioral guidelines for careful, minimal code changes
             - `caveman` — ultra-compressed communication mode (full intensity)
             - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
-            - `i-have-adhd` — shape output for a reader with ADHD
+            ''${/* - `i-have-adhd` — shape output for a reader with ADHD */ ""}
             - `humanizer` — avoid AI-sounding prose
 
             ## Guidelines
@@ -610,7 +610,7 @@ in
 
             ## Startup
             At the start of every session, load the following skills using the skill tool:
-            - `i-have-adhd` to shape output for a reader with ADHD
+            ''${/* - `i-have-adhd` to shape output for a reader with ADHD */ ""}
             - `humanizer` to avoid AI-sounding prose
           '';
           tools = {
