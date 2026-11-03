@@ -122,7 +122,7 @@ let
     At the start of every session, load the following skills using the skill tool:
     - `ponytail` (full intensity) to favour the simplest solution that works
     ''${/* - `i-have-adhd` to shape output for a reader with ADHD */ ""}
-    - `humanizer` to avoid AI-sounding prose
+    ''${/* - `humanizer` to avoid AI-sounding prose */ ""}
   '';
 in
 {
@@ -522,7 +522,7 @@ in
             - `caveman` — ultra-compressed communication mode (full intensity)
             - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
             ''${/* - `i-have-adhd` — shape output for a reader with ADHD */ ""}
-            - `humanizer` — avoid AI-sounding prose
+            ''${/* - `humanizer` — avoid AI-sounding prose */ ""}
 
             ## Guidelines
             - Skim through the codebase initially. Continue gaining a better understanding of the
@@ -608,10 +608,10 @@ in
           prompt = ''
             Engage in meaningful and context-aware conversations with the user. Be rational.
 
-            ## Startup
+            ''${/* ## Startup
             At the start of every session, load the following skills using the skill tool:
-            ''${/* - `i-have-adhd` to shape output for a reader with ADHD */ ""}
-            - `humanizer` to avoid AI-sounding prose
+            - `i-have-adhd` to shape output for a reader with ADHD
+            - `humanizer` to avoid AI-sounding prose */ ""}
           '';
           tools = {
             write = false;
