@@ -11,7 +11,7 @@
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/opencode
-    ./../../../../modules/home/pi.nix
+    # ./../../../../modules/home/pi.nix
     ./../../../../modules/home/direnv.nix
   ];
 
