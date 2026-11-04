@@ -702,6 +702,22 @@ in
       prompt.image_preview = true;
       session.image_preview = true;
       session.permissions = "autoaccept";
+      session.thinking = "show";
+      session.scrollbar = true;
+      session.verbosity = "high";
+      animations = true;
+      tabs = {
+        mode = "on";
+        layout = "vertical";
+        indicators = "numbers";
+      };
+      # Each value keeps the upstream defaults and adds the alt binding.
+      keybinds = {
+        "session.tab.next" = "ctrl+tab,alt+down,alt+j";
+        "session.tab.previous" = "ctrl+shift+tab,alt+up,alt+k";
+        "session.tab.select.10" = "<leader>0,ctrl+0,alt+0";
+      } // lib.genAttrs (map (n: "session.tab.select.${toString n}") (lib.range 1 9))
+        (k: let n = lib.last (lib.splitString "." k); in "<leader>${n},ctrl+${n},alt+${n}");
       attention.notifications = true;
       attention.sound = true;
       debug.devtools = true;
