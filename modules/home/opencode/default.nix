@@ -116,6 +116,15 @@ let
     hash = "sha256-g6ZqRqX+u8IUVBYdXwU2OLItJdleCdd7j22jPevISK0=";
   });
 
+  # Env var -> sops secret for opencode's built-in websearch providers.
+  websearchSecrets = {
+    EXA_API_KEY = "exa_api.key";
+    FIRECRAWL_API_KEY = "firecrawl_api.key";
+    PARALLEL_API_KEY = "parallel_api.key";
+    TAVILY_API_KEY = "tavily_api.key";
+    TINYFISH_API_KEY = "tinyfish_api.key";
+  };
+
   # Skills every agent loads at startup.
   startupSkills = ''
     ## Startup
@@ -138,7 +147,7 @@ in
     "github_copilot.access" = {};
     "searx.url" = {};
     "lightpanda_cdp.token" = {};
-  };
+  } // lib.mapAttrs' (_: s: lib.nameValuePair s {}) websearchSecrets;
 
   home.packages = [
     pkgs.uv
@@ -170,7 +179,16 @@ in
     in pkgs.symlinkJoin {
       name = "opencode-${oc2.version}";
       paths = [ oc2 ];
-      postBuild = "ln -s opencode2 $out/bin/opencode";
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      # Websearch providers only read their keys from env vars; export them
+      # from the sops files at launch (skipped if not yet decrypted).
+      postBuild = ''
+        rm $out/bin/opencode2
+        makeWrapper ${oc2}/bin/opencode2 $out/bin/opencode2 ${lib.concatStringsSep " " (lib.mapAttrsToList (var: s:
+          "--run ${lib.escapeShellArg "[ -r ${config.sops.secrets.${s}.path} ] && export ${var}=$(cat ${config.sops.secrets.${s}.path})"}"
+        ) websearchSecrets)}
+        ln -s opencode2 $out/bin/opencode
+      '';
       meta.mainProgram = "opencode";
     };
     skills = lib.optionalAttrs isNiriEnabled {
@@ -236,6 +254,8 @@ in
       # small_model = "opencode-go/deepseek-v4-flash";
       small_model = "github-copilot/gpt-6-luna";
       default_agent = "build";
+      # Rotate across all connected providers; falls over on HTTP 429.
+      websearch.provider = "random";
       provider = {
         "opencode".options.timeout = false;
         "opencode-go".options.timeout = false;
