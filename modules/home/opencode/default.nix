@@ -152,7 +152,6 @@ in
     pkgs.psmisc
     pkgs.procps
     pkgs.nodejs_24
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pdfvision
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
@@ -684,10 +683,6 @@ in
 
   home.file = lib.mkMerge [
     {
-      ".config/rtk/config.toml".source = (pkgs.formats.toml {}).generate "rtk-config" {
-        telemetry.enabled = false;
-      };
-
       # ".config/opencode/dcp.jsonc".text = builtins.toJSON {
       #   "$schema" = "https://raw.githubusercontent.com/Opencode-DCP/opencode-dynamic-context-pruning/master/dcp.schema.json";
       #   compress = {
@@ -697,12 +692,6 @@ in
       # };
     }
   ];
-
-  home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
-      ${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk}/bin/rtk init -g --opencode
-    fi
-  '';
 
   home.activation.opencode-auth = lib.hm.dag.entryAfter ["writeBoundary" "sops-nix"] ''
     ${opencode-auth-generator}
