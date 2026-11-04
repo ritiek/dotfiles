@@ -158,7 +158,7 @@ in
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codegraph
   ] ++ lib.optionals isWayland [
-    # Required to play notification sounds with opencode-notifier.
+    # Provides paplay for notification sounds.
     pkgs.pulseaudio
   ];
   programs.chromium = playwright.chromiumProgram;
@@ -656,8 +656,6 @@ in
         (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
         # "@tarquinen/opencode-dcp@3.2.0"
         "@dietrichgebert/ponytail@5.3.3"
-      ] ++ lib.optionals isWayland [
-        "@mohak34/opencode-notifier@1.1.1"
       ];
 
       autoupdate = false;
@@ -671,6 +669,16 @@ in
       plugin = [
         "oc-tps@0.0.12"
       ];
+    } // lib.optionalAttrs isOpencodeV2 {
+      prompt.image_preview = true;
+      session.image_preview = true;
+      session.permissions = "autoaccept";
+      attention.notifications = true;
+      attention.sound = true;
+      debug.devtools = true;
+      debug.timing = true;
+      debug.turn_tokens = "verbose";
+      experimental.new-designs = true;
     };
   };
 
@@ -688,62 +696,11 @@ in
       #   };
       # };
     }
-    (lib.mkIf isWayland {
-      ".config/opencode/opencode-notifier.json".text = builtins.toJSON {
-        notification = true;
-        sound = true;
-        showIcon = true;
-        notificationSystem = "osascript";
-        events = {
-          complete = {
-            sound = true;
-            notification = true;
-          };
-          error = {
-            sound = true;
-            notification = true;
-          };
-          question = {
-            sound = true;
-            notification = true;
-          };
-          permission = {
-            sound = true;
-            notification = true;
-          };
-          subagent_complete = {
-            sound = false;
-            notification = false;
-          };
-          user_cancelled = {
-            sound = true;
-            notification = false;
-          };
-        };
-        messages = {
-          permission = "Permission: {sessionTitle}";
-          complete = "Complete: {sessionTitle}";
-          subagent_complete = "Subagent complete: {sessionTitle}";
-          error = "Error: {sessionTitle}";
-          question = "Question: {sessionTitle}";
-          user_cancelled = "User cancelled: {sessionTitle}";
-        };
-        showProjectName = true;
-        showSessionTitle = true;
-        suppressWhenFocused = false;
-      };
-    })
   ];
 
   home.activation.opencode-plugin-rtk = lib.hm.dag.entryAfter ["writeBoundary"] ''
     if [ ! -f "${config.home.homeDirectory}/.config/opencode/plugins/rtk.ts" ]; then
       ${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.rtk}/bin/rtk init -g --opencode
-    fi
-  '';
-
-  home.activation.opencode-plugin-get-shit-done = lib.hm.dag.entryAfter ["writeBoundary"] ''
-    if [ ! -d "${config.home.homeDirectory}/.config/opencode/get-shit-done" ]; then
-      PATH=${pkgs.lib.makeBinPath [pkgs.nodejs_24 pkgs.bash pkgs.coreutils pkgs.gettext pkgs.findutils pkgs.gawk pkgs.gnused pkgs.util-linux]} ${pkgs.nodejs_24}/bin/npx get-shit-done-cc --opencode --global
     fi
   '';
 
