@@ -679,16 +679,6 @@ in
 
       autoupdate = false;
     };
-
-    tui = {
-      # XXX: I like the `system` theme but it takes a while to load:
-      # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
-      theme = "lucent-orng";
-      scroll_speed = 5;
-      plugin = [
-        "oc-tps@0.0.12"
-      ];
-    };
   };
 
   # opencode2 reads these from ~/.config/opencode/cli.json, which the TUI also
@@ -702,6 +692,11 @@ in
       prompt.image_preview = true;
       session.image_preview = true;
       session.permissions = "autoaccept";
+      session.tps = true;
+      # XXX: I like the `system` theme but it takes a while to load:
+      # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
+      theme.name = "lucent-orng";
+      scroll.speed = 5;
       session.thinking = "show";
       session.scrollbar = true;
       session.verbosity = "high";
