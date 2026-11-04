@@ -668,7 +668,17 @@ in
       plugin = [
         "oc-tps@0.0.12"
       ];
-    } // lib.optionalAttrs isOpencodeV2 {
+    };
+  };
+
+  # opencode2 reads these from ~/.config/opencode/cli.json, which the TUI also
+  # writes, so merge into it instead of symlinking a read-only file.
+  home.activation.opencode-cli-settings = lib.mkIf isOpencodeV2 (lib.hm.dag.entryAfter ["writeBoundary"] ''
+    f="${config.home.homeDirectory}/.config/opencode/cli.json"
+    mkdir -p "$(dirname "$f")"
+    [ -f "$f" ] || echo '{}' > "$f"
+    tmp=$(mktemp)
+    ${pkgs.jq}/bin/jq '. * $s' --argjson s ${lib.escapeShellArg (builtins.toJSON {
       prompt.image_preview = true;
       session.image_preview = true;
       session.permissions = "autoaccept";
@@ -678,8 +688,9 @@ in
       debug.timing = true;
       debug.turn_tokens = "verbose";
       experimental.new-designs = true;
-    };
-  };
+    })} "$f" > "$tmp" && install -m 600 "$tmp" "$f"
+    rm -f "$tmp"
+  '');
 
   home.file = lib.mkMerge [
     {
