@@ -685,7 +685,7 @@ in
       attention.notifications = true;
       attention.sound = true;
       debug.devtools = true;
-      debug.timing = true;
+      debug.timing = false;
       debug.turn_tokens = "verbose";
       experimental.new-designs = true;
     })} "$f" > "$tmp" && install -m 600 "$tmp" "$f"
