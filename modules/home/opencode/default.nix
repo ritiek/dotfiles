@@ -164,7 +164,16 @@ in
   programs.chromium = playwright.chromiumProgram;
   programs.opencode = {
     enable = true;
-    package = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode;
+    # The package only ships `opencode2`; also expose it as `opencode` for
+    # opencode.nvim and muscle memory.
+    package = let
+      oc2 = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2;
+    in pkgs.symlinkJoin {
+      name = "opencode-${oc2.version}";
+      paths = [ oc2 ];
+      postBuild = "ln -s opencode2 $out/bin/opencode";
+      meta.mainProgram = "opencode";
+    };
     skills = lib.optionalAttrs isNiriEnabled {
       "niri-screenshot" = ''
         ---

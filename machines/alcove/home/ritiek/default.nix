@@ -58,16 +58,6 @@
   };
 
   programs = {
-    # OpenCode V2 trial. The package only ships `opencode2`; also expose it as
-    # `opencode` for opencode.nvim and muscle memory.
-    opencode.package = let
-      oc2 = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2;
-    in lib.mkForce (pkgs.symlinkJoin {
-      name = "opencode-${oc2.version}";
-      paths = [ oc2 ];
-      postBuild = "ln -s opencode2 $out/bin/opencode";
-      meta.mainProgram = "opencode";
-    });
     command-not-found.enable = true;
     home-manager.enable = true;
     jq.enable = true;
