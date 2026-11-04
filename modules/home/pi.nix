@@ -1,92 +1,37 @@
-{ config, pkgs, inputs, lib, hostName, ... }:
-let
-  secretsFile =
-    if hostName == "mishy-usb"
-    then ./../../machines/mishy/home/${config.home.username}/secrets.yaml
-    else ./../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
-  secretsContent = builtins.readFile secretsFile;
-  hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
-
-  # Shared auth generator — used by both home.activation (interactive hm switch)
-  # and systemd --user service (boot: runs after sops-nix.service decrypts secrets).
-  pi-auth-generator = pkgs.writeShellScript "pi-auth-generator" ''
-    set -euo pipefail
-
-    AUTH_FILE="${config.home.homeDirectory}/.pi/agent/auth.json"
-    NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
-
-    # Guard: sops secrets may not be available at boot (systemd --user not running yet)
-    if [ ! -f "${config.sops.secrets."opencode_api.key".path}" ]; then
-      echo "pi-auth: sops secrets not yet decrypted by sops-nix, skipping"
-      rm -f "$NIXOS_JSON"
-      exit 0
-    fi
-
-    OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
-    OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
-    GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
-    GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
-    ${lib.optionalString hasZaiApiKey ''
-    ZAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})
-    ''}
-
-    ${if hasZaiApiKey then ''
-    ${pkgs.jq}/bin/jq -n \
-      --arg opencode_key "$OPENCODE_KEY" \
-      --arg openai_key "$OPENAI_KEY" \
-      --arg gh_refresh "$GH_REFRESH" \
-      --arg gh_access "$GH_ACCESS" \
-      --arg zai_key "$ZAI_KEY" \
-      '{
-        "opencode": { type: "api_key", key: $opencode_key },
-        "openai": { type: "api_key", key: $openai_key },
-        "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 },
-        "zai": { type: "api_key", key: $zai_key }
-      }' > "$NIXOS_JSON"
-    '' else ''
-    ${pkgs.jq}/bin/jq -n \
-      --arg opencode_key "$OPENCODE_KEY" \
-      --arg openai_key "$OPENAI_KEY" \
-      --arg gh_refresh "$GH_REFRESH" \
-      --arg gh_access "$GH_ACCESS" \
-      '{
-        "opencode": { type: "api_key", key: $opencode_key },
-        "openai": { type: "api_key", key: $openai_key },
-        "github-copilot": { type: "oauth", refresh: $gh_refresh, access: $gh_access, expires: 0 }
-      }' > "$NIXOS_JSON"
-    ''}
-
-    if [ -f "$AUTH_FILE" ]; then
-      ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$AUTH_FILE" "$NIXOS_JSON" > "$AUTH_FILE.tmp" \
-        && mv "$AUTH_FILE.tmp" "$AUTH_FILE"
-    else
-      mkdir -p "$(${pkgs.coreutils}/bin/dirname "$AUTH_FILE")"
-      cp "$NIXOS_JSON" "$AUTH_FILE"
-    fi
-    chmod 600 "$AUTH_FILE"
-    rm -f "$NIXOS_JSON"
-  '';
-in
+{ pkgs, inputs, ... }:
 {
-  sops.secrets = {
-    "opencode_api.key" = {};
-    "openai_api.key" = {};
-    "github_copilot.refresh" = {};
-    "github_copilot.access" = {};
-  } // lib.optionalAttrs hasZaiApiKey {
-    "z_ai_api.key" = {};
-  };
-
   home.packages = [
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pi
   ];
 
-  home.file.".pi/agent/settings.json".text = builtins.toJSON ({
-    defaultProvider = "anthropic";
-    defaultModel = "claude-sonnet-4-20250514";
+  # Credentials are managed by pi itself (`/login`), stored in ~/.pi/agent/auth.json.
+
+  # Minimal MCP set: no-secret local servers only, and no playwright for now.
+  # pi connects to every enabled server at startup; try pi-mcp-adapter if this grows.
+  home.file.".pi/agent/mcp.json".text = builtins.toJSON {
+    mcpServers = {
+      nixos.command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
+      context7.command = "${inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system}.context7-mcp}/bin/context7-mcp";
+      codegraph = {
+        command = "${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codegraph}/bin/codegraph";
+        args = [ "serve" "--mcp" ];
+      };
+      pdfvision = {
+        command = "${inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pdfvision}/bin/pdfvision";
+        args = [ "mcp" ];
+      };
+    };
+  };
+
+  home.file.".pi/agent/settings.json".text = builtins.toJSON {
+    defaultProvider = "github-copilot";
+    defaultModel = "gpt-6-luna";
     defaultThinkingLevel = "medium";
     theme = "dark";
     enableInstallTelemetry = false;
+    # Pi installs missing packages with npm on startup. Subscription login:
+    # `/login anthropic`. Pinned so upgrades are deliberate.
+    packages = [ "npm:@gotgenes/pi-anthropic-auth@3.4.4" ];
     compaction = {
       enabled = true;
       reserveTokens = 16384;
@@ -100,21 +45,5 @@ in
         maxRetries = 0;
       };
     };
-  });
-
-  home.activation.pi-auth = lib.hm.dag.entryAfter ["writeBoundary" "sops-nix"] ''
-    ${pi-auth-generator}
-  '';
-
-  systemd.user.services.pi-auth = {
-    Unit = {
-      Description = "Pi agent auth setup (after sops-nix decrypts secrets)";
-      After = [ "sops-nix.service" ];
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${pi-auth-generator}";
-    };
-    Install.WantedBy = [ "default.target" ];
   };
 }
