@@ -19,8 +19,9 @@
     ./../../../../modules/home/btop.nix
     ./../../../../modules/home/ssh.nix
     ./../../../../modules/home/rofi.nix
-    ./../../../../modules/home/waybar
-    ./../../../../modules/home/swaync
+    # Replaced by Noctalia (see modules/home/niri).
+    # ./../../../../modules/home/waybar
+    # ./../../../../modules/home/swaync
     ./../../../../modules/home/mpv.nix
     ./../../../../modules/home/jellyfin-mpv-shim.nix
     # ./../../../../modules/home/firefox.nix
@@ -121,7 +122,8 @@
       nemo
       calibre
       # protonvpn-gui
-      lxqt.lxqt-policykit
+      # Replaced by Noctalia's polkit agent.
+      # lxqt.lxqt-policykit
 
       unstable.krita
       unstable.blender

@@ -255,7 +255,8 @@
       wget
       curl
       screen
-      swayosd
+      # Replaced by Noctalia's OSD.
+      # swayosd
       brightnessctl
 
       # Superseded by programs.ssh.startAgent = true;
@@ -301,34 +302,35 @@
     waydroid.enable = true;
   };
 
-  systemd = {
-    services = {
-      swayosd-libinput-backend = {
-        description = "swayosd-libinput-backend";
-        enable = true;
-        path = with pkgs; [
-          coreutils
-          swayosd
-        ];
-        script = ''
-          ${pkgs.coreutils}/bin/sleep 30s;
-          echo starting;
-          sudo ${pkgs.swayosd}/bin/swayosd-libinput-backend;
-        '';
-        wantedBy = [ "graphical-session.target" ];
-        # wants = [ "graphical-session.target" ];
-        # after = [ "graphical-session.target" ];
-        serviceConfig = {
-          Type = "simple";
-          Restart = "on-failure";
-          RestartSec = 10;
-          TimeoutStopSec = 60;
-          User = "root";
-          Group = "root";
-        };
-      };
-    };
-  };
+  # Replaced by Noctalia's OSD.
+  # systemd = {
+  #   services = {
+  #     swayosd-libinput-backend = {
+  #       description = "swayosd-libinput-backend";
+  #       enable = true;
+  #       path = with pkgs; [
+  #         coreutils
+  #         swayosd
+  #       ];
+  #       script = ''
+  #         ${pkgs.coreutils}/bin/sleep 30s;
+  #         echo starting;
+  #         sudo ${pkgs.swayosd}/bin/swayosd-libinput-backend;
+  #       '';
+  #       wantedBy = [ "graphical-session.target" ];
+  #       # wants = [ "graphical-session.target" ];
+  #       # after = [ "graphical-session.target" ];
+  #       serviceConfig = {
+  #         Type = "simple";
+  #         Restart = "on-failure";
+  #         RestartSec = 10;
+  #         TimeoutStopSec = 60;
+  #         User = "root";
+  #         Group = "root";
+  #       };
+  #     };
+  #   };
+  # };
 
   # Enable sound with pipewire.
   # sound.enable = true;
@@ -443,7 +445,7 @@
 
     udev = {
       packages = with pkgs; [
-        swayosd
+        # swayosd
         # android-tools
       ];
       extraRules = ''

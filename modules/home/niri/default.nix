@@ -86,6 +86,34 @@ let
       [ -n "$snap" ] && rm -f "$snap"
     ) </dev/null >/dev/null 2>&1 &
   '';
+  # mishy runs the Noctalia shell, which replaces waybar, swaync, swayosd,
+  # hyprpaper, hypridle/hyprlock, gammastep and the lxqt polkit agent.
+  noctalia = hostName == "mishy";
+  nvidia = osConfig.hardware.nvidia.enabled or false;
+  noctalia-config = (pkgs.formats.toml { }).generate "noctalia-config.toml" {
+    shell.polkit_agent = true;
+    notification.layer = "overlay";
+    # Same fixed 4300K that gammastep applied.
+    nightlight = {
+      enabled = true;
+      force = true;
+      temperature_night = 4300;
+    };
+    # Same timeouts hypridle used; lock-before-suspend is on by default.
+    idle.behavior = {
+      lock = { enabled = true; action = "lock"; timeout = 1800; };
+      screen-off = { enabled = true; action = "screen_off"; timeout = 3600; };
+    };
+    wallpaper = {
+      fill_mode = "crop";
+      default.path = builtins.toString sunrise;
+      monitors = {
+        "HDMI-A-1".path = builtins.toString sakura;
+        "HDMI-A-2".path = builtins.toString cactus;
+      };
+    };
+  };
+
   ntfy-desktop = pkgs.writeShellScript "ntfy-desktop" ''
     while true; do
       ${pkgs.ntfy-sh}/bin/ntfy subscribe \
@@ -105,17 +133,9 @@ in
 
   home.packages = with pkgs; [
     niri
-    # Use Hyprland ecosystem tools instead of Sway equivalents
-    hyprpaper     # Instead of swaybg
-    hypridle      # Instead of swayidle
     hyprpicker    # Color picker
     # hyprshot      # Screenshot tool
     # hyprcursor    # Cursor theme tool
-
-    # Fixed color temperature:
-    # 1. hyprsunset doesn't work on NixOS
-    # 2. had trouble with wlsunset to maintain constant temp recently
-    gammastep
 
     xdg-desktop-portal-hyprland
     # wl-clipboard  # Already provided by wl-clipboard-rs in main config
@@ -125,14 +145,25 @@ in
     wlopm
     xwayland-satellite
     rose-pine-cursor
-  ] ++ (if osConfig.hardware.nvidia.enabled or false then [
+  ] ++ (if noctalia then [
+    pkgs.noctalia
+  ] else [
+    # Use Hyprland ecosystem tools instead of Sway equivalents
+    hyprpaper     # Instead of swaybg
+    hypridle      # Instead of swayidle
+
+    # Fixed color temperature:
+    # 1. hyprsunset doesn't work on NixOS
+    # 2. had trouble with wlsunset to maintain constant temp recently
+    gammastep
+  ]) ++ lib.optionals nvidia [
     # Wrapper to disable NVIDIA offload (use Intel GPU instead)
     # for screenshare to work.
     (pkgs.writeShellScriptBin "nvidia-unoffload" ''
       export __NV_PRIME_RENDER_OFFLOAD=0
       exec "$@"
     '')
-
+  ] ++ lib.optionals (!noctalia) (if nvidia then [
     # Wrapper to automatically run hyprlock without NVIDIA offload
     (pkgs.writeShellScriptBin "hyprlock" ''
       exec nvidia-unoffload "${pkgs.hyprlock}/bin/hyprlock" "$@"
@@ -150,6 +181,8 @@ in
   ] else [
     hyprlock
   ]);
+
+  xdg.configFile."noctalia/config.toml" = lib.mkIf noctalia { source = noctalia-config; };
 
   xdg.configFile."niri/config.kdl".text = ''
 // Niri configuration equivalent to Hyprland setup
@@ -517,14 +550,31 @@ window-rule {
 //     open-floating true
 // }
 
+${if noctalia then ''
+// Unoffloaded like hyprlock/swayosd were, so the shell stays on the Intel GPU.
+spawn-at-startup ${lib.optionalString nvidia ''"nvidia-unoffload" ''}"noctalia"
+
+window-rule {
+  match app-id="dev.noctalia.Noctalia"
+  open-floating true
+  default-column-width { fixed 1080; }
+  default-window-height { fixed 920; }
+}
+
+// Lets notification actions and clicks focus the sending window.
+debug {
+  honor-xdg-activation-with-invalid-serial
+}
+'' else ''
 spawn-at-startup "waybar"
 spawn-at-startup "hyprpaper"
 spawn-at-startup "hypridle"
 spawn-at-startup "gammastep" "-O" "4300" "-r" "-m" "wayland"
-spawn-at-startup "${ntfy-desktop}"
-spawn-at-startup "xhost" "+local:"
 spawn-at-startup "lxqt-policykit-agent"
 spawn-sh-at-startup "swayosd-server"
+''}
+spawn-at-startup "${ntfy-desktop}"
+spawn-at-startup "xhost" "+local:"
 spawn-at-startup "tailscale" "systray"
 ${if hostName == "deskette" then ''
 // Sunshine disabled (2026-07-26) — its live capture pipeline was the sole
@@ -678,10 +728,42 @@ binds {
     Shift+Print { screenshot-screen; }
     Mod+Print { screenshot-window; }
 
+${if noctalia then ''
+    // Notifications
+    Ctrl+Shift+Q { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+    Ctrl+Shift+X { spawn "noctalia" "msg" "notification-clear-active"; }
+    Mod+Tab { spawn "noctalia" "msg" "notification-invoke-latest"; }
+
+    // Audio
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-up" "2"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "noctalia" "msg" "volume-down" "2"; }
+    XF86AudioMute allow-when-locked=true { spawn "noctalia" "msg" "volume-mute"; }
+    F7 allow-when-locked=true { spawn "noctalia" "msg" "volume-up" "2"; }
+    F6 allow-when-locked=true { spawn "noctalia" "msg" "volume-down" "2"; }
+
+    // Input volume controls
+    Shift+XF86AudioRaiseVolume { spawn "noctalia" "msg" "mic-volume-up" "5"; }
+    Shift+XF86AudioLowerVolume { spawn "noctalia" "msg" "mic-volume-down" "5"; }
+    Shift+XF86AudioMute { spawn "noctalia" "msg" "mic-mute"; }
+    Shift+F7 { spawn "noctalia" "msg" "mic-volume-up" "5"; }
+    Shift+F6 { spawn "noctalia" "msg" "mic-volume-down" "5"; }
+
+    // Brightness (the ScreenPad backlight isn't tied to an output Noctalia knows, so use brightnessctl)
+    XF86MonBrightnessUp { spawn "noctalia" "msg" "brightness-up" "eDP-1" "5"; }
+    XF86MonBrightnessDown { spawn "noctalia" "msg" "brightness-down" "eDP-1" "5"; }
+    Shift+XF86MonBrightnessUp { spawn "brightnessctl" "-d" "asus*screenpad" "set" "5%+"; }
+    Shift+XF86MonBrightnessDown { spawn "brightnessctl" "-d" "asus*screenpad" "set" "5%-"; }
+
+    // Media control
+    XF86AudioPlay allow-when-locked=true { spawn "noctalia" "msg" "media" "play"; }
+    XF86AudioPause allow-when-locked=true { spawn "noctalia" "msg" "media" "pause"; }
+    F10 allow-when-locked=true { spawn "noctalia" "msg" "media" "toggle"; }
+'' else ''
     // Notifications
     // Ctrl+Shift+Q { spawn-sh "niri msg action do-screen-transition && swaync-client -t"; }
     Ctrl+Shift+Q { spawn "swaync-client" "-t"; }
     Ctrl+Shift+X { spawn "swaync-client" "--hide-latest"; }
+    Mod+Tab { spawn "swaync-client" "-a"; }
 
     // Audio
     XF86AudioRaiseVolume allow-when-locked=true { spawn "swayosd-client" "--output-volume" "+2"; }
@@ -689,22 +771,14 @@ binds {
     XF86AudioMute allow-when-locked=true { spawn "swayosd-client" "--output-volume" "mute-toggle"; }
     F7 allow-when-locked=true { spawn "swayosd-client" "--output-volume" "+2"; }
     F6 allow-when-locked=true { spawn "swayosd-client" "--output-volume" "-2"; }
-    
-    // Per-app volume controls
-    Ctrl+XF86AudioRaiseVolume { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%+; notify-send -u low -t 1000 -r 10 \"2%+ Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
-    Ctrl+XF86AudioLowerVolume { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%-; notify-send -u low -t 1000 -r 10 \"2%- Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
-    Ctrl+XF86AudioMute { spawn-sh "wpctl set-mute -p $(niri msg --json focused-window | jq -r '.pid // empty') toggle; notify-send -u low -t 1000 -r 10 \"Toggle Mute for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
-    Ctrl+F7 { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%+; notify-send -u low -t 1000 -r 10 \"2%+ Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
-    Ctrl+F6 { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%-; notify-send -u low -t 1000 -r 10 \"2%- Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
-    Ctrl+F10 { spawn-sh "wpctl set-mute -p $(niri msg --json focused-window | jq -r '.pid // empty') toggle; notify-send -u low -t 1000 -r 10 \"Toggle Mute for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
 
-    // Input volume controls  
+    // Input volume controls
     Shift+XF86AudioRaiseVolume { spawn "swayosd-client" "--input-volume" "+5"; }
     Shift+XF86AudioLowerVolume { spawn "swayosd-client" "--input-volume" "-5"; }
     Shift+XF86AudioMute { spawn "swayosd-client" "--input-volume" "mute-toggle"; }
     Shift+F7 { spawn "swayosd-client" "--input-volume" "+5"; }
     Shift+F6 { spawn "swayosd-client" "--input-volume" "-5"; }
-    
+
     // Brightness
     XF86MonBrightnessUp { spawn "swayosd-client" "--device" "intel_backlight" "--brightness" "raise"; }
     XF86MonBrightnessDown { spawn "swayosd-client" "--device" "intel_backlight" "--brightness" "lower"; }
@@ -714,14 +788,23 @@ binds {
     // Media control
     XF86AudioPlay allow-when-locked=true { spawn "swayosd-client" "--playerctl=play"; }
     XF86AudioPause allow-when-locked=true { spawn "swayosd-client" "--playerctl=pause"; }
+    F10 allow-when-locked=true { spawn "swayosd-client" "--playerctl=play-pause"; }
+''}
+
+    // Per-app volume controls
+    Ctrl+XF86AudioRaiseVolume { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%+; notify-send -u low -t 1000 -r 10 \"2%+ Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
+    Ctrl+XF86AudioLowerVolume { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%-; notify-send -u low -t 1000 -r 10 \"2%- Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
+    Ctrl+XF86AudioMute { spawn-sh "wpctl set-mute -p $(niri msg --json focused-window | jq -r '.pid // empty') toggle; notify-send -u low -t 1000 -r 10 \"Toggle Mute for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
+    Ctrl+F7 { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%+; notify-send -u low -t 1000 -r 10 \"2%+ Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
+    Ctrl+F6 { spawn-sh "wpctl set-volume -l 1.0 -p $(niri msg --json focused-window | jq -r '.pid // empty') 2%-; notify-send -u low -t 1000 -r 10 \"2%- Volume for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
+    Ctrl+F10 { spawn-sh "wpctl set-mute -p $(niri msg --json focused-window | jq -r '.pid // empty') toggle; notify-send -u low -t 1000 -r 10 \"Toggle Mute for $(niri msg --json focused-window | jq -r '.title // \"Unknown\"')\""; }
+
     XF86AudioNext allow-when-locked=true { spawn "playerctl" "next"; }
     XF86AudioPrev allow-when-locked=true { spawn "playerctl" "previous"; }
     F8 allow-when-locked=true { spawn "playerctl" "previous"; }
     F9 allow-when-locked=true { spawn "playerctl" "next"; }
-    F10 allow-when-locked=true { spawn "swayosd-client" "--playerctl=play-pause"; }
 
     // Window management (group management from Hyprland - niri doesn't have groups but these are window navigation)
-    Mod+Tab { spawn "swaync-client" "-a"; }
     // Mod+Shift+Tab { focus-window-up-or-column-left; }
     // Alt+Tab { focus-window-down-or-column-right; }
     
@@ -932,7 +1015,7 @@ animations {
 
   services = {
     hyprpaper = {
-      enable = true;
+      enable = !noctalia;
       settings = {
         ipc = "on";
         splash = false;
@@ -970,7 +1053,7 @@ animations {
       };
     };
     hypridle = {
-      enable = true;
+      enable = !noctalia;
       settings = {
         general = {
           before_sleep_cmd = "pidof hyprlock || hyprlock --immediate";
