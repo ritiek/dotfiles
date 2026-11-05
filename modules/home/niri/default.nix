@@ -730,7 +730,7 @@ binds {
 
 ${if noctalia then ''
     // Notifications
-    Ctrl+Shift+Q { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
+    Ctrl+Shift+Q { spawn "noctalia" "msg" "panel-toggle" "control-center" "notifications"; }
     Ctrl+Shift+X { spawn "noctalia" "msg" "notification-clear-active"; }
     Mod+Tab { spawn "noctalia" "msg" "notification-invoke-latest"; }
 
