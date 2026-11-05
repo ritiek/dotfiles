@@ -324,6 +324,24 @@ let
         '';
       };
     };
+    "meridian.${domain}" = http3Vhost // {
+      forceSSL = true;
+      enableACME = true;
+      locations."/" = {
+        recommendedProxySettings = true;
+        extraConfig = ''
+          include ${config.sops.templates."nginx-meridian-gate".path};
+          set $upstream "pilab.lion-zebra.ts.net:3456";
+          proxy_pass http://$upstream;
+          proxy_http_version 1.1;
+
+          # Claude turns stream and can run long; don't let nginx buffer or
+          # time out a response mid-generation.
+          proxy_buffering off;
+          proxy_read_timeout 300s;
+        '';
+      };
+    };
     "webhook.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
@@ -358,6 +376,7 @@ let
     "webhook_matrix.auth" = {};
     "github_actions_matrix_user.password" = {};
     "app_identity_header" = {};
+    "meridian_api_key" = {};
   };
 
   # restartTriggers on the unit below only cover changes to the template *text*
@@ -398,6 +417,28 @@ let
     restartUnits = [ "nginx.service" ];
     content = ''
       if ($http_app_identity_key != "${config.sops.placeholder."app_identity_header"}") {
+        return 403;
+      }
+    '';
+  };
+
+  # Gate for the meridian vhost: only requests carrying the configured key as
+  # either x-api-key or an Authorization: Bearer header (Meridian's own
+  # MERIDIAN_API_KEY accepts both forms) get proxied through. nginx `if` has
+  # no `or`, hence the two-step $meridian_authorized flag instead of a single
+  # condition. restartUnits reloads nginx when the secret is rotated.
+  sops.templates."nginx-meridian-gate" = {
+    owner = "nginx";
+    restartUnits = [ "nginx.service" ];
+    content = ''
+      set $meridian_authorized 0;
+      if ($http_x_api_key = "${config.sops.placeholder."meridian_api_key"}") {
+        set $meridian_authorized 1;
+      }
+      if ($http_authorization = "Bearer ${config.sops.placeholder."meridian_api_key"}") {
+        set $meridian_authorized 1;
+      }
+      if ($meridian_authorized = 0) {
         return 403;
       }
     '';
