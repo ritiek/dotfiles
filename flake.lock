@@ -83,6 +83,26 @@
         "type": "github"
       }
     },
+    "artcraft": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793882394,
+        "narHash": "sha256-Gl8Mjk23K59GqemuWbE62TzNby5hYOO25guP3xe0GsY=",
+        "owner": "ipeglin",
+        "repo": "artcraft-nix",
+        "rev": "9c92ec4b3fae524e7c4c517e930d808194174885",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipeglin",
+        "repo": "artcraft-nix",
+        "type": "github"
+      }
+    },
     "blobs": {
       "flake": false,
       "locked": {
@@ -1639,6 +1659,7 @@
     },
     "root": {
       "inputs": {
+        "artcraft": "artcraft",
         "bun2nix": "bun2nix",
         "deploy-rs": "deploy-rs",
         "disko": "disko",

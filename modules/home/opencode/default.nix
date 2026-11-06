@@ -430,6 +430,18 @@ in
             "mcp"
           ];
         };
+        photocraft = {
+          enabled = true;
+          type = "local";
+          command = [
+            "${inputs.artcraft.packages.${pkgs.stdenv.hostPlatform.system}.photocraft}/bin/photocraft-cli"
+            "mcp"
+            "--bridge"
+            "127.0.0.1:9812"
+            "--control-token-file"
+            "/tmp/opencode/pc-token"
+          ];
+        };
         github = {
           enabled = true;
           type = "remote";

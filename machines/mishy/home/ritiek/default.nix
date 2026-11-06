@@ -128,6 +128,7 @@
       unstable.krita
       unstable.blender
       gimp3
+      inputs.artcraft.packages.${pkgs.stdenv.hostPlatform.system}.photocraft
 
       wl-clipboard-rs
       wev
