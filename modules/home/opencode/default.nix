@@ -698,7 +698,8 @@ in
   home.activation.opencode-cli-settings = lib.mkIf isOpencodeV2 (lib.hm.dag.entryAfter ["writeBoundary"] ''
     f="${config.home.homeDirectory}/.config/opencode/cli.json"
     mkdir -p "$(dirname "$f")"
-    [ -f "$f" ] || echo '{}' > "$f"
+    # -s: jq prints nothing for an empty file, which would leave it empty forever.
+    [ -s "$f" ] || echo '{}' > "$f"
     tmp=$(mktemp)
     ${pkgs.jq}/bin/jq '. * $s' --argjson s ${lib.escapeShellArg (builtins.toJSON {
       prompt.image_preview = true;
