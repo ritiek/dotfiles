@@ -13,7 +13,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.kernelParams = [ "i915.enable_guc=3" ];
+  boot.kernelParams = [ "i915.enable_guc=3" "video=HDMI-A-1:e" ]; # force HDMI on: this monitor never asserts hotplug
 
   networking.useDHCP = lib.mkDefault true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
