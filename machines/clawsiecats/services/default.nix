@@ -111,6 +111,25 @@ let
     "jitsi.${domain}" = {
       basicAuthFile = config.sops.secrets."jitsi.htpasswd".path;
     };
+    "navidrome.${domain}" = http3Vhost // {
+      forceSSL = true;
+      enableACME = true;
+      # Subsonic clients can send credentials in the query string.
+      extraConfig = http3Vhost.extraConfig + ''
+        access_log off;
+      '';
+      locations."/".extraConfig = ''
+        set $upstream "pilab.lion-zebra.ts.net:4533";
+        proxy_pass http://$upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_buffering off;
+        proxy_read_timeout 300s;
+      '';
+    };
     "immich.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;
