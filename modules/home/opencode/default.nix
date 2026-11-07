@@ -57,6 +57,8 @@ let
       test -f $out/dist/cli.js
     '';
   in pkgs.writeShellScript "open-design-mcp" ''
+    # od mcp exits after 30 min idle by default and opencode doesn't respawn it.
+    export OD_MCP_STDIO_IDLE_EXIT_MS=0
     exec ${pkgs.nodejs_24}/bin/node ${daemon}/dist/cli.js mcp "$@"
   '';
 
