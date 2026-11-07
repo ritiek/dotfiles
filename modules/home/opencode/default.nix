@@ -34,15 +34,15 @@ let
   # OpenDesign's `od mcp` stdio client, lifted out of the daemon image so it
   # runs on plain nodejs without a local Docker daemon. It is pure JS that
   # talks HTTP to the daemon on pilab; the native/media deps are dropped.
-  # ponytail: pinned digest, bump with nix-prefetch-docker if the pilab
-  # daemon (which tracks :latest) grows an incompatible API.
+  # ponytail: pinned digest of 0.27.0, bump with nix-prefetch-docker together
+  # with the pilab daemon's FROM tag (machines/pilab/compose/open-design).
   open-design-mcp = let
     image = pkgs.dockerTools.pullImage {
       imageName = "ghcr.io/nexu-io/od";
-      imageDigest = "sha256:5fc38ad9dd67dceb89a332c52ded43745be1071816c6683607f7032200693643";
+      imageDigest = "sha256:c61bb744f057091b4ada678b32142b11f419755713c17203184bbd57cf5057df";
       hash = {
-        x86_64-linux = "sha256-n6w+cwHtm0s1uE0Llx8UZDJUgo390RPp1HfSqWZKb+s=";
-        aarch64-linux = "sha256-s/TzUrpd5+06Rs5G3aNM1DFQWwM0FAfbrrygN6kP8IY=";
+        x86_64-linux = "sha256-/D7BIHdFmauNtIi1AYIuveRv0X+GOeyD6SaiEgrTFiw=";
+        aarch64-linux = "sha256-E9ZpnNVltJS7QxktXaxdIG7zuVu4L+Jeikm8GwbPRlQ=";
       }.${pkgs.stdenv.hostPlatform.system};
       finalImageTag = "latest";
     };

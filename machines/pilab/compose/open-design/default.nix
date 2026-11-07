@@ -14,7 +14,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."open-design" = {
-    # Built locally from ghcr.io/nexu-io/od:latest + libc6-compat (see the
+    # Built locally from ghcr.io/nexu-io/od:<version> + libc6-compat (see the
     # open-design-image-build service below) so the glibc-linked
     # vela-cli-linux-arm64 binary can actually run on this Alpine image.
     image = "open-design-local:latest";
@@ -104,7 +104,7 @@
     };
     script = ''
       docker build -t open-design-local:latest - <<'EOF'
-      FROM ghcr.io/nexu-io/od:latest
+      FROM ghcr.io/nexu-io/od:0.27.0
       USER root
       RUN apk add --no-cache libc6-compat
       USER open-design
