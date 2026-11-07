@@ -695,7 +695,9 @@ let
       '';
       commonHttpConfig = ''
       '';
-      virtualHosts = lib.mkMerge (map mkVhosts domains) // {
+      # Extra vhosts go inside mkMerge's list: `mkMerge [...] // { ... }` merges
+      # them into the mkMerge wrapper itself, where they are silently ignored.
+      virtualHosts = lib.mkMerge (map mkVhosts domains ++ [ {
         # "miniserve.${primaryDomain}" = {
         #   forceSSL = true;
         #   enableACME = true;
@@ -887,15 +889,30 @@ let
         #     recommendedProxySettings = true;
         #   };
         # };
-        # "n8n.${primaryDomain}" = {
+        # n8n on pilab. Before enabling, set these in pilab's
+        # compose/n8n/stack.env so n8n builds correct webhook/editor URLs and
+        # trusts X-Forwarded-For from this hop:
+        #   WEBHOOK_URL=https://n8n.clawsiecats.omg.lol/
+        #   N8N_EDITOR_BASE_URL=https://n8n.clawsiecats.omg.lol/
+        #   N8N_PROXY_HOPS=1
+        # "n8n.${primaryDomain}" = http3Vhost // {
         #   forceSSL = true;
         #   enableACME = true;
-        #   locations."/" = {
-        #     proxyPass = "http://pilab.lion-zebra.ts.net:5678";
-        #     proxyWebsockets = true;
-        #     # Need this enabled to avoid header request issues.
-        #     recommendedProxySettings = true;
-        #   };
+        #   locations."/".extraConfig = ''
+        #     set $upstream "pilab.lion-zebra.ts.net:5678";
+        #     proxy_pass http://$upstream;
+        #     proxy_http_version 1.1;
+        #     proxy_set_header Host $host;
+        #     proxy_set_header X-Real-IP $remote_addr;
+        #     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        #     proxy_set_header X-Forwarded-Proto $scheme;
+        #     # Editor UI push channel (/rest/push) is a WebSocket.
+        #     proxy_set_header Upgrade $http_upgrade;
+        #     proxy_set_header Connection "upgrade";
+        #     # Execution/webhook responses can stream and run long.
+        #     proxy_buffering off;
+        #     proxy_read_timeout 300s;
+        #   '';
         # };
         # "git.${primaryDomain}" = {
         #   forceSSL = true;
@@ -942,7 +959,7 @@ let
         #     recommendedProxySettings = true;
         #   };
         # };
-      };
+      } ]);
       streamConfig = ''
         resolver 127.0.0.53;
         server {
