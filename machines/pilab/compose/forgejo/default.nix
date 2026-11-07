@@ -26,6 +26,11 @@
     ];
     # Forgejo 17 defaults to "session", which collides with Flask apps on the same host.
     environment.FORGEJO__session__COOKIE_NAME = "i_like_gitea";
+    # Clone URLs shown in the UI; SSH_PORT is the published host port (container listens on 22).
+    environment.FORGEJO__server__ROOT_URL = "http://pilab.lion-zebra.ts.net:3033/";
+    environment.FORGEJO__server__DOMAIN = "pilab.lion-zebra.ts.net";
+    environment.FORGEJO__server__SSH_DOMAIN = "pilab.lion-zebra.ts.net";
+    environment.FORGEJO__server__SSH_PORT = "3022";
     volumes = [
       "/etc/localtime:/etc/localtime:ro"
       "/etc/timezone:/etc/timezone:ro"
