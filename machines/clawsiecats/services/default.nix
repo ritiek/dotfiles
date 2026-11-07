@@ -963,6 +963,19 @@ let
           set $upstream "pilab.lion-zebra.ts.net:8776";
           proxy_pass $upstream;
         }
+        # 3proxy on pilab and keyberry, exiting from their public IPs
+        server {
+          listen 0.0.0.0:8091;
+          proxy_timeout 600s;
+          set $upstream "pilab.lion-zebra.ts.net:8090";
+          proxy_pass $upstream;
+        }
+        server {
+          listen 0.0.0.0:8092;
+          proxy_timeout 600s;
+          set $upstream "keyberry.lion-zebra.ts.net:8090";
+          proxy_pass $upstream;
+        }
       '';
     };
   };
@@ -1013,8 +1026,10 @@ let
 
   networking.firewall = {
     allowedTCPPorts = [
-      # 3proxy HTTP proxy
+      # 3proxy HTTP proxy, plus forwards to pilab and keyberry's 3proxy
       8090
+      8091
+      8092
 
       # NGINX and ACME
       80
