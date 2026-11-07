@@ -24,7 +24,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."n8n" = {
-    image = "docker.n8n.io/n8nio/n8n";
+    image = "docker.n8n.io/n8nio/n8n:2.46.6";
     environmentFiles = [
       config.sops.secrets."compose/n8n.env".path
     ];
@@ -70,7 +70,7 @@
     ];
   };
   virtualisation.oci-containers.containers."n8n-worker" = {
-    image = "docker.n8n.io/n8nio/n8n";
+    image = "docker.n8n.io/n8nio/n8n:2.46.6";
     environmentFiles = [
       config.sops.secrets."compose/n8n.env".path
     ];
