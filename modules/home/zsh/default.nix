@@ -56,6 +56,64 @@
           pkill -f "$tunnel_spec"
         }
 
+        # Mirror $PROXY into the standard proxy env vars, for both
+        # `export PROXY=...` and one-shot `PROXY=... cmd`.
+        function _proxy_set {
+          if [[ -n "$1" ]]; then
+            export HTTP_PROXY=$1 HTTPS_PROXY=$1 http_proxy=$1 https_proxy=$1
+            export NO_PROXY="127.0.0.1,localhost,::1" no_proxy="127.0.0.1,localhost,::1"
+          else
+            unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy
+          fi
+        }
+        typeset -g _proxy_last=""
+        typeset -ga _proxy_shims
+        function _proxy_precmd {
+          (( $#_proxy_shims )) && unfunction $_proxy_shims 2>/dev/null
+          _proxy_shims=()
+          # Only touch the proxy vars when $PROXY changes, so manual ones survive.
+          [[ "$PROXY" == "$_proxy_last" ]] && return
+          _proxy_last=$PROXY
+          _proxy_set "$PROXY"
+        }
+        function _proxy_run {
+          if (( ''${+PROXY} )); then
+            local -x HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy
+            _proxy_set "$PROXY"
+          fi
+          command "$@"
+        }
+        # For one-shot `PROXY=... cmd` (anywhere in the line), shadow cmd with a
+        # function calling _proxy_run until the next prompt. Functions are
+        # resolved at run time and see the temporary PROXY, so the shell still
+        # expands the value exactly once. $3 is the line with aliases expanded.
+        zmodload zsh/parameter
+        function _proxy_preexec {
+          local w start=1 has=0
+          for w in ''${(z)3}; do
+            case $w in
+              ';'|'&&'|'||'|'|'|'|&'|'&'|'&!'|'&|'|'('|'{') start=1 has=0; continue ;;
+            esac
+            (( start )) || continue
+            case $w in
+              '!'|if|elif|then|else|while|until|do|time) ;;
+              PROXY=*) has=1 ;;
+              [[:alpha:]_]*=*) ;;
+              *)
+                start=0
+                w=''${(Q)w}
+                # shortcut: only external commands are wrapped, not functions or builtins.
+                if (( has )) && [[ "$(whence -w -- $w)" == *': command' ]]; then
+                  _proxy_shims+=($w)
+                  functions[$w]="_proxy_run ''${(q)w} \"\$@\""
+                fi ;;
+            esac
+          done
+        }
+        autoload -Uz add-zsh-hook
+        add-zsh-hook precmd _proxy_precmd
+        add-zsh-hook preexec _proxy_preexec
+
         # Allow symlinks
         ZSH_DISABLE_COMPFIX=true
 
