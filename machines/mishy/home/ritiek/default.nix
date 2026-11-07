@@ -1,5 +1,12 @@
 { pkgs, inputs, config, ... }:
 {
+  # Shared with the opencode photocraft MCP bridge (see modules/home/opencode).
+  sops.secrets."photocraft.token" = {};
+  home.sessionVariables = {
+    PHOTOCRAFT_CONTROL_PORT = "9812";
+    PHOTOCRAFT_CONTROL_TOKEN_FILE = config.sops.secrets."photocraft.token".path;
+  };
+
   imports = [
     inputs.sops-nix.homeManagerModule
 

@@ -430,7 +430,8 @@ in
             "mcp"
           ];
         };
-        photocraft = {
+        # Only on machines that declare the photocraft.token secret (mishy).
+        photocraft = lib.mkIf (config.sops.secrets ? "photocraft.token") {
           enabled = true;
           type = "local";
           command = [
@@ -439,7 +440,7 @@ in
             "--bridge"
             "127.0.0.1:9812"
             "--control-token-file"
-            "/tmp/opencode/pc-token"
+            config.sops.secrets."photocraft.token".path
           ];
         };
         github = {
