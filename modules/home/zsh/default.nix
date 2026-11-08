@@ -261,6 +261,7 @@
       chafa = "chafa --format=kitty";
       mpv-kitty = "mpv --profile=sw-fast --vo=kitty --vo-kitty-use-shm=yes --really-quiet";
       scrcpy-opengl = "scrcpy --render-driver=opengl --mouse=sdk --keyboard=sdk --max-size=960";
+      scanimage-lide-100 = "scanimage --mode Color --resolution 300";
 
       # $ ffmpeg-intel-hw-accel -i Big_Buck_Bunny_1080_10s_5MB.mp4 -c:v hevc_qsv output_qsv.mp4
       # $ ffmpeg-intel-hw-accel -i Big_Buck_Bunny_1080_10s_5MB.mp4 -vf 'format=nv12,hwupload' -c:v h264_vaapi output_h264.mp4
