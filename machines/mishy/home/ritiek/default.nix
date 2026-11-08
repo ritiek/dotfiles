@@ -2,6 +2,9 @@
 {
   # Shared with the opencode photocraft MCP bridge (see modules/home/opencode).
   sops.secrets."photocraft.token" = {};
+  # PS4 Remote Play registration ([registered_hosts] + [manual_hosts]) for
+  # Chiaki's default profile, merged into the live config on each launch.
+  sops.secrets."chiaki/Chiaki.conf" = {};
   home.sessionVariables = {
     PHOTOCRAFT_CONTROL_PORT = "9812";
     PHOTOCRAFT_CONTROL_TOKEN_FILE = config.sops.secrets."photocraft.token".path;
@@ -151,11 +154,17 @@
       syncplay
       # chiaki-ng's QML UI fails to load with QT_STYLE_OVERRIDE=kvantum
       # ("module kvantum is not installed"), so unset it for chiaki.
+      # Chiaki rewrites its config at runtime, so the sops credentials are
+      # merged in (keeping local UI settings) instead of symlinked read-only.
       (symlinkJoin {
         name = "chiaki-ng";
         paths = [ chiaki-ng ];
         nativeBuildInputs = [ makeWrapper ];
-        postBuild = "wrapProgram $out/bin/chiaki --unset QT_STYLE_OVERRIDE";
+        postBuild = ''
+          wrapProgram $out/bin/chiaki --unset QT_STYLE_OVERRIDE \
+            --run 'mkdir -p "$HOME/.config/Chiaki"' \
+            --run '${crudini}/bin/crudini --ini-options=nospace --merge "$HOME/.config/Chiaki/Chiaki.conf" < ${config.sops.secrets."chiaki/Chiaki.conf".path}'
+        '';
       })
       moonlight-qt
       scrcpy
