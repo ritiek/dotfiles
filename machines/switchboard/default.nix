@@ -29,11 +29,19 @@
     ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
-    ./services/pihole.nix
-    ./services/homepage.nix
-    ./services/gatus.nix
-    ./services/searxng.nix
+    # Off for now to leave RAM (937 MiB total) for frigate. LAN clients get
+    # 192.168.3.1 as DNS from kea, so re-enable pihole before using the LAN.
+    # ./services/pihole.nix
+    # ./services/homepage.nix
+    # ./services/gatus.nix
+    # ./services/searxng.nix
+    ./services/frigate.nix
   ];
+
+  # lan.nix points the host at pihole (127.0.0.1). Without it, tailscaled and
+  # netbird still need DNS to reach their control servers before MagicDNS is up.
+  # Drop this together with re-enabling pihole above.
+  networking.nameservers = lib.mkForce [ "194.242.2.2" "2a07:e340::2" ];
 
   sops.secrets = {
     "rnixbld.id_ed25519" = {
