@@ -32,7 +32,10 @@
     # ./../../../../modules/home/sioyek.nix
     ./../../../../modules/home/opencode
     ./../../../../modules/home/direnv.nix
+    ./../../../../scripts/home/immich-env.nix
    ];
+
+  sops.secrets."paperless-ngx-push.env" = {};
 
   nixpkgs.config.allowUnfree = false;
 
@@ -81,6 +84,7 @@
       iperf
       chafa
       imagemagick
+      (import ./../../../../scripts/home/paperless-ngx-push.nix { inherit pkgs config; })
     ];
   };
   programs = {
