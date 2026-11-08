@@ -2,6 +2,9 @@
   description = "NixOS flake for my dotfiles";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs";
+    # Frozen at switchboard's last deployed nixpkgs (26.11.20260905) so fleet-wide
+    # `nix flake update` doesn't move the router. Bump deliberately.
+    nixpkgs-switchboard.url = "github:NixOS/nixpkgs/f5f41d5cdfadcfedb240dcaf7ab67770e8ac423c";
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -753,7 +756,7 @@
       extraSpecialArgs = { inherit inputs; everythingElsePath = "/media/EVERYTHING_ELSE"; };
     };
 
-    nixosConfigurations.switchboard = inputs.nixpkgs.lib.nixosSystem {
+    nixosConfigurations.switchboard = inputs.nixpkgs-switchboard.lib.nixosSystem {
       system = "aarch64-linux";
       modules = [
         ./machines/switchboard
@@ -763,7 +766,7 @@
     };
 
     homeConfigurations."ritiek@switchboard" = inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = import inputs.nixpkgs {
+      pkgs = import inputs.nixpkgs-switchboard {
         system = "aarch64-linux";
         # config.allowUnfree = true;
       };
