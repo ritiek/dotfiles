@@ -79,6 +79,7 @@
       miniserve
       bore-cli
       iperf
+      chafa
     ];
   };
   programs = {
