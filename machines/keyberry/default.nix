@@ -124,6 +124,8 @@
         "i2c"
         "spi"
         "dialout"
+        "scanner"
+        "lp"
       ];
       openssh.authorizedKeys.keys = [
         "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINmHZVbmzdVkoONuoeJhfIUDRvbhPeaSkhv0LXuNIyFfAAAAEXNzaDpyaXRpZWtAeXViaWth"
@@ -418,5 +420,7 @@
   systemd.settings.Manager.RuntimeWatchdogSec = "360s";
 
   hardware.enableRedistributableFirmware = true;
+  # Canon CanoScan LiDE 100 (genesys backend)
+  hardware.sane.enable = true;
   system.stateVersion = "24.11";
 }
