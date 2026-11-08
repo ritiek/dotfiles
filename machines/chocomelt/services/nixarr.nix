@@ -338,6 +338,10 @@ in
         "char-dma_heap rw"
         "char-drm rw"
       ];
+      # MPP identifies the SoC from /proc/device-tree/compatible; the module's
+      # ProcSubset=pid hides it, and MPP then refuses hevc_rkmpp ("unable to
+      # create enc h265 for soc unknown") while h264_rkmpp still works.
+      jellyfin.serviceConfig.ProcSubset = lib.mkForce "all";
     };
 
   # Auto-stop everything if EVERYTHING_ELSE is unplugged without running
