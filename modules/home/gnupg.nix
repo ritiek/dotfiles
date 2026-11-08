@@ -1,5 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
+  # At boot, importGpgKeys runs before /run/user/$UID exists, so gpg spawns
+  # keyboxd/gpg-agent with sockets in ~/.gnupg. That keyboxd holds
+  # pubring.db.lock forever and every later gpg (sops) hangs waiting on it.
+  # Only kill in that case so a `switch` mid-session keeps the real agent.
+  home.activation.killBootGpgDaemons = lib.hm.dag.entryAfter [ "importGpgKeys" ] ''
+    if [ ! -d "/run/user/$(id -u)" ]; then
+      run ${pkgs.gnupg}/bin/gpgconf --kill keyboxd gpg-agent
+    fi
+  '';
+
   services.gpg-agent = {
     enable = true;
     # enableExtraSocket = true;
