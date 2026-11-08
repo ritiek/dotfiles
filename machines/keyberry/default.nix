@@ -200,6 +200,8 @@
     nix-index-database.comma.enable = true;
     zsh.enable = true;
     # gnupg.agent.enable = true;
+    # opencode's /terminal runs a prebuilt glibc opencode-pty binary.
+    nix-ld.enable = true;
   };
 
   security = {
