@@ -432,6 +432,7 @@ in
             "mcp"
           ];
         };
+      } // lib.optionalAttrs (inputs.artcraft.packages ? ${pkgs.stdenv.hostPlatform.system}) {
         # Only on machines that declare the photocraft.token secret (mishy).
         photocraft = lib.mkIf (config.sops.secrets ? "photocraft.token") {
           enabled = true;
@@ -445,6 +446,7 @@ in
             config.sops.secrets."photocraft.token".path
           ];
         };
+      } // {
         github = {
           enabled = true;
           type = "remote";
