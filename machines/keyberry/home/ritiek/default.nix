@@ -80,6 +80,7 @@
       bore-cli
       iperf
       chafa
+      imagemagick
     ];
   };
   programs = {
