@@ -4,6 +4,12 @@
     inputs.home-manager.nixosModules.home-manager
   ];
 
+  # Without this, C+ below creates a missing ~/.ssh as root:root and HM can't link into it.
+  systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh".d = {
+    mode = "0700";
+    user = "ritiek";
+    group = "users";
+  };
   systemd.tmpfiles.settings."10-ssh"."/home/ritiek/.ssh/sops.id_ed25519" = {
     "C+" = {
       mode = "0600";
