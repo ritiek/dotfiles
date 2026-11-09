@@ -40,8 +40,9 @@
 
   # lan.nix points the host at pihole (127.0.0.1). Without it, tailscaled and
   # netbird still need DNS to reach their control servers before MagicDNS is up.
-  # Drop this together with re-enabling pihole above.
-  networking.nameservers = lib.mkForce [ "194.242.2.2" "2a07:e340::2" ];
+  # Drop this together with re-enabling pihole above. Must be plain-DNS
+  # resolvers: Mullvad's 194.242.2.2 is DoH/DoT only and left the box offline.
+  networking.nameservers = lib.mkForce [ "9.9.9.9" "1.1.1.1" ];
 
   sops.secrets = {
     "rnixbld.id_ed25519" = {

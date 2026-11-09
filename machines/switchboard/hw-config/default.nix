@@ -23,6 +23,11 @@
   # SDIO wifi/bt driver requires kernel >= 7.0 - see ./aic8800-sdio.nix).
   boot.kernelPackages = pkgs.linuxPackages_7_1;
 
+  # This is the A527 variant: the NPU node probes but is fused off (etnaviv
+  # reads it as GC0). Opening it oopses in etnaviv_iommu_context_init (seen from
+  # frigate's vainfo probe), and the box hung hours later. Nothing else uses it.
+  boot.blacklistedKernelModules = [ "etnaviv" ];
+
   # A523/A527 thermal sensor support (THS0/THS1) is provided via
   # boot.kernelPatches in ./cubie-a5e.nix (gated on hardware.cubie-a5e.enable
   # above), not here - do not duplicate that list in this file, since
