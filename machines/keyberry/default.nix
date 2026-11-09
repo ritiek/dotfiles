@@ -17,6 +17,7 @@
     ./../../modules/restic-server.nix
     ./gpio/dht22.nix
     ./services/psfree.nix
+    ./services/frigate.nix
   ];
 
   sops.secrets = {

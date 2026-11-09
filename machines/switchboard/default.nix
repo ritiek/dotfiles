@@ -29,20 +29,13 @@
     ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
-    # Off for now to leave RAM (937 MiB total) for frigate. LAN clients get
-    # 192.168.3.1 as DNS from kea, so re-enable pihole before using the LAN.
-    # ./services/pihole.nix
-    # ./services/homepage.nix
-    # ./services/gatus.nix
-    # ./services/searxng.nix
-    ./services/frigate.nix
+    ./services/pihole.nix
+    ./services/homepage.nix
+    ./services/gatus.nix
+    ./services/searxng.nix
+    # Frigate moved to keyberry (machines/keyberry/services/frigate.nix): 937 MiB
+    # of RAM couldn't hold it and the router services together.
   ];
-
-  # lan.nix points the host at pihole (127.0.0.1). Without it, tailscaled and
-  # netbird still need DNS to reach their control servers before MagicDNS is up.
-  # Drop this together with re-enabling pihole above. Must be plain-DNS
-  # resolvers: Mullvad's 194.242.2.2 is DoH/DoT only and left the box offline.
-  networking.nameservers = lib.mkForce [ "9.9.9.9" "1.1.1.1" ];
 
   sops.secrets = {
     "rnixbld.id_ed25519" = {

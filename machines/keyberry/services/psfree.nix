@@ -39,7 +39,10 @@ in
   };
 
   # Listens on 0.0.0.0 so nginx starts without end0 and serves every interface.
+  # Default server on :80: the PS4 connects by IP, and frigate's
+  # keyberry.lion-zebra.ts.net vhost would otherwise win as first-defined.
   services.nginx.virtualHosts."ps4-exploit" = {
+    default = true;
     listen = [{ addr = "0.0.0.0"; port = 80; }];
     root = webkitty;
     locations."/" = {

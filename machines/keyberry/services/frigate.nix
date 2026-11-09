@@ -1,14 +1,14 @@
 { config, lib, pkgs, ... }:
 
-# Frigate on the CPU only. This board is the A527 variant of the Cubie A5E:
-# the NPU node probes but reads back GC0 (fused off; only the T527 has it),
-# mainline has no video engine (cedrus) driver for the A523 family, and
-# panfrost has no video decode. So:
-#   - detect: the 640x480 H.264 substream, decoded on the CPU at 5 fps,
-#     with the default SSDLite MobileDet tflite model on the CPU detector.
+# Frigate on the Pi 400 (moved from switchboard, whose 1 GB RAM couldn't take
+# it). No NPU here either, so:
+#   - detect: the 640x480 H.264 substream, decoded by the Pi's V4L2 H.264
+#     decoder at 5 fps, with the default SSDLite MobileDet tflite model on the
+#     CPU detector (73 ms at 4 threads, 93 ms at 3; 3 keeps a core free for the
+#     desktop).
 #   - live view: go2rtc restreams the 2304x1296 HEVC main stream untouched
 #     (browser needs HEVC support, e.g. Chrome/Edge/Safari). Nothing records.
-# Alerts: events go to pilab's mosquitto under frigate-switchboard/, and
+# Alerts: events go to pilab's mosquitto under frigate-keyberry/, and
 # frigate-ntfy (below) forwards person/car >= 80% to pilab's ntfy.
 let
   # Same Imou model, URL and credentials on every camera; only the host differs.
@@ -38,25 +38,24 @@ in
 
   services.frigate = {
     enable = true;
-    hostname = "switchboard.lion-zebra.ts.net";
+    hostname = "keyberry.lion-zebra.ts.net";
     settings = {
       # Own prefix so events don't mix with chocomelt's on the same broker.
       mqtt = {
         enabled = true;
         host = "pilab.lion-zebra.ts.net";
-        topic_prefix = "frigate-switchboard";
-        client_id = "frigate-switchboard";
+        topic_prefix = "frigate-keyberry";
+        client_id = "frigate-keyberry";
       };
+      ffmpeg.hwaccel_args = "preset-rpi-64-h264";
       # Frigate doesn't run go2rtc here, but the UI only offers MSE/WebRTC live
       # view for streams it sees listed in its own config.
       go2rtc.streams = streams;
-      # Default SSDLite MobileDet, benchmarked here: 109 ms at 3 threads, 53 ms
-      # at 8. SSD MobileNet v2 does 34 ms but is noticeably less accurate.
       detectors.cpu = {
         type = "cpu";
-        num_threads = 8;
+        num_threads = 3;
       };
-      # birdseye would add an always-on mpeg1 encoder this box can't spare.
+      # birdseye would add an always-on mpeg1 encoder on the CPU.
       birdseye.enabled = false;
       record.enabled = false;
       snapshots = {
@@ -81,6 +80,9 @@ in
     };
   };
 
+  # The V4L2 decoder (/dev/video10) is root:video.
+  systemd.services.frigate.serviceConfig.SupplementaryGroups = [ "video" ];
+
   # nginx vhost with frigate's login (admin password is printed in
   # `journalctl -u frigate` on first start).
   networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 ];
@@ -89,6 +91,7 @@ in
   # with top_score >= 0.8, to the same ntfy topic chocomelt's alerts use.
   # chocomelt uses frigate-notify on pilab, but it isn't packaged in nixpkgs and
   # adding it there would mean redeploying (upgrading) all of pilab.
+  # Uses Frigate's unauthenticated internal API on 127.0.0.1:5000.
   sops.secrets."ntfy.token" = { };
   systemd.services.frigate-ntfy = {
     description = "Push Frigate person/car events to ntfy";
@@ -106,13 +109,13 @@ in
       runtimeInputs = with pkgs; [ mosquitto jq curl coreutils ];
       text = ''
         token=$(cat "$CREDENTIALS_DIRECTORY/ntfy-token")
-        ui=http://switchboard.lion-zebra.ts.net
+        ui=http://keyberry.lion-zebra.ts.net
         tmp=$(mktemp -d)
         trap 'rm -rf "$tmp"' EXIT
         declare -A sent=()
 
         # -R skips events retained from before this service started.
-        mosquitto_sub -h pilab.lion-zebra.ts.net -R -t frigate-switchboard/events \
+        mosquitto_sub -h pilab.lion-zebra.ts.net -R -t frigate-keyberry/events \
           | jq --unbuffered -r 'select(.type != "end") | .after
               | select((.label == "person" or .label == "car") and .top_score >= 0.8)
               | [.id, .label, .camera, (.top_score * 100 | floor)] | @tsv' \
