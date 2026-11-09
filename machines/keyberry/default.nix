@@ -18,6 +18,7 @@
     ./gpio/dht22.nix
     ./services/psfree.nix
     ./services/frigate.nix
+    ./printer.nix
   ];
 
   sops.secrets = {
