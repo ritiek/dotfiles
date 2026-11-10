@@ -104,7 +104,7 @@ let
       systemctl start autostart-mealie.service
       # systemctl start autostart-karakeep.service
       # systemctl start docker-karakeep.service
-      # systemctl start docker-n8n-worker.service
+      systemctl start docker-n8n-worker.service
       # systemctl start docker-transmission.service
       systemctl start docker-glances.service
       systemctl start autostart-calibre-web-automated.service
@@ -304,7 +304,7 @@ in
         systemctl stop autostart-mealie.service docker-compose-mealie-root.target
         # systemctl stop autostart-karakeep.service docker-compose-karakeep-root.target
         # systemctl stop docker-compose-karakeep-root.target
-        # systemctl stop docker-compose-n8n-root.target
+        systemctl stop docker-compose-n8n-root.target
         # systemctl stop docker-compose-transmission-root.target
         systemctl stop docker-compose-qbittorrent-root.target
         systemctl stop autostart-jellyfin.service docker-compose-jellyfin-root.target

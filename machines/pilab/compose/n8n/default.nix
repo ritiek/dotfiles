@@ -24,7 +24,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."n8n" = {
-    image = "docker.n8n.io/n8nio/n8n:2.46.6";
+    image = "docker.n8n.io/n8nio/n8n:2.47.3";
     environmentFiles = [
       config.sops.secrets."compose/n8n.env".path
     ];
@@ -68,9 +68,11 @@
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/n8n/storage"
     ];
+    partOf = [ "docker-compose-n8n-root.target" ];
+    wantedBy = [ "docker-compose-n8n-root.target" ];
   };
   virtualisation.oci-containers.containers."n8n-worker" = {
-    image = "docker.n8n.io/n8nio/n8n:2.46.6";
+    image = "docker.n8n.io/n8nio/n8n:2.47.3";
     environmentFiles = [
       config.sops.secrets."compose/n8n.env".path
     ];
@@ -106,6 +108,8 @@
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/n8n/storage"
     ];
+    partOf = [ "docker-compose-n8n-root.target" ];
+    wantedBy = [ "docker-compose-n8n-root.target" ];
   };
   virtualisation.oci-containers.containers."n8n-postgres" = {
     image = "postgres:16";
@@ -144,6 +148,8 @@
       "${homelabMediaPath}/services/n8n/db"
       "${homelabMediaPath}/services/n8n/init-data.sh"
     ];
+    partOf = [ "docker-compose-n8n-root.target" ];
+    wantedBy = [ "docker-compose-n8n-root.target" ];
   };
   virtualisation.oci-containers.containers."n8n-redis" = {
     image = "redis:6-alpine";
@@ -180,6 +186,8 @@
     unitConfig.RequiresMountsFor = [
       "${homelabMediaPath}/services/n8n/redis"
     ];
+    partOf = [ "docker-compose-n8n-root.target" ];
+    wantedBy = [ "docker-compose-n8n-root.target" ];
   };
 
   # Networks

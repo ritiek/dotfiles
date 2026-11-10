@@ -322,6 +322,14 @@
           recommendedProxySettings = true;
         };
       };
+      virtualHosts."n8n-proxy" = {
+        listen = [ { addr = "0.0.0.0"; port = 5678; } ];
+        locations."/" = {
+          proxyPass = "http://pilab.lion-zebra.ts.net:5678";
+          proxyWebsockets = true;
+          recommendedProxySettings = true;
+        };
+      };
     };
 
   #   frigate = {
@@ -414,7 +422,7 @@
     memoryPercent = 200;
   };
 
-  networking.firewall.allowedTCPPorts = [ 8096 ];
+  networking.firewall.allowedTCPPorts = [ 8096 5678 ];
 
   boot.tmp = {
     useTmpfs = false;
