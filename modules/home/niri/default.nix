@@ -93,6 +93,8 @@ let
   noctalia-config = (pkgs.formats.toml { }).generate "noctalia-config.toml" {
     shell.polkit_agent = true;
     notification.layer = "overlay";
+    bar.default.widget_spacing = 10; # default 6
+    widget.media.max_length = 360; # now-playing text width, default 220
     # Same fixed 4300K that gammastep applied.
     nightlight = {
       enabled = true;
