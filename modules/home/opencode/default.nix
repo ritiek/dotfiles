@@ -602,6 +602,7 @@ in
           tools = {
             "*" = false;
             read = true;
+            bash = false;
             skill = true;
             "codegraph*" = true;
             "pdfvision*" = true;
