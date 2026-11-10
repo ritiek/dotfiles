@@ -56,37 +56,47 @@
           pkill -f "$tunnel_spec"
         }
 
-        # Mirror $PROXY into the standard proxy env vars, for both
-        # `export PROXY=...` and one-shot `PROXY=... cmd`.
+        # Proxy through 3proxy (port 8090) on the full hostname in $UPSTREAM_3PROXY
+        # (e.g. host.tailnet.ts.net), for both `export UPSTREAM_3PROXY=<host>` and
+        # one-shot `UPSTREAM_3PROXY=<host> cmd`. Creds are read from the host over ssh.
+        function _proxy_url {
+          local line
+          # -n: don't let ssh eat the wrapped command's stdin.
+          line=$(ssh -n "$1" 'head -n1 /run/secrets/3proxy.users') || return 1
+          # shortcut: assumes the password has no URL-special chars, percent-encode if that changes.
+          print -r -- "http://''${line%%:*}:''${line#*:CL:}@$1:8090"
+        }
         function _proxy_set {
-          if [[ -n "$1" ]]; then
-            export HTTP_PROXY=$1 HTTPS_PROXY=$1 http_proxy=$1 https_proxy=$1
-            export NO_PROXY="127.0.0.1,localhost,::1" no_proxy="127.0.0.1,localhost,::1"
-          else
-            unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy
-          fi
+          local url
+          unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy
+          [[ -n "$1" ]] || return 0
+          url=$(_proxy_url "$1") || { echo "3proxy: no creds from $1" >&2; return 1; }
+          export HTTP_PROXY=$url HTTPS_PROXY=$url http_proxy=$url https_proxy=$url
+          export NO_PROXY="127.0.0.1,localhost,::1" no_proxy="127.0.0.1,localhost,::1"
         }
         typeset -g _proxy_last=""
         typeset -ga _proxy_shims
         function _proxy_precmd {
           (( $#_proxy_shims )) && unfunction $_proxy_shims 2>/dev/null
           _proxy_shims=()
-          # Only touch the proxy vars when $PROXY changes, so manual ones survive.
-          [[ "$PROXY" == "$_proxy_last" ]] && return
-          _proxy_last=$PROXY
-          _proxy_set "$PROXY"
+          # Only touch the proxy vars when $UPSTREAM_3PROXY changes, so manual ones survive.
+          [[ "$UPSTREAM_3PROXY" == "$_proxy_last" ]] && return
+          _proxy_last=$UPSTREAM_3PROXY
+          _proxy_set "$UPSTREAM_3PROXY"
         }
         function _proxy_run {
-          if (( ''${+PROXY} )); then
+          if (( ''${+UPSTREAM_3PROXY} )); then
             local -x HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy
-            _proxy_set "$PROXY"
+            # Refuse to run unproxied when the proxy was asked for.
+            _proxy_set "$UPSTREAM_3PROXY" || return 1
           fi
           command "$@"
         }
-        # For one-shot `PROXY=... cmd` (anywhere in the line), shadow cmd with a
-        # function calling _proxy_run until the next prompt. Functions are
-        # resolved at run time and see the temporary PROXY, so the shell still
-        # expands the value exactly once. $3 is the line with aliases expanded.
+        # For one-shot `UPSTREAM_3PROXY=... cmd` (anywhere in the line), shadow
+        # cmd with a function calling _proxy_run until the next prompt. Functions
+        # are resolved at run time and see the temporary UPSTREAM_3PROXY, so the
+        # shell still expands the value exactly once. $3 is the line with aliases
+        # expanded.
         zmodload zsh/parameter
         function _proxy_preexec {
           local w start=1 has=0
@@ -97,7 +107,7 @@
             (( start )) || continue
             case $w in
               '!'|if|elif|then|else|while|until|do|time) ;;
-              PROXY=*) has=1 ;;
+              UPSTREAM_3PROXY=*) has=1 ;;
               [[:alpha:]_]*=*) ;;
               *)
                 start=0
@@ -113,6 +123,25 @@
         autoload -Uz add-zsh-hook
         add-zsh-hook precmd _proxy_precmd
         add-zsh-hook preexec _proxy_preexec
+
+        # Route the opencode background service through 3proxy on <host>:8090.
+        # Usage: opencode-via <host>.<tailnet>.ts.net   (restarts the service)
+        function opencode-via {
+          local host=$1 url v
+          [[ -n $host ]] || { echo "Usage: opencode-via <host>.<tailnet>.ts.net" >&2; return 1; }
+          url=$(_proxy_url "$host") || return 1
+          curl -sf --max-time 10 -x "$url" https://ifconfig.me >/dev/null \
+            || { echo "proxy on $host not working" >&2; return 1; }
+          # Child tools differ on case (curl/wget only read lowercase http_proxy).
+          for v in HTTP_PROXY HTTPS_PROXY http_proxy https_proxy; do
+            opencode service set env $v "$url" || return 1
+          done
+          # The host's own domain (its tailnet) stays direct, e.g. tailnet MCP servers.
+          for v in NO_PROXY no_proxy; do
+            opencode service set env $v "localhost,127.0.0.1,::1,.''${host#*.}" || return 1
+          done
+          opencode service start
+        }
 
         # Allow symlinks
         ZSH_DISABLE_COMPFIX=true
