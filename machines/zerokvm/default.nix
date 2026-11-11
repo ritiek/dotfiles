@@ -13,6 +13,7 @@
     ./../../modules/net-tuning.nix
     ./../../modules/netbird.nix
     ./../../modules/usbipd.nix
+    ./../../modules/3proxy.nix
   ];
 
   networking.hostName = lib.mkDefault "zerokvm";
