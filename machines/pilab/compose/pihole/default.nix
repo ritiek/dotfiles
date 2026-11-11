@@ -50,6 +50,8 @@
       "FTLCONF_dns_upstreams" = "1.0.0.1;1.1.1.1";
       # Ask Tailscale MagicDNS for reverse lookups so tailnet clients show up by name.
       "FTLCONF_dns_revServers" = "true,100.64.0.0/10,100.100.100.100";
+      # Keep the query log for 2 years (default 91 days).
+      "FTLCONF_database_maxDBdays" = "730";
     };
     environmentFiles = [
       config.sops.secrets."compose/pihole.env".path
