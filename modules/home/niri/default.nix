@@ -95,6 +95,8 @@ let
     notification.layer = "overlay";
     bar.default.widget_spacing = 10; # default 6
     widget.media.max_length = 360; # now-playing text width, default 220
+    # Show workspace names (set with Mod+N); unnamed ones keep their number.
+    widget.workspaces = { label_source = "name"; max_label_chars = 12; };
     # Same fixed 4300K that gammastep applied.
     nightlight = {
       enabled = true;
@@ -115,6 +117,16 @@ let
       };
     };
   };
+
+  # Rename the focused workspace; an empty name clears it, Escape cancels.
+  rename-workspace = pkgs.writeShellScript "rename-workspace" ''
+    name=$(rofi -dmenu -p "Workspace name" -l 0 </dev/null) || exit 0
+    if [ -n "$name" ]; then
+      niri msg action set-workspace-name "$name"
+    else
+      niri msg action unset-workspace-name
+    fi
+  '';
 
   ntfy-desktop = pkgs.writeShellScript "ntfy-desktop" ''
     while true; do
@@ -707,6 +719,9 @@ binds {
 
     // Last workspace
     Mod+grave repeat=false { focus-workspace-previous; }
+
+    // Rename focused workspace (empty name clears it)
+    Mod+N repeat=false { spawn "${rename-workspace}"; }
     
     // Special workspace equivalents
     // Mod+Return { focus-workspace "empty"; }
