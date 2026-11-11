@@ -93,7 +93,14 @@ let
   noctalia-config = (pkgs.formats.toml { }).generate "noctalia-config.toml" {
     shell.polkit_agent = true;
     notification.layer = "overlay";
-    bar.default.widget_spacing = 10; # default 6
+    bar.default = {
+      widget_spacing = 10; # default 6
+      # Clock moved from the center to between brightness and battery.
+      # Lists replace Noctalia's defaults wholesale, so the full right side is restated.
+      center = [ ];
+      end = [ "media" "tray" "notifications" "clipboard" "network" "bluetooth"
+              "volume" "brightness" "clock" "battery" "control-center" "session" ];
+    };
     widget.media.max_length = 360; # now-playing text width, default 220
     # Show workspace names (set with Mod+N); unnamed ones keep their number.
     widget.workspaces = { label_source = "name"; max_label_chars = 12; };
