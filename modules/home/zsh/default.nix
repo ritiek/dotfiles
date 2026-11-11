@@ -140,7 +140,8 @@
           for v in NO_PROXY no_proxy; do
             opencode service set env $v "localhost,127.0.0.1,::1,.''${host#*.}" || return 1
           done
-          opencode service start
+          # restart, not start: open TUIs may respawn the service with their stale cached env.
+          opencode service restart
         }
 
         # Route the opencode background service directly, without any proxy.
@@ -150,7 +151,8 @@
           for v in HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy; do
             opencode service unset env $v
           done
-          opencode service start
+          # restart, not start: open TUIs may respawn the service with their stale cached env.
+          opencode service restart
         }
 
         # Allow symlinks
