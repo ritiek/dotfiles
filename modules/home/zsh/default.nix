@@ -58,11 +58,11 @@
 
         # Proxy through 3proxy (port 8090) on the full hostname in $UPSTREAM_3PROXY
         # (e.g. host.tailnet.ts.net), for both `export UPSTREAM_3PROXY=<host>` and
-        # one-shot `UPSTREAM_3PROXY=<host> cmd`. Creds are read from the host over ssh.
+        # one-shot `UPSTREAM_3PROXY=<host> cmd`. Every 3proxy host shares one password,
+        # read from this machine's own sops secret.
         function _proxy_url {
           local line
-          # -n: don't let ssh eat the wrapped command's stdin.
-          line=$(ssh -n "$1" 'head -n1 /run/secrets/3proxy.users') || return 1
+          line=$(head -n1 /run/secrets/3proxy.users) || return 1
           # shortcut: assumes the password has no URL-special chars, percent-encode if that changes.
           print -r -- "http://''${line%%:*}:''${line#*:CL:}@$1:8090"
         }

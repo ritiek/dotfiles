@@ -40,6 +40,8 @@
       owner = "root";
       group = "nixbld";
     };
+    # Shared 3proxy password, read locally by opencode-via / UPSTREAM_3PROXY.
+    "3proxy.users".owner = "ritiek";
   };
 
   networking.hostName = "alcove";
