@@ -75,6 +75,12 @@
       };
     };
 
+    # Advertise the home LAN, same as keyberry. keyberry's other route,
+    # 10.13.37.0/24, is its wired link to the PS4 and unreachable from here.
+    tailscale.extraUpFlags = lib.mkAfter [
+      "--advertise-routes=192.168.1.0/24"
+    ];
+
     avahi = {
       enable = true;
       openFirewall = true;
