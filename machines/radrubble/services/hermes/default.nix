@@ -162,22 +162,22 @@ in
   # itself, so dial it for ~10 min after boot (the sleep comes first so
   # wireplumber has registered its A2DP endpoints). Switched on later, the
   # speaker connects to us on its own.
-  systemd.user.services.bt-speaker-connect = {
-    wantedBy = [ "default.target" ];
-    after = [ "wireplumber.service" ];
-    unitConfig.ConditionUser = "ritiek";
-    script = ''
-      mac=$(tr _ : < ${config.sops.secrets."bt_speaker.mac_address".path})
-      btctl=${config.hardware.bluetooth.package}/bin/bluetoothctl
-      for _ in $(seq 20); do
-        sleep 30
-        # Connecting an already-connected speaker errors out, so check first.
-        # Output names the MAC, which is kept in sops; keep it out of the journal.
-        $btctl info "$mac" 2>/dev/null | grep -q 'Connected: yes' && exit 0
-        timeout 30 $btctl connect "$mac" >/dev/null 2>&1 && exit 0
-      done
-    '';
-  };
+  # systemd.user.services.bt-speaker-connect = {
+  #   wantedBy = [ "default.target" ];
+  #   after = [ "wireplumber.service" ];
+  #   unitConfig.ConditionUser = "ritiek";
+  #   script = ''
+  #     mac=$(tr _ : < ${config.sops.secrets."bt_speaker.mac_address".path})
+  #     btctl=${config.hardware.bluetooth.package}/bin/bluetoothctl
+  #     for _ in $(seq 20); do
+  #       sleep 30
+  #       # Connecting an already-connected speaker errors out, so check first.
+  #       # Output names the MAC, which is kept in sops; keep it out of the journal.
+  #       $btctl info "$mac" 2>/dev/null | grep -q 'Connected: yes' && exit 0
+  #       timeout 30 $btctl connect "$mac" >/dev/null 2>&1 && exit 0
+  #     done
+  #   '';
+  # };
 
   # The wrapper is the sole `hermes` on PATH (we do NOT use the module's
   # addToSystemPackages CLI, which would shadow this wrapper and skip the
