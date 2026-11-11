@@ -95,13 +95,15 @@ let
     notification.layer = "overlay";
     bar.default = {
       widget_spacing = 10; # default 6
-      # Clock moved from the center to between brightness and battery.
+      # Now-playing in the center; clock between brightness and battery.
       # Lists replace Noctalia's defaults wholesale, so the full right side is restated.
-      center = [ ];
-      end = [ "media" "tray" "notifications" "clipboard" "network" "bluetooth"
+      center = [ "media" ];
+      end = [ "tray" "notifications" "clipboard" "network" "bluetooth"
               "volume" "brightness" "clock" "battery" "control-center" "session" ];
     };
-    widget.media.max_length = 360; # now-playing text width, default 220
+    # Now-playing text width in px (default 220). 525 is the most that fits beside the
+    # right-side icons on eDP-1 (1920 wide) without overlapping them.
+    widget.media.max_length = 525;
     # Show workspace names (set with Mod+N); unnamed ones keep their number.
     widget.workspaces = { label_source = "name"; max_label_chars = 12; };
     # Same fixed 4300K that gammastep applied.
