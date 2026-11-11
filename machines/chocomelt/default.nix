@@ -17,6 +17,8 @@
   ];
 
   sops.secrets = {
+    # Shared 3proxy password, read locally by opencode-via / UPSTREAM_3PROXY.
+    "3proxy.users".owner = "ritiek";
     "rnixbld.id_ed25519" = {
       mode = "600";
       owner = "root";

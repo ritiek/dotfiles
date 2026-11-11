@@ -19,6 +19,9 @@
   networking.hostName = lib.mkDefault "zerostash";
   time.timeZone = lib.mkDefault "Asia/Kolkata";
 
+  # Shared 3proxy password, read locally by opencode-via / UPSTREAM_3PROXY.
+  sops.secrets."3proxy.users".owner = "ritiek";
+
   boot.supportedFilesystems = [ "ntfs" ];
 
   nix = {
