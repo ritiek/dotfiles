@@ -143,6 +143,16 @@
           opencode service start
         }
 
+        # Route the opencode background service directly, without any proxy.
+        function opencode-via-none {
+          local v
+          # No error check: a var that was never set is already what we want.
+          for v in HTTP_PROXY HTTPS_PROXY http_proxy https_proxy NO_PROXY no_proxy; do
+            opencode service unset env $v
+          done
+          opencode service start
+        }
+
         # Allow symlinks
         ZSH_DISABLE_COMPFIX=true
 
