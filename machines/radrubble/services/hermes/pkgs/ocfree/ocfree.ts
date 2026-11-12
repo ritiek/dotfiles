@@ -1,11 +1,15 @@
-// OpenAI-compatible shim for OpenCode's free tier (opencode.ai/inference).
-// The gate only serves the OpenCode CLI's request shape (canonical prompt/tools from prefix.json.gz
-// plus descending()-shaped ids) and answers any request carrying a `terminal` tool with a 429,
-// so every request is wrapped in the prefix and that tool is shipped as `bash`.
+// OpenAI-compatible shim for OpenCode's free tier (opencode.ai/inference). The gate only serves the
+// OpenCode CLI's request shape (canonical prompt/tools from prefix.json.gz, CLI headers and
+// descending()-shaped ids), so every request is replayed in that shape.
 const UP = "https://opencode.ai/inference/openai/v1/chat/completions";
 const PORT = Number(process.env.PORT ?? 9997);
 const A = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const P = JSON.parse(new TextDecoder().decode(Bun.gunzipSync(await Bun.file(import.meta.dir + "/prefix.json.gz").arrayBuffer())));
+// The captured prompt carries OpenCode's skill catalog and a "load these skills at startup" order.
+// Hermes has its own skills, so drop both (~20 KB per request). The gate never inspects the text.
+P.system.content = P.system.content
+  .replace(/## Startup\nAt the start of every session[\s\S]*?(?=\n\nYou are powered)/, "")
+  .replace(/Skills provide specialized instructions[\s\S]*?<\/available_skills>\n*/, "");
 
 const rnd = (n: number, set = A) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => set[b % set.length]).join("");
 let last = 0, counter = 0;
@@ -23,16 +27,16 @@ const text = (c: any) => (typeof c === "string" ? c : (c ?? []).map((x: any) => 
 // The free quota is per public IP. Egresses = direct + 3proxy nodes on the tailnet, deduped by public IP.
 // All ids (session, project, request) are minted per IP and never shared between IPs.
 type Egress = { proxy?: string; ip: string };
-const CRED = process.env.CREDENTIALS_DIRECTORY ? Bun.file(process.env.CREDENTIALS_DIRECTORY + "/3proxy") : null;
-const proxies = async () => {
-  const [user, , pass] = ((await CRED?.text().catch(() => "")) ?? "").split("\n")[0].split(":");
-  if (!user || !pass) return [];
-  return (process.env.OCFREE_PROXY_HOSTS ?? "").split(",").filter(Boolean)
-    .map((h) => `http://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${h}`);
-};
 let egresses: Egress[] = [{ ip: "direct" }];
 const refresh = async () => {
-  const found = await Promise.all([undefined, ...(await proxies())].map(async (proxy) => {
+  const dir = process.env.CREDENTIALS_DIRECTORY;
+  const cred = dir ? await Bun.file(dir + "/3proxy").text().catch(() => "") : "";
+  const [user, , pass] = cred.split("\n")[0].split(":");
+  const proxies = user && pass
+    ? (process.env.OCFREE_PROXY_HOSTS ?? "").split(",").filter(Boolean)
+        .map((h) => `http://${encodeURIComponent(user)}:${encodeURIComponent(pass)}@${h}`)
+    : [];
+  const found = await Promise.all([undefined, ...proxies].map(async (proxy) => {
     try {
       const ip = (await (await fetch("https://api.ipify.org", { proxy, signal: AbortSignal.timeout(10000) })).text()).trim();
       return /^[\d.:a-f]+$/i.test(ip) ? { proxy, ip } : null;
@@ -46,31 +50,22 @@ const refresh = async () => {
 await refresh();
 setInterval(refresh, 600_000);
 const state = new Map<string, { until: number; project: string; sessions: Map<string, string> }>();
-const st = (ip: string) => {
-  let s = state.get(ip);
-  if (!s) state.set(ip, (s = { until: 0, project: rnd(40, "0123456789abcdef"), sessions: new Map() }));
-  return s;
-};
+const st = (ip: string) =>
+  state.get(ip) ?? state.set(ip, { until: 0, project: rnd(40, "0123456789abcdef"), sessions: new Map() }).get(ip)!;
 
-// The model sees OpenCode's tools; rewrite its calls into the caller's (Hermes) equivalents.
-// Each entry: hermes tool name + arg translator. Only applied if the caller actually offered that tool.
-const pick = (a: any, m: Record<string, string>) =>
-  Object.fromEntries(Object.entries(m).filter(([k]) => a[k] !== undefined).map(([k, v]) => [v, a[k]]));
-const MAP: Record<string, [string, (a: any) => any]> = {
-  read: ["read_file", (a) => pick(a, { filePath: "path", offset: "offset", limit: "limit" })],
+// The gateway answers 429 FreeUsageLimitError to any request with a tool named `terminal` (no shell
+// tools for non-OpenCode agents), so Hermes' terminal ships as `bash`. The model also sees
+// OpenCode's own tools; map its calls back to the Hermes equivalents, if Hermes offered them.
+const BACK: Record<string, [string, (a: any) => any]> = {
+  read: ["read_file", (a) => ({ path: a.filePath, offset: a.offset, limit: a.limit })],
   bash: ["terminal", (a) => a],
 };
-// The gateway answers 429 FreeUsageLimitError to any request whose tools include one named
-// `terminal` (it refuses to serve shell tools from non-OpenCode agents), so ship it as `bash`.
-const HIDE: Record<string, string> = { terminal: "bash" };
-const hide = (t: any) =>
-  HIDE[t.function.name] ? { ...t, function: { ...t.function, name: HIDE[t.function.name] } } : t;
 const remap = (calls: any[], names: Set<string>) =>
   calls.flatMap((c) => {
     const { name, arguments: raw } = c.function;
     if (names.has(name)) return [c];
-    const m = MAP[name];
-    if (!m || !names.has(m[0])) return []; // unknown OpenCode tool Hermes can't run: drop
+    const m = BACK[name];
+    if (!m || !names.has(m[0])) return []; // OpenCode tool Hermes can't run: drop
     try {
       return [{ ...c, function: { name: m[0], arguments: JSON.stringify(m[1](JSON.parse(raw || "{}"))) } }];
     } catch {
@@ -120,6 +115,9 @@ const reply = (r: Awaited<ReturnType<typeof collect>>, model: string, stream: bo
   return new Response(out.join(""), { headers: { "content-type": "text/event-stream" } });
 };
 
+const passthrough = (body: BodyInit | null, res: Response) =>
+  new Response(body, { status: res.status, headers: { "content-type": res.headers.get("content-type") ?? "text/plain" } });
+
 Bun.serve({
   hostname: "127.0.0.1",
   port: PORT,
@@ -135,8 +133,8 @@ Bun.serve({
     const sys = b.messages.filter((m: any) => m.role === "system").map((m: any) => text(m.content));
     const rest = b.messages.filter((m: any) => m.role !== "system");
     const key = text(rest[0]?.content).slice(0, 500);
+    const names = new Set<string>((b.tools ?? []).map((t: any) => t.function.name));
 
-    const tools = b.tools?.length ? [...P.tools, ...b.tools.map(hide)] : P.tools;
     const body = JSON.stringify({
       model,
       max_tokens: b.max_tokens ?? b.max_completion_tokens ?? 32000,
@@ -144,19 +142,25 @@ Bun.serve({
       stream: true,
       stream_options: { include_usage: true },
       messages: [{ role: "system", content: [P.system.content, ...sys].join("\n\n") }, ...rest],
-      tools,
+      tools: [...P.tools, ...(b.tools ?? []).map((t: any) =>
+        t.function.name === "terminal" ? { ...t, function: { ...t.function, name: "bash" } } : t)],
       // without caller tools, forbid the canonical ones (bash, read, ...) so replies stay plain text
-      tool_choice: b.tools?.length ? (b.tool_choice ?? "auto") : "none",
+      tool_choice: names.size ? (b.tool_choice ?? "auto") : "none",
     });
 
-    // First egress whose IP isn't out of quota; on 429 mark it exhausted and fail over with fresh ids.
-    let res: Response | undefined;
+    // First egress not cooling down wins. 429 = that IP is out of quota: cool it down, fail over.
+    // 5xx or unreachable: fail over without a cooldown.
+    let fail: Response | undefined;
     for (const e of egresses) {
       const s = st(e.ip);
       if (s.until > Date.now()) continue;
       let sid = s.sessions.get(key);
-      if (!sid) s.sessions.set(key, (sid = id("ses")));
-      res = await fetch(UP, {
+      if (!sid) {
+        s.sessions.set(key, (sid = id("ses")));
+        // shortcut: evicts by insertion order, so a conversation older than 1000 newer ones gets a fresh session id.
+        if (s.sessions.size > 1000) s.sessions.delete(s.sessions.keys().next().value!);
+      }
+      const res = await fetch(UP, {
         method: "POST",
         body,
         proxy: e.proxy,
@@ -172,21 +176,25 @@ Bun.serve({
           accept: "*/*",
         },
       }).catch(() => undefined);
-      if (!res) continue; // egress unreachable
-      if (res.status !== 429) break;
-      // retry-after is the daily reset (~3.5h), but an egress often has quota again long before
-      // that, and a stale mark silently takes the room down until the deadline. Cap it.
-      s.until = Date.now() + Math.min(Number(res.headers.get("retry-after")) || 3600, 300) * 1000;
-      console.log(`quota exhausted on ${e.ip} until ${new Date(s.until).toISOString()}`);
-      await res.body?.cancel();
-      res = undefined;
+      if (!res) continue;
+      if (res.status === 429) {
+        // retry-after is the daily reset (~3.5h), but an IP often has quota again long before that.
+        s.until = Date.now() + Math.min(Number(res.headers.get("retry-after")) || 3600, 300) * 1000;
+        console.log(`quota exhausted on ${e.ip} until ${new Date(s.until).toISOString()}`);
+        await res.body?.cancel();
+        continue;
+      }
+      if (res.status >= 500) {
+        console.log(`upstream ${res.status} via ${e.ip}`);
+        fail = passthrough(await res.text(), res);
+        continue;
+      }
+      if (!res.ok) return passthrough(res.body, res);
+      return reply(await collect(res, names), model, !!b.stream);
     }
-    if (!res) {
-      const soon = Math.min(...egresses.map((e) => st(e.ip).until));
-      return new Response("all egresses exhausted or unreachable", { status: 429, headers: { "retry-after": String(Math.max(60, Math.ceil((soon - Date.now()) / 1000))) } });
-    }
-    if (!res.ok) return new Response(res.body, { status: res.status, headers: { "content-type": res.headers.get("content-type") ?? "text/plain" } });
-    return reply(await collect(res, new Set((b.tools ?? []).map((t: any) => t.function.name))), model, !!b.stream);
+    if (fail) return fail;
+    const soon = Math.min(...egresses.map((e) => st(e.ip).until));
+    return new Response("all egresses exhausted or unreachable", { status: 429, headers: { "retry-after": String(Math.max(60, Math.ceil((soon - Date.now()) / 1000))) } });
   },
 });
 console.log(`ocfree listening on 127.0.0.1:${PORT}`);

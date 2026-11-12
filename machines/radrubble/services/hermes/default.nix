@@ -306,12 +306,12 @@ in
     };
   };
 
+  # 3proxy credentials (user:CL:pass) for ocfree's egress IP rotation.
+  sops.secrets."3proxy.users" = { };
+
   # OpenCode free-tier bridge: OpenAI-compatible loopback proxy that replays the
   # OpenCode CLI request shape (see ./pkgs/ocfree/ocfree.ts). Hermes reaches it
   # via providers.ocfree below.
-  # Proxy credentials (user:CL:pass) for rotating ocfree's egress IP when one runs out of quota.
-  sops.secrets."3proxy.users" = { };
-
   systemd.services.ocfree = {
     description = "OpenCode free-tier bridge (OpenAI-compatible, for hermes)";
     wantedBy = [ "multi-user.target" ];
@@ -565,6 +565,10 @@ in
         timeout = 180;
         lifetime_seconds = 300;
       };
+      # Hermes' own skill index also offers `humanizer`, so the model still loads it
+      # on writing tasks even with the OpenCode "startup skills" prompt stripped from
+      # ocfree's prefix. Disabled here; `i-have-adhd` isn't installed at all.
+      skills.disabled = [ "humanizer" ];
       agent = {
         # Effectively unlimited. There is no "unlimited" sentinel upstream:
         # agent/conversation_loop.py gates on `api_call_count < max_iterations`
@@ -699,10 +703,7 @@ in
       # `hermes plugins install homeassistant` (formerly core). Enabled here
       # because `--enable` fails on Nix installs (it resolves deps against a
       # uv.lock the store path doesn't ship).
-      # oc-free-provider: catalog plugin (`hermes plugins install
-      # oc-free-provider`), adds the `opencode-free` provider for OpenCode
-      # Zen free models.
-      plugins.enabled = [ "homeassistant" "oc-free-provider" ];
+      plugins.enabled = [ "homeassistant" ];
 
       mcp_servers.homeassistant = {
         enabled = true;
