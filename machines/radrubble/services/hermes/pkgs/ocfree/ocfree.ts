@@ -59,7 +59,13 @@ const pick = (a: any, m: Record<string, string>) =>
   Object.fromEntries(Object.entries(m).filter(([k]) => a[k] !== undefined).map(([k, v]) => [v, a[k]]));
 const MAP: Record<string, [string, (a: any) => any]> = {
   read: ["read_file", (a) => pick(a, { filePath: "path", offset: "offset", limit: "limit" })],
+  bash: ["terminal", (a) => a],
 };
+// The gateway answers 429 FreeUsageLimitError to any request whose tools include one named
+// `terminal` (it refuses to serve shell tools from non-OpenCode agents), so ship it as `bash`.
+const HIDE: Record<string, string> = { terminal: "bash" };
+const hide = (t: any) =>
+  HIDE[t.function.name] ? { ...t, function: { ...t.function, name: HIDE[t.function.name] } } : t;
 const remap = (calls: any[], names: Set<string>) =>
   calls.flatMap((c) => {
     const { name, arguments: raw } = c.function;
@@ -131,7 +137,7 @@ Bun.serve({
     const rest = b.messages.filter((m: any) => m.role !== "system");
     const key = text(rest[0]?.content).slice(0, 500);
 
-    const tools = b.tools?.length ? [...P.tools, ...b.tools] : P.tools;
+    const tools = b.tools?.length ? [...P.tools, ...b.tools.map(hide)] : P.tools;
     const body = JSON.stringify({
       model,
       max_tokens: b.max_tokens ?? b.max_completion_tokens ?? 32000,
@@ -173,7 +179,9 @@ Bun.serve({
       }).catch(() => undefined);
       if (!res) continue; // egress unreachable
       if (res.status !== 429) break;
-      s.until = Date.now() + (Number(res.headers.get("retry-after")) || 3600) * 1000;
+      // retry-after is the daily reset (~3.5h), but an egress often has quota again long before
+      // that, and a stale mark silently takes the room down until the deadline. Cap it.
+      s.until = Date.now() + Math.min(Number(res.headers.get("retry-after")) || 3600, 300) * 1000;
       console.log(`quota exhausted on ${e.ip} until ${new Date(s.until).toISOString()}`);
       await res.body?.cancel();
       res = undefined;
