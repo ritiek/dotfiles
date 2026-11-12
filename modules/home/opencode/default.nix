@@ -693,6 +693,13 @@ in
         (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
         # "@tarquinen/opencode-dcp@3.2.0"
         "@dietrichgebert/ponytail@5.3.3"
+        # Free models: on a 429, re-send through a 3proxy node on another public IP.
+        [ "${./ocfree}" {
+          # Every 3proxy server; the plugin groups them by public IP itself.
+          hosts = map (h: "${h}.lion-zebra.ts.net:8090")
+            [ "pilab" "mishy" "nixstation" "zerokvm" "keyberry" "clawsiecats" ];
+          credentials = "/run/secrets/3proxy.users";
+        } ]
       ];
 
       autoupdate = false;
