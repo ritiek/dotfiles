@@ -1,9 +1,9 @@
 // OpenAI-compatible shim for OpenCode's free tier (opencode.ai/inference).
-// The gate wants the OpenCode CLI's system prompt + a `read` tool (nothing else is checked) and a descending()-shaped session id,
-// so every request is wrapped in the canonical prefix (prefix.json.gz) before being forwarded.
+// The gate only serves the OpenCode CLI's request shape (canonical prompt/tools from prefix.json.gz
+// plus descending()-shaped ids) and answers any request carrying a `terminal` tool with a 429,
+// so every request is wrapped in the prefix and that tool is shipped as `bash`.
 const UP = "https://opencode.ai/inference/openai/v1/chat/completions";
 const PORT = Number(process.env.PORT ?? 9997);
-const GAP = 1200; // ms between upstream calls; zero-spacing bursts get 429
 const A = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const P = JSON.parse(new TextDecoder().decode(Bun.gunzipSync(await Bun.file(import.meta.dir + "/prefix.json.gz").arrayBuffer())));
 
@@ -19,7 +19,6 @@ const id = (p: string) => {
 };
 
 const text = (c: any) => (typeof c === "string" ? c : (c ?? []).map((x: any) => x.text ?? "").join(""));
-let next = 0;
 
 // The free quota is per public IP. Egresses = direct + 3proxy nodes on the tailnet, deduped by public IP.
 // All ids (session, project, request) are minted per IP and never shared between IPs.
@@ -149,10 +148,6 @@ Bun.serve({
       // without caller tools, forbid the canonical ones (bash, read, ...) so replies stay plain text
       tool_choice: b.tools?.length ? (b.tool_choice ?? "auto") : "none",
     });
-
-    const wait = Math.max(0, next - Date.now());
-    next = Math.max(Date.now(), next) + GAP;
-    if (wait) await Bun.sleep(wait);
 
     // First egress whose IP isn't out of quota; on 429 mark it exhausted and fail over with fresh ids.
     let res: Response | undefined;

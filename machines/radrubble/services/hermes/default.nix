@@ -319,8 +319,9 @@ in
     wants = [ "network-online.target" ];
     environment = {
       PORT = "9997";
-      # 3proxy nodes with their own egress; ocfree dedupes by public IP.
-      OCFREE_PROXY_HOSTS = lib.concatMapStringsSep "," (h: "${h}.lion-zebra.ts.net:8090") [ "clawsiecats" "pilab" "keyberry" ];
+      # 3proxy nodes with their own egress; ocfree dedupes by public IP, so a host sharing
+      # radrubble's own IP (pilab, mishy) would be discarded — list only distinct-IP hosts.
+      OCFREE_PROXY_HOSTS = lib.concatMapStringsSep "," (h: "${h}.lion-zebra.ts.net:8090") [ "clawsiecats" "keyberry" ];
     };
     serviceConfig = {
       LoadCredential = "3proxy:${config.sops.secrets."3proxy.users".path}";
