@@ -232,6 +232,11 @@
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    opencode-prefix-editor = {
+      url = "github:ritiek/opencode-prefix-editor";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     rosa-flake-pkgs = {
       url = "git+https://rosa.radicle.xyz/rad:z3xKxmF48Drxap7N7D3qDChV9bPAy";
       inputs.nixpkgs.follows = "nixpkgs";

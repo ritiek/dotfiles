@@ -1536,6 +1536,26 @@
         "type": "github"
       }
     },
+    "opencode-prefix-editor": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794515798,
+        "narHash": "sha256-EsZnnKSTMD+ohh3CyAcpsGUkFE/ikhFn03xuzVRg1Lc=",
+        "owner": "ritiek",
+        "repo": "opencode-prefix-editor",
+        "rev": "a77c2831e3dfddee129ac40e2ba09031dae693f7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ritiek",
+        "repo": "opencode-prefix-editor",
+        "type": "github"
+      }
+    },
     "pi400kb-nix": {
       "inputs": {
         "nixos-hardware": [
@@ -1706,6 +1726,7 @@
         "nixpkgs-switchboard": "nixpkgs-switchboard",
         "nixpkgs-wayland": "nixpkgs-wayland",
         "nur": "nur",
+        "opencode-prefix-editor": "opencode-prefix-editor",
         "pi400kb-nix": "pi400kb-nix",
         "rbw": "rbw",
         "rockchip": "rockchip",

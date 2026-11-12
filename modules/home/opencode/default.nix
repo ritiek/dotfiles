@@ -693,6 +693,8 @@ in
         (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
         # "@tarquinen/opencode-dcp@3.2.0"
         "@dietrichgebert/ponytail@5.3.3"
+        # /edit-prefix: edit the system prompt and history the model sees in $EDITOR (V2-only).
+        "${inputs.opencode-prefix-editor.packages.${pkgs.stdenv.hostPlatform.system}.default}"
         # Free models: on a 429, re-send through a 3proxy node on another public IP.
         [ "${./ocfree}" {
           # Every 3proxy server; the plugin groups them by public IP itself.
