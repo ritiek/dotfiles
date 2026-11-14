@@ -527,6 +527,8 @@ in
       providers.ocfree = {
         api = "http://127.0.0.1:9997/v1";
         default_model = "deepseek-v4.1-flash-free";
+        # Catalog reports 1M for deepseek; cap the free tier at 200K.
+        models."deepseek-v4.1-flash-free".context_length = 200000;
         transport = "chat_completions";
       };
 
