@@ -92,8 +92,6 @@ const reply = (r: Awaited<ReturnType<typeof collect>>, model: string, stream: bo
 };
 
 export async function hermes(req: Request, url: URL, relay: Relay, upstream: string): Promise<Response> {
-  if (req.method === "GET" && url.pathname.endsWith("/models"))
-    return Response.json({ object: "list", data: ["deepseek-v4.1-flash-free"].map((id) => ({ id, object: "model" })) });
   if (req.method !== "POST" || !url.pathname.endsWith("/chat/completions")) return new Response("not found", { status: 404 });
 
   const b = await req.json();

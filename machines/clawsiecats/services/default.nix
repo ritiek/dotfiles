@@ -361,6 +361,33 @@ let
         '';
       };
     };
+    # ocfree (./ocfree), the OpenCode free-tier middleman, as a public model provider.
+    "models.${domain}" = http3Vhost // {
+      forceSSL = true;
+      enableACME = true;
+      # The only path open without the key: OpenCode reads it to register the
+      # provider (`opencode auth login https://models.${domain}`). No secrets in it.
+      locations."= /.well-known/opencode" = {
+        recommendedProxySettings = true;
+        proxyPass = "http://127.0.0.1:9997";
+      };
+      locations."/" = {
+        # proxyPass (not a proxy_pass line) so recommendedProxySettings applies: ocfree
+        # builds its public URLs from Host and X-Forwarded-Proto.
+        proxyPass = "http://127.0.0.1:9997";
+        recommendedProxySettings = true;
+        extraConfig = ''
+          include ${config.sops.templates."nginx-ocfree-gate".path};
+          proxy_http_version 1.1;
+          # Replies stream and a model can think for minutes between chunks.
+          proxy_buffering off;
+          proxy_read_timeout 3600s;
+          proxy_send_timeout 3600s;
+          # Long prompts and attached images.
+          client_max_body_size 64m;
+        '';
+      };
+    };
     "webhook.${domain}" = http3Vhost // {
       forceSSL = true;
       enableACME = true;

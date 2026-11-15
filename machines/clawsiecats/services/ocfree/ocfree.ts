@@ -4,9 +4,13 @@
 // kept until it runs out of quota or stops working; only then does the next one take over, and an
 // earlier one is used again only after a later one fails. Nothing is probed in the background: real
 // requests are the only check, so an egress's state is whatever its last request showed.
-//   /opencode/*  OpenCode's own requests, passed through unchanged (its provider baseURL points here).
-//   /v1/*        hermes' OpenAI-compatible shim (./hermes.ts).
-//   /status      which egress each model uses, and which ones are cooling down or failing.
+//   /.well-known/opencode  public: lets `opencode auth login <origin>` register the clawsiecats provider.
+//   /opencode/config       that provider, with the free models read live from upstream's /models.
+//   /opencode/*            OpenCode's model requests, passed through unchanged.
+//   /v1/models             the same free models, for OpenAI-style clients (hermes discovers them here).
+//   /v1/*                  hermes' OpenAI-compatible shim (./hermes.ts).
+//   /status                which egress each model uses, and which ones are cooling down or failing.
+// Everything except the well-known manifest needs the key.
 import { createHash, timingSafeEqual } from "node:crypto";
 import { hermes } from "./hermes";
 
@@ -41,6 +45,47 @@ const HOP = ["host", "connection", "keep-alive", "proxy-authorization", "proxy-c
 const STALE = ["content-encoding", "content-length", "transfer-encoding", "connection"];
 
 const digest = (s: string) => createHash("sha256").update(s).digest();
+
+// OpenCode runs this on `opencode auth login <origin>` and stores what it prints as the key.
+const LOGIN = 'if [ -z "$CLAWSIECATS_API_KEY" ]; then echo "Set CLAWSIECATS_API_KEY to your clawsiecats API key, then log in again." >&2; exit 1; fi; printf %s "$CLAWSIECATS_API_KEY"';
+
+// OpenCode's well-known manifest. After login, every OpenCode start fetches remote_config with the
+// stored key (substituted for {env:CLAWSIECATS_API_KEY}), so the model list is always current.
+const manifest = (origin: string) => ({
+  auth: { command: ["sh", "-c", LOGIN], env: "CLAWSIECATS_API_KEY" },
+  remote_config: { url: `${origin}/opencode/config`, headers: { authorization: "Bearer {env:CLAWSIECATS_API_KEY}" } },
+});
+
+// "image/png" -> "image": OpenCode's capability names are coarser than upstream's MIME types.
+const media = (m: string) => (m === "application/pdf" ? "pdf" : m.split("/")[0]);
+
+// The clawsiecats provider for OpenCode, from upstream /models entries (models.dev v2 shape).
+const providerConfig = (models: any[], origin: string) => ({
+  providers: {
+    clawsiecats: {
+      name: "clawsiecats",
+      package: "@opencode/ai/providers/openai-compatible",
+      settings: { baseURL: `${origin}/opencode`, apiKey: "{env:CLAWSIECATS_API_KEY}" },
+      models: Object.fromEntries(models.map((m) => {
+        const [api] = Object.values<any>(m.api ?? {});
+        return [m.id, {
+          name: m.name,
+          family: m.family,
+          // Anthropic-format models get their own package; ocfree routes their /messages upstream.
+          package: api?.sdk?.opencodeai,
+          capabilities: {
+            tools: !!m.capabilities?.tools?.supported,
+            reasoning: m.capabilities?.reasoning,
+            input: [...new Set((m.modalities?.input ?? ["text"]).map(media))],
+            output: ["text"],
+          },
+          limit: m.limit,
+          ...(api?.compatibility?.reasoning_field && { compatibility: { reasoningField: api.compatibility.reasoning_field } }),
+        }];
+      })),
+    },
+  },
+});
 
 export function relayer(egresses: Egress[], o: Required<Pick<Options, "headerTimeout" | "quotaCooldown" | "deadBackoff" | "connectTimeout" | "log">>) {
   const active = new Map<string, number>(); // model -> index of the egress in use
@@ -227,10 +272,32 @@ export function serve(o: Options) {
     idleTimeout: 0, // replies can stay silent for minutes while the model thinks
     async fetch(req) {
       const url = new URL(req.url);
+      const origin = `${req.headers.get("x-forwarded-proto") ?? url.protocol.slice(0, -1)}://${url.host}`;
+      if (url.pathname === "/.well-known/opencode") return Response.json(manifest(origin));
       const bearer = req.headers.get("authorization")?.match(/^Bearer (.+)$/i)?.[1];
       if (!timingSafeEqual(digest(req.headers.get("x-ocfree-key") ?? bearer ?? ""), want))
         return Response.json({ error: { message: "ocfree: invalid key" } }, { status: 401 });
       if (url.pathname === "/status") return Response.json(status());
+      if (url.pathname === "/opencode/config" || url.pathname === "/opencode/models" || url.pathname === "/v1/models") {
+        // Live on every call, trimmed to the free models: ocfree only ever sends the free tier's key.
+        const res = await relay("", () => ({
+          url: `${upstream}/inference/openai/v1/models`, method: "GET", headers: new Headers({ accept: "application/json" }),
+        }), req.signal);
+        if (!res.ok) return res;
+        const free = (((await res.json()) as { data?: any[] }).data ?? []).filter((m) => m.cost?.text?.input?.price === 0);
+        if (url.pathname === "/opencode/config") return Response.json(providerConfig(free, origin));
+        if (url.pathname === "/opencode/models") return Response.json({ object: "list", data: free });
+        // Plain OpenAI model entries for OpenAI-style clients: hermes' parser crashes on the nested
+        // catalog fields, and it reads the window from context_length (models.dev's `limit` it ignores,
+        // then guesses and overruns the free tier's real one, deepseek's 200K for one).
+        return Response.json({
+          object: "list",
+          data: free.map((m) => ({
+            id: m.id, object: "model", created: m.created, owned_by: m.owned_by, name: m.name,
+            context_length: m.limit?.context, max_completion_tokens: m.limit?.output,
+          })),
+        });
+      }
       if (url.pathname.startsWith("/v1/")) return hermes(req, url, relay, upstream);
       if (!url.pathname.startsWith("/opencode/")) return new Response("not found", { status: 404 });
 

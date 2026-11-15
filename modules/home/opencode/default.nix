@@ -13,8 +13,8 @@ let
     else ./../../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
-  # Machines with this key send the `opencode` provider (free models) through the
-  # ocfree middleman on clawsiecats; the rest talk to opencode.ai directly.
+  # Machines with this key register the `clawsiecats` provider (OpenCode's free models
+  # through the ocfree middleman, machines/clawsiecats/services/ocfree) on activation.
   hasOcfreeKey = lib.strings.hasInfix "ocfree.key:" secretsContent;
 
   searxDomain = "clawsiecats.omg.lol";
@@ -69,7 +69,7 @@ let
   # and systemd --user service (boot: runs after sops-nix.service decrypts secrets).
   # The guard at the top prevents failure at boot when systemd --user isn't running
   # and sops-nix secrets haven't been decrypted yet.
-  opencode-auth-generator = pkgs.writeShellScript "opencode-auth-generator" ''
+  opencode-auth-generator = pkgs.writeShellScript "opencode-auth-generator" (''
     set -euo pipefail
 
     AUTH_FILE="${config.home.homeDirectory}/.local/share/opencode/auth.json"
@@ -111,7 +111,28 @@ let
     fi
     chmod 600 "$AUTH_FILE"
     rm -f "$NIXOS_JSON"
-  '';
+  '' + lib.optionalString hasOcfreeKey ''
+
+    # Register the clawsiecats provider. OpenCode reads its well-known manifest, stores
+    # the key, and from then on fetches the provider (live free models) on every start.
+    # Only re-run when the key changes; a failed login (e.g. offline) retries next time.
+    KEY_FILE=${config.sops.secrets."ocfree.key".path}
+    MARK="${config.xdg.stateHome}/opencode/clawsiecats-key.sha256"
+    SUM=$(${pkgs.coreutils}/bin/sha256sum < "$KEY_FILE" | ${pkgs.coreutils}/bin/cut -d' ' -f1)
+    if [ "$(${pkgs.coreutils}/bin/cat "$MARK" 2>/dev/null || true)" != "$SUM" ]; then
+      # An empty config dir: the login needs the provider, not plugins or MCP servers.
+      CFG=$(${pkgs.coreutils}/bin/mktemp -d)
+      if (cd "$CFG" && XDG_CONFIG_HOME="$CFG" CLAWSIECATS_API_KEY=$(${pkgs.coreutils}/bin/cat "$KEY_FILE") \
+          ${pkgs.coreutils}/bin/timeout 180 ${config.programs.opencode.package}/bin/opencode \
+          auth login https://models.clawsiecats.omg.lol --method login --standalone < /dev/null); then
+        ${pkgs.coreutils}/bin/mkdir -p "$(${pkgs.coreutils}/bin/dirname "$MARK")"
+        echo "$SUM" > "$MARK"
+      else
+        echo "opencode-auth: clawsiecats login failed, retrying on the next activation"
+      fi
+      ${pkgs.coreutils}/bin/rm -rf "$CFG"
+    fi
+  '');
 
   # Setting an agent `prompt` replaces opencode's per-model provider prompt, so re-include it.
   # ponytail: pinned to gpt.txt (what gpt-6-luna maps to in v1.18.29); update hash on
@@ -257,14 +278,7 @@ in
       # Rotate across all connected providers; falls over on HTTP 429.
       websearch.provider = "random";
       provider = {
-        "opencode".options = {
-          timeout = false;
-        } // lib.optionalAttrs hasOcfreeKey {
-          # Free models go through ocfree (machines/clawsiecats/services/ocfree), which
-          # moves to another egress IP once one runs out of free quota.
-          baseURL = "http://clawsiecats.lion-zebra.ts.net:9997/opencode";
-          headers."x-ocfree-key" = "{file:${config.sops.secrets."ocfree.key".path}}";
-        };
+        "opencode".options.timeout = false;
         "opencode-go".options.timeout = false;
         "anthropic" = {
           options = {

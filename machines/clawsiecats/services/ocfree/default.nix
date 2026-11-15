@@ -1,10 +1,32 @@
 { config, lib, pkgs, ... }:
 {
-  # Key every client sends (OpenCode as x-ocfree-key, hermes as its bearer token).
+  # Key every client sends as its bearer token (or as x-ocfree-key).
   sops.secrets."ocfree.key".restartUnits = [ "ocfree.service" ];
 
-  # OpenCode free-tier middleman (./ocfree.ts). Reached over Tailscale only: the port
-  # stays out of networking.firewall, and Tailscale's ts-input chain accepts tailscale0.
+  # Public gate for models.clawsiecats.omg.lol: a request without the key is dropped
+  # (444: connection closed, nothing sent back) before it reaches ocfree, which then
+  # checks the key again. Only /.well-known/opencode skips it (see the vhost). The key
+  # stays out of the nix store via the sops template. nginx `if` has no `or`, hence the flag.
+  sops.templates."nginx-ocfree-gate" = {
+    owner = "nginx";
+    restartUnits = [ "nginx.service" ];
+    content = ''
+      set $ocfree_authorized 0;
+      if ($http_authorization = "Bearer ${config.sops.placeholder."ocfree.key"}") {
+        set $ocfree_authorized 1;
+      }
+      if ($http_x_ocfree_key = "${config.sops.placeholder."ocfree.key"}") {
+        set $ocfree_authorized 1;
+      }
+      if ($ocfree_authorized = 0) {
+        return 444;
+      }
+    '';
+  };
+
+  # OpenCode free-tier middleman (./ocfree.ts). Public through nginx at models.<domain>
+  # (behind the gate above); port 9997 itself stays out of networking.firewall, so only
+  # the tailnet reaches it directly (Tailscale's ts-input chain accepts tailscale0).
   systemd.services.ocfree = {
     description = "OpenCode free-tier middleman (egress rotation, hermes shim)";
     wantedBy = [ "multi-user.target" ];

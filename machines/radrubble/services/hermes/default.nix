@@ -306,7 +306,7 @@ in
     };
   };
 
-  # Key for the ocfree middleman on clawsiecats (providers.ocfree below).
+  # Key for the ocfree middleman on clawsiecats (providers.clawsiecats below).
   sops.secrets."ocfree.key" = { };
 
   # Give the gateway enough stop time to finish its drain. The module ships
@@ -432,7 +432,7 @@ in
         channel_overrides."!TiSyl7i3cEsHc7V4_xhUmEHCpF1kOONPsXEUPq_46H0" = {
           # OpenCode free tier via the ocfree middleman on clawsiecats.
           model = "deepseek-v4.1-flash-free";
-          provider = "custom:ocfree";
+          provider = "custom:clawsiecats";
           # Free Nous Portal model; OAuth login lives in .hermes/auth.json
           # (`hermes auth add nous --type oauth --no-browser`).
           # model = "ornith/ornith-1.5-122b:free";
@@ -497,13 +497,12 @@ in
         };
       };
 
-      providers.ocfree = {
+      providers.clawsiecats = {
         # OpenAI-compatible shim of the ocfree middleman (machines/clawsiecats/services/ocfree).
-        api = "http://clawsiecats.lion-zebra.ts.net:9997/v1";
-        key_env = "OCFREE_API_KEY";
+        # Hermes discovers the models from its /v1/models (live free models upstream).
+        api = "https://models.clawsiecats.omg.lol/v1";
+        key_env = "CLAWSIECATS_API_KEY";
         default_model = "deepseek-v4.1-flash-free";
-        # Catalog reports 1M for deepseek; cap the free tier at 200K.
-        models."deepseek-v4.1-flash-free".context_length = 200000;
         transport = "chat_completions";
       };
 
@@ -832,7 +831,7 @@ in
       GROQ_API_KEY=${config.sops.placeholder."groq_api.key"}
       ELEVENLABS_API_KEY=${config.sops.placeholder."elevenlabs_api.key"}
       OPENCODE_ZEN_API_KEY=${config.sops.placeholder."opencode_api.key"}
-      OCFREE_API_KEY=${config.sops.placeholder."ocfree.key"}
+      CLAWSIECATS_API_KEY=${config.sops.placeholder."ocfree.key"}
     '';
   };
 

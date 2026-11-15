@@ -8,11 +8,19 @@ const mode: Record<string, Mode> = {};
 const hits: Record<string, number> = {};
 const seen: Record<string, string | null> = {}; // authorization header each fake received
 const cf = { "cf-ray": "test" };
+// Upstream /models: one free model, one paid.
+const catalog = [
+  { id: "free-a", name: "Free A", family: "fa", cost: { text: { input: { price: 0 } } }, limit: { context: 1000, output: 100 },
+    modalities: { input: ["text", "image/png", "image/jpeg"] }, capabilities: { tools: { supported: true }, reasoning: { supported: true, effort: ["low", "high"] } },
+    api: { "chat-completions": { sdk: { opencodeai: "@opencode/ai/providers/openai-compatible" }, compatibility: { reasoning_field: "reasoning_content" } } } },
+  { id: "paid-b", name: "Paid B", cost: { text: { input: { price: 2 } } }, api: {} },
+];
 
 function fake(name: string, hostname = "127.0.0.1") {
   return Bun.serve({
     hostname, port: 0, idleTimeout: 0,
     fetch(req) {
+      if (new URL(req.url).pathname.endsWith("/models")) return Response.json({ object: "list", data: catalog }, { headers: cf });
       hits[name] = (hits[name] ?? 0) + 1;
       seen[name] = req.headers.get("authorization");
       switch (mode[name]) {
@@ -43,8 +51,9 @@ const servers: { stop(force?: boolean): unknown }[] = [];
 function mw(egresses: Egress[], upstream = "http://192.0.2.1:9", headerTimeout = 300) {
   const s = serve({ key: "k", egresses, upstream, port: 0, hostname: "127.0.0.1", headerTimeout, connectTimeout: 200, quotaCooldown: 200, deadBackoff: [5_000, 10_000], log: () => {} });
   servers.push(s);
-  return (headers: Record<string, string> = { "x-ocfree-key": "k", authorization: "Bearer public" }) =>
+  const post = (headers: Record<string, string> = { "x-ocfree-key": "k", authorization: "Bearer public" }) =>
     fetch(`${s.url}opencode/chat/completions`, { method: "POST", headers, body: JSON.stringify({ model: "m" }) });
+  return Object.assign(post, { origin: s.url.origin });
 }
 
 beforeEach(() => {
@@ -121,6 +130,27 @@ test("a route without IPv6 falls back to IPv4 on the same route", async () => {
   const post = mw([{ name: "direct/v6", family: 6 }, { name: "direct/v4", family: 4 }], `http://localhost:${direct.port}`);
   const r = await post();
   expect(r.headers.get("x-ocfree-egress")).toBe("direct/v4");
+});
+
+test("only the well-known manifest is public; the provider and model list carry just the free models", async () => {
+  const { origin } = mw([via("a")]);
+  const wk: any = await (await fetch(`${origin}/.well-known/opencode`)).json();
+  expect(wk.auth.env).toBe("CLAWSIECATS_API_KEY");
+  expect(wk.remote_config).toEqual({ url: `${origin}/opencode/config`, headers: { authorization: "Bearer {env:CLAWSIECATS_API_KEY}" } });
+
+  expect((await fetch(`${origin}/opencode/config`)).status).toBe(401);
+  const cfg: any = await (await fetch(`${origin}/opencode/config`, { headers: { authorization: "Bearer k" } })).json();
+  const p = cfg.providers.clawsiecats;
+  expect(p.settings).toEqual({ baseURL: `${origin}/opencode`, apiKey: "{env:CLAWSIECATS_API_KEY}" });
+  expect(Object.keys(p.models)).toEqual(["free-a"]);
+  expect(p.models["free-a"].capabilities).toEqual({ tools: true, reasoning: { supported: true, effort: ["low", "high"] }, input: ["text", "image"], output: ["text"] });
+  expect(p.models["free-a"].compatibility).toEqual({ reasoningField: "reasoning_content" });
+
+  expect((await fetch(`${origin}/v1/models`)).status).toBe(401);
+  const list: any = await (await fetch(`${origin}/v1/models`, { headers: { "x-ocfree-key": "k" } })).json();
+  expect(list.data).toEqual([{ id: "free-a", object: "model", name: "Free A", context_length: 1000, max_completion_tokens: 100 }]);
+  const raw: any = await (await fetch(`${origin}/opencode/models`, { headers: { "x-ocfree-key": "k" } })).json();
+  expect(raw.data.map((m: any) => m.id)).toEqual(["free-a"]);
 });
 
 test("a wrong key is refused, and the key never reaches the gateway", async () => {
