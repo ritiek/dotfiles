@@ -306,35 +306,8 @@ in
     };
   };
 
-  # 3proxy credentials (user:CL:pass) for ocfree's egress IP rotation.
-  sops.secrets."3proxy.users" = { };
-
-  # OpenCode free-tier bridge: OpenAI-compatible loopback proxy that replays the
-  # OpenCode CLI request shape (see ./pkgs/ocfree/ocfree.ts). Hermes reaches it
-  # via providers.ocfree below.
-  systemd.services.ocfree = {
-    description = "OpenCode free-tier bridge (OpenAI-compatible, for hermes)";
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network-online.target" ];
-    wants = [ "network-online.target" ];
-    environment = {
-      PORT = "9997";
-      # 3proxy nodes with their own egress; ocfree dedupes by public IP, so a host sharing
-      # radrubble's own IP (pilab, mishy) would be discarded — list only distinct-IP hosts.
-      OCFREE_PROXY_HOSTS = lib.concatMapStringsSep "," (h: "${h}.lion-zebra.ts.net:8090") [ "clawsiecats" "keyberry" ];
-    };
-    serviceConfig = {
-      LoadCredential = "3proxy:${config.sops.secrets."3proxy.users".path}";
-      ExecStart = "${pkgs.bun}/bin/bun run ${./pkgs/ocfree}/ocfree.ts";
-      Restart = "on-failure";
-      RestartSec = 3;
-      DynamicUser = true;
-      ProtectSystem = "strict";
-      ProtectHome = true;
-      PrivateTmp = true;
-      NoNewPrivileges = true;
-    };
-  };
+  # Key for the ocfree middleman on clawsiecats (providers.ocfree below).
+  sops.secrets."ocfree.key" = { };
 
   # Give the gateway enough stop time to finish its drain. The module ships
   # TimeoutStopSec=90s but the gateway's drain_timeout is 180s, so systemd
@@ -457,7 +430,7 @@ in
           provider = "anthropic";
         };
         channel_overrides."!TiSyl7i3cEsHc7V4_xhUmEHCpF1kOONPsXEUPq_46H0" = {
-          # OpenCode free tier via the local ocfree bridge (systemd.services.ocfree).
+          # OpenCode free tier via the ocfree middleman on clawsiecats.
           model = "deepseek-v4.1-flash-free";
           provider = "custom:ocfree";
           # Free Nous Portal model; OAuth login lives in .hermes/auth.json
@@ -525,7 +498,9 @@ in
       };
 
       providers.ocfree = {
-        api = "http://127.0.0.1:9997/v1";
+        # OpenAI-compatible shim of the ocfree middleman (machines/clawsiecats/services/ocfree).
+        api = "http://clawsiecats.lion-zebra.ts.net:9997/v1";
+        key_env = "OCFREE_API_KEY";
         default_model = "deepseek-v4.1-flash-free";
         # Catalog reports 1M for deepseek; cap the free tier at 200K.
         models."deepseek-v4.1-flash-free".context_length = 200000;
@@ -857,6 +832,7 @@ in
       GROQ_API_KEY=${config.sops.placeholder."groq_api.key"}
       ELEVENLABS_API_KEY=${config.sops.placeholder."elevenlabs_api.key"}
       OPENCODE_ZEN_API_KEY=${config.sops.placeholder."opencode_api.key"}
+      OCFREE_API_KEY=${config.sops.placeholder."ocfree.key"}
     '';
   };
 

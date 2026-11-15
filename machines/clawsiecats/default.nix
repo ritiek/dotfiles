@@ -174,4 +174,8 @@
   };
 
   networking.firewall.enable = true;
+
+  # The provider drops IPv6 traffic from privacy (temporary) addresses; only the
+  # stable SLAAC address gets out, so never source from a temporary one.
+  networking.tempAddresses = "disabled";
 }

@@ -19,6 +19,10 @@
         acl = [
           { rule = "allow"; }
         ];
+        # Hostnames still resolve to IPv4 first, but IPv6 targets become reachable
+        # (3proxy's default -4 refuses them). ocfree picks the family per request by
+        # asking for the IP address itself.
+        extraArguments = "-46";
       }
     ];
   };

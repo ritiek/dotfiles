@@ -13,6 +13,9 @@ let
     else ./../../../machines/${hostName}/home/${config.home.username}/secrets.yaml;
   secretsContent = builtins.readFile secretsFile;
   hasZaiApiKey = lib.strings.hasInfix "z_ai_api.key:" secretsContent;
+  # Machines with this key send the `opencode` provider (free models) through the
+  # ocfree middleman on clawsiecats; the rest talk to opencode.ai directly.
+  hasOcfreeKey = lib.strings.hasInfix "ocfree.key:" secretsContent;
 
   searxDomain = "clawsiecats.omg.lol";
 
@@ -131,6 +134,7 @@ in
 {
   sops.secrets = {
     "z_ai_api.key" = lib.mkIf hasZaiApiKey {};
+    "ocfree.key" = lib.mkIf hasOcfreeKey {};
     "github.token" = {};
     "paperless.url" = {};
     "paperless_api.key" = {};
@@ -253,7 +257,14 @@ in
       # Rotate across all connected providers; falls over on HTTP 429.
       websearch.provider = "random";
       provider = {
-        "opencode".options.timeout = false;
+        "opencode".options = {
+          timeout = false;
+        } // lib.optionalAttrs hasOcfreeKey {
+          # Free models go through ocfree (machines/clawsiecats/services/ocfree), which
+          # moves to another egress IP once one runs out of free quota.
+          baseURL = "http://clawsiecats.lion-zebra.ts.net:9997/opencode";
+          headers."x-ocfree-key" = "{file:${config.sops.secrets."ocfree.key".path}}";
+        };
         "opencode-go".options.timeout = false;
         "anthropic" = {
           options = {
@@ -684,13 +695,6 @@ in
         "@dietrichgebert/ponytail@5.3.3"
         # /edit-prefix: edit the system prompt and history the model sees in $EDITOR (V2-only).
         "${inputs.opencode-prefix-editor.packages.${pkgs.stdenv.hostPlatform.system}.default}"
-        # Free models: on a 429, re-send through a 3proxy node on another public IP.
-        [ "${./ocfree}" {
-          # Every 3proxy server; the plugin groups them by public IP itself.
-          hosts = map (h: "${h}.lion-zebra.ts.net:8090")
-            [ "pilab" "mishy" "nixstation" "zerokvm" "keyberry" "clawsiecats" ];
-          credentials = "/run/secrets/3proxy.users";
-        } ]
       ];
 
       autoupdate = false;

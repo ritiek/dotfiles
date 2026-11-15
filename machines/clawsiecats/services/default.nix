@@ -380,6 +380,7 @@ let
   imports = [
     inputs.simple-nixos-mailserver.nixosModules.default
     ./headscale
+    ./ocfree
   ];
 
   sops.secrets = {
