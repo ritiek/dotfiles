@@ -16,7 +16,7 @@
       PORT = "9997";
       # 3proxy nodes tried after this host's own IPs, in this order; each over IPv6, then IPv4.
       OCFREE_PROXIES = lib.concatMapStringsSep "," (h: "${h}.lion-zebra.ts.net:8090")
-        [ "keyberry" "pilab" "mishy" "nixstation" "zerokvm" ];
+        [ "keyberry" "pilab" "mishy" "nixstation" "zerokvm" "m2" "redmi-note-11" ];
     };
     serviceConfig = {
       LoadCredential = [
