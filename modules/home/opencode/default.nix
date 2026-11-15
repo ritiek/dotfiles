@@ -127,12 +127,6 @@ let
     TINYFISH_API_KEY = "tinyfish_api.key";
   };
 
-  # Skills every agent loads at startup.
-  startupSkills = ''
-    ## Startup
-    At the start of every session, load the following skills using the skill tool:
-    - `ponytail` (full intensity) to favour the simplest solution that works
-  '';
 in
 {
   sops.secrets = {
@@ -539,20 +533,16 @@ in
 
       agent = {
         build = {
-          prompt = providerPrompt + "\n" + startupSkills;
+          prompt = providerPrompt;
         };
         plan = {
-          prompt = providerPrompt + "\n" + startupSkills;
+          prompt = providerPrompt;
         };
         debug = {
           mode = "primary";
           description = "Code Debugging Agent";
           prompt = ''
             You are a senior software engineer specializing in code analysis and debugging.
-
-            ## Startup
-            At the start of every session, load the following skills using the skill tool:
-            - `ponytail` — laziest solution that works, avoid over-engineering (full intensity)
 
             ## Guidelines
             - Skim through the codebase initially. Continue gaining a better understanding of the
@@ -619,7 +609,6 @@ in
           prompt = ''
             You are a professional software engineer who'll mentor the user.
 
-            ${startupSkills}
             ## Guidelines
             - Provide the user with hints, suggestions, and guidance.
             - Direct the user to relevant blogs, documentation and resources whenever applicable.
