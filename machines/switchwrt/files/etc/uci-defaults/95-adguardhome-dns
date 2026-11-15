@@ -35,6 +35,6 @@ uci commit dhcp
 # config and work dirs read-write, but the shipped yaml lands root-owned
 # (install -Dm644 via the image build).  AGH rewrites its config on every
 # UI/filter change, so hand ownership of both trees to the service user.
-chown -R adguardhome:adguardhome /etc/adguardhome /var/lib/adguardhome
+chown -R adguardhome:adguardhome /etc/adguardhome /srv/adguardhome
 
 exit 0

@@ -1,0 +1,29 @@
+#!/bin/sh
+# Keep device/connection history across reboots: syslog (hostapd
+# AP-STA-CONNECTED/DISCONNECTED, dnsmasq DHCPACK), nlbwmon per-client traffic
+# and AdGuardHome's per-client query log all default to /var, which is tmpfs
+# on OpenWrt.  Move them onto the SD card (wear is an accepted trade-off).
+# /srv rather than /root: AGH runs jailed as an unprivileged user and /root
+# is 0700.
+
+# logd rotates log_file to log_file.old once it passes log_size KiB, so this
+# caps on-disk syslog at ~40 MiB.  log_buffer_size keeps the RAM ring buffer
+# small; it would otherwise default to log_size.
+uci set system.@system[0].log_file='/srv/log/messages'
+uci set system.@system[0].log_size='20480'
+uci set system.@system[0].log_buffer_size='1024'
+uci commit system
+
+# Default commit_interval is 24h, i.e. up to a day of counters lost on reboot.
+mkdir -p /srv/nlbwmon
+uci set nlbwmon.@nlbwmon[0].database_directory='/srv/nlbwmon'
+uci set nlbwmon.@nlbwmon[0].commit_interval='1h'
+uci commit nlbwmon
+
+# AGH keeps querylog/stats under its work_dir; the init script creates,
+# chowns and jail-mounts whatever path is set here.  safe_fs_patterns in
+# files/etc/adguardhome/adguardhome.yaml must point at the same tree.
+uci set adguardhome.config.work_dir='/srv/adguardhome'
+uci commit adguardhome
+
+exit 0
