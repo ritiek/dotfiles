@@ -92,8 +92,11 @@ let
   nvidia = osConfig.hardware.nvidia.enabled or false;
   noctalia-config = (pkgs.formats.toml { }).generate "noctalia-config.toml" {
     shell.polkit_agent = true;
-    notification.layer = "overlay";
+    # Keep the shell off the ScreenPad (HDMI-A-2); toasts/OSD only take an allowlist.
+    notification = { layer = "overlay"; monitors = [ "eDP-1" "HDMI-A-1" ]; };
+    osd.monitors = [ "eDP-1" "HDMI-A-1" ];
     bar.default = {
+      monitor."HDMI-A-2".enabled = false;
       widget_spacing = 10; # default 6
       # Now-playing in the center; clock between brightness and battery.
       # Lists replace Noctalia's defaults wholesale, so the full right side is restated.
