@@ -1,8 +1,8 @@
 diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
-index 1545ea8..dddc2f5 100644
+index c14c0d0..b84e9ed 100644
 --- a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
-@@ -825,15 +825,20 @@
+@@ -778,15 +778,20 @@ usbphy: phy@4100400 {
  			      <0x4200800 0x100>;
  			reg-names = "phy_ctrl",
  				    "pmu0",
@@ -28,7 +28,7 @@ index 1545ea8..dddc2f5 100644
  			status = "disabled";
  			#phy-cells = <1>;
  		};
-@@ -984,6 +989,27 @@ combophy: phy@4f00000 {
+@@ -937,6 +942,27 @@ combophy: phy@4f00000 {
  	status = "disabled";
  };
  
@@ -57,10 +57,10 @@ index 1545ea8..dddc2f5 100644
  	compatible = "allwinner,sunxi-pcie-v210-rc";
  	#address-cells = <3>;
 diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-index 03355bd..6655c82 100644
+index fcdad45..7371c06 100644
 --- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
 +++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
-@@ -143,15 +143,15 @@
+@@ -139,15 +139,15 @@ gma340_oe: gma340-oe {
  		gpio = <&pio 1 7 GPIO_ACTIVE_LOW>;
  	};
  
@@ -80,7 +80,30 @@ index 03355bd..6655c82 100644
  	};
  };
  
-@@ -511,7 +511,7 @@
+@@ -156,6 +156,14 @@ &ehci0 {
+ };
+ 
+ &ehci1 {
++	/*
++	 * The USB3 socket's D+/D- and VBUS (PL8) belong to usb1: VBUS turns on
++	 * when EHCI1/OHCI1 power up PHY1. If that happens before xHCI is
++	 * running, the drive misses SuperSpeed rx-detect and settles at 480M
++	 * on EHCI1. The phandle is only for ordering: fw_devlink defers
++	 * EHCI1/OHCI1 until dwc3 (and its xHCI child) has probed.
++	 */
++	extcon = <&usb3>;
+ 	status = "okay";
+ };
+ 
+@@ -241,6 +249,7 @@ &ohci0 {
+ };
+ 
+ &ohci1 {
++	extcon = <&usb3>; /* probe ordering, see &ehci1 */
+ 	status = "okay";
+ };
+ 
+@@ -507,7 +516,7 @@ &usbphy {
  /* PCIE and USB Switch */
  &combophy {
  	resets = <&ccu RST_BUS_PCIE_USB3>;
@@ -89,7 +112,7 @@ index 03355bd..6655c82 100644
  	status = "okay";
  };
  
-@@ -521,6 +521,10 @@
+@@ -517,6 +526,10 @@ &pcie {
  	num-lanes  = <1>;
  	clk-freq-100M;
  	pcie3v3-supply = <&reg_pcie_vcc3v3>;
