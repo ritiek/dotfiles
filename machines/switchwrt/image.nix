@@ -254,6 +254,9 @@ let
         ./patches/815-phy-allwinner-inno-combophy-reinit-on-mode-mismatch.patch;
       "target/linux/sunxi/patches-6.18/816-arm64-dts-cubie-a5e-enable-usb3-dwc3.patch" =
         ./patches/816-arm64-dts-cubie-a5e-enable-usb3-dwc3.patch;
+      # SPI NOR as /dev/mtd0 (switchboard's spi-nor-overlay.dts, in-tree).
+      "target/linux/sunxi/patches-6.18/817-arm64-dts-cubie-a5e-enable-spi-nor.patch" =
+        ./patches/817-arm64-dts-cubie-a5e-enable-spi-nor.patch;
       # NOTE: files/ deliberately does NOT appear in this attribute.
       # Everything here is spliced into the *full build's* postPatch as a
       # content-addressed store path (see CONFIG_IB above), so listing a

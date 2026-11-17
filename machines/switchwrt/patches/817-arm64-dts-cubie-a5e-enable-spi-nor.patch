@@ -1,0 +1,26 @@
+diff --git a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+index 7371c06..439bd8e 100644
+--- a/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
++++ b/arch/arm64/boot/dts/allwinner/sun55i-a527-cubie-a5e.dts
+@@ -467,6 +467,21 @@ &spdif {
+ 	status = "okay";
+ };
+ 
++&spi0 {
++	/* On-board SPI NOR holding U-Boot; exposed as /dev/mtd0 for reflashing. */
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0_pc_pins>, <&spi0_cs0_pc_pin>;
++	status = "okay";
++
++	flash@0 {
++		compatible = "jedec,spi-nor";
++		reg = <0>;
++		spi-max-frequency = <20000000>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++	};
++};
++
+ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_pb_pins>;
