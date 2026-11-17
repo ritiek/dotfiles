@@ -75,6 +75,14 @@ in
     };
   };
 
+  # EVERYTHING_ELSE is mounted by mediaserver-mount, not fileSystems, so the
+  # fstab-driven fstrim service never sees it.
+  systemd.services.fstrim.postStart = ''
+    if ${pkgs.util-linux}/bin/mountpoint -q ${everythingElsePath}; then
+      ${pkgs.util-linux}/bin/fstrim --verbose ${everythingElsePath}
+    fi
+  '';
+
   networking.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "aarch64-linux";

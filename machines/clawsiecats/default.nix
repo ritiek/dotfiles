@@ -141,6 +141,11 @@
   };
 
   services = {
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
+
     # systemd-resolved provides a local DNS stub on 127.0.0.53 that is always
     # available regardless of Tailscale state. nginx uses it as its resolver so
     # that .ts.net upstream hostnames are only looked up at request time (via

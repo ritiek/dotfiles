@@ -24,6 +24,7 @@ let
     if ! mountpoint -q ${everythingElsePath}; then
       if [ ! -e /dev/mapper/EVERYTHING_ELSE ]; then
         cryptsetup open \
+          --allow-discards \
           /dev/disk/by-label/EVERYTHING_ELSE \
           EVERYTHING_ELSE
       fi

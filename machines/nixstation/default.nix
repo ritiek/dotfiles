@@ -208,6 +208,11 @@ in
   };
 
   services = {
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
+
     udev.packages = [ pkgs.swayosd ];
     udisks2.enable = true;
     upower.enable = true;

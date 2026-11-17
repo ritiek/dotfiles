@@ -262,6 +262,14 @@ in
     ];
   };
 
+  # HOMELAB_MEDIA is mounted by homelab-mount, not fileSystems, so the
+  # fstab-driven fstrim service never sees it.
+  systemd.services.fstrim.postStart = ''
+    if ${pkgs.util-linux}/bin/mountpoint -q ${homelabMediaPath}; then
+      ${pkgs.util-linux}/bin/fstrim --verbose ${homelabMediaPath}
+    fi
+  '';
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction

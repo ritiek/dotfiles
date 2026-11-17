@@ -337,6 +337,11 @@
   # ];
 
   services = {
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
+
     udisks2.enable = true;
 
     udev.extraRules = ''

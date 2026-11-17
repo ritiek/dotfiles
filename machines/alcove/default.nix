@@ -113,6 +113,11 @@
   };
 
   services = {
+    fstrim = {
+      enable = true;
+      interval = "weekly";
+    };
+
     openssh = {
       enable = true;
       startWhenNeeded = true;

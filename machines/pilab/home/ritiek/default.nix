@@ -27,11 +27,13 @@ let
         set +x
         if [ -n "$LUKS_PASSPHRASE" ]; then
           printf '%s' "$LUKS_PASSPHRASE" | cryptsetup open \
+            --allow-discards \
             /dev/disk/by-label/HOMELAB_MEDIA \
             HOMELAB_MEDIA \
             --key-file=-
         else
           cryptsetup open \
+            --allow-discards \
             /dev/disk/by-label/HOMELAB_MEDIA \
             HOMELAB_MEDIA
         fi
