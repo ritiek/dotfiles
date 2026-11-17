@@ -202,11 +202,19 @@ let
 
   openwrt = inputs.nix-openwrt.lib.build {
     inherit pkgs;
-    src = pkgs.fetchFromGitHub {
-      owner = "ritiek";
-      repo = "openwrt";
-      rev = "ad633d4568c054fcf0e6ed89b48e4d36a7651c7f";
-      hash = "sha256-P1cWrcC09OPyvcVd8+ygZU0jmRTKHTgqRaclXoSI3bI=";
+    # Fork tree with feeds.conf.default swapped for commit-pinned feeds (see
+    # ./feeds.conf).  Done on src rather than via `patches` because ayles'
+    # downloads stage clones the feeds before it copies `patches` in.
+    version = "ad633d4568c054fcf0e6ed89b48e4d36a7651c7f";
+    src = pkgs.applyPatches {
+      name = "openwrt-source";
+      src = pkgs.fetchFromGitHub {
+        owner = "ritiek";
+        repo = "openwrt";
+        rev = "ad633d4568c054fcf0e6ed89b48e4d36a7651c7f";
+        hash = "sha256-P1cWrcC09OPyvcVd8+ygZU0jmRTKHTgqRaclXoSI3bI=";
+      };
+      postPatch = "cp ${./feeds.conf} feeds.conf.default";
     };
     config = ./config.seed;
     target = "sunxi";
@@ -214,7 +222,7 @@ let
     profile = "radxa_cubie-a5e";
     # Pinned by the bootstrap build (set to pkgs.lib.fakeHash, build once,
     # and replace with the `got:` hash nix reports).
-    downloadsHash = "sha256-Qjy2ZZYSzJY5S1wrVPqtaqGnbrKYepIaOABQHa4gtqc=";
+    downloadsHash = pkgs.lib.fakeHash;
 
     # See the "Go on an aarch64 build host" note above.
     extraBuildInputs = [ pkgs.go ];
