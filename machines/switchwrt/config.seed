@@ -122,6 +122,16 @@ CONFIG_PACKAGE_kmod-usb-net-ipheth=y
 CONFIG_PACKAGE_kmod-usb3=y
 CONFIG_PACKAGE_kmod-usb-dwc3=y
 CONFIG_PACKAGE_kmod-usb-storage=y
+# NTFS read/write for USB drives, matching switchboard's
+# boot.supportedFilesystems = [ "ntfs" ].
+CONFIG_PACKAGE_kmod-fs-ntfs3=y
+
+# Bluetooth on the AIC8800D80 (H4 over UART1), matching switchboard's
+# hciattach + bluetoothd setup. bluez-daemon pulls in bluez-utils, which
+# ships hciattach; files/etc/init.d/aic8800-bt does the attach.
+CONFIG_PACKAGE_kmod-bluetooth=y
+CONFIG_PACKAGE_kmod-hci-uart=y
+CONFIG_PACKAGE_bluez-daemon=y
 
 # Per-client bandwidth accounting, useful for metered/capped hotel WiFi
 # while travelling. Lighter-weight and more purpose-fit than the

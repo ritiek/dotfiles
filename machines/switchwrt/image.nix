@@ -433,6 +433,10 @@ let
       "kmod-usb3"
       "kmod-usb-dwc3"
       "kmod-usb-storage"
+      "kmod-fs-ntfs3"
+      "kmod-bluetooth"
+      "kmod-hci-uart"
+      "bluez-daemon"
     ];
     # Shipped verbatim; the modes are fixed up in the ImageBuilder instead --
     # see the `chmod -R u+w files/` injection in the override below.

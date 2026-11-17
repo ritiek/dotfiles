@@ -1,0 +1,17 @@
+#!/bin/sh /etc/rc.common
+# Attach the AIC8800D80's Bluetooth half (H4 over UART1, enabled in the DT by
+# target/linux/sunxi/patches-6.18/702-*) to the kernel's hci_uart, mirroring
+# switchboard's aic8800-bluetooth.service (hw-config/aic8800-sdio.nix).
+# aic8800_bsp powers the chip and loads its BT patch at kmodloader time, so
+# this only needs to run after the boot-time module load. bluetoothd (from
+# bluez-daemon) picks up hci0 whenever it appears.
+START=95
+USE_PROCD=1
+
+start_service() {
+	procd_open_instance
+	# -n: stay in the foreground so procd can supervise/respawn it.
+	procd_set_param command /usr/bin/hciattach -n /dev/ttyS1 any 1500000 flow
+	procd_set_param respawn 3600 5 0
+	procd_close_instance
+}
