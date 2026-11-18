@@ -24,6 +24,29 @@ in
     };
   };
 
+  # Snapshot the live headscale db back into the repo so the first-boot seed
+  # below restores current clients after a reinstall.
+  environment.systemPackages = [
+    (pkgs.writeShellApplication {
+      name = "sync-headscale-db";
+      runtimeInputs = [ pkgs.sops pkgs.git ];
+      text = ''
+        cd /etc/nixos
+        db=machines/clawsiecats/services/headscale/db.sqlite
+        sudo systemctl stop headscale.service headplane.service
+        # Never leave headscale down if a step below fails.
+        trap 'sudo systemctl start headscale.service headplane.service' EXIT
+        sleep 30s
+        sudo cp /var/lib/headscale/db.sqlite "$db"
+        sudo systemctl start headscale.service headplane.service
+        sops encrypt -i "$db"
+        git add "$db"
+        git commit -m "Re-sync headscale clients"
+        git push -u origin main
+      '';
+    })
+  ];
+
   environment.persistence."/nix/persist/system" = {
     directories = [
       "/var/lib/headscale"
