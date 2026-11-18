@@ -696,6 +696,33 @@ in
             "codegraph*" = true;
           };
         };
+        critic = {
+          mode = "subagent";
+          description = "Builds the strongest evidence-backed case against a proposed plan. Pass the goal and the full plan verbatim.";
+          prompt = ''
+            You are reviewing a proposed plan, not writing one.
+
+            - Re-read the relevant code yourself; do not trust the plan's description of it.
+            - Look for: wrong assumptions, missed callers/config/tests, data-loss or security
+              risk, a simpler alternative, and scope creep.
+            - Every objection needs evidence (file:line, doc URL, or a concrete failing case)
+              and a severity (blocker / should-fix / nit). Drop anything you can't back up.
+            - "No substantive objections" is a valid and good outcome.
+            - End with a verdict: proceed / revise / rethink.
+          '';
+          temperature = 0.3;
+          # Read-only via tool allowlist: cli.json autoaccept would approve "ask" permissions.
+          tools = {
+            "*" = false;
+            read = true;
+            glob = true;
+            grep = true;
+            webfetch = true;
+            "codegraph*" = true;
+            "context7*" = true;
+            "nixos*" = true;
+          };
+        };
       };
 
       plugin = [
