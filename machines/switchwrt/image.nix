@@ -222,7 +222,7 @@ let
     profile = "radxa_cubie-a5e";
     # Pinned by the bootstrap build (set to pkgs.lib.fakeHash, build once,
     # and replace with the `got:` hash nix reports).
-    downloadsHash = pkgs.lib.fakeHash;
+    downloadsHash = "sha256-oPjaK5666ata1eEfJtBkfheceEdJALAmnDJcRjilVVc=";
 
     # See the "Go on an aarch64 build host" note above.
     extraBuildInputs = [ pkgs.go ];
