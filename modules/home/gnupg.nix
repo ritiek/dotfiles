@@ -20,6 +20,9 @@
     # pinentryPackage = pkgs.pinentry-curses;
     pinentry.package = pkgs.pinentry-gnome3;
   };
+  # pinentry-gnome3 needs gcr's D-Bus system prompter outside GNOME, else it
+  # falls back to curses and silently cancels when there is no TTY.
+  home.packages = [ pkgs.gcr_3 ];
   programs.gpg = {
     enable = true;
     publicKeys = [
