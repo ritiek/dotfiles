@@ -701,6 +701,19 @@ let
 
     nginx = {
       enable = true;
+      # shortcut: pin nginx 1.30.7 for CVE-2026-123007/123633 (HTTP/2 RCE) until
+      # the nixpkgs input ships it; the version check drops the pin automatically.
+      package =
+        if lib.versionOlder pkgs.nginxStable.version "1.30.7" then
+          pkgs.nginxStable.overrideAttrs (_: rec {
+            version = "1.30.7";
+            src = pkgs.fetchurl {
+              url = "https://nginx.org/download/nginx-${version}.tar.gz";
+              hash = "sha256-JWW1yDcFDpWPcPsPc8SOK8pFQq00n9NW9G+wxyYQvG4=";
+            };
+          })
+        else
+          pkgs.nginxStable;
       clientMaxBodySize = "0";
       # Route QUIC packets to the right worker by Connection ID instead of by
       # 4-tuple hash. Without this, a client that changes address (wifi ->
