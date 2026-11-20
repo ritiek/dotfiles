@@ -3,14 +3,17 @@
 # OpenWrt buildroot is compiled natively, so run `nix build
 # /etc/nixos#switchwrt-sd` on an aarch64 host (e.g. alcove).
 #
-# The OpenWrt source is pinned to our fork branch, which carries all of the
-# board support in-tree: A523/A527 CPU DVFS, thermal, PCIe/IOMMU and WiFi
-# patches (target/linux/sunxi/patches-6.18/), U-Boot DRAM-timing + earlycon
-# changes (package/boot/uboot-sunxi/), the radxa_cubie-a5e device
-# definition, TF-A/ATF support and the out-of-tree AIC8800D80 SDIO WiFi
-# package.  nix-openwrt's `patches` attribute can only drop patch files
-# into OpenWrt's quilt patch dirs, so it cannot express device/package
-# tree content -- hence a fork pin instead of upstream + patch list.
+# The OpenWrt source is pinned to our fork branch: upstream OpenWrt main
+# (which has the radxa_cubie-a5e device, TF-A and the A523 thermal/PCIe/
+# IOMMU patches since Nov 2026, in the cortexa53 subtarget) plus our own
+# commits: A523/A527 CPU DVFS, CPU_FREQ_THERMAL, U-Boot DRAM-timing +
+# earlycon, the out-of-tree AIC8800D80 SDIO WiFi package and the Nix FHS
+# sandbox build fixes.  nix-openwrt's `patches` attribute can only drop
+# patch files into OpenWrt's quilt patch dirs, so it cannot express
+# device/package tree content -- hence a fork pin instead of upstream +
+# patch list.  Keep ./feeds.conf pinned to feed commits from around the
+# fork's upstream base: core and feeds move packages between each other
+# (e.g. libffi moved to core in Oct 2026), and a mismatch drops them.
 #
 # Two overrides on nix-openwrt's hardcoded fixes:
 # - tools/fakeroot/patches/900-einval.patch (libfakeroot: forgive EINVAL
@@ -38,7 +41,7 @@
 #
 # To bump the OpenWrt pin, update `src.rev`/`src.hash` (prefetch with
 # `nix store prefetch-file --unpack --json
-# https://codeload.github.com/ritiek/openwrt/tar.gz/<rev>`), then set
+# https://codeload.github.com/ritiek/openwrt-cubie-a5e/tar.gz/<rev>`), then set
 # `downloadsHash = pkgs.lib.fakeHash;`, build once, and pin the `got:`
 # hash nix reports.
 {
@@ -205,24 +208,25 @@ let
     # Fork tree with feeds.conf.default swapped for commit-pinned feeds (see
     # ./feeds.conf).  Done on src rather than via `patches` because ayles'
     # downloads stage clones the feeds before it copies `patches` in.
-    version = "ad633d4568c054fcf0e6ed89b48e4d36a7651c7f";
+    version = "ebcb64f69a4e4aa6f0f37b41f19cabc22b4cd433";
     src = pkgs.applyPatches {
       name = "openwrt-source";
       src = pkgs.fetchFromGitHub {
         owner = "ritiek";
-        repo = "openwrt";
-        rev = "ad633d4568c054fcf0e6ed89b48e4d36a7651c7f";
-        hash = "sha256-P1cWrcC09OPyvcVd8+ygZU0jmRTKHTgqRaclXoSI3bI=";
+        repo = "openwrt-cubie-a5e";
+        # Branch rebase-2026-11: our commits on upstream main as of 2026-11-20.
+        rev = "ebcb64f69a4e4aa6f0f37b41f19cabc22b4cd433";
+        hash = "sha256-7j7J3e3DEYFEXnf0O/GlWyk2EPlxMDVK0RCWa7MySPs=";
       };
       postPatch = "cp ${./feeds.conf} feeds.conf.default";
     };
     config = ./config.seed;
     target = "sunxi";
-    subtarget = "cortexa55";
+    subtarget = "cortexa53";
     profile = "radxa_cubie-a5e";
     # Pinned by the bootstrap build (set to pkgs.lib.fakeHash, build once,
     # and replace with the `got:` hash nix reports).
-    downloadsHash = "sha256-oPjaK5666ata1eEfJtBkfheceEdJALAmnDJcRjilVVc=";
+    downloadsHash = "sha256-39eXP0angXSt9bbV0ypiCoIJPgNETwArwlD1xzSb+Ys=";
 
     # See the "Go on an aarch64 build host" note above.
     extraBuildInputs = [ pkgs.go ];
