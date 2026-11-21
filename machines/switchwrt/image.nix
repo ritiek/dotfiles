@@ -208,15 +208,15 @@ let
     # Fork tree with feeds.conf.default swapped for commit-pinned feeds (see
     # ./feeds.conf).  Done on src rather than via `patches` because ayles'
     # downloads stage clones the feeds before it copies `patches` in.
-    version = "ebcb64f69a4e4aa6f0f37b41f19cabc22b4cd433";
+    version = "9647daf744362813de659405b0d8c5b7eec37f17";
     src = pkgs.applyPatches {
       name = "openwrt-source";
       src = pkgs.fetchFromGitHub {
         owner = "ritiek";
         repo = "openwrt-cubie-a5e";
         # Branch rebase-2026-11: our commits on upstream main as of 2026-11-20.
-        rev = "ebcb64f69a4e4aa6f0f37b41f19cabc22b4cd433";
-        hash = "sha256-7j7J3e3DEYFEXnf0O/GlWyk2EPlxMDVK0RCWa7MySPs=";
+        rev = "9647daf744362813de659405b0d8c5b7eec37f17";
+        hash = "sha256-lEQwoD2mUnSRZM51Ln5FNFLorFl9Pq9l0ew1gJH3RkA=";
       };
       postPatch = "cp ${./feeds.conf} feeds.conf.default";
     };
