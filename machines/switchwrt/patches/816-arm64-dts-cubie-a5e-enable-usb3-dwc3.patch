@@ -3,7 +3,8 @@ index c14c0d0..b84e9ed 100644
 --- a/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
 +++ b/arch/arm64/boot/dts/allwinner/sun55i-a523.dtsi
 @@ -778,15 +778,20 @@ usbphy: phy@4100400 {
- 			      <0x4200800 0x100>;
+-			      <0x4200800 0x100>;
++			      <0x4200800 0x100>, <0x4e00000 0x100>;
  			reg-names = "phy_ctrl",
  				    "pmu0",
 -				    "pmu1";
