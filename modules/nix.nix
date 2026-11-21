@@ -54,7 +54,7 @@ in
   # TODO: Remove this when things have cooled down a bit.
   security.pki.caCertificateBlacklist = [
     "Comodo AAA Services root"
-    "emSign ECC Root CA - G3"
+    # "emSign ECC Root CA - G3" was dropped upstream in nss-cacert 3.131.1.
   ];
 
   # Configure nix-daemon socket for remote builder access
