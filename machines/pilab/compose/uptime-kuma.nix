@@ -11,7 +11,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."uptime-kuma" = {
-    image = "louislam/uptime-kuma:2.5.6";
+    image = "louislam/uptime-kuma:2.5.12";
     volumes = [
       "${homelabMediaPath}/services/uptime-kuma:/app/data:rw"
     ];

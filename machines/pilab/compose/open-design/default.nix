@@ -104,7 +104,7 @@
     };
     script = ''
       docker build -t open-design-local:latest - <<'EOF'
-      FROM ghcr.io/nexu-io/od:0.27.0
+      FROM ghcr.io/nexu-io/od:0.27.1
       USER root
       RUN apk add --no-cache libc6-compat
       USER open-design

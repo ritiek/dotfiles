@@ -21,7 +21,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."ntfy" = {
-    image = "binwiederhier/ntfy:v2.34.0";
+    image = "binwiederhier/ntfy:v2.38.1";
     environment = {
       "NTFY_ATTACHMENT_CACHE_DIR" = "/var/lib/ntfy/attachments";
       "NTFY_AUTH_ACCESS" = lib.concatStringsSep "," [

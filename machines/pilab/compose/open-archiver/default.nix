@@ -26,7 +26,7 @@
   virtualisation.oci-containers.containers."open-archiver" = {
     # Pinned rather than :latest so a docker pull can't silently move us
     # across a schema migration. Bump deliberately.
-    image = "logiclabshq/open-archiver:v0.6.0";
+    image = "logiclabshq/open-archiver:v0.6.2";
     environmentFiles = [
       config.sops.secrets."compose/open-archiver.env".path
     ];
@@ -178,7 +178,7 @@
     ];
   };
   virtualisation.oci-containers.containers."tika" = {
-    image = "apache/tika:3.3.1.0-full";
+    image = "apache/tika:4.1.0-full";
     environmentFiles = [
       config.sops.secrets."compose/open-archiver.env".path
     ];

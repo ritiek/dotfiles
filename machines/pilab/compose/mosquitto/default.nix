@@ -23,7 +23,7 @@ in
 
   # Containers
   virtualisation.oci-containers.containers."mosquitto" = {
-    image = "eclipse-mosquitto:2.0.22";
+    image = "eclipse-mosquitto:2.1.4-alpine";
     volumes = [
       "${mosquittoConf}:/mosquitto/config/mosquitto.conf:ro"
     ];

@@ -69,7 +69,7 @@
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-gotenberg" = {
-    image = "docker.io/gotenberg/gotenberg:8.37";
+    image = "docker.io/gotenberg/gotenberg:8.38";
     environmentFiles = [
       config.sops.secrets."compose/paperless-ngx.env".path
     ];
@@ -139,7 +139,12 @@
     ];
   };
   virtualisation.oci-containers.containers."paperless-ngx-webserver" = {
-    image = "ghcr.io/paperless-ngx/paperless-ngx:3.3.3";
+    image = "ghcr.io/paperless-ngx/paperless-ngx:3.5.1";
+    # 3.5 stopped allowing all hosts once PAPERLESS_URL is set; keep serving
+    # pilab.lion-zebra.ts.net:8010 and other non-public hostnames.
+    environment = {
+      "PAPERLESS_ALLOWED_HOSTS" = "*";
+    };
     environmentFiles = [
       config.sops.secrets."compose/paperless-ngx.env".path
     ];

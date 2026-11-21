@@ -55,7 +55,7 @@
       ];
   };
   virtualisation.oci-containers.containers."miniflux" = {
-    image = "miniflux/miniflux:2.3.4";
+    image = "miniflux/miniflux:2.3.5";
     environmentFiles = [
       config.sops.secrets."compose/miniflux.env".path
     ];

@@ -53,7 +53,7 @@ in lib.mkMerge [
 
   # Containers
   virtualisation.oci-containers.containers."archivist-es" = {
-    image = "docker.elastic.co/elasticsearch/elasticsearch:8.19.0";
+    image = "docker.elastic.co/elasticsearch/elasticsearch:9.5.5";
     environmentFiles = [
       config.sops.secrets."compose/tubearchivist.env".path
     ];
@@ -148,9 +148,12 @@ in lib.mkMerge [
   };
 
   virtualisation.oci-containers.containers."tubearchivist" = {
-    image = "bbilly1/tubearchivist:v0.5.12";
+    image = "bbilly1/tubearchivist:v0.6.0";
+    # v0.6.0 dropped HOST_UID/HOST_GID and no longer chowns; run as the
+    # owner of cache/ and videos/ instead. run.sh now puts the updated
+    # yt-dlp on PYTHONPATH itself.
+    user = "1000:1000";
     environment = {
-      PYTHONPATH = "/root/.local/bin";
       TA_AUTO_UPDATE_YTDLP = "nightly";
     };
     environmentFiles = [

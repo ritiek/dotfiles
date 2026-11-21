@@ -19,7 +19,7 @@
 
   # Containers
   virtualisation.oci-containers.containers."backvault" = {
-    image = "docker.io/mvflc/backvault:2.0.15";
+    image = "docker.io/mvflc/backvault:3.0.3";
     environmentFiles = [
       config.sops.secrets."compose/backvault.env".path
     ];
