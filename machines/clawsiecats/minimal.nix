@@ -1,5 +1,14 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, utils, ... }:
 
+let
+  persistFiles = [
+    "/etc/machine-id"
+    "/etc/ssh/ssh_host_ed25519_key"
+    "/etc/ssh/ssh_host_ed25519_key.pub"
+    "/etc/ssh/ssh_host_rsa_key"
+    "/etc/ssh/ssh_host_rsa_key.pub"
+  ];
+in
 {
   imports = [
     inputs.impermanence.nixosModules.impermanence
@@ -20,19 +29,26 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
     ];
-    files = [
-      "/etc/machine-id"
-      "/etc/ssh/ssh_host_ed25519_key"
-      "/etc/ssh/ssh_host_ed25519_key.pub"
-      "/etc/ssh/ssh_host_rsa_key"
-      "/etc/ssh/ssh_host_rsa_key.pub"
-    ];
+    files = persistFiles;
     # users.root = {
     #   home = "/root";
     #   directories = [ ];
     #   files = [ ];
     # };
   };
+
+  # Every nixpkgs bump changes these units; restarting them mid-switch unmounts the
+  # persisted files, letting sshd-keygen create fresh host keys over them.
+  systemd.services = lib.genAttrs
+    (map (f: "persist-${utils.escapeSystemdPath "/nix/persist/system${f}"}") persistFiles)
+    (_: { restartIfChanged = false; });
+
+  # Only the persisted key types; the default also generates an mldsa44 key that
+  # would land on tmpfs and change on every boot.
+  services.openssh.hostKeys = [
+    { type = "rsa"; bits = 4096; path = "/etc/ssh/ssh_host_rsa_key"; }
+    { type = "ed25519"; path = "/etc/ssh/ssh_host_ed25519_key"; }
+  ];
 
   # Disable sudo as we've no non-root users.
   security.sudo.enable = lib.mkDefault false;
