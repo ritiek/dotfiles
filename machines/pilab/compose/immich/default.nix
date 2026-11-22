@@ -10,9 +10,14 @@ let
   # depends on the order networks happen to be created in. Pinning it means the
   # gateway address is stable and can be named exactly in
   # IMMICH_TRUSTED_PROXIES below instead of trusting the whole /12.
+  #
+  # Docker hands out the lowest free /24 from that pool, so the pin sits at the
+  # far end of it: a low pin (it used to be .11) gets taken by another stack
+  # whenever immich_default is recreated, and creation then fails with
+  # "Pool overlaps".
   immichNetwork = {
-    subnet = "10.240.11.0/24";
-    gateway = "10.240.11.1";
+    subnet = "10.240.255.0/24";
+    gateway = "10.240.255.1";
   };
 in
 {
@@ -150,7 +155,7 @@ in
       # port 2283 is published via docker-proxy, so connections are SNATed and
       # the container observes every external peer as the gateway (verified by
       # reading /proc/net/tcp6 inside the container during a live request --
-      # remote was 10.240.11.1, the immich_default gateway).
+      # remote was the immich_default gateway).
       #
       # The exact gateway, not a wide range: the subnet is pinned in the
       # `immichNetwork` binding at the top of this file and enforced by the
