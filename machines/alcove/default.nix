@@ -35,7 +35,6 @@
       group = "nixbld";
     };
     "nixbuild3.id_ed25519" = {
-      sopsFile = ../nixbuild3.yaml;
       mode = "600";
       owner = "root";
       group = "nixbld";
