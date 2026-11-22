@@ -243,11 +243,15 @@ in
         server = {
           host = "127.0.0.1";
           port = 3000;
-          cookie_secret_path = pkgs.writeText "headplane-cookie-secret" "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX";
+          # Paths here are strings, not derivations: headplane's settings filter recurses
+          # into attrsets and would walk a derivation, tripping stdenv.is* warnings.
+          cookie_secret_path = "${pkgs.writeText "headplane-cookie-secret" "xXxXxXxXxXxXxXxXxXxXxXxXxXxXxXxX"}";
           cookie_secure = false;
         };
         headscale = {
           url = "http://127.0.0.1:8088";
+          # Same as the module default, minus the derivation.
+          config_path = "${config.services.headscale.configFile}";
           config_strict = true;
         };
         integration = {

@@ -2,31 +2,29 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
+    settings = {
       "github.com" = {
-        user = "git";
+        User = "git";
       };
       "*.lion-zebra.ts.net" = {
-        extraOptions = {
-          PubkeyAuthentication = "unbound";
-          # Since encryption can't be disabled on newer OpenSSH versions, we'll settle for
-          # the most lightweight encryption. Tailscale already encrypts everything so this
-          # another layer of encryption can be avoided.
-          Ciphers = "chacha20-poly1305@openssh.com,aes128-gcm@openssh.com";
-          # ConnectTimeout = "3";
-        };
+        PubkeyAuthentication = "unbound";
+        # Since encryption can't be disabled on newer OpenSSH versions, we'll settle for
+        # the most lightweight encryption. Tailscale already encrypts everything so this
+        # another layer of encryption can be avoided.
+        Ciphers = "chacha20-poly1305@openssh.com,aes128-gcm@openssh.com";
+        # ConnectTimeout = "3";
       };
       "*" = {
-        forwardAgent = false;
-        addKeysToAgent = "no";
-        compression = true;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+        ForwardAgent = false;
+        AddKeysToAgent = "no";
+        Compression = true;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
       };
     };
   };
