@@ -1,12 +1,12 @@
 #!/bin/sh
-# mwan3 multi-WAN policy routing: three uplinks -- wan (eth1, wired, via
+# mwan3 multi-WAN policy routing: three uplinks -- wan (eth0, wired, via
 # switchboard -> the ONT), wwan (USB WiFi dongle, STA joining the ONT's own
 # SSID directly; see files/etc/uci-defaults/97-wwan-uplink), and usbtether
 # (phone USB tethering, untested; see
 # files/etc/uci-defaults/97-usbtether-uplink) as a third, lowest-priority
 # fallback for when travelling and neither of the other two is available.
 #
-# Automatic failover, eth1 preferred: both members sit in one policy at
+# Automatic failover, wired wan preferred: both members sit in one policy at
 # different metrics. mwan3's metric semantics ARE the failover logic --
 # members at the lowest live metric are used (load-balanced by weight among
 # ties), and a higher-metric member only takes over once every lower-metric
@@ -35,7 +35,7 @@
 # 'balanced'). Since mwan3 matches rules top-down and the shipped rules sit
 # ABOVE anything we append here, they permanently shadow our default_rule:
 # all traffic hit shipped default_rule_v4 -> 'balanced', whose only enabled
-# member is wan -- so wwan failover never engaged, and our eth1_preferred
+# member is wan -- so wwan failover never engaged, and our wan_preferred
 # policy sat unused at the bottom. Delete the shipped rules outright (the
 # unused shipped interfaces/members/policies are left in place: harmless
 # clutter, visible in LuCI, but shadowing nothing).
@@ -52,10 +52,10 @@ uci -q delete mwan3.default_rule_v6
 # interface has NO route its probes can use -> every check fails ->
 # permanently "offline" even though the link itself is perfectly healthy
 # (seen live: wan flapped offline 30s after boot and never recovered while
-# a pinned-route ping over eth1 had 0% loss; which uplink won the metric-0
-# race varied per boot). With distinct metrics, all defaults coexist in the
-# main table (metric 10 preferred by non-mwan3 lookups) and every tracker
-# can always route its own probes.
+# a pinned-route ping over eth1, then the WAN port, had 0% loss; which
+# uplink won the metric-0 race varied per boot). With distinct metrics, all
+# defaults coexist in the main table (metric 10 preferred by non-mwan3
+# lookups) and every tracker can always route its own probes.
 uci set network.wan.metric='10'
 uci set network.wwan.metric='20'
 uci set network.usbtether.metric='30'
@@ -127,23 +127,23 @@ uci set mwan3.usbtether_only=policy
 uci -q delete mwan3.usbtether_only.use_member
 uci add_list mwan3.usbtether_only.use_member='usbtether_m3_w1'
 
-uci set mwan3.eth1_preferred=policy
-uci -q delete mwan3.eth1_preferred.use_member
-uci add_list mwan3.eth1_preferred.use_member='wan_m1_w1'
-uci add_list mwan3.eth1_preferred.use_member='wwan_m2_w1'
-uci add_list mwan3.eth1_preferred.use_member='usbtether_m3_w1'
+uci set mwan3.wan_preferred=policy
+uci -q delete mwan3.wan_preferred.use_member
+uci add_list mwan3.wan_preferred.use_member='wan_m1_w1'
+uci add_list mwan3.wan_preferred.use_member='wwan_m2_w1'
+uci add_list mwan3.wan_preferred.use_member='usbtether_m3_w1'
 
 # Tailnet traffic must bypass mwan3 entirely: use_policy='default' marks it
 # 0x3f00 ("use the default/main routing table"), where ip rule 5270 sends
 # 100.64.0.0/10 through tailscaled's own table 52 -> tailscale0. Without
-# this, the catch-all below marks tailnet-bound packets for eth1 and
+# this, the catch-all below marks tailnet-bound packets for the WAN and
 # replies to tailnet peers leak out the WAN instead of the tunnel (seen
 # live: alcove could tailscale-ping switchwrt but got no ICMP replies;
-# `ip route get 100.64.0.12` said via 192.168.2.1 dev eth1). Deleting +
-# recreating default_rule keeps UCI ordering right: rules match top-down,
-# so the exemption must sit above the catch-all. No IPv6 twin is needed:
-# with shipped default_rule_v6 gone, mwan3 doesn't manage IPv6 at all, so
-# tailscale's v6 range rides the main table naturally.
+# `ip route get 100.64.0.12` said via 192.168.2.1 dev eth1, then the WAN
+# port). Deleting + recreating default_rule keeps UCI ordering right: rules
+# match top-down, so the exemption must sit above the catch-all. No IPv6
+# twin is needed: with shipped default_rule_v6 gone, mwan3 doesn't manage
+# IPv6 at all, so tailscale's v6 range rides the main table naturally.
 # (Name kept <= 15 chars, see NOTE above.)
 uci set mwan3.ts_exempt=rule
 uci set mwan3.ts_exempt.dest_ip='100.64.0.0/10'
@@ -154,7 +154,7 @@ uci -q delete mwan3.default_rule
 uci set mwan3.default_rule=rule
 uci set mwan3.default_rule.dest_ip='0.0.0.0/0'
 uci set mwan3.default_rule.family='ipv4'
-uci set mwan3.default_rule.use_policy='eth1_preferred'
+uci set mwan3.default_rule.use_policy='wan_preferred'
 
 uci commit mwan3
 

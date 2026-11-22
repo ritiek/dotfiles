@@ -125,6 +125,18 @@ CONFIG_PACKAGE_kmod-usb-storage=y
 # NTFS read/write for USB drives, matching switchboard's
 # boot.supportedFilesystems = [ "ntfs" ].
 CONFIG_PACKAGE_kmod-fs-ntfs3=y
+# `block` + hotplug automount for USB drives, and LuCI's Mount Points page.
+CONFIG_PACKAGE_block-mount=y
+
+# zram-backed swap, matching switchboard's zramSwap (memoryPercent = 200).
+# kmod-zram + the zstd backend (kmod-zram's DEPENDS pulls kmod-lib-zstd when
+# the kernel's ZRAM zstd backend is on); zram-swap is the init script. Size
+# and algorithm are set in files/etc/config/system.
+CONFIG_PACKAGE_zram-swap=y
+CONFIG_PACKAGE_kmod-zram=y
+CONFIG_KERNEL_ZRAM_BACKEND_ZSTD=y
+CONFIG_KERNEL_ZRAM_DEF_COMP_ZSTD=y
+CONFIG_KERNEL_ZRAM_DEF_COMP="zstd"
 
 # Bluetooth on the AIC8800D80 (H4 over UART1), matching switchboard's
 # hciattach + bluetoothd setup. bluez-daemon pulls in bluez-utils, which

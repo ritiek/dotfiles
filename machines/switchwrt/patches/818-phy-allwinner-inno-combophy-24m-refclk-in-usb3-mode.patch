@@ -1,0 +1,39 @@
+From: Ritiek Malhotra <ritiekmalhotra123@gmail.com>
+Subject: phy: allwinner: inno-combophy: 24 MHz reference clock in USB3 mode
+
+On a cold boot (bootloader did not touch the combo PHY) the driver set
+phyclk_ref to 100 MHz for every mode, but in USB3 mode it never runs
+sunxi_combphy_pcie_phy_100M(), so the INNO PLL keeps its reset-default
+setup, which is for a 24 MHz reference (multiplier 104 + 1/6 -> 2.5 GHz).
+With 100 MHz fed in, DWC3's core soft reset times out (-110) and xHCI,
+EHCI1 and OHCI1 never probe.
+
+Verified live on a Radxa Cubie A5E (OpenWrt U-Boot, which leaves the PHY
+alone): with usb3-ref at 24 MHz (parent osc24M) DWC3 initialises and a
+SanDisk Ultra links at 5000M, 169 MB/s sequential read. Replaying the
+PCIe 100 MHz PLL sequence with a 100 MHz reference instead still failed.
+
+Boards whose bootloader leaves the PHY in PCIe mode take the
+"wrong mode, resetting" path from the bootloader-fix patch, which does
+not reset the PLL registers; that case is not covered here.
+
+--- a/drivers/phy/allwinner/sunxi-inno-combophy.c
++++ b/drivers/phy/allwinner/sunxi-inno-combophy.c
+@@ -341,8 +341,16 @@
+         if (ret) goto err_regulator;
+ 
+ 
++        /*
++         * The PHY's reset-default PLL setup expects a 24 MHz reference in
++         * USB3 mode; only sunxi_combphy_pcie_phy_100M() reprograms it for
++         * 100 MHz, and nothing calls that for USB3. Feeding 100 MHz to the
++         * default PLL leaves the PIPE clock dead and DWC3's core soft reset
++         * times out (-110). The vendor BSP never raises the rate for USB3.
++         */
+         if (!IS_ERR_OR_NULL(combphy->phyclk_ref))
+-            clk_set_rate(combphy->phyclk_ref, 100000000);
++            clk_set_rate(combphy->phyclk_ref,
++                         combphy->user == PHY_USE_BY_USB3 ? 24000000 : 100000000);
+         
+         if (combphy->drvdata->has_cfg_clk && !IS_ERR_OR_NULL(combphy->phyclk_cfg))
+             clk_set_rate(combphy->phyclk_cfg, 200000000);

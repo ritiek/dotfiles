@@ -85,7 +85,7 @@
 # deploy-secrets.sh -> /usr/sbin/switchwrt-apply-secrets, which sets the key
 # and clears the disabled flag below.  Consequently the AP is fully
 # configured but DOWN until secrets are deployed -- deliberate, so the image
-# can never come up as an open AP.  Recover over the wired LAN (eth0 is a
+# can never come up as an open AP.  Recover over the wired LAN (eth1 is the
 # br-lan member, so ssh root@192.168.3.1 works with the baked public keys).
 #
 # To change the passphrase later, edit sops and re-deploy -- no image rebuild:

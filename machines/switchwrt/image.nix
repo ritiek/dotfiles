@@ -266,6 +266,10 @@ let
         ./patches/815-phy-allwinner-inno-combophy-reinit-on-mode-mismatch.patch;
       "target/linux/sunxi/patches-6.18/816-arm64-dts-cubie-a5e-enable-usb3-dwc3.patch" =
         ./patches/816-arm64-dts-cubie-a5e-enable-usb3-dwc3.patch;
+      # 24 MHz combo-PHY reference in USB3 mode; without it DWC3 times out
+      # on a cold boot (OpenWrt's U-Boot never touches the PHY).
+      "target/linux/sunxi/patches-6.18/818-phy-allwinner-inno-combophy-24m-refclk-in-usb3-mode.patch" =
+        ./patches/818-phy-allwinner-inno-combophy-24m-refclk-in-usb3-mode.patch;
       # SPI NOR as /dev/mtd0 (switchboard's spi-nor-overlay.dts, in-tree).
       "target/linux/sunxi/patches-6.18/817-arm64-dts-cubie-a5e-enable-spi-nor.patch" =
         ./patches/817-arm64-dts-cubie-a5e-enable-spi-nor.patch;
@@ -446,6 +450,9 @@ let
       "kmod-usb-dwc3"
       "kmod-usb-storage"
       "kmod-fs-ntfs3"
+      "block-mount"
+      "zram-swap"
+      "kmod-zram"
       "kmod-bluetooth"
       "kmod-hci-uart"
       "bluez-daemon"

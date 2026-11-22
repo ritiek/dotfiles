@@ -12,18 +12,19 @@
 #
 # which sits ABOVE the main table (32766). Whenever switchwrt is parked on a
 # 192.168.2.0/24 network -- i.e. at home, which is the common case, since the
-# ONT/ONT uplink hands out exactly that subnet on BOTH eth1 (wan) and wlan1
+# ONT/ONT uplink hands out exactly that subnet on BOTH eth0 (wan) and wlan1
 # (wwan) -- table 52's 192.168.2.0/24 shadowed our own directly-connected
 # route to the very subnet we are plugged into.
 #
 # Observed symptom: LuCI/SSH unreachable on the WAN-side addresses. tcpdump
 # showed the asymmetry perfectly -- request arrives, reply leaves the tunnel:
+# (Captured before 91-swap-lan-wan-ports moved WAN from eth1 to eth0.)
 #
 #	eth1        In   IP 192.168.2.4 > 192.168.2.16: ICMP echo request
 #	tailscale0  Out  IP 192.168.2.16 > 192.168.2.4: ICMP echo reply
 #
 # i.e. replies to a machine one hop away on the same wire were being pushed
-# into the tunnel to pilab instead of straight back out eth1. Anything that
+# into the tunnel to pilab instead of straight back out the WAN. Anything that
 # depends on a reply reaching a 192.168.2.0/24 host (LuCI, ssh, ping) broke,
 # while LAN (192.168.3.1) and tailnet (100.64.0.21) access kept working
 # because those subnets are not shadowed.
@@ -37,7 +38,7 @@
 # suppress_prefixlength 0 discards any match whose prefix length is <= 0, i.e.
 # the 0.0.0.0/0 default only. Net effect, by route class:
 #
-#   - connected subnets (192.168.2.0/24 dev eth1/wlan1, 192.168.3.0/24
+#   - connected subnets (192.168.2.0/24 dev eth0/wlan1, 192.168.3.0/24
 #     dev br-lan) are in main -> matched here -> routed directly. FIXED.
 #   - tailnet CGNAT (100.64.0.0/10) is not in main -> falls through to
 #     5270 -> table 52 -> tailscale0. Unchanged.
@@ -65,7 +66,7 @@
 # "tailscale_prio - 1" would race every restart instead).
 #
 # 1100 also slots in safely among mwan3's rules: mwan3's iif rules are
-# 1000+index (1001 eth1, 1005 wlan1 here) so they stay ahead of us, and its
+# 1000+index (1001 WAN, 1005 wlan1 here) so they stay ahead of us, and its
 # fwmark policy rules are 2001+, i.e. behind us. Being ahead of the fwmark
 # rules is harmless and in fact correct -- for internet destinations main's
 # default is suppressed here so we fall through to mwan3 untouched, while for
@@ -124,6 +125,7 @@ ensure_rule -6
 # THE BUG THIS FIXES
 # With switchwrt selected as a tailnet exit node, every stage of the path was
 # correct except the very last hop. tcpdump -ni any during a live test:
+# (Captured before 91-swap-lan-wan-ports moved WAN from eth1 to eth0.)
 #
 #	tailscale0  In   100.64.0.4  > 1.1.1.1      echo request
 #	eth1        Out  192.168.2.5 > 1.1.1.1      echo request   (masq -- correct)

@@ -1,0 +1,12 @@
+# zram swap sizing, matching switchboard's zramSwap.memoryPercent = 200.
+# The zram-swap init script (/etc/init.d/zram) reads these two keys:
+#   zram_size_mb    device size in MiB; default is only ram/2048 (~0.5 MiB
+#                   per MiB of RAM), far too small. 200% of 988 MiB RAM.
+#   zram_comp_algo  zstd gives the best ratio of the kmod-zram backends and
+#                   is selected into the kernel via config.seed.
+# zstd on this A527 compresses typical anon pages several-fold, so a 1976 MiB
+# zram device costs well under that in real RAM. START=15 in the init script
+# brings it up before the heavy services (adguardhome, samba, tailscale).
+uci -q set system.@system[0].zram_size_mb='1976'
+uci -q set system.@system[0].zram_comp_algo='zstd'
+uci commit system

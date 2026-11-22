@@ -1,7 +1,7 @@
 #!/bin/sh
-# This board's "WAN" (eth1) sits on the upstream home network behind the ONT
+# This board's "WAN" (eth0) sits on the upstream home network behind the ONT
 # (192.168.2.0/24), not the public internet. It is NOT a trusted segment
-# though: every other client of that ONT shares it, and eth1 + wlan1 both
+# though: every other client of that ONT shares it, and eth0 + wlan1 both
 # land on it (they resolve the same gateway MAC), so anything exposed here is
 # exposed to every neighbouring device on that wire.
 #
@@ -21,7 +21,7 @@
 # Reach LuCI over the LAN (https://192.168.3.1) or the tailnet
 # (https://100.64.0.21) instead -- WireGuard gives it real transport security
 # and real key authentication. The WAN-side address churns every boot anyway
-# (randomize-wwan-mac re-randomizes eth1's MAC, drawing a fresh DHCP lease),
+# (randomize-wwan-mac re-randomizes eth0's MAC, drawing a fresh DHCP lease),
 # which made WAN LuCI impractical to rely on regardless.
 #
 # Everything else (AdGuardHome, DNS, etc.) is likewise off the wan zone --

@@ -2,7 +2,7 @@
 # Third portable-router uplink option: USB tethering from a phone. Wired
 # into network + the wan firewall zone the same way as
 # files/etc/uci-defaults/97-wwan-uplink; see files/etc/uci-defaults/
-# 98-mwan3-setup for how it's prioritised against eth1/wwan.
+# 98-mwan3-setup for how it's prioritised against wan (eth0)/wwan.
 #
 # UNTESTED: no phone was available to verify this against real hardware.
 # device='usb0' is the standard interface name for both RNDIS (Android) and

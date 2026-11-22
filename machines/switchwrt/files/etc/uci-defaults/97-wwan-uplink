@@ -1,9 +1,9 @@
 #!/bin/sh
 # WISP uplink: USB WiFi dongle (0bda:818b, TP-Link TL-WN822N v4, RTL8192EU,
 # kmod-rtl8xxxu) joins an upstream WiFi network in STA mode, giving switchwrt
-# a second, wireless path to the internet alongside the wired eth1 uplink.
+# a second, wireless path to the internet alongside the wired eth0 uplink.
 # See files/etc/uci-defaults/98-mwan3-setup for how the two uplinks are
-# prioritised (automatic failover, eth1 preferred) and how to pin a specific
+# prioritised (automatic failover, wired preferred) and how to pin a specific
 # device to one uplink or the other.
 #
 # NO SSID OR PASSPHRASE HERE.  This is a portable router, so the upstream
@@ -22,7 +22,7 @@
 #
 # mwan3 already treats wwan as an optional member and tracks it as offline
 # until it actually carries traffic, so leaving this unconfigured is a
-# supported steady state -- eth1 carries everything.
+# supported steady state -- eth0 carries everything.
 #
 # macaddr='00:e0:4c:04:86:6a' match (NOT phy=): phyN indexes are assigned
 # in probe order, and SDIO (onboard AIC) vs USB (this dongle) probe order
@@ -68,7 +68,7 @@ uci set network.wwan.proto='dhcp'
 uci set network.wwan.device='wlan1'
 uci commit network
 
-# The wan zone already opens masquerading/forwarding for eth1; extend it to
+# The wan zone already opens masquerading/forwarding for eth0; extend it to
 # cover wwan so traffic egressing over the dongle gets the same NAT
 # treatment. Idempotent: skip if 'wwan' is already in the zone's network
 # list (this script is expected to run once per firstboot, but matching the

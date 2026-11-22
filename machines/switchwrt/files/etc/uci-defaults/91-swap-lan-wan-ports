@@ -1,0 +1,24 @@
+#!/bin/sh
+# Swap the board's default port roles: LAN on eth1, WAN on eth0.
+#
+# Upstream board.d (target/linux/sunxi/base-files/etc/board.d/02_network)
+# makes eth0 LAN and eth1 WAN. The two MACs are not equal:
+#   eth0 = dwmac-sun8i  (Allwinner EMAC, no RX interrupt mitigation)
+#   eth1 = dwmac-sun55i (Synopsys GMAC 4.20a, RX watchdog-timer mitigation)
+# and LAN is the side that sees gigabit (NAS/Samba on the USB 3.0 drive),
+# while WAN is capped by the ISP at 200 Mbit/s.
+#
+# Measured on this board, iperf3 alcove <-> router over LAN, 20 s each way:
+#   LAN eth0: 853 Mbit/s rx, 722 Mbit/s tx, 1.83M interrupts (all CPU0)
+#   LAN eth1: 931 Mbit/s rx, 931 Mbit/s tx, 0.33M interrupts
+# Pinning the NIC interrupts to the big cores (4-7) did not improve on eth1.
+#
+# Only network.* device names change; every other script here uses logical
+# interface names (lan, wan, br-lan), so firewall, mwan3 and friends follow.
+for s in $(uci -q show network | sed -n "s/^network\.\(@device\[[0-9]*\]\)\.name='br-lan'$/\1/p"); do
+	uci set "network.$s.ports=eth1"
+done
+uci set network.wan.device='eth0'
+uci set network.wan6.device='eth0'
+uci commit network
+exit 0
