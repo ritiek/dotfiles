@@ -182,7 +182,12 @@ in
     pkgs.psmisc
     pkgs.procps
     pkgs.nodejs_24
-    inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon
+    # shortcut: onig_sys needs pkg-config + oniguruma, missing on nixpkgs
+    # 2026-11-22; drop once llm-agents adds them upstream.
+    (inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.toon.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkgs.pkg-config ];
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.oniguruma ];
+    }))
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.pdfvision
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.zat
     inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.codegraph
