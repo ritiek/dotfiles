@@ -1,0 +1,10 @@
+# Auto-mount any USB drive partition at /mnt/<dev> without a fstab entry.
+#
+# block-mount's default is anon_mount=0: partitions with no enabled fstab
+# entry never mount (block detect writes them disabled), so a plugged-in
+# drive is visible in dmesg but nothing appears under /mnt. This box is a
+# portable router that takes arbitrary drives (Samba on top, see
+# luci-app-samba4), so flip the global anonymous-mount switch instead of
+# hand-enabling per-drive entries.
+uci -q set fstab.@global[0].anon_mount='1'
+uci commit fstab
