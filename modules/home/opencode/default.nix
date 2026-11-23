@@ -249,9 +249,14 @@ in
         to rebuild NixOS configuration and do NOT use `home-manager switch`. This applies only
         when rebuilding the machine you (opencode) are running on. To deploy to any other
         machine, use `deploy -s </path/to/>#<flake>`.
-      - For heavy builds, offload to nixbuild.net remote builders by prefixing the command
-        with `nixbuild`, `nixbuild2` or `nixbuild3` (e.g. `nixbuild sudo nixos-rebuild switch --flake ...`).
-        These are separate accounts; if one fails or runs out of credits, try another.
+    ''
+    # nixbuild.net builders are disabled in modules/nix.nix (accounts out of billing).
+    # + ''
+    #   - For heavy builds, offload to nixbuild.net remote builders by prefixing the command
+    #     with `nixbuild`, `nixbuild2` or `nixbuild3` (e.g. `nixbuild sudo nixos-rebuild switch --flake ...`).
+    #     These are separate accounts; if one fails or runs out of credits, try another.
+    # ''
+    + ''
       - If a request fails with a rate limit error or anything, retry it through the 3proxy
         HTTP proxy (port 8090, over Tailscale) on a machine outside your subnet, so the request
         leaves from a different public IP. 3proxy runs on pilab, keyberry, mishy, clawsiecats, m2,
@@ -761,9 +766,7 @@ in
       session.image_preview = true;
       session.permissions = "autoaccept";
       session.tps = true;
-      # XXX: I like the `system` theme but it takes a while to load:
-      # https://github.com/anomalyco/opencode/issues/14965#issuecomment-3973081161
-      theme.name = "lucent-orng";
+      theme.name = "cursor";
       scroll.speed = 5;
       session.thinking = "show";
       session.scrollbar = true;

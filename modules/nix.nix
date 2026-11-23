@@ -16,10 +16,11 @@ let
       '');
 in
 {
-  environment.systemPackages =
-    mkNixbuild "nixbuild" "rnixbld.id_ed25519"
-    ++ mkNixbuild "nixbuild2" "nixbuild2.id_ed25519"
-    ++ mkNixbuild "nixbuild3" "nixbuild3.id_ed25519";
+  # nixbuild.net builders disabled: all three accounts are out of billing.
+  # environment.systemPackages =
+  #   mkNixbuild "nixbuild" "rnixbld.id_ed25519"
+  #   ++ mkNixbuild "nixbuild2" "nixbuild2.id_ed25519"
+  #   ++ mkNixbuild "nixbuild3" "nixbuild3.id_ed25519";
 
   nix.settings = {
     inherit (cache)
