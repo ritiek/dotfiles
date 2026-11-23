@@ -299,6 +299,17 @@ EOF
         chown hass:hass /var/lib/hass/configuration.yaml
       fi
     ''}")
+    ("+${pkgs.writeShellScript "add-halox-include" ''
+      sleep 2
+      # halox.yaml ({email, password}) is written out-of-band into /var/lib/hass
+      # so the account credentials never enter the Nix store.
+      if [ -f /var/lib/hass/halox.yaml ] && ! grep -q "^halox:" /var/lib/hass/configuration.yaml; then
+        echo "" >> /var/lib/hass/configuration.yaml
+        echo "# Halox Smart account (credentials in halox.yaml, not the store)" >> /var/lib/hass/configuration.yaml
+        echo "halox: !include halox.yaml" >> /var/lib/hass/configuration.yaml
+        chown hass:hass /var/lib/hass/configuration.yaml
+      fi
+    ''}")
     ("+${pkgs.writeShellScript "install-dawarich" ''
       mkdir -p /var/lib/hass/custom_components
       if [ ! -d "/var/lib/hass/custom_components/dawarich" ]; then
@@ -320,6 +331,22 @@ EOF
         sha256 = "sha256-aVCfUuwPW+0L+OuOoLV0cPezZVKHtO39p/TK/gy2jdg=";
       }}/custom_components/philips_airpurifier_coap
       DST=/var/lib/hass/custom_components/philips_airpurifier_coap
+      if [ ! -f "$DST/.nix-src" ] || [ "$(cat $DST/.nix-src)" != "$SRC" ]; then
+        rm -rf "$DST"
+        cp -r "$SRC" "$DST"
+        echo "$SRC" > "$DST/.nix-src"
+        chown -R hass:hass "$DST"
+      fi
+    ''}")
+    ("+${pkgs.writeShellScript "install-halox" ''
+      mkdir -p /var/lib/hass/custom_components
+      SRC=${pkgs.fetchFromGitHub {
+        owner = "ritiek";
+        repo = "halox-homeassistant";
+        rev = "v0.1.0";
+        sha256 = "sha256-867nIYYej0bCencxfweNVO9ILhzZ5JhpPAhmkyO9b5g=";
+      }}/custom_components/halox
+      DST=/var/lib/hass/custom_components/halox
       if [ ! -f "$DST/.nix-src" ] || [ "$(cat $DST/.nix-src)" != "$SRC" ]; then
         rm -rf "$DST"
         cp -r "$SRC" "$DST"
