@@ -22,7 +22,9 @@
   };
   # pinentry-gnome3 needs gcr's D-Bus system prompter outside GNOME, else it
   # falls back to curses and silently cancels when there is no TTY.
-  home.packages = [ pkgs.gcr_3 ];
+  # GCR 3 (it ships the prompter; gcr_4 does not): `gcr_3` in newer nixpkgs,
+  # plain `gcr` in the older pins (switchboard, zerostash).
+  home.packages = [ (pkgs.gcr_3 or pkgs.gcr) ];
   programs.gpg = {
     enable = true;
     publicKeys = [
