@@ -2,10 +2,10 @@
 let
   # Physical NICs. These are what the flowtable has to name, regardless of
   # which WAN variant is in use.
-  wanPhys = "end1";
-  lanPhys = "end0";
+  wanPhys = "end0";
+  lanPhys = "end1";
 
-  # Logical WAN: "ppp-wan" under PPPoE, or end1 itself when the WAN is a plain
+  # Logical WAN: "ppp-wan" under PPPoE, or end0 itself when the WAN is a plain
   # DHCP client. Set by whichever modules/router/wan-*.nix is imported.
   wan = config.router.wanInterface;
 

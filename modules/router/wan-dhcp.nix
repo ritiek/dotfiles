@@ -1,16 +1,15 @@
 { ... }:
 let
-  # Physical WAN NIC. end1 is the dwmac-sun55i MAC (DWMAC4/5, real DMA
-  # capability register, RX mitigation via HW watchdog timer). It gets the WAN
-  # role because that is the interface taking the highest inbound packet rate,
-  # and its interrupt coalescing is what relieves the CPU0 IRQ concentration
-  # (both NICs are single-queue with every IRQ landing on CPU0).
-  wanPhys = "end1";
+  # Physical WAN NIC. end0 is the dwmac-sun8i MAC (Allwinner EMAC: no DMA
+  # capability register, no RX interrupt mitigation, transmit tops out around
+  # 725 Mbit/s). The ISP caps the WAN at 200 Mbit/s, far below that, so the
+  # stronger end1 carries the LAN instead -- see lan.nix for the measurements.
+  wanPhys = "end0";
 in
 {
   # ---------------------------------------------------------------------
   # Variant A: the ONT (Genexis XC220-G3) is left alone and keeps routing
-  # 192.168.2.0/24. switchboard takes an ordinary DHCP lease from it on end1
+  # 192.168.2.0/24. switchboard takes an ordinary DHCP lease from it on end0
   # and NATs 192.168.3.0/24 behind that.
   #
   # This is deliberately double NAT. The tradeoff is that nothing currently on

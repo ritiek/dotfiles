@@ -1,11 +1,10 @@
 { config, lib, ... }:
 let
-  # Physical WAN NIC. end1 is the dwmac-sun55i MAC (DWMAC4/5, real DMA
-  # capability register, RX mitigation via HW watchdog timer). It gets the WAN
-  # role because that is the interface taking the highest inbound packet rate,
-  # and its interrupt coalescing is what relieves the CPU0 IRQ concentration
-  # (both NICs are single-queue with every IRQ landing on CPU0).
-  wanPhys = "end1";
+  # Physical WAN NIC. end0 is the dwmac-sun8i MAC (Allwinner EMAC: no DMA
+  # capability register, no RX interrupt mitigation, transmit tops out around
+  # 725 Mbit/s). The ISP caps the WAN at 200 Mbit/s, far below that, so the
+  # stronger end1 carries the LAN instead -- see lan.nix for the measurements.
+  wanPhys = "end0";
   # Name of the interface pppd creates. Referenced by lan.nix (DHCPv6-PD
   # uplink) and nat-firewall.nix (NAT external interface).
   wanPpp = "ppp-wan";
@@ -90,7 +89,7 @@ in
   # separate from the chassis/LAN/Wireless MAC ...D:A8) was tried and reverted:
   # cloning it changed nothing (PADO still never arrived) and it turned out to
   # duplicate a MAC still live on the ONT's own WAN entry, which is itself a
-  # confound. This box reverts to udev's default naming/MAC for end1.
+  # confound. This box reverts to udev's default naming/MAC for the WAN NIC.
   systemd.network.networks."20-${wanPhys}" = {
     # pppd needs the physical NIC up but with no L3 configuration of its own.
     matchConfig.Name = wanPhys;

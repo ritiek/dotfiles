@@ -1,9 +1,13 @@
 { config, lib, ... }:
 let
-  # end0 is the dwmac-sun8i MAC (the weaker of the two: no DMA capability
-  # register, chain-mode descriptors). It carries the LAN, where the packet
-  # rate is lower than on the WAN.
-  lanPhys = "end0";
+  # end1 is the dwmac-sun55i MAC (Synopsys GMAC 4.20a: DMA capability
+  # register, RX interrupt mitigation via the HW watchdog timer). It carries
+  # the LAN because that is the gigabit side (NAS/Samba on the USB 3.0 drive),
+  # while the ISP caps the WAN at 200 Mbit/s. Measured on this board with
+  # iperf3 to the router over the LAN, 20 s each way (OpenWrt, same MACs):
+  #   LAN on end0: 853 Mbit/s rx, 722 Mbit/s tx, 1.83M IRQs, all on CPU0
+  #   LAN on end1: 931 Mbit/s rx, 931 Mbit/s tx, 0.33M IRQs
+  lanPhys = "end1";
   # Onboard AIC8800D80. Runs as an AP (see modules/wifi/hostapd_ap.nix) and is
   # bridged into the same L2 domain as the wired LAN.
   lanWlan = "wlan0";
