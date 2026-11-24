@@ -141,6 +141,12 @@ let
     hash = "sha256-g6ZqRqX+u8IUVBYdXwU2OLItJdleCdd7j22jPevISK0=";
   });
 
+  # REA (github:morluto/rea). The npm tarball bundles its deps and the skill.
+  rea = pkgs.fetchzip {
+    url = "https://registry.npmjs.org/rea-agents/-/rea-agents-6.10.1.tgz";
+    hash = "sha256-C4iPchmp1pFVe7eCRJZoatRPHe08yp5T09DsAAjJbPk=";
+  };
+
   # Env var -> sops secret for opencode's built-in websearch providers.
   websearchSecrets = {
     EXA_API_KEY = "exa_api.key";
@@ -239,6 +245,8 @@ in
         Use this when you require taking screenshot or need to capture what's on the screen.
         Ask clarifying questions if it's unclear whether to capture the full screen, window, or region.
       '';
+    } // {
+      "reverse-engineer-anything" = "${rea}/skills/reverse-engineer-anything";
     };
     context = ''
       - NEVER include your own emotes in your responses.
@@ -398,7 +406,8 @@ in
         kindly-web-search = lib.mkIf (!hasZaiApiKey) {
           enabled = true;
           type = "local";
-          timeout = 60000;
+          # Not `execution`: a plain number would also cap each call at 60 s.
+          timeout = { startup = 60000; catalog = 60000; };
           command = [
             "${pkgs.uv}/bin/uvx"
             "--refresh"
@@ -521,6 +530,16 @@ in
             "serve"
             "--mcp"
           ];
+        };
+        rea = {
+          enabled = true;
+          type = "local";
+          command = [ "${pkgs.nodejs_24}/bin/node" "${rea}/scripts/rea.mjs" "mcp" ];
+          environment = {
+            PATH = lib.makeBinPath [ pkgs.nodejs_24 pkgs.openjdk25 pkgs.procps pkgs.bash ];
+            GHIDRA_INSTALL_DIR = "${pkgs.ghidra}/lib/ghidra";
+            JAVA_HOME = "${pkgs.openjdk25}";
+          };
         };
         indmoney = {
           enabled = true;
@@ -686,14 +705,17 @@ in
             - Multiple web-searches using variety of search terms by playing the devil's advocate
               to challenge assumptions and gather perspective from ALL angles.
             - Most relevant sources AFTER explicitly finding out today's date and time using
-              `homeassistant_GetDateTime` tool or (if that is unavailable) from `https://time.now/developer/api/ip`
+              `homeassistant_llm__GetDateTime` tool or (if that is unavailable) from `https://time.now/developer/api/ip`
               JSON API endpoint.
             - Concise, structured information and strip raw data dumps.
           '';
           temperature = 0.2;
           tools = {
             "*" = false;
-            homeassistant_GetDateTime = true;
+            # Code Mode: MCP tools sit behind `execute` instead of being listed
+            # in full on every request. Nested calls still obey this allowlist.
+            execute = true;
+            homeassistant_llm__GetDateTime = true;
             read = true;
             webfetch = true;
             "kindly-web-search*" = true;
@@ -723,6 +745,7 @@ in
           # Read-only via tool allowlist: cli.json autoaccept would approve "ask" permissions.
           tools = {
             "*" = false;
+            execute = true; # Code Mode; see research.
             read = true;
             glob = true;
             grep = true;
