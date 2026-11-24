@@ -38,8 +38,8 @@ let
       '3<&0 4>&1 </dev/null >&2' <&3 >&4
   '';
 
-  # Not `execution`: a plain number would also cap each browser call at 2 min.
-  server = command: { enabled = true; type = "local"; timeout = { startup = 120000; catalog = 120000; }; inherit command; };
+  # V2-native (goes under mcp.servers); a legacy number would also cap each call at 2 min.
+  server = command: { type = "local"; timeout = { startup = 120000; catalog = 120000; }; inherit command; };
 in
 {
   inherit chromiumPackage sync-chromium-to-alcove;

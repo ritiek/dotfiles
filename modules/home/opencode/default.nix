@@ -403,44 +403,47 @@ in
             Z_AI_API_KEY = "{file:${config.sops.secrets."z_ai_api.key".path}}";
           };
         };
-        kindly-web-search = lib.mkIf (!hasZaiApiKey) {
-          enabled = true;
-          type = "local";
-          # Not `execution`: a plain number would also cap each call at 60 s.
-          timeout = { startup = 60000; catalog = 60000; };
-          command = [
-            "${pkgs.uv}/bin/uvx"
-            "--refresh"
-            "--from"
-            "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
-            "kindly-web-search-mcp-server"
-            "start-mcp-server"
-          ];
-          environment = {
-            PATH = pkgs.lib.makeBinPath [
-              pkgs.uv
-              pkgs.git
-              pkgs.coreutils
-              pkgs.python3
-              cloud-cdp-wrapper
+        # V2-native entries (no `enabled`): needed for an object `timeout`, which a
+        # legacy `mcp.<name>` entry rejects. A legacy number also caps execution.
+        servers = {
+          inherit (playwright.mcp) playwright playwright-alcove playwright-lightpanda;
+          kindly-web-search = lib.mkIf (!hasZaiApiKey) {
+            type = "local";
+            timeout = { startup = 60000; catalog = 60000; };
+            command = [
+              "${pkgs.uv}/bin/uvx"
+              "--refresh"
+              "--from"
+              "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
+              "kindly-web-search-mcp-server"
+              "start-mcp-server"
             ];
-            GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
-            SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}.${searxDomain}/";
-            # XXX: Disable external browser in case of memory constraints as they cause
-            # MCP timeouts in OpenCode.
-            # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
-            # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.writeShellScript "chromium-for-nodriver" ''
-            #   exec ${pkgs.chromium}/bin/chromium \
-            #     --no-sandbox \
-            #     --disable-gpu \
-            #     --disable-dev-shm-usage \
-            #     "$@"
-            # ''}";
-            KINDLY_BROWSER_EXECUTABLE_PATH = "${cloud-cdp-wrapper}/bin/chromium";
-            KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "300";
-            KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
-            KINDLY_WEB_SEARCH_MAX_CONCURRENCY = "3";
-            # KINDLY_DIAGNOSTICS = "1";
+            environment = {
+              PATH = pkgs.lib.makeBinPath [
+                pkgs.uv
+                pkgs.git
+                pkgs.coreutils
+                pkgs.python3
+                cloud-cdp-wrapper
+              ];
+              GITHUB_TOKEN = "{file:${config.sops.secrets."github.token".path}}";
+              SEARXNG_BASE_URL = "{file:${config.sops.secrets."searx.url".path}}.${searxDomain}/";
+              # XXX: Disable external browser in case of memory constraints as they cause
+              # MCP timeouts in OpenCode.
+              # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+              # KINDLY_BROWSER_EXECUTABLE_PATH = "${pkgs.writeShellScript "chromium-for-nodriver" ''
+              #   exec ${pkgs.chromium}/bin/chromium \
+              #     --no-sandbox \
+              #     --disable-gpu \
+              #     --disable-dev-shm-usage \
+              #     "$@"
+              # ''}";
+              KINDLY_BROWSER_EXECUTABLE_PATH = "${cloud-cdp-wrapper}/bin/chromium";
+              KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS = "300";
+              KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
+              KINDLY_WEB_SEARCH_MAX_CONCURRENCY = "3";
+              # KINDLY_DIAGNOSTICS = "1";
+            };
           };
         };
         # NOTE: context7-mcp is automatically disabled on machines with baseline bun
@@ -456,7 +459,6 @@ in
           type = "local";
           command = ["${mcp-servers-nix.context7-mcp}/bin/context7-mcp"];
         };
-        inherit (playwright.mcp) playwright playwright-alcove playwright-lightpanda;
         nixos = {
           enabled = true;
           type = "local";
