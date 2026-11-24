@@ -75,18 +75,19 @@ let
     NIXOS_JSON=$(${pkgs.coreutils}/bin/mktemp)
 
     # Guard: sops secrets may not be available at boot (systemd --user not running yet)
-    if [ ! -f "${config.sops.secrets."github_copilot.refresh".path}" ]; then
+    if [ ! -f "${config.sops.secrets."opencode_api.key".path}" ]; then
       echo "opencode-auth: sops secrets not yet decrypted by sops-nix, skipping"
       rm -f "$NIXOS_JSON"
       exit 0
     fi
 
-    ZAI_KEY=${if hasZaiApiKey then "$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."z_ai_api.key".path})" else "\"\""}
+    # Unused: only opencode-go is written below.
+    # ZAI_KEY=$(${pkgs.coreutils}/bin/cat <z_ai_api.key>)
     OPENCODE_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."opencode_api.key".path})
-    OPENAI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."openai_api.key".path})
-    XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."xiaomi_api.key".path})
-    # GH_REFRESH=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.refresh".path})
-    # GH_ACCESS=$(${pkgs.coreutils}/bin/cat ${config.sops.secrets."github_copilot.access".path})
+    # OPENAI_KEY=$(${pkgs.coreutils}/bin/cat <openai_api.key>)
+    # XIAOMI_KEY=$(${pkgs.coreutils}/bin/cat <xiaomi_api.key>)
+    # GH_REFRESH=$(${pkgs.coreutils}/bin/cat <github_copilot.refresh>)
+    # GH_ACCESS=$(${pkgs.coreutils}/bin/cat <github_copilot.access>)
 
     ${pkgs.jq}/bin/jq -n \
       --arg opencode_key "$OPENCODE_KEY" \
@@ -159,10 +160,11 @@ in
     "paperless_public.url" = {};
     "home_assistant.long_lived_token" = {};
     "opencode_api.key" = {};
-    "openai_api.key" = {};
-    "xiaomi_api.key" = {};
-    "github_copilot.refresh" = {};
-    "github_copilot.access" = {};
+    # Unused; only referenced by commented-out code in opencode-auth-generator.
+    # "openai_api.key" = {};
+    # "xiaomi_api.key" = {};
+    # "github_copilot.refresh" = {};
+    # "github_copilot.access" = {};
     "searx.url" = {};
     "lightpanda_cdp.token" = {};
   } // lib.mapAttrs' (_: s: lib.nameValuePair s {}) websearchSecrets;
