@@ -153,6 +153,8 @@ in
         unit_system = "metric";
         time_zone = "Asia/Kolkata";
       };
+      # Enables the built-in "_my_redirect" panel for my.home-assistant.io.
+      my = { };
       lovelace = {
         mode = "storage";
       };
