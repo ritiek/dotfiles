@@ -343,8 +343,8 @@ EOF
       SRC=${pkgs.fetchFromGitHub {
         owner = "ritiek";
         repo = "halox-homeassistant";
-        rev = "v0.1.0";
-        sha256 = "sha256-867nIYYej0bCencxfweNVO9ILhzZ5JhpPAhmkyO9b5g=";
+        rev = "v0.2.1";
+        sha256 = "sha256-7xDAyDH9hO/VtCGy6wmcpnzHtBGOPZdpAKC3vG1FjfU=";
       }}/custom_components/halox
       DST=/var/lib/hass/custom_components/halox
       if [ ! -f "$DST/.nix-src" ] || [ "$(cat $DST/.nix-src)" != "$SRC" ]; then
