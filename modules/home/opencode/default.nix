@@ -406,9 +406,9 @@ in
             timeout = { startup = 60000; catalog = 60000; };
             command = [
               "${pkgs.uv}/bin/uvx"
-              "--refresh"
               "--from"
-              "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
+              # Pinned: unpinned + --refresh ran upstream HEAD on every start.
+              "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server@72a3e059bbddc42436efa1575e0895a30a62c351"
               "kindly-web-search-mcp-server"
               "start-mcp-server"
             ];
