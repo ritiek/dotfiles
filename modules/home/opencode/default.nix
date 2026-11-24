@@ -3,7 +3,6 @@ let
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
   isNiriEnabled = builtins.any (pkg: pkg.pname or "" == "niri") config.home.packages;
   isWayland = (lib.attrByPath ["environment" "sessionVariables" "WAYLAND_DISPLAY"] "" osConfig) != "";
-  isOpencodeV2 = lib.versionAtLeast (lib.getVersion config.programs.opencode.package) "2";
 
   playwright = import ./playwright.nix { inherit config pkgs inputs hostName; };
 
@@ -736,17 +735,17 @@ in
       };
 
       plugin = [
-        # 3.x is V2-only, 2.x is V1-only.
-        # On V2 the V1 Anthropic login doesn't carry over and gets billed as
-        # extra usage (429). Once per machine, import the Claude Code login and
-        # drop the old one:
+        # The V1 Anthropic login doesn't carry over and gets billed as extra
+        # usage (429). Once per machine, import the Claude Code login and drop
+        # the old one:
         #   opencode auth login anthropic --method claude-code
         #   opencode auth logout anthropic OAuth
-        (if isOpencodeV2 then "opencode-claude-auth@3.0.0" else "opencode-claude-auth@2.2.1")
+        "opencode-claude-auth@3.0.0"
         # "@tarquinen/opencode-dcp@3.2.0"
         "@dietrichgebert/ponytail@5.3.3"
-        # /edit-prefix: edit the system prompt and history the model sees in $EDITOR (V2-only).
+        # /edit-prefix: edit the system prompt and history the model sees in $EDITOR.
         "${inputs.opencode-prefix-editor.packages.${pkgs.stdenv.hostPlatform.system}.default}"
+        "opencode-handoff@0.7.0"
       ];
 
       autoupdate = false;
@@ -755,7 +754,7 @@ in
 
   # opencode2 reads these from ~/.config/opencode/cli.json, which the TUI also
   # writes, so merge into it instead of symlinking a read-only file.
-  home.activation.opencode-cli-settings = lib.mkIf isOpencodeV2 (lib.hm.dag.entryAfter ["writeBoundary"] ''
+  home.activation.opencode-cli-settings = lib.hm.dag.entryAfter ["writeBoundary"] ''
     f="${config.home.homeDirectory}/.config/opencode/cli.json"
     mkdir -p "$(dirname "$f")"
     # -s: jq prints nothing for an empty file, which would leave it empty forever.
@@ -792,7 +791,7 @@ in
       experimental.new-designs = true;
     })} "$f" > "$tmp" && install -m 600 "$tmp" "$f"
     rm -f "$tmp"
-  '');
+  '';
 
   home.file = lib.mkMerge [
     {
