@@ -608,7 +608,6 @@ in
             edit = true;
             bash = true;
           };
-          temperature = 0.35;
         };
         browser = {
           mode = "primary";
@@ -643,7 +642,6 @@ in
             # in NixOS through the approach taken by this tool.
             playwright_browser_install = false;
           };
-          temperature = 0.2;
         };
         sensei = {
           mode = "primary";
@@ -662,7 +660,6 @@ in
             edit = false;
             write = false;
           };
-          temperature = 0.3;
         };
         conversational = {
           mode = "primary";
@@ -675,7 +672,6 @@ in
             bash = false;
             playwright_browser_install = false;
           };
-          temperature = 0.4;
         };
         # mcpless = {
         #   mode = "primary";
@@ -697,7 +693,6 @@ in
               JSON API endpoint.
             - Concise, structured information and strip raw data dumps.
           '';
-          temperature = 0.2;
           tools = {
             "*" = false;
             # Code Mode: MCP tools sit behind `execute` instead of being listed
@@ -729,7 +724,6 @@ in
             - "No substantive objections" is a valid and good outcome.
             - End with a verdict: proceed / revise / rethink.
           '';
-          temperature = 0.3;
           # Read-only via tool allowlist: cli.json autoaccept would approve "ask" permissions.
           tools = {
             "*" = false;
