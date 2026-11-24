@@ -55,7 +55,14 @@ let
       installPhase = ''
         runHook preInstall
         mkdir -p $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/net/wireless/aic8800
-        find . -name '*.ko' -exec cp {} $out/lib/modules/${kernel.modDirVersion}/kernel/drivers/net/wireless/aic8800/ \;
+        for ko in $(find . -name '*.ko'); do
+          dest=$out/lib/modules/${kernel.modDirVersion}/kernel/drivers/net/wireless/aic8800/$(basename "$ko")
+          install -m644 "$ko" "$dest"
+          # shortcut: nixpkgs' kmod aggregator cats a .ko.cer for every module
+          # outside modules.order; unsigned modules have none. Empty files add
+          # zero bytes to modules.cer. Drop once nixpkgs tolerates missing certs.
+          : > "$dest.cer"
+        done
         runHook postInstall
       '';
     }
