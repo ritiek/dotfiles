@@ -133,14 +133,6 @@ let
     fi
   '');
 
-  # Setting an agent `prompt` replaces opencode's per-model provider prompt, so re-include it.
-  # ponytail: pinned to gpt.txt (what gpt-6-luna maps to in v1.18.29); update hash on
-  # opencode bumps or if the default model family changes (see session/system.ts).
-  providerPrompt = builtins.readFile (pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/anomalyco/opencode/v1.18.29/packages/opencode/src/session/prompt/gpt.txt";
-    hash = "sha256-g6ZqRqX+u8IUVBYdXwU2OLItJdleCdd7j22jPevISK0=";
-  });
-
   # REA (github:morluto/rea). The npm tarball bundles its deps and the skill.
   rea = pkgs.fetchzip {
     url = "https://registry.npmjs.org/rea-agents/-/rea-agents-6.10.1.tgz";
@@ -588,12 +580,6 @@ in
       };
 
       agent = {
-        build = {
-          prompt = providerPrompt;
-        };
-        plan = {
-          prompt = providerPrompt;
-        };
         debug = {
           mode = "primary";
           description = "Code Debugging Agent";
