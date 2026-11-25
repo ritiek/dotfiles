@@ -1573,11 +1573,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795592698,
-        "narHash": "sha256-cxVfZEG+GADTIEUB/1R2FKpGeB1fTRDANQKydfLSVF8=",
+        "lastModified": 1795593926,
+        "narHash": "sha256-mEROZlIwbRJwBYPhIjukXv2fsoQ3Nmop3tQAx1OEPaQ=",
         "owner": "ritiek",
         "repo": "opencode-prefix-editor",
-        "rev": "91bf016f9d514941626a14827364cee8445157bf",
+        "rev": "6dda27aba125606fccbe9fa43f42b85a3b7a70bf",
         "type": "github"
       },
       "original": {
