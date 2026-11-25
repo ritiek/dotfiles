@@ -33,7 +33,17 @@ in
   # To see available kernel versions, run:
   # $ nix eval --impure --expr 'builtins.attrNames (builtins.getFlake "path:/etc/nixos").inputs.nixos-raspberrypi.legacyPackages.aarch64-linux.linuxAndFirmware
   # boot.kernelPackages = pkgs.linuxAndFirmware.v6_6_51.linuxPackages_rpi5;
-  boot.kernelPackages = pkgs.linuxAndFirmware.latest.linuxPackages_rpi5;
+  # linux-headers >= 7.3 (the 2026-11-22 nixpkgs bump) use __u128 in the arm64
+  # UAPI headers; older rpi kernel trees lack the matching tools/ typedef and
+  # fail building tools/bpf/resolve_btfids. nvmd's fix (PR #296) is only on
+  # their develop branch, so apply nixpkgs' tools_128bit_types backport here.
+  # shortcut: drop this override once nvmd main ships the same fix.
+  boot.kernelPackages = pkgs.linuxPackagesFor (
+    pkgs.linuxAndFirmware.latest.linux_rpi5.override {
+      kernelPatches = pkgs.linuxAndFirmware.latest.linux_rpi5.kernelPatches
+        ++ [ pkgs.kernelPatches.tools_128bit_types ];
+    }
+  );
 
   boot.kernelModules = [ "i2c-dev" "vhci-hcd" ];
 
