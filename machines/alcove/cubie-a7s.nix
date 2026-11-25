@@ -4,6 +4,50 @@ let
   cubieA7SKernel = pkgs.callPackage ./linux-cubie-a7s.nix { };
 in
 {
+  # Our kernel is single-output and built with CONFIG_MODULE_SIG disabled,
+  # so it ships no modules.cer / *.ko.cer files. NixOS's modulesTree
+  # aggregator (pkgs/os-specific/linux/kmod/aggregator.nix) copies and
+  # concatenates those unconditionally, which fails with
+  # "cannot stat .../modules.cer". Guard only that block; the depmod pass
+  # is still required for out-of-tree modules (e.g. aic8800).
+  nixpkgs.overlays = [
+    (final: prev: {
+      aggregateModules = modules:
+        (prev.aggregateModules modules).overrideAttrs (_: {
+          postBuild = ''
+            source ${prev.stdenvNoCC}/setup
+
+            if ! test -d "$out/lib/modules"; then
+              echo "No modules found."
+              exit 0
+            fi
+
+            kernelVersion=$(cd $out/lib/modules && ls -d *)
+            if test "$(echo $kernelVersion | wc -w)" != "1"; then
+              echo "inconsistent kernel versions: $kernelVersion"
+              exit 1
+            fi
+
+            echo "kernel version is $kernelVersion"
+            shopt -s extglob
+
+            if test -w $out/lib/modules/$kernelVersion; then
+              rm -f $out/lib/modules/$kernelVersion/modules.!(builtin*|order*|cer)
+              ${prev.buildPackages.kmod}/bin/depmod -b $out -C $out/etc/depmod.d -a $kernelVersion
+              cd -- "$out/lib/modules/$kernelVersion"
+
+              if test -e modules.cer; then
+                cp --no-preserve=mode,ownership --remove-destination \
+                  -- "$(readlink -f modules.cer)" modules.cer
+                sed "1,$(wc -l < modules.order)d; s/\.ko.*/.ko.cer/" modules.dep \
+                    | xargs -d'\n' cat >> modules.cer
+              fi
+            fi
+          '';
+        });
+    })
+  ];
+
   boot.loader.grub.enable = false;
   boot.loader.generic-extlinux-compatible.enable = true;
 
