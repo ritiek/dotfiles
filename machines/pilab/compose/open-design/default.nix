@@ -24,9 +24,10 @@
       OD_BIND_HOST = "0.0.0.0";
       OD_PORT = "7456";
       OD_WEB_PORT = "7456";
-      # Browser UI is served from this origin; the daemon rejects any
-      # cross-origin /api call whose Origin header isn't listed here.
-      OD_ALLOWED_ORIGINS = "http://pilab.lion-zebra.ts.net:7456";
+      # Upstream has no wildcard; "*" is patched in by open-design-image-build.
+      # Without it od mcp (no Origin header) is rejected for any Host that
+      # isn't loopback/RFC1918, i.e. every tailnet client.
+      OD_ALLOWED_ORIGINS = "*";
       # od mcp's stdio client has no code path to send an Authorization
       # header, so an enforced OD_API_TOKEN would 401 every MCP tool call
       # from other hosts. Tailscale (this host is only reachable via
@@ -107,6 +108,15 @@
       FROM ghcr.io/nexu-io/od:0.27.1
       USER root
       RUN apk add --no-cache libc6-compat
+      # OD_ALLOWED_ORIGINS="*" allows every origin/host; grep fails the build
+      # if upstream renames these functions.
+      RUN cd /app/apps/daemon/dist \
+       && sed -i \
+          -e 's/^export function configuredAllowedOrigins(.*{$/&\n    if (env.OD_ALLOWED_ORIGINS?.trim() === "*") return [];/' \
+          -e 's/^export function isAllowedBrowserOrigin(.*{$/&\n    if (process.env.OD_ALLOWED_ORIGINS?.trim() === "*") return true;/' \
+          -e 's/^export function isLocalSameOrigin(.*{$/&\n    if (env.OD_ALLOWED_ORIGINS?.trim() === "*") return true;/' \
+          origin-validation.js \
+       && test "$(grep -c 'OD_ALLOWED_ORIGINS?.trim() === "\*"' origin-validation.js)" = 3
       USER open-design
       EOF
     '';
