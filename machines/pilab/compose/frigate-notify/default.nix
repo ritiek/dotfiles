@@ -184,9 +184,38 @@ in
           done
         }
 
+        # Frigate's audio events never reach frigate/events (frigate-notify), only
+        # frigate/xiao/audio/<label>, which turns ON when a sound starts after
+        # 30s of silence. The labels are chocomelt's audio.listen.
+        audio_loop() {
+          local topic state label title now
+          local -A last=()
+          mosquitto_sub -h localhost -R -v -t 'frigate/xiao/audio/+' | while read -r topic state; do
+            label=''${topic##*/}
+            case $label in all | state) continue ;; esac
+            [ "$state" = ON ] || continue
+            now=$(date +%s)
+            if [ $((now - ''${last[$label]:-0})) -lt 120 ]; then continue; fi
+            last[$label]=$now
+            case $label in
+              speech) title="Talking at the door" ;;
+              smoke_detector | fire_alarm) title="Smoke/fire alarm at the door" ;;
+              scream) title="Screaming at the door" ;;
+              bark) title="Barking at the door" ;;
+              *) title="Heard $label at the door" ;;
+            esac
+            if notify "$title" "Frigate heard $label near the peephole"; then
+              echo "audio: notified $label"
+            else
+              echo "audio: notify failed for $label"
+            fi
+          done
+        }
+
         echo 0 > "$tmp/door_at"
         door_loop &
         motion_loop &
+        audio_loop &
         # Exit (and get restarted) if either loop dies.
         wait -n
         exit 1

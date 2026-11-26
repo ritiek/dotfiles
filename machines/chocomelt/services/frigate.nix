@@ -241,8 +241,11 @@ in
             roles = [ "audio" ];
           }
         ];
-        # Default listen types (bark, fire_alarm, scream, speech, yell).
-        audio.enabled = true;
+        # Each of these is also an ntfy alert (pilab's xiao-motion-notify).
+        audio = {
+          enabled = true;
+          listen = [ "speech" "smoke_detector" "fire_alarm" "scream" "bark" ];
+        };
         # preset-record-mjpeg, but encoding on the MPP instead of libx264.
         ffmpeg.output_args.record = "-f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v h264_rkmpp -an";
         detect = {
