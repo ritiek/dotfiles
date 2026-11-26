@@ -10,6 +10,17 @@ let
   # https://github.com/NousResearch/hermes-agent/issues/13065
   hermesDetailAutoOverlay = pkgs.callPackage ./patches/detail-auto { };
 
+  # GitHub Copilot model-provider plugin (moved out of hermes core).
+  githubCopilotPlugin = pkgs.runCommand "github-copilot" { } ''
+    mkdir -p $out
+    cp -r ${pkgs.fetchFromGitHub {
+      owner = "NousResearch";
+      repo = "hermes-labs-plugins";
+      rev = "f9fd3a3f3990369e7a8b01eccc7fd2eba9f10bc7";
+      hash = "sha256-PFfvtmqoOcGNidNXIa/d9dDAaPYJUjjuwl9WSgzP7iI=";
+    }}/github-copilot/. $out/
+  '';
+
   edgeTtsPython = pkgs.python314.withPackages (ps: [ ps.edge-tts ]);
 
   # The dependency-complete hermes CLI (sealed venv WITH the matrix+anthropic
@@ -381,6 +392,8 @@ in
 
     extraDependencyGroups = [ "matrix" "anthropic" ];
 
+    extraPlugins = [ githubCopilotPlugin ];
+
     # Web dashboard as a separate hermes-backend unit (http://127.0.0.1:9119).
     # Loopback only: any other bind engages the auth gate and needs
     # dashboard.basic_auth credentials in settings.
@@ -513,16 +526,11 @@ in
         # default = "opencode-go/qwen3.7-plus";
         # default = "opencode-go/mimo-v2.5";
         # default = "opencode-go/glm-5.3-flash";
-        # gpt-6-luna/github-copilot moved out of core into the 'github-copilot'
-        # plugin, which this Hermes build cannot install ("not in the plugin
-        # catalog"). It also made EVERY room fail before its channel_override
-        # was applied: the gateway resolves the global default first, so an
-        # unknown default aborts the turn even when the room names another
-        # provider. Keep a resolvable default (the free clawsiecats route).
-        # default = "gpt-6-luna";
-        # provider = "github-copilot";
-        default = "deepseek-v4.1-flash-free";
-        provider = "custom:clawsiecats";
+        # Fallback: free clawsiecats route
+        # default = "deepseek-v4.1-flash-free";
+        # provider = "custom:clawsiecats";
+        default = "gpt-6-luna";
+        provider = "copilot";
         supports_vision = true;
 
         # Previous: opencode free tier (keyless, fixed X-Session-ID).
