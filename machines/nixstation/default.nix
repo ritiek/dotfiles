@@ -84,10 +84,6 @@ in
 
   sops.secrets = {
     ritiek_password_hash.neededForUsers = true;
-    # Presence of these enables the nixbuild/nixbuild2/nixbuild3 wrappers in modules/nix.nix.
-    "rnixbld.id_ed25519" = { mode = "600"; owner = "root"; group = "nixbld"; };
-    "nixbuild2.id_ed25519" = { mode = "600"; owner = "root"; group = "nixbld"; };
-    "nixbuild3.id_ed25519" = { mode = "600"; owner = "root"; group = "nixbld"; };
   };
 
   users = {

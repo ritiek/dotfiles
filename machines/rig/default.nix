@@ -32,16 +32,6 @@
       owner = "root";
       group = "nixbld";
     };
-    "nixbuild2.id_ed25519" = {
-      mode = "600";
-      owner = "root";
-      group = "nixbld";
-    };
-    "nixbuild3.id_ed25519" = {
-      mode = "600";
-      owner = "root";
-      group = "nixbld";
-    };
   };
 
   networking.hostName = "rig";

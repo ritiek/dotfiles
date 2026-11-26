@@ -251,12 +251,6 @@ in
         when rebuilding the machine you (opencode) are running on. To deploy to any other
         machine, use `deploy -s </path/to/>#<flake>`.
     ''
-    # nixbuild.net builders are disabled in modules/nix.nix (accounts out of billing).
-    # + ''
-    #   - For heavy builds, offload to nixbuild.net remote builders by prefixing the command
-    #     with `nixbuild`, `nixbuild2` or `nixbuild3` (e.g. `nixbuild sudo nixos-rebuild switch --flake ...`).
-    #     These are separate accounts; if one fails or runs out of credits, try another.
-    # ''
     + ''
       - If a request fails with a rate limit error or anything, retry it through the 3proxy
         HTTP proxy (port 8090, over Tailscale) on a machine outside your subnet, so the request

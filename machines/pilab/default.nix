@@ -104,16 +104,6 @@
       owner = "root";
       group = "nixbld";
     };
-    "nixbuild2.id_ed25519" = {
-      mode = "600";
-      owner = "root";
-      group = "nixbld";
-    };
-    "nixbuild3.id_ed25519" = {
-      mode = "600";
-      owner = "root";
-      group = "nixbld";
-    };
     "yubiluks.env" = {};
     # homelab-mount (root) unlocks EVERYTHING_ELSE on chocomelt with this.
     "chocomelt_mediaserver.ssh_key" = {};

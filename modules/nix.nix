@@ -1,27 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
 let
   cache = import ../substituters.nix;
-  # On-demand remote builds: `<name> <any nix command>` sends builds to the
-  # nixbuild.net account that `secret` (an SSH key) is registered with.
-  # Only installed on hosts that declare the secret.
-  # Last machines field is eu.nixbuild.net's base64 host key, so no known_hosts entry is needed.
-  mkNixbuild = name: secret:
-    lib.optional (config ? sops && config.sops.secrets ? ${secret})
-      (pkgs.writeShellScriptBin name ''
-        export NIX_CONFIG="builders = @${pkgs.writeText "${name}-machines" ''
-          ssh-ng://eu.nixbuild.net x86_64-linux,aarch64-linux ${config.sops.secrets.${secret}.path} 100 1 benchmark,big-parallel - c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSVBJUUNaYzU0cG9KOHZxYXdkOFRyYU5yeVFlSm52SDFlTHBJRGdiaXF5bU0=
-        ''}
-        ''${NIX_CONFIG:-}"
-        exec "$@"
-      '');
 in
 {
-  # nixbuild.net builders disabled: all three accounts are out of billing.
-  # environment.systemPackages =
-  #   mkNixbuild "nixbuild" "rnixbld.id_ed25519"
-  #   ++ mkNixbuild "nixbuild2" "nixbuild2.id_ed25519"
-  #   ++ mkNixbuild "nixbuild3" "nixbuild3.id_ed25519";
-
   nix.settings = {
     inherit (cache)
       substituters
