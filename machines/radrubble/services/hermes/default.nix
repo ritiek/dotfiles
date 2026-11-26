@@ -362,6 +362,30 @@ in
     };
   };
 
+  # OpenAI-compatible passthrough to the Nous Portal Free plan (`:free` models,
+  # which have no API keys) for OpenCode on the tailnet; it attaches the OAuth
+  # login from .hermes/auth.json (`hermes auth add nous --type oauth --no-browser`).
+  # Any bearer is accepted, so the port is open on tailscale0 only. 0.0.0.0 rather
+  # than the tailnet IP: an IP bind rejects requests by hostname (Host check).
+  systemd.services.hermes-nous-proxy = {
+    description = "Hermes subscription proxy for Nous Portal";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
+    environment = {
+      HOME = "/var/lib/hermes";
+      HERMES_HOME = "/var/lib/hermes/.hermes";
+    };
+    serviceConfig = {
+      ExecStart = "${hermesEnvCli} proxy start --provider nous --host 0.0.0.0 --port 8645";
+      User = "ritiek";
+      Group = "users";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+  };
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 8645 ];
+
   # Dashboard unit stays defined but doesn't autostart; run it on demand with
   # `sudo systemctl start hermes-backend`.
   systemd.services.hermes-backend.wantedBy = lib.mkForce [ ];
