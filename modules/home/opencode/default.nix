@@ -347,6 +347,32 @@ in
             baseURL = "http://rig.lion-zebra.ts.net:8080";
           };
         };
+
+        # Nous Portal Free plan via the hermes-nous-proxy on radrubble, which
+        # attaches the OAuth login (the Free plan can't create API keys).
+        # shortcut: the :free roster rotates, check portal.nousresearch.com/models.
+        nous = {
+          npm = "@ai-sdk/openai-compatible@2.0.55";
+          name = "Nous Portal (free)";
+          models = {
+            "stepfun/step-3.7-flash:free" = {
+              name = "Step 3.7 Flash (free)";
+              tools = true;
+            };
+            "tencent/hy4-flash:free" = {
+              name = "Hy4 Flash (free)";
+              tools = true;
+            };
+            "upstage/solar-mini4:free" = {
+              name = "Solar Mini 4 (free)";
+              tools = true;
+            };
+          };
+          options = {
+            baseURL = "http://radrubble.lion-zebra.ts.net:8645/v1";
+            apiKey = "unused";
+          };
+        };
       };
 
       permission = {
