@@ -106,8 +106,11 @@ in
     };
     script = lib.getExe (pkgs.writeShellApplication {
       name = "frigate-ntfy";
-      runtimeInputs = with pkgs; [ mosquitto jq curl coreutils ];
+      runtimeInputs = with pkgs; [ mosquitto jq curl coreutils getent ];
       text = ''
+        # MagicDNS is briefly down while tailscaled restarts.
+        until getent hosts pilab.lion-zebra.ts.net >/dev/null; do sleep 1; done
+
         token=$(cat "$CREDENTIALS_DIRECTORY/ntfy-token")
         ui=http://keyberry.lion-zebra.ts.net
         tmp=$(mktemp -d)

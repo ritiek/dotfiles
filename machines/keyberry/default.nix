@@ -318,6 +318,14 @@
 
     nginx = {
       enable = true;
+      # The config test fails while MagicDNS is down (e.g. tailscaled restarting
+      # in the same switch), so wait for the upstream names to resolve first.
+      preStart = ''
+        for i in $(seq 60); do
+          ${pkgs.getent}/bin/getent hosts chocomelt.lion-zebra.ts.net pilab.lion-zebra.ts.net >/dev/null && break
+          sleep 1
+        done
+      '';
       virtualHosts."jellyfin-proxy" = {
         listen = [ { addr = "0.0.0.0"; port = 8096; } ];
         locations."/" = {
