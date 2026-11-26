@@ -90,6 +90,7 @@ const providerConfig = (models: any[], origin: string) => ({
 export function relayer(egresses: Egress[], o: Required<Pick<Options, "headerTimeout" | "quotaCooldown" | "deadBackoff" | "connectTimeout" | "log">>) {
   const active = new Map<string, number>(); // model -> index of the egress in use
   const quota = new Map<string, number>(); // `${egress}|${model}` -> end of its cooldown
+  const reset = new Map<string, number>(); // same keys -> the gateway's own reset time (uncapped retry-after)
   const dead = new Map<string, { until: number; wait: number }>(); // egress -> backoff
   let lastQuota: { body: string; type: string } | undefined; // replayed when every egress is out
   const [deadMin, deadMax] = o.deadBackoff;
@@ -219,6 +220,7 @@ export function relayer(egresses: Egress[], o: Required<Pick<Options, "headerTim
       trail.push(`${e.name}:${r.note}`);
       if (r.kind === "quota") {
         quota.set(qkey(e, model), Date.now() + Math.min(r.retryMs!, o.quotaCooldown));
+        reset.set(qkey(e, model), Date.now() + r.retryMs!);
         continue;
       }
       if (r.kind === "down" || r.kind === "blocked") {
@@ -231,10 +233,21 @@ export function relayer(egresses: Egress[], o: Required<Pick<Options, "headerTim
       return r.res!;
     }
     o.log(`${model || "-"} ${trail.join(" ") || "(every egress cooling down)"} -> none left`);
-    const cooling = egresses.map((e) => quota.get(qkey(e, model)) ?? 0).filter((t) => t > Date.now());
-    if (cooling.length) {
-      const retry = Math.max(1, Math.ceil((Math.min(...cooling) - Date.now()) / 1000));
-      return new Response(lastQuota?.body ?? JSON.stringify({ error: { message: "Free usage limit reached on every egress" } }), {
+    const limited = egresses.map((e) => qkey(e, model)).filter((k) => (quota.get(k) ?? 0) > Date.now());
+    if (limited.length) {
+      const retry = Math.max(1, Math.ceil((Math.min(...limited.map((k) => quota.get(k)!)) - Date.now()) / 1000));
+      let body = lastQuota?.body ?? JSON.stringify({ error: { message: "Free usage limit reached on every egress" } });
+      const earliest = Math.min(...limited.map((k) => reset.get(k) ?? Infinity));
+      if (Number.isFinite(earliest)) {
+        const mins = Math.max(1, Math.ceil((earliest - Date.now()) / 60_000));
+        const when = mins >= 60 ? `${Math.floor(mins / 60)}h ${mins % 60}m` : `${mins}m`;
+        try {
+          const json = JSON.parse(body);
+          json.error.message = `${json.error.message} Earliest reset across ${limited.length} egresses: in ${when}.`;
+          body = JSON.stringify(json);
+        } catch {}
+      }
+      return new Response(body, {
         status: 429,
         headers: { "content-type": lastQuota?.type ?? "application/json", "retry-after": String(retry) },
       });

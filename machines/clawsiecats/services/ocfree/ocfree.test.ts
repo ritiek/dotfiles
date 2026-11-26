@@ -25,7 +25,7 @@ function fake(name: string, hostname = "127.0.0.1") {
       seen[name] = req.headers.get("authorization");
       switch (mode[name]) {
         case "ok": return new Response(`data: ${name}\n\n`, { headers: { ...cf, "content-type": "text/event-stream" } });
-        case "quota": return Response.json({ error: { message: "Free usage limit reached" } }, { status: 429, headers: { ...cf, "retry-after": "9999" } });
+        case "quota": return Response.json({ error: { message: "Free usage limit reached" } }, { status: 429, headers: { ...cf, "retry-after": name === "b" ? "3600" : "9999" } });
         case "broken": return new Response("proxy error", { status: 502 }); // no cf-ray: the proxy itself failed
         case "hang": return new Promise<Response>(() => {});
         case "die": return new Response(new ReadableStream({ start(c) { c.error(new Error("boom")); } }), { headers: cf });
@@ -120,8 +120,11 @@ test("every egress out of quota answers 429 with retry-after", async () => {
   const r = await post();
   expect(r.status).toBe(429);
   expect(Number(r.headers.get("retry-after"))).toBeGreaterThan(0);
-  expect(await r.text()).toContain("Free usage limit reached");
-  expect((await post()).status).toBe(429); // both cooling down: answered without another upstream request
+  const msg = "Free usage limit reached Earliest reset across 2 egresses: in 1h 0m.";
+  expect(((await r.json()) as any).error.message).toBe(msg);
+  const again = await post();
+  expect(again.status).toBe(429); // both cooling down: answered without another upstream request
+  expect(((await again.json()) as any).error.message).toBe(msg);
   expect(hits).toEqual({ a: 1, b: 1 });
 });
 
