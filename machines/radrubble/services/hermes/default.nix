@@ -513,10 +513,16 @@ in
         # default = "opencode-go/qwen3.7-plus";
         # default = "opencode-go/mimo-v2.5";
         # default = "opencode-go/glm-5.3-flash";
-        default = "gpt-6-luna";
-        provider = "github-copilot";
-        # Multimodal. Auth: COPILOT_GITHUB_TOKEN/GH_TOKEN (gho_/github_pat_, NOT
-        # classic ghp_) or `hermes auth add github-copilot` (device flow).
+        # gpt-6-luna/github-copilot moved out of core into the 'github-copilot'
+        # plugin, which this Hermes build cannot install ("not in the plugin
+        # catalog"). It also made EVERY room fail before its channel_override
+        # was applied: the gateway resolves the global default first, so an
+        # unknown default aborts the turn even when the room names another
+        # provider. Keep a resolvable default (the free clawsiecats route).
+        # default = "gpt-6-luna";
+        # provider = "github-copilot";
+        default = "deepseek-v4.1-flash-free";
+        provider = "custom:clawsiecats";
         supports_vision = true;
 
         # Previous: opencode free tier (keyless, fixed X-Session-ID).
