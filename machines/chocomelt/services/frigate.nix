@@ -167,6 +167,14 @@ in
     })
   ];
 
+  # The XIAO's mic stream (Opus in WebM on :82) takes one client at a time, so
+  # go2rtc holds that connection and restreams it to frigate and anyone else:
+  # rtsp://chocomelt.lion-zebra.ts.net:8554/xiao_audio. go2rtc can't parse
+  # WebM itself, hence the ffmpeg source. Video stays direct to frigate.
+  services.go2rtc = {
+    enable = true;
+    settings.streams.xiao_audio = "ffmpeg:http://xiao-sense-esp32-cam.pihole:82/stream.webm#audio=copy";
+  };
   services.frigate = {
     enable = true;
     hostname = "chocomelt.lion-zebra.ts.net";
@@ -221,11 +229,20 @@ in
       # Seeed XIAO ESP32S3 Sense (OV3660) on custom Tasmota: 1600x1200 MJPEG
       # at ~8 fps on its port-81 stream server.
       cameras.xiao = {
-        ffmpeg.inputs = [{
-          path = "http://xiao-sense-esp32-cam.pihole:81/stream";
-          input_args = "preset-http-mjpeg-generic";
-          roles = [ "detect" "record" ];
-        }];
+        ffmpeg.inputs = [
+          {
+            path = "http://xiao-sense-esp32-cam.pihole:81/stream";
+            input_args = "preset-http-mjpeg-generic";
+            roles = [ "detect" "record" ];
+          }
+          {
+            path = "rtsp://127.0.0.1:8554/xiao_audio";
+            input_args = "preset-rtsp-restream";
+            roles = [ "audio" ];
+          }
+        ];
+        # Default listen types (bark, fire_alarm, scream, speech, yell).
+        audio.enabled = true;
         # preset-record-mjpeg, but encoding on the MPP instead of libx264.
         ffmpeg.output_args.record = "-f segment -segment_time 10 -segment_format mp4 -reset_timestamps 1 -strftime 1 -c:v h264_rkmpp -an";
         detect = {
@@ -301,8 +318,10 @@ in
   };
 
   # nginx vhost with frigate's login (admin password is printed in
-  # `journalctl -u frigate` on first start).
-  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 ];
+  # `journalctl -u frigate` on first start). 8554 is go2rtc's RTSP, without
+  # auth: anything on the tailnet can listen to the XIAO's mic. Its API (1984)
+  # stays firewalled.
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 80 8554 ];
 
   # frigate-notify (pilab) posts its login JSON without a Content-Type, which
   # Frigate rejects with 422, so every later API call 401s. The web UI sends
