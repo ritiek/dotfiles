@@ -319,6 +319,7 @@ in
 
   # Key for the ocfree middleman on clawsiecats (providers.clawsiecats below).
   sops.secrets."ocfree.key" = { };
+  sops.secrets."github_copilot.access" = { };
 
   # Give the gateway enough stop time to finish its drain. The module ships
   # TimeoutStopSec=90s but the gateway's drain_timeout is 180s, so systemd
@@ -846,6 +847,7 @@ in
       ELEVENLABS_API_KEY=${config.sops.placeholder."elevenlabs_api.key"}
       OPENCODE_ZEN_API_KEY=${config.sops.placeholder."opencode_api.key"}
       CLAWSIECATS_API_KEY=${config.sops.placeholder."ocfree.key"}
+      COPILOT_GITHUB_TOKEN=${config.sops.placeholder."github_copilot.access"}
     '';
   };
 
