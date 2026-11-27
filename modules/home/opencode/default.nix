@@ -35,36 +35,7 @@ let
     exec ${cloud-cdp-proxy-env}/bin/python3 ${cloud-cdp-proxy-py} "$@"
   '';
 
-  # OpenDesign's `od mcp` stdio client, lifted out of the daemon image so it
-  # runs on plain nodejs without a local Docker daemon. It is pure JS that
-  # talks HTTP to the daemon on pilab; the native/media deps are dropped.
-  # ponytail: pinned digest of 0.27.1, bump with nix-prefetch-docker together
-  # with the pilab daemon's FROM tag (machines/pilab/compose/open-design).
-  open-design-mcp = let
-    image = pkgs.dockerTools.pullImage {
-      imageName = "ghcr.io/nexu-io/od";
-      imageDigest = "sha256:e60aec9fb7e07af9f11de58eff62a546c82421d3a24aa57a353b4c2808a1d85c";
-      hash = {
-        x86_64-linux = "sha256-cg4NhXsfl+s7v/N7wz2d8t2s36fpmOJCEuSFF8U/VG4=";
-        aarch64-linux = "sha256-MnuTqGLXGLq+18VwZyPKCtEvTBEyTKx2T6TtvV0c3dA=";
-      }.${pkgs.stdenv.hostPlatform.system};
-      finalImageTag = "latest";
-    };
-    daemon = pkgs.runCommand "open-design-daemon" { nativeBuildInputs = [ pkgs.jq ]; } ''
-      mkdir image $out
-      tar -xf ${image} -C image
-      for layer in $(jq -r '.[0].Layers[]' image/manifest.json); do
-        tar -xf "image/$layer" -C $out --strip-components=3 app/apps/daemon 2>/dev/null || true
-      done
-      cd $out/node_modules/.pnpm
-      rm -rf onnxruntime-node@* @ffmpeg-installer+* node-pty@* @img+sharp* esbuild@* @esbuild+*
-      test -f $out/dist/cli.js
-    '';
-  in pkgs.writeShellScript "open-design-mcp" ''
-    # od mcp exits after 30 min idle by default and opencode doesn't respawn it.
-    export OD_MCP_STDIO_IDLE_EXIT_MS=0
-    exec ${pkgs.nodejs_24}/bin/node ${daemon}/dist/cli.js mcp "$@"
-  '';
+  open-design-mcp = pkgs.callPackage ./open-design-mcp.nix { };
 
   # Shared auth generator — used by both home.activation (interactive hm switch)
   # and systemd --user service (boot: runs after sops-nix.service decrypts secrets).
@@ -445,8 +416,21 @@ in
         # V2-native entries (no `enabled`): needed for an object `timeout`, which a
         # legacy `mcp.<name>` entry rejects. A legacy number also caps execution.
         servers = {
-          inherit (playwright.mcp) playwright playwright-alcove playwright-lightpanda;
-          kindly-web-search = lib.mkIf (!hasZaiApiKey) {
+          inherit (playwright.mcp) playwright;
+          # Machines with a Bifrost key get these (and context7, nixos, paperless,
+          # open-design, github, homeassistant, indmoney) from Bifrost's MCP gateway
+          # on pilab, as `<server>-<tool>` (`_` for `-` in server names):
+          # machines/pilab/compose/bifrost/mcp.nix.
+          bifrost = lib.mkIf hasBifrostKey {
+            type = "remote";
+            url = "http://pilab.lion-zebra.ts.net:3639/mcp";
+            oauth = false;
+            headers.Authorization = "Bearer {file:${config.sops.secrets."bifrost_vk.key".path}}";
+            timeout = { startup = 120000; catalog = 120000; };
+          };
+          playwright-alcove = lib.mkIf (!hasBifrostKey) playwright.mcp.playwright-alcove;
+          playwright-lightpanda = lib.mkIf (!hasBifrostKey) playwright.mcp.playwright-lightpanda;
+          kindly-web-search = lib.mkIf (!hasZaiApiKey && !hasBifrostKey) {
             type = "local";
             timeout = { startup = 60000; catalog = 60000; };
             command = [
@@ -493,12 +477,12 @@ in
         # To enable context7 on these machines, you would need to:
         # 1. Build bun baseline manually and install it outside Nix, OR
         # 2. Fork mcp-servers-nix and modify context7 package to support baseline bun
-        context7 = lib.mkIf (!builtins.elem hostName baseline-bun-machines) {
+        context7 = lib.mkIf (!hasBifrostKey && !builtins.elem hostName baseline-bun-machines) {
           enabled = true;
           type = "local";
           command = ["${mcp-servers-nix.context7-mcp}/bin/context7-mcp"];
         };
-        nixos = {
+        nixos = lib.mkIf (!hasBifrostKey) {
           enabled = true;
           type = "local";
           command = ["${pkgs.mcp-nixos}/bin/mcp-nixos"];
@@ -526,7 +510,7 @@ in
           ];
         };
       } // {
-        github = {
+        github = lib.mkIf (!hasBifrostKey) {
           enabled = true;
           type = "remote";
           url = "https://api.githubcopilot.com/mcp/";
@@ -534,7 +518,7 @@ in
             Authorization = "Bearer {file:${config.sops.secrets."github.token".path}}";
           };
         };
-        paperless = {
+        paperless = lib.mkIf (!hasBifrostKey) {
           enabled = true;
           type = "local";
           command = [
@@ -553,7 +537,7 @@ in
             PAPERLESS_PUBLIC_URL = "{file:${config.sops.secrets."paperless_public.url".path}}";
           };
         };
-        homeassistant = {
+        homeassistant = lib.mkIf (!hasBifrostKey) {
           enabled = true;
           type = "remote";
           url = "http://radrubble.lion-zebra.ts.net:8123/api/mcp";
@@ -582,12 +566,12 @@ in
             JAVA_HOME = "${pkgs.openjdk25}";
           };
         };
-        indmoney = {
+        indmoney = lib.mkIf (!hasBifrostKey) {
           enabled = true;
           type = "remote";
           url = "https://mcp.indmoney.com/mcp";
         };
-        open-design = {
+        open-design = lib.mkIf (!hasBifrostKey) {
           enabled = true;
           type = "local";
           # The daemon runs on pilab with OD_DISABLE_API_AUTH=1 (Tailscale
