@@ -48,8 +48,50 @@ let
       # The Free plan only serves :free models; the rest fail on credits.
       { provider = "nous"; allowed_models = [ "regex:.*:free$" ]; key_ids = [ "*" ]; weight = 1; }
       { provider = "copilot"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
+      # Not "*": that only admits models the catalog lists under anthropic.
+      # Regex entries must match the whole name.
+      { provider = "anthropic"; allowed_models = [ "regex:claude-.*" ]; key_ids = [ "*" ]; weight = 1; }
+      { provider = "opencodego"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
     ];
     mcp_configs = mcpAccess mcpClientNames;
+  };
+  opencodeMcp = lib.remove "github_readonly" (map (c: c.name) mcpClients);
+  # Claude seats pooled in Meridian (../meridian/members.nix). The plain
+  # provider is the pool; meridian_<member> pins a member's own profile, which
+  # their key tries first and leaves for the pool when it is out of quota.
+  meridian = {
+    custom_provider_config = {
+      base_provider_type = "anthropic";
+      display_name = "Meridian";
+    };
+    network_config.base_url = "http://127.0.0.1:3456";
+    keys = [ { name = "meridian"; value = "env.MERIDIAN_API_KEY"; models = [ "*" ]; weight = 1; } ];
+  };
+  poolMembers = import ../meridian/members.nix;
+  memberProviders = lib.listToAttrs (map (member: lib.nameValuePair "meridian_${member}"
+    (lib.recursiveUpdate meridian {
+      network_config.extra_headers."x-meridian-profile" = member;
+      keys = [ { name = "meridian_${member}"; value = "env.MERIDIAN_API_KEY"; models = [ "*" ]; weight = 1; } ];
+    })) poolMembers);
+  memberKey = member: {
+    id = "vk-${member}";
+    name = member;
+    value = "env.BIFROST_VK_${lib.toUpper member}";
+    provider_configs = map (provider: { inherit provider; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; })
+      [ "meridian" "meridian_${member}" ];
+    mcp_configs = [ ];
+  };
+  memberRule = member: {
+    id = "pool-${member}";
+    name = "pool-${member}";
+    description = "${member}'s own Claude seat first, then the pool";
+    enabled = true;
+    scope = "virtual_key";
+    scope_id = "vk-${member}";
+    cel_expression = ''provider == "meridian"'';
+    targets = [ { provider = "meridian_${member}"; weight = 1; } ];
+    fallbacks = [ { provider = "meridian"; } ];
+    priority = 0;
   };
   opencodeMachines = [
     "alcove" "chocomelt" "clawsiecats" "deskette" "keyberry" "mishy"
@@ -77,6 +119,11 @@ let
       # request they would arrive as tool calls the client cannot run.
       mcp_disable_auto_tool_inject = true;
       mcp_tool_execution_timeout = 120;
+      # Needed for the Bifrost MCP (mcp.nix's bifrost_admin); its tool calls
+      # run in process as if sent to this address.
+      bifrost_url = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      # Client headers passed on upstream as is; OpenCode Go needs this one.
+      header_filter_config.allowlist = [ "x-opencode-session" ];
     };
     mcp.client_configs = mcpClients;
     # Absolute: relative paths resolve against the working directory, not the app-dir.
@@ -88,24 +135,32 @@ let
         admin_username = "env.BIFROST_ADMIN_USERNAME";
         admin_password = "env.BIFROST_ADMIN_PASSWORD";
       };
-      virtual_keys = map (m: virtualKey m "opencode" (map (c: c.name) mcpClients)) opencodeMachines ++ [
-        # Hermes on radrubble: the MCP servers it used to run itself.
+      virtual_keys = map (m: virtualKey m "opencode" opencodeMcp) opencodeMachines ++ [
+        # Hermes on radrubble: the MCP servers it used to run itself, GitHub read-only.
         (virtualKey "radrubble" "hermes" [
-          "github" "indmoney" "context7" "nixos" "paperless" "kindly_web_search" "playwright_alcove"
+          "github_readonly" "indmoney" "context7" "nixos" "paperless" "kindly_web_search" "playwright_alcove"
         ])
-      ];
+      ] ++ map memberKey poolMembers;
+      routing_rules = map memberRule poolMembers ++ [ {
+        # OpenCode's opencode-claude-auth sends bare IDs (claude-opus-5-5),
+        # which the catalog would route to Meridian or Copilot; its requests
+        # carry the caller's Claude login, so they go to anthropic as is.
+        id = "claude-code-passthrough";
+        name = "claude-code-passthrough";
+        enabled = true;
+        scope = "global";
+        cel_expression = ''"x-app" in headers && headers["x-app"] == "cli"'';
+        targets = [ { provider = "anthropic"; weight = 1; } ];
+        priority = 0;
+      } ];
     };
     # display_name (from the patch) lists models as "<display_name>/<upstream name>".
-    providers = {
-      # Lazy listener: the first request after idle waits for Meridian to boot.
-      meridian = {
-        custom_provider_config = {
-          base_provider_type = "anthropic";
-          display_name = "Meridian";
-        };
-        network_config.base_url = "http://127.0.0.1:3456";
-        keys = [ { name = "meridian"; value = "env.MERIDIAN_API_KEY"; models = [ "*" ]; weight = 1; } ];
-      };
+    providers = memberProviders // {
+      # No key of its own: Claude Code style requests on /anthropic (OpenCode's
+      # opencode-claude-auth) carry the caller's Claude login, which Bifrost
+      # passes on, so each machine uses its own subscription.
+      anthropic.keys = [ ];
+      inherit meridian;
       ocfree = {
         custom_provider_config = {
           base_provider_type = "openai";
@@ -134,6 +189,22 @@ let
           allow_private_network = true;
         };
         keys = [ { name = "nous"; value = "unused"; models = [ "*" ]; weight = 1; } ];
+      };
+      # OpenCode Go subscription (the key OpenCode on mishy is signed in with).
+      # Its OpenAI endpoint serves every text model, translating for those
+      # whose native API is another. Go refuses requests without the client's
+      # x-opencode-session (forwarded, client.header_filter_config) or with a
+      # generic HTTP library's User-Agent.
+      opencodego = {
+        custom_provider_config = {
+          base_provider_type = "openai";
+          display_name = "OpenCode Go";
+        };
+        network_config = {
+          base_url = "https://opencode.ai/inference/go/openai";
+          extra_headers."User-Agent" = "bifrost-gateway/${bifrost.version}";
+        };
+        keys = [ { name = "opencodego"; value = "env.OPENCODE_GO_API_KEY"; models = [ "*" ]; weight = 1; } ];
       };
       # The GitHub OAuth token Hermes signed in with (github_copilot.access on
       # radrubble), sent as is with the VS Code headers Hermes' Copilot plugin

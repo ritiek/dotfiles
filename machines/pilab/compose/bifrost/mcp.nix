@@ -67,13 +67,43 @@ let
     tools_to_execute = [ "*" ];
   } // extra;
   bearer = var: { auth_type = "headers"; headers.Authorization = "env.${var}"; };
+  # One tool per operation of an API's OpenAPI spec, calling the API itself.
+  openapi = name: config: {
+    inherit name;
+    connection_type = "openapi";
+    openapi_config = config;
+    auth_type = "none";
+    tools_to_execute = [ "*" ];
+  };
 
   remote = [
     (http "github" "https://api.githubcopilot.com/mcp/" (bearer "GITHUB_AUTHORIZATION"))
+    # GitHub's read tools only, for Hermes.
+    (http "github_readonly" "https://api.githubcopilot.com/mcp/readonly" (bearer "GITHUB_AUTHORIZATION"))
     (http "homeassistant" "http://radrubble.lion-zebra.ts.net:8123/api/mcp" (bearer "HASS_AUTHORIZATION"))
     (http "context7" "https://mcp.context7.com/mcp" { })
     # Signed in once from the dashboard (MCP servers, Authorize).
     (http "indmoney" "https://mcp.indmoney.com/mcp" { auth_type = "oauth"; })
+    # Bifrost's own API as tools (its Bifrost MCP), which takes only the
+    # dashboard login; through here a virtual key reaches it instead.
+    (http "bifrost_admin" "http://127.0.0.1:3639/v1/mcp" {
+      auth_type = "headers";
+      headers.Authorization = "env.BIFROST_ADMIN_BASIC_AUTHORIZATION";
+    })
+  ];
+
+  apis = [
+    (openapi "immich" {
+      spec_url = "http://127.0.0.1:2283/api/spec.json";
+      base_url = "http://127.0.0.1:2283/api";
+      security_credentials.api_key.value = "env.IMMICH_API_KEY";
+    })
+    (openapi "paperless_api" {
+      spec_url = "http://127.0.0.1:8010/api/schema/?format=json";
+      base_url = "http://127.0.0.1:8010";
+      # "Token <key>"
+      security_credentials.tokenAuth.value = "env.PAPERLESS_AUTHORIZATION";
+    })
   ];
 
   local = [
@@ -119,6 +149,8 @@ let
 in
 {
   inherit commandDir;
-  clients = remote ++ map stdioClient local;
+  # Code mode everywhere: a client sees four tools that search, read and run
+  # code against the servers' tools, not hundreds of tool definitions.
+  clients = map (c: c // { is_code_mode_client = true; }) (remote ++ apis ++ map stdioClient local);
   wrappers = lib.listToAttrs (map (s: lib.nameValuePair s.name s.wrapper) local);
 }
