@@ -62,6 +62,8 @@
         # radrubble's key (also ~/.ssh/sops.id_ed25519 there): lets hermes'
         # playwright-alcove MCP launch chromium-agent over ssh.
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBRF7Eqv1PrSBPfBqZzpKjPqPfbJ8Msnj+3EHP8WcpxV radrubble"
+        # Bifrost's playwright-alcove MCP on pilab (machines/pilab/compose/bifrost/mcp.nix).
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPzJPru+nuqLjOQzE4VUuryr37Qwf30/PTlPQi279A0i bifrost@pilab"
       ];
       packages = [
         inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.default
