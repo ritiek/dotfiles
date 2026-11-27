@@ -1,0 +1,570 @@
+diff --git a/core/providers/anthropic/anthropic.go b/core/providers/anthropic/anthropic.go
+index b288c99..404dd76 100644
+--- a/core/providers/anthropic/anthropic.go
++++ b/core/providers/anthropic/anthropic.go
+@@ -435,6 +435,12 @@ func (provider *AnthropicProvider) listModelsByKey(ctx *schemas.BifrostContext,
+ // Uses a best-effort approach: continues with remaining keys even if some fail.
+ // Requests are made concurrently for improved performance.
+ func (provider *AnthropicProvider) ListModels(ctx *schemas.BifrostContext, keys []schemas.Key, request *schemas.BifrostListModelsRequest) (*schemas.BifrostListModelsResponse, *schemas.BifrostError) {
++	response, err := provider.listModels(ctx, keys, request)
++	providerUtils.ApplyDisplayNames(response, provider.customProviderConfig)
++	return response, err
++}
++
++func (provider *AnthropicProvider) listModels(ctx *schemas.BifrostContext, keys []schemas.Key, request *schemas.BifrostListModelsRequest) (*schemas.BifrostListModelsResponse, *schemas.BifrostError) {
+ 	if err := providerUtils.CheckOperationAllowed(schemas.Anthropic, provider.customProviderConfig, schemas.ListModelsRequest); err != nil {
+ 		return nil, err
+ 	}
+@@ -511,6 +517,7 @@ func (provider *AnthropicProvider) ModelRetrieve(ctx *schemas.BifrostContext, ke
+ 	}
+ 
+ 	response := anthropicModel.ToBifrostModelRetrieveResponse(provider.GetProviderKey())
++	providerUtils.ApplyDisplayName(&response.Model, provider.customProviderConfig)
+ 	response.ExtraFields.Latency = latency.Milliseconds()
+ 	response.ExtraFields.ProviderResponseHeaders = providerResponseHeaders
+ 
+diff --git a/core/providers/anthropic/modelmetadata_test.go b/core/providers/anthropic/modelmetadata_test.go
+new file mode 100644
+index 0000000..858a639
+--- /dev/null
++++ b/core/providers/anthropic/modelmetadata_test.go
+@@ -0,0 +1,48 @@
++package anthropic
++
++import (
++	"testing"
++
++	"github.com/bytedance/sonic"
++	providerUtils "github.com/maximhq/bifrost/core/providers/utils"
++	"github.com/maximhq/bifrost/core/schemas"
++	"github.com/stretchr/testify/require"
++)
++
++func TestListModelsReadsContextWindowAndEfforts(t *testing.T) {
++	t.Parallel()
++
++	// Shape served by Meridian's /v1/models.
++	body := `{"data":[
++		{"id":"claude-opus-5-5","object":"model","created":1795776949,"owned_by":"anthropic","display_name":"Claude Opus 5.5","context_window":1000000,
++		 "capabilities":{"effort":{"high":{"supported":true},"low":{"supported":true},"max":{"supported":true},"medium":{"supported":true},"xhigh":{"supported":false},"supported":true},
++		                 "thinking":{"supported":true}}},
++		{"id":"claude-haiku-4-5","display_name":"Claude Haiku 4.5","max_input_tokens":200000,"max_tokens":64000,
++		 "capabilities":{"effort":{"supported":false,"low":{"supported":true}}}},
++		{"id":"claude-odd","display_name":"","capabilities":{"effort":"yes"}}
++	],"has_more":false}`
++	var listing AnthropicListModelsResponse
++	require.NoError(t, sonic.Unmarshal([]byte(body), &listing))
++
++	response := listing.ToBifrostListModelsResponse("meridian", schemas.WhiteList{"*"}, nil, nil, false)
++	require.Len(t, response.Data, 3)
++
++	opus := response.Data[0]
++	require.Equal(t, "Claude Opus 5.5", *opus.Name)
++	require.Equal(t, 1000000, *opus.ContextLength)
++	require.Equal(t, []string{"low", "medium", "high", "max"}, opus.Reasoning.SupportedEfforts)
++
++	// Native Anthropic fields are untouched; effort levels need effort.supported.
++	haiku := response.Data[1]
++	require.Nil(t, haiku.ContextLength)
++	require.Equal(t, 200000, *haiku.MaxInputTokens)
++	require.Equal(t, 64000, *haiku.MaxOutputTokens)
++	require.Nil(t, haiku.Reasoning)
++
++	require.Nil(t, response.Data[2].Reasoning)
++
++	providerUtils.ApplyDisplayNames(response, &schemas.CustomProviderConfig{DisplayName: "Meridian"})
++	require.Equal(t, "Meridian/Claude Opus 5.5", *response.Data[0].Name)
++	// An empty upstream name falls back to the model ID.
++	require.Equal(t, "Meridian/claude-odd", *response.Data[2].Name)
++}
+diff --git a/core/providers/anthropic/models.go b/core/providers/anthropic/models.go
+index f04b17c..d74882d 100644
+--- a/core/providers/anthropic/models.go
++++ b/core/providers/anthropic/models.go
+@@ -1,6 +1,7 @@
+ package anthropic
+ 
+ import (
++	"encoding/json"
+ 	"strings"
+ 	"time"
+ 
+@@ -46,14 +47,7 @@ func (response *AnthropicListModelsResponse) ToBifrostListModelsResponse(provide
+ 			if included[resolvedKey] {
+ 				continue
+ 			}
+-			entry := schemas.Model{
+-				ID:              string(providerKey) + "/" + result.ResolvedID,
+-				Name:            schemas.Ptr(model.DisplayName),
+-				Created:         schemas.Ptr(model.CreatedAt.Unix()),
+-				MaxInputTokens:  model.MaxInputTokens,
+-				MaxOutputTokens: model.MaxTokens,
+-				ProviderExtra:   model.Capabilities,
+-			}
++			entry := model.toBifrostModel(string(providerKey) + "/" + result.ResolvedID)
+ 			if result.AliasValue != "" {
+ 				entry.Alias = schemas.Ptr(result.AliasValue)
+ 			}
+@@ -114,13 +108,43 @@ func (model *AnthropicModel) ToBifrostModelRetrieveResponse(providerKey schemas.
+ 	}
+ 
+ 	return &schemas.BifrostModelRetrieveResponse{
+-		Model: schemas.Model{
+-			ID:              string(providerKey) + "/" + model.ID,
+-			Name:            schemas.Ptr(model.DisplayName),
+-			Created:         schemas.Ptr(model.CreatedAt.Unix()),
+-			MaxInputTokens:  model.MaxInputTokens,
+-			MaxOutputTokens: model.MaxTokens,
+-			ProviderExtra:   model.Capabilities,
+-		},
++		Model: model.toBifrostModel(string(providerKey) + "/" + model.ID),
++	}
++}
++
++// anthropicEffortLevels lists the effort levels a capabilities.effort block can carry, lowest first.
++var anthropicEffortLevels = []string{"low", "medium", "high", "xhigh", "max"}
++
++// toBifrostModel maps an Anthropic model onto a Bifrost model with the given ID,
++// reading the context size and the supported effort levels it advertises.
++func (model *AnthropicModel) toBifrostModel(id string) schemas.Model {
++	entry := schemas.Model{
++		ID:              id,
++		Name:            schemas.Ptr(model.DisplayName),
++		Created:         schemas.Ptr(model.CreatedAt.Unix()),
++		ContextLength:   model.ContextWindow,
++		MaxInputTokens:  model.MaxInputTokens,
++		MaxOutputTokens: model.MaxTokens,
++		ProviderExtra:   model.Capabilities,
++	}
++	// {"effort": {"supported": true, "low": {"supported": true}, ...}}
++	capabilities := providerUtils.DecodeOptional[struct {
++		Effort map[string]json.RawMessage `json:"effort"`
++	}](model.Capabilities)
++	if capabilities == nil || string(capabilities.Effort["supported"]) != "true" {
++		return entry
++	}
++	var efforts []string
++	for _, level := range anthropicEffortLevels {
++		flag := providerUtils.DecodeOptional[struct {
++			Supported bool `json:"supported"`
++		}](capabilities.Effort[level])
++		if flag != nil && flag.Supported {
++			efforts = append(efforts, level)
++		}
++	}
++	if len(efforts) > 0 {
++		entry.Reasoning = &schemas.ModelReasoning{SupportedEfforts: efforts}
+ 	}
++	return entry
+ }
+diff --git a/core/providers/anthropic/types.go b/core/providers/anthropic/types.go
+index 5945419..9d99025 100644
+--- a/core/providers/anthropic/types.go
++++ b/core/providers/anthropic/types.go
+@@ -2366,6 +2366,7 @@ type AnthropicModel struct {
+ 	CreatedAt      time.Time       `json:"created_at"`
+ 	MaxInputTokens *int            `json:"max_input_tokens,omitempty"`
+ 	MaxTokens      *int            `json:"max_tokens,omitempty"`
++	ContextWindow  *int            `json:"context_window,omitempty"` // Sent by Anthropic-compatible gateways such as Meridian
+ 	Capabilities   json.RawMessage `json:"capabilities,omitempty"`
+ }
+ 
+diff --git a/core/providers/openai/modelmetadata_test.go b/core/providers/openai/modelmetadata_test.go
+new file mode 100644
+index 0000000..008e796
+--- /dev/null
++++ b/core/providers/openai/modelmetadata_test.go
+@@ -0,0 +1,105 @@
++package openai
++
++import (
++	"context"
++	"net/http"
++	"net/http/httptest"
++	"testing"
++
++	"github.com/bytedance/sonic"
++	providerUtils "github.com/maximhq/bifrost/core/providers/utils"
++	"github.com/maximhq/bifrost/core/schemas"
++	"github.com/stretchr/testify/require"
++	"github.com/valyala/fasthttp"
++)
++
++func TestListModelsKeepsUpstreamMetadata(t *testing.T) {
++	t.Parallel()
++
++	body := `{"object":"list","data":[
++		{"id":"stepfun/step-3.7-flash:free","name":"StepFun: Step 3.7 Flash (free)","context_length":256000,
++		 "architecture":{"modality":"text+image->text","input_modalities":["text","image"],"output_modalities":["text"],"instruct_type":null},
++		 "top_provider":{"context_length":256000,"max_completion_tokens":230400,"is_moderated":false},
++		 "supported_parameters":["reasoning_effort","tools"],
++		 "reasoning":{"mandatory":true,"supported_efforts":["high","medium","low"]}},
++		{"id":"big-pickle","object":"model","owned_by":"opencode","name":"Big Pickle","context_length":200000,"max_completion_tokens":32000,
++		 "reasoning":{"supported_efforts":["high","turbo","low"]}},
++		{"id":"odd","reasoning":true,"architecture":"text","top_provider":[]},
++		{"id":"gpt-5","owned_by":"openai","context_window":128000}
++	]}`
++	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
++		_, _ = w.Write([]byte(body))
++	}))
++	defer server.Close()
++
++	response, bifrostErr := ListModelsByKey(
++		schemas.NewBifrostContext(context.Background(), schemas.NoDeadline),
++		&fasthttp.Client{},
++		server.URL,
++		schemas.Key{Models: schemas.WhiteList{"*"}},
++		false,
++		nil,
++		schemas.ModelProvider("nous"),
++		false,
++		false,
++	)
++	require.Nil(t, bifrostErr)
++	require.Len(t, response.Data, 4)
++	models := map[string]schemas.Model{}
++	for _, model := range response.Data {
++		models[model.ID] = model
++	}
++
++	nous := models["nous/stepfun/step-3.7-flash:free"]
++	require.Equal(t, "StepFun: Step 3.7 Flash (free)", *nous.Name)
++	require.Equal(t, 256000, *nous.ContextLength)
++	require.Equal(t, 230400, *nous.MaxOutputTokens)
++	require.Equal(t, 230400, *nous.TopProvider.MaxCompletionTokens)
++	require.Equal(t, []string{"text", "image"}, nous.Architecture.InputModalities)
++	// Upstream listed them highest first; Bifrost reports them lowest first.
++	require.Equal(t, []string{"low", "medium", "high"}, nous.Reasoning.SupportedEfforts)
++	require.True(t, *nous.Reasoning.Mandatory)
++	require.Equal(t, []string{"reasoning_effort", "tools"}, nous.SupportedParameters)
++
++	// Flat max_completion_tokens is also exposed as top_provider for OpenRouter-style readers.
++	pickle := models["nous/big-pickle"]
++	require.Equal(t, "Big Pickle", *pickle.Name)
++	require.Equal(t, 200000, *pickle.ContextLength)
++	require.Equal(t, 32000, *pickle.MaxOutputTokens)
++	require.Equal(t, 32000, *pickle.TopProvider.MaxCompletionTokens)
++	require.Equal(t, []string{"low", "high", "turbo"}, pickle.Reasoning.SupportedEfforts)
++
++	// Unexpected shapes of optional fields are dropped instead of failing the listing.
++	odd := models["nous/odd"]
++	require.Nil(t, odd.Reasoning)
++	require.Nil(t, odd.Architecture)
++	require.Nil(t, odd.TopProvider)
++
++	plain := models["nous/gpt-5"]
++	require.Nil(t, plain.Name)
++	require.Nil(t, plain.TopProvider)
++	require.Equal(t, 128000, *plain.ContextLength)
++
++	providerUtils.ApplyDisplayNames(response, &schemas.CustomProviderConfig{DisplayName: "Nous Portal"})
++	require.Equal(t, "Nous Portal/StepFun: Step 3.7 Flash (free)", *response.Data[0].Name)
++	require.Equal(t, "Nous Portal/gpt-5", *response.Data[3].Name)
++
++	// The /openai drop-in listing carries the same metadata.
++	out, err := sonic.Marshal(ToOpenAIListModelsResponse(response).Data[0])
++	require.NoError(t, err)
++	require.JSONEq(t, `{"id":"nous/stepfun/step-3.7-flash:free","object":"model","owned_by":"",
++		"name":"Nous Portal/StepFun: Step 3.7 Flash (free)","context_window":256000,"context_length":256000,"max_output_tokens":230400,
++		"top_provider":{"is_moderated":false,"context_length":256000,"max_completion_tokens":230400},
++		"architecture":{"modality":"text+image->text","input_modalities":["text","image"],"output_modalities":["text"]},
++		"reasoning":{"mandatory":true,"supported_efforts":["low","medium","high"]},
++		"supported_parameters":["reasoning_effort","tools"]}`, string(out))
++}
++
++func TestDisplayNameNeedsCustomProviderSetting(t *testing.T) {
++	t.Parallel()
++
++	response := &schemas.BifrostListModelsResponse{Data: []schemas.Model{{ID: "openai/gpt-5", Name: schemas.Ptr("GPT-5")}}}
++	providerUtils.ApplyDisplayNames(response, nil)
++	providerUtils.ApplyDisplayNames(response, &schemas.CustomProviderConfig{})
++	require.Equal(t, "GPT-5", *response.Data[0].Name)
++}
+diff --git a/core/providers/openai/models.go b/core/providers/openai/models.go
+index b9ac947..6a998f0 100644
+--- a/core/providers/openai/models.go
++++ b/core/providers/openai/models.go
+@@ -3,6 +3,7 @@ package openai
+ import (
+ 	"strings"
+ 
++	"github.com/bytedance/sonic"
+ 	providerUtils "github.com/maximhq/bifrost/core/providers/utils"
+ 	"github.com/maximhq/bifrost/core/schemas"
+ )
+@@ -33,12 +34,7 @@ func (response *OpenAIListModelsResponse) ToBifrostListModelsResponse(providerKe
+ 
+ 	for _, model := range response.Data {
+ 		for _, result := range pipeline.FilterModel(model.ID) {
+-			entry := schemas.Model{
+-				ID:            string(providerKey) + "/" + result.ResolvedID,
+-				Created:       model.Created,
+-				OwnedBy:       schemas.Ptr(model.OwnedBy),
+-				ContextLength: model.ContextWindow,
+-			}
++			entry := model.toBifrostModel(string(providerKey) + "/" + result.ResolvedID)
+ 			if result.AliasValue != "" {
+ 				entry.Alias = schemas.Ptr(result.AliasValue)
+ 			}
+@@ -59,14 +55,70 @@ func (model *OpenAIModel) ToBifrostModelRetrieveResponse(providerKey schemas.Mod
+ 		return nil
+ 	}
+ 
+-	return &schemas.BifrostModelRetrieveResponse{
+-		Model: schemas.Model{
+-			ID:            string(providerKey) + "/" + model.ID,
+-			Created:       model.Created,
+-			OwnedBy:       schemas.Ptr(model.OwnedBy),
+-			ContextLength: model.ContextWindow,
+-			ShutdownDate:  model.ShutdownDate,
+-		},
++	entry := model.toBifrostModel(string(providerKey) + "/" + model.ID)
++	entry.ShutdownDate = model.ShutdownDate
++	return &schemas.BifrostModelRetrieveResponse{Model: entry}
++}
++
++// toBifrostModel maps an upstream model, including the metadata OpenAI-compatible
++// catalogs add (name, limits, reasoning efforts), onto a Bifrost model with the given ID.
++func (model *OpenAIModel) toBifrostModel(id string) schemas.Model {
++	entry := schemas.Model{
++		ID:                  id,
++		Created:             model.Created,
++		OwnedBy:             schemas.Ptr(model.OwnedBy),
++		Name:                model.DisplayName,
++		ContextLength:       model.ContextWindow,
++		MaxInputTokens:      model.MaxInputTokens,
++		MaxOutputTokens:     model.MaxOutputTokens,
++		TopProvider:         providerUtils.DecodeOptional[schemas.TopProvider](model.TopProvider),
++		Architecture:        providerUtils.DecodeOptional[schemas.Architecture](model.Architecture),
++		Reasoning:           providerUtils.DecodeOptional[schemas.ModelReasoning](model.Reasoning),
++		SupportedParameters: model.SupportedParameters,
++	}
++	if entry.Name == nil {
++		entry.Name = model.Name
++	}
++	if entry.Reasoning != nil {
++		providerUtils.SortReasoningEfforts(entry.Reasoning.SupportedEfforts)
++	}
++	if entry.ContextLength == nil {
++		entry.ContextLength = model.ContextLength
++	}
++	if entry.ContextLength == nil && entry.TopProvider != nil {
++		entry.ContextLength = entry.TopProvider.ContextLength
++	}
++	if entry.MaxOutputTokens == nil {
++		entry.MaxOutputTokens = model.MaxCompletionTokens
++	}
++	if entry.MaxOutputTokens == nil && entry.TopProvider != nil {
++		entry.MaxOutputTokens = entry.TopProvider.MaxCompletionTokens
++	}
++	// OpenRouter-style readers take the output limit from top_provider only.
++	if entry.MaxOutputTokens != nil && (entry.TopProvider == nil || entry.TopProvider.MaxCompletionTokens == nil) {
++		if entry.TopProvider == nil {
++			entry.TopProvider = &schemas.TopProvider{}
++		}
++		entry.TopProvider.MaxCompletionTokens = entry.MaxOutputTokens
++	}
++	return entry
++}
++
++// setMetadata writes the metadata of a Bifrost model onto an outgoing OpenAI model.
++func (model *OpenAIModel) setMetadata(source *schemas.Model) {
++	model.Name = source.Name
++	model.ContextLength = source.ContextLength
++	model.MaxInputTokens = source.MaxInputTokens
++	model.MaxOutputTokens = source.MaxOutputTokens
++	model.SupportedParameters = source.SupportedParameters
++	if source.TopProvider != nil {
++		model.TopProvider, _ = sonic.Marshal(source.TopProvider)
++	}
++	if source.Architecture != nil {
++		model.Architecture, _ = sonic.Marshal(source.Architecture)
++	}
++	if source.Reasoning != nil {
++		model.Reasoning, _ = sonic.Marshal(source.Reasoning)
+ 	}
+ }
+ 
+@@ -91,6 +143,7 @@ func ToOpenAIModelRetrieveResponse(response *schemas.BifrostModelRetrieveRespons
+ 	} else if response.MaxInputTokens != nil {
+ 		openaiModel.ContextWindow = response.MaxInputTokens // Fallback to MaxInputTokens if ContextLength is not set
+ 	}
++	openaiModel.setMetadata(&response.Model)
+ 	return openaiModel
+ }
+ 
+@@ -118,6 +171,7 @@ func ToOpenAIListModelsResponse(response *schemas.BifrostListModelsResponse) *Op
+ 		} else if model.MaxInputTokens != nil {
+ 			openaiModel.ContextWindow = model.MaxInputTokens // Fallback to MaxInputTokens if ContextLength is not set
+ 		}
++		openaiModel.setMetadata(&model)
+ 
+ 		openaiResponse.Data = append(openaiResponse.Data, openaiModel)
+ 
+diff --git a/core/providers/openai/openai.go b/core/providers/openai/openai.go
+index 29a1553..7f10687 100644
+--- a/core/providers/openai/openai.go
++++ b/core/providers/openai/openai.go
+@@ -118,6 +118,12 @@ func (provider *OpenAIProvider) buildRequestURL(ctx *schemas.BifrostContext, def
+ }
+ 
+ func (provider *OpenAIProvider) ListModels(ctx *schemas.BifrostContext, keys []schemas.Key, request *schemas.BifrostListModelsRequest) (*schemas.BifrostListModelsResponse, *schemas.BifrostError) {
++	response, err := provider.listModels(ctx, keys, request)
++	providerUtils.ApplyDisplayNames(response, provider.customProviderConfig)
++	return response, err
++}
++
++func (provider *OpenAIProvider) listModels(ctx *schemas.BifrostContext, keys []schemas.Key, request *schemas.BifrostListModelsRequest) (*schemas.BifrostListModelsResponse, *schemas.BifrostError) {
+ 	if err := providerUtils.CheckOperationAllowed(schemas.OpenAI, provider.customProviderConfig, schemas.ListModelsRequest); err != nil {
+ 		return nil, err
+ 	}
+@@ -288,7 +294,7 @@ func (provider *OpenAIProvider) ModelRetrieve(ctx *schemas.BifrostContext, key s
+ 		return nil, idErr
+ 	}
+ 
+-	return HandleOpenAIModelRetrieveRequest(
++	response, err := HandleOpenAIModelRetrieveRequest(
+ 		ctx,
+ 		provider.client,
+ 		provider.buildRequestURL(ctx, "/v1/models/"+escapedModel, schemas.ModelRetrieveRequest),
+@@ -298,6 +304,10 @@ func (provider *OpenAIProvider) ModelRetrieve(ctx *schemas.BifrostContext, key s
+ 		providerUtils.ShouldSendBackRawRequest(ctx, provider.sendBackRawRequest),
+ 		providerUtils.ShouldSendBackRawResponse(ctx, provider.sendBackRawResponse),
+ 	)
++	if response != nil {
++		providerUtils.ApplyDisplayName(&response.Model, provider.customProviderConfig)
++	}
++	return response, err
+ }
+ 
+ // HandleOpenAIModelRetrieveRequest handles a model retrieve request to OpenAI's API.
+diff --git a/core/providers/openai/types.go b/core/providers/openai/types.go
+index 7ae5f67..257e80c 100644
+--- a/core/providers/openai/types.go
++++ b/core/providers/openai/types.go
+@@ -1680,6 +1680,19 @@ type OpenAIModel struct {
+ 	// GROQ specific fields
+ 	Active        *bool `json:"active,omitempty"`
+ 	ContextWindow *int  `json:"context_window,omitempty"`
++
++	// Metadata OpenAI-compatible upstreams (OpenRouter-style catalogs, gateways) add.
++	// Nested fields stay raw and are decoded leniently: their shapes vary by upstream.
++	Name                *string         `json:"name,omitempty"`
++	DisplayName         *string         `json:"display_name,omitempty"`
++	ContextLength       *int            `json:"context_length,omitempty"`
++	MaxInputTokens      *int            `json:"max_input_tokens,omitempty"`
++	MaxOutputTokens     *int            `json:"max_output_tokens,omitempty"`
++	MaxCompletionTokens *int            `json:"max_completion_tokens,omitempty"`
++	TopProvider         json.RawMessage `json:"top_provider,omitempty"`
++	Architecture        json.RawMessage `json:"architecture,omitempty"`
++	Reasoning           json.RawMessage `json:"reasoning,omitempty"`
++	SupportedParameters []string        `json:"supported_parameters,omitempty"`
+ }
+ 
+ // OpenAIListModelsResponse represents an OpenAI list models response
+@@ -1699,8 +1712,7 @@ func (response *OpenAIListModelsResponse) UnmarshalJSON(data []byte) error {
+ 
+ 	var models []struct {
+ 		OpenAIModel
+-		Organization  string `json:"organization"`
+-		ContextLength *int   `json:"context_length,omitempty"`
++		Organization string `json:"organization"`
+ 	}
+ 	if err := sonic.Unmarshal(trimmed, &models); err != nil {
+ 		return err
+diff --git a/core/providers/utils/modelmetadata.go b/core/providers/utils/modelmetadata.go
+new file mode 100644
+index 0000000..d308cb9
+--- /dev/null
++++ b/core/providers/utils/modelmetadata.go
+@@ -0,0 +1,63 @@
++package utils
++
++import (
++	"slices"
++	"strings"
++
++	"github.com/bytedance/sonic"
++	"github.com/maximhq/bifrost/core/schemas"
++)
++
++// reasoningEffortOrder ranks the reasoning effort levels, lowest first.
++var reasoningEffortOrder = []string{"none", "minimal", "low", "medium", "high", "xhigh", "max"}
++
++// SortReasoningEfforts orders effort levels lowest first, whatever order the upstream
++// listed them in; levels outside reasoningEffortOrder keep their place at the end.
++func SortReasoningEfforts(efforts []string) {
++	rank := func(effort string) int {
++		if i := slices.Index(reasoningEffortOrder, strings.ToLower(effort)); i >= 0 {
++			return i
++		}
++		return len(reasoningEffortOrder)
++	}
++	slices.SortStableFunc(efforts, func(a, b string) int { return rank(a) - rank(b) })
++}
++
++// DecodeOptional decodes an optional upstream model metadata field. It returns nil when
++// the field is absent or has an unexpected shape, so one odd field never fails a listing.
++func DecodeOptional[T any](raw []byte) *T {
++	if len(raw) == 0 || string(raw) == "null" {
++		return nil
++	}
++	var value T
++	if sonic.Unmarshal(raw, &value) != nil {
++		return nil
++	}
++	return &value
++}
++
++// ApplyDisplayName names a custom provider's model "<display_name>/<upstream name>",
++// using the model ID when the upstream gave no name.
++func ApplyDisplayName(model *schemas.Model, cfg *schemas.CustomProviderConfig) {
++	if model == nil || cfg == nil || cfg.DisplayName == "" {
++		return
++	}
++	name := model.ID
++	if _, id, ok := strings.Cut(model.ID, "/"); ok {
++		name = id
++	}
++	if model.Name != nil && *model.Name != "" {
++		name = *model.Name
++	}
++	model.Name = schemas.Ptr(cfg.DisplayName + "/" + name)
++}
++
++// ApplyDisplayNames applies ApplyDisplayName to every model in a listing.
++func ApplyDisplayNames(response *schemas.BifrostListModelsResponse, cfg *schemas.CustomProviderConfig) {
++	if response == nil {
++		return
++	}
++	for i := range response.Data {
++		ApplyDisplayName(&response.Data[i], cfg)
++	}
++}
+diff --git a/core/schemas/provider.go b/core/schemas/provider.go
+index 51fc295..b4480bc 100644
+--- a/core/schemas/provider.go
++++ b/core/schemas/provider.go
+@@ -627,6 +627,7 @@ type CustomProviderConfig struct {
+ 	RequestPathOverrides  map[RequestType]string `json:"request_path_overrides,omitempty"` // Mapping of request type to its custom path which will override the default path of the provider (not allowed for Bedrock)
+ 	DoesNotSendDoneMarker bool                   `json:"does_not_send_done_marker"`        // Upstream ends its SSE stream after finish_reason without sending data: [DONE]
+ 	WaitForUsage          bool                   `json:"wait_for_usage"`                   // With DoesNotSendDoneMarker, keep reading past finish_reason so the trailing usage-only chunk is not dropped (#7143). A silent upstream then ends on network_config.stream_idle_timeout_in_seconds
++	DisplayName           string                 `json:"display_name,omitempty"`           // Listed model names become "<DisplayName>/<upstream name>"
+ }
+ 
+ // IsOperationAllowed checks if a specific operation is allowed for this custom provider
+diff --git a/transports/config.schema.json b/transports/config.schema.json
+index d8f41e9..28a348d 100644
+--- a/transports/config.schema.json
++++ b/transports/config.schema.json
+@@ -15572,6 +15572,10 @@
+           "type": "boolean",
+           "description": "With does_not_send_done_marker, keep reading past finish_reason so the trailing usage-only chunk is collected instead of dropped. Without it the request records zero tokens and zero cost. An upstream that then goes silent ends on network_config.stream_idle_timeout_in_seconds"
+         },
++        "display_name": {
++          "type": "string",
++          "description": "Prefix for the names of this provider's listed models: \"<display_name>/<upstream name>\""
++        },
+         "base_provider_type": {
+           "type": "string",
+           "enum": [

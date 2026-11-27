@@ -11,6 +11,18 @@ let
   port = 3639;
   dataDir = "${homelabMediaPath}/services/bifrost/data";
 
+  # Built here instead of pulling maximhq/bifrost: see ./package.nix for the patch.
+  bifrost = pkgs.callPackage ./package.nix { };
+  image = pkgs.dockerTools.streamLayeredImage {
+    name = "bifrost-local";
+    tag = bifrost.version;
+    extraCommands = "mkdir -m 1777 tmp";
+    config = {
+      Entrypoint = [ (lib.getExe bifrost) ];
+      Env = [ "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" ];
+    };
+  };
+
   # Every secret is an env.VAR reference, resolved from the env files below.
   # Default "split" source_of_truth: dashboard edits survive restarts until
   # the matching entry here changes; entries removed here stay in config.db.
@@ -22,7 +34,7 @@ let
       disable_content_logging = true;
       log_retention_days = 14;
     };
-    # Absolute: relative paths resolve against the CWD (/app), not the app-dir.
+    # Absolute: relative paths resolve against the working directory, not the app-dir.
     config_store = { enabled = true; type = "sqlite"; config.path = "/app/data/config.db"; };
     logs_store = { enabled = true; type = "sqlite"; config.path = "/app/data/logs.db"; };
     governance = {
@@ -45,16 +57,21 @@ let
         }
       ];
     };
+    # display_name (from the patch) lists models as "<display_name>/<upstream name>".
     providers = {
       # Lazy listener: the first request after idle waits for Meridian to boot.
       meridian = {
-        custom_provider_config.base_provider_type = "anthropic";
+        custom_provider_config = {
+          base_provider_type = "anthropic";
+          display_name = "Meridian";
+        };
         network_config.base_url = "http://127.0.0.1:3456";
         keys = [ { name = "meridian"; value = "env.MERIDIAN_API_KEY"; models = [ "*" ]; weight = 1; } ];
       };
       ocfree = {
         custom_provider_config = {
           base_provider_type = "openai";
+          display_name = "OpenCode Free";
           request_path_overrides = {
             chat_completion = "/opencode/chat/completions";
             chat_completion_stream = "/opencode/chat/completions";
@@ -68,7 +85,10 @@ let
       };
       # hermes-nous-proxy attaches the OAuth token and accepts any bearer.
       nous = {
-        custom_provider_config.base_provider_type = "openai";
+        custom_provider_config = {
+          base_provider_type = "openai";
+          display_name = "Nous Portal";
+        };
         network_config = {
           base_url = "http://radrubble.lion-zebra.ts.net:8645";
           allow_private_network = true;
@@ -98,17 +118,19 @@ in
 
   # Containers
   virtualisation.oci-containers.containers."bifrost" = {
-    image = "maximhq/bifrost:v2.6.0";
+    image = "${image.imageName}:${image.imageTag}";
+    imageStream = image;
+    cmd = [ "-app-dir" "/app/data" "-host" "0.0.0.0" "-port" (toString port) ];
     environment = {
-      "APP_HOST" = "0.0.0.0";
-      "APP_PORT" = toString port;
       "GOMEMLIMIT" = "384MiB";
     };
     environmentFiles = [
       config.sops.secrets."compose/bifrost.env".path
       config.sops.secrets."compose/meridian.env".path
     ];
-    # The image runs as UID 1000, which must own dataDir.
+    # UID 1000 must own dataDir, as with the upstream image.
+    user = "1000:0";
+    workdir = "/app/data";
     volumes = [
       "${dataDir}:/app/data:rw"
       "${configJson}:/app/data/config.json:ro"
