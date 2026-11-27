@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.2.
 { pkgs, lib, config, everythingElsePath, ... }:
 
+let
+  webUIPort = 9081;
+in
 {
   sops.secrets."compose/transmission.env" = {
     sopsFile = ./stack.env;
@@ -27,7 +30,7 @@
       "${everythingElsePath}/downloads/transmission/watch:/watch:rw"
     ];
     ports = [
-      "9081:9091/tcp"
+      "${toString webUIPort}:9091/tcp"
       "51413:51413/tcp"
       "51413:51413/udp"
     ];
@@ -40,7 +43,7 @@
     labels = {
       "homepage.description" = "Torrent downloads";
       "homepage.group" = "*arr Stack";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:9081";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "transmission";
       "homepage.name" = "Transmission";
     };

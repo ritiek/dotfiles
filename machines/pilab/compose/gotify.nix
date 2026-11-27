@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, homelabMediaPath, ... }:
 
+let
+  webUIPort = 8893;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -19,7 +22,7 @@
       "${homelabMediaPath}/services/gotify:/app/data:rw"
     ];
     ports = [
-      "8893:80/tcp"
+      "${toString webUIPort}:80/tcp"
     ];
     user = "1000:1000";
     log-driver = "journald";
@@ -31,7 +34,7 @@
     labels = {
       "homepage.description" = "Send push notifications";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8893";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "gotify";
       "homepage.name" = "Gotify";
       # "homepage.widget.type" = "gotify";

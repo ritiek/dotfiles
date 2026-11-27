@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 81;
+in
 {
   sops.secrets = {
     "compose/pihole.env" = {
@@ -18,7 +21,7 @@
   networking.firewall = {
     allowedTCPPorts = [
       53
-      81
+      webUIPort
     ];
     allowedUDPPorts = [
       53
@@ -42,7 +45,7 @@
       "TZ" = "Asia/Kolkata";
       # If using Docker's default `bridge` network setting the dns listening mode should be set to 'all'
       "FTLCONF_dns_listeningMode" = "all";
-      "FTLCONF_webserver_port" = "81";
+      "FTLCONF_webserver_port" = toString webUIPort;
       "FTLCONF_misc_etc_dnsmasq_d" = "true";
       # Listen on port 5335 so NixOS dnsmasq can own port 53 and forward to us.
       "FTLCONF_dns_port" = "5335";
@@ -88,8 +91,8 @@
     labels = {
       "homepage.description" = "DNS";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:81/admin";
-      "homepage.icon" = "pi-hole";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/admin";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/admin/img/favicons/apple-touch-icon.png";
       "homepage.name" = "Pi-Hole";
       # TODO: Make Homepage dashboard widgets work. Currently, one needs to hardcode
       #       the API key in the compose file, which is not ideal. For more info, see:

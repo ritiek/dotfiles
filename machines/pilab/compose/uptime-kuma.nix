@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 3001;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -16,7 +19,7 @@
       "${homelabMediaPath}/services/uptime-kuma:/app/data:rw"
     ];
     ports = [
-      "3001:3001/tcp"
+      "${toString webUIPort}:3001/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -29,8 +32,8 @@
     labels = {
       "homepage.description" = "Monitor machines and services for health";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3001";
-      "homepage.icon" = "uptime-kuma";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/apple-touch-icon.png";
       "homepage.name" = "Uptime Kuma";
       # "homepage.widget.type" = "uptimekuma";
       # "homepage.widget.url" = "http://host.docker.internal:3001";

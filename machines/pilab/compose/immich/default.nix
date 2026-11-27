@@ -2,6 +2,7 @@
 { pkgs, lib, config, homelabMediaPath, ... }:
 
 let
+  webUIPort = 2283;
   # Single source of truth for the immich_default bridge.
   #
   # Left to itself, Docker allocates this network's subnet dynamically out of
@@ -60,8 +61,8 @@ in
     labels = {
       "homepage.description" = "Photos backup";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:2283";
-      "homepage.icon" = "immich";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
       "homepage.name" = "Immich";
     };
   };
@@ -171,7 +172,7 @@ in
       "${homelabMediaPath}/services/immich/photos:/usr/src/app/upload:rw"
     ];
     ports = [
-      "2283:2283/tcp"
+      "${toString webUIPort}:2283/tcp"
     ];
     dependsOn = [
       "immich_postgres"

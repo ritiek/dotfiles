@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.2.
 { pkgs, lib, everythingElsePath, ... }:
 
+let
+  webUIPort = 8989;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -23,7 +26,7 @@
       "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
     ports = [
-      "8989:8989/tcp"
+      "${toString webUIPort}:8989/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -35,7 +38,7 @@
     labels = {
       "homepage.description" = "For TV shows";
       "homepage.group" = "*arr Stack";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8989";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "sonarr";
       "homepage.name" = "Sonarr";
     };

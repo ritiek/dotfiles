@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 6168;
+in
 {
   sops.secrets."compose/conduwuit.env" = {
     sopsFile = ./stack.env;
@@ -25,7 +28,7 @@
       "${homelabMediaPath}/services/conduwuit/data:/var/lib/matrix-conduit:rw"
     ];
     ports = [
-      "6168:6168/tcp"
+      "${toString webUIPort}:6168/tcp"
     ];
     user = "1001:1001";
     log-driver = "journald";
@@ -37,7 +40,7 @@
     labels = {
       "homepage.description" = "Conduwuit Homeserver";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:6168";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "matrix";
       "homepage.name" = "Matrix";
     };

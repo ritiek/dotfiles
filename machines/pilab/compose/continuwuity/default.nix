@@ -2,6 +2,9 @@
 # CONDUWUIT_* env vars remain valid as compat aliases — stack.env unchanged.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 6168;
+in
 {
   sops.secrets."compose/continuwuity.env" = {
     sopsFile = ./stack.env;
@@ -27,7 +30,7 @@
       "${homelabMediaPath}/services/continuwuity/data:/var/lib/matrix-conduit:rw"
     ];
     ports = [
-      "6168:6168/tcp"
+      "${toString webUIPort}:6168/tcp"
     ];
     user = "1001:1001";
     log-driver = "journald";
@@ -39,7 +42,7 @@
     labels = {
       "homepage.description" = "Continuwuity Homeserver";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:6168";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "matrix";
       "homepage.name" = "Matrix";
     };

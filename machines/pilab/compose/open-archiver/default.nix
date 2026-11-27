@@ -2,6 +2,9 @@
 
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 3035;
+in
 {
   sops.secrets."compose/open-archiver.env" = {
     sopsFile = ./stack.env;
@@ -71,7 +74,7 @@
       "${homelabMediaPath}/services/open-archiver:/var/data/open-archiver:rw"
     ];
     ports = [
-      "3035:3000/tcp"
+      "${toString webUIPort}:3000/tcp"
     ];
     dependsOn = [
       "meilisearch"
@@ -87,8 +90,8 @@
     labels = {
       "homepage.description" = "Email archiving";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3035";
-      "homepage.icon" = "open-archiver";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.png";
       "homepage.name" = "Open Archiver";
     };
   };

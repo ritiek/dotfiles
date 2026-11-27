@@ -5,6 +5,9 @@
 # admin/subscriber. Users, password hashes and tokens are in stack.env.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 8894;
+in
 {
   sops.secrets."compose/ntfy.env" = {
     sopsFile = ./stack.env;
@@ -39,7 +42,7 @@
       ];
       "NTFY_AUTH_DEFAULT_ACCESS" = "deny-all";
       "NTFY_AUTH_FILE" = "/var/lib/ntfy/auth.db";
-      "NTFY_BASE_URL" = "http://pilab.lion-zebra.ts.net:8894";
+      "NTFY_BASE_URL" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "NTFY_CACHE_FILE" = "/var/lib/ntfy/cache.db";
       "NTFY_ENABLE_LOGIN" = "true";
       "TZ" = config.time.timeZone;
@@ -51,14 +54,14 @@
       "${homelabMediaPath}/services/ntfy:/var/lib/ntfy:rw"
     ];
     ports = [
-      "8894:80/tcp"
+      "${toString webUIPort}:80/tcp"
     ];
     cmd = [ "serve" ];
     labels = {
       "homepage.description" = "Send push notifications";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8894";
-      "homepage.icon" = "ntfy";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/static/images/apple-touch-icon.png";
       "homepage.name" = "ntfy";
     };
     user = "1000:1000";

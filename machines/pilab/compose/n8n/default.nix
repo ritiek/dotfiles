@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 5678;
+in
 {
   sops.secrets = {
     "compose/n8n.env" = {
@@ -32,7 +35,7 @@
       "${homelabMediaPath}/services/n8n/storage:/home/node/.n8n:rw"
     ];
     ports = [
-      "5678:5678/tcp"
+      "${toString webUIPort}:5678/tcp"
     ];
     dependsOn = [
       "n8n-postgres"
@@ -47,8 +50,8 @@
     labels = {
       "homepage.description" = "Workflow automations";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:5678";
-      "homepage.icon" = "n8n";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
       "homepage.name" = "n8n";
     };
   };

@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { pkgs, lib, homelabMediaPath, ... }:
 
+let
+  webUIPort = 8188;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -20,7 +23,7 @@
       # "${homelabMediaPath}/services/filebrowser-quantum/frontend:/home/frontend:rw"
     ];
     ports = [
-      "8188:80/tcp"
+      "${toString webUIPort}:80/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -32,7 +35,7 @@
     labels = {
       "homepage.description" = "Filebrowser";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8188/";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/";
       "homepage.icon" = "filebrowser";
       "homepage.name" = "FileBrowser Quantum";
     };

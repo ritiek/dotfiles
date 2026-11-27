@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { config, pkgs, lib, homelabMediaPath, ... }:
 
+let
+  webUIPort = 5000;
+in
 {
   sops.secrets = {
     "compose/changedetection.env" = {
@@ -35,7 +38,7 @@
       "${homelabMediaPath}/services/changedetection:/datastore:rw"
     ];
     ports = [
-      "5000:5000/tcp"
+      "${toString webUIPort}:5000/tcp"
     ];
     dependsOn = [
       "changedetection-sockpuppetbrowser"
@@ -52,7 +55,7 @@
     labels = {
       "homepage.description" = "Monitor webpages for changes";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:5000";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "changedetection";
       "homepage.name" = "ChangeDetection";
       # "homepage.widget.type" = "changedetectionio";

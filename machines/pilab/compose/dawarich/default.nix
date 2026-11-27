@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 3030;
+in
 {
   sops.secrets."compose/dawarich.env" = {
     sopsFile = ./stack.env;
@@ -60,7 +63,7 @@
       # "${homelabMediaPath}/services/dawarich/sqlite_data:/dawarich_sqlite_data"
     ];
     ports = [
-      "3030:3000/tcp"
+      "${toString webUIPort}:3000/tcp"
     ];
     cmd = [ "bin/rails" "server" "-p" "3000" "-b" "0.0.0.0" ];
     dependsOn = [
@@ -88,8 +91,8 @@
     labels = {
       "homepage.description" = "Location";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3030";
-      "homepage.icon" = "dawarich";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/apple-touch-icon.png";
       "homepage.name" = "Dawarich";
     };
   };

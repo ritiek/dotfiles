@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.2.
 { pkgs, lib, ... }:
 
+let
+  webUIPort = 61208;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -27,8 +30,8 @@
     labels = {
       "homepage.description" = "System resources";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:61208";
-      "homepage.icon" = "glances";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/static/favicon.ico";
       "homepage.name" = "Glances";
     };
   };

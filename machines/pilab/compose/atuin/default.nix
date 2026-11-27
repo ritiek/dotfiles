@@ -2,6 +2,9 @@
 
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 7235;
+in
 {
   sops.secrets."compose/atuin.env" = {
     sopsFile = ./stack.env;
@@ -29,7 +32,7 @@
       "${homelabMediaPath}/services/atuin/config:/config:rw"
     ];
     ports = [
-      "7235:8888/tcp"
+      "${toString webUIPort}:8888/tcp"
     ];
     cmd = [ "start" ];
     dependsOn = [
@@ -44,7 +47,7 @@
     labels = {
       "homepage.description" = "Shell history";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:7235";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "atuin";
       "homepage.name" = "Atuin";
     };

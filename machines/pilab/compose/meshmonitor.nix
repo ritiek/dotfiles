@@ -2,6 +2,10 @@
 
 { pkgs, lib, homelabMediaPath, ... }:
 
+let
+  webUIPort = 5819;
+  serialBridgePort = 4403;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -25,7 +29,7 @@
       "${homelabMediaPath}/services/meshmonitor:/data:rw"
     ];
     ports = [
-      "5819:3001/tcp"
+      "${toString webUIPort}:3001/tcp"
       "4404:4404/tcp"
     ];
     dependsOn = [
@@ -40,8 +44,8 @@
     labels = {
       "homepage.description" = "Manage Meshtastic devices";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:5819";
-      "homepage.icon" = "meshmonitor";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
       "homepage.name" = "MeshMonitor";
     };
   };
@@ -67,10 +71,10 @@
     environment = {
       "BAUD_RATE" = "115200";
       "SERIAL_DEVICE" = "/dev/ttyACM0";
-      "TCP_PORT" = "4403";
+      "TCP_PORT" = toString serialBridgePort;
     };
     ports = [
-      "4403:4403/tcp"
+      "${toString serialBridgePort}:${toString serialBridgePort}/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -82,8 +86,8 @@
     labels = {
       "homepage.description" = "Meshtastic serial bridge";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:4403";
-      "homepage.icon" = "meshmonitor";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString serialBridgePort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
       "homepage.name" = "Meshtastic Serial Bridge";
     };
   };

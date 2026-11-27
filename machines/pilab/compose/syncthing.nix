@@ -1,10 +1,13 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, everythingElsePath, ... }:
 
+let
+  webUIPort = 8384;
+in
 {
   networking.firewall = {
     allowedTCPPorts = [
-      8384
+      webUIPort
       22000
     ];
     allowedUDPPorts = [
@@ -63,8 +66,8 @@
     labels = {
       "homepage.description" = "Synchronize data between Machines";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8384";
-      "homepage.icon" = "syncthing";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/assets/img/favicon-default.png";
       "homepage.name" = "Syncthing";
     };
   };

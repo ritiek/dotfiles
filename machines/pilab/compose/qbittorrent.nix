@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.2.
 { pkgs, lib, everythingElsePath, ... }:
 
+let
+  webUIPort = 9082;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -17,14 +20,14 @@
       "PUID" = "1000";
       "TORRENTING_PORT" = "6881";
       "TZ" = "Asia/Kolkata";
-      "WEBUI_PORT" = "9082";
+      "WEBUI_PORT" = toString webUIPort;
     };
     volumes = [
       "${everythingElsePath}/qbittorrent/config:/config:rw"
       "${everythingElsePath}/qbittorrent/downloads:/downloads:rw"
     ];
     ports = [
-      "9082:9082/tcp"
+      "${toString webUIPort}:${toString webUIPort}/tcp"
       "6881:6881/tcp"
       "6881:6881/udp"
     ];
@@ -38,7 +41,7 @@
     labels = {
       "homepage.description" = "Torrent downloads";
       "homepage.group" = "*arr Stack";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:9082";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "qbittorrent";
       "homepage.name" = "qBittorrent";
     };

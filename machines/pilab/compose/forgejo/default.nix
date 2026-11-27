@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 3033;
+in
 {
   sops.secrets."compose/forgejo.env" = {
     sopsFile = ./stack.env;
@@ -27,7 +30,7 @@
     # Forgejo 17 defaults to "session", which collides with Flask apps on the same host.
     environment.FORGEJO__session__COOKIE_NAME = "i_like_gitea";
     # Clone URLs shown in the UI; SSH_PORT is the published host port (container listens on 22).
-    environment.FORGEJO__server__ROOT_URL = "http://pilab.lion-zebra.ts.net:3033/";
+    environment.FORGEJO__server__ROOT_URL = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/";
     environment.FORGEJO__server__DOMAIN = "pilab.lion-zebra.ts.net";
     environment.FORGEJO__server__SSH_DOMAIN = "pilab.lion-zebra.ts.net";
     environment.FORGEJO__server__SSH_PORT = "3022";
@@ -37,7 +40,7 @@
       "${homelabMediaPath}/services/forgejo/server:/data:rw"
     ];
     ports = [
-      "3033:3033/tcp"
+      "${toString webUIPort}:3033/tcp"
       "3022:22/tcp"
     ];
     dependsOn = [
@@ -54,8 +57,8 @@
     labels = {
       "homepage.description" = "Git in a forge";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3033";
-      "homepage.icon" = "forgejo";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/assets/img/favicon.svg";
       "homepage.name" = "Forgejo";
     };
   };

@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 3721;
+in
 {
   sops.secrets."compose/miniflux.env" = {
     sopsFile = ./stack.env;
@@ -60,7 +63,7 @@
       config.sops.secrets."compose/miniflux.env".path
     ];
     ports = [
-      "3721:8080/tcp"
+      "${toString webUIPort}:8080/tcp"
     ];
     dependsOn = [
       "miniflux-db"
@@ -76,8 +79,8 @@
     labels = {
       "homepage.description" = "RSS Reader";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:3721";
-      "homepage.icon" = "miniflux";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
       "homepage.name" = "Miniflux";
     };
   };

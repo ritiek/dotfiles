@@ -8,7 +8,7 @@
 { pkgs, lib, config, homelabMediaPath, ... }:
 
 let
-  port = 3639;
+  webUIPort = 3639;
   dataDir = "${homelabMediaPath}/services/bifrost/data";
 
   # Built here instead of pulling maximhq/bifrost: see ./package.nix for the patch.
@@ -107,7 +107,7 @@ in
   # MERIDIAN_API_KEY is read from Meridian's own env file.
   sops.secrets."compose/meridian.env".restartUnits = [ "docker-bifrost.service" ];
 
-  networking.firewall.allowedTCPPorts = [ port ];
+  networking.firewall.allowedTCPPorts = [ webUIPort ];
 
   # Runtime
   virtualisation.docker = {
@@ -120,7 +120,7 @@ in
   virtualisation.oci-containers.containers."bifrost" = {
     image = "${image.imageName}:${image.imageTag}";
     imageStream = image;
-    cmd = [ "-app-dir" "/app/data" "-host" "0.0.0.0" "-port" (toString port) ];
+    cmd = [ "-app-dir" "/app/data" "-host" "0.0.0.0" "-port" (toString webUIPort) ];
     environment = {
       "GOMEMLIMIT" = "384MiB";
     };
@@ -140,6 +140,14 @@ in
     extraOptions = [
       "--network=host"
     ];
+    labels = {
+      "homepage.description" = "LLM gateway";
+      "homepage.group" = "Services";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      # No bifrost entry in Homepage's icon sets; Bifrost serves its own.
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
+      "homepage.name" = "Bifrost";
+    };
   };
   systemd.services."docker-bifrost" = {
     serviceConfig = {

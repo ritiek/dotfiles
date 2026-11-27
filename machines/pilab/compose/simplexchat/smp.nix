@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { config, pkgs, lib, homelabMediaPath, ... }:
 
+let
+  webUIPort = 5221;
+in
 {
   sops.secrets."compose/simplexchat/smp.env" = {
     sopsFile = ./smp.env;
@@ -27,7 +30,7 @@
     ];
     ports = [
       "5220:5223/tcp"
-      "5221:5221"
+      "${toString webUIPort}:5221"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -38,7 +41,7 @@
     labels = {
       "homepage.description" = "Messenger";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:5221";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "simplex-chat";
       "homepage.name" = "SimpleX Chat";
     };

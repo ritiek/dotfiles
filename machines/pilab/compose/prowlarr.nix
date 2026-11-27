@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.2.
 { pkgs, lib, config, everythingElsePath, ... }:
 
+let
+  webUIPort = 9696;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -21,7 +24,7 @@
       "${everythingElsePath}/arr/configs/prowlarr:/config:rw"
     ];
     ports = [
-      "9696:9696/tcp"
+      "${toString webUIPort}:9696/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -34,7 +37,7 @@
     labels = {
       "homepage.description" = "For indexers";
       "homepage.group" = "*arr Stack";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:9696";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "prowlarr";
       "homepage.name" = "Prowlarr";
     };

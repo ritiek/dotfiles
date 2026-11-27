@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 51515;
+in
 {
   sops.secrets."compose/kopia.env" = {
     sopsFile = ./stack.env;
@@ -28,14 +31,14 @@
       "kopia_logs:/app/logs:rw"
     ];
     ports = [
-      "51515:51515/tcp"
+      "${toString webUIPort}:${toString webUIPort}/tcp"
     ];
     cmd = [
       "server"
       "start"
       "--disable-csrf-token-checks"
       "--insecure"
-      "--address=0.0.0.0:51515"
+      "--address=0.0.0.0:${toString webUIPort}"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -52,7 +55,7 @@
     labels = {
       "homepage.description" = "Backups";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:51515";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "kopia";
       "homepage.name" = "Kopia";
     };

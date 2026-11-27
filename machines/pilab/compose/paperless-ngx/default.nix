@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 8010;
+in
 {
   sops.secrets."compose/paperless-ngx.env" = {
     sopsFile = ./stack.env;
@@ -155,7 +158,7 @@
       "${homelabMediaPath}/services/paperless/media:/usr/src/paperless/media:rw"
     ];
     ports = [
-      "8010:8000/tcp"
+      "${toString webUIPort}:8000/tcp"
     ];
     dependsOn = [
       "paperless-ngx-broker"
@@ -176,8 +179,8 @@
     labels = {
       "homepage.description" = "Go paperless";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8010";
-      "homepage.icon" = "paperless-ngx";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/favicon.ico";
       "homepage.name" = "Paperless NGX";
     };
   };

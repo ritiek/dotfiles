@@ -4,6 +4,9 @@
 
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 7456;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -22,8 +25,8 @@
       NODE_ENV = "production";
       NODE_OPTIONS = "--max-old-space-size=192";
       OD_BIND_HOST = "0.0.0.0";
-      OD_PORT = "7456";
-      OD_WEB_PORT = "7456";
+      OD_PORT = toString webUIPort;
+      OD_WEB_PORT = toString webUIPort;
       # Upstream has no wildcard; "*" is patched in by open-design-image-build.
       # Without it od mcp (no Origin header) is rejected for any Host that
       # isn't loopback/RFC1918, i.e. every tailnet client.
@@ -48,7 +51,7 @@
       "open-design-vela:/mnt/host-vela:ro"
     ];
     ports = [
-      "7456:7456/tcp"
+      "${toString webUIPort}:${toString webUIPort}/tcp"
     ];
     log-driver = "journald";
     autoStart = false;
@@ -65,8 +68,8 @@
     labels = {
       "homepage.description" = "AI design tool (MCP daemon)";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:7456";
-      "homepage.icon" = "open-design";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/app-icon.png";
       "homepage.name" = "OpenDesign";
     };
   };

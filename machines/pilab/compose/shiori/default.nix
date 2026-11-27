@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.2.3.
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 2397;
+in
 {
   sops.secrets."compose/shiori.env" = {
     sopsFile = ./stack.env;
@@ -29,7 +32,7 @@
       "${homelabMediaPath}/services/shiori/src:/src/shiori:rw"
     ];
     ports = [
-      "2397:8080/tcp"
+      "${toString webUIPort}:8080/tcp"
     ];
     dependsOn = [
       "shiori-postgres"
@@ -43,7 +46,7 @@
     labels = {
       "homepage.description" = "Bookmarks & Read Later";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:2397";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "shiori";
       "homepage.name" = "Shiori";
     };

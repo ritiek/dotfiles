@@ -2,6 +2,9 @@
 
 { pkgs, lib, config, homelabMediaPath, ... }:
 
+let
+  webUIPort = 8001;
+in
 {
   sops.secrets."compose/ryot.env" = {
     sopsFile = ./stack.env;
@@ -26,7 +29,7 @@
       config.sops.secrets."compose/ryot.env".path
     ];
     ports = [
-      "8001:8000/tcp"
+      "${toString webUIPort}:8000/tcp"
     ];
     dependsOn = [
       "ryot-db"
@@ -41,8 +44,8 @@
     labels = {
       "homepage.description" = "Media tracking";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:8001";
-      "homepage.icon" = "ryot";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
+      "homepage.icon" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}/icons/maskable_icon_x180.png";
       "homepage.name" = "Ryot";
     };
   };

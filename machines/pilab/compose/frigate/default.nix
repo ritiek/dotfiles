@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { config, pkgs, lib, everythingElsePath, ... }:
 
+let
+  webUIPort = 5010;
+in
 {
   sops.secrets."compose/frigate.env" = {
     sopsFile = ./stack.env;
@@ -28,7 +31,7 @@
       "${everythingElsePath}/frigate/storage:/media/frigate:rw"
     ];
     ports = [
-      "5010:5000/tcp"
+      "${toString webUIPort}:5000/tcp"
       "8971:8971/tcp"
       "8554:8554/tcp"
       "8555:8555/tcp"
@@ -50,7 +53,7 @@
     labels = {
       "homepage.description" = "Monitor IP cams";
       "homepage.group" = "Monitoring";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:5010";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       "homepage.icon" = "frigate";
       "homepage.name" = "Frigate";
     };

@@ -1,6 +1,9 @@
 # Auto-generated using compose2nix v0.3.1.
 { pkgs, lib, homelabMediaPath, ... }:
 
+let
+  relayPort = 21117;
+in
 {
   # Runtime
   virtualisation.docker = {
@@ -16,7 +19,7 @@
       "${homelabMediaPath}/services/rustdesk/hbbr:/root:rw"
     ];
     ports = [
-      "21117:21117/tcp"
+      "${toString relayPort}:21117/tcp"
       "21119:21119/tcp"
     ];
     cmd = [ "hbbr" ];
@@ -55,7 +58,7 @@
       "21116:21116/udp"
       "21118:21118/tcp"
     ];
-    cmd = [ "hbbs" "-r" "pilab.lion-zebra.ts.net:21117" ];
+    cmd = [ "hbbs" "-r" "pilab.lion-zebra.ts.net:${toString relayPort}" ];
     dependsOn = [
       "rustdesk-hbbr"
     ];
@@ -68,7 +71,7 @@
     labels = {
       "homepage.description" = "Remote Desktop";
       "homepage.group" = "Services";
-      "homepage.href" = "http://pilab.lion-zebra.ts.net:21117";
+      "homepage.href" = "http://pilab.lion-zebra.ts.net:${toString relayPort}";
       "homepage.icon" = "rustdesk";
       "homepage.name" = "RustDesk";
     };
