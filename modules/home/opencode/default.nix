@@ -372,7 +372,8 @@ in
         };
       } // lib.optionalAttrs hasBifrostKey {
         # Bifrost on pilab, in front of meridian, ocfree and nous. Models come from
-        # its /v1/models via opencode-models-discovery, a few seconds after start.
+        # its /v1/models via opencode-models-discovery, a few seconds after start;
+        # the virtual key's allowed_models decides which (machines/pilab/compose/bifrost).
         bifrost = {
           npm = "@ai-sdk/openai-compatible@2.0.55";
           name = "Bifrost";
@@ -384,9 +385,6 @@ in
               modelInfoFormat = "bifrost";
               pruneMissing = true;
               cache.enabled = true;
-              # Free models, every Claude model behind Meridian, and all of ocfree,
-              # which only lists free ones (big-pickle has no -free suffix).
-              models.includeBy = [ { field = "id"; match = "^(meridian|ocfree)/|(:free|-free)$"; } ];
             };
           };
         };
