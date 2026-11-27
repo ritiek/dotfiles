@@ -375,16 +375,20 @@ in
         # its /v1/models via opencode-models-discovery, a few seconds after start;
         # the virtual key's allowed_models decides which (machines/pilab/compose/bifrost).
         bifrost = {
-          npm = "@ai-sdk/openai-compatible@2.0.55";
+          # OpenCode's own driver: @ai-sdk/openai-compatible drops the thinking
+          # level (reasoning_effort) that the variants below set.
+          npm = "@opencode/ai/providers/openai-compatible";
           name = "Bifrost";
           options = {
             baseURL = "http://pilab.lion-zebra.ts.net:3639/openai/v1";
             apiKey = "{file:${config.sops.secrets."bifrost_vk.key".path}}";
             modelsDiscovery = {
               enabled = true;
-              modelInfoFormat = "bifrost";
+              # Bifrost's list is OpenRouter-shaped; this format reads `name`
+              # ("Meridian/Claude Opus 5.5"), limits and reasoning efforts.
+              modelInfoFormat = "openrouter";
+              smartModelName = true;
               pruneMissing = true;
-              cache.enabled = true;
             };
           };
         };
