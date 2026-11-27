@@ -46,22 +46,6 @@ let
 
   mcp-servers-nix = inputs.mcp-servers-nix.packages.${pkgs.stdenv.hostPlatform.system};
 
-  # Playwright's --executable-path for the Applications room: GPU Chromium in
-  # alcove's sway, seeded from alcove's copy of the laptop profile (mishy).
-  # CDP travels over ssh fds 3/4, the same contract as
-  # modules/home/opencode/playwright.nix. No profile sync here -- refresh the
-  # seed by running `sync-chromium-to-alcove mishy` on mishy.
-  chromiumAlcove = pkgs.writeShellScript "chromium-alcove-hermes" ''
-    exec ${pkgs.coreutils}/bin/env -u HTTP_PROXY -u HTTPS_PROXY \
-      -u http_proxy -u https_proxy \
-      ${pkgs.openssh}/bin/ssh -o BatchMode=yes -o StrictHostKeyChecking=accept-new \
-      -o ConnectTimeout=10 -o ServerAliveInterval=5 -o ServerAliveCountMax=3 \
-      -i /home/ritiek/.ssh/sops.id_ed25519 -o IdentitiesOnly=yes \
-      ritiek@alcove.lion-zebra.ts.net \
-      CHROMIUM_SEED=.cache/chromium-seed/mishy chromium-agent "''${@@Q}" \
-      '3<&0 4>&1 </dev/null >&2' <&3 >&4
-  '';
-
   # Prebuilt kitten_tts_rs (aarch64) binaries: `kitten-tts` CLI +
   # `kitten-tts-server` (OpenAI-compatible /v1/audio/speech). autoPatchelf'd.
   kittenTtsRs = pkgs.callPackage ./pkgs/kitten-tts-rs { };
@@ -320,6 +304,8 @@ in
   # Key for the ocfree middleman on clawsiecats (providers.clawsiecats below).
   sops.secrets."ocfree.key" = { };
   sops.secrets."github_copilot.access" = { };
+  # Hermes' virtual key for Bifrost (providers.bifrost, mcpServers.bifrost below).
+  sops.secrets."bifrost_vk.key" = { };
 
   # Give the gateway enough stop time to finish its drain. The module ships
   # TimeoutStopSec=90s but the gateway's drain_timeout is 180s, so systemd
@@ -464,13 +450,14 @@ in
         # Per-room model. `/model` in the room still wins for that session.
         # Reasoning effort is per-model: see agent.reasoning_overrides.
         channel_overrides."!DhGz4cPBPFmEUlVLeO5-jjWiSG2_5Vr0qcD2yCvzuc4" = {
-          model = "claude-opus-5-5";
-          provider = "anthropic";
+          # Claude subscription through Meridian on pilab.
+          model = "meridian/claude-opus-5-5";
+          provider = "custom:bifrost";
         };
         channel_overrides."!TiSyl7i3cEsHc7V4_xhUmEHCpF1kOONPsXEUPq_46H0" = {
           # OpenCode free tier via the ocfree middleman on clawsiecats.
-          model = "deepseek-v4.1-flash-free";
-          provider = "custom:clawsiecats";
+          model = "ocfree/deepseek-v4.1-flash-free";
+          provider = "custom:bifrost";
           # Free Nous Portal model; OAuth login lives in .hermes/auth.json
           # (`hermes auth add nous --type oauth --no-browser`).
           # model = "ornith/ornith-1.5-122b:free";
@@ -544,6 +531,17 @@ in
         transport = "chat_completions";
       };
 
+      # Every model goes through Bifrost on pilab (machines/pilab/compose/bifrost)
+      # as `<provider>/<model>`, so its usage shows up under this virtual key.
+      # Responses API: Copilot's GPT models only serve it, and Bifrost turns it
+      # into chat completions for the providers that only speak that.
+      providers.bifrost = {
+        api = "http://pilab.lion-zebra.ts.net:3639/v1";
+        key_env = "BIFROST_VK";
+        default_model = "copilot/gpt-6-luna";
+        transport = "codex_responses";
+      };
+
       model = {
         # default = "nemotron-3-ultra-free";
         # default = "opencode/deepseek-v4-flash-free";
@@ -554,8 +552,8 @@ in
         # Fallback: free clawsiecats route
         # default = "deepseek-v4.1-flash-free";
         # provider = "custom:clawsiecats";
-        default = "gpt-6-luna";
-        provider = "copilot";
+        default = "copilot/gpt-6-luna";
+        provider = "custom:bifrost";
         supports_vision = true;
 
         # Previous: opencode free tier (keyless, fixed X-Session-ID).
@@ -596,7 +594,7 @@ in
         # unpatched. A single profile costs ~20-30 turns.
         max_turns = 9999;
         # Per-model effort (beats global agent.reasoning_effort).
-        reasoning_overrides."claude-opus-5-5" = "high";
+        reasoning_overrides."meridian/claude-opus-5-5" = "high";
       };
       compression = {
         enabled = true;
@@ -733,70 +731,6 @@ in
     # HASS_TOKEN is already in /run/secrets/hermes.env (via environmentFiles below).
     mcpServers = {
       # -- Stdio servers --
-      # connect_timeout: the default 60s is too short for these to start on
-      # radrubble's A55 cores (paperless and kindly-web-search also fetch
-      # their package on every start).
-      nixos = {
-        enabled = true;
-        command = "${pkgs.mcp-nixos}/bin/mcp-nixos";
-        args = [ ];
-        connect_timeout = 180;
-      };
-      context7 = {
-        enabled = true;
-        command = "${mcp-servers-nix.context7-mcp}/bin/context7-mcp";
-        args = [ ];
-      };
-      paperless = {
-        enabled = true;
-        command = "${pkgs.nodejs_24}/bin/node";
-        args = [
-          "${pkgs.nodejs_24}/bin/npx"
-          "-y"
-          "@baruchiro/paperless-mcp@latest"
-        ];
-        env = {
-          PATH = lib.makeBinPath [
-            pkgs.nodejs_24
-            pkgs.bash
-          ];
-          PAPERLESS_URL        = "\${HERMES_MCP_PAPERLESS_URL}";
-          PAPERLESS_API_KEY    = "\${HERMES_MCP_PAPERLESS_API_KEY}";
-          PAPERLESS_PUBLIC_URL = "\${HERMES_MCP_PAPERLESS_PUB_URL}";
-        };
-        connect_timeout = 180;
-      };
-      kindly-web-search = {
-        enabled = true;
-        command = "${pkgs.uv}/bin/uvx";
-        args = [
-          "--refresh"
-          "--from"
-          "git+https://github.com/Shelpuk-AI-Technology-Consulting/kindly-web-search-mcp-server"
-          "kindly-web-search-mcp-server"
-          "start-mcp-server"
-        ];
-        env = {
-          PATH = lib.makeBinPath [
-            pkgs.uv
-            pkgs.git
-            pkgs.coreutils
-            pkgs.python3
-            # aarch64: stable pkgs.chromium has no binary cache and would
-            # build from source (~100GB scratch). unstable nixpkgs has a cached
-            # aarch64 build, so use it.
-            pkgs.unstable.chromium
-          ];
-          GITHUB_TOKEN                          = "\${HERMES_MCP_GITHUB_TOKEN}";
-          SEARXNG_BASE_URL                      = "\${HERMES_MCP_SEARX_URL}";
-          KINDLY_BROWSER_EXECUTABLE_PATH        = "${pkgs.unstable.chromium}/bin/chromium";
-          KINDLY_TOOL_TOTAL_TIMEOUT_SECONDS     = "300";
-          KINDLY_TOOL_TOTAL_TIMEOUT_MAX_SECONDS = "600";
-          KINDLY_WEB_SEARCH_MAX_CONCURRENCY     = "3";
-        };
-        timeout = 60;
-        connect_timeout = 180;
-      };
       playwright = {
         enabled = true;
         command = "${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp";
@@ -809,27 +743,17 @@ in
         ];
         timeout = 30;
       };
-      # GPU Chromium in alcove's headless sway, on the logged-in mishy profile.
-      # Watch it at alcove:5900. Available to every room (hermes has no per-room
-      # tool gating); the Applications room's topic tells it when to use this.
-      playwright-alcove = {
-        enabled = true;
-        command = "${mcp-servers-nix.playwright-mcp}/bin/playwright-mcp";
-        args = [ "--caps" "vision" "--executable-path" "${chromiumAlcove}" ];
-        env.PLAYWRIGHT_MCP_HEADLESS = "false";
-        timeout = 120;
-        connect_timeout = 180;
-      };
       # -- Remote HTTP servers --
-      github = {
+      # Bifrost's MCP gateway on pilab (machines/pilab/compose/bifrost/mcp.nix):
+      # github, indmoney, context7, nixos, paperless, kindly-web-search and
+      # playwright-alcove (as `<server>-<tool>`, with `_` for `-` in server names).
+      bifrost = {
         enabled = true;
-        url = "https://api.githubcopilot.com/mcp/";
-        headers.Authorization = "Bearer \${HERMES_MCP_GITHUB_TOKEN}";
-      };
-      indmoney = {
-        enabled = true;
-        url = "https://mcp.indmoney.com/mcp";
-        auth = "oauth";
+        url = "http://pilab.lion-zebra.ts.net:3639/mcp";
+        headers.Authorization = "Bearer \${BIFROST_VK}";
+        # kindly-web-search runs up to 600s; alcove's browser takes a while to start.
+        timeout = 600;
+        connect_timeout = 180;
       };
       swiggy-food = {
         enabled = true;
@@ -862,11 +786,7 @@ in
     # is only picked up on restart.
     restartUnits = [ "hermes-agent.service" ];
     content = ''
-      HERMES_MCP_GITHUB_TOKEN=${config.sops.placeholder."github.token"}
-      HERMES_MCP_PAPERLESS_URL=${config.sops.placeholder."paperless.url"}
-      HERMES_MCP_PAPERLESS_API_KEY=${config.sops.placeholder."paperless_api.key"}
-      HERMES_MCP_PAPERLESS_PUB_URL=${config.sops.placeholder."paperless_public.url"}
-      HERMES_MCP_SEARX_URL=${config.sops.placeholder."searx.url"}.clawsiecats.omg.lol/
+      BIFROST_VK=${config.sops.placeholder."bifrost_vk.key"}
       GROQ_API_KEY=${config.sops.placeholder."groq_api.key"}
       ELEVENLABS_API_KEY=${config.sops.placeholder."elevenlabs_api.key"}
       OPENCODE_ZEN_API_KEY=${config.sops.placeholder."opencode_api.key"}
