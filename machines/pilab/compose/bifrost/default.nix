@@ -35,6 +35,34 @@ let
   mcpClients = mcp.clients;
   mcpAccess = names: map (name: { mcp_client_name = name; tools_to_execute = [ "*" ]; }) names;
 
+  # A virtual key per machine and app, so logs and usage split by them. Its
+  # value is BIFROST_VK_<MACHINE>_<APP> in stack.env and bifrost_vk.key in
+  # that machine's secrets (modules/home/opencode, Hermes on radrubble).
+  virtualKey = machine: app: mcpClientNames: {
+    id = "vk-${machine}-${app}";
+    name = "${machine}-${app}";
+    value = "env.BIFROST_VK_${lib.toUpper machine}_${lib.toUpper app}";
+    provider_configs = [
+      { provider = "meridian"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
+      { provider = "ocfree"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
+      # The Free plan only serves :free models; the rest fail on credits.
+      { provider = "nous"; allowed_models = [ "regex:.*:free$" ]; key_ids = [ "*" ]; weight = 1; }
+      { provider = "copilot"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
+    ];
+    mcp_configs = mcpAccess mcpClientNames;
+  };
+  opencodeMachines = [
+    "alcove" "chocomelt" "clawsiecats" "deskette" "keyberry" "mishy"
+    "nixstation" "pilab" "radrubble" "rig" "switchboard"
+  ];
+  # Responses requests (Hermes) for providers that only serve chat
+  # completions: Bifrost converts them when responses isn't allowed.
+  chatOnly = {
+    list_models = true;
+    chat_completion = true;
+    chat_completion_stream = true;
+  };
+
   # Every secret is an env.VAR reference, resolved from the env files below.
   # Default "split" source_of_truth: dashboard edits survive restarts until
   # the matching entry here changes; entries removed here stay in config.db.
@@ -60,29 +88,11 @@ let
         admin_username = "env.BIFROST_ADMIN_USERNAME";
         admin_password = "env.BIFROST_ADMIN_PASSWORD";
       };
-      virtual_keys = [
-        {
-          id = "vk-ritiek";
-          name = "ritiek";
-          value = "env.BIFROST_VK_RITIEK";
-          provider_configs = [
-            { provider = "meridian"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
-            { provider = "ocfree"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
-            # The Free plan only serves :free models; the rest fail on credits.
-            { provider = "nous"; allowed_models = [ "regex:.*:free$" ]; key_ids = [ "*" ]; weight = 1; }
-          ];
-          mcp_configs = mcpAccess (map (c: c.name) mcpClients);
-        }
-        # Hermes on radrubble: the MCP servers it used to run itself, no models.
-        {
-          id = "vk-hermes";
-          name = "hermes";
-          value = "env.BIFROST_VK_HERMES";
-          provider_configs = [ ];
-          mcp_configs = mcpAccess [
-            "github" "indmoney" "context7" "nixos" "paperless" "kindly_web_search" "playwright_alcove"
-          ];
-        }
+      virtual_keys = map (m: virtualKey m "opencode" (map (c: c.name) mcpClients)) opencodeMachines ++ [
+        # Hermes on radrubble: the MCP servers it used to run itself.
+        (virtualKey "radrubble" "hermes" [
+          "github" "indmoney" "context7" "nixos" "paperless" "kindly_web_search" "playwright_alcove"
+        ])
       ];
     };
     # display_name (from the patch) lists models as "<display_name>/<upstream name>".
@@ -100,6 +110,7 @@ let
         custom_provider_config = {
           base_provider_type = "openai";
           display_name = "OpenCode Free";
+          allowed_requests = chatOnly;
           request_path_overrides = {
             chat_completion = "/opencode/chat/completions";
             chat_completion_stream = "/opencode/chat/completions";
@@ -116,12 +127,42 @@ let
         custom_provider_config = {
           base_provider_type = "openai";
           display_name = "Nous Portal";
+          allowed_requests = chatOnly;
         };
         network_config = {
           base_url = "http://radrubble.lion-zebra.ts.net:8645";
           allow_private_network = true;
         };
         keys = [ { name = "nous"; value = "unused"; models = [ "*" ]; weight = 1; } ];
+      };
+      # The GitHub OAuth token Hermes signed in with (github_copilot.access on
+      # radrubble), sent as is with the VS Code headers Hermes' Copilot plugin
+      # uses. Not the built-in github-copilot provider: it always exchanges the
+      # token for a Copilot one, which GitHub refuses (403) for this account,
+      # and Hermes' plugin falls back to the raw token too.
+      copilot = {
+        custom_provider_config = {
+          base_provider_type = "openai";
+          display_name = "GitHub Copilot";
+          request_path_overrides = {
+            list_models = "/models";
+            chat_completion = "/chat/completions";
+            chat_completion_stream = "/chat/completions";
+            responses = "/responses";
+            responses_stream = "/responses";
+          };
+        };
+        network_config = {
+          base_url = "https://api.githubcopilot.com";
+          extra_headers = {
+            "Copilot-Integration-Id" = "vscode-chat";
+            "Editor-Version" = "vscode/1.104.1";
+            "Openai-Intent" = "conversation-edits";
+            # Without it /models reports the smaller context windows.
+            "X-GitHub-Api-Version" = "2026-08-01";
+          };
+        };
+        keys = [ { name = "copilot"; value = "env.COPILOT_GITHUB_TOKEN"; models = [ "*" ]; weight = 1; } ];
       };
     };
   });
