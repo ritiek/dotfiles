@@ -308,6 +308,8 @@ export function serve(o: Options) {
           data: free.map((m) => ({
             id: m.id, object: "model", created: m.created, owned_by: m.owned_by, name: m.name,
             context_length: m.limit?.context, max_completion_tokens: m.limit?.output,
+            // OpenRouter's shape, which gateways such as Bifrost pass on as thinking levels.
+            ...(m.capabilities?.reasoning?.effort?.length && { reasoning: { supported_efforts: m.capabilities.reasoning.effort } }),
           })),
         });
       }

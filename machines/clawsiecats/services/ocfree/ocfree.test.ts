@@ -151,7 +151,10 @@ test("only the well-known manifest is public; the provider and model list carry 
 
   expect((await fetch(`${origin}/v1/models`)).status).toBe(401);
   const list: any = await (await fetch(`${origin}/v1/models`, { headers: { "x-ocfree-key": "k" } })).json();
-  expect(list.data).toEqual([{ id: "free-a", object: "model", name: "Free A", context_length: 1000, max_completion_tokens: 100 }]);
+  expect(list.data).toEqual([{
+    id: "free-a", object: "model", name: "Free A", context_length: 1000, max_completion_tokens: 100,
+    reasoning: { supported_efforts: ["low", "high"] },
+  }]);
   const raw: any = await (await fetch(`${origin}/opencode/models`, { headers: { "x-ocfree-key": "k" } })).json();
   expect(raw.data.map((m: any) => m.id)).toEqual(["free-a"]);
 });
