@@ -1,6 +1,6 @@
 # nixpkgs' bifrost recipe (pkgs/by-name/bi/bifrost), bumped to the version the
-# stack runs and patched to keep upstream model metadata in /v1/models and to
-# drop MCP output schemas the spec doesn't allow.
+# stack runs and patched to keep upstream model metadata in /v1/models, to
+# drop MCP output schemas the spec doesn't allow and to send Copilot x-initiator.
 # shortcut: model-metadata.patch covers maximhq/bifrost#8914 (open PR #9201) plus
 # provider display names; drop the metadata part once that PR ships.
 {
@@ -55,6 +55,9 @@ buildGo127Module {
     # The gateway passes on GitHub MCP output schemas typed ["null","object"],
     # which make Hermes (the Python MCP SDK) drop every tool from /mcp.
     ./mcp-output-schema.patch
+    # x-initiator per request for GitHub Copilot, so tool-call follow-ups
+    # aren't billed as premium requests.
+    ./copilot-initiator.patch
   ];
 
   modRoot = "transports";

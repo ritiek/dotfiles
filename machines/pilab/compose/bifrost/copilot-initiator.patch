@@ -1,0 +1,71 @@
+diff --git a/core/bifrost.go b/core/bifrost.go
+index 6676415..97d4d75 100644
+--- a/core/bifrost.go
++++ b/core/bifrost.go
+@@ -9541,6 +9541,7 @@ func injectedMCPInstructions(ctx *schemas.BifrostContext) *string {
+ // turn Bifrost rewrote (injected tools, appended tool results) still echoes what the
+ // caller sent.
+ func (bifrost *Bifrost) dispatchChat(ctx *schemas.BifrostContext, provider schemas.Provider, config *schemas.ProviderConfig, key schemas.Key, chatRequest, original *schemas.BifrostChatRequest) (*schemas.BifrostChatResponse, *schemas.BifrostError) {
++	setCopilotInitiator(ctx, config, chatUserTurn(chatRequest))
+ 	chatRequest = applyKeyServiceTierChat(ctx, &key, chatRequest)
+ 	if bifrostError := routeChatReasoningMode(ctx, provider, chatRequest); bifrostError != nil {
+ 		return nil, bifrostError
+@@ -9575,8 +9576,42 @@ func (bifrost *Bifrost) dispatchChat(ctx *schemas.BifrostContext, provider schem
+ 	return chatCompletionResponse, nil
+ }
+ 
++// setCopilotInitiator sends GitHub Copilot the x-initiator its own clients send: "user" for a
++// request that ends with the user's message, "agent" for one an agent makes on its own, such as
++// after a tool call. Copilot counts only "user" requests as premium requests.
++func setCopilotInitiator(ctx *schemas.BifrostContext, config *schemas.ProviderConfig, userTurn bool) {
++	if config == nil || !strings.Contains(config.NetworkConfig.BaseURL, ".githubcopilot.com") {
++		return
++	}
++	initiator := "agent"
++	if userTurn {
++		initiator = "user"
++	}
++	existing, _ := ctx.Value(schemas.BifrostContextKeyExtraHeaders).(map[string][]string)
++	headers := make(map[string][]string, len(existing)+1)
++	for name, values := range existing {
++		headers[name] = values
++	}
++	headers["x-initiator"] = []string{initiator}
++	ctx.SetValue(schemas.BifrostContextKeyExtraHeaders, headers)
++}
++
++func chatUserTurn(request *schemas.BifrostChatRequest) bool {
++	return request != nil && len(request.Input) > 0 && request.Input[len(request.Input)-1].Role == schemas.ChatMessageRoleUser
++}
++
++func responsesUserTurn(request *schemas.BifrostResponsesRequest) bool {
++	if request == nil || len(request.Input) == 0 {
++		return true
++	}
++	last := request.Input[len(request.Input)-1]
++	return last.Role != nil && *last.Role == schemas.ResponsesInputMessageRoleUser &&
++		(last.Type == nil || *last.Type == schemas.ResponsesMessageTypeMessage)
++}
++
+ // dispatchResponses is the Responses API parallel of dispatchChat.
+ func (bifrost *Bifrost) dispatchResponses(ctx *schemas.BifrostContext, provider schemas.Provider, config *schemas.ProviderConfig, key schemas.Key, responsesRequest, original *schemas.BifrostResponsesRequest) (*schemas.BifrostResponsesResponse, *schemas.BifrostError) {
++	setCopilotInitiator(ctx, config, responsesUserTurn(responsesRequest))
+ 	responsesRequest = applyKeyServiceTierResponses(ctx, &key, responsesRequest)
+ 	// Prepared BEFORE the chat-fallback branch: ToChatRequest keeps only function
+ 	// tools, so a namespace that reached it unflattened would be dropped silently.
+@@ -9611,6 +9646,7 @@ func (bifrost *Bifrost) dispatchResponses(ctx *schemas.BifrostContext, provider
+ // dispatchChatStream opens one chat completion stream, converting through the
+ // Responses API when the request is marked for it.
+ func (bifrost *Bifrost) dispatchChatStream(ctx *schemas.BifrostContext, provider schemas.Provider, config *schemas.ProviderConfig, key schemas.Key, chatRequest *schemas.BifrostChatRequest, postHookRunner schemas.PostHookRunner, postHookSpanFinalizer func(context.Context)) (chan *schemas.BifrostStreamChunk, *schemas.BifrostError) {
++	setCopilotInitiator(ctx, config, chatUserTurn(chatRequest))
+ 	chatRequest = applyKeyServiceTierChat(ctx, &key, chatRequest)
+ 	if bifrostError := routeChatReasoningMode(ctx, provider, chatRequest); bifrostError != nil {
+ 		return nil, bifrostError
+@@ -9633,6 +9669,7 @@ func (bifrost *Bifrost) dispatchChatStream(ctx *schemas.BifrostContext, provider
+ // dispatchResponsesStream opens one Responses API stream, converting through chat
+ // completions when the request is marked for it.
+ func (bifrost *Bifrost) dispatchResponsesStream(ctx *schemas.BifrostContext, provider schemas.Provider, config *schemas.ProviderConfig, key schemas.Key, responsesRequest *schemas.BifrostResponsesRequest, postHookRunner schemas.PostHookRunner, postHookSpanFinalizer func(context.Context)) (chan *schemas.BifrostStreamChunk, *schemas.BifrostError) {
++	setCopilotInitiator(ctx, config, responsesUserTurn(responsesRequest))
+ 	responsesRequest = applyKeyServiceTierResponses(ctx, &key, responsesRequest)
+ 	// Prepared BEFORE the chat-fallback branch: ToChatRequest keeps only function
+ 	// tools, so a namespace that reached it unflattened would be dropped silently.
