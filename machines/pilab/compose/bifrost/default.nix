@@ -5,7 +5,7 @@
 # the lazy listener answers an API client with an HTML 200 while starting.
 # Host networking so the container gets this host's resolver (MagicDNS) and
 # 127.0.0.1:3456.
-{ pkgs, lib, config, homelabMediaPath, ... }:
+{ pkgs, lib, config, inputs, homelabMediaPath, ... }:
 
 let
   webUIPort = 3639;
@@ -16,12 +16,24 @@ let
   image = pkgs.dockerTools.streamLayeredImage {
     name = "bifrost-local";
     tag = bifrost.version;
+    # A passwd entry for the container's UID, which ssh and npm look up, and
+    # /bin/sh, which uv's launchers for long install paths start with.
+    contents = [
+      (pkgs.dockerTools.fakeNss.override {
+        extraPasswdLines = [ "bifrost:x:1000:0:Bifrost:/app/data/mcp:/sbin/nologin" ];
+      })
+      pkgs.bash
+    ];
     extraCommands = "mkdir -m 1777 tmp";
     config = {
       Entrypoint = [ (lib.getExe bifrost) ];
       Env = [ "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" ];
     };
   };
+
+  mcp = import ./mcp.nix { inherit pkgs lib inputs; };
+  mcpClients = mcp.clients;
+  mcpAccess = names: map (name: { mcp_client_name = name; tools_to_execute = [ "*" ]; }) names;
 
   # Every secret is an env.VAR reference, resolved from the env files below.
   # Default "split" source_of_truth: dashboard edits survive restarts until
@@ -33,7 +45,12 @@ let
       enforce_auth_on_inference = true;
       disable_content_logging = true;
       log_retention_days = 14;
+      # MCP tools reach clients only through /mcp; injected into every chat
+      # request they would arrive as tool calls the client cannot run.
+      mcp_disable_auto_tool_inject = true;
+      mcp_tool_execution_timeout = 120;
     };
+    mcp.client_configs = mcpClients;
     # Absolute: relative paths resolve against the working directory, not the app-dir.
     config_store = { enabled = true; type = "sqlite"; config.path = "/app/data/config.db"; };
     logs_store = { enabled = true; type = "sqlite"; config.path = "/app/data/logs.db"; };
@@ -53,6 +70,17 @@ let
             { provider = "ocfree"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
             # The Free plan only serves :free models; the rest fail on credits.
             { provider = "nous"; allowed_models = [ "regex:.*:free$" ]; key_ids = [ "*" ]; weight = 1; }
+          ];
+          mcp_configs = mcpAccess (map (c: c.name) mcpClients);
+        }
+        # Hermes on radrubble: the MCP servers it used to run itself, no models.
+        {
+          id = "vk-hermes";
+          name = "hermes";
+          value = "env.BIFROST_VK_HERMES";
+          provider_configs = [ ];
+          mcp_configs = mcpAccess [
+            "github" "indmoney" "context7" "nixos" "paperless" "kindly_web_search" "playwright_alcove"
           ];
         }
       ];
@@ -109,6 +137,10 @@ in
 
   networking.firewall.allowedTCPPorts = [ webUIPort ];
 
+  # The fixed stdio MCP commands (mcp.nix), repointed at each deploy's wrappers.
+  systemd.tmpfiles.rules = [ "d ${mcp.commandDir} 0755 root root -" ]
+    ++ lib.mapAttrsToList (name: wrapper: "L+ ${mcp.commandDir}/${name} - - - - ${wrapper}") mcp.wrappers;
+
   # Runtime
   virtualisation.docker = {
     enable = true;
@@ -134,6 +166,9 @@ in
     volumes = [
       "${dataDir}:/app/data:rw"
       "${configJson}:/app/data/config.json:ro"
+      # The stdio MCP commands, their wrappers and what those run (./mcp.nix).
+      "${mcp.commandDir}:${mcp.commandDir}:ro"
+      "/nix/store:/nix/store:ro"
     ];
     log-driver = "journald";
     autoStart = false;
