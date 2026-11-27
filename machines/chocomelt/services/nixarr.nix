@@ -322,6 +322,10 @@ in
     {
       qbittorrent.preStart =
         "${pkgs.coreutils}/bin/rm -f ${qbtConfig}/qBittorrent/config/lockfile";
+      # qBittorrent creates download subfolders with the service umask; 0022
+      # leaves them 2755, so sonarr/radarr (group media) can read but not
+      # move/delete the files they import. 0002 keeps them group-writable.
+      qbittorrent.serviceConfig.UMask = "0002";
       # A list definition is concatenated with nixpkgs' bare-string
       # ExecStartPre; mkAfter runs it after the store-generated
       # qBittorrent.conf is installed, so the hash never lands in the store.
