@@ -15,6 +15,8 @@ let
   # Machines with this key register the `clawsiecats` provider (OpenCode's free models
   # through the ocfree middleman, machines/clawsiecats/services/ocfree) on activation.
   hasOcfreeKey = lib.strings.hasInfix "ocfree.key:" secretsContent;
+  # Bifrost virtual key for the gateway on pilab (machines/pilab/compose/bifrost).
+  hasBifrostKey = lib.strings.hasInfix "bifrost_vk.key:" secretsContent;
 
   searxDomain = "clawsiecats.omg.lol";
 
@@ -154,6 +156,7 @@ in
   sops.secrets = {
     "z_ai_api.key" = lib.mkIf hasZaiApiKey {};
     "ocfree.key" = lib.mkIf hasOcfreeKey {};
+    "bifrost_vk.key" = lib.mkIf hasBifrostKey {};
     "github.token" = {};
     "paperless.url" = {};
     "paperless_api.key" = {};
@@ -365,6 +368,25 @@ in
           options = {
             baseURL = "http://radrubble.lion-zebra.ts.net:8645/v1";
             apiKey = "unused";
+          };
+        };
+      } // lib.optionalAttrs hasBifrostKey {
+        # Bifrost on pilab, in front of meridian, ocfree and nous. Models come from
+        # its /v1/models via opencode-models-discovery, a few seconds after start.
+        bifrost = {
+          npm = "@ai-sdk/openai-compatible@2.0.55";
+          name = "Bifrost";
+          options = {
+            baseURL = "http://pilab.lion-zebra.ts.net:3639/openai/v1";
+            apiKey = "{file:${config.sops.secrets."bifrost_vk.key".path}}";
+            modelsDiscovery = {
+              enabled = true;
+              modelInfoFormat = "bifrost";
+              pruneMissing = true;
+              cache.enabled = true;
+              # Free models, plus every Claude model behind Meridian.
+              models.includeBy = [ { field = "id"; match = "^meridian/|(:free|-free)$"; } ];
+            };
           };
         };
       };
@@ -773,7 +795,7 @@ in
         # /edit-prefix: edit the system prompt and history the model sees in $EDITOR.
         "${inputs.opencode-prefix-editor.packages.${pkgs.stdenv.hostPlatform.system}.default}"
         "opencode-handoff@0.7.0"
-      ];
+      ] ++ lib.optional hasBifrostKey "opencode-models-discovery@2.2.1";
 
       autoupdate = false;
     };
