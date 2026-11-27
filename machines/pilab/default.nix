@@ -84,6 +84,7 @@
     ./compose/linkding
     ./compose/open-archiver
     ./compose/meridian
+    ./compose/bifrost
     ./compose/audiomuse
     ./compose/ryot
     ./compose/grampsweb.nix
