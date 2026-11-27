@@ -1,5 +1,6 @@
 # nixpkgs' bifrost recipe (pkgs/by-name/bi/bifrost), bumped to the version the
-# stack runs and patched to keep upstream model metadata in /v1/models.
+# stack runs and patched to keep upstream model metadata in /v1/models and to
+# drop MCP output schemas the spec doesn't allow.
 # shortcut: model-metadata.patch covers maximhq/bifrost#8914 (open PR #9201) plus
 # provider display names; drop the metadata part once that PR ships.
 {
@@ -49,7 +50,12 @@ buildGo127Module {
   pname = "bifrost";
   inherit version src;
 
-  patches = [ ./model-metadata.patch ];
+  patches = [
+    ./model-metadata.patch
+    # The gateway passes on GitHub MCP output schemas typed ["null","object"],
+    # which make Hermes (the Python MCP SDK) drop every tool from /mcp.
+    ./mcp-output-schema.patch
+  ];
 
   modRoot = "transports";
   subPackages = [ "bifrost-http" ];

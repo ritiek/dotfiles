@@ -1,0 +1,18 @@
+diff --git a/transports/bifrost-http/handlers/mcpserver.go b/transports/bifrost-http/handlers/mcpserver.go
+index 1773d00..dd32272 100644
+--- a/transports/bifrost-http/handlers/mcpserver.go
++++ b/transports/bifrost-http/handlers/mcpserver.go
+@@ -583,7 +583,12 @@ func gatewayTool(tool schemas.ChatTool) mcp.Tool {
+ 		Annotations: toolAnnotation,
+ 	}
+ 	if tool.MCP != nil {
+-		serverTool.Title, serverTool.Icons, serverTool.RawOutputSchema = tool.MCP.Title, tool.MCP.Icons, tool.MCP.OutputSchema
++		serverTool.Title, serverTool.Icons = tool.MCP.Title, tool.MCP.Icons
++		// The spec requires an object schema, and clients that validate it (the
++		// Python SDK) reject the whole tools/list over one tool that has another.
++		if gjson.GetBytes(tool.MCP.OutputSchema, "type").String() == "object" {
++			serverTool.RawOutputSchema = tool.MCP.OutputSchema
++		}
+ 	}
+ 	serverTool.Meta, _ = toolMeta(tool)
+ 	return serverTool
