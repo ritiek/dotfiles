@@ -745,8 +745,8 @@ in
       };
       # -- Remote HTTP servers --
       # Bifrost's MCP gateway on pilab (machines/pilab/compose/bifrost/mcp.nix):
-      # github, indmoney, context7, nixos, paperless, kindly-web-search and
-      # playwright-alcove (as `<server>-<tool>`, with `_` for `-` in server names).
+      # GitHub (read-only), indmoney, context7, nixos, paperless,
+      # kindly-web-search and playwright-alcove, behind Bifrost's code mode.
       bifrost = {
         enabled = true;
         url = "http://pilab.lion-zebra.ts.net:3639/mcp";
