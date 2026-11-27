@@ -384,8 +384,9 @@ in
               modelInfoFormat = "bifrost";
               pruneMissing = true;
               cache.enabled = true;
-              # Free models, plus every Claude model behind Meridian.
-              models.includeBy = [ { field = "id"; match = "^meridian/|(:free|-free)$"; } ];
+              # Free models, every Claude model behind Meridian, and all of ocfree,
+              # which only lists free ones (big-pickle has no -free suffix).
+              models.includeBy = [ { field = "id"; match = "^(meridian|ocfree)/|(:free|-free)$"; } ];
             };
           };
         };
