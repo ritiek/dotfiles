@@ -263,6 +263,12 @@ in
         "anthropic" = {
           options = {
             timeout = false;
+          } // lib.optionalAttrs hasBifrostKey {
+            # Through Bifrost, which passes opencode-claude-auth's login on to
+            # Anthropic (this machine's own subscription) and logs it under
+            # this machine's virtual key.
+            baseURL = "http://pilab.lion-zebra.ts.net:3639/anthropic/v1";
+            headers."x-bf-vk" = "{file:${config.sops.secrets."bifrost_vk.key".path}}";
           };
         };
         # "zai-coding-plan" = {
@@ -358,6 +364,9 @@ in
               # Bifrost's list is OpenRouter-shaped; this format reads `name`
               # ("Meridian/Claude Opus 5.5"), limits and reasoning efforts.
               modelInfoFormat = "openrouter";
+              # The 3s default is shorter than Bifrost's listing takes on a busy
+              # pilab; on a timeout the models arrive without names or variants.
+              timeoutMs = 30000;
               smartModelName = true;
               pruneMissing = true;
             };
