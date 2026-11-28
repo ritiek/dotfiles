@@ -65,6 +65,9 @@ buildGo127Module {
     # A provider's retry hint reaches the client as the standard Retry-After
     # header, not only as the opt-in x-bifrost-retry-after-ms.
     ./retry-after-header.patch
+    # A header_filter_config allowlist set only in config.json was compiled
+    # before the file's client section replaced it, so it never applied.
+    ./client-config-header-matcher.patch
   ];
 
   modRoot = "transports";

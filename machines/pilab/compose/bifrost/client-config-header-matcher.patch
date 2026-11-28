@@ -1,0 +1,15 @@
+diff --git a/transports/bifrost-http/lib/config.go b/transports/bifrost-http/lib/config.go
+index 0844cdb..465ac71 100644
+--- a/transports/bifrost-http/lib/config.go
++++ b/transports/bifrost-http/lib/config.go
+@@ -1941,6 +1941,10 @@ func loadClientConfig(ctx context.Context, config *Config, configData *ConfigDat
+ 		if err = persistReconciledClientConfig(ctx, config); err != nil {
+ 			return err
+ 		}
++		// The header filter is compiled from the client config earlier, before the
++		// file's client section replaces it, so an allowlist set only in config.json
++		// would never apply until an API write rebuilt it.
++		config.SetHeaderMatcher(NewHeaderMatcher(config.ClientConfig.HeaderFilterConfig))
+ 	}
+ 	return nil
+ }

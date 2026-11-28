@@ -59,9 +59,12 @@ let
   # Claude seats pooled in Meridian (../meridian/members.nix). The plain
   # provider is the pool; meridian_<member> pins a member's own profile, which
   # their key tries first and leaves for the pool when it is out of quota.
+  # OpenAI wire, not Anthropic: Bifrost then forwards the client's chat body
+  # unchanged and Meridian converts it itself, which is the path where it lays
+  # out cache breakpoints and resumes a conversation instead of replaying it.
   meridian = {
     custom_provider_config = {
-      base_provider_type = "anthropic";
+      base_provider_type = "openai";
       display_name = "Meridian";
     };
     network_config.base_url = "http://127.0.0.1:3456";
@@ -124,6 +127,11 @@ let
       bifrost_url = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       # Deleted keys still have log rows; keep them out of the logs' filter lists.
       hide_deleted_virtual_keys_in_filters = true;
+      # Meridian keys a conversation (and its prompt cache) on these; without
+      # them it fingerprints the opening message and rebuilds the context.
+      header_filter_config.allowlist = [
+        "x-opencode-session" "x-session-affinity" "x-session-id" "x-claude-code-session-id"
+      ];
     };
     mcp.client_configs = mcpClients;
     # Absolute: relative paths resolve against the working directory, not the app-dir.
