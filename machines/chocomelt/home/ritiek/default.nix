@@ -4,7 +4,7 @@ let
   # jellyseerr.service; qui.service is a separate WebUI proxy unit alongside
   # qbittorrent.service). Keep in sync with machines/chocomelt/services/nixarr.nix.
   # Listed in start order.
-  units = "qbittorrent.service qui.service syncthing.service syncthing-init.service prowlarr.service radarr.service sonarr.service bazarr.service seerr.service jellyfin.service frigate.service";
+  units = "qbittorrent.service qui.service syncthing.service syncthing-init.service prowlarr.service radarr.service sonarr.service bazarr.service seerr.service jellyfin.service go2rtc.service frigate.service";
 
   # One unit a minute: started together their startup peaks overlap past the
   # 2GB of RAM and the board thrashes in zram until it stops answering.
