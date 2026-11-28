@@ -47,11 +47,11 @@ let
       { provider = "ocfree"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
       # The Free plan only serves :free models; the rest fail on credits.
       { provider = "nous"; allowed_models = [ "regex:.*:free$" ]; key_ids = [ "*" ]; weight = 1; }
-      { provider = "copilot"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
+      { provider = "github-copilot"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
       # Not "*": that only admits models the catalog lists under anthropic.
       # Regex entries must match the whole name.
       { provider = "anthropic"; allowed_models = [ "regex:claude-.*" ]; key_ids = [ "*" ]; weight = 1; }
-      { provider = "opencodego"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
+      { provider = "opencode-go"; allowed_models = [ "*" ]; key_ids = [ "*" ]; weight = 1; }
     ];
     mcp_configs = mcpAccess mcpClientNames;
   };
@@ -122,8 +122,6 @@ let
       # Needed for the Bifrost MCP (mcp.nix's bifrost_admin); its tool calls
       # run in process as if sent to this address.
       bifrost_url = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
-      # Client headers passed on upstream as is; OpenCode Go needs this one.
-      header_filter_config.allowlist = [ "x-opencode-session" ];
       # Deleted keys still have log rows; keep them out of the logs' filter lists.
       hide_deleted_virtual_keys_in_filters = true;
     };
@@ -192,50 +190,25 @@ let
         };
         keys = [ { name = "nous"; value = "unused"; models = [ "*" ]; weight = 1; } ];
       };
-      # OpenCode Go subscription (the key OpenCode on mishy is signed in with).
-      # Its OpenAI endpoint serves every text model, translating for those
-      # whose native API is another. Go refuses requests without the client's
-      # x-opencode-session (forwarded, client.header_filter_config) or with a
-      # generic HTTP library's User-Agent.
-      opencodego = {
-        custom_provider_config = {
-          base_provider_type = "openai";
-          display_name = "OpenCode Go";
-        };
+      # OpenCode Go subscription (the key OpenCode on mishy is signed in with),
+      # built in: it sends the x-opencode-session Go requires, the client's or
+      # one of its own. Its OpenAI endpoint serves every text model, translating
+      # for those whose native API is another. Go also refuses a generic HTTP
+      # library's User-Agent.
+      opencode-go = {
         network_config = {
           base_url = "https://opencode.ai/inference/go/openai";
           extra_headers."User-Agent" = "bifrost-gateway/${bifrost.version}";
         };
-        keys = [ { name = "opencodego"; value = "env.OPENCODE_GO_API_KEY"; models = [ "*" ]; weight = 1; } ];
+        keys = [ { name = "opencode-go"; value = "env.OPENCODE_GO_API_KEY"; models = [ "*" ]; weight = 1; } ];
       };
-      # The GitHub OAuth token Hermes signed in with (github_copilot.access on
-      # radrubble), sent as is with the VS Code headers Hermes' Copilot plugin
-      # uses. Not the built-in github-copilot provider: it always exchanges the
-      # token for a Copilot one, which GitHub refuses (403) for this account,
-      # and Hermes' plugin falls back to the raw token too.
-      copilot = {
-        custom_provider_config = {
-          base_provider_type = "openai";
-          display_name = "GitHub Copilot";
-          request_path_overrides = {
-            list_models = "/models";
-            chat_completion = "/chat/completions";
-            chat_completion_stream = "/chat/completions";
-            responses = "/responses";
-            responses_stream = "/responses";
-          };
-        };
-        network_config = {
-          base_url = "https://api.githubcopilot.com";
-          extra_headers = {
-            "Copilot-Integration-Id" = "vscode-chat";
-            "Editor-Version" = "vscode/1.104.1";
-            "Openai-Intent" = "conversation-edits";
-            # Without it /models reports the smaller context windows.
-            "X-GitHub-Api-Version" = "2026-08-01";
-          };
-        };
-        keys = [ { name = "copilot"; value = "env.COPILOT_GITHUB_TOKEN"; models = [ "*" ]; weight = 1; } ];
+      # Built in: sends a fine-grained PAT to Copilot as is, with the editor
+      # headers, Claude models to /v1/messages and the rest to the endpoint each
+      # serves. base_url is the account's plan host (copilot_internal/user's
+      # endpoints.api); it also makes copilot-initiator.patch match.
+      github-copilot = {
+        network_config.base_url = "https://api.individual.githubcopilot.com";
+        keys = [ { name = "copilot-pat"; value = "env.COPILOT_PAT"; models = [ "*" ]; weight = 1; } ];
       };
     };
   });

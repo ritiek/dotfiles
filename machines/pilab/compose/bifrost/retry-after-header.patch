@@ -1,0 +1,21 @@
+diff --git a/transports/bifrost-http/lib/responseheaders.go b/transports/bifrost-http/lib/responseheaders.go
+index ebc9bad..692031a 100644
+--- a/transports/bifrost-http/lib/responseheaders.go
++++ b/transports/bifrost-http/lib/responseheaders.go
+@@ -286,6 +286,16 @@ func ApplyBifrostErrorResponseHeaders(ctx *fasthttp.RequestCtx, bifrostCtx *sche
+ 		ConvertedRequestType:      extra.ConvertedRequestType,
+ 		DroppedCompatPluginParams: extra.DroppedCompatPluginParams,
+ 	}, false)
++	// The caller's own retry schedule reads the standard header. Providers' hints
++	// arrive here clamped (core/providers/utils/retryafter.go), and without this a
++	// client falls back to its own fixed backoff instead of the real reset.
++	if extra.RetryAfter > 0 {
++		seconds := (extra.RetryAfter + 999) / 1000
++		if seconds < 1 {
++			seconds = 1
++		}
++		ctx.Response.Header.Set("Retry-After", strconv.FormatInt(seconds, 10))
++	}
+ 	if !ExtraFieldsInHeaders(ctx) {
+ 		return
+ 	}

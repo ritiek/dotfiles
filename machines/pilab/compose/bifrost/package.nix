@@ -62,6 +62,9 @@ buildGo127Module {
     # 2026-07-28 were checked against that request's Mcp-Method/Mcp-Name headers
     # and refused ("header mismatch").
     ./mcp-inprocess-headers.patch
+    # A provider's retry hint reaches the client as the standard Retry-After
+    # header, not only as the opt-in x-bifrost-retry-after-ms.
+    ./retry-after-header.patch
   ];
 
   modRoot = "transports";

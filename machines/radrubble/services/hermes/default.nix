@@ -538,7 +538,7 @@ in
       providers.bifrost = {
         api = "http://pilab.lion-zebra.ts.net:3639/v1";
         key_env = "BIFROST_VK";
-        default_model = "copilot/gpt-6-luna";
+        default_model = "github-copilot/gpt-6-luna";
         transport = "codex_responses";
       };
 
@@ -552,7 +552,7 @@ in
         # Fallback: free clawsiecats route
         # default = "deepseek-v4.1-flash-free";
         # provider = "custom:clawsiecats";
-        default = "copilot/gpt-6-luna";
+        default = "github-copilot/gpt-6-luna";
         provider = "custom:bifrost";
         supports_vision = true;
 
