@@ -326,6 +326,10 @@ in
       # leaves them 2755, so sonarr/radarr (group media) can read but not
       # move/delete the files they import. 0002 keeps them group-writable.
       qbittorrent.serviceConfig.UMask = "0002";
+      # on-failure (not always) so mediaserver-stop still stops it: qBittorrent
+      # has segfaulted under load and otherwise stayed down until started by hand.
+      qbittorrent.serviceConfig.Restart = "on-failure";
+      qbittorrent.serviceConfig.RestartSec = "10s";
       # A list definition is concatenated with nixpkgs' bare-string
       # ExecStartPre; mkAfter runs it after the store-generated
       # qBittorrent.conf is installed, so the hash never lands in the store.
