@@ -58,6 +58,10 @@ buildGo127Module {
     # x-initiator per request for GitHub Copilot, so tool-call follow-ups
     # aren't billed as premium requests.
     ./copilot-initiator.patch
+    # OpenAPI (in-process) MCP tools called from a /mcp request on protocol
+    # 2026-07-28 were checked against that request's Mcp-Method/Mcp-Name headers
+    # and refused ("header mismatch").
+    ./mcp-inprocess-headers.patch
   ];
 
   modRoot = "transports";

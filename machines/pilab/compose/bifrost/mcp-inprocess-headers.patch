@@ -1,0 +1,50 @@
+diff --git a/core/mcp/toolmanager.go b/core/mcp/toolmanager.go
+index 7e0cc21..88cf108 100644
+--- a/core/mcp/toolmanager.go
++++ b/core/mcp/toolmanager.go
+@@ -7,12 +7,14 @@ import (
+ 	"encoding/json"
+ 	"errors"
+ 	"fmt"
++	"net/http"
+ 	"slices"
+ 	"strings"
+ 	"sync/atomic"
+ 	"time"
+ 
+ 	"github.com/mark3labs/mcp-go/client"
++	"github.com/mark3labs/mcp-go/client/transport"
+ 	"github.com/mark3labs/mcp-go/mcp"
+ 	"github.com/maximhq/bifrost/core/mcp/credstore"
+ 	"github.com/maximhq/bifrost/core/schemas"
+@@ -1018,6 +1020,20 @@ func (m *ToolsManager) executeToolInternal(
+ 	return createToolResponseMessage(*toolCall, toolResponse, toolName), executionConfig.Name, originalMCPToolName, nil
+ }
+ 
++// withoutHTTPHeaders hides the HTTP headers of the request a call was made in (the
++// gateway's own /mcp request, for one) from an in-process server. mcp-go's server reads
++// them from ctx and, from protocol version 2026-07-28, checks Mcp-Method and Mcp-Name
++// against the message, which they describe only for the outer request.
++type withoutHTTPHeaders struct{ context.Context }
++
++func (c withoutHTTPHeaders) Value(key any) any {
++	value := c.Context.Value(key)
++	if _, ok := value.(http.Header); ok {
++		return nil
++	}
++	return value
++}
++
+ // CallToolWithin calls the tool and answers no later than ctx's deadline. A
+ // remote transport stops at the deadline itself, but an in-process server runs
+ // the handler on the calling goroutine and returns only when the handler does,
+@@ -1025,6 +1041,9 @@ func (m *ToolsManager) executeToolInternal(
+ // that arrives once the deadline has passed is dropped too: a handler that
+ // returns when its context ends has not finished the work in time.
+ func CallToolWithin(ctx context.Context, conn *client.Client, req mcp.CallToolRequest) (*mcp.CallToolResult, error) {
++	if _, inProcess := conn.GetTransport().(*transport.InProcessTransport); inProcess {
++		ctx = withoutHTTPHeaders{ctx}
++	}
+ 	type outcome struct {
+ 		result *mcp.CallToolResult
+ 		err    error

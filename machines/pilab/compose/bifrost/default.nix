@@ -124,6 +124,8 @@ let
       bifrost_url = "http://pilab.lion-zebra.ts.net:${toString webUIPort}";
       # Client headers passed on upstream as is; OpenCode Go needs this one.
       header_filter_config.allowlist = [ "x-opencode-session" ];
+      # Deleted keys still have log rows; keep them out of the logs' filter lists.
+      hide_deleted_virtual_keys_in_filters = true;
     };
     mcp.client_configs = mcpClients;
     # Absolute: relative paths resolve against the working directory, not the app-dir.
