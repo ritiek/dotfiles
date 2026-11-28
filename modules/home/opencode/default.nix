@@ -260,17 +260,9 @@ in
       provider = {
         "opencode".options.timeout = false;
         "opencode-go".options.timeout = false;
-        "anthropic" = {
-          options = {
-            timeout = false;
-          } // lib.optionalAttrs hasBifrostKey {
-            # Through Bifrost, which passes opencode-claude-auth's login on to
-            # Anthropic (this machine's own subscription) and logs it under
-            # this machine's virtual key.
-            baseURL = "http://pilab.lion-zebra.ts.net:3639/anthropic/v1";
-            headers."x-bf-vk" = "{file:${config.sops.secrets."bifrost_vk.key".path}}";
-          };
-        };
+        # Straight to Anthropic with opencode-claude-auth's login, not through
+        # Bifrost, so it keeps working when pilab is down.
+        "anthropic".options.timeout = false;
         # "zai-coding-plan" = {
         #   options.timeout = false;
         #   models = {
