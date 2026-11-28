@@ -68,6 +68,9 @@ buildGo127Module {
     # A header_filter_config allowlist set only in config.json was compiled
     # before the file's client section replaced it, so it never applied.
     ./client-config-header-matcher.patch
+    # GitHub Copilot has no custom provider config to carry a display name, so
+    # its catalog entries read like Meridian's ("Claude Opus 5.5" on both).
+    ./copilot-display-name.patch
   ];
 
   modRoot = "transports";

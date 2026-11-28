@@ -1,0 +1,30 @@
+diff --git a/core/providers/githubcopilot/githubcopilot.go b/core/providers/githubcopilot/githubcopilot.go
+index 8922085..b6aebb8 100644
+--- a/core/providers/githubcopilot/githubcopilot.go
++++ b/core/providers/githubcopilot/githubcopilot.go
+@@ -131,7 +131,7 @@ func (p *githubCopilotProvider) listModelsByKey(ctx *schemas.BifrostContext, key
+ 	// resolved token rather than the stored credential.
+ 	key.Value = *schemas.NewSecretVar(creds.Token)
+ 
+-	return openai.ListModelsByKey(
++	response, bErr := openai.ListModelsByKey(
+ 		ctx,
+ 		p.client,
+ 		creds.BaseURL+providerUtils.GetPathFromContext(ctx, "/models"),
+@@ -142,6 +142,16 @@ func (p *githubCopilotProvider) listModelsByKey(ctx *schemas.BifrostContext, key
+ 		providerUtils.ShouldSendBackRawRequest(ctx, p.sendBackRawRequest),
+ 		providerUtils.ShouldSendBackRawResponse(ctx, p.sendBackRawResponse),
+ 	)
++	// This provider has no custom provider config to carry a display name, and
++	// its catalogs overlap the others' (Claude Opus 5.5 on Meridian and here).
++	if response != nil {
++		for i := range response.Data {
++			if name := response.Data[i].Name; name != nil && *name != "" {
++				response.Data[i].Name = schemas.Ptr("GitHub Copilot / " + *name)
++			}
++		}
++	}
++	return response, bErr
+ }
+ 
+ // mergeEditorHeaders overlays the editor identity onto the operator's extra headers.
